@@ -92,15 +92,13 @@ namespace QueryFacetDomain {
         public IEnumerable<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector)
         {
             return context.Database.ExecuteSqlQuery(sql)
-                .DbDataReader.Select(x => new KeyValuePair<K, V>(keySelector(x), valueSelector(x)))
-            .ToList();
+                .DbDataReader.Select(x => new KeyValuePair<K, V>(keySelector(x), valueSelector(x)));
         }
 
         public IEnumerable<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1) // Func<DbDataReader, KeyValuePair<K, V>> selector)
         {
             return context.Database.ExecuteSqlQuery(sql)
-                .DbDataReader.Select(x => new Key1Value<K, V>(x.GetFieldValue<K>(keyIndex), x.GetFieldValue<V>(valueIndex)))
-            .ToList();
+                .DbDataReader.Select(x => new Key1Value<K, V>(x.GetFieldValue<K>(keyIndex), x.GetFieldValue<V>(valueIndex)));
         }
 
         public IEnumerable<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2)

@@ -9,32 +9,33 @@ using static QueryFacetDomain.Utility;
 
 namespace QueryFacetDomain
 {
+    public class CategoryCountValue {
+        public string Category { get; set; }
+        public int Count { get; set; }
+        public Dictionary<EFacetPickType, decimal> Details;
+    }
+
     public interface ICategoryCountService {
-        Dictionary<string, CategeryCountValue> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
+        Dictionary<string, CategoryCountValue> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
     }
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
 
 
-        public class CategeryCountValue {
-            public string Category { get; set; }
-            public int Count { get; set; }
-            public Dictionary<EFacetPickType, decimal> Details;
-        }
 
         public CategoryCountService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
         }
 
-        public Dictionary<string, CategeryCountValue> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
+        public Dictionary<string, CategoryCountValue> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {
             FacetDefinition facet = Context.Facets.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
-            Dictionary<string, CategeryCountValue> data = Query(sql).ToDictionary(z => z.Category);
+            Dictionary<string, CategoryCountValue> data = Query(sql).ToDictionary(z => z.Category);
             return data; 
         }
 
-        protected virtual IEnumerable<CategeryCountValue> Query(string sql)
+        protected virtual IEnumerable<CategoryCountValue> Query(string sql)
         {
             throw new NotImplementedException();
         }
@@ -57,10 +58,10 @@ namespace QueryFacetDomain
             return sql;
         }
 
-        protected override IEnumerable<CategeryCountValue> Query(string sql)
+        protected override IEnumerable<CategoryCountValue> Query(string sql)
         {
-            return Context.QueryRows<CategeryCountValue>(sql,
-                x => new CategeryCountValue() {
+            return Context.QueryRows<CategoryCountValue>(sql,
+                x => new CategoryCountValue() {
                     Category = x.GetInt32(0).ToString(),
                     Count = x.GetInt32(1),
                     Details = new Dictionary<EFacetPickType, decimal>() {
@@ -102,10 +103,10 @@ namespace QueryFacetDomain
             return tables;
         }
 
-        protected override IEnumerable<CategeryCountValue> Query(string sql)
+        protected override IEnumerable<CategoryCountValue> Query(string sql)
         {
-            return Context.QueryRows<CategeryCountValue>(sql,
-                x => new CategeryCountValue() {
+            return Context.QueryRows<CategoryCountValue>(sql,
+                x => new CategoryCountValue() {
                     Category = x.GetInt32(0).ToString(),
                     Count = x.GetInt32(1),
                     Details = new Dictionary<EFacetPickType, decimal>() { {  EFacetPickType.discrete, x.GetInt32(0) } }

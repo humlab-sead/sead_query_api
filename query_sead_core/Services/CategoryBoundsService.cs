@@ -9,8 +9,11 @@ using static QueryFacetDomain.Utility;
 
 namespace QueryFacetDomain
 {
+    public interface ICategoryBoundsService  {
+        IEnumerable<Key2Value<int, float>> Load();
+    }
 
-    public class RangeCategoryBoundsService : QueryServiceBase, IRangeCategoryBoundsService {
+    public class RangeCategoryBoundsService : QueryServiceBase, ICategoryBoundsService {
 
         public RangeCategoryBoundsService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
