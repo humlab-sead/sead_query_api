@@ -79,5 +79,6 @@ namespace QueryFacetDomain {
             }
             return position;
         }
+
     }
 }

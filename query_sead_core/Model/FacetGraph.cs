@@ -4,6 +4,18 @@ using System.Linq;
 
 namespace QueryFacetDomain
 {
+
+    public interface IFacetsGraph {
+        IEnumerable<FacetDefinition> AliasFacets { get; }
+        Dictionary<Tuple<string, string>, GraphEdge> Edges { get; }
+        Dictionary<int, GraphNode> NodeIds { get; }
+        Dictionary<string, GraphNode> Nodes { get; }
+        Dictionary<int, Dictionary<int, int>> Weights { get; }
+        GraphEdge GetEdge(int sourceId, int targetId);
+        GraphEdge GetEdge(string source, string target);
+        string ResolveName(string tableName);
+    }
+
     public class FacetGraphFactory {
 
 
@@ -67,14 +79,6 @@ namespace QueryFacetDomain
 
     }
 
-    static class ForEachExt {
-        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
-        {
-            foreach (T item in enumeration) {
-                action(item);
-            }
-        }
-    }
     public class FacetsGraph : IFacetsGraph {
 
         public Dictionary<string, GraphNode> Nodes { get; set; }

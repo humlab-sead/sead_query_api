@@ -8,15 +8,26 @@ using QueryFacetDomain.QueryBuilder;
 namespace QueryFacetDomain {
 
     public class QueryConfig {
-        public List<string> group_by_fields = new List<string>();
-        public List<string> group_by_inner_fields = new List<string>();
-        public List<string> data_fields_alias = new List<string>();
-        public List<string> data_tables = new List<string>();
-        public List<string> sort_fields = new List<string>();
-        public List<string> data_fields = new List<string>();
+        public List<string> GroupByFields = new List<string>();
+        public List<string> InnerGroupByFields = new List<string>();
+        public List<string> DataFieldAliases = new List<string>();
+        public List<string> DataTables = new List<string>();
+        public List<string> SortFields = new List<string>();
+        public List<string> DataFields = new List<string>();
     }
 
-    public abstract class QuerySetupCompiler : QueryServiceBase {
+    public interface IQuerySetupCompilers {
+        IQuerySetupCompiler DefaultQuerySetupCompiler { get; }
+        IQuerySetupCompiler MapQuerySetupCompiler { get; }
+    }
+
+    public interface IQuerySetupCompiler {
+
+        string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode = null);
+
+    }
+
+    public abstract class QuerySetupCompiler : QueryServiceBase, IQuerySetupCompiler {
 
         public QuerySetupCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
@@ -26,11 +37,22 @@ namespace QueryFacetDomain {
 
     }
 
-    // FIXME: Name to DefaultQuerySetupCompiler
-    public class ResultSqlQueryCompiler : QuerySetupCompiler { // OLD NAME: ResultSqlQueryCompiler
+    public class DefaultQuerySetupCompiler : QuerySetupCompiler { // OLD NAME: ResultSqlQueryCompiler
 
-        public ResultSqlQueryCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public DefaultQuerySetupCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
+        }
+
+        public override string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode = "result_facet")
+        {
+            QueryConfig queryConfig = createResultQueryConfig(resultConfig);
+
+            if (queryConfig == null || queryConfig.DataFields.Count == 0) {
+                return "";
+            }
+            QueryBuilder.QuerySetup query = QueryBuilder.Build(facetsConfig, facetCode, queryConfig.DataTables);
+            string sql = ResultSqlQueryBuilder.compile(query, null, queryConfig);
+            return sql;
         }
 
         private QueryConfig createResultQueryConfig(ResultConfig resultConfig)
@@ -52,39 +74,27 @@ namespace QueryFacetDomain {
 
                     string alias_name = "alias_" + (alias_counter++).ToString();
 
-                    result.data_fields_alias.Add($"{resultField.ColumnName} AS {alias_name}");
-                    result.data_tables.Add(resultField.TableName);
-                    result.group_by_inner_fields.Add(alias_name);
+                    result.DataFieldAliases.Add($"{resultField.ColumnName} AS {alias_name}");
+                    result.DataTables.Add(resultField.TableName);
+                    result.InnerGroupByFields.Add(alias_name);
 
                     if (SqlFieldCompiler.isFieldType(resultField.ResultType))
-                        result.data_fields.Add(fieldCompiler.compile(alias_name));
+                        result.DataFields.Add(fieldCompiler.compile(alias_name));
 
                     if (SqlFieldCompiler.isGroupByType(resultField.ResultType))
-                        result.group_by_fields.Add(alias_name);
+                        result.GroupByFields.Add(alias_name);
 
                     if (SqlFieldCompiler.isSortType(resultField.ResultType))
-                        result.sort_fields.Add(alias_name);
+                        result.SortFields.Add(alias_name);
                 }
             }
             return result;
         }
 
-        public override string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode = "result_facet")
-        {
-            QueryConfig queryConfig = createResultQueryConfig(resultConfig);
-
-            if (queryConfig == null || queryConfig.data_fields.Count == 0) {
-                return "";
-            }
-            QueryBuilder.QuerySetup query = QueryBuilder.Build(facetsConfig, facetCode, queryConfig.data_tables);
-            string sql = ResultSqlQueryBuilder.compile(query, null, queryConfig);
-            return sql;
-        }
     }
 
-    // FIXME: Name to MapQuerySetupCompiler
-    class MapResultSqlQueryCompiler : QuerySetupCompiler { // OLD NAME: MapResultSqlQueryCompiler
-        public MapResultSqlQueryCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
+    public class MapQuerySetupCompiler : QuerySetupCompiler { // OLD NAME: MapResultSqlQueryCompiler
+        public MapQuerySetupCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
         }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using QueryFacetDomain.QueryBuilder;
+using static QueryFacetDomain.Utility;
 
 namespace QueryFacetDomain {
 
@@ -46,8 +47,6 @@ namespace QueryFacetDomain {
   
         }
 
-        public bool empty(string x) => (x ?? "").Equals("");
-
         public FacetsConfig2()
         {
         }
@@ -71,9 +70,10 @@ namespace QueryFacetDomain {
         public List<FacetConfig2> GetFacetConfigsWithPicks()    => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
         public List<string> GetFacetCodesWithPicks()            => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
 
-        public void DeletePicks()
+        public FacetsConfig2 DeletePicks()
         {
             FacetConfigs.ForEach(z => { z.ClearPicks(); });
+            return this;
         }
 
         public class UserPickData {

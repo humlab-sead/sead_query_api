@@ -61,6 +61,14 @@ namespace QueryFacetTest
                 .As<IFacetContentService>()
                 .Keyed<EFacetType>(EFacetType.Discrete);
 
+            builder.RegisterType<MapQuerySetupCompiler>()
+                .As<IQuerySetupCompiler>()
+                .Keyed<EResultViewType>(EResultViewType.Map);
+
+            builder.RegisterType<DefaultQuerySetupCompiler>()
+                .As<IQuerySetupCompiler>()
+                .Keyed<EResultViewType>(EResultViewType.Tabular);
+
             var container = builder.Build();
             return container;
         }

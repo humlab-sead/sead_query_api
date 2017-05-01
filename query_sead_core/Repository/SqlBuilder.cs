@@ -235,11 +235,11 @@ namespace QueryFacetDomain {
         // ResultSqlQueryCompiler::compile(query, queryConfig): string
         public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, QueryConfig queryConfig)
         {
-            string data_fields = String.Join(", ", queryConfig.data_fields);
-            string group_by_inner_fields = String.Join(", ", queryConfig.group_by_inner_fields);
-            string data_fields_alias = String.Join(", ", queryConfig.data_fields_alias);
-            string group_by_clause = str_prefix("GROUP BY ", String.Join(", ", queryConfig.group_by_fields));
-            string sort_by_clause = str_prefix("ORDER BY ", String.Join(", ", queryConfig.sort_fields));
+            string data_fields = String.Join(", ", queryConfig.DataFields);
+            string group_by_inner_fields = String.Join(", ", queryConfig.InnerGroupByFields);
+            string data_fields_alias = String.Join(", ", queryConfig.DataFieldAliases);
+            string group_by_clause = str_prefix("GROUP BY ", String.Join(", ", queryConfig.GroupByFields));
+            string sort_by_clause = str_prefix("ORDER BY ", String.Join(", ", queryConfig.SortFields));
 
             string sql = $@"
             SELECT {data_fields}

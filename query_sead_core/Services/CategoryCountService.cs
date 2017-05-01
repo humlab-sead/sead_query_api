@@ -21,8 +21,6 @@ namespace QueryFacetDomain
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
 
-
-
         public CategoryCountService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
         }

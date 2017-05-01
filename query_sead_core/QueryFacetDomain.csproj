@@ -36,6 +36,7 @@
     <None Include="Services\CategoryCountService.cs" />
     <None Include="Model\ResultConfig.cs" />
     <None Include="Services\FacetContentService.cs" />
+    <None Include="Services\ResultService.cs" />
   </ItemGroup>
 
 
