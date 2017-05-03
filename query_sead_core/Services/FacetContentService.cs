@@ -1,24 +1,30 @@
-using Autofac.Features.Indexed;
-using QueryFacetDomain.QueryBuilder;
+using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
-  
+    using CatCountDict = Dictionary<string, CategoryCountValue>;
+
+    public interface IFacetContentServiceAggregate {
+        DiscreteFacetContentService DiscreteFacetContentService { get; set; }
+        RangeFacetContentService RangeFacetContentService { get; set; }
+    }
+
     public interface IFacetContentService {
         FacetContent Load(FacetsConfig2 facetsConfig);
     }
 
     public class FacetContentService : QueryServiceBase, IFacetContentService {
 
-        public IIndex<EFacetType, ICategoryCountService> CountServices { get; set; }
+        //public ICategoryCountServiceAggregate CountServices { get; set; }
+        public ICategoryCountService CountService { get; set; }
 
-        public FacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IIndex<EFacetType,ICategoryCountService> countServices) : base(config, context, builder)
+        public FacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, ICategoryCountServiceAggregate countServices) : base(config, context, builder)
         {
-            CountServices = countServices;
+            //CountServices = countServices;
         }
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
@@ -33,20 +39,19 @@ namespace QueryFacetDomain
 
         protected (int,string) compileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode) => (0, "");
 
-        private Dictionary<string, CategoryCountValue> GetDataDistribution(FacetsConfig2 facetsConfig, string intervalQuery)
+        private CatCountDict GetDataDistribution(FacetsConfig2 facetsConfig, string intervalQuery)
         {
-            ICategoryCountService service = CountServices[facetsConfig.TargetFacet.FacetTypeId];
-            Dictionary<string,CategoryCountValue> categoryCounts = service.Load(facetsConfig.TargetCode, facetsConfig, intervalQuery);
+            CatCountDict categoryCounts = CountService.Load(facetsConfig.TargetCode, facetsConfig, intervalQuery);
             return categoryCounts;
         }
 
-        protected IEnumerable<FacetContent.CategoryItem> CompileItems(string intervalQuery, Dictionary<string, CategoryCountValue> distribution)
+        protected IEnumerable<FacetContent.CategoryItem> CompileItems(string intervalQuery, CatCountDict distribution)
         {
             var rows = Context.QueryRows(intervalQuery, dr => CreateItem(dr, distribution));
             return rows;
         }
 
-        protected FacetContent.CategoryItem CreateItem(DbDataReader dr, Dictionary<string, CategoryCountValue> distribution)
+        protected FacetContent.CategoryItem CreateItem(DbDataReader dr, CatCountDict distribution)
         {
             string category = GetCategory(dr);
             string name = GetName(dr);
@@ -65,8 +70,9 @@ namespace QueryFacetDomain
     }
 
     public class DiscreteFacetContentService : FacetContentService {
-        public DiscreteFacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder, countServices)
+        public DiscreteFacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, ICategoryCountServiceAggregate countServices) : base(config, context, builder, countServices)
         {
+            CountService = countServices.DiscreteCategoryCountService;
         }
 
         protected (int, string) compileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
@@ -78,8 +84,9 @@ namespace QueryFacetDomain
     }
 
     public class RangeFacetContentService : FacetContentService {
-        public RangeFacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder, countServices)
+        public RangeFacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, ICategoryCountServiceAggregate countServices) : base(config, context, builder, countServices)
         {
+            CountService = countServices.RangeCategoryCountService;
         }
 
         private (decimal, decimal) GetLowerUpperBound(FacetConfig2 config)

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace QueryAPI {
+namespace QuerySeadAPI {
+
     public class Program
     {
         public static void Main(string[] args)

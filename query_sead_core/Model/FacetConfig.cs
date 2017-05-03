@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using QueryFacetDomain.QueryBuilder;
-using static QueryFacetDomain.Utility;
+using QuerySeadDomain.QueryBuilder;
+using static QuerySeadDomain.Utility;
+using Newtonsoft.Json;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public class FacetsConfig2 {
 
@@ -16,8 +17,10 @@ namespace QueryFacetDomain {
         public string TargetCode { get; set; } = "";        // Target facet code i.e. facet for which new data is requested
         public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
 
+        [JsonIgnore]
         public IUnitOfWork context { get; set; }
 
+        [JsonIgnore]
         private List<FacetConfig2> facetConfigs;
         public List<FacetConfig2> FacetConfigs
         {                                                                               // Current client facet configurations
@@ -27,8 +30,9 @@ namespace QueryFacetDomain {
             set {
                 facetConfigs = value.OrderBy(z => z.Position).ToList();
             }
-        } 
+        }
 
+        [JsonIgnore]
         public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
 
         public FacetDefinition TargetFacet                                              // Target facet definition
@@ -142,10 +146,13 @@ namespace QueryFacetDomain {
         public int StartRow { get; set; } = 0;
         public int RowCount { get; set; } = 0;
         public string TextFilter { get; set; } = "";
+
+        [JsonIgnore]
         public IUnitOfWork context { get; set; }
 
         public List<FacetConfigPick> Picks { get; set; }
 
+        [JsonIgnore]
         public FacetDefinition Facet { get => context.Facets.GetByCode(FacetCode); }
 
         public FacetConfig2()
@@ -222,51 +229,4 @@ namespace QueryFacetDomain {
         }
     }
 
-    /*
-    file: facet_config.php
-    This file holds all publics to process and handle params and xml-data from client
-    */
-
-    public interface IDeleteBogusPickService {
-        FacetsConfig2 DeleteBogusPicks(FacetsConfig2 facetsConfig);
-    }
-
-    public class DeleteBogusPickService : QueryServiceBase {
-
-        public DeleteBogusPickService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
-        {
-        }
-
-        //***************************************************************************************************************************************************
-        /*
-        public:  deleteBogusPicks
-        Removes invalid selections e.g. hidden selections still being sent from the client.
-        The client keep them since they can be visible when the filters changes
-        This is only applicable for discrete facets (range facet selection are always visible)
-        */
-        public FacetsConfig2 DeleteBogusPicks(FacetsConfig2 facetsConfig)
-        {
-            foreach (string facetCode in facetsConfig.GetFacetCodes()) {
-
-                var config = facetsConfig.GetConfig(facetCode);
-
-                if (config.Facet.FacetTypeId != EFacetType.Discrete || config.Picks.Count == 0) {
-                    continue;
-                }
-
-                config.Picks = getValidPicks(facetsConfig, facetCode, config);
-            }
-            return facetsConfig;
-        }
-
-        private List<FacetConfigPick> getValidPicks(FacetsConfig2 facetsConfig, string facetCode, FacetConfig2 config)
-        {
-            QueryBuilder.QuerySetup query = QueryBuilder.Build(facetsConfig, facetCode);
-
-            string sql = ValidPicksSqlQueryBuilder.compile(query, config.Facet, config.GetPickValues());
-
-            IEnumerable<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EFacetPickType.discrete, x.GetInt32(0), x.GetString(1)));
-            return rows.ToList();
-        }
-    }
 }

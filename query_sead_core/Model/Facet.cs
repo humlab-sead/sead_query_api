@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
 
     public enum EFacetType {
@@ -37,6 +36,7 @@ namespace QueryFacetDomain
         public int FacetId { get; set; }
         public string Clause { get; set; }
 
+        [JsonIgnore]
         public FacetDefinition FacetDefinition { get; set; }
     }
 
@@ -50,9 +50,11 @@ namespace QueryFacetDomain
         public string TableName { get; set; }
         public string Alias { get; set; }
 
+        [JsonIgnore]
         public FacetDefinition FacetDefinition { get; set; }
     }
 
+    [JsonObject(MemberSerialization.OptOut)]
     public class FacetDefinition {
 
         public int FacetId { get; set; }
@@ -79,7 +81,9 @@ namespace QueryFacetDomain
         public string TargetTableName       => TargetTable.TableName;
         public List<FacetTable> ExtraTables => Tables.Where(z => z.SequenceId != 1).ToList();
 
+        [JsonIgnore]
         public string aliasName = null;
+
         public string AliasName {
             get {
                 return aliasName ?? (aliasName = Tables.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "");
@@ -87,6 +91,8 @@ namespace QueryFacetDomain
         }
 
         public string ResolvedName  => AliasName != "" ? AliasName : TargetTableName; 
+
+        [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));
 
     }

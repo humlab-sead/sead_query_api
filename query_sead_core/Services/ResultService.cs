@@ -1,19 +1,19 @@
-using QueryFacetDomain.QueryBuilder;
+using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     using CatCountDict = Dictionary<string, CategoryCountValue>;
 
-    public class ResultDataLoader : QueryServiceBase
+    public class ResultService : QueryServiceBase
     {
         public IQuerySetupCompilers CompilerAggregate { get; set; }
-        public ResultDataLoader(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IQuerySetupCompilers compilerAggregate) : base(config, context, builder)
+        public ResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IQuerySetupCompilers compilerAggregate) : base(config, context, builder)
         {
             CompilerAggregate = compilerAggregate;
         }
@@ -26,38 +26,37 @@ namespace QueryFacetDomain {
             }
             IDataReader iterator = Context.Query(sql);
             dynamic payload = GetExtraPayload(facetsConfig, resultConfig);
-            return (iterator, payload );
+            return ( iterator, payload );
         }
 
-        protected dynamic GetExtraPayload(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
+        protected virtual dynamic GetExtraPayload(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             return null;
         }
 
-        protected string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
+        protected virtual string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             return CompilerAggregate.DefaultQuerySetupCompiler.Compile(facetsConfig, resultConfig);
         }
     }
 
-    class MapResultDataLoader : ResultDataLoader {
+    class MapResultService : ResultService {
 
         public string facetCode = null;
         public DiscreteCategoryCountService CategoryCountService;
 
-        public MapResultDataLoader(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IQuerySetupCompilers compilerAggregate, DiscreteCategoryCountService categoryCountService) : base(config, context, builder, compilerAggregate)
+        public MapResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IQuerySetupCompilers compilerAggregate, DiscreteCategoryCountService categoryCountService) : base(config, context, builder, compilerAggregate)
         {
             facetCode = "map_result";
             CategoryCountService = categoryCountService;
         }
-
 
         private Dictionary<string, CategoryCountValue> GetCategoryCounts(FacetsConfig2 facetsConfig)
         {
             return CategoryCountService.Load(facetCode, facetsConfig);
         }
 
-        protected (CatCountDict, CatCountDict) getExtraPayload(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
+        protected override dynamic GetExtraPayload(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             CatCountDict data = GetCategoryCounts(facetsConfig);
             CatCountDict filtered = data ?? new Dictionary<string, CategoryCountValue>();
@@ -65,7 +64,7 @@ namespace QueryFacetDomain {
             return (filtered, unfiltered);
         }
 
-        protected string compileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
+        protected override string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             return CompilerAggregate.MapQuerySetupCompiler.Compile(facetsConfig, null, facetCode);
         }

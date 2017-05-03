@@ -9,7 +9,7 @@ using System.Dynamic;
 using System.Data;
 using System.Reflection;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public interface IUnitOfWork {
 

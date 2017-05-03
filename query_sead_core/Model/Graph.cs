@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
 
     public class GraphNode {
@@ -35,10 +36,14 @@ namespace QueryFacetDomain
         public GraphNode TargetTable { get; set; }
 
         // Computed properties
+        [JsonIgnore]
         public string SourceTableName { get { return SourceTable.TableName; } }
+        [JsonIgnore]
         public string TargetTableName { get { return TargetTable.TableName; } }
 
+        [JsonIgnore]
         public string SourceName { get { return $"{SourceTableName}.\"{SourceColumnName}\""; } }
+        [JsonIgnore]
         public string TargetName { get { return $"{TargetTableName}.\"{TargetColumnName}\""; } }
 
         // Note! Only simple, non-composite key allows (just id-2-id), and for now no extra critera

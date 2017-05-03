@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryFacetDomain.QueryBuilder
+namespace QuerySeadDomain.QueryBuilder
 {
 
     // TODO Convert to non-static functions

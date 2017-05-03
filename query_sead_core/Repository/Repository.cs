@@ -7,7 +7,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {

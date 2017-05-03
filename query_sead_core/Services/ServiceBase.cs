@@ -1,9 +1,9 @@
-﻿using QueryFacetDomain.QueryBuilder;
+﻿using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
     public class ServiceBase
     {

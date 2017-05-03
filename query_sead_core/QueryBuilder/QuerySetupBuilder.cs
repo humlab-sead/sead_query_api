@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 
-namespace QueryFacetDomain.QueryBuilder {
+namespace QuerySeadDomain.QueryBuilder {
 
     public class QuerySetupBuilder : IQuerySetupBuilder {
         public IUnitOfWork Context { get; set; }

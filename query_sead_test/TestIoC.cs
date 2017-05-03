@@ -6,7 +6,7 @@ using DataAccessPostgreSqlProvider;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Autofac;
-using QueryFacetDomain;
+using QuerySeadDomain;
 
 namespace QueryFacetTest {
 

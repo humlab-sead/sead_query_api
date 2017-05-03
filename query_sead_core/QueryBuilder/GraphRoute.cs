@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QueryFacetDomain.QueryBuilder
+namespace QuerySeadDomain.QueryBuilder
 {
     public class GraphRoute {
 

@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public class NodeRepository : Repository<GraphNode> {
 

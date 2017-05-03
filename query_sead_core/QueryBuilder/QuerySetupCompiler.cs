@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using QueryFacetDomain.QueryBuilder;
+using QuerySeadDomain.QueryBuilder;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public class QueryConfig {
         public List<string> GroupByFields = new List<string>();

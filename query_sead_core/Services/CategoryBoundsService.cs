@@ -1,13 +1,9 @@
-using Autofac.Features.Indexed;
-using QueryFacetDomain.QueryBuilder;
+using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
     public interface ICategoryBoundsService  {
         IEnumerable<Key2Value<int, float>> Load();

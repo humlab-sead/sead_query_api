@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public enum EResultViewType {
         Unknown = 0,

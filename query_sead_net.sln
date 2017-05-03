@@ -18,6 +18,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		README.md = README.md
+		..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf = ..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf
+		..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf = ..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
 	EndProjectSection
 EndProject
 Global

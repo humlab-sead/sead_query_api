@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
     public static class ForEachExt {
         public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)

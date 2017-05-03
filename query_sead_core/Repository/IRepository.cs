@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public interface IRepository2 {
 

@@ -1,14 +1,16 @@
-using Autofac.Features.Indexed;
-using QueryFacetDomain.QueryBuilder;
+using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
+    public interface ICategoryCountServiceAggregate {
+        ICategoryCountService RangeCategoryCountService { get; set; }
+        ICategoryCountService DiscreteCategoryCountService { get; set; }
+    }
+
     public class CategoryCountValue {
         public string Category { get; set; }
         public int Count { get; set; }
@@ -33,15 +35,9 @@ namespace QueryFacetDomain
             return data; 
         }
 
-        protected virtual IEnumerable<CategoryCountValue> Query(string sql)
-        {
-            throw new NotImplementedException();
-        }
+        protected virtual IEnumerable<CategoryCountValue> Query(string sql) => throw new NotSupportedException();
 
-        protected virtual string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery)
-        {
-            throw new NotImplementedException();
-        }
+        protected virtual string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery) => throw new NotSupportedException();
     }
 
     public class RangeCategoryCountService : CategoryCountService {
@@ -51,7 +47,7 @@ namespace QueryFacetDomain
         protected override string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
             List<string> tables = new List<string>() { facet.TargetTableName, Config.DirectCountTable };
-            QueryBuilder.QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
+            QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
             string sql = RangeCounterSqlQueryBuilder.compile(query, facet, intervalQuery, Config.DirectCountColumn);
             return sql;
         }
@@ -84,7 +80,7 @@ namespace QueryFacetDomain
             List<string> extraTables = CollectTables(facetsConfig, targetFacet, countFacet);
             List<string> facetCodes  = array_insert_before_existing(facetsConfig.GetFacetCodes(), targetFacet.FacetCode, countFacet.FacetCode);
 
-            QueryBuilder.QuerySetup query = QueryBuilder.Build(facetsConfig, countFacet.FacetCode, extraTables, facetCodes);
+            QuerySetup query = QueryBuilder.Build(facetsConfig, countFacet.FacetCode, extraTables, facetCodes);
             string sql = DiscreteCounterSqlQueryBuilder.compile(query, targetFacet, countFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }

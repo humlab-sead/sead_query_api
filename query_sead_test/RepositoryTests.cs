@@ -5,12 +5,12 @@ using System.Diagnostics;
 using DataAccessPostgreSqlProvider;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using QueryFacetDomain;
+using QuerySeadDomain;
 
 namespace query_sead_test
 {
     [TestClass]
-    public class TestRepository {
+    public class RepositoryTests {
 
 
         [TestMethod]

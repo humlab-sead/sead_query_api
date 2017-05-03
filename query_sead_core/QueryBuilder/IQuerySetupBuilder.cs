@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace QueryFacetDomain.QueryBuilder {
+namespace QuerySeadDomain.QueryBuilder {
     public interface IQuerySetupBuilder {
         IFacetsGraph Graph { get; set; }
 

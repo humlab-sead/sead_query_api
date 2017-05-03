@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
     public class FacetContent {
 

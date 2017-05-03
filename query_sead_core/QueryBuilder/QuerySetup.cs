@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 using System.Linq;
 
-namespace QueryFacetDomain.QueryBuilder
+namespace QuerySeadDomain.QueryBuilder
 {
     public class QuerySetup {
 

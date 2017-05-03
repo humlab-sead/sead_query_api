@@ -7,35 +7,34 @@ using QuerySeadDomain;
 
 namespace query_sead_net.Controllers
 {
-    [Route("api/[controller]")]
-    public class FacetsController : Controller
+    [Route("api/[controller]/")]
+    public class ResultController : Controller
     {
         public IUnitOfWork Context { get; private set; }
 
-        public FacetsController(IUnitOfWork context)
+        public ResultController(IUnitOfWork context)
         {
             Context = context;
         }
 
         // GET api/values
-        [HttpGet]
-        public IEnumerable<FacetDefinition> Get()
+        [HttpGet("definition")]
+        public IEnumerable<ResultDefinition> Get()
         {
-            return Context.Facets.GetAll().ToList();
+            return Context.Results.GetAll().ToList();
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public FacetDefinition Get(int id)
+        [HttpGet("definition/{id}")]
+        public ResultDefinition Get(int id)
         {
-            return Context.Facets.Get(id);
+            return Context.Results.Get(id);
         }
 
         // POST api/values
         [HttpPost]
-        public int Post([FromBody]FacetsConfig2 data)
+        public void Post([FromBody]string value)
         {
-            return 0;
         }
 
     }

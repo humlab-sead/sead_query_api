@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-using static QueryFacetDomain.Utility;
+using static QuerySeadDomain.Utility;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     class SqlFieldCompiler {
         protected static Dictionary<string, SqlFieldCompiler> compilers = null;

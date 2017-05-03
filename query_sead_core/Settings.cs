@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
     public interface IQueryBuilderSetting {
         FacetSetting Facet { get; set; }

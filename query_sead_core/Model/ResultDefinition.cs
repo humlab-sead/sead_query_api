@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace QueryFacetDomain
+namespace QuerySeadDomain
 {
     public enum EResultType {
         single_item = 1,

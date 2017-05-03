@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using QueryFacetDomain;
+using QuerySeadDomain;
 
 namespace DataAccessPostgreSqlProvider {
  

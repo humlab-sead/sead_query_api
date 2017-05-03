@@ -1,5 +1,5 @@
 ﻿using DataAccessPostgreSqlProvider;
-using QueryFacetDomain;
+using QuerySeadDomain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace QueryFacetDomain {
+namespace QuerySeadDomain {
 
     public class ResultRepository : Repository<ResultDefinition>
     {

@@ -2,8 +2,8 @@
 using Autofac.Extras.AggregateService;
 using DataAccessPostgreSqlProvider;
 using Microsoft.Extensions.Configuration;
-using QuerySeadDomain;
-using QuerySeadDomain.QueryBuilder;
+using QueryFacetDomain;
+using QueryFacetDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Text;
