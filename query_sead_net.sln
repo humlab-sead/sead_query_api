@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadAPI", "query_sead_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryFacetDomain", "query_sead_core\QueryFacetDomain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryFacetTest", "query_sead_test\QueryFacetTest.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadTests", "query_sead_test\QuerySeadTests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. API", "0. API", "{2A5926AB-11C3-4F26-847E-FC5CEA0E0424}"
 EndProject
