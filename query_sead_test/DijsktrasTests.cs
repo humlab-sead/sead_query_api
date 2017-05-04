@@ -6,9 +6,9 @@ using DataAccessPostgreSqlProvider;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace QueryFacetTest {
+namespace QuerySeadTests.Dijsktras {
     [TestClass]
-    public class TestDijsktras
+    public class DijsktrasTests
     {
 
         [TestMethod]

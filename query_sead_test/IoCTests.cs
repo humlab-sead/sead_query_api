@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Autofac;
 using QuerySeadDomain;
 
-namespace QueryFacetTest {
+namespace QuerySeadTests.IoC {
 
     public interface IDependent {
         void DoSomeThingNice();
@@ -43,7 +43,7 @@ namespace QueryFacetTest {
     }
 
     [TestClass]
-    public class TestIoC
+    public class IoCTests
     {
 
         [TestMethod]

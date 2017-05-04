@@ -46,7 +46,7 @@ namespace QuerySeadDomain
             PickMatrix           = pickMatrix ?? new Dictionary<string, FacetsConfig2.UserPickData>();
         }
 
-        public (int,int) getPage(int minSize=12)
+        public (int,int) GetPage(int minSize=12)
         {
             if (FacetsConfig.TargetFacet.FacetTypeId == EFacetType.Range) {
                 return (0, 250);

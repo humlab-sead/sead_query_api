@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryFacetTest
-{
+namespace QuerySeadTests.Cache {
     [TestClass]
     public class CacheTests {
 

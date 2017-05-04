@@ -19,17 +19,17 @@ namespace QuerySeadDomain
 
     public class FacetContentService : QueryServiceBase, IFacetContentService {
 
-        //public ICategoryCountServiceAggregate CountServices { get; set; }
+        public ICategoryCountServiceAggregate CountServices { get; set; }
         public ICategoryCountService CountService { get; set; }
 
         public FacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, ICategoryCountServiceAggregate countServices) : base(config, context, builder)
         {
-            //CountServices = countServices;
+            CountServices = countServices;
         }
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            (int interval, string intervalQuery) = compileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
+            (int interval, string intervalQuery) = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
             var distribution = GetDataDistribution(facetsConfig, intervalQuery);
             List<FacetContent.CategoryItem> items = CompileItems(intervalQuery, distribution).ToList();
             Dictionary<string, FacetsConfig2.UserPickData> pickMatrix = facetsConfig.collectUserPicks(facetsConfig.TargetCode);
@@ -37,7 +37,7 @@ namespace QuerySeadDomain
             return facetContent;
         }
 
-        protected (int,string) compileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode) => (0, "");
+        protected virtual (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=0) => (0, "");
 
         private CatCountDict GetDataDistribution(FacetsConfig2 facetsConfig, string intervalQuery)
         {
@@ -75,7 +75,7 @@ namespace QuerySeadDomain
             CountService = countServices.DiscreteCategoryCountService;
         }
 
-        protected (int, string) compileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
+        protected override (int, string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
         {
             QuerySetup query = QueryBuilder.Build(facetsConfig, facetsConfig.TargetCode, null, facetsConfig.GetFacetCodes());
             string sql = DiscreteContentSqlQueryBuilder.compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
@@ -98,7 +98,7 @@ namespace QuerySeadDomain
             return (bounds[EFacetPickType.lower], bounds[EFacetPickType.upper]);
         }
 
-        protected (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval_count=120)
+        protected override (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval_count=120)
         {
             (decimal lower, decimal upper) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode));
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);

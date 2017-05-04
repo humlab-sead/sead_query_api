@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <AssemblyName>SEADQueryAPI</AssemblyName>
-    <RootNamespace>SEADQueryAPI</RootNamespace>
+    <AssemblyName>QuerySeadAPI</AssemblyName>
+    <RootNamespace>QuerySeadAPI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +36,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\query_sead_core\QueryFacetDomain.csproj" />
+    <ProjectReference Include="..\query_sead_core\QuerySeadDomain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.json">

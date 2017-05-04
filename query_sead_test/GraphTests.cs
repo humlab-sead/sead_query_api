@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Autofac;
 using QuerySeadDomain;
 using QuerySeadDomain.QueryBuilder;
+using QuerySeadTests;
 
-namespace QueryFacetTest {
+namespace QuerySeadTests.Graph {
+
     [TestClass]
-    public class TestFacetsGraph
+    public class GraphTests
     {
 
         [TestMethod]
@@ -34,7 +36,7 @@ namespace QueryFacetTest {
         [TestMethod]
         public void TestResolveFacetsGraph()
         {
-            var container = RegisterDependencies.Register();
+            var container = new TestDependencyService().Register(null);
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IFacetsGraph>();
                 Assert.IsTrue(service.Nodes.Count > 0);

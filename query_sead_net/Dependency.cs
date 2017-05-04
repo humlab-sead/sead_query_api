@@ -18,14 +18,18 @@ namespace QuerySeadAPI {
 
     public class DependencyService
     {
-        public IContainer Register(IServiceCollection services)
+        public virtual IContainer Register(IServiceCollection services)
         {
             var builder = new Autofac.ContainerBuilder();
 
             // http://docs.autofac.org/en/latest/register/registration.html
             
             builder.RegisterInstance(new SettingFactory().Create()).SingleInstance().ExternallyOwned();
-            builder.RegisterInstance<IQueryCache>(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
+            //builder.RegisterInstance<IQueryCache>(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
+
+            builder.RegisterInstance(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
+            builder.RegisterAggregateService<IQueryCache>();
+
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
@@ -34,7 +38,7 @@ namespace QuerySeadAPI {
             builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
-
+            //ICategoryCountService
             builder.RegisterAggregateService<ICategoryCountServiceAggregate>();
             builder.RegisterType<RangeCategoryCountService>();
             builder.RegisterType<DiscreteCategoryCountService>();
@@ -49,7 +53,8 @@ namespace QuerySeadAPI {
 
             builder.RegisterAggregateService<IControllerServiceAggregate>();
 
-            builder.Populate(services);
+            if (services != null)
+                builder.Populate(services);
 
             var container = builder.Build();
 

@@ -6,11 +6,13 @@ using CacheManager.Core;
 
 namespace QuerySeadAPI
 {
-    public interface IQueryCache : ICacheManager<object> { }
+    public interface IQueryCache {
+        ICacheManager<object> Store { get; set; }
+    }
 
     public class QueryCacheFactory {
 
-        public IQueryCache Create()
+        public ICacheManager<object> Create()
         {
             var cacheConfig = ConfigurationBuilder.BuildConfiguration(settings => {
                 settings
@@ -26,7 +28,7 @@ namespace QuerySeadAPI
                     .WithRedisCacheHandle("redis", true);
             });
             ICacheManager<object> cache = CacheFactory.FromConfiguration<object>(cacheConfig);
-            return (IQueryCache)cache;
+            return cache;
         }
     }
 }

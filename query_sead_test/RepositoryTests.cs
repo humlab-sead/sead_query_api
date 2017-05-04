@@ -7,8 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using QuerySeadDomain;
 
-namespace query_sead_test
-{
+namespace QuerySeadTests.Repository {
     [TestClass]
     public class RepositoryTests {
 

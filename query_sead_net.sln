@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadAPI", "query_sead_net\QuerySeadAPI.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryFacetDomain", "query_sead_core\QueryFacetDomain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadDomain", "query_sead_core\QuerySeadDomain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadTests", "query_sead_test\QuerySeadTests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject

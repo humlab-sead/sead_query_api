@@ -7,8 +7,8 @@ using static QuerySeadDomain.Utility;
 namespace QuerySeadDomain
 {
     public interface ICategoryCountServiceAggregate {
-        ICategoryCountService RangeCategoryCountService { get; set; }
-        ICategoryCountService DiscreteCategoryCountService { get; set; }
+        RangeCategoryCountService RangeCategoryCountService { get; set; }
+        DiscreteCategoryCountService DiscreteCategoryCountService { get; set; }
     }
 
     public class CategoryCountValue {

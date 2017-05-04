@@ -18,7 +18,7 @@ namespace QuerySeadDomain {
         public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
 
         [JsonIgnore]
-        public IUnitOfWork context { get; set; }
+        public IUnitOfWork Context { get; set; }
 
         [JsonIgnore]
         private List<FacetConfig2> facetConfigs;
@@ -35,22 +35,6 @@ namespace QuerySeadDomain {
         [JsonIgnore]
         public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
 
-        public FacetDefinition TargetFacet                                              // Target facet definition
-        {
-            get => empty(TargetCode) ? null : context.Facets.GetByCode(TargetCode);
-        }
-
-        public FacetDefinition TriggerFacet
-        {
-            get => empty(TriggerCode) ? null : context.Facets.GetByCode(TriggerCode);
-        }
-
-        public FacetConfig2 TargetConfig
-        {
-            get => GetConfig(TargetCode);
-  
-        }
-
         public FacetsConfig2()
         {
         }
@@ -59,15 +43,26 @@ namespace QuerySeadDomain {
         {
         }
 
-        public FacetsConfig2(IUnitOfWork context, string requestId, string language, List<FacetConfig2> facetConfigs, string requestType = "", string targetCode = "", string triggerCode = "") : this(context)
+        [JsonIgnore]
+        public FacetDefinition TargetFacet                                              // Target facet definition
         {
-            RequestId = requestId;
-            Language = language;
-            RequestType = requestType;
-            TargetCode = targetCode;
-            TriggerCode = triggerCode;
-            FacetConfigs =  facetConfigs;
+            get => empty(TargetCode) ? null : Context.Facets.GetByCode(TargetCode);
         }
+
+        [JsonIgnore]
+        public FacetDefinition TriggerFacet
+        {
+            get => empty(TriggerCode) ? null : Context.Facets.GetByCode(TriggerCode);
+        }
+
+        [JsonIgnore]
+        public FacetConfig2 TargetConfig
+        {
+            get => GetConfig(TargetCode);
+  
+        }
+
+
 
         public FacetConfig2 GetConfig(string facetCode)         => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
         public List<string> GetFacetCodes()                     => FacetConfigs.Select(x => x.FacetCode).ToList();
@@ -148,15 +143,20 @@ namespace QuerySeadDomain {
         public string TextFilter { get; set; } = "";
 
         [JsonIgnore]
-        public IUnitOfWork context { get; set; }
+        public IUnitOfWork Context { get; set; }    // FIXME Remove dependecy to Context
 
         public List<FacetConfigPick> Picks { get; set; }
 
         [JsonIgnore]
-        public FacetDefinition Facet { get => context.Facets.GetByCode(FacetCode); }
+        public FacetDefinition Facet { get => Context.Facets.GetByCode(FacetCode); }
 
         public FacetConfig2()
         {
+        }
+
+        public FacetConfig2(IUnitOfWork context) : this()
+        {
+            Context = context;
         }
 
         public FacetConfig2(string facetCode, int position, int startRow, int rowCount, string filter, List<FacetConfigPick> picks)
@@ -203,7 +203,7 @@ namespace QuerySeadDomain {
 
         public dynamic /*(decimal lower, decimal upper)*/ getStorageLowerUpperBounds()
         {
-            return context.Facets.GetUpperLowerBounds(Facet);
+            return Context.Facets.GetUpperLowerBounds(Facet);
         }
 
     }

@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\query_sead_core\QueryFacetDomain.csproj" />
+    <ProjectReference Include="..\query_sead_core\QuerySeadDomain.csproj" />
     <ProjectReference Include="..\query_sead_net\QuerySeadAPI.csproj" />
   </ItemGroup>
 

@@ -41,7 +41,7 @@ namespace QuerySeadDomain.QueryBuilder {
 
                 FacetConfig2 config = facetsConfig.GetConfig(currentCode);
 
-                if (config.Picks.Count == 0) {
+                if (config == null || config.Picks.Count == 0) {
                     continue;
                 }
 
