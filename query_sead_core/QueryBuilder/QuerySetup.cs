@@ -40,7 +40,7 @@ namespace QuerySeadDomain.QueryBuilder
 
         private string generateWhereClause(FacetDefinition facet, Dictionary<string, string> filter_clauses)
         {
-            List<string> sql_where_clauses = filter_clauses.Select(x => "(" + x + ")\n").ToList();
+            List<string> sql_where_clauses = filter_clauses.Select(x => "(" + x.Value + ")\n").ToList();
             if (facet.Clauses.Count > 0) {
                 sql_where_clauses.Add(facet.QueryCriteria);
             }

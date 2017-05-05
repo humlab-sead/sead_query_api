@@ -64,6 +64,38 @@ namespace QuerySeadTests.FacetsConfig
         [TestMethod]
         public void CanLoadSimpleConfig()
         {
+            FacetsConfig2 facetsConfig = new FacetsConfig2() {
+                RequestId = "1",
+                Language = "en_GB",
+                TargetCode = "sites",       // requested_facet
+                RequestType = "populate",
+                TriggerCode = "sites",    // f_action.f_code
+                FacetConfigs = new List<FacetConfig2>() {
+                    new FacetConfig2() {
+                        FacetCode = "sites",
+                        Position = 0,
+                        StartRow = 0,
+                        RowCount = 150,
+                        TextFilter = "",
+                        Picks = new List<FacetConfigPick>() {
+                        }
+                    }
+                }
+            };
+            IContainer container = new TestDependencyService().Register(null);
+
+            using (var scope = container.BeginLifetimeScope()) {
+                var service = scope.Resolve<IFacetContentServiceAggregate>();
+                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                var facetContent = service.DiscreteFacetContentService.Load(facetsConfig);
+                string output = JsonConvert.SerializeObject(facetContent);
+            }
+        }
+
+        [TestMethod]
+        public void CanLoadDualConfig()
+        {
             FacetsConfig2 facetsConfig = GetTestFacetsConfig();
 
             IContainer container = new TestDependencyService().Register(null);

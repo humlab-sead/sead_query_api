@@ -83,12 +83,12 @@ namespace QuerySeadDomain.QueryBuilder {
 
                     GraphEdge relation = Graph.Edges[Tuple.Create(edge.TargetName, edge.SourceName)];
 
-                    string joinType = tableCriteria.ContainsKey(edge.SourceName) || tableCriteria.ContainsKey(edge.TargetName) ? "inner" : "left";
+                    string joinType = tableCriteria.ContainsKey(edge.SourceName) || tableCriteria.ContainsKey(edge.TargetName) ? "INNER" : "LEFT";
                     string targetName = Graph.ResolveName(edge.TargetName);
                     string aliasClause = (targetName != edge.TargetName) ? $" AS {edge.TargetName} " : "";
                     string relationClause = relation.GetSqlJoinClause(joinType);
 
-                    joins.Append($" {joinType} JOIN {targetName} {aliasClause}\n  ON {relationClause} \n");
+                    joins.Append($" {joinType} JOIN {targetName} {aliasClause}\n  ON ({relation.SourceName} = {relation.TargetName}) \n");
                 }
             }
             return joins.ToString();
@@ -96,7 +96,12 @@ namespace QuerySeadDomain.QueryBuilder {
 
         private List<GraphRoute> computeShortestJoinPaths(string start_table, List<string> destination_tables)
         {
-            return destination_tables.Select(z => computeShortestJoinPath(start_table, z)).ToList();
+            return destination_tables
+                .Where(w => start_table != w)
+                .Select(z =>
+                    computeShortestJoinPath(start_table, z)
+                    )
+                .ToList();
         }
 
         private GraphRoute computeShortestJoinPath(string start_table, string destination_table)
@@ -113,7 +118,8 @@ namespace QuerySeadDomain.QueryBuilder {
             DijkstrasGraph<int> dijkstra = new DijkstrasGraph<int>(Graph.Weights);
 
             List<int> trail = dijkstra.shortest_path(start_node, destination_node);
-
+            trail.Add(start_node);
+            trail.Reverse();
             return new GraphRoute(trail.Select(x => Graph.NodeIds[x].TableName).ToList());
         }
     }

@@ -48,7 +48,7 @@ namespace QuerySeadDomain
 
         // Note! Only simple, non-composite key allows (just id-2-id), and for now no extra critera
         public string GetSqlJoinClause(string joinType)
-            => $" INNER JOIN {TargetTableName} ON ({SourceName} = {TargetName})\n";
+            => $" ({SourceName} = {TargetName})\n";
 
         public GraphEdge Clone()
         {
@@ -59,6 +59,8 @@ namespace QuerySeadDomain
                 TargetTableId = TargetTableId,
                 SourceTable = SourceTable,
                 TargetTable = TargetTable,
+                SourceColumnName = SourceColumnName,
+                TargetColumnName = TargetColumnName
             };
         }
 
@@ -68,6 +70,7 @@ namespace QuerySeadDomain
             x.RelationId = -x.RelationId;
             (x.SourceTableId, x.TargetTableId) = (x.TargetTableId, x.SourceTableId);
             (x.SourceTable, x.TargetTable) = (x.TargetTable, x.SourceTable);
+            (x.SourceColumnName, x.TargetColumnName) = (x.TargetColumnName, x.SourceColumnName);
             return x;
         }
 

@@ -6,7 +6,7 @@ namespace QuerySeadDomain {
 
     public class DijkstrasGraph<N>
     {
-        public Dictionary<N, Dictionary<N, int>> vertices { get; set; } = new Dictionary<N, Dictionary<N, int>>();
+        public Dictionary<N, Dictionary<N, int>> Vertices { get; set; } = new Dictionary<N, Dictionary<N, int>>();
 
         public DijkstrasGraph()
         {
@@ -14,12 +14,12 @@ namespace QuerySeadDomain {
 
         public DijkstrasGraph(Dictionary<N, Dictionary<N, int>> weights)
         {
-            this.vertices = weights;
+            this.Vertices = weights;
         }
 
         public void add_vertex(N name, Dictionary<N, int> edges)
         {
-            vertices[name] = edges;
+            Vertices[name] = edges;
         }
 
         public List<N> shortest_path(N start, N finish)
@@ -30,7 +30,7 @@ namespace QuerySeadDomain {
 
             List<N> path = null;
 
-            foreach (var vertex in vertices) {
+            foreach (var vertex in Vertices) {
                 if (vertex.Key.Equals(start)) {
                     distances[vertex.Key] = 0;
                 } else {
@@ -52,7 +52,6 @@ namespace QuerySeadDomain {
                         path.Add(smallest);
                         smallest = previous[smallest];
                     }
-
                     break;
                 }
 
@@ -60,7 +59,7 @@ namespace QuerySeadDomain {
                     break;
                 }
 
-                foreach (var neighbor in vertices[smallest]) {
+                foreach (var neighbor in Vertices[smallest]) {
                     var alt = distances[smallest] + neighbor.Value;
                     if (alt < distances[neighbor.Key]) {
                         distances[neighbor.Key] = alt;

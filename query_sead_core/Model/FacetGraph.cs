@@ -4,12 +4,13 @@ using System.Linq;
 
 namespace QuerySeadDomain
 {
+    using NodesDict = Dictionary<string, GraphNode>;
 
     public interface IFacetsGraph {
         IEnumerable<FacetDefinition> AliasFacets { get; }
         Dictionary<Tuple<string, string>, GraphEdge> Edges { get; }
         Dictionary<int, GraphNode> NodeIds { get; }
-        Dictionary<string, GraphNode> Nodes { get; }
+        NodesDict Nodes { get; }
         Dictionary<int, Dictionary<int, int>> Weights { get; }
         GraphEdge GetEdge(int sourceId, int targetId);
         GraphEdge GetEdge(string source, string target);
@@ -28,60 +29,78 @@ namespace QuerySeadDomain
 
         public IFacetsGraph Build(IUnitOfWork context)
         {
+            // FIXME! Edges where source_table = target_table?? Key=(tbl_dataset,tbl_dataset)
+            // Could it be that key must be "table_name.column_name"
             var edgesList = context.Edges.GetAll().ToList();
 
-            var nodes = context.Nodes.GetAll().ToDictionary(x => x.TableName);
+            var nodesList = context.Nodes.GetAll().ToList();
 
             var aliasFacets = context.Facets.FindThoseWithAlias().ToList();
             var aliasTables = aliasFacets.ToDictionary(x => x.TargetTableName, x => x.AliasName);
 
-            AddAliasNodes(nodes, aliasFacets);
+            var nodes = nodesList.ToDictionary(x => x.TableName);
 
-            var weights = edgesList.GroupBy(p => p.SourceTableId,
-                (key, g) => (key, g.ToDictionary(x => x.TargetTableId, x => x.Weight)))
+            var aliasNodes = GetAliasNodes(nodes, aliasFacets).ToList();
+            if (aliasNodes.Count > 0) {
+                aliasNodes.ForEach(z => nodes[z.TableName] = z);
+                edgesList = AddAliasEdges(edgesList, nodes, aliasFacets);
+            }
+
+            edgesList = AddReverseEdges(edgesList);
+
+            /* Create a dictionary of dictionaries */
+            var weights = edgesList
+                .GroupBy(
+                    p => p.SourceTableId,
+                    (key, g) => (
+                        key,
+                        g.ToDictionary(x => x.TargetTableId, x => x.Weight)))
                 .ToDictionary(x => x.Item1, y => y.Item2);
 
-            var edges = edgesList.ToDictionary(z => z.Key);
-            AddAliasEdges(edges, nodes, aliasFacets);
-            AddReverseEdges(edges);
-
             return new FacetsGraph() {
-                Nodes = nodes,
-                Edges = edges,
+                Nodes       = nodes,
+                Edges       = edgesList.ToDictionary(z => z.Key),
                 AliasFacets = aliasFacets,
-                AliasTables = aliasTables,
-                NodeIds = nodes.Values.ToDictionary(x => x.TableId),
-                Weights = weights
+                AliasTables = aliasFacets.ToDictionary(x => x.TargetTableName, x => x.AliasName),
+                NodeIds     = nodes.Values.ToDictionary(x => x.TableId),
+                Weights     = weights
             };
         }
 
-        private void AddAliasNodes(Dictionary<string, GraphNode> nodes, IEnumerable<FacetDefinition> aliasFacets)
+        private IEnumerable<GraphNode> GetAliasNodes(NodesDict nodes, IEnumerable<FacetDefinition> aliasFacets)
         {
             int id = nodes.Max(z => z.Value.TableId) + 1;
-            aliasFacets.Select(z => z.AliasName)
-                .ForEach(z => nodes[z] = new GraphNode() { TableId = id++, TableName = z });
+            return aliasFacets
+                .Select(z => new GraphNode() { TableId = id++, TableName = z.AliasName })
+                .Where(z => !nodes.ContainsKey(z.TableName));
         }
 
-        private void AddAliasEdges(Dictionary<Tuple<string, string>, GraphEdge> edges, Dictionary<string, GraphNode> nodes, IEnumerable<FacetDefinition> aliasFacets)
+        private List<GraphEdge> AddAliasEdges(List<GraphEdge> edgesList, NodesDict nodes, IEnumerable<FacetDefinition> aliasFacets)
         {
             foreach (var facet in aliasFacets) {
-                var values = edges.Where(x => x.Key.Item1 == facet.TargetTableName)
-                     .Select(z => z.Value.makeAlias(nodes[facet.AliasName])).ToList();
-                     values.ForEach(z => edges[z.Key] = z);
+                var values = edgesList
+                    .Where(x => x.SourceTableName == facet.TargetTableName)
+                    .Select(z => z.makeAlias(nodes[facet.AliasName]))
+                    .ToList();
+                edgesList.AddRange(values);
             }
+            return edgesList;
         }
 
-        private void AddReverseEdges(Dictionary<Tuple<string, string>, GraphEdge> edges)
+        private List<GraphEdge> AddReverseEdges(List<GraphEdge> edgesList)
         {
-            var values = edges.Values.Select(x => x.Reverse()).ToList();
-            values.ForEach(x => edges[x.Key] = x);
+            edgesList.AddRange(
+                edgesList
+                    .Where(z => z.SourceTableId != z.TargetTableId)
+                    .Select(x => x.Reverse()).ToList());
+            return edgesList;
         }
 
     }
 
     public class FacetsGraph : IFacetsGraph {
 
-        public Dictionary<string, GraphNode> Nodes { get; set; }
+        public NodesDict Nodes { get; set; }
         public Dictionary<Tuple<string, string>, GraphEdge> Edges { get; set; }
         public IEnumerable<FacetDefinition> AliasFacets { get; set; }
         public Dictionary<string, string> AliasTables;

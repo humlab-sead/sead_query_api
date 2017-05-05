@@ -80,7 +80,7 @@ namespace QuerySeadDomain
             List<string> extraTables = CollectTables(facetsConfig, targetFacet, countFacet);
             List<string> facetCodes  = array_insert_before_existing(facetsConfig.GetFacetCodes(), targetFacet.FacetCode, countFacet.FacetCode);
 
-            QuerySetup query = QueryBuilder.Build(facetsConfig, countFacet.FacetCode, extraTables, facetCodes);
+             QuerySetup query = QueryBuilder.Build(facetsConfig, countFacet.FacetCode, extraTables, facetCodes);
             string sql = DiscreteCounterSqlQueryBuilder.compile(query, targetFacet, countFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }
