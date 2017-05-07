@@ -130,7 +130,7 @@ namespace QuerySeadDomain {
             string sql = $@"
             SELECT category, {aggType}(value) AS count
             FROM (
-                SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS count
+                SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS value
                 FROM {query.sql_table}
                      {query.sql_joins}
                 WHERE 1 = 1

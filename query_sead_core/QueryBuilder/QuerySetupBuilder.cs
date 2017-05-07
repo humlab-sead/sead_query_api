@@ -28,7 +28,7 @@ namespace QuerySeadDomain.QueryBuilder {
         {
             extraTables = extraTables ?? new List<string>();
             FacetDefinition targetFacet = Context.Facets.GetByCode(facetCode);
-            IEnumerable<string> tables = extraTables.Concat(targetFacet.ExtraTables.Select(z => z.TableName)); 
+            List<string> tables = extraTables.Concat(targetFacet.ExtraTables.Select(z => z.TableName)).ToList(); 
 
             Dictionary<string, List<string>> filter_clauses = new Dictionary<string, List<string>>();
 
@@ -55,7 +55,8 @@ namespace QuerySeadDomain.QueryBuilder {
 
                 filterClauses.Add((config.Facet.ResolvedName, filterClause));
 
-                tables.Concat(config.Facet.ExtraTables.Select(z => z.TableName)).Append(config.Facet.ResolvedName);
+                tables.AddRange(config.Facet.ExtraTables.Select(z => z.TableName).ToList());
+                tables.Add(config.Facet.ResolvedName);
             }
 
             var criteraGroups = filterClauses.GroupBy(p => p.Item1, p => p.Item2, (key, g) => new { TableName = key, Clauses = g.ToList() });

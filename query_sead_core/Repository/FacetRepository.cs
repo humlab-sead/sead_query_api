@@ -34,11 +34,6 @@ namespace QuerySeadDomain {
             return dictionary ?? (dictionary = GetAll().ToDictionary(x => x.FacetCode));
         }
 
-        //public override IEnumerable<FacetDefinition> GetAll()
-        //{
-        //    return context.Set<FacetDefinition>().BuildFacetDefinition().ToList();
-        //}
-
         public FacetDefinition GetByCode(string facetCode)
         {
             return ToDictionary()?[facetCode];
@@ -65,6 +60,13 @@ namespace QuerySeadDomain {
             return item;
         }
 
+        public string GenerateStateId()
+        {
+            var sql = $"select nextval('{Context.Settings.CacheSeq}') as cache_id;";
+            using (var dr = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+                return "state_id_" + dr.GetInt32(0).ToString();
+            }
+        }
     }
 
     public static class FacetRepositoryEagerBuilder {

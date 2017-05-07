@@ -27,7 +27,7 @@ namespace QuerySeadDomain {
         {
         }
 
-        public string generateCacheId(FacetsConfig2 facetsConfig)
+        public string GetCacheId(FacetsConfig2 facetsConfig)
         {
             return ViewType.ToString("F") + "_" + facetsConfig.GetPicksCacheId() + String.Join("", Items) + facetsConfig.Language + AggregationCode;
         }

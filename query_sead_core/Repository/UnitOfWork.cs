@@ -20,26 +20,26 @@ namespace QuerySeadDomain {
 
         int Commit();
         void Dispose();
-        IEnumerable<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector);
-        IEnumerable<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1);
-        IEnumerable<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2);
+        //List<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector);
+        //List<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1);
+        List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2);
         T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null);
-        IEnumerable<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector);
+        List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector);
         DbDataReader Query(string sql);
 
-        IEnumerable<dynamic> QueryDynamic(string sql, Func<DbDataReader, dynamic> selector);
-        IEnumerable<T> QueryPopulate<T>(string sql) where T : class;
+        //IEnumerable<dynamic> QueryDynamic(string sql, Func<DbDataReader, dynamic> selector);
+        //IEnumerable<T> QueryPopulate<T>(string sql) where T : class;
     }
 
-    [SerializableAttribute]
-    public struct Key1Value<K, V> {
-        public Key1Value(K k, V v)
-        {
-            Key = k; Value = v;
-        }
-        K Key { get; set; }
-        V Value { get; set; }
-    }
+    //[SerializableAttribute]
+    //public struct Key1Value<K, V> {
+    //    public Key1Value(K k, V v)
+    //    {
+    //        Key = k; Value = v;
+    //    }
+    //    K Key { get; set; }
+    //    V Value { get; set; }
+    //}
 
     [SerializableAttribute]
     public struct Key2Value<K, V> {
@@ -53,7 +53,6 @@ namespace QuerySeadDomain {
     }
 
     public class UnitOfWork : IUnitOfWork {
-
 
         private readonly DomainModelDbContext context;
 
@@ -76,47 +75,56 @@ namespace QuerySeadDomain {
 
         public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
         {
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).Take(1).FirstOrDefault();
+            using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+                return reader.Select(selector).Take(1).FirstOrDefault();
+            }
         }
 
         public DbDataReader Query(string sql)
         {
+            // FIXME: call dispose?
             return context.Database.ExecuteSqlQuery(sql).DbDataReader;
         }
 
-        public IEnumerable<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
+        public List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
         {
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector);
+            using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+                return reader.Select(selector).ToList();
+            }
         }
 
-        public IEnumerable<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector)
+        //public List<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector)
+        //{
+        //    return context.Database.ExecuteSqlQuery(sql)
+        //        .DbDataReader.Select(x => new KeyValuePair<K, V>(keySelector(x), valueSelector(x))).ToList();
+        //}
+
+        //public List<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1) // Func<DbDataReader, KeyValuePair<K, V>> selector)
+        //{
+        //    return context.Database.ExecuteSqlQuery(sql)
+        //        .DbDataReader.Select(x => new Key1Value<K, V>(x.GetFieldValue<K>(keyIndex), x.GetFieldValue<V>(valueIndex))).ToList();
+        //}
+
+        public List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2)
         {
-            return context.Database.ExecuteSqlQuery(sql)
-                .DbDataReader.Select(x => new KeyValuePair<K, V>(keySelector(x), valueSelector(x)));
+            using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+                return reader.Select(x => new Key2Value<K, V>(
+                    x.GetFieldValue<K>(keyIndex),
+                    x.GetFieldValue<V>(valueIndex1),
+                    x.GetFieldValue<V>(valueIndex2))
+                ).ToList();
+            }
         }
 
-        public IEnumerable<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1) // Func<DbDataReader, KeyValuePair<K, V>> selector)
-        {
-            return context.Database.ExecuteSqlQuery(sql)
-                .DbDataReader.Select(x => new Key1Value<K, V>(x.GetFieldValue<K>(keyIndex), x.GetFieldValue<V>(valueIndex)));
-        }
+        //public IEnumerable<dynamic> QueryDynamic(string sql, Func<DbDataReader, dynamic> selector)
+        //{
+        //    return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(x => selector(x)); //.ToList();
+        //}
 
-        public IEnumerable<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2)
-        {
-            return context.Database.ExecuteSqlQuery(sql)
-                .DbDataReader.Select(x => new Key2Value<K, V>(x.GetFieldValue<K>(keyIndex), x.GetFieldValue<V>(valueIndex1), x.GetFieldValue<V>(valueIndex2))
-            ).ToList();
-        }
-
-        public IEnumerable<dynamic> QueryDynamic(string sql, Func<DbDataReader, dynamic> selector)
-        {
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(x => selector(x)); //.ToList();
-        }
-
-        public IEnumerable<T> QueryPopulate<T>(string sql) where T : class
-        {
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader.Populate<T>();
-        }
+        //public IEnumerable<T> QueryPopulate<T>(string sql) where T : class
+        //{
+        //    return context.Database.ExecuteSqlQuery(sql).DbDataReader.Populate<T>();
+        //}
 
     }
 

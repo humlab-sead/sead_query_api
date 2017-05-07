@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <None Include="Archive\SetupQueryService.cs" />
+    <None Include="Repository\VIewStateRepository.cs" />
     <None Include="Services\CategoryCountService.cs" />
     <None Include="Model\ResultConfig.cs" />
     <None Include="Services\FacetContentService.cs" />

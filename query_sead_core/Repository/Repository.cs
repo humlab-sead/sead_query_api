@@ -11,16 +11,16 @@ namespace QuerySeadDomain {
 
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DomainModelDbContext context;
+        protected readonly DomainModelDbContext Context;
 
         public Repository(DomainModelDbContext context)
         {
-            this.context = context;
+            this.Context = context;
         }
 
         protected IQueryable<TEntity> GetSet()
         {
-            return GetInclude(context.Set<TEntity>());
+            return GetInclude(Context.Set<TEntity>());
         }
 
         protected virtual IQueryable<TEntity> GetInclude(IQueryable<TEntity> set)
@@ -30,7 +30,7 @@ namespace QuerySeadDomain {
 
         public TEntity Get(int id)
         {
-            return context.Set<TEntity>().Find(id);
+            return Context.Set<TEntity>().Find(id);
         }
 
         public virtual IEnumerable<TEntity> GetAll()
@@ -45,33 +45,33 @@ namespace QuerySeadDomain {
 
         public void Add(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
+            Context.Set<TEntity>().Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
-            context.Set<TEntity>().AddRange(entities);
+            Context.Set<TEntity>().AddRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            context.Set<TEntity>().Remove(entity);
+            Context.Set<TEntity>().Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            context.Set<TEntity>().RemoveRange(entities);
+            Context.Set<TEntity>().RemoveRange(entities);
         }
 
         //QueryRow("", r => new { CatName = r.GetString(0), CarDOB = r.GetDateTime(1), CatStatus = r.GetInt32(2) });
         public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
         {
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).Take(1).FirstOrDefault();
+            return Context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).Take(1).FirstOrDefault();
         }
 
         public IEnumerable<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
         {
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).ToList();
+            return Context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).ToList();
         }
 
     }

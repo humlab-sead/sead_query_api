@@ -20,7 +20,7 @@ namespace QuerySeadDomain {
 
         public override IEnumerable<GraphEdge> GetAll()
         {
-            return context.Set<GraphEdge>().BuildEntity().ToList();
+            return Context.Set<GraphEdge>().BuildEntity().ToList();
         }
 
     }

@@ -44,8 +44,8 @@ namespace QuerySeadDomain
 
             string sql = ValidPicksSqlQueryBuilder.compile(query, config.Facet, config.GetPickValues());
 
-            IEnumerable<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EFacetPickType.discrete, x.GetInt32(0), x.GetString(1)));
-            return rows.ToList();
+            List<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EFacetPickType.discrete, x.GetInt32(0), x.GetString(1))).ToList();
+            return rows;
         }
     }
 }

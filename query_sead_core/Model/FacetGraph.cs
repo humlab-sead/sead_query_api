@@ -7,7 +7,7 @@ namespace QuerySeadDomain
     using NodesDict = Dictionary<string, GraphNode>;
 
     public interface IFacetsGraph {
-        IEnumerable<FacetDefinition> AliasFacets { get; }
+        List<FacetDefinition> AliasFacets { get; }
         Dictionary<Tuple<string, string>, GraphEdge> Edges { get; }
         Dictionary<int, GraphNode> NodeIds { get; }
         NodesDict Nodes { get; }
@@ -67,15 +67,15 @@ namespace QuerySeadDomain
             };
         }
 
-        private IEnumerable<GraphNode> GetAliasNodes(NodesDict nodes, IEnumerable<FacetDefinition> aliasFacets)
+        private List<GraphNode> GetAliasNodes(NodesDict nodes, List<FacetDefinition> aliasFacets)
         {
             int id = nodes.Max(z => z.Value.TableId) + 1;
             return aliasFacets
                 .Select(z => new GraphNode() { TableId = id++, TableName = z.AliasName })
-                .Where(z => !nodes.ContainsKey(z.TableName));
+                .Where(z => !nodes.ContainsKey(z.TableName)).ToList();
         }
 
-        private List<GraphEdge> AddAliasEdges(List<GraphEdge> edgesList, NodesDict nodes, IEnumerable<FacetDefinition> aliasFacets)
+        private List<GraphEdge> AddAliasEdges(List<GraphEdge> edgesList, NodesDict nodes, List<FacetDefinition> aliasFacets)
         {
             foreach (var facet in aliasFacets) {
                 var values = edgesList
@@ -102,7 +102,7 @@ namespace QuerySeadDomain
 
         public NodesDict Nodes { get; set; }
         public Dictionary<Tuple<string, string>, GraphEdge> Edges { get; set; }
-        public IEnumerable<FacetDefinition> AliasFacets { get; set; }
+        public List<FacetDefinition> AliasFacets { get; set; }
         public Dictionary<string, string> AliasTables;
         public Dictionary<int, GraphNode> NodeIds { get; set; }
         public Dictionary<int, Dictionary<int, int>> Weights { get; set; }

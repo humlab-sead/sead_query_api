@@ -9,9 +9,26 @@ namespace QuerySeadDomain
     using CatCountDict = Dictionary<string, CategoryCountValue>;
 
     public interface IFacetContentServiceAggregate {
+
         DiscreteFacetContentService DiscreteFacetContentService { get; set; }
         RangeFacetContentService RangeFacetContentService { get; set; }
+
+        //IFacetContentServiceSelector Get(EFacetType type, IFacetContentServiceAggregate aggregate);
     }
+
+    //// FIXME: Find a BETTER way of doing this! Use IIndex<K,T> instead????
+    //public class FacetContentServiceIndex : IFacetContentServiceSelector {
+    //    public IFacetContentService Get(EFacetType facetType, IFacetContentServiceAggregate aggregate)
+    //    {
+    //        return new Dictionary<EFacetType, IFacetContentService>() {
+    //            { EFacetType.Discrete, aggregate.DiscreteFacetContentService },
+    //            { EFacetType.Range, aggregate.RangeFacetContentService }
+    //        }[facetType];
+    //    }
+    //}
+    //public interface IFacetContentServiceSelector {
+    //    IFacetContentService Get(EFacetType facetType, IFacetContentServiceAggregate aggregate);
+    //}
 
     public interface IFacetContentService {
         FacetContent Load(FacetsConfig2 facetsConfig);
@@ -30,9 +47,9 @@ namespace QuerySeadDomain
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
             (int interval, string intervalQuery) = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
-            var distribution = GetDataDistribution(facetsConfig, intervalQuery);
+            CatCountDict distribution = GetDataDistribution(facetsConfig, intervalQuery);
             List<FacetContent.CategoryItem> items = CompileItems(intervalQuery, distribution).ToList();
-            Dictionary<string, FacetsConfig2.UserPickData> pickMatrix = facetsConfig.collectUserPicks(facetsConfig.TargetCode);
+            Dictionary<string, FacetsConfig2.UserPickData> pickMatrix = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
             FacetContent facetContent = new FacetContent(facetsConfig, items, distribution, pickMatrix, interval, intervalQuery);
             return facetContent;
         }
@@ -45,9 +62,9 @@ namespace QuerySeadDomain
             return categoryCounts;
         }
 
-        protected IEnumerable<FacetContent.CategoryItem> CompileItems(string intervalQuery, CatCountDict distribution)
+        protected List<FacetContent.CategoryItem> CompileItems(string intervalQuery, CatCountDict distribution)
         {
-            var rows = Context.QueryRows(intervalQuery, dr => CreateItem(dr, distribution));
+            var rows = Context.QueryRows(intervalQuery, dr => CreateItem(dr, distribution)).ToList();
             return rows;
         }
 

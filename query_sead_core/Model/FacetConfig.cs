@@ -32,6 +32,12 @@ namespace QuerySeadDomain {
             }
         }
 
+        public void SetContext(IUnitOfWork context)
+        {
+            Context = context;
+            FacetConfigs.ForEach(z => z.Context = context);
+        }
+
         [JsonIgnore]
         public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
 
@@ -41,6 +47,7 @@ namespace QuerySeadDomain {
 
         public FacetsConfig2(IUnitOfWork context)
         {
+            Context = context;
         }
 
         [JsonIgnore]
@@ -62,8 +69,6 @@ namespace QuerySeadDomain {
   
         }
 
-
-
         public FacetConfig2 GetConfig(string facetCode)         => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
         public List<string> GetFacetCodes()                     => FacetConfigs.Select(x => x.FacetCode).ToList();
         public List<FacetConfig2> GetFacetConfigsWithPicks()    => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
@@ -82,18 +87,18 @@ namespace QuerySeadDomain {
             public string Title { get; set; }
         }
 
-        public Dictionary<string, UserPickData> collectUserPicks(string onlyCode = "")
+        public Dictionary<string, UserPickData> CollectUserPicks(string onlyCode = "")
         {
 
             Func<FacetConfig2, bool> filter() => x => (empty(onlyCode) || onlyCode == x.FacetCode) && (x.Picks.Count > 0);
-            Dictionary<string, UserPickData> pickCounts = new Dictionary<string, UserPickData>();
+            var pickCounts = new Dictionary<string, UserPickData>();
             foreach (var config in FacetConfigs.Where(filter())) {
-                pickCounts.Add(config.FacetCode, new UserPickData() {
+                pickCounts[config.FacetCode] = new UserPickData() {
                     FacetCode = config.FacetCode,
                     PickValues = config.GetPickValues(),
                     FacetType = config.Facet.FacetTypeId,
                     Title = config.Facet.DisplayTitle
-                });
+                };
                 // FIXME: Is this used? Can be computed as GroupBy(FacetType).Sum(Selections.Count)
                 //matrix['counts'][config.facet.facet_type] += count(config.picks);
             }
@@ -108,7 +113,7 @@ namespace QuerySeadDomain {
 
         //public void deleteBogusPicks()
         //{
-        //    DeleteBogusPickService.DeleteBogusPicks(context, this);
+        //    new DeleteBogusPickService().Delete(this);
         //}
 
         public string GetPicksCacheId()
@@ -120,7 +125,7 @@ namespace QuerySeadDomain {
             return key.ToString();
         }
 
-        public string getCacheId()
+        public string GetCacheId()
         {
             //filter = ConfigRegistry::getFilterByText() ? this.targetFacet.textFilter : "no_text_filter";
             return TargetCode + "_" + string.Join("", GetFacetCodes()) +

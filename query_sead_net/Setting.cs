@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using QuerySeadDomain;
 
 namespace QuerySeadAPI {
@@ -12,7 +13,9 @@ namespace QuerySeadAPI {
         public IQueryBuilderSetting Create()
         {
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                //.SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
                 //.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
 
             IConfigurationRoot configuration = builder.Build();

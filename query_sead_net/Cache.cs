@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CacheManager.Core;
+using QuerySeadDomain;
 
 namespace QuerySeadAPI
 {
@@ -30,5 +31,33 @@ namespace QuerySeadAPI
             ICacheManager<object> cache = CacheFactory.FromConfiguration<object>(cacheConfig);
             return cache;
         }
+    }
+
+    public class CacheService<T> {
+
+        public string Prefix;
+        private ICacheManager<object> Store { get; set; }
+
+        public CacheService(IQueryCache cache, string prefix)
+        {
+            Store = cache.Store;
+            Prefix = prefix;
+        }
+
+        public void Put(string key, T entity) => Store.Put(Prefix + key, entity);
+        public bool Exists(string key)        => Store.Exists(Prefix + key);
+        public T    Get(string key)           => Store.Exists(Prefix + key) ? Store.Get<T>(Prefix + key) : default(T);
+    }
+
+    public class FacetConfigCache : CacheService<FacetsConfig2> {
+        public FacetConfigCache(IQueryCache cache) : base(cache, "config_") { }
+    }
+
+    public class FacetContentCache : CacheService<FacetContent> {
+        public FacetContentCache(IQueryCache cache) : base(cache, "content_") { }
+    }
+    
+    public class FaceResultCache : CacheService<FacetResult> {
+        public FaceResultCache(IQueryCache cache) : base(cache, "result_") { }
     }
 }

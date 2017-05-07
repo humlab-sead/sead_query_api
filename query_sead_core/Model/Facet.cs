@@ -96,5 +96,13 @@ namespace QuerySeadDomain
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));
 
     }
-    
+
+    public class ViewState {
+
+        public int ViewStateId { get; set; }
+        public string SessionId { get; set; }
+        public string Data { get; set; }
+        public DateTime CreateTime { get; set; }
+
+    }
 }

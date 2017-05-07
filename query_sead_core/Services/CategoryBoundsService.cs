@@ -1,12 +1,13 @@
 using QuerySeadDomain.QueryBuilder;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using static QuerySeadDomain.Utility;
 
 namespace QuerySeadDomain
 {
     public interface ICategoryBoundsService  {
-        IEnumerable<Key2Value<int, float>> Load();
+        List<Key2Value<int, float>> Load();
     }
 
     public class RangeCategoryBoundsService : QueryServiceBase, ICategoryBoundsService {
@@ -15,7 +16,7 @@ namespace QuerySeadDomain
         {
         }
 
-        public IEnumerable<Key2Value<int, float>> Load()
+        public List<Key2Value<int, float>> Load()
         {
             List<string> sqls = new List<string>();
             foreach (FacetDefinition facet in Context.Facets.GetOfType(EFacetType.Range)) {
@@ -23,7 +24,7 @@ namespace QuerySeadDomain
                 sqls.Add(new RangeCategoryBoundSqlQueryBuilder().compile(query, facet, facet.FacetCode));
             }
             string sql = String.Join("\nUNION\n", sqls);
-            IEnumerable<Key2Value<int, float>> values = Context.QueryKeyValues2<int, float>(sql);
+            List<Key2Value<int, float>> values = Context.QueryKeyValues2<int, float>(sql).ToList();
             return values;
         }
     }

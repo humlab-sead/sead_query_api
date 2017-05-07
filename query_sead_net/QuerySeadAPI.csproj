@@ -36,6 +36,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Services\LoadResultService.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\query_sead_core\QuerySeadDomain.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -10,23 +10,42 @@ namespace QuerySeadDomain {
 
     using CatCountDict = Dictionary<string, CategoryCountValue>;
 
-    public class ResultService : QueryServiceBase
-    {
+    public class FacetResult : IDisposable {
+
+        public IDataReader Iterator { get; set; }
+        public dynamic Payload { get; set; }
+
+        public void Dispose()
+        {
+            Iterator.Dispose();
+        }
+    }
+
+    public interface IResultService {
+        FacetResult Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetStateId);
+    }
+
+    public class ResultService : QueryServiceBase, IResultService {
+
         public IQuerySetupCompilers CompilerAggregate { get; set; }
+
         public ResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IQuerySetupCompilers compilerAggregate) : base(config, context, builder)
         {
             CompilerAggregate = compilerAggregate;
         }
 
-        public dynamic Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetStateId)
+        // FIXME! Använd using runt iterator...?
+        public FacetResult Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetStateId)
         {
             string sql = CompileSql(facetsConfig, resultConfig);
             if (empty(sql)) {
                 return null; // new { Iterator = null, Payload = null };
             }
-            IDataReader iterator = Context.Query(sql);
             dynamic payload = GetExtraPayload(facetsConfig, resultConfig);
-            return ( iterator, payload );
+            return new FacetResult() {
+                Iterator = Context.Query(sql),
+                Payload = GetExtraPayload(facetsConfig, resultConfig)
+            };
         }
 
         protected virtual dynamic GetExtraPayload(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
@@ -40,14 +59,13 @@ namespace QuerySeadDomain {
         }
     }
 
-    class MapResultService : ResultService {
+    public class MapResultService : ResultService {
 
-        public string facetCode = null;
+        public string facetCode = "map_result";
         public DiscreteCategoryCountService CategoryCountService;
 
         public MapResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IQuerySetupCompilers compilerAggregate, DiscreteCategoryCountService categoryCountService) : base(config, context, builder, compilerAggregate)
         {
-            facetCode = "map_result";
             CategoryCountService = categoryCountService;
         }
 

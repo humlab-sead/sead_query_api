@@ -1,26 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using QuerySeadDomain;
 
 namespace DataAccessPostgreSqlProvider {
  
     public class DomainModelDbContext : DbContext {
 
+        public IStoreSetting Settings { get; set; }
+
         //public DomainModelPostgreSqlContext(DbContextOptions<DomainModelPostgreSqlContext> options) : base(options)
         //{
         //}
+        public DomainModelDbContext()
+        {
+        }
+
+        public DomainModelDbContext(IQueryBuilderSetting config)
+        {
+            Settings = config.Store;
+        }
 
         public DbSet<ResultDefinition> ResultDefinitions { get; set; }
         public DbSet<FacetDefinition> FacetDefinitions { get; set; }
         public DbSet<GraphEdge> Edges { get; set; }
         public DbSet<GraphNode> Nodes { get; set; }
+        public DbSet<ViewState> ViewStates { get; set; }
 
         public DbSet<FacetType> FacetTypes { get; set; }
         public DbSet<FacetGroup> FacetGroups { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"Host=dataserver.humlab.umu.se;Database=sead_master_8;Username=seadread;Password=Vua9VagZ");
+            optionsBuilder.UseNpgsql(Settings.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -100,7 +110,6 @@ namespace DataAccessPostgreSqlProvider {
                 .WithOne(x => x.ResultDefinition)
                 .HasForeignKey(p => p.ResultDefinitionId);
 
-
             builder.Entity<ResultDefinitionField>().ToTable("result_definition_field", "facet").HasKey(b => b.ResultDefinitionFieldId);
             builder.Entity<ResultDefinitionField>().Property(b => b.ResultDefinitionFieldId).HasColumnName("result_definition_field_id").IsRequired();
             builder.Entity<ResultDefinitionField>().Property(b => b.ResultDefinitionId).HasColumnName("result_definition_id").IsRequired();
@@ -131,15 +140,21 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.SourceTable).WithMany().HasForeignKey(p => p.SourceTableId);
             builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.TargetTable).WithMany().HasForeignKey(p => p.TargetTableId);
 
+            builder.Entity<ViewState>().ToTable("tbl_view_states", "metainformation").HasKey(b => b.ViewStateId);
+            builder.Entity<ViewState>().Property(b => b.ViewStateId).HasColumnName("view_state_id").ValueGeneratedOnAdd().IsRequired();
+            builder.Entity<ViewState>().Property(b => b.SessionId).HasColumnName("session_id").IsRequired();
+            builder.Entity<ViewState>().Property(b => b.Data).HasColumnName("view_state").IsRequired();
+            builder.Entity<ViewState>().Property(b => b.CreateTime).HasColumnName("creatation_date").IsRequired();
+
             base.OnModelCreating(builder);
         }
 
-        //public override int SaveChanges()
-        //{
-        //    ChangeTracker.DetectChanges();
-        //    updateUpdatedProperty<FacetDefinition>();
-        //    return base.SaveChanges();
-        //}
+        public override int SaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+            //updateUpdatedProperty<FacetDefinition>();
+            return base.SaveChanges();
+        }
 
         //private void updateUpdatedProperty<T>() where T : class
         //{
@@ -147,8 +162,6 @@ namespace DataAccessPostgreSqlProvider {
         //        ChangeTracker.Entries<T>()
         //            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
         //}
-
-
 
     }
 }

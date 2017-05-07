@@ -13,7 +13,7 @@ namespace QuerySeadDomain
 
     public class CategoryCountValue {
         public string Category { get; set; }
-        public int Count { get; set; }
+        public int? Count { get; set; }
         public Dictionary<EFacetPickType, decimal> Details;
     }
 
@@ -31,11 +31,11 @@ namespace QuerySeadDomain
         {
             FacetDefinition facet = Context.Facets.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
-            Dictionary<string, CategoryCountValue> data = Query(sql).ToDictionary(z => z.Category);
+            Dictionary<string, CategoryCountValue> data = Query(sql).ToList().ToDictionary(z => Coalesce(z.Category, "(null)"));
             return data; 
         }
 
-        protected virtual IEnumerable<CategoryCountValue> Query(string sql) => throw new NotSupportedException();
+        protected virtual List<CategoryCountValue> Query(string sql) => throw new NotSupportedException();
 
         protected virtual string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery) => throw new NotSupportedException();
     }
@@ -52,7 +52,7 @@ namespace QuerySeadDomain
             return sql;
         }
 
-        protected override IEnumerable<CategoryCountValue> Query(string sql)
+        protected override List<CategoryCountValue> Query(string sql)
         {
             return Context.QueryRows<CategoryCountValue>(sql,
                 x => new CategoryCountValue() {
@@ -61,7 +61,7 @@ namespace QuerySeadDomain
                     Details = new Dictionary<EFacetPickType, decimal>() {
                         { EFacetPickType.lower, x.GetInt32(2) },
                         { EFacetPickType.upper, x.GetInt32(3) } }
-                });
+                }).ToList();
         }
     }
 
@@ -97,14 +97,16 @@ namespace QuerySeadDomain
             return tables;
         }
 
-        protected override IEnumerable<CategoryCountValue> Query(string sql)
+        protected override List<CategoryCountValue> Query(string sql)
         {
             return Context.QueryRows<CategoryCountValue>(sql,
                 x => new CategoryCountValue() {
-                    Category = x.GetInt32(0).ToString(),
-                    Count = x.GetInt32(1),
-                    Details = new Dictionary<EFacetPickType, decimal>() { {  EFacetPickType.discrete, x.GetInt32(0) } }
-                });
+                    Category =  x.IsDBNull(0) ? null : x.GetInt32(0).ToString(),
+                    Count = x.IsDBNull(0) ? 0 : x.GetInt32(1),
+                    Details = new Dictionary<EFacetPickType, decimal>() {
+                        { EFacetPickType.discrete, x.IsDBNull(1) ? 0 : x.GetInt32(1) }
+                    }
+                }).ToList();
         }
     }
 

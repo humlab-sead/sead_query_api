@@ -22,7 +22,7 @@ namespace QuerySeadDomain {
 
         public override IEnumerable<ResultDefinition> GetAll()
         {
-            return context.Set<ResultDefinition>().BuildEntity().ToList();
+            return Context.Set<ResultDefinition>().BuildEntity().ToList();
         }
 
         public ResultDefinition GetByKey(string key)

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using QuerySeadDomain;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,10 +16,7 @@ namespace QuerySeadTests.FacetsConfig
         {
             FacetsConfig2 facetsConfig = GetTestFacetsConfig();
             string output = JsonConvert.SerializeObject(facetsConfig);
-
             FacetsConfig2 facetConfig2 = JsonConvert.DeserializeObject<FacetsConfig2>(output);
-
-
         }
 
         private static FacetsConfig2 GetTestFacetsConfig()
@@ -62,7 +59,7 @@ namespace QuerySeadTests.FacetsConfig
         }
 
         [TestMethod]
-        public void CanLoadSimpleConfig()
+        public void CanLoadSingleDiscreteConfigWithoutPicks()
         {
             FacetsConfig2 facetsConfig = new FacetsConfig2() {
                 RequestId = "1",
@@ -85,28 +82,30 @@ namespace QuerySeadTests.FacetsConfig
             IContainer container = new TestDependencyService().Register(null);
 
             using (var scope = container.BeginLifetimeScope()) {
-                var service = scope.Resolve<IFacetContentServiceAggregate>();
                 facetsConfig.Context = scope.Resolve<IUnitOfWork>();
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
-                var facetContent = service.DiscreteFacetContentService.Load(facetsConfig);
+                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+                var facetContent = service.Load(facetsConfig);
+                Assert.IsTrue(facetContent.Items.Count > 0);
                 string output = JsonConvert.SerializeObject(facetContent);
             }
         }
 
         [TestMethod]
-        public void CanLoadDualConfig()
+        public void CanLoadDualDiscreteConfigWithPicks()
         {
             FacetsConfig2 facetsConfig = GetTestFacetsConfig();
 
             IContainer container = new TestDependencyService().Register(null);
 
             using (var scope = container.BeginLifetimeScope()) {
-                var service = scope.Resolve<IFacetContentServiceAggregate>();
-                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                facetsConfig.SetContext(scope.Resolve<IUnitOfWork>());
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
-                var facetContent = service.DiscreteFacetContentService.Load(facetsConfig);
+                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+                var facetContent = service.Load(facetsConfig);
                 string output = JsonConvert.SerializeObject(facetContent);
-            }
+                Assert.IsTrue(facetContent.Items.Count > 0);
+           }
         }
     }
 }

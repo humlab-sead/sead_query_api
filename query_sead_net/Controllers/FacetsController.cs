@@ -5,38 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuerySeadDomain;
 
-namespace query_sead_net.Controllers
+namespace QuerySeadAPI.Controllers
 {
     [Route("api/[controller]")]
     public class FacetsController : Controller
     {
         public IUnitOfWork Context { get; private set; }
+        public Services.ILoadFacetService LoadService { get; private set; }
 
-        public FacetsController(IUnitOfWork context)
+        public FacetsController(IUnitOfWork context, Services.ILoadFacetService loadService)
         {
             Context = context;
+            LoadService = loadService;
         }
 
-        // GET api/values
         [HttpGet]
         public IEnumerable<FacetDefinition> Get()
         {
             return Context.Facets.GetAll().ToList();
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public FacetDefinition Get(int id)
         {
             return Context.Facets.Get(id);
         }
 
-        // POST api/values
-        [HttpPost]
-        public int Post([FromBody]FacetsConfig2 data)
+        [HttpGet("load")]
+        public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
         {
-            return 0;
+            return LoadService.Load(facetsConfig);
         }
-
     }
 }

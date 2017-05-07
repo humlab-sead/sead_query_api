@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using QuerySeadDomain;
+using Microsoft.AspNetCore.Routing;
 
 namespace QuerySeadAPI {
 
@@ -23,21 +24,25 @@ namespace QuerySeadAPI {
         }
 
         public IConfigurationRoot Configuration { get; }
+        public IContainer Container { get; private set; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            IContainer container = new DependencyService().Register(services);
+            Container = new DependencyService().Register(services);
 
-            return container.Resolve<IServiceProvider>();
+            return Container.Resolve<IServiceProvider>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
  
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
+
+            appLifetime.ApplicationStopped.Register(() => this.Container.Dispose());
         }
+
     }
 }

@@ -31,10 +31,10 @@ namespace query_sead_net.Controllers
             return Context.Results.Get(id);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        [HttpGet("load")]
+        public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
         {
+            return null; // LoadService.Load(facetsConfig);
         }
 
     }
