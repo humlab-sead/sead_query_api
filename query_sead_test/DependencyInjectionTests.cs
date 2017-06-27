@@ -47,7 +47,7 @@ namespace QuerySeadTests.IoC {
     }
 
     [TestClass]
-    public class IoCTests
+    public class DependencyInjectionTests
     {
 
         [TestMethod]
