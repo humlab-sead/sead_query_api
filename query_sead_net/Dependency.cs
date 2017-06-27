@@ -25,11 +25,10 @@ namespace QuerySeadAPI {
             // http://docs.autofac.org/en/latest/register/registration.html
             
             builder.RegisterInstance(new SettingFactory().Create()).SingleInstance().ExternallyOwned();
-            //builder.RegisterInstance<IQueryCache>(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
+            // builder.RegisterInstance(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
+            builder.Register(c => new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
 
-            builder.RegisterInstance(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
             builder.RegisterAggregateService<IQueryCache>();
-
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
@@ -38,12 +37,20 @@ namespace QuerySeadAPI {
             builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
+
+            #region __Count Services__
             builder.RegisterAggregateService<ICategoryCountServiceAggregate>();
             builder.RegisterType<RangeCategoryCountService>();
             builder.RegisterType<DiscreteCategoryCountService>();
+            #endregion
 
-            builder.RegisterType<RangeFacetContentService>().As<IFacetContentService>().Keyed<EFacetType>(EFacetType.Range);
-            builder.RegisterType<DiscreteFacetContentService>().As<IFacetContentService>().Keyed<EFacetType>(EFacetType.Discrete);
+            #region __Content Services__
+            //builder.RegisterType<RangeFacetContentService>().As<IFacetContentService>().Keyed<EFacetType>(EFacetType.Range);
+            //builder.RegisterType<DiscreteFacetContentService>().As<IFacetContentService>().Keyed<EFacetType>(EFacetType.Discrete);
+            builder.RegisterAggregateService<IFacetContentServiceAggregate>();
+            builder.RegisterType<RangeFacetContentService>();
+            builder.RegisterType<DiscreteFacetContentService>();
+            #endregion
 
             builder.RegisterAggregateService<IQuerySetupCompilers>();
             builder.RegisterType<DefaultQuerySetupCompiler>();
@@ -51,8 +58,14 @@ namespace QuerySeadAPI {
 
             builder.RegisterAggregateService<IControllerServiceAggregate>();
 
-            builder.RegisterType<ResultService>().As<IResultService>().Keyed<EFacetType>(EResultViewType.Tabular);
-            builder.RegisterType<MapResultService>().As<IResultService>().Keyed<EFacetType>(EResultViewType.Map);
+            #region __Result Services__
+            builder.RegisterAggregateService<IResultServiceAggregate>();
+            builder.RegisterType<ResultService>();
+            builder.RegisterType<MapResultService>();
+
+            //builder.RegisterType<ResultService>().As<IResultService>().Keyed<EFacetType>(EResultViewType.Tabular);
+            //builder.RegisterType<MapResultService>().As<IResultService>().Keyed<EFacetType>(EResultViewType.Map);
+            #endregion
 
             /* App Services */
             builder.RegisterType<Services.LoadFacetService>().As<Services.ILoadFacetService>();
@@ -66,8 +79,5 @@ namespace QuerySeadAPI {
         }
         //builder.RegisterType<RangeCategoryCountService>().As<ICategoryCountService>().Keyed<EFacetType>(EFacetType.Range);
         //builder.RegisterType<DiscreteCategoryCountService>().As<ICategoryCountService>().Keyed<EFacetType>(EFacetType.Discrete);
-        //builder.RegisterAggregateService<IFacetContentServiceAggregate>();
-        //builder.RegisterType<RangeFacetContentService>();
-        //builder.RegisterType<DiscreteFacetContentService>();
    }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Autofac;
 using QuerySeadDomain;
+using QuerySeadAPI;
 
 namespace QuerySeadTests.IoC {
 
@@ -30,16 +31,19 @@ namespace QuerySeadTests.IoC {
 
         public IDependent Dependent { get; set; }
 
-        //public MyController(IDependent dependent)
-        //{
-        //    this.Dependent = dependent;
-        //}
-
         public void CallMyDependent()
         {
             Dependent.DoSomeThingNice();
         }
 
+    }
+
+    public class MyController2 : MyController
+    {
+        public MyController2(IDependent dependent)
+        {
+            this.Dependent = dependent;
+        }
     }
 
     [TestClass]
@@ -59,11 +63,11 @@ namespace QuerySeadTests.IoC {
         }
 
         [TestMethod]
-        public void TestSResolveDependent()
+        public void TestResolveDependent()
         {
             var builder = new ContainerBuilder();
             builder.RegisterInstance<IDependent>(new MyDependent()); //.As<IDependent>();
-            builder.RegisterType<MyController>().As<IMyController>();
+            builder.RegisterType<MyController2>().As<IMyController>();
             var container = builder.Build();
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IMyController>();
@@ -84,6 +88,13 @@ namespace QuerySeadTests.IoC {
                 var service = scope.Resolve<IMyController>();
                 service.CallMyDependent();
             }
+        }
+
+        [TestMethod]
+        public void TestCanRegisterDependencies()
+        {
+            var container = new DependencyService().Register(null);
+            Assert.IsNotNull(container);
         }
 
     }

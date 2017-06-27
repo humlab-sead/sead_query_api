@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace QuerySeadTests.Dijsktras {
+
     [TestClass]
     public class DijsktrasTests
     {

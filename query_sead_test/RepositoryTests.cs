@@ -1,16 +1,13 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DataAccessPostgreSqlProvider;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using QuerySeadDomain;
 
 namespace QuerySeadTests.Repository {
+
     [TestClass]
     public class RepositoryTests {
-
 
         [TestMethod]
         public void CanGetFacetsWithAssociatedObjects()

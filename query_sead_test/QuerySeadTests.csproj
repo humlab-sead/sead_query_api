@@ -12,26 +12,26 @@
 
   <ItemGroup>
     
-    <PackageReference Include="CacheManager.Core" Version="1.0.1" />
-    <PackageReference Include="CacheManager.Serialization.Json" Version="1.0.1" />
-    <PackageReference Include="CacheManager.StackExchange.Redis" Version="1.0.1" />
+    <PackageReference Include="CacheManager.Core" Version="1.1.0" />
+    <PackageReference Include="CacheManager.Serialization.Json" Version="1.1.0" />
+    <PackageReference Include="CacheManager.StackExchange.Redis" Version="1.1.0" />
     
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170427-09" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.1.17" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.1.17" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
     
     <PackageReference Include="Autofac.Extras.AggregateService" Version="4.1.0" />
     
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <PackageReference Include="Npgsql" Version="3.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Npgsql" Version="3.2.4.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="1.1.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
 
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
 
   </ItemGroup>
 

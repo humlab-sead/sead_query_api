@@ -10,6 +10,11 @@ namespace QuerySeadDomain {
 
     using CatCountDict = Dictionary<string, CategoryCountValue>;
 
+    public interface IResultServiceAggregate
+    {
+        ResultService ResultService { get; set; }
+        MapResultService MapResultService { get; set; }
+    }
     public class FacetResult : IDisposable {
 
         public IDataReader Iterator { get; set; }
