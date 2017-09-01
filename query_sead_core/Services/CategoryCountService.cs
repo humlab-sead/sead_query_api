@@ -6,10 +6,11 @@ using static QuerySeadDomain.Utility;
 
 namespace QuerySeadDomain
 {
-    public interface ICategoryCountServiceAggregate {
-        RangeCategoryCountService RangeCategoryCountService { get; set; }
-        DiscreteCategoryCountService DiscreteCategoryCountService { get; set; }
-    }
+    //public interface ICategoryCountServiceAggregate
+    //{
+    //    RangeCategoryCountService RangeCategoryCountService { get; set; }
+    //    DiscreteCategoryCountService DiscreteCategoryCountService { get; set; }
+    //}
 
     public class CategoryCountValue {
         public string Category { get; set; }

@@ -1,22 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql.Logging;
 using QuerySeadDomain;
+using System.Diagnostics;
 
 namespace DataAccessPostgreSqlProvider {
  
     public class DomainModelDbContext : DbContext {
 
-        public IStoreSetting Settings { get; set; }
-
-        //public DomainModelPostgreSqlContext(DbContextOptions<DomainModelPostgreSqlContext> options) : base(options)
-        //{
-        //}
-        public DomainModelDbContext()
-        {
-        }
+        public StoreSetting Settings { get; set; }
 
         public DomainModelDbContext(IQueryBuilderSetting config)
         {
             Settings = config.Store;
+            //NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+
         }
 
         public DbSet<ResultDefinition> ResultDefinitions { get; set; }
@@ -54,9 +51,11 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetDefinition>().Property(b => b.AggregateType).HasColumnName("aggregate_type").IsRequired();
             builder.Entity<FacetDefinition>().Property(b => b.AggregateTitle).HasColumnName("aggregate_title").IsRequired();
             builder.Entity<FacetDefinition>().Property(b => b.AggregateFacetId).HasColumnName("aggregate_facet_id").IsRequired();
+            builder.Entity<FacetDefinition>().Ignore(z => z.ExtraTables).Ignore(z => z.TargetTable);
+
             builder.Entity<FacetDefinition>().HasOne<FacetType>(x => x.FacetType).WithMany().HasForeignKey(p => p.FacetTypeId);
             builder.Entity<FacetDefinition>().HasOne<FacetGroup>(x => x.FacetGroup).WithMany().HasForeignKey(p => p.FacetGroupId);
-            builder.Entity<FacetDefinition>().HasMany<FacetTable>(x => x.Tables).WithOne(z => z.FacetDefinition).HasForeignKey(p => p.FacetId);
+            //builder.Entity<FacetDefinition>().HasMany<FacetTable>(x => x.Tables).WithOne(z => z.FacetDefinition).HasForeignKey(p => p.FacetId);
 
             builder.Entity<FacetGroup>().ToTable("facet_group", "facet").HasKey(b => b.FacetGroupId);
             builder.Entity<FacetGroup>().Property(b => b.FacetGroupId).HasColumnName("facet_group_id").IsRequired();
@@ -79,6 +78,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetTable>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
             builder.Entity<FacetTable>().Property(b => b.Alias).HasColumnName("alias").IsRequired();
             //builder.Entity<FacetTable>().HasOne<FacetDefinition>(x => x.FacetDefinition).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
+            builder.Entity<FacetTable>().HasOne<FacetDefinition>(x => x.FacetDefinition).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
 
             builder.Entity<ResultField>().ToTable("result_field", "facet").HasKey(b => b.ResultFieldId);
             builder.Entity<ResultField>().Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();

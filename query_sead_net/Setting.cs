@@ -2,30 +2,42 @@
 using Microsoft.Extensions.Configuration;
 using QuerySeadDomain;
 
-namespace QuerySeadAPI {
+namespace QuerySeadAPI
+{
 
-    public interface ISettingFactory {
-        IQueryBuilderSetting Create();
+    public interface ISettingFactory
+    {
+        IQueryBuilderSetting Create(IConfigurationRoot env);
     }
 
-    public class SettingFactory : ISettingFactory {
+    public class SettingFactory : ISettingFactory
+    {
 
-        public IQueryBuilderSetting Create()
+        public IQueryBuilderSetting Create(IConfigurationRoot configuration)
         {
-            var builder = new ConfigurationBuilder()
-                //.SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-                //.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
+            //var builder = new ConfigurationBuilder()
+            //    .SetBasePath(env.ContentRootPath)
+            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            //    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            //    .AddEnvironmentVariables();
 
-            IConfigurationRoot configuration = builder.Build();
+            //IConfigurationRoot configuration = builder.Build();
 
-            IQueryBuilderSetting setting = configuration
-               .GetSection("QueryBuilderSetting")
-               .Get<QueryBuilderSetting>();
+            IQueryBuilderSetting setting = configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
 
             return setting;
 
         }
+
+        //public Startup(IHostingEnvironment env)
+        //{
+        //    var builder = new ConfigurationBuilder()
+        //        .SetBasePath(env.ContentRootPath)
+        //        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        //        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+        //        .AddEnvironmentVariables();
+
+        //    return builder.Build();
+        //}
     }
 }

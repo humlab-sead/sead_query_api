@@ -35,7 +35,7 @@ namespace QuerySeadDomain
         public bool CategoryNameFilter { get; set; } = true;
     }
 
-    public class StoreSetting : IStoreSetting {
+    public class StoreSetting /*: IStoreSetting*/ {
         public string ConnectionString { get; set; }
         public string CacheSeq { get; set; } = "metainformation.file_name_data_download_seq";
         public string CacheDir { get; set; }
@@ -43,8 +43,17 @@ namespace QuerySeadDomain
         public string ViewStateTable { get; set; }
     }
 
-    public class QueryBuilderSetting : IQueryBuilderSetting {
+    public class QueryBuilderSetting: IQueryBuilderSetting {
         // https://msdn.microsoft.com/en-us/magazine/mt632279.aspx
+        public QueryBuilderSetting()
+        {
+
+        }
+        public QueryBuilderSetting(FacetSetting facet, StoreSetting store)
+        {
+            Facet = facet;
+            Store = store;
+        }
         public FacetSetting Facet { get; set; }
         public StoreSetting Store { get; set; }
     }

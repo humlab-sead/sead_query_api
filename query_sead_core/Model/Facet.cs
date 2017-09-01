@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace QuerySeadDomain
 {
 
+    /// <summary>
+    /// Enum for supported facet types
+    /// </summary>
     public enum EFacetType {
         Unknown = 0,
         Discrete = 1,
@@ -13,13 +17,25 @@ namespace QuerySeadDomain
         Geo = 3
     }
 
+    /// <summary>
+    /// Facet definition ID and name 
+    /// </summary>
     public class FacetType {
 
+        /// <summary>
+        /// Facet type id
+        /// </summary>
         public EFacetType FacetTypeId { get; set; }
+        /// <summary>
+        /// Type of facet in plain text
+        /// </summary>
         public string FacetTypeName { get; set; }
 
     }
 
+    /// <summary>
+    /// Facet definition group type
+    /// </summary>
     public class FacetGroup {
 
         public int FacetGroupId { get; set; }
@@ -30,17 +46,21 @@ namespace QuerySeadDomain
 
     }
 
+    /// <summary>
+    /// Condition clauses associated to a facet
+    /// </summary>
     public class FacetConditionClause {
 
         public int FacetSourceTableId { get; set; }
         public int FacetId { get; set; }
         public string Clause { get; set; }
 
-        [JsonIgnore]
-        public FacetDefinition FacetDefinition { get; set; }
+        [JsonIgnore] public FacetDefinition FacetDefinition { get; set; }
     }
 
-    // FIXME facet.facet_table should perhaps instead reference facet.graph_table i.e. replace tablename with a table_id FK.
+    /// <summary>
+    /// A relational table associated to a facet
+    /// </summary>
     public class FacetTable {
 
         public int FacetTableId { get; set; }
@@ -57,39 +77,83 @@ namespace QuerySeadDomain
     [JsonObject(MemberSerialization.OptOut)]
     public class FacetDefinition {
 
+        /// <summary>
+        /// System ID
+        /// </summary>
         public int FacetId { get; set; }
+        /// <summary>
+        /// Domain key / ID
+        /// </summary>
         public string FacetCode { get; set; }
+        /// <summary>
+        /// Display text
+        /// </summary>
         public string DisplayTitle { get; set; }
+        /// <summary>
+        /// Group facet belongs to
+        /// </summary>
         public int FacetGroupId { get; set; }
+        /// <summary>
+        /// Facet type ID
+        /// </summary>
         public EFacetType FacetTypeId { get; set; }
+        /// <summary>
+        /// Query (SQL) expression that specifies ID for facet category values
+        /// </summary>
         public string CategoryIdExpr { get; set; }
+        /// <summary>
+        /// Query (SQL) expression that specifies descriptive name facet category values
+        /// </summary>
         public string CategoryNameExpr { get; set; }
         public string IconIdExpr { get; set; }
-        public string SortExpr { get; set; }
         public bool IsApplicable { get; set; }
         public bool IsDefault { get; set; }
         public string AggregateType { get; set; }
         public string AggregateTitle { get; set; }
         public int AggregateFacetId { get; set; }
 
+        [JsonIgnore]
+        public string SortExpr { get; set; }
+
+        [JsonIgnore]
         public FacetType FacetType { get; set; }
+
+        [JsonIgnore]
         public FacetGroup FacetGroup { get; set; }
+
+        [JsonIgnore]
         public List<FacetTable> Tables { get; set; } // = new List<FacetTable>();
+
+        [JsonIgnore]
         public List<FacetConditionClause> Clauses { get; set; } // = new List<FacetConditionClause>();
 
-        public FacetTable TargetTable       => Tables.Find(z => z.SequenceId == 1);
-        public string TargetTableName       => TargetTable.TableName;
-        public List<FacetTable> ExtraTables => Tables.Where(z => z.SequenceId != 1).ToList();
+        [JsonIgnore]
+        [NotMapped]
+        public FacetTable TargetTable       => Tables?.Find(z => z.SequenceId == 1) ?? null;
+
+        [JsonIgnore]
+        public string TargetTableName       => TargetTable?.TableName ?? "";
+
+        [JsonIgnore]
+        [NotMapped]
+        public List<FacetTable> ExtraTables
+        {
+            get { return Tables?.Where(z => z.SequenceId != 1).ToList(); }
+        }
 
         [JsonIgnore]
         public string aliasName = null;
 
+        [JsonIgnore]
+        [NotMapped]
         public string AliasName {
             get {
                 return aliasName ?? (aliasName = Tables.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "");
             }
         }
 
+        [JsonIgnore]
+        [NotMapped]
         public string ResolvedName  => AliasName != "" ? AliasName : TargetTableName; 
 
         [JsonIgnore]

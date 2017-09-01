@@ -28,20 +28,5 @@ namespace QuerySeadTests.Dijsktras {
             Assert.IsTrue(route.Count > 0);
             route.ForEach(x => Debug.Write(x));
         }
-
-        [TestMethod]
-        public void CanGetFacetsFromStore()
-        {
-            using (var context = new DomainModelDbContext()) {
-                var facets = context.FacetDefinitions
-                    .Include(x => x.FacetGroup)
-                    .Include(x => x.FacetType)
-                    .Include(x => x.Tables)
-                    .Include(x => x.Clauses)
-                    .ToList();
-                Assert.IsTrue(facets.Count > 0);
-            }
-        }
-
     }
 }

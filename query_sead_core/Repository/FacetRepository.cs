@@ -13,6 +13,20 @@ namespace QuerySeadDomain {
 
     }
 
+    public class FacetTypeRepository : Repository<FacetType>
+    {
+        public FacetTypeRepository(DomainModelDbContext context) : base(context)
+        {
+        }
+    }
+
+    public class FacetGroupRepository : Repository<FacetGroup>
+    {
+        public FacetGroupRepository(DomainModelDbContext context) : base(context)
+        {
+        }
+    }
+
     public class FacetRepository : Repository<FacetDefinition>, IFacetRepository
     {
         private Dictionary<string, FacetDefinition> dictionary = null;

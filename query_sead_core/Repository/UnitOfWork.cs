@@ -17,6 +17,8 @@ namespace QuerySeadDomain {
         FacetRepository Facets { get; }
         NodeRepository Nodes { get; }
         ResultRepository Results { get; }
+        FacetGroupRepository FacetGroups { get; }
+        FacetTypeRepository FacetTypes { get; }
 
         int Commit();
         void Dispose();
@@ -41,7 +43,7 @@ namespace QuerySeadDomain {
     //    V Value { get; set; }
     //}
 
-    [SerializableAttribute]
+    //[SerializableAttribute]
     public struct Key2Value<K, V> {
         public Key2Value(K k, V v1, V v2)
         {
@@ -63,12 +65,16 @@ namespace QuerySeadDomain {
             Edges = new EdgeRepository(context);
             Nodes = new NodeRepository(context);
             Results = new ResultRepository(context);
+            FacetGroups = new FacetGroupRepository(context);
+            FacetTypes = new FacetTypeRepository(context);
         }
 
         public FacetRepository Facets { get; private set; }
         public EdgeRepository Edges { get; private set; }
         public NodeRepository Nodes { get; private set; }
         public ResultRepository Results { get; private set; }
+        public FacetGroupRepository FacetGroups { get; private set; }
+        public FacetTypeRepository FacetTypes { get; private set; }
 
         public int Commit() => context.SaveChanges();
         public void Dispose() => context.Dispose();

@@ -5,6 +5,8 @@ using QuerySeadDomain;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace QuerySeadTests.FacetsConfig
 {
@@ -21,6 +23,39 @@ namespace QuerySeadTests.FacetsConfig
 
         private static FacetsConfig2 GetTestFacetsConfig()
         {
+            dynamic jsonObject = new JObject();
+            jsonObject.A = "a value";
+            jsonObject.B = "b value";
+
+/*            JObject o = JObject.Parse(@"{
+              'CPU': 'Intel',
+              'Drives': [
+                'DVD read/writer',
+                '500 gigabyte hard drive'
+              ]
+            }");
+
+            JObject o = JObject.FromObject(new
+            {
+                channel = new
+                {
+                    title = "James Newton-King",
+                    link = "http://james.newtonking.com",
+                    description = "James Newton-King's blog.",
+                    item =
+                        from p in posts
+                        orderby p.Title
+                        select new
+                        {
+                            title = p.Title,
+                            description = p.Description,
+                            link = p.Link,
+                            category = p.Categories
+                        }
+                }
+            });
+*/
+
             FacetsConfig2 facetsConfig = new FacetsConfig2() {
                 RequestId = "1",
                 Language = "en_GB",
@@ -79,15 +114,17 @@ namespace QuerySeadTests.FacetsConfig
                     }
                 }
             };
-            IContainer container = new TestDependencyService().Register(null);
+            IContainer container = new TestDependencyService().Register();
 
+            string facetsConfig_JSON = JsonConvert.SerializeObject(facetsConfig, Formatting.Indented);
+            File.WriteAllText(@"C:\tmep\json\facetsConfig_SingleDiscreteConfigWithoutPicks.json", JsonConvert.SerializeObject(facetsConfig, Formatting.Indented));
             using (var scope = container.BeginLifetimeScope()) {
                 facetsConfig.Context = scope.Resolve<IUnitOfWork>();
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
                 var facetContent = service.Load(facetsConfig);
                 Assert.IsTrue(facetContent.Items.Count > 0);
-                string output = JsonConvert.SerializeObject(facetContent);
+                string facetContent_JSON = JsonConvert.SerializeObject(facetContent);
             }
         }
 
@@ -96,7 +133,7 @@ namespace QuerySeadTests.FacetsConfig
         {
             FacetsConfig2 facetsConfig = GetTestFacetsConfig();
 
-            IContainer container = new TestDependencyService().Register(null);
+            IContainer container = new TestDependencyService().Register();
 
             using (var scope = container.BeginLifetimeScope()) {
                 facetsConfig.SetContext(scope.Resolve<IUnitOfWork>());

@@ -3,6 +3,8 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.AggregateService;
 using CacheManager.Core;
 using DataAccessPostgreSqlProvider;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuerySeadDomain;
 using QuerySeadDomain.QueryBuilder;
@@ -12,22 +14,20 @@ namespace QuerySeadAPI {
     public interface IControllerServiceAggregate
     {
         IQueryBuilderSetting Setting { get; set; }
-        IQueryBuilderSetting IQueryCache { get; set; }
-        IQueryBuilderSetting IUnitOfWork { get; set; }
+        IQueryCache QueryCache { get; set; }
+        IUnitOfWork UnitOfWork { get; set; }
     }
 
     public class DependencyService
     {
-        public virtual IContainer Register(IServiceCollection services)
+        public virtual IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
         {
             var builder = new Autofac.ContainerBuilder();
 
             // http://docs.autofac.org/en/latest/register/registration.html
-            
-            builder.RegisterInstance(new SettingFactory().Create()).SingleInstance().ExternallyOwned();
-            // builder.RegisterInstance(new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
-            builder.Register(c => new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
 
+            builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
+            builder.Register(c => new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
             builder.RegisterAggregateService<IQueryCache>();
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
@@ -39,17 +39,24 @@ namespace QuerySeadAPI {
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
             #region __Count Services__
-            builder.RegisterAggregateService<ICategoryCountServiceAggregate>();
-            builder.RegisterType<RangeCategoryCountService>();
-            builder.RegisterType<DiscreteCategoryCountService>();
+            builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
+            builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
+
+            //builder.RegisterAggregateService<ICategoryCountServiceAggregate>();
+            //builder.RegisterType<RangeCategoryCountService>();
+            //builder.RegisterType<DiscreteCategoryCountService>();
             #endregion
 
             #region __Content Services__
-            //builder.RegisterType<RangeFacetContentService>().As<IFacetContentService>().Keyed<EFacetType>(EFacetType.Range);
-            //builder.RegisterType<DiscreteFacetContentService>().As<IFacetContentService>().Keyed<EFacetType>(EFacetType.Discrete);
-            builder.RegisterAggregateService<IFacetContentServiceAggregate>();
-            builder.RegisterType<RangeFacetContentService>();
-            builder.RegisterType<DiscreteFacetContentService>();
+
+            // alt #1 using index
+            builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
+            builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
+
+            // alt #2 using an aggregate
+            //builder.RegisterAggregateService<IFacetContentServiceAggregate>();
+            //builder.RegisterType<RangeFacetContentService>();
+            //builder.RegisterType<DiscreteFacetContentService>();
             #endregion
 
             builder.RegisterAggregateService<IQuerySetupCompilers>();
@@ -63,8 +70,8 @@ namespace QuerySeadAPI {
             builder.RegisterType<ResultService>();
             builder.RegisterType<MapResultService>();
 
-            //builder.RegisterType<ResultService>().As<IResultService>().Keyed<EFacetType>(EResultViewType.Tabular);
-            //builder.RegisterType<MapResultService>().As<IResultService>().Keyed<EFacetType>(EResultViewType.Map);
+            //builder.RegisterType<ResultService>().Keyed<IResultService>(EResultViewType.Tabular);
+            //builder.RegisterType<MapResultService>().Keyed<IResultService>(EResultViewType.Map);
             #endregion
 
             /* App Services */
@@ -77,7 +84,5 @@ namespace QuerySeadAPI {
 
             return container;
         }
-        //builder.RegisterType<RangeCategoryCountService>().As<ICategoryCountService>().Keyed<EFacetType>(EFacetType.Range);
-        //builder.RegisterType<DiscreteCategoryCountService>().As<ICategoryCountService>().Keyed<EFacetType>(EFacetType.Discrete);
-   }
+    }
 }

@@ -17,7 +17,9 @@ namespace QuerySeadAPI.Services {
 
         public IResultServiceIndex ContentServices { get; private set; }
 
-        public LoadResultService(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache,
+        public LoadResultService(
+            IQueryBuilderSetting config,
+            IUnitOfWork context, IQueryCache cache,
             IResultServiceIndex services) : base(config, context, cache) {
             ContentServices = services;
         }

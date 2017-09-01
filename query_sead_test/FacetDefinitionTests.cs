@@ -1,21 +1,24 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using Autofac;
 using DataAccessPostgreSqlProvider;
-using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuerySeadDomain;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using Autofac;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
-namespace QuerySeadTests.Repository {
+namespace QuerySeadTests
+{
 
     [TestClass]
-    public class RepositoryTests {
-
+    class FacetDefinitionTests
+    {
         DomainModelDbContext context;
         IContainer container;
         IQueryBuilderSetting settings;
 
-        public RepositoryTests()
+        public FacetDefinitionTests()
         {
             container = new TestDependencyService().Register();
             settings = container.Resolve<IQueryBuilderSetting>();
@@ -24,27 +27,15 @@ namespace QuerySeadTests.Repository {
         [TestInitialize()]
         public void Initialize()
         {
+            Debug.WriteLine("Called: TestInitialize");
             context = new DomainModelDbContext(settings);
         }
 
         [TestCleanup()]
         public void Cleanup()
         {
+            Debug.WriteLine("Called: TestCleanup");
             context.Dispose();
-        }
-
-        [TestMethod]
-        public void CanGetFacetObject()
-        {
-            var repository = new FacetRepository(context);
-
-            FacetDefinition facet = repository.Get(14);
-
-            Assert.AreEqual(facet.FacetCode, "places");
-            Assert.AreEqual(facet.DisplayTitle, "Places");
-            Assert.AreEqual(facet.CategoryIdExpr, "tbl_locations.location_id");
-            Assert.AreEqual(facet.CategoryNameExpr, "tbl_locations.location_name");
-            Assert.AreEqual(facet.AggregateType, "count");
         }
 
         [TestMethod]
@@ -60,9 +51,9 @@ namespace QuerySeadTests.Repository {
 
             Assert.AreEqual(facet.FacetCode, "places");
             Assert.AreEqual(facet.DisplayTitle, "Places");
-            Assert.IsNotNull(facet.FacetGroup, "FacetGroup");
-            Assert.IsNotNull(facet.TargetTable, "TargetTable");
-            Assert.IsNotNull(facet.FacetType, "FacetType");
+            Assert.IsNotNull(facet.FacetGroup);
+            Assert.IsNotNull(facet.TargetTable);
+            Assert.IsNotNull(facet.FacetType);
             Assert.IsNotNull(facet.Tables);
             Assert.IsTrue(facet.Tables.Count > 0);
             Assert.AreEqual(facet.CategoryIdExpr, "tbl_locations.location_id");
@@ -88,5 +79,19 @@ namespace QuerySeadTests.Repository {
             Assert.AreEqual(1, aliasFacets.Count);
             Assert.AreSame(facet, aliasFacets[0]);
         }
+
+        [TestMethod]
+        public void CanGetFacetsFromStore()
+        {
+            var facets = context.FacetDefinitions
+                .Include(x => x.FacetGroup)
+                .Include(x => x.FacetType)
+                .Include(x => x.Tables)
+                .Include(x => x.Clauses)
+                .ToList();
+            Assert.IsTrue(facets.Count > 0);
+        }
+
+
     }
 }

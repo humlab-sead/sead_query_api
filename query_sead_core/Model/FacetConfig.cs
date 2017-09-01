@@ -9,11 +9,22 @@ using Newtonsoft.Json;
 
 namespace QuerySeadDomain {
 
+    /// <summary>
+    /// Contains client data sent to server upon facet load content and load result requests.
+    /// </summary>
     public class FacetsConfig2 {
 
+        /// <summary>
+        /// Client request identity. Defined by client and value is returned without change.
+        /// </summary>
         public string RequestId { get; set; } = "";
+
         public string Language { get; set; } = "";
+        /// <summary>
+        /// Specifies request language. Only english supported in new version
+        /// </summary>
         public string RequestType { get; set; } = "";       // Request specifier ("populate", ...)
+
         public string TargetCode { get; set; } = "";        // Target facet code i.e. facet for which new data is requested
         public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
 

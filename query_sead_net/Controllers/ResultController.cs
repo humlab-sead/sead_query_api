@@ -32,7 +32,7 @@ namespace query_sead_net.Controllers
         }
 
         [HttpGet("load")]
-        public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
+        public FacetResult Load([FromBody]FacetsConfig2 facetsConfig, [FromBody]ResultConfig resultConfig)
         {
             return null; // LoadService.Load(facetsConfig);
         }

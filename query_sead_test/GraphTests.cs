@@ -36,7 +36,7 @@ namespace QuerySeadTests.Graph {
         [TestMethod]
         public void TestResolveFacetsGraph()
         {
-            var container = new TestDependencyService().Register(null);
+            var container = new TestDependencyService().Register(null, null);
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IFacetsGraph>();
                 Assert.IsTrue(service.Nodes.Count > 0);

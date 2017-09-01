@@ -7,7 +7,7 @@ using Autofac.Features.Indexed;
 
 namespace QuerySeadAPI.Services
 {
-    using IContentServiceIndex = IIndex<EFacetType, IFacetContentService>;
+    //using IContentServiceIndex = IIndex<EFacetType, IFacetContentService>;
 
     public interface ILoadFacetService {
         FacetContent Load(FacetsConfig2 facetsConfig);
@@ -16,10 +16,11 @@ namespace QuerySeadAPI.Services
     public class LoadFacetService : AppServiceBase, ILoadFacetService {
 
         public IDeleteBogusPickService BogusPickService { get; private set; }
-        public IContentServiceIndex ContentServices { get; private set; }
+        public IIndex<EFacetType, IFacetContentService> ContentServices { get; private set; }
+        //public IFacetContentServiceAggregate ContentServices { get; private set; }
 
         public LoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache,
-            IDeleteBogusPickService bogusService, IContentServiceIndex services) : base(config, context, cache)
+            IDeleteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache)
         {
             BogusPickService = bogusService;
             ContentServices = services;
