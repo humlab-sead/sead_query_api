@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuerySeadAPI", "query_sead_net\QuerySeadAPI.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.api", "query_sead_net\query.sead.api.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuerySeadDomain", "query_sead_core\QuerySeadDomain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.domain", "query_sead_core\query.sead.domain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuerySeadTests", "query_sead_test\QuerySeadTests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.tests", "query_sead_test\query.sead.tests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. API", "0. API", "{2A5926AB-11C3-4F26-847E-FC5CEA0E0424}"
 EndProject

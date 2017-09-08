@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>QuerySeadAPI</AssemblyName>
+    <AssemblyName>query.sead.api</AssemblyName>
     <RootNamespace>QuerySeadAPI</RootNamespace>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
@@ -50,7 +50,7 @@
     <None Include="Services\LoadResultService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\query_sead_core\QuerySeadDomain.csproj" />
+    <ProjectReference Include="..\query_sead_core\query.sead.domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">
