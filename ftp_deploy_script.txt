@@ -1,0 +1,10 @@
+open dev.humlab.umu.se
+roger
+schi11er
+lcd /D 
+cd ./applications/pending
+binary
+prompt
+put """C:\Users\roma0050\Documents\Projects\SEAD\query_sead_api_core"\query_sead_net\bin\Release\netcoreapp2.0\debian.8-x64\publish".gz"
+disconnect
+quit

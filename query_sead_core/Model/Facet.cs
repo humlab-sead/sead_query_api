@@ -38,12 +38,14 @@ namespace QuerySeadDomain
     /// </summary>
     public class FacetGroup {
 
+        [JsonIgnore]
         public int FacetGroupId { get; set; }
         public string FacetGroupKey { get; set; }
         public string DisplayTitle { get; set; }
         public bool IsApplicable { get; set; }
         public bool IsDefault { get; set; }
 
+        public List<FacetDefinition> Items { get; set; }
     }
 
     /// <summary>
@@ -92,24 +94,32 @@ namespace QuerySeadDomain
         /// <summary>
         /// Group facet belongs to
         /// </summary>
+        [JsonIgnore]
         public int FacetGroupId { get; set; }
+        public string FacetGroupKey { get { return FacetGroup?.FacetGroupKey ?? "unknown";  } }
         /// <summary>
         /// Facet type ID
         /// </summary>
+        [JsonIgnore]
         public EFacetType FacetTypeId { get; set; }
+        public string FacetTypeKey { get { return FacetType?.FacetTypeName ?? "unknown"; } }
         /// <summary>
         /// Query (SQL) expression that specifies ID for facet category values
         /// </summary>
+        [JsonIgnore]
         public string CategoryIdExpr { get; set; }
         /// <summary>
         /// Query (SQL) expression that specifies descriptive name facet category values
         /// </summary>
+        [JsonIgnore]
         public string CategoryNameExpr { get; set; }
+        [JsonIgnore]
         public string IconIdExpr { get; set; }
         public bool IsApplicable { get; set; }
         public bool IsDefault { get; set; }
         public string AggregateType { get; set; }
         public string AggregateTitle { get; set; }
+        [JsonIgnore]
         public int AggregateFacetId { get; set; }
 
         [JsonIgnore]

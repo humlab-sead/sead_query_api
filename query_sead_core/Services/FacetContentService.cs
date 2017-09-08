@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace QuerySeadDomain
 {
-    using CatCountDict = Dictionary<string, CategoryCountValue>;
+    using CatCountDict = Dictionary<string, CategoryCountItem>;
 
     public interface IFacetContentServiceAggregate {
         DiscreteFacetContentService DiscreteFacetContentService { get; set; }
@@ -29,38 +29,38 @@ namespace QuerySeadDomain
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
             (int interval, string intervalQuery) = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
-            CatCountDict distribution = GetDataDistribution(facetsConfig, intervalQuery);
-            List<FacetContent.CategoryItem> items = CompileItems(intervalQuery, distribution).ToList();
-            Dictionary<string, FacetsConfig2.UserPickData> pickMatrix = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
-            FacetContent facetContent = new FacetContent(facetsConfig, items, distribution, pickMatrix, interval, intervalQuery);
+            CatCountDict distribution = GetCategoryCounts(facetsConfig, intervalQuery);
+            List<FacetContent.ContentItem> items = CompileItems(intervalQuery, distribution).ToList();
+            Dictionary<string, FacetsConfig2.UserPickData> picks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
+            FacetContent facetContent = new FacetContent(facetsConfig, items, distribution, picks, interval, intervalQuery);
             return facetContent;
         }
 
         protected virtual (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=0) => (0, "");
 
-        private CatCountDict GetDataDistribution(FacetsConfig2 facetsConfig, string intervalQuery)
+        private CatCountDict GetCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {
             CatCountDict categoryCounts = CountService.Load(facetsConfig.TargetCode, facetsConfig, intervalQuery);
             return categoryCounts;
         }
 
-        protected List<FacetContent.CategoryItem> CompileItems(string intervalQuery, CatCountDict distribution)
+        protected List<FacetContent.ContentItem> CompileItems(string intervalQuery, CatCountDict distribution)
         {
             var rows = Context.QueryRows(intervalQuery, dr => CreateItem(dr, distribution)).ToList();
             return rows;
         }
 
-        protected FacetContent.CategoryItem CreateItem(DbDataReader dr, CatCountDict distribution)
+        protected FacetContent.ContentItem CreateItem(DbDataReader dr, CatCountDict distribution)
         {
             string category = GetCategory(dr);
             string name = GetName(dr);
-            CategoryCountValue countValue = distribution.ContainsKey(category) ? distribution[category] : null;
-            return new FacetContent.CategoryItem() {
+            CategoryCountItem countValue = distribution.ContainsKey(category) ? distribution[category] : null;
+            return new FacetContent.ContentItem() {
+                // FacetType = EFacetType.Unknown,
                 Category = category,
                 DisplayName = name,
                 Name = name,
-                Count = countValue?.Count ?? 0,
-                CategoryDetails = countValue?.Details
+                Value = countValue
             };
         }
 

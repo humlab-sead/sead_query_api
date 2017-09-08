@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuerySeadDomain;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Cors;
 
 namespace QuerySeadAPI.Controllers
 {
@@ -40,7 +41,7 @@ namespace QuerySeadAPI.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK , Type = typeof(IEnumerable<FacetDefinition>))]
         public IEnumerable<FacetDefinition> Get()
         {
-            return Context.Facets.GetAll().ToList();
+            return Context.Facets.GetAll().Where(z => z.FacetGroupId != 0 && z.IsApplicable == true).ToList();
         }
 
         /// <summary>
@@ -64,11 +65,13 @@ namespace QuerySeadAPI.Controllers
         /// </remarks>
         /// <returns></returns>
         [Produces("application/json", Type = typeof(FacetContent))]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetContent))]
-        [HttpGet("load")]
+        //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetContent))]
+        [HttpPost("load")]
         public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
         {
-            return LoadService.Load(facetsConfig);
+            return null;
+            //facetsConfig.SetContext(Context);
+            //return LoadService.Load(facetsConfig);
         }
 
     }

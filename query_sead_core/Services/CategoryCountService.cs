@@ -12,14 +12,19 @@ namespace QuerySeadDomain
     //    DiscreteCategoryCountService DiscreteCategoryCountService { get; set; }
     //}
 
-    public class CategoryCountValue {
+    /// <summary>
+    /// Gives the number of occurrences (Count) of a category determined by given extent
+    /// The extent is a single value for discrete facets (the category ID) and an interval (lower, upper) for range facets
+    /// </summary>
+    public class CategoryCountItem {
         public string Category { get; set; }
         public int? Count { get; set; }
-        public Dictionary<EFacetPickType, decimal> Details;
+        public List<decimal> Extent;
+        //public Dictionary<EFacetPickType, decimal> CategoryValues;
     }
 
     public interface ICategoryCountService {
-        Dictionary<string, CategoryCountValue> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
+        Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
     }
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
@@ -28,15 +33,15 @@ namespace QuerySeadDomain
         {
         }
 
-        public Dictionary<string, CategoryCountValue> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
+        public Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {
             FacetDefinition facet = Context.Facets.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
-            Dictionary<string, CategoryCountValue> data = Query(sql).ToList().ToDictionary(z => Coalesce(z.Category, "(null)"));
+            Dictionary<string, CategoryCountItem> data = Query(sql).ToList().ToDictionary(z => Coalesce(z.Category, "(null)"));
             return data; 
         }
 
-        protected virtual List<CategoryCountValue> Query(string sql) => throw new NotSupportedException();
+        protected virtual List<CategoryCountItem> Query(string sql) => throw new NotSupportedException();
 
         protected virtual string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery) => throw new NotSupportedException();
     }
@@ -53,15 +58,16 @@ namespace QuerySeadDomain
             return sql;
         }
 
-        protected override List<CategoryCountValue> Query(string sql)
+        protected override List<CategoryCountItem> Query(string sql)
         {
-            return Context.QueryRows<CategoryCountValue>(sql,
-                x => new CategoryCountValue() {
+            return Context.QueryRows<CategoryCountItem>(sql,
+                x => new CategoryCountItem() {
                     Category = x.GetInt32(0).ToString(),
                     Count = x.GetInt32(1),
-                    Details = new Dictionary<EFacetPickType, decimal>() {
-                        { EFacetPickType.lower, x.GetInt32(2) },
-                        { EFacetPickType.upper, x.GetInt32(3) } }
+                    Extent = new List<decimal>() { x.GetInt32(2), x.GetInt32(3) }
+                    //Values =  new Dictionary<EFacetPickType, decimal>() {
+                    //    { EFacetPickType.lower, x.GetInt32(2) },
+                    //    { EFacetPickType.upper, x.GetInt32(3) } }
                 }).ToList();
         }
     }
@@ -98,15 +104,16 @@ namespace QuerySeadDomain
             return tables;
         }
 
-        protected override List<CategoryCountValue> Query(string sql)
+        protected override List<CategoryCountItem> Query(string sql)
         {
-            return Context.QueryRows<CategoryCountValue>(sql,
-                x => new CategoryCountValue() {
+            return Context.QueryRows<CategoryCountItem>(sql,
+                x => new CategoryCountItem() {
                     Category =  x.IsDBNull(0) ? null : x.GetInt32(0).ToString(),
-                    Count = x.IsDBNull(0) ? 0 : x.GetInt32(1),
-                    Details = new Dictionary<EFacetPickType, decimal>() {
-                        { EFacetPickType.discrete, x.IsDBNull(1) ? 0 : x.GetInt32(1) }
-                    }
+                    Count = x.IsDBNull(0) ? 0 : x.GetInt32(0),
+                    Extent = new List<decimal>() { x.IsDBNull(1) ? 0 : x.GetInt32(1) }
+                    //CategoryValues = new Dictionary<EFacetPickType, decimal>() {
+                    //    { EFacetPickType.discrete, x.IsDBNull(1) ? 0 : x.GetInt32(1) }
+                    //}
                 }).ToList();
         }
     }

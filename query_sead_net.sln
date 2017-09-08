@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadAPI", "query_sead_net\QuerySeadAPI.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuerySeadAPI", "query_sead_net\QuerySeadAPI.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadDomain", "query_sead_core\QuerySeadDomain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuerySeadDomain", "query_sead_core\QuerySeadDomain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuerySeadTests", "query_sead_test\QuerySeadTests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuerySeadTests", "query_sead_test\QuerySeadTests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. API", "0. API", "{2A5926AB-11C3-4F26-847E-FC5CEA0E0424}"
 EndProject
@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		deploy_to_dev.bat = deploy_to_dev.bat
 		README.md = README.md
 		..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf = ..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf
 		..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf = ..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
@@ -49,5 +50,8 @@ Global
 		{97931AF2-4472-4579-B88C-42A742126231} = {2A5926AB-11C3-4F26-847E-FC5CEA0E0424}
 		{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6} = {21E3D803-0140-4AE8-9028-C4B7679DD7EA}
 		{4807405E-C9E2-457B-A4CD-BA0A43640935} = {285C55B7-5525-4926-9C90-D541DFD00EE7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5283932E-66A7-41F3-9EEE-C02D5737EFC6}
 	EndGlobalSection
 EndGlobal

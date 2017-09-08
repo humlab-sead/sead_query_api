@@ -12,8 +12,6 @@ namespace DataAccessPostgreSqlProvider {
         public DomainModelDbContext(IQueryBuilderSetting config)
         {
             Settings = config.Store;
-            //NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
-
         }
 
         public DbSet<ResultDefinition> ResultDefinitions { get; set; }
@@ -54,7 +52,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetDefinition>().Ignore(z => z.ExtraTables).Ignore(z => z.TargetTable);
 
             builder.Entity<FacetDefinition>().HasOne<FacetType>(x => x.FacetType).WithMany().HasForeignKey(p => p.FacetTypeId);
-            builder.Entity<FacetDefinition>().HasOne<FacetGroup>(x => x.FacetGroup).WithMany().HasForeignKey(p => p.FacetGroupId);
+            builder.Entity<FacetDefinition>().HasOne<FacetGroup>(x => x.FacetGroup).WithMany(x => x.Items).HasForeignKey(p => p.FacetGroupId);
             //builder.Entity<FacetDefinition>().HasMany<FacetTable>(x => x.Tables).WithOne(z => z.FacetDefinition).HasForeignKey(p => p.FacetId);
 
             builder.Entity<FacetGroup>().ToTable("facet_group", "facet").HasKey(b => b.FacetGroupId);

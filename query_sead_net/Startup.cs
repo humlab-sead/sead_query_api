@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Routing;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
+using Npgsql.Logging;
 
 namespace QuerySeadAPI {
 
@@ -34,24 +35,33 @@ namespace QuerySeadAPI {
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("QuerySeadCorsPolicy",
+            //        builder => builder
+            //            .AllowAnyOrigin()
+            //            .AllowAnyMethod()
+            //            .AllowAnyHeader()
+            //            .AllowCredentials());
+            //});
+            services.AddCors();
             services.AddMvc();
 
             // See https://github.com/domaindrivendev/Swashbuckle
             // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info {
-                    Title = "Query SEAD API",
-                    Version = "v1",
-                    Description = "API used by the Query SEAD client",
-                    TermsOfService = "None"
-                });
-                string[] files = { "QuerySeadAPI.xml", "QuerySeadDomain.xml" } ;
-                foreach (var file in files) {
-                    c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, file));
-                }
-            });
-
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info {
+            //        Title = "Query SEAD API",
+            //        Version = "v1",
+            //        Description = "API used by the Query SEAD client",
+            //        TermsOfService = "None"
+            //    });
+            //    string[] files = { "QuerySeadAPI.xml", "QuerySeadDomain.xml" } ;
+            //    foreach (var file in files) {
+            //        c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, file));
+            //    }
+            //});
 
             Container = new DependencyService().Register(services, Options);
 
@@ -62,25 +72,35 @@ namespace QuerySeadAPI {
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
- 
+
+            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+
+            //app.UseCors("QuerySeadCorsPolicy");
             app.UseMvcWithDefaultRoute();
-
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
+            app.UseResponseBuffering();
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query SEAD API V1");
-                //c.EnabledValidator();
-                //c.BooleanValues(new object[] { 0, 1 });
-                //c.DocExpansion("full");
-                //c.InjectOnCompleteJavaScript("/swagger-ui/on-complete.js");
-                //c.InjectOnFailureJavaScript("/swagger-ui/on-failure.js");
-                //c.SupportedSubmitMethods(new[] { "get", "post", "put", "patch" });
-                c.ShowRequestHeaders();
-                c.ShowJsonEditor();
-            });
+                app.UseDeveloperExceptionPage();
+            }
+
+            //// Enable middleware to serve generated Swagger as a JSON endpoint.
+            //app.UseSwagger();
+
+            //// Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query SEAD API V1");
+            //    //c.EnabledValidator();
+            //    //c.BooleanValues(new object[] { 0, 1 });
+            //    //c.DocExpansion("full");
+            //    //c.InjectOnCompleteJavaScript("/swagger-ui/on-complete.js");
+            //    //c.InjectOnFailureJavaScript("/swagger-ui/on-failure.js");
+            //    //c.SupportedSubmitMethods(new[] { "get", "post", "put", "patch" });
+            //    c.ShowRequestHeaders();
+            //    c.ShowJsonEditor();
+            //});
 
             appLifetime.ApplicationStopped.Register(() => this.Container.Dispose());
         }

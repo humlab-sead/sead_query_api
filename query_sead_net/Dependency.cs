@@ -20,6 +20,11 @@ namespace QuerySeadAPI {
 
     public class DependencyService
     {
+        public virtual ICacheManager<object> GetCacheManager()
+        {
+            return new QueryCacheFactory().Create();
+        }
+
         public virtual IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
         {
             var builder = new Autofac.ContainerBuilder();
@@ -27,7 +32,7 @@ namespace QuerySeadAPI {
             // http://docs.autofac.org/en/latest/register/registration.html
 
             builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
-            builder.Register(c => new QueryCacheFactory().Create()).SingleInstance().ExternallyOwned();
+            builder.Register(c => GetCacheManager()).SingleInstance().ExternallyOwned();
             builder.RegisterAggregateService<IQueryCache>();
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();

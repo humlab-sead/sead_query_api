@@ -28,6 +28,7 @@ namespace QuerySeadAPI.Services
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
+            facetsConfig.SetContext(Context);
             var cacheId = facetsConfig.GetCacheId();
             var facetContent = ContentCache.Get(cacheId);
             if (facetContent == null) {

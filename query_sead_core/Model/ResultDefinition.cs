@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -41,7 +42,9 @@ namespace QuerySeadDomain
         public int ResultFieldId { get; set; }
         public EResultType ResultTypeId { get; set; }
 
+        [JsonIgnore]
         public ResultDefinition ResultDefinition { get; set; }
+
         public ResultField ResultField { get; set; }
         public ResultType ResultType { get; set; }
     }
@@ -50,7 +53,9 @@ namespace QuerySeadDomain
 
         public int ResultFieldId { get; set; }
         public string ResultFieldKey { get; set; }
+        [JsonIgnore]
         public string TableName { get; set; }
+        [JsonIgnore]
         public string ColumnName { get; set; }
         public string DisplayText { get; set; }
         public string ResultType { get; set; }

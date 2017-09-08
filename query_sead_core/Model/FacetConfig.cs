@@ -9,16 +9,95 @@ using Newtonsoft.Json;
 
 namespace QuerySeadDomain {
 
+    public class QuerySeadException : Exception {
+
+        public QuerySeadException(string msg, Exception ex) : base(msg, ex) { }
+        public QuerySeadException(string msg) : base(msg) { }
+        public QuerySeadException() : base() { }
+    }
+
+    public abstract class IsValidDomainEntitySpecification<T>
+    {
+        public abstract bool IsSatisfiedBy(T entity);
+    }
+
+    public class IsValidFacetsConfigSpecification : IsValidDomainEntitySpecification<FacetsConfig2>
+    {
+
+        public override bool IsSatisfiedBy(FacetsConfig2 facetsConfig)
+        {
+            if (!this.IsSatisfiedBy(facetsConfig.FacetConfigs))
+            {
+                return false;
+            }
+            if (facetsConfig.RequestId == "")
+            {
+                throw new QuerySeadException("Undefined request id");
+            }
+            if ((facetsConfig.TargetConfig ?? facetsConfig.TargetConfig) == null)
+            {
+                throw new QuerySeadException("Target facet is undefined");
+            }
+            if (facetsConfig.TriggerFacet == null)
+            {
+                throw new QuerySeadException("Trigger facet is undefined");
+            }
+            foreach (var facetCode in new List<string>() { facetsConfig.TargetFacet.FacetCode, facetsConfig.TriggerFacet.FacetCode })
+            {
+                if ( ! facetsConfig.FacetConfigs.Exists(z => z.FacetCode == facetCode))
+                {
+                    throw new QuerySeadException("Target or trigger facet code invalid (not found in any config)");
+                }
+            }
+            return true;
+        }
+
+        public bool IsSatisfiedBy(List<FacetConfig2> configs)
+        {
+            if (0 == configs.Count())
+            {
+                throw new QuerySeadException("Facet chain is empty");
+            }
+            if (configs.Select(z => z.Position).Distinct().Count() != configs.Count())
+            {
+                throw new QuerySeadException("Facets' positions within facet chain are not unique");
+            }
+            if (configs.Select(z => z.FacetCode).Distinct().Count() != configs.Count())
+            {
+                throw new QuerySeadException("Facets' codes within facet chain are not unique");
+            }
+            return true;
+        }
+    }
+
     /// <summary>
     /// Contains client data sent to server upon facet load content and load result requests.
     /// </summary>
     public class FacetsConfig2 {
+
+        public class UserPickData
+        {
+            public string FacetCode { get; set; }
+            public EFacetType FacetType { get; set; }
+            public List<int> PickValues { get; set; }
+            public string Title { get; set; }
+        }
+
+        //public FacetsConfig2()
+        //{
+        //}
+
+        public FacetsConfig2(IUnitOfWork context)
+        {
+            Context = context;
+        }
 
         /// <summary>
         /// Client request identity. Defined by client and value is returned without change.
         /// </summary>
         public string RequestId { get; set; } = "";
 
+        [JsonIgnore]
         public string Language { get; set; } = "";
         /// <summary>
         /// Specifies request language. Only english supported in new version
@@ -39,27 +118,21 @@ namespace QuerySeadDomain {
                 return facetConfigs;
             }
             set {
-                facetConfigs = value.OrderBy(z => z.Position).ToList();
+                if (Context == null || new IsValidFacetsConfigSpecification().IsSatisfiedBy(value)) {
+                    facetConfigs = value.OrderBy(z => z.Position).ToList();
+                }
             }
         }
 
-        public void SetContext(IUnitOfWork context)
+        public FacetsConfig2 SetContext(IUnitOfWork context)
         {
             Context = context;
             FacetConfigs.ForEach(z => z.Context = context);
+            return this;
         }
 
         [JsonIgnore]
         public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
-
-        public FacetsConfig2()
-        {
-        }
-
-        public FacetsConfig2(IUnitOfWork context)
-        {
-            Context = context;
-        }
 
         [JsonIgnore]
         public FacetDefinition TargetFacet                                              // Target facet definition
@@ -77,7 +150,6 @@ namespace QuerySeadDomain {
         public FacetConfig2 TargetConfig
         {
             get => GetConfig(TargetCode);
-  
         }
 
         public FacetConfig2 GetConfig(string facetCode)         => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
@@ -91,20 +163,14 @@ namespace QuerySeadDomain {
             return this;
         }
 
-        public class UserPickData {
-            public string FacetCode { get; set; }
-            public EFacetType FacetType { get; set; }
-            public List<int> PickValues { get; set; }
-            public string Title { get; set; }
-        }
 
         public Dictionary<string, UserPickData> CollectUserPicks(string onlyCode = "")
         {
 
             Func<FacetConfig2, bool> filter() => x => (empty(onlyCode) || onlyCode == x.FacetCode) && (x.Picks.Count > 0);
-            var pickCounts = new Dictionary<string, UserPickData>();
+            var values = new Dictionary<string, UserPickData>();
             foreach (var config in FacetConfigs.Where(filter())) {
-                pickCounts[config.FacetCode] = new UserPickData() {
+                values[config.FacetCode] = new UserPickData() {
                     FacetCode = config.FacetCode,
                     PickValues = config.GetPickValues(),
                     FacetType = config.Facet.FacetTypeId,
@@ -113,7 +179,7 @@ namespace QuerySeadDomain {
                 // FIXME: Is this used? Can be computed as GroupBy(FacetType).Sum(Selections.Count)
                 //matrix['counts'][config.facet.facet_type] += count(config.picks);
             }
-            return pickCounts;
+            return values;
 
         }
 
@@ -166,11 +232,11 @@ namespace QuerySeadDomain {
         [JsonIgnore]
         public FacetDefinition Facet { get => Context.Facets.GetByCode(FacetCode); }
 
-        public FacetConfig2()
-        {
-        }
+        //public FacetConfig2()
+        //{
+        //}
 
-        public FacetConfig2(IUnitOfWork context) : this()
+        public FacetConfig2(IUnitOfWork context) //: this()
         {
             Context = context;
         }

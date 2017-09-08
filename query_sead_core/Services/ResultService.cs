@@ -8,7 +8,7 @@ using static QuerySeadDomain.Utility;
 
 namespace QuerySeadDomain {
 
-    using CatCountDict = Dictionary<string, CategoryCountValue>;
+    using CatCountDict = Dictionary<string, CategoryCountItem>;
 
     public interface IResultServiceAggregate
     {
@@ -74,7 +74,7 @@ namespace QuerySeadDomain {
             CategoryCountService = categoryCountService;
         }
 
-        private Dictionary<string, CategoryCountValue> GetCategoryCounts(FacetsConfig2 facetsConfig)
+        private Dictionary<string, CategoryCountItem> GetCategoryCounts(FacetsConfig2 facetsConfig)
         {
             return CategoryCountService.Load(facetCode, facetsConfig);
         }
@@ -82,7 +82,7 @@ namespace QuerySeadDomain {
         protected override dynamic GetExtraPayload(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             CatCountDict data = GetCategoryCounts(facetsConfig);
-            CatCountDict filtered = data ?? new Dictionary<string, CategoryCountValue>();
+            CatCountDict filtered = data ?? new Dictionary<string, CategoryCountItem>();
             CatCountDict unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.DeletePicks()) : filtered;
             return (filtered, unfiltered);
         }
