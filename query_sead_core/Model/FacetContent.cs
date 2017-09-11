@@ -9,11 +9,11 @@ namespace QuerySeadDomain
     public class FacetContent {
 
         public class ContentItem {
-            public string Category { get; internal set; }
-            public string DisplayName { get; internal set; }
-            public string Name { get; internal set; }
+            public string Category { get; set; }
+            public string DisplayName { get; set; }
+            public string Name { get; set; }
             [JsonIgnore]
-            public CategoryCountItem Value { get; internal set; }
+            public CategoryCountItem Value { get; set; }
             public int? Count { get { return Value?.Count ?? 0; } }
             public List<decimal> Extent { get { return Value?.Extent ?? new List<decimal>(); } }
         }

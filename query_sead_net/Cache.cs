@@ -47,6 +47,7 @@ namespace QuerySeadAPI
         public void Put(string key, T entity) => Store.Put(Prefix + key, entity);
         public bool Exists(string key)        => Store.Exists(Prefix + key);
         public T    Get(string key)           => Store.Exists(Prefix + key) ? Store.Get<T>(Prefix + key) : default(T);
+        public void Clear() => Store.Clear();
     }
 
     public class FacetConfigCache : CacheService<FacetsConfig2> {

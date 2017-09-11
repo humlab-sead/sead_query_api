@@ -139,16 +139,16 @@ namespace QuerySeadDomain
 
         [JsonIgnore]
         [NotMapped]
-        public FacetTable TargetTable       => Tables?.Find(z => z.SequenceId == 1) ?? null;
+        public FacetTable TargetTable => Tables?.Find(z => z.SequenceId == 1) ?? null;
 
         [JsonIgnore]
-        public string TargetTableName       => TargetTable?.TableName ?? "";
+        public string TargetTableName => TargetTable?.TableName ?? "";
 
         [JsonIgnore]
         [NotMapped]
         public List<FacetTable> ExtraTables
         {
-            get { return Tables?.Where(z => z.SequenceId != 1).ToList(); }
+            get { return Tables?.Where(z => z.SequenceId != 1)?.ToList(); }
         }
 
         [JsonIgnore]
@@ -158,7 +158,7 @@ namespace QuerySeadDomain
         [NotMapped]
         public string AliasName {
             get {
-                return aliasName ?? (aliasName = Tables.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "");
+                return aliasName ?? (aliasName = Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "");
             }
         }
 

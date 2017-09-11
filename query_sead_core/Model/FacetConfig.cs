@@ -86,7 +86,7 @@ namespace QuerySeadDomain {
         //public FacetsConfig2()
         //{
         //}
-
+        [JsonConstructor]
         public FacetsConfig2(IUnitOfWork context)
         {
             Context = context;
@@ -137,13 +137,13 @@ namespace QuerySeadDomain {
         [JsonIgnore]
         public FacetDefinition TargetFacet                                              // Target facet definition
         {
-            get => empty(TargetCode) ? null : Context.Facets.GetByCode(TargetCode);
+            get => empty(TargetCode) ? null : Context?.Facets?.GetByCode(TargetCode);
         }
 
         [JsonIgnore]
         public FacetDefinition TriggerFacet
         {
-            get => empty(TriggerCode) ? null : Context.Facets.GetByCode(TriggerCode);
+            get => empty(TriggerCode) ? null : Context?.Facets?.GetByCode(TriggerCode);
         }
 
         [JsonIgnore]
@@ -230,12 +230,12 @@ namespace QuerySeadDomain {
         public List<FacetConfigPick> Picks { get; set; }
 
         [JsonIgnore]
-        public FacetDefinition Facet { get => Context.Facets.GetByCode(FacetCode); }
+        public FacetDefinition Facet { get => Context?.Facets?.GetByCode(FacetCode); }
 
         //public FacetConfig2()
         //{
         //}
-
+        [JsonConstructor]
         public FacetConfig2(IUnitOfWork context) //: this()
         {
             Context = context;

@@ -1,6 +1,7 @@
 ﻿using QuerySeadDomain;
 using System;
 using System.Collections.Generic;
+using Autofac;
 using System.Linq;
 
 namespace QuerySeadTests.fixtures
@@ -8,9 +9,19 @@ namespace QuerySeadTests.fixtures
     public class SetupFacetsConfig
     {
 
+        public IContainer Container { get; set; }
+        public IUnitOfWork Context { get; set; }
+
+        public SetupFacetsConfig()
+        {
+            Container = new TestDependencyService().Register();
+            Context = Container.Resolve<IUnitOfWork>();
+        }
+
+
         public FacetsConfig2 GenerateFacetsConfig(string targetCode, string triggerCode, List<FacetConfig2> facetConfigs)
         {
-            return new FacetsConfig2()
+            return new FacetsConfig2(Context)
             {
                 RequestId = "1",
                 Language = "en_GB",
@@ -23,7 +34,7 @@ namespace QuerySeadTests.fixtures
 
         public FacetConfig2 GenerateFacetConfig(string facetCode, int position, List<FacetConfigPick> picks, string filter = "")
         {
-            return new FacetConfig2()
+            return new FacetConfig2(Context)
             {
                 FacetCode = facetCode,
                 Position = position,

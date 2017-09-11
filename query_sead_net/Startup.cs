@@ -35,37 +35,36 @@ namespace QuerySeadAPI {
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("QuerySeadCorsPolicy",
-            //        builder => builder
-            //            .AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader()
-            //            .AllowCredentials());
-            //});
+
             services.AddCors();
             services.AddMvc();
 
-            // See https://github.com/domaindrivendev/Swashbuckle
-            // Register the Swagger generator, defining one or more Swagger documents
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new Info {
-            //        Title = "Query SEAD API",
-            //        Version = "v1",
-            //        Description = "API used by the Query SEAD client",
-            //        TermsOfService = "None"
-            //    });
-            //    string[] files = { "QuerySeadAPI.xml", "QuerySeadDomain.xml" } ;
-            //    foreach (var file in files) {
-            //        c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, file));
-            //    }
-            //});
+            //AddSwagger(services);
 
             Container = new DependencyService().Register(services, Options);
 
             return Container.Resolve<IServiceProvider>();
+        }
+
+        private static void AddSwagger(IServiceCollection services)
+        {
+            //See https://github.com/domaindrivendev/Swashbuckle
+            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "Query SEAD API",
+                    Version = "v1",
+                    Description = "API used by the Query SEAD client",
+                    TermsOfService = "None"
+                });
+                string[] files = { "QuerySeadAPI.xml", "QuerySeadDomain.xml" };
+                foreach (var file in files)
+                {
+                    c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, file));
+                }
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
@@ -75,9 +74,8 @@ namespace QuerySeadAPI {
 
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
 
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            //app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
-            //app.UseCors("QuerySeadCorsPolicy");
             app.UseMvcWithDefaultRoute();
             app.UseResponseBuffering();
             if (env.IsDevelopment())
@@ -107,3 +105,15 @@ namespace QuerySeadAPI {
 
     }
 }
+
+//services.AddCors(options =>
+//{
+//    options.AddPolicy("QuerySeadCorsPolicy",
+//        builder => builder
+//            .AllowAnyOrigin()
+//            .AllowAnyMethod()
+//            .AllowAnyHeader()
+//            .AllowCredentials());
+//});
+
+//app.UseCors("QuerySeadCorsPolicy");

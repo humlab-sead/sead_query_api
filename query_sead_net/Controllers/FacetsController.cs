@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using QuerySeadDomain;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace QuerySeadAPI.Controllers
 {
@@ -49,9 +51,9 @@ namespace QuerySeadAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Produces("application/json", Type = typeof(IEnumerable<FacetDefinition>))]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetDefinition))]
+        //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetDefinition))]
         [HttpGet("{id}")]
+        [Produces("application/json", Type = typeof(IEnumerable<FacetDefinition>))]
         public FacetDefinition Get(int id)
         {
             return Context.Facets.Get(id);
@@ -64,15 +66,45 @@ namespace QuerySeadAPI.Controllers
         /// The call result is cached (using redis) for subsequent calls, and based on hash key generated from supplied configuration
         /// </remarks>
         /// <returns></returns>
-        [Produces("application/json", Type = typeof(FacetContent))]
-        //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetContent))]
+         //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetContent))]
         [HttpPost("load")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
         public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
         {
-            return null;
-            //facetsConfig.SetContext(Context);
-            //return LoadService.Load(facetsConfig);
+            facetsConfig.SetContext(Context);
+            return LoadService.Load(facetsConfig);
         }
 
+        [HttpPost("load2")]
+        [Produces("application/json", Type = typeof(FacetContent))]
+        [Consumes("application/json")]
+        public FacetContent Load2([FromBody]JObject json)
+        {
+            var facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(json.ToString());
+            facetsConfig.SetContext(Context);
+            var facetContent = LoadService.Load(facetsConfig);
+            return facetContent;
+        }
+
+        [HttpPost("load3")]
+        [Produces("application/json", Type = typeof(string))]
+        [Consumes("application/json")]
+        public string Load3([FromBody]JObject json)
+        {
+            var facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(json.ToString());
+            facetsConfig.SetContext(Context);
+            FacetContent facetContent = LoadService.Load(facetsConfig);
+            string data = JsonConvert.SerializeObject(facetContent);
+            return data;
+        }
+
+        [HttpPost("mirror")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        public JObject Mirror([FromBody]JObject json)
+        {
+            return json;
+        }
     }
 }

@@ -9,12 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.domain", "query_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.tests", "query_sead_test\query.sead.tests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. API", "0. API", "{2A5926AB-11C3-4F26-847E-FC5CEA0E0424}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9. Test", "9. Test", "{285C55B7-5525-4926-9C90-D541DFD00EE7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Domain", "1. Domain", "{21E3D803-0140-4AE8-9028-C4B7679DD7EA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -45,11 +39,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{97931AF2-4472-4579-B88C-42A742126231} = {2A5926AB-11C3-4F26-847E-FC5CEA0E0424}
-		{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6} = {21E3D803-0140-4AE8-9028-C4B7679DD7EA}
-		{4807405E-C9E2-457B-A4CD-BA0A43640935} = {285C55B7-5525-4926-9C90-D541DFD00EE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5283932E-66A7-41F3-9EEE-C02D5737EFC6}
