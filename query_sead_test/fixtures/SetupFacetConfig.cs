@@ -32,7 +32,7 @@ namespace QuerySeadTests.fixtures
             };
         }
 
-        public FacetConfig2 GenerateFacetConfig(string facetCode, int position, List<FacetConfigPick> picks, string filter = "")
+        public FacetConfig2 GenerateFacetConfig(string facetCode, int position, List<FacetConfigPick> picks = null, string filter = "")
         {
             return new FacetConfig2(Context)
             {
@@ -41,7 +41,7 @@ namespace QuerySeadTests.fixtures
                 StartRow = 0,
                 RowCount = 150,
                 TextFilter = filter,
-                Picks = picks
+                Picks = picks ?? new List<FacetConfigPick>()
             };
         }
 
@@ -58,9 +58,9 @@ namespace QuerySeadTests.fixtures
         //    };
         //}
 
-        public FacetsConfig2 SingleFacetsConfigWithoutPicks()
+        public FacetsConfig2 GenerateSingleFacetsConfigWithoutPicks(string facetCode)
         {
-            return GenerateFacetsConfig("sites", "sites", new List<FacetConfig2>() { GenerateFacetConfig("sites", 0, new List<FacetConfigPick>()) });
+            return GenerateFacetsConfig(facetCode, facetCode, new List<FacetConfig2>() { GenerateFacetConfig(facetCode, 0, new List<FacetConfigPick>()) });
         }
 
         //public string GetJSON()

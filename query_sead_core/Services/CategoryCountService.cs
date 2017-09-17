@@ -62,9 +62,9 @@ namespace QuerySeadDomain
         {
             return Context.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
-                    Category = x.GetInt32(0).ToString(),
-                    Count = x.GetInt32(1),
-                    Extent = new List<decimal>() { x.GetInt32(2), x.GetInt32(3) }
+                    Category = x.IsDBNull(0) ? "(null)" : x.GetInt32(0).ToString(),
+                    Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
+                    Extent = new List<decimal>() { x.IsDBNull(2) ? 0 : x.GetInt32(2), x.IsDBNull(3) ? 0 : x.GetInt32(3) }
                     //Values =  new Dictionary<EFacetPickType, decimal>() {
                     //    { EFacetPickType.lower, x.GetInt32(2) },
                     //    { EFacetPickType.upper, x.GetInt32(3) } }
@@ -78,30 +78,32 @@ namespace QuerySeadDomain
 
         protected override string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string payload)
         {
-            FacetDefinition countFacet = Context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
+            FacetDefinition computeFacet = Context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
 
-            string targetCode = Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
+            string targetCode = Coalesce(facetsConfig?.TargetCode, computeFacet.FacetCode);
 
             FacetDefinition targetFacet = Context.Facets.GetByCode(targetCode);
 
-            List<string> extraTables = CollectTables(facetsConfig, targetFacet, countFacet);
-            List<string> facetCodes  = array_insert_before_existing(facetsConfig.GetFacetCodes(), targetFacet.FacetCode, countFacet.FacetCode);
+            List<string> tables = GetTables(facetsConfig, targetFacet, computeFacet);
+            List<string> facetCodes = facetsConfig.GetFacetCodes();
 
-             QuerySetup query = QueryBuilder.Build(facetsConfig, countFacet.FacetCode, extraTables, facetCodes);
-            string sql = DiscreteCounterSqlQueryBuilder.compile(query, targetFacet, countFacet, Coalesce(facet.AggregateType, "count"));
+            facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
+
+            QuerySetup query = QueryBuilder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
+            string sql = DiscreteCounterSqlQueryBuilder.compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }
 
-        private List<string> CollectTables(FacetsConfig2 facetsConfig, FacetDefinition targetFacet, FacetDefinition countFacet)
+        private List<string> GetTables(FacetsConfig2 facetsConfig, FacetDefinition targetFacet, FacetDefinition computeFacet)
         {
             List<string> tables = targetFacet.ExtraTables.Select(x => x.TableName).ToList();
             if (facetsConfig.TargetCode != null) {
                 tables.Add(targetFacet.ResolvedName);
             }
-            if (countFacet.FacetCode != targetFacet.FacetCode) {
-                tables.Add(countFacet.TargetTableName);
+            if (computeFacet.FacetCode != targetFacet.FacetCode) {
+                tables.Add(computeFacet.TargetTableName);
             }
-            return tables;
+            return tables.Distinct().ToList();
         }
 
         protected override List<CategoryCountItem> Query(string sql)
@@ -109,7 +111,7 @@ namespace QuerySeadDomain
             return Context.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
                     Category =  x.IsDBNull(0) ? null : x.GetInt32(0).ToString(),
-                    Count = x.IsDBNull(0) ? 0 : x.GetInt32(0),
+                    Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
                     Extent = new List<decimal>() { x.IsDBNull(1) ? 0 : x.GetInt32(1) }
                     //CategoryValues = new Dictionary<EFacetPickType, decimal>() {
                     //    { EFacetPickType.discrete, x.IsDBNull(1) ? 0 : x.GetInt32(1) }

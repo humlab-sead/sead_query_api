@@ -10,21 +10,15 @@ namespace QuerySeadDomain.QueryBuilder
 
         public FacetPickFilterCompiler()
         {
-
         }
 
-        public virtual string compile(IUnitOfWork context, string targetCode, string currentCode, FacetConfig2 config)
+        public virtual string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
         {
             return null;
         }
 
-        public virtual bool is_affected_position(int targetPosition, int currentPosition)
-        {
-            return targetPosition > currentPosition;
-        }
-
         protected static Dictionary<EFacetType, FacetPickFilterCompiler> compilers = null;
-        public static FacetPickFilterCompiler getCompiler(EFacetType type)
+        public static FacetPickFilterCompiler GetCompiler(EFacetType type)
         {
             if (compilers == null)
                 compilers = new Dictionary<EFacetType, FacetPickFilterCompiler>() {
@@ -38,49 +32,38 @@ namespace QuerySeadDomain.QueryBuilder
 
     class RangeFacetPickFilterCompiler : FacetPickFilterCompiler {
 
-        public override string compile(IUnitOfWork context, string targetCode, string currentCode, FacetConfig2 config)
+        public override string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
         {
-            FacetDefinition facet = context.Facets.GetByCode(currentCode);
-
             var bound = config.GetPickedLowerUpperBounds();
-
             int lower = (int)bound[EFacetPickType.lower];
             int upper = (int)bound[EFacetPickType.upper];
 
             string criteria;
             if (lower == upper) {                                                 // Safer to do it this way if equal
-                criteria = $" (floor({facet.CategoryIdExpr}) = {lower})";
+                criteria = $" (floor({currentFacet.CategoryIdExpr}) = {lower})";
             } else {
-                criteria = $" ({facet.CategoryIdExpr} >= {lower} and {facet.CategoryIdExpr} <= {upper})";
+                criteria = $" ({currentFacet.CategoryIdExpr} >= {lower} and {currentFacet.CategoryIdExpr} <= {upper})";
             }
-
-            criteria += str_prefix(" AND ", facet.QueryCriteria);
+            criteria += str_prefix(" AND ", currentFacet.QueryCriteria);
 
             return criteria;
-        }
-
-        public override bool is_affected_position(int targetPosition, int currentPosition)
-        {
-            return base.is_affected_position(targetPosition, currentPosition) || (targetPosition == currentPosition);
         }
     }
 
     class DiscreteFacetPickFilterCompiler : FacetPickFilterCompiler {
 
-        public override string compile(IUnitOfWork context, string targetCode, string currentCode, FacetConfig2 config)
+        public override string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
         {
-            if (targetCode == currentCode)
+            if (targetFacet.FacetCode == currentFacet.FacetCode)
                 return "";
 
-            FacetDefinition facet = context.Facets.GetByCode(currentCode);
             List<string> picks = config.GetPickValues().Select(x => $"'{x}'").ToList();
 
             if (picks.Count == 0)
                 return "";
 
-            string criteria = $" ({facet.CategoryIdExpr}::text in (" + String.Join(", ", picks) + ")) ";
+            string criteria = $" ({currentFacet.CategoryIdExpr}::text in (" + String.Join(", ", picks) + ")) ";
             return criteria;
         }
     }
-
 }

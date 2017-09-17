@@ -76,7 +76,7 @@ namespace QuerySeadDomain
             }
             (int offset, int size) = FacetsConfig.TargetConfig.GetPage();
             if (RequestType == "populate_text_search") {
-                offset = array_find_index<ContentItem>(Items, FacetsConfig.TargetConfig.TextFilter, z => z.Name);
+                offset = Items.MyFindClosestIndex(FacetsConfig.TargetConfig.TextFilter, z => z.Name);
                 offset = Math.Max(0, Math.Min(offset, ItemCount - minSize));
             }
             return (offset, size);

@@ -157,12 +157,22 @@ namespace QuerySeadDomain {
         public List<FacetConfig2> GetFacetConfigsWithPicks()    => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
         public List<string> GetFacetCodesWithPicks()            => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
 
+        public List<FacetConfig2> GetFacetConfigsAffectedByFacet(List<string> facetCodes, FacetDefinition targetFacet)
+        {
+            var targetIndex = facetCodes.IndexOf(targetFacet.FacetCode);
+            return facetCodes
+                .Select(z => ((FacetCode: z, Config: GetConfig(z))))
+                .Where(x => x.Config?.HasPicks() ?? false)
+                .Where(x => x.Config.Facet.IsAffectedBy(facetCodes, targetFacet))
+                .Select(x => x.Config)
+                .ToList();
+        }
+
         public FacetsConfig2 DeletePicks()
         {
             FacetConfigs.ForEach(z => { z.ClearPicks(); });
             return this;
         }
-
 
         public Dictionary<string, UserPickData> CollectUserPicks(string onlyCode = "")
         {
@@ -248,7 +258,12 @@ namespace QuerySeadDomain {
             StartRow = startRow;
             RowCount = rowCount;
             TextFilter = filter;
-            Picks = picks;
+            Picks = picks ?? new List<FacetConfigPick>();
+        }
+
+        public bool HasPicks()
+        {
+            return (Picks?.Count ?? 0) > 0;
         }
 
         public List<int> GetPickValues(bool sort = false)
@@ -283,9 +298,17 @@ namespace QuerySeadDomain {
                 .ToDictionary(x => x.Type, y => y.Value);
         }
 
-        public dynamic /*(decimal lower, decimal upper)*/ getStorageLowerUpperBounds()
+        public Dictionary<EFacetPickType, decimal> getStorageLowerUpperBounds()
         {
-            return Context.Facets.GetUpperLowerBounds(Facet);
+            dynamic bound = Context.Facets.GetUpperLowerBounds(Facet);
+            return new Dictionary<EFacetPickType, decimal>() { { EFacetPickType.lower, bound.lower }, { EFacetPickType.upper, bound.upper } };
+        }
+
+        public List<string> GetJoinTables()
+        {
+            var tables = Facet.ExtraTables.Select(z => z.TableName).ToList();
+            tables.Add(Facet.ResolvedName);
+            return tables;
         }
 
     }

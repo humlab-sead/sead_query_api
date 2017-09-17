@@ -90,9 +90,13 @@ ALTER TABLE facet.facet_table ADD CONSTRAINT facet_table_PK PRIMARY KEY ( facet_
 
 CREATE TABLE facet.facet_type
   (
-    facet_type_id   INTEGER NOT NULL ,
-    facet_type_name VARCHAR (80) NOT NULL
+    facet_type_id		INTEGER NOT NULL ,
+    facet_type_name		VARCHAR (80) NOT NULL,
+	reload_as_target	BOOLEAN NOT NULL default(FALSE)
   );
+
+-- ALTER TABLE facet.facet_type ADD COLUMN reload_as_trigger BOOLEAN NOT NULL DEFAULT(FALSE)
+-- UPDATE facet.facet_type SET reload_as_trigger = TRUE WHERE facet_type_id in (2, 3);
 
 ALTER TABLE facet.facet_type ADD CONSTRAINT facet_type_PK PRIMARY KEY ( facet_type_id ) ;
 
@@ -121,11 +125,10 @@ ALTER TABLE facet.facet_table
     ADD CONSTRAINT facet_table_facet_FK FOREIGN KEY ( facet_id ) REFERENCES facet.facet ( facet_id )
         ON DELETE NO ACTION ;
 
-
-INSERT INTO facet.facet_type (facet_type_id, facet_type_name) VALUES (0, 'undefined');
-INSERT INTO facet.facet_type (facet_type_id, facet_type_name) VALUES (1, 'discrete');
-INSERT INTO facet.facet_type (facet_type_id, facet_type_name) VALUES (2, 'range');
-INSERT INTO facet.facet_type (facet_type_id, facet_type_name) VALUES (3, 'geo');
+INSERT INTO facet.facet_type (facet_type_id, facet_type_name, reload_as_target) VALUES (0, 'undefined', FALSE);
+INSERT INTO facet.facet_type (facet_type_id, facet_type_name, reload_as_target) VALUES (1, 'discrete', FALSE);
+INSERT INTO facet.facet_type (facet_type_id, facet_type_name, reload_as_target) VALUES (2, 'range', TRUE);
+INSERT INTO facet.facet_type (facet_type_id, facet_type_name, reload_as_target) VALUES (3, 'geo', TRUE);
 
 INSERT INTO facet.facet_group (facet_group_id, facet_group_key, display_title, is_applicable, is_default) VALUES(0, 'ROOT', 'ROOT', 0, 0);
 INSERT INTO facet.facet_group (facet_group_id, facet_group_key, display_title, is_applicable, is_default) VALUES(1, 'others', 'Others', 1, 0);

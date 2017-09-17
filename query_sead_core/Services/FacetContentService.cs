@@ -3,6 +3,7 @@ using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 
 namespace QuerySeadDomain
@@ -36,7 +37,7 @@ namespace QuerySeadDomain
             return facetContent;
         }
 
-        protected virtual (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=0) => (0, "");
+        protected virtual (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=120) => (0, "");
 
         private CatCountDict GetCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {
@@ -64,8 +65,8 @@ namespace QuerySeadDomain
             };
         }
 
-        protected virtual string GetCategory(DbDataReader dr) => dr.GetInt32(0).ToString();
-        protected virtual string GetName(DbDataReader dr) => dr.GetString(1);
+        protected virtual string GetCategory(DbDataReader dr) => dr.IsDBNull(0) ? "" : dr.GetInt32(0).ToString();
+        protected virtual string GetName(DbDataReader dr) => dr.IsDBNull(1) ? "" : dr.GetString(1);
     }
 
     public class DiscreteFacetContentService : FacetContentService {
@@ -79,6 +80,7 @@ namespace QuerySeadDomain
         {
             QuerySetup query = QueryBuilder.Build(facetsConfig, facetsConfig.TargetCode, null, facetsConfig.GetFacetCodes());
             string sql = DiscreteContentSqlQueryBuilder.compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
+            Debug.Print($"{facetCode}: {sql}");
             return ( 1, sql );
         }
     }
@@ -91,9 +93,9 @@ namespace QuerySeadDomain
 
         private (decimal, decimal) GetLowerUpperBound(FacetConfig2 config)
         {
-            var bounds = config.GetPickedLowerUpperBounds();      // Get client picked bound if exists...
+            var bounds = config.GetPickedLowerUpperBounds();                    // Get client picked bound if exists...
             if (bounds.Count != 2) {
-                bounds = config.getStorageLowerUpperBounds();     // ...else fetch from database
+                bounds = Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
             }
             return (bounds[EFacetPickType.lower], bounds[EFacetPickType.upper]);
         }

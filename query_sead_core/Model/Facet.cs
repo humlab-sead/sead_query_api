@@ -30,6 +30,10 @@ namespace QuerySeadDomain
         /// Type of facet in plain text
         /// </summary>
         public string FacetTypeName { get; set; }
+        /// <summary>
+        /// Specifies if facets of type should be reloaded when is target facet
+        /// </summary>
+        public bool ReloadAsTarget { get; set; }
 
     }
 
@@ -164,11 +168,32 @@ namespace QuerySeadDomain
 
         [JsonIgnore]
         [NotMapped]
+        public bool HasAliasName
+        {
+            get {
+                return AliasName != "";
+            }
+        }
+
+        [JsonIgnore]
+        [NotMapped]
         public string ResolvedName  => AliasName != "" ? AliasName : TargetTableName; 
 
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));
 
+        /// <summary>
+        /// Checks if facet is affected by target "facet" given facet sequence defined by list of facet codes
+        /// </summary>
+        /// <param name="targetFacet"></param>
+        /// <param name="facetCodes">Facet chain</param>
+        /// <returns></returns>
+        public bool IsAffectedBy(List<string> facetCodes, FacetDefinition targetFacet)
+        {
+            if (targetFacet.FacetCode == FacetCode)
+                return targetFacet.FacetType.ReloadAsTarget;
+            return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(FacetCode);
+        }
     }
 
     public class ViewState {

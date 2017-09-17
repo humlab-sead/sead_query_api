@@ -32,28 +32,55 @@ namespace QuerySeadTests.FacetsConfig
         [TestMethod]
         public void CanLoadSingleDiscreteConfigWithoutPicks()
         {
- 
-            IContainer container = new TestDependencyService().Register();
-            FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
-                "sites", "sites",
-                new List<FacetConfig2>() {
-                    fixture.GenerateFacetConfig("sites", 0, new List<FacetConfigPick>())
+
+            var facetKeys = new List<string>() { "species", "tbl_biblio_modern", "relative_age_name", "record_types", "sample_groups", "sites", "country", "ecocode", "family",
+                    "genus","species_author","feature_type","ecocode_system","abundance_classification", "activeseason", "tbl_biblio_sample_groups" };
+
+            foreach (var facetKey in facetKeys)
+            {
+                IContainer container = new TestDependencyService().Register();
+                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetKey);
+                //Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
+
+                using (var scope = container.BeginLifetimeScope())
+                {
+                    facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                    facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                    var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+                    var facetContent = service.Load(facetsConfig);
+
+                    //Assert.IsTrue(facetContent.Items.Count == 1544);
+                    Assert.AreEqual<FacetsConfig2>(facetsConfig, facetContent.FacetsConfig, facetKey);
+                    //Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
                 }
-            );
-            Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
-
-            using (var scope = container.BeginLifetimeScope()) {
-                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
-                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
-                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
-                var facetContent = service.Load(facetsConfig);
-
-                Assert.IsTrue(facetContent.Items.Count == 1544);
-                Assert.AreEqual<FacetsConfig2>(facetsConfig, facetContent.FacetsConfig);
-                Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
             }
         }
 
+        [TestMethod]
+        public void CanLoadSingleDiscreteWithAliasConfigWithoutPicks()
+        {
+
+            var facetKeys = new List<string>() {  "country" };
+
+            foreach (var facetKey in facetKeys)
+            {
+                IContainer container = new TestDependencyService().Register();
+                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetKey);
+                //Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
+
+                using (var scope = container.BeginLifetimeScope())
+                {
+                    facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                    facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                    var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+                    var facetContent = service.Load(facetsConfig);
+
+                    //Assert.IsTrue(facetContent.Items.Count == 1544);
+                    Assert.AreEqual<FacetsConfig2>(facetsConfig, facetContent.FacetsConfig, facetKey);
+                    //Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
+                }
+            }
+        }
         [TestMethod]
         public void CanLoadSingleDiscreteConfigWithPicks()
         {
@@ -109,5 +136,27 @@ namespace QuerySeadTests.FacetsConfig
                 Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
             }
         }
+
+        [TestMethod]
+        public void CanLoadSingleRangeConfigWithoutPicks()
+        {
+
+            IContainer container = new TestDependencyService().Register();
+            FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("abundances_all");
+            Utility.SaveAsJson(facetsConfig, "facet_load_config_", logDir);
+
+            using (var scope = container.BeginLifetimeScope())
+            {
+                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+                var facetContent = service.Load(facetsConfig);
+
+                Assert.IsTrue(facetContent.Items.Count == 1544);
+                Assert.AreEqual<FacetsConfig2>(facetsConfig, facetContent.FacetsConfig);
+                Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
+            }
+        }
+
     }
 }

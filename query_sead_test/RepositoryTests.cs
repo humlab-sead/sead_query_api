@@ -34,6 +34,24 @@ namespace QuerySeadTests.Repository {
         }
 
         [TestMethod]
+        public void TestResolveUnitOfWork()
+        {
+            var builder = new ContainerBuilder();
+
+            // http://docs.autofac.org/en/latest/register/registration.html
+
+            builder.RegisterType<DomainModelDbContext>().SingleInstance();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+
+            var container = builder.Build();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                var service = scope.Resolve<IUnitOfWork>();
+                Assert.IsTrue(service.Facets.GetAll().Count() > 0);
+            }
+        }
+
+        [TestMethod]
         public void CanGetFacetObject()
         {
             var repository = new FacetRepository(context);

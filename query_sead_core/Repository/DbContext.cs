@@ -33,6 +33,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetType>().ToTable("facet_type", "facet").HasKey(b => b.FacetTypeId);
             builder.Entity<FacetType>().Property(b => b.FacetTypeId).HasColumnName("facet_type_id").IsRequired();
             builder.Entity<FacetType>().Property(b => b.FacetTypeName).HasColumnName("facet_type_name").IsRequired();
+            builder.Entity<FacetType>().Property(b => b.ReloadAsTarget).HasColumnName("reload_as_target").IsRequired();
 
             builder.Entity<FacetDefinition>().ToTable("facet", "facet").HasKey(b => b.FacetId);
             builder.Entity<FacetDefinition>().Property(b => b.FacetId).HasColumnName("facet_id").IsRequired();
