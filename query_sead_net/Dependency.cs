@@ -64,24 +64,28 @@ namespace QuerySeadAPI {
             //builder.RegisterType<DiscreteFacetContentService>();
             #endregion
 
-            builder.RegisterAggregateService<IQuerySetupCompilers>();
-            builder.RegisterType<DefaultQuerySetupCompiler>();
-            builder.RegisterType<MapQuerySetupCompiler>();
+            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
 
             builder.RegisterAggregateService<IControllerServiceAggregate>();
 
             #region __Result Services__
-            builder.RegisterAggregateService<IResultServiceAggregate>();
-            builder.RegisterType<ResultService>();
-            builder.RegisterType<MapResultService>();
+            builder.RegisterType<ResultService>().Keyed<IResultService>("tabular");
+            builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            //builder.RegisterType<ResultService>().Keyed<IResultService>(EResultViewType.Tabular);
-            //builder.RegisterType<MapResultService>().Keyed<IResultService>(EResultViewType.Map);
+            builder.RegisterType<TabularResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("tabular");
+            builder.RegisterType<MapResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("map");
+
             #endregion
 
             /* App Services */
-            builder.RegisterType<Services.LoadFacetService>().As<Services.ILoadFacetService>();
 
+            if (options.Store.UseRedisCache) {
+                builder.RegisterType<Services.CachedLoadFacetService>().As<Services.ILoadFacetService>();
+                builder.RegisterType<Services.CachedLoadResultService>().As<Services.ILoadResultService>();
+            } else {
+                builder.RegisterType<Services.LoadFacetService>().As<Services.ILoadFacetService>();
+                builder.RegisterType<Services.LoadResultService>().As<Services.ILoadResultService>();
+            }
             if (services != null)
                 builder.Populate(services);
 

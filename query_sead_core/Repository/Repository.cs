@@ -66,12 +66,18 @@ namespace QuerySeadDomain {
         //QueryRow("", r => new { CatName = r.GetString(0), CarDOB = r.GetDateTime(1), CatStatus = r.GetInt32(2) });
         public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
         {
-            return Context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).Take(1).FirstOrDefault();
+            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
+            {
+                return reader.Select(selector).Take(1).FirstOrDefault();
+            }
         }
 
-        public IEnumerable<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
+        public List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
         {
-            return Context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(selector).ToList();
+            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
+            {
+                return reader.Select(selector).ToList();
+            }
         }
 
     }

@@ -5,48 +5,56 @@ using System.Linq;
 
 namespace QuerySeadDomain.QueryBuilder
 {
+
     public class QuerySetup {
 
-        public FacetDefinition facet;
-        public List<string> fields;
-        public string target_text_filter;
-        public List<GraphRoute> none_reduced_routes;
-        public List<GraphRoute> reduced_routes;
+        public FacetConfig2 TargetConfig;
+        public FacetDefinition Facet;
+        public List<GraphRoute> Routes;
+        public List<GraphRoute> ReducedRoutes;
 
-        public string sql_fields;
-        public string sql_table;
-        public string sql_where;
-        public string sql_where2;
-        public string sql_joins;
+        public List<string> Joins;
+        public List<string> Criterias;
 
+        public string CategoryTextFilter { get { return TargetConfig?.TextFilter ?? "";  } }
 
-        public QuerySetup(FacetDefinition facet, List<string> sql_joins, Dictionary<string, string> sql_filter_clauses, List<GraphRoute> none_reduced_routes, List<GraphRoute> reduced_routes, string target_text_filter)
+        public QuerySetup(FacetConfig2 targetConfig, FacetDefinition facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
         {
-
-            this.facet = facet;
-            this.target_text_filter = target_text_filter;
-            this.none_reduced_routes = none_reduced_routes;
-            this.reduced_routes = reduced_routes;
-            this.fields = new List<string>() { facet.CategoryIdExpr, facet.CategoryNameExpr };
-
-            this.sql_fields = String.Join(", ", this.fields);
-            this.sql_table = facet.TargetTableName + " " + str_prefix("AS ", facet.AliasName, " ");
-            this.sql_where = this.generateWhereClause(facet, sql_filter_clauses);
-            this.sql_where2 = str_prefix("AND ", this.sql_where);
-
-            this.sql_joins = String.Join(" ", sql_joins);
+            TargetConfig = targetConfig;
+            Facet = facet;
+            Routes = routes;
+            ReducedRoutes = reducedRoutes;
+            Joins = sqlJoins;
+            Criterias = criterias.Select(x => "(" + x.Value + ")").AppendIf(Facet.QueryCriteria).ToList();
         }
 
-        private string generateWhereClause(FacetDefinition facet, Dictionary<string, string> filter_clauses)
+    }
+
+    public class ResultQuerySetup
+    {
+
+        public List<ResultAggregateField> Fields { get; set; }
+        public List<ResultField> ResultFields => Fields.Select(z => z.ResultField).ToList();
+        public List<string> DataTables => Fields.Select(z => z.ResultField.TableName).Where(t => t != null).ToList();
+
+        public List<(string, string)> AliasPairs { get; set; }
+        public List<string> DataFields { get; set; }
+        public List<string> GroupByFields { get; set; }
+        public List<string> InnerGroupByFields { get; set; }
+        public List<string> SortFields { get; set; }
+
+        public ResultQuerySetup(List<ResultAggregateField> fields)
         {
-            List<string> sql_where_clauses = filter_clauses.Select(x => "(" + x.Value + ")\n").ToList();
-            if (facet.Clauses.Count > 0) {
-                sql_where_clauses.Add(facet.QueryCriteria);
-            }
-            sql_where = String.Join(" AND ", filter_clauses.Select(x => "(" + x.Value + ")\n").Append(facet.QueryCriteria));
-            return sql_where;
+            var aliases = fields.Select((field, i) => new { Field = field, Alias = "alias_" + (i+1).ToString() });
+            Fields = fields;
+            InnerGroupByFields = aliases.Select(p => p.Alias).ToList();
+            GroupByFields = aliases.Where(z => z.Field.FieldType.IsGroupByField).Select(z => z.Alias).ToList();
+            AliasPairs = aliases.Select(z => ((z.Field.ResultField.ColumnName, z.Alias))).ToList();
+            SortFields = aliases.Where(z => z.Field.FieldType.IsSortField).Select(z => z.Alias).ToList();
+            DataFields = aliases.Where(z => z.Field.FieldType.IsResultValue).Select(z => z.Field.FieldType.Compiler.Compile(z.Alias)).ToList();
         }
 
+        public bool IsEmpty => (Fields?.Count ?? 0) == 0;
     }
 
 }

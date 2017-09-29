@@ -1,96 +1,78 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using QuerySeadDomain.QueryBuilder;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-
+using System.Reflection;
 using static QuerySeadDomain.Utility;
 
 namespace QuerySeadDomain {
 
-    class SqlFieldCompiler {
-        protected static Dictionary<string, SqlFieldCompiler> compilers = null;
-
-        public static SqlFieldCompiler getCompiler(string type)
+    public interface ISqlFieldCompiler
+    {
+        string Compile(string expr);
+    }
+    
+    public class SqlFieldCompiler : ISqlFieldCompiler
+    {
+        [JsonIgnore] public ResultFieldType FieldType { get; private set; }
+        public SqlFieldCompiler(ResultFieldType fieldType)
         {
-            return isFieldType(type) ? getCompilers()[type] : null;
+            FieldType = fieldType;
         }
-
-        public static bool isFieldType(string type)
-        {
-            return getCompilers().ContainsKey(type);
-        }
-
-        public static bool isSingleItemType(string type)
-        {
-            return isFieldType(type) && (getCompiler(type).GetType().Name == "SqlFieldCompiler");
-        }
-
-        public static bool isAggregateType(string type)
-        {
-            return isFieldType(type) && !isSingleItemType(type);
-        }
-
-        public static bool isSortType(string type)
-        {
-            return type == "sort_item";
-        }
-
-        public static bool isGroupByType(string type)
-        {
-            return isSingleItemType(type) || isSortType(type);
-        }
-
-        public static Dictionary<string, SqlFieldCompiler> getCompilers()
-        {
-            if (compilers == null)
-                compilers = new Dictionary<string, SqlFieldCompiler>() {
-                { "sum_item", new SumFieldCompiler() },
-                { "count_item", new CountFieldCompiler() },
-                { "avg_item", new AvgFieldCompiler() },
-                { "text_agg_item", new TextAggFieldCompiler() },
-                { "single_item", new SqlFieldCompiler() },
-                { "link_item", new SqlFieldCompiler() },
-                { "link_item_filtered", new SqlFieldCompiler() }
-             };
-            return compilers;
-        }
-
-        public virtual string compile(string key) { return key; }
+        public virtual string Compile(string expr) { return expr; }
     }
 
-    class SumFieldCompiler : SqlFieldCompiler {
-        public override string compile(string key) { return $"SUM({key}.double precision) AS sum_of_{key}"; }
+    public class DefaultFieldCompiler : SqlFieldCompiler
+    {
+        public DefaultFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
+        public override string Compile(string expr) { return expr; }
     }
 
-    class CountFieldCompiler : SqlFieldCompiler {
-        public override string compile(string key) { return $"COUNT({key}) AS count_of_{key}"; }
+    public class SumFieldCompiler : SqlFieldCompiler
+    {
+        public SumFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
+        public override string Compile(string expr) { return $"SUM({expr}.double precision) AS sum_of_{expr}"; }
     }
 
-    class AvgFieldCompiler : SqlFieldCompiler {
-        public override string compile(string key) { return $"AVG({key}) AS avg_of_{key}"; }
+    public class CountFieldCompiler : SqlFieldCompiler
+    {
+        public CountFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
+        public override string Compile(string expr) { return $"COUNT({expr}) AS count_of_{expr}"; }
     }
 
-    class TextAggFieldCompiler : SqlFieldCompiler {
-        public override string compile(string key) { return $"array_to_string(array_agg(DISTINCT {key}),',') AS text_agg_of_{key}"; }
+    public class AvgFieldCompiler : SqlFieldCompiler
+    {
+        public AvgFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
+        public override string Compile(string expr) { return $"AVG({expr}) AS avg_of_{expr}"; }
     }
 
-    class SqlQueryBuilder {
+    public class TextAggFieldCompiler : SqlFieldCompiler {
+        public TextAggFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
+        public override string Compile(string expr) { return $"array_to_string(array_agg(DISTINCT {expr}),',') AS text_agg_of_{expr}"; }
+    }
+
+    public class TemplateFieldCompiler : SqlFieldCompiler
+    {
+        public TemplateFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
+        public override string Compile(string expr) { return string.Format(FieldType.SqlTemplate, expr); }
     }
 
     class ValidPicksSqlQueryBuilder {
         //public static function deleteBogusPicks(&facetsConfig)
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, List<int> picks)
+        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, List<int> picks)
         {
-            string picks_clause = array_join_surround(picks, ",", "('", "'::text)", "");
+            string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"
             SELECT DISTINCT pick_id, {facet.CategoryNameExpr} AS name
-            FROM {query.sql_table}
+            FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
             JOIN (VALUES {picks_clause}) AS x(pick_id)
               ON x.pick_id = {facet.CategoryIdExpr}::text
-              {query.sql_joins}
+              {query.Joins.Combine("")}
             WHERE 1 = 1
-              {query.sql_where2}
+              {"AND ".AddIf(query.Criterias.Combine(" AND "))}
         ";
             return sql;
         }
@@ -98,7 +80,7 @@ namespace QuerySeadDomain {
 
     class RangeCounterSqlQueryBuilder {
         
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string intervalQuery, string countColumn)
+        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string intervalQuery, string countColumn)
         {
             string sql = $@"
             SELECT category, count(category) AS count, lower, upper
@@ -106,12 +88,12 @@ namespace QuerySeadDomain {
                 SELECT COALESCE(lower||' => '||upper, 'data missing') AS category, group_column, lower, upper
                 FROM  (
                     SELECT lower, upper, {countColumn} AS group_column
-                    FROM {query.sql_table}
+                    FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
                     LEFT JOIN ( {intervalQuery} ) AS temp_interval
                         ON {facet.CategoryIdExpr}::integer >= lower
                         AND {facet.CategoryIdExpr}::integer < upper
-                            {query.sql_joins}
-                    {query.sql_where2}
+                            {query.Joins.Combine("")}
+                      {"AND ".AddIf(query.Criterias.Combine(" AND "))}
                     GROUP BY lower, upper, {countColumn}
                     ORDER BY lower) AS x
                 GROUP by lower, upper, group_column) AS y
@@ -125,16 +107,16 @@ namespace QuerySeadDomain {
 
     class DiscreteCounterSqlQueryBuilder {
         
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, FacetDefinition countFacet, string aggType)
+        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, FacetDefinition countFacet, string aggType)
         {
             string sql = $@"
             SELECT category, {aggType}(value) AS count
             FROM (
                 SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS value
-                FROM {query.sql_table}
-                     {query.sql_joins}
+                FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                     {query.Joins.Combine("")}
                 WHERE 1 = 1
-                    {query.sql_where2}
+                {"AND ".AddIf(query.Criterias.Combine(" AND "))}
                 GROUP BY {facet.CategoryIdExpr}, {countFacet.CategoryIdExpr}
             ) AS x
             GROUP BY category;
@@ -145,15 +127,14 @@ namespace QuerySeadDomain {
 
     class RangeCategoryBoundSqlQueryBuilder {
         // RangeMinMaxFacetCounter::templateSQL(query, facet, facetCode): string
-        public string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string facetCode)
+        public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string facetCode)
         {
             string clauses = String.Join("", facet.Clauses.Select(x => x.Clause));
-            string where_clause = str_prefix("WHERE ", clauses);
             string sql = $@"
-             SELECT 'facetCode' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
-             FROM {facet.TargetTableName} 
-               {query.sql_joins} 
-             {where_clause}";
+               SELECT 'facetCode' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
+               FROM {facet.TargetTableName} 
+                 {query.Joins.Combine("")} 
+             {"WHERE ".AddIf(clauses)}";
             return sql;
         }
     }
@@ -166,10 +147,10 @@ namespace QuerySeadDomain {
             SELECT DISTINCT id, name
             FROM (
                 SELECT {facet.CategoryIdExpr} AS id, COALESCE({facet.CategoryNameExpr},'No value') AS name, {facet.SortExpr} AS sort_column
-                FROM {query.sql_table} 
-                     {query.sql_joins}
+                FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                     {query.Joins.Combine("")}
                 WHERE 1 = 1
-                  {query.sql_where2}
+                {"AND ".AddIf(query.Criterias.Combine(" AND "))}
                 GROUP BY name, id, sort_column
                 ORDER BY {facet.SortExpr}
             ) AS tmp
@@ -192,7 +173,7 @@ namespace QuerySeadDomain {
 
     class RangeIntervalSqlQueryBuilder {
         // RangeFacetContentLoader::getRangeQuery($interval, $min_value, $max_value, $interval_count)
-        public static string compile(int interval, int min, int max, int interval_count)
+        public static string Compile(int interval, int min, int max, int interval_count)
         {
             List<string> pieces = new List<string>();
             for (int i = 0, lower = min; i <= interval_count && lower <= max; i++) {
@@ -211,62 +192,75 @@ namespace QuerySeadDomain {
 
     class DiscreteContentSqlQueryBuilder {
         // DiscreteFacetContentLoader::compileSQL(facetsConfig, facet, query): string
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string text_filter)
+        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string text_filter)
         {
-            string text_criteria = empty(text_filter) ? ""
-                : $" AND {facet.CategoryNameExpr} ILIKE '{text_filter}' ";
-            string sort_clause = empty(facet.SortExpr) ? ""
-                : $", {facet.SortExpr} ORDER BY {facet.SortExpr}";
+            string text_criteria = text_filter.IsEmpty() ? "" : $" AND {facet.CategoryNameExpr} ILIKE '{text_filter}' ";
+            string sort_clause = empty(facet.SortExpr) ? "" : $", {facet.SortExpr} ORDER BY {facet.SortExpr}";
+
             string sql = $@"
             SELECT {facet.CategoryIdExpr} AS category, {facet.CategoryNameExpr} AS name
-            FROM {query.sql_table}
-                 {query.sql_joins}
+            FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                 {query.Joins.Combine("")}
             WHERE 1 = 1
               {text_criteria}
-              {query.sql_where2}
+            {"AND ".AddIf(query.Criterias.Combine(" AND "))}
             GROUP BY {facet.CategoryIdExpr}, {facet.CategoryNameExpr}
             {sort_clause}";
             return sql;
         }
 
     }
+    public interface IResultSqlQueryCompiler
+    {
+        string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config);
+    }
 
-    public class ResultSqlQueryBuilder {
-        // ResultSqlQueryCompiler::compile(query, queryConfig): string
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet, QueryConfig queryConfig)
+    public class TabularResultSqlQueryBuilder : IResultSqlQueryCompiler {
+
+        public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config)
         {
-            string data_fields = String.Join(", ", queryConfig.DataFields);
-            string group_by_inner_fields = String.Join(", ", queryConfig.InnerGroupByFields);
-            string data_fields_alias = String.Join(", ", queryConfig.DataFieldAliases);
-            string group_by_clause = str_prefix("GROUP BY ", String.Join(", ", queryConfig.GroupByFields));
-            string sort_by_clause = str_prefix("ORDER BY ", String.Join(", ", queryConfig.SortFields));
-
             string sql = $@"
-            SELECT {data_fields}
+            SELECT {config.DataFields.Combine(", ")}
             FROM (
-                SELECT {data_fields_alias}
-                FROM {query.sql_table}
-                    {query.sql_joins}
-                WHERE 1 = 1 {query.sql_where2}
-                GROUP BY {group_by_inner_fields}
+                SELECT {config.AliasPairs.Select(x => $"{x.Item1} AS {x.Item2}").ToList().Combine(", ")}
+                FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                     {query.Joins.Combine("")}
+                WHERE 1 = 1
+                {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+                GROUP BY {config.InnerGroupByFields.Combine(", ")}
             ) AS X 
-            {group_by_clause}
-            {sort_by_clause}
+            {"GROUP BY ".AddIf(config.GroupByFields.Combine(", "))}
+            {"ORDER BY ".AddIf(config.SortFields.Combine(", "))}
         ";
             return sql;
         }
     }
 
-    class MapResultSqlQueryBuilder {
-        // MapResultSqlQueryCompiler::compileSQL(query, facet): string
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet)
+    public class MapResultSqlQueryBuilder : IResultSqlQueryCompiler {
+
+        public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config)
         {
             string sql = $@"
             SELECT DISTINCT {facet.CategoryNameExpr} AS name, latitude_dd, longitude_dd, {facet.CategoryIdExpr} AS id_column
-            FROM {query.sql_table}
-                {query.sql_joins}
-            WHERE 1 = 1 {query.sql_where2}
+            FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                 {query.Joins.Combine("")}
+            WHERE 1 = 1
+            {"AND ".AddIf(query.Criterias.Combine(" AND "))}
         ";
+            return sql;
+        }
+    }
+
+    public class JoinClauseCompiler
+    {
+        public static string Compile(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false)
+        {
+            var resolvedTableName = graph.ResolveTargetName(edge.TargetTableName);
+            var resolvedAliasName = graph.ResolveAliasName(edge.TargetTableName);
+            var joinType = innerJoin ? "INNER" : "LEFT";
+            var sql = $" {joinType} JOIN {resolvedTableName} {resolvedAliasName ?? ""}" +
+                    $" ON {resolvedAliasName ?? resolvedTableName}.\"{edge.TargetColumnName}\" = " +
+                            $"{edge.SourceTableName}.\"{edge.SourceColumnName}\" ";
             return sql;
         }
     }

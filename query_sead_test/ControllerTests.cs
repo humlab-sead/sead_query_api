@@ -57,12 +57,12 @@ namespace QuerySeadTests
     [TestClass]
     public class ControllerTests
     {
-        private fixtures.SetupFacetsConfig fixture;
+        private fixtures.FacetConfigFixture fixture;
 
         [TestInitialize()]
         public void Initialize()
         {
-            fixture = new fixtures.SetupFacetsConfig();
+            fixture = new fixtures.FacetConfigFixture();
         }
 
         [TestMethod]
@@ -103,65 +103,82 @@ namespace QuerySeadTests
         }
 
         [TestMethod]
-        public async Task CanLoadSimpleFacet()
+        public async Task CanLoadSimpleDiscreteFacetWithoutPicks()
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
-            FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
-                "sites", "sites",
-                new List<FacetConfig2>() {
-                    fixture.GenerateFacetConfig("sites", 0, new List<FacetConfigPick>())
-                }
-            );
-            var json = JsonConvert.SerializeObject(facetsConfig);
             using (var server = new TestServer(builder))
             {
-                var request_content = new StringContent(json, Encoding.UTF8, "application/json");
-                using (var client = server.CreateClient()) {
+                using (var client = server.CreateClient())
+                {
+                    foreach (var config in fixture.Data.DiscreteTestConfigsWithPicks)
+                    {
+                        FacetsConfig2 facetsConfig = fixture.GenerateByConfig(config);
+
+                        var json = JsonConvert.SerializeObject(facetsConfig);
+                        var request_content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync("/api/facets/load", request_content);
+                        response.EnsureSuccessStatusCode();
+                        var response_content = await response.Content.ReadAsStringAsync();
+                        var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
+                        var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
+                        Assert.AreEqual(config.ExpectedCount, facetContent.Items.Count, config.TargetCode);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task CanLoadDiscreteFacetConfigsWithPicks()
+        {
+            var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
+            using (var server = new TestServer(builder))
+            {
+                using (var client = server.CreateClient())
+                {
+                    foreach (var config in fixture.Data.DiscreteTestConfigsWithPicks)
+                    {
+                        FacetsConfig2 facetsConfig = fixture.GenerateByConfig(config);
+                        
+                        var json = JsonConvert.SerializeObject(facetsConfig);
+                        var request_content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync("/api/facets/load", request_content);
+                        response.EnsureSuccessStatusCode();
+                        var response_content = await response.Content.ReadAsStringAsync();
+                        var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
+                        var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
+                        Assert.AreEqual(config.ExpectedCount, facetContent.Items.Count, config.UriConfig);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task LoadOfFinishSitesShouldEqualExpectedItems()
+        {
+            var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
+            using (var server = new TestServer(builder))
+            {
+                using (var client = server.CreateClient())
+                {
+                    // Arrange
+                    FacetsConfig2 facetsConfig = fixture.GenerateByUri("sites@sites:country@73/sites:");
+                    var json = JsonConvert.SerializeObject(facetsConfig);
+                    var request_content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    // Act
                     var response = await client.PostAsync("/api/facets/load", request_content);
                     response.EnsureSuccessStatusCode();
                     var response_content = await response.Content.ReadAsStringAsync();
                     var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
                     var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
-                    Assert.IsTrue(facetContent.Items.Count > 0);
-                    Assert.Fail("Add additional tests");
+
+                    // Assert
+                    Dictionary<string,int> items = facetContent.Items.ToDictionary(z => z.Category, z => z.Count ?? 0);
+                    Dictionary<string,int> expected = fixture.Data.FinishSiteCount;
+                    var isEqual = (expected == items) || (expected.Count == items.Count && !expected.Except(items).Any());
+                    Assert.IsTrue(isEqual);
                 }
             }
         }
-
-        //[TestMethod]
-        //public async Task CorsRequest_MatchPolicy_SetsResponseHeaders()
-        //{
-        //    string accessControlRequestMethod = "GET";
-        //    // Arrange
-        //    var hostBuilder = new WebHostBuilder()
-        //        .Configure(app =>
-        //        {
-        //            app.UseCors(builder =>
-        //                builder.WithOrigins("http://localhost:5001")
-        //                       .WithMethods("GET")
-        //                       .WithHeaders("Header1")
-        //                       .WithExposedHeaders("AllowedHeader"));
-        //            app.Run(async context =>
-        //            {
-        //                await context.Response.WriteAsync("Cross origin response");
-        //            });
-        //        })
-        //        .ConfigureServices(services => services.AddCors());
-
-        //    using (var server = new TestServer(hostBuilder))
-        //    {
-        //        // Act
-        //        // Actual request.
-        //        var response = await server.CreateRequest("/")
-        //            .AddHeader(CorsConstants.Origin, "http://localhost:5001")
-        //            .SendAsync(accessControlRequestMethod);
-
-        //        // Assert
-        //        response.EnsureSuccessStatusCode();
-        //        //Assert.Single(response.Headers);
-        //        //Assert.Equal("Cross origin response", await response.Content.ReadAsStringAsync());
-        //        //Assert.Equal("http://localhost:5001", response.Headers.GetValues(CorsConstants.AccessControlAllowOrigin).FirstOrDefault());
-        //    }
-        //}
     }
 }

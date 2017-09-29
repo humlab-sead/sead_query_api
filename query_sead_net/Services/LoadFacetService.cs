@@ -7,8 +7,6 @@ using Autofac.Features.Indexed;
 
 namespace QuerySeadAPI.Services
 {
-    //using IContentServiceIndex = IIndex<EFacetType, IFacetContentService>;
-
     public interface ILoadFacetService {
         FacetContent Load(FacetsConfig2 facetsConfig);
     }
@@ -17,7 +15,6 @@ namespace QuerySeadAPI.Services
 
         public IDeleteBogusPickService BogusPickService { get; private set; }
         public IIndex<EFacetType, IFacetContentService> ContentServices { get; private set; }
-        //public IFacetContentServiceAggregate ContentServices { get; private set; }
 
         public LoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache,
             IDeleteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache)
@@ -26,18 +23,31 @@ namespace QuerySeadAPI.Services
             ContentServices = services;
         }
 
-        public FacetContent Load(FacetsConfig2 facetsConfig)
+        public virtual FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            Cache.Store.Clear();
             facetsConfig.SetContext(Context);
+            facetsConfig = BogusPickService.Delete(facetsConfig);
+            var facetContent = ContentServices[facetsConfig.TargetFacet.FacetTypeId].Load(facetsConfig);
+            return facetContent;
+        }
+    }
+
+    public class CachedLoadFacetService : LoadFacetService
+    {
+
+        public CachedLoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache,
+            IDeleteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache, bogusService, services)
+        {
+        }
+
+        public override FacetContent Load(FacetsConfig2 facetsConfig)
+        {
             var cacheId = facetsConfig.GetCacheId();
-            var facetContent = ContentCache.Get(cacheId);
-            if (facetContent == null) {
-                facetsConfig = BogusPickService.Delete(facetsConfig);
-                facetContent = ContentServices[facetsConfig.TargetFacet.FacetTypeId].Load(facetsConfig);
-                ConfigCache.Put(cacheId, facetsConfig);
-                ContentCache.Put(cacheId, facetContent);
-            }
+            if (ContentCache.Exists(cacheId))
+                return ContentCache.Get(cacheId);
+            var facetContent = base.Load(facetsConfig);
+            ConfigCache.Put(cacheId, facetsConfig);
+            ContentCache.Put(cacheId, facetContent);
             return facetContent;
         }
     }

@@ -268,7 +268,7 @@ namespace QuerySeadDomain {
 
         public List<int> GetPickValues(bool sort = false)
         {
-            List<int>  values = Picks.Select(x => x.PickValue).ToList();
+            List<int>  values = Picks.Select(x => Int32.Parse(x.PickValue)).ToList();
             if (sort)
                 values.Sort();
             return values;
@@ -294,7 +294,7 @@ namespace QuerySeadDomain {
         {
             return Picks
                 .GroupBy(x => x.PickType)
-                .Select(g => new { Type = g.Key, Value = g.Max(z => (decimal)z.PickValue) })
+                .Select(g => new { Type = g.Key, Value = g.Max(z => Decimal.Parse(z.PickValue)) })
                 .ToDictionary(x => x.Type, y => y.Value);
         }
 
@@ -323,10 +323,10 @@ namespace QuerySeadDomain {
     public class FacetConfigPick {
 
         public EFacetPickType PickType;
-        public int PickValue;
+        public string PickValue;
         public string Text;
 
-        public FacetConfigPick(EFacetPickType type, int value, string text)
+        public FacetConfigPick(EFacetPickType type, string value, string text)
         {
             PickType = type;
             PickValue = value;

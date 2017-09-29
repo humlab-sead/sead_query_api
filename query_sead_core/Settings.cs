@@ -24,6 +24,7 @@ namespace QuerySeadDomain
         string CacheDir { get; set; }
         int CurrentViewStateId { get; set; }
         string ViewStateTable { get; set; }
+        bool UseRedisCache { get; set; }
     }
 
     public class FacetSetting : IFacetSetting {
@@ -41,6 +42,7 @@ namespace QuerySeadDomain
         public string CacheDir { get; set; }
         public int CurrentViewStateId { get; set; } = 7;
         public string ViewStateTable { get; set; }
+        public bool UseRedisCache { get; set; } = false;
     }
 
     public class QueryBuilderSetting: IQueryBuilderSetting {

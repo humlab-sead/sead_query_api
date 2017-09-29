@@ -12,10 +12,8 @@ namespace QuerySeadDomain
             public string Category { get; set; }
             public string DisplayName { get; set; }
             public string Name { get; set; }
-            [JsonIgnore]
-            public CategoryCountItem Value { get; set; }
-            public int? Count { get { return Value?.Count ?? 0; } }
-            public List<decimal> Extent { get { return Value?.Extent ?? new List<decimal>(); } }
+            public int? Count { get; set; }
+            public List<decimal> Extent { get; set; }
         }
 
         /// <summary>
@@ -61,12 +59,12 @@ namespace QuerySeadDomain
             Dictionary<string, FacetsConfig2.UserPickData> picks,
             int interval, string intervalQuery)
         {
-            FacetsConfig         = facetsConfig;
-            Items                = items;
-            Distribution         = filteredCounts;
-            Interval             = interval;
-            IntervalQuery        = intervalQuery;
-            Picks                = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
+            FacetsConfig = facetsConfig;
+            Items = items.Where(z => z.Count != null).ToList();
+            Distribution = filteredCounts;
+            Interval = interval;
+            IntervalQuery = intervalQuery;
+            Picks = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
         }
 
         public (int,int) GetPage(int minSize=12)

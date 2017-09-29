@@ -22,8 +22,9 @@ namespace QuerySeadDomain
         GraphRoute Find(string start_table, string destination_table);
         List<GraphRoute> Find(string start_table, List<string> destination_tables);
         bool IsAlias(string tableName);
-        string ResolveAlias(string aliasOrTable);
+        string ResolveTargetName(string aliasOrTable);
         string ToCSV();
+        string ResolveAliasName(string targetTableName);
     }
 
     public class FacetsGraph : IFacetsGraph {
@@ -53,9 +54,14 @@ namespace QuerySeadDomain
 
         public bool IsAlias(string name) => AliasTables.ContainsKey(name);
 
-        public string ResolveAlias(string aliasOrTable)
+        public string ResolveTargetName(string aliasOrTable)
         {
-            return IsAlias(aliasOrTable) ? AliasTables[aliasOrTable] : null;
+            return IsAlias(aliasOrTable) ? AliasTables[aliasOrTable] : aliasOrTable;
+        }
+
+        public string ResolveAliasName(string aliasOrTable)
+        {
+            return IsAlias(aliasOrTable) ? aliasOrTable : null;
         }
 
         public List<GraphRoute> Find(string start_table, List<string> destination_tables)

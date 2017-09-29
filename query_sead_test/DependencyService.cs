@@ -39,11 +39,11 @@ namespace QuerySeadTests
             DomainModelDbContext context = new DomainModelDbContext(options);
             IUnitOfWork unitOfWork = new UnitOfWork(context);
 
-            builder.Register(c => context).SingleInstance();
-            builder.Register(c => unitOfWork).SingleInstance();
+            //builder.Register(c => context).SingleInstance();
+            //builder.Register(c => unitOfWork).SingleInstance();
 
-            //builder.RegisterType<DomainModelDbContext>().SingleInstance().SingleInstance();
-            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance();
+            builder.RegisterType<DomainModelDbContext>().SingleInstance().SingleInstance();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance().ExternallyOwned();
 
             //builder.Register(c => GetCacheManager()).SingleInstance().ExternallyOwned();
 
@@ -60,17 +60,23 @@ namespace QuerySeadTests
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
             builder.RegisterAggregateService<IQuerySetupCompilers>();
-            builder.RegisterType<DefaultQuerySetupCompiler>();
+            builder.RegisterType<ResultQueryCompiler>();
             builder.RegisterType<MapQuerySetupCompiler>();
+
+            // QuerySeadDomain.IQuerySetupCompiler
 
             builder.RegisterAggregateService<IControllerServiceAggregate>();
 
-            builder.RegisterAggregateService<IResultServiceAggregate>();
-            builder.RegisterType<ResultService>();
-            builder.RegisterType<MapResultService>();
+            builder.RegisterType<ResultService>().Keyed<IResultService>("tabular");
+            builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            builder.RegisterType<QuerySeadAPI.Services.LoadFacetService>().As<QuerySeadAPI.Services.ILoadFacetService>();
-
+            if (options.Store.UseRedisCache) {
+                builder.RegisterType<QuerySeadAPI.Services.CachedLoadFacetService>().As<QuerySeadAPI.Services.ILoadFacetService>();
+                builder.RegisterType<QuerySeadAPI.Services.CachedLoadResultService>().As<QuerySeadAPI.Services.ILoadResultService>();
+            } else {
+                builder.RegisterType<QuerySeadAPI.Services.LoadFacetService>().As<QuerySeadAPI.Services.ILoadFacetService>();
+                builder.RegisterType<QuerySeadAPI.Services.LoadResultService>().As<QuerySeadAPI.Services.ILoadResultService>();
+            }
             if (services != null)
                 builder.Populate(services);
 

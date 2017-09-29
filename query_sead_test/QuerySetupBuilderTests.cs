@@ -16,7 +16,7 @@ namespace QuerySeadTests.FacetsConfig
     [TestClass]
     public class QueryCompilerTests
     {
-        private fixtures.SetupFacetsConfig fixture;
+        private fixtures.FacetConfigFixture fixture;
         private static IContainer container;
         private TestContext testContextInstance;
 
@@ -38,7 +38,7 @@ namespace QuerySeadTests.FacetsConfig
 
         [TestInitialize()]
         public void Initialize() {
-            fixture = new fixtures.SetupFacetsConfig();
+            fixture = new fixtures.FacetConfigFixture();
         }
 
         [TestMethod]
@@ -75,9 +75,8 @@ namespace QuerySeadTests.FacetsConfig
                     var facet = context.Facets.GetByCode(facetCode);
 
                     Assert.IsNotNull(querySetup);
-                    Assert.AreEqual(facet.HasAliasName ? 1 : 0, querySetup.none_reduced_routes.Count);
-                    Assert.AreEqual(facet.HasAliasName ? 1 : 0, querySetup.reduced_routes.Count);
-                    Assert.AreEqual(facet.TargetTableName + (facet.HasAliasName ? $"AS{facet.AliasName}" : ""), querySetup.sql_table.Replace(" ", ""));
+                    Assert.AreEqual(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
+                    Assert.AreEqual(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
 
                 }
             }
@@ -94,6 +93,11 @@ namespace QuerySeadTests.FacetsConfig
                     new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites", "tbl_sites/tbl_site_locations" },
                     new List<string> { "tbl_site_locations/countries" },
                     new List<string> { "tbl_analysis_entities/tbl_datasets" }
+                }
+            },
+
+            { "tbl_denormalized_measured_values_33_0", new List<List<string>> {
+                    new List<string> { "metainformation.tbl_denormalized_measured_values", "tbl_physical_samples", "tbl_analysis_entities" }
                 }
             }
         };
@@ -130,13 +134,13 @@ namespace QuerySeadTests.FacetsConfig
                     // Assert
                     var expected = singleExpectedRoutes[facetCode];
                     Assert.IsNotNull(querySetup);
-                    Assert.AreEqual(countFacet.FacetCode, querySetup.facet.FacetCode);
+                    Assert.AreEqual(countFacet.FacetCode, querySetup.Facet.FacetCode);
                     for (var i = 0; i < expected.Count; i++)
                     {
-                        Assert.AreEqual(expected[i].Count, querySetup.reduced_routes[i].Items.Count);
+                        Assert.AreEqual(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count);
                         for (var j = 0; j < expected[i].Count; j++)
                         {
-                            Assert.AreEqual(expected[i][j], querySetup.reduced_routes[i].Items[j].ToStringPair());
+                            Assert.AreEqual(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
                         }
                     }
                     // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
@@ -240,14 +244,14 @@ namespace QuerySeadTests.FacetsConfig
                     // Assert
                     Assert.IsNotNull(querySetup, key);
                     var expected = expectedRoutes[key];
-                    Assert.AreEqual(computeFacet.FacetCode, querySetup.facet.FacetCode, key);
-                    Assert.AreEqual(expected.Count, querySetup.reduced_routes.Count, key);
+                    Assert.AreEqual(computeFacet.FacetCode, querySetup.Facet.FacetCode, key);
+                    Assert.AreEqual(expected.Count, querySetup.ReducedRoutes.Count, key);
                     for (var i = 0; i < expected.Count; i++)
                     {
-                        Assert.AreEqual(expected[i].Count, querySetup.reduced_routes[i].Items.Count, key);
+                        Assert.AreEqual(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count, key);
                         for (var j = 0; j < expected[i].Count; j++)
                         {
-                            Assert.AreEqual(expected[i][j], querySetup.reduced_routes[i].Items[j].ToStringPair(), key);
+                            Assert.AreEqual(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair(), key);
                         }
                     }
                     // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
@@ -268,26 +272,6 @@ namespace QuerySeadTests.FacetsConfig
             return tables.Distinct().ToList();
         }
 
-        //[TestMethod]
-        //public void CanBuildSetup()
-        //{
-        //    FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
-
-        //    IContainer container = new TestDependencyService().Register();
-
-        //    using (var scope = container.BeginLifetimeScope())
-        //    {
-
-        //        IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-
-        //        facetsConfig.SetContext(scope.Resolve<IUnitOfWork>());
-
-        //        facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
-        //        var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
-        //        var facetContent = service.Load(facetsConfig);
-        //        string output = JsonConvert.SerializeObject(facetContent);
-        //        Assert.IsTrue(facetContent.Items.Count > 0);
-        //    }
-        //}
+        
     }
 }

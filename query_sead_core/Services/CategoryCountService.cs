@@ -54,7 +54,7 @@ namespace QuerySeadDomain
         {
             List<string> tables = new List<string>() { facet.TargetTableName, Config.DirectCountTable };
             QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
-            string sql = RangeCounterSqlQueryBuilder.compile(query, facet, intervalQuery, Config.DirectCountColumn);
+            string sql = RangeCounterSqlQueryBuilder.Compile(query, facet, intervalQuery, Config.DirectCountColumn);
             return sql;
         }
 
@@ -62,7 +62,7 @@ namespace QuerySeadDomain
         {
             return Context.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
-                    Category = x.IsDBNull(0) ? "(null)" : x.GetInt32(0).ToString(),
+                    Category = x.IsDBNull(0) ? "(null)" : x.GetString(0),
                     Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
                     Extent = new List<decimal>() { x.IsDBNull(2) ? 0 : x.GetInt32(2), x.IsDBNull(3) ? 0 : x.GetInt32(3) }
                     //Values =  new Dictionary<EFacetPickType, decimal>() {
@@ -90,7 +90,7 @@ namespace QuerySeadDomain
             facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
 
             QuerySetup query = QueryBuilder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
-            string sql = DiscreteCounterSqlQueryBuilder.compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
+            string sql = DiscreteCounterSqlQueryBuilder.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }
 

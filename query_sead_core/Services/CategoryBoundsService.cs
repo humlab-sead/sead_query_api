@@ -21,7 +21,7 @@ namespace QuerySeadDomain
             List<string> sqls = new List<string>();
             foreach (FacetDefinition facet in Context.Facets.GetOfType(EFacetType.Range)) {
                 QueryBuilder.QuerySetup query = QueryBuilder.Build(null, facet.FacetCode, ToList(facet.TargetTableName), ToList(facet.FacetCode));
-                sqls.Add(new RangeCategoryBoundSqlQueryBuilder().compile(query, facet, facet.FacetCode));
+                sqls.Add(new RangeCategoryBoundSqlQueryBuilder().Compile(query, facet, facet.FacetCode));
             }
             string sql = String.Join("\nUNION\n", sqls);
             List<Key2Value<int, float>> values = Context.QueryKeyValues2<int, float>(sql).ToList();

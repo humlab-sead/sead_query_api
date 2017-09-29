@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Features.Indexed;
+using QuerySeadDomain.Model;
 
 namespace QuerySeadAPI.Services
 {
@@ -15,7 +16,7 @@ namespace QuerySeadAPI.Services
 
         public CacheService<FacetsConfig2> ConfigCache { get; private set; }
         public CacheService<FacetContent> ContentCache { get; private set; }
-        public CacheService<FacetResult> ResultCache { get; private set; }
+        public CacheService<ResultContentSet> ResultCache { get; private set; }
 
         public AppServiceBase(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache)
         {

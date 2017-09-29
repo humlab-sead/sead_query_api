@@ -12,7 +12,7 @@ namespace QuerySeadTests
 {
 
     [TestClass]
-    class FacetDefinitionTests
+    public class FacetDefinitionTests
     {
         DomainModelDbContext context;
         IContainer container;

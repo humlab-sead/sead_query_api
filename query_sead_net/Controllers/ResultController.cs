@@ -4,37 +4,49 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuerySeadDomain;
+using QuerySeadDomain.Model;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
-namespace query_sead_net.Controllers
+namespace QuerySeadAPI.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/[controller]")]
     public class ResultController : Controller
     {
         public IUnitOfWork Context { get; private set; }
+        private Services.ILoadResultService ResultService { get; set; }
 
-        public ResultController(IUnitOfWork context)
+        public ResultController(IUnitOfWork context, Services.ILoadResultService resultService)
         {
             Context = context;
+            ResultService = resultService;
         }
 
         // GET api/values
         [HttpGet("definition")]
-        public IEnumerable<ResultDefinition> Get()
+        public IEnumerable<ResultAggregate> Get()
         {
             return Context.Results.GetAll().ToList();
         }
 
         // GET api/values/5
         [HttpGet("definition/{id}")]
-        public ResultDefinition Get(int id)
+        public ResultAggregate Get(int id)
         {
             return Context.Results.Get(id);
         }
 
-        [HttpGet("load")]
-        public FacetResult Load([FromBody]FacetsConfig2 facetsConfig, [FromBody]ResultConfig resultConfig)
+        [HttpPost("load")]
+        [Produces("application/json", Type = typeof(ResultContentSet))]
+        [Consumes("application/json")]
+        public ResultContentSet Load([FromBody]JObject data) //[FromBody]FacetsConfig2 facetsConfig, [FromBody]ResultConfig resultConfig)
         {
-            return null; // LoadService.Load(facetsConfig);
+            FacetsConfig2 facetsConfig = data["facetsConfig"].ToObject<FacetsConfig2>();
+            ResultConfig resultConfig = data["resultConfig"].ToObject<ResultConfig>();
+            facetsConfig.SetContext(Context);
+            var result = ResultService.Load(facetsConfig, resultConfig);
+            //var json = JsonConvert.SerializeObject(result);
+            return result;
         }
 
     }

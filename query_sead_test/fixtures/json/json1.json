@@ -1,0 +1,465 @@
+﻿[
+  {
+    "facetGroupKey": "ROOT",
+    "displayTitle": "ROOT",
+    "isApplicable": false,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 1,
+        "facetCode": "result_facet",
+        "displayTitle": "Analysis entities",
+        "facetGroupKey": "ROOT",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 2,
+        "facetCode": "dataset_helper",
+        "displayTitle": "dataset_helper",
+        "facetGroupKey": "ROOT",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 7,
+        "facetCode": "measured_values_helper",
+        "displayTitle": "values",
+        "facetGroupKey": "ROOT",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 8,
+        "facetCode": "taxon_result",
+        "displayTitle": "taxon_id",
+        "facetGroupKey": "ROOT",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 9,
+        "facetCode": "map_result",
+        "displayTitle": "Site",
+        "facetGroupKey": "ROOT",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  },
+  {
+    "facetGroupKey": "others",
+    "displayTitle": "Others",
+    "isApplicable": true,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 12,
+        "facetCode": "record_types",
+        "displayTitle": "Proxy types",
+        "facetGroupKey": "others",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 29,
+        "facetCode": "feature_type",
+        "displayTitle": "Feature type",
+        "facetGroupKey": "others",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 35,
+        "facetCode": "tbl_biblio_modern",
+        "displayTitle": "Bibligraphy modern",
+        "facetGroupKey": "others",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "count of species"
+      },
+      {
+        "facetId": 36,
+        "facetCode": "tbl_biblio_sample_groups",
+        "displayTitle": "Bibligraphy sites/Samplegroups",
+        "facetGroupKey": "others",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 37,
+        "facetCode": "tbl_biblio_sites",
+        "displayTitle": "Bibligraphy sites",
+        "facetGroupKey": "others",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  },
+  {
+    "facetGroupKey": "space_time",
+    "displayTitle": "Space/Time",
+    "isApplicable": true,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 13,
+        "facetCode": "sample_groups",
+        "displayTitle": "Sample group",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 14,
+        "facetCode": "places",
+        "displayTitle": "Places",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 15,
+        "facetCode": "places_all2",
+        "displayTitle": "view_places_relations",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 16,
+        "facetCode": "sample_groups_helper",
+        "displayTitle": "Sample group",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 17,
+        "facetCode": "physical_samples",
+        "displayTitle": "physical samples",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 18,
+        "facetCode": "sites",
+        "displayTitle": "Site",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 19,
+        "facetCode": "sites_helper",
+        "displayTitle": "Site",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": true,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 21,
+        "facetCode": "country",
+        "displayTitle": "Country",
+        "facetGroupKey": "space_time",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  },
+  {
+    "facetGroupKey": "time",
+    "displayTitle": "Time",
+    "isApplicable": true,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 10,
+        "facetCode": "geochronology",
+        "displayTitle": "Geochronology",
+        "facetGroupKey": "time",
+        "facetTypeKey": "range",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 11,
+        "facetCode": "relative_age_name",
+        "displayTitle": "Time periods",
+        "facetGroupKey": "time",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 20,
+        "facetCode": "tbl_relative_dates_helper",
+        "displayTitle": "tbl_relative_dates",
+        "facetGroupKey": "time",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 34,
+        "facetCode": "activeseason",
+        "displayTitle": "Seasons",
+        "facetGroupKey": "time",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  },
+  {
+    "facetGroupKey": "ecology",
+    "displayTitle": "Ecology",
+    "isApplicable": true,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 22,
+        "facetCode": "ecocode",
+        "displayTitle": "Eco code",
+        "facetGroupKey": "ecology",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 30,
+        "facetCode": "ecocode_system",
+        "displayTitle": "Eco code system",
+        "facetGroupKey": "ecology",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 31,
+        "facetCode": "abundance_classification",
+        "displayTitle": "abundance classification",
+        "facetGroupKey": "ecology",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 32,
+        "facetCode": "abundances_all_helper",
+        "displayTitle": "Abundances",
+        "facetGroupKey": "ecology",
+        "facetTypeKey": "range",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 33,
+        "facetCode": "abundances_all",
+        "displayTitle": "Abundances",
+        "facetGroupKey": "ecology",
+        "facetTypeKey": "range",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  },
+  {
+    "facetGroupKey": "measured_values",
+    "displayTitle": "Measured values",
+    "isApplicable": true,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 3,
+        "facetCode": "tbl_denormalized_measured_values_33_0",
+        "displayTitle": "MS ",
+        "facetGroupKey": "measured_values",
+        "facetTypeKey": "range",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 4,
+        "facetCode": "tbl_denormalized_measured_values_33_82",
+        "displayTitle": "MS Heating 550",
+        "facetGroupKey": "measured_values",
+        "facetTypeKey": "range",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 5,
+        "facetCode": "tbl_denormalized_measured_values_32",
+        "displayTitle": "LOI",
+        "facetGroupKey": "measured_values",
+        "facetTypeKey": "range",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 6,
+        "facetCode": "tbl_denormalized_measured_values_37",
+        "displayTitle": " P┬░",
+        "facetGroupKey": "measured_values",
+        "facetTypeKey": "range",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  },
+  {
+    "facetGroupKey": "taxonomy",
+    "displayTitle": "Taxonomy",
+    "isApplicable": true,
+    "isDefault": false,
+    "items": [
+      {
+        "facetId": 23,
+        "facetCode": "family",
+        "displayTitle": "Family",
+        "facetGroupKey": "taxonomy",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 24,
+        "facetCode": "genus",
+        "displayTitle": "Genus",
+        "facetGroupKey": "taxonomy",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 25,
+        "facetCode": "species",
+        "displayTitle": "Taxa",
+        "facetGroupKey": "taxonomy",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "sum",
+        "aggregateTitle": "sum of Abundance"
+      },
+      {
+        "facetId": 26,
+        "facetCode": "species_helper",
+        "displayTitle": "Species",
+        "facetGroupKey": "taxonomy",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 27,
+        "facetCode": "abundance_helper",
+        "displayTitle": "abundance_id",
+        "facetGroupKey": "taxonomy",
+        "facetTypeKey": "discrete",
+        "isApplicable": false,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      },
+      {
+        "facetId": 28,
+        "facetCode": "species_author",
+        "displayTitle": "Author",
+        "facetGroupKey": "taxonomy",
+        "facetTypeKey": "discrete",
+        "isApplicable": true,
+        "isDefault": false,
+        "aggregateType": "count",
+        "aggregateTitle": "Number of samples"
+      }
+    ]
+  }
+]

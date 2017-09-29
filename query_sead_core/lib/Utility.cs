@@ -11,6 +11,26 @@ namespace QuerySeadDomain {
     public static class MyListExtensions
     {
 
+        public static IEnumerable<string> AppendIf(this IEnumerable<string> array, string element)
+        {
+            return element.IsEmpty() ? array : array.Append(element);
+        }
+
+        public static string Combine(this List<string> array, string glue)
+        {
+            return String.Join(glue, array);
+        }
+
+        public static string Combine<T>(this List<T> array, string glue, Func<T, string> selector)
+        {
+            return String.Join(glue, array.Select(selector).ToList());
+        }
+
+        public static string Combine<T>(this List<T> array, string glue = "", string prefix = "", string suffix = "", string default_value = "")
+        {
+            return String.Join(glue, array.Select(x => $"{prefix}{x.ToString() ?? default_value}{suffix}").ToList());
+        }
+
         public static void MyInsertBeforeItem<T>(this List<T> array, T search_item, T insert_item)
         {
             var idx = array.FindIndex(z => search_item.Equals(z));
@@ -19,7 +39,6 @@ namespace QuerySeadDomain {
             else
                 throw new ArgumentException($"List<T>.InsertBeforeItem: {search_item} to found");
         }
-
 
         public static int MyFindClosestIndex<T>(this List<T> rows, string search_str, Func<T, string> selector)
         {
@@ -68,6 +87,21 @@ namespace QuerySeadDomain {
 
     }
 
+    public static class StringUtilityExtension
+    {
+        public static bool IsEmpty(this string x) => (x ?? "").Equals("");
+
+        public static string Prepend(this string text, string prefix, string glue = "", bool preserveEmpty = true)
+        {
+            return (preserveEmpty && text.IsEmpty()) ? "" : $"{prefix}{glue}{text}";
+        }
+
+        public static string AddIf(this string prefix, string text, string glue = "", bool preserveEmpty = true)
+        {
+            return (preserveEmpty && text.IsEmpty()) ? "" : $"{prefix}{glue}{text}";
+        }
+    }
+
     public class Utility {
 
         public static bool empty(string x) => (x ?? "").Equals("");
@@ -86,7 +120,7 @@ namespace QuerySeadDomain {
 
         public static string Coalesce(params string[] data)
         {
-            return data.FirstOrDefault(x => !empty(x)) ?? "";
+            return data.FirstOrDefault(x => !x.IsEmpty()) ?? "";
         }
 
         public static List<T> ToList<T>(params T[] items) => new List<T>(items);

@@ -14,11 +14,14 @@ namespace DataAccessPostgreSqlProvider {
             Settings = config.Store;
         }
 
-        public DbSet<ResultDefinition> ResultDefinitions { get; set; }
+        public DbSet<ResultAggregate> ResultDefinitions { get; set; }
+        public DbSet<ResultField> ResultFields { get; set; }
+        public DbSet<ResultFieldType> ResultFieldTypes { get; set; }
         public DbSet<FacetDefinition> FacetDefinitions { get; set; }
         public DbSet<GraphEdge> Edges { get; set; }
         public DbSet<GraphNode> Nodes { get; set; }
         public DbSet<ViewState> ViewStates { get; set; }
+        public DbSet<ResultViewType> ViewTypes { get; set; }
 
         public DbSet<FacetType> FacetTypes { get; set; }
         public DbSet<FacetGroup> FacetGroups { get; set; }
@@ -79,48 +82,60 @@ namespace DataAccessPostgreSqlProvider {
             //builder.Entity<FacetTable>().HasOne<FacetDefinition>(x => x.FacetDefinition).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
             builder.Entity<FacetTable>().HasOne<FacetDefinition>(x => x.FacetDefinition).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
 
+            builder.Entity<ResultViewType>().ToTable("result_view_tyoe", "facet").HasKey(b => b.ViewTypeId);
+
+            builder.Entity<ResultViewType>().Property(b => b.ViewTypeId).HasColumnName("view_type_id").IsRequired();
+            builder.Entity<ResultViewType>().Property(b => b.ViewName).HasColumnName("view_name").IsRequired();
+            builder.Entity<ResultViewType>().Property(b => b.IsCachable).HasColumnName("is_cachable").IsRequired();
+
             builder.Entity<ResultField>().ToTable("result_field", "facet").HasKey(b => b.ResultFieldId);
             builder.Entity<ResultField>().Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();
             builder.Entity<ResultField>().Property(b => b.ResultFieldKey).HasColumnName("result_field_key").IsRequired();
+            builder.Entity<ResultField>().Property(b => b.FieldTypeId).HasColumnName("field_type_id").IsRequired();
             builder.Entity<ResultField>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
             builder.Entity<ResultField>().Property(b => b.ColumnName).HasColumnName("column_name").IsRequired();
             builder.Entity<ResultField>().Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
-            builder.Entity<ResultField>().Property(b => b.ResultType).HasColumnName("result_type").IsRequired();
             builder.Entity<ResultField>().Property(b => b.Activated).HasColumnName("activated").IsRequired();
             builder.Entity<ResultField>().Property(b => b.LinkUrl).HasColumnName("link_url");
             builder.Entity<ResultField>().Property(b => b.LinkLabel).HasColumnName("link_label");
 
-            builder.Entity<ResultType>().ToTable("result_type", "facet").HasKey(b => b.ResultTypeId);
-            builder.Entity<ResultType>().Property(b => b.ResultTypeId).HasColumnName("result_type_id").IsRequired();
-            builder.Entity<ResultType>().Property(b => b.ResultTypeName).HasColumnName("result_type").IsRequired();
+            builder.Entity<ResultField>().HasOne(x => x.FieldType).WithMany().HasForeignKey(p => p.FieldTypeId);
 
-            builder.Entity<ResultDefinition>().ToTable("result_definition", "facet").HasKey(b => b.ResultDefinitionId);
-            builder.Entity<ResultDefinition>().Property(b => b.ResultDefinitionId).HasColumnName("result_definition_id").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.Key).HasColumnName("result_definition_key").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.IsApplicable).HasColumnName("is_applicable").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.IsActivated).HasColumnName("is_activated").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.AggregationType).HasColumnName("aggregation_type").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.InputType).HasColumnName("input_type").IsRequired();
-            builder.Entity<ResultDefinition>().Property(b => b.HasAggregationSelector).HasColumnName("has_aggregation_selector").IsRequired();
+            builder.Entity<ResultFieldType>().ToTable("result_field_type", "facet").HasKey(b => b.FieldTypeId);
+            builder.Entity<ResultFieldType>().Property(b => b.FieldTypeId).HasColumnName("field_type_id").IsRequired();
+            builder.Entity<ResultFieldType>().Property(b => b.IsResultValue).HasColumnName("is_result_value").IsRequired();
+            builder.Entity<ResultFieldType>().Property(b => b.SqlFieldCompiler).HasColumnName("sql_field_compiler").IsRequired();
+            builder.Entity<ResultFieldType>().Property(b => b.IsSortField).HasColumnName("is_sort_field").IsRequired();
+            builder.Entity<ResultFieldType>().Property(b => b.IsAggregateField).HasColumnName("is_aggregate_field").IsRequired();
+            builder.Entity<ResultFieldType>().Property(b => b.IsItemField).HasColumnName("is_item_field").IsRequired();
+            builder.Entity<ResultFieldType>().Property(b => b.SqlTemplate).HasColumnName("sql_template").IsRequired();
 
-            builder.Entity<ResultDefinition>()
-                .HasMany<ResultDefinitionField>(x => x.Fields)
-                .WithOne(x => x.ResultDefinition)
-                .HasForeignKey(p => p.ResultDefinitionId);
+        builder.Entity<ResultAggregate>().ToTable("result_aggregate", "facet").HasKey(b => b.AggregateId);
+            builder.Entity<ResultAggregate>().Property(b => b.AggregateId).HasColumnName("aggregate_id").IsRequired();
+            builder.Entity<ResultAggregate>().Property(b => b.AggregateKey).HasColumnName("aggregate_key").IsRequired();
+            builder.Entity<ResultAggregate>().Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
+            builder.Entity<ResultAggregate>().Property(b => b.IsApplicable).HasColumnName("is_applicable").IsRequired();
+            builder.Entity<ResultAggregate>().Property(b => b.IsActivated).HasColumnName("is_activated").IsRequired();
+            builder.Entity<ResultAggregate>().Property(b => b.InputType).HasColumnName("input_type").IsRequired();
+            builder.Entity<ResultAggregate>().Property(b => b.HasSelector).HasColumnName("has_selector").IsRequired();
 
-            builder.Entity<ResultDefinitionField>().ToTable("result_definition_field", "facet").HasKey(b => b.ResultDefinitionFieldId);
-            builder.Entity<ResultDefinitionField>().Property(b => b.ResultDefinitionFieldId).HasColumnName("result_definition_field_id").IsRequired();
-            builder.Entity<ResultDefinitionField>().Property(b => b.ResultDefinitionId).HasColumnName("result_definition_id").IsRequired();
-            builder.Entity<ResultDefinitionField>().Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();
-            builder.Entity<ResultDefinitionField>().Property(b => b.ResultTypeId).HasColumnName("result_type_id").IsRequired();
+            builder.Entity<ResultAggregate>()
+                .HasMany<ResultAggregateField>(x => x.Fields)
+                .WithOne(x => x.Aggregate)
+                .HasForeignKey(p => p.AggregateId);
 
-            builder.Entity<ResultDefinitionField>()
-                .HasOne<ResultType>(x => x.ResultType)
+            builder.Entity<ResultAggregateField>().ToTable("result_aggregate_field", "facet").HasKey(b => b.AggregateFieldId);
+            builder.Entity<ResultAggregateField>().Property(b => b.AggregateFieldId).HasColumnName("aggregate_field_id").IsRequired();
+            builder.Entity<ResultAggregateField>().Property(b => b.AggregateId).HasColumnName("aggregate_id").IsRequired();
+            builder.Entity<ResultAggregateField>().Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();
+            builder.Entity<ResultAggregateField>().Property(b => b.FieldTypeId).HasColumnName("field_type_id").IsRequired();
+
+            builder.Entity<ResultAggregateField>()
+                .HasOne<ResultFieldType>(x => x.FieldType)
                 .WithMany()
-                .HasForeignKey(p => p.ResultTypeId);
+                .HasForeignKey(p => p.FieldTypeId);
 
-            builder.Entity<ResultDefinitionField>()
+            builder.Entity<ResultAggregateField>()
                 .HasOne<ResultField>(x => x.ResultField)
                 .WithMany()
                 .HasForeignKey(p => p.ResultFieldId);

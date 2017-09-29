@@ -57,15 +57,15 @@ namespace QuerySeadDomain
             string name = GetName(dr);
             CategoryCountItem countValue = distribution.ContainsKey(category) ? distribution[category] : null;
             return new FacetContent.ContentItem() {
-                // FacetType = EFacetType.Unknown,
                 Category = category,
                 DisplayName = name,
                 Name = name,
-                Value = countValue
+                Count = countValue?.Count,
+                Extent = countValue?.Extent
             };
         }
 
-        protected virtual string GetCategory(DbDataReader dr) => dr.IsDBNull(0) ? "" : dr.GetInt32(0).ToString();
+        protected virtual string GetCategory(DbDataReader dr) => dr.IsDBNull(0) ? "" : dr.GetString(0);
         protected virtual string GetName(DbDataReader dr) => dr.IsDBNull(1) ? "" : dr.GetString(1);
     }
 
@@ -79,7 +79,7 @@ namespace QuerySeadDomain
         protected override (int, string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
         {
             QuerySetup query = QueryBuilder.Build(facetsConfig, facetsConfig.TargetCode, null, facetsConfig.GetFacetCodes());
-            string sql = DiscreteContentSqlQueryBuilder.compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
+            string sql = DiscreteContentSqlQueryBuilder.Compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
             Debug.Print($"{facetCode}: {sql}");
             return ( 1, sql );
         }
@@ -104,7 +104,7 @@ namespace QuerySeadDomain
         {
             (decimal lower, decimal upper) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode));
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
-            string sql = RangeIntervalSqlQueryBuilder.compile(interval, (int)lower, (int)upper, interval_count);
+            string sql = RangeIntervalSqlQueryBuilder.Compile(interval, (int)lower, (int)upper, interval_count);
             return ( interval, sql );
         }
 

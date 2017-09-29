@@ -71,11 +71,11 @@ namespace QuerySeadDomain {
         {
             string sql = RangeLowerUpperSqlQueryBuilder.compile(null, facet);
             var item = QueryRow(sql, r => new {
-                lower = r.IsDBNull(0) ? null : (int?)r.GetDecimal(0),
-                upper = r.IsDBNull(1) ? null : (int?)r.GetDecimal(1)
+                lower = r.IsDBNull(0) ? 0 : (int)r.GetDecimal(0),
+                upper = r.IsDBNull(1) ? 0 : (int)r.GetDecimal(1)
             });
             if (item != null) 
-                return new Dictionary<EFacetPickType, decimal?>() { { EFacetPickType.lower, item.lower }, { EFacetPickType.upper, item.upper } };
+                return new Dictionary<EFacetPickType, decimal>() { { EFacetPickType.lower, item.lower }, { EFacetPickType.upper, item.upper } };
             return item;
         }
 

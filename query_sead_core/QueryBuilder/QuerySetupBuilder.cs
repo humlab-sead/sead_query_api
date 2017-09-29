@@ -60,7 +60,7 @@ namespace QuerySeadDomain.QueryBuilder {
             // Group criterias per table, and store in a dictionary keyed by table name
             Dictionary<string, string> pickCriterias = criterias
                 .GroupBy(p => p.Tablename, p => p.Criteria, (key, g) => new { TableName = key, Clauses = g.ToList() })
-                .ToDictionary(z => z.TableName, z => "(" + String.Join(" AND ", z.Clauses) + ")");
+                .ToDictionary(z => z.TableName, z => "(" + z.Clauses.Combine(" AND ") + ")");
 
             // FIXME Check start node should be ResolvedName or TargetTableName
             // Find all routes between target facet's table and all tabled collected in affected facets
@@ -72,12 +72,11 @@ namespace QuerySeadDomain.QueryBuilder {
             // Compile list of joins for the reduced route
             List<string> joins = reducedRoutes
                 .SelectMany(route => route.Items)
-                .Select(edge => JoinClauseCompiler.GenerateSQL(Graph, edge, HasUserPicks(edge, pickCriterias)))
+                .Select(edge => JoinClauseCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
                 .ToList();
-            Debug.Print(GraphRoute.Utility.ToString(reducedRoutes));
-            string categoryFilter = facetsConfig?.TargetConfig?.TextFilter ?? "";
+            //Debug.Print(GraphRoute.Utility.ToString(reducedRoutes));
 
-            QuerySetup querySetup = new QuerySetup(targetFacet, joins, pickCriterias, routes, reducedRoutes, categoryFilter);
+            QuerySetup querySetup = new QuerySetup(facetsConfig?.TargetConfig, targetFacet, joins, pickCriterias, routes, reducedRoutes);
 
             return querySetup;
         }
@@ -93,17 +92,6 @@ namespace QuerySeadDomain.QueryBuilder {
         }
     }
 
-    public class JoinClauseCompiler
-    {
-        public static string GenerateSQL(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false)
-        {
-            var alias = graph.ResolveAlias(edge.TargetTableName);
-            var joinType = innerJoin ? "INNER" : "LEFT";
-            var sql = $" {joinType} JOIN {edge.TargetTableName} {alias ?? ""}" +
-                    $" ON {alias ?? edge.TargetTableName}.\"{edge.TargetColumnName}\" = " +
-                            $"{edge.SourceTableName}.\"{edge.SourceColumnName}\" \n";
-            return sql;
-        }
-    }
+
 
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CacheManager.Core;
 using QuerySeadDomain;
+using QuerySeadDomain.Model;
 
 namespace QuerySeadAPI
 {
@@ -58,7 +59,7 @@ namespace QuerySeadAPI
         public FacetContentCache(IQueryCache cache) : base(cache, "content_") { }
     }
     
-    public class FaceResultCache : CacheService<FacetResult> {
+    public class FaceResultCache : CacheService<ResultContentSet> {
         public FaceResultCache(IQueryCache cache) : base(cache, "result_") { }
     }
 }

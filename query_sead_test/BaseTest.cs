@@ -4,6 +4,7 @@ using DataAccessPostgreSqlProvider;
 using System.Linq;
 using QuerySeadDomain;
 using System.Diagnostics;
+using Autofac;
 
 namespace QuerySeadTests
 {
@@ -11,56 +12,33 @@ namespace QuerySeadTests
     public class BaseTest
     {
 
-        [ClassInitialize()]
-        public static void ClassInit(TestContext context)
+        protected fixtures.FacetConfigFixture fixture;
+        protected static IContainer container;
+        protected string logDir = @"\temp\json\";
+
+        protected TestContext testContextInstance;
+
+        /// <summary>
+        ///  Gets or sets the test context which provides
+        ///  information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
         {
-            Debug.WriteLine("ClassInit " + context.TestName);
+            get { return testContextInstance; }
+            set { testContextInstance = value; }
+        }
+
+        [ClassInitialize()]
+        public static void InitializeClass(TestContext context)
+        {
+            container = new TestDependencyService().Register();
         }
 
         [TestInitialize()]
         public void Initialize()
         {
-            Debug.WriteLine("TestMethodInit");
+            fixture = new fixtures.FacetConfigFixture();
         }
-
-        [TestCleanup()]
-        public void Cleanup()
-        {
-            Debug.WriteLine("TestMethodCleanup");
-        }
-
-        [ClassCleanup()]
-        public static void ClassCleanup()
-        {
-            Debug.WriteLine("ClassCleanup");
-        }
-
-        //[AssemblyInitialize()]
-        //public static void AssemblyInit(TestContext context)
-        //{
-        //    Debug.WriteLine("AssemblyInit " + context.TestName);
-        //}
-
-        //[AssemblyCleanup()]
-        //public static void AssemblyCleanup()
-        //{
-        //    Debug.WriteLine("AssemblyCleanup");
-        //}
-
-        [TestMethod]
-        public void TrueMustBeTrue()
-        {
-            Assert.IsTrue(true);
-        }
-
-        [DataTestMethod]
-        [DataRow(false)]
-        public void FalseMustAlwaysBeFalse(bool value)
-        {
-            Assert.IsFalse(value);
-        }
-
-
     }
 
 }

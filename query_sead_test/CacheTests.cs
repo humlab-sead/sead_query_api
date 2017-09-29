@@ -8,22 +8,6 @@ namespace QuerySeadTests.Cache {
     [TestClass]
     public class CacheTests {
 
-        public ICacheManager<T> GetManager<T>()
-        {
-            var cache = CacheFactory.Build<T>("cacheName", settings => settings
-                .WithJsonSerializer()
-                .WithRedisConfiguration("redis", config => {
-                        config.WithAllowAdmin()
-                        .WithDatabase(0)
-                        .WithEndpoint("localhost", 6379);
-                    })
-                .WithMaxRetries(1000)
-                .WithRetryTimeout(100)
-                //.WithRedisCacheHandle("redis", false)
-                //.WithExpiration(ExpirationMode.Sliding, TimeSpan.FromMinutes(30))
-            );
-            return cache;
-        }
 
         public ICacheManager<object> GetManager2()
         {
@@ -49,7 +33,7 @@ namespace QuerySeadTests.Cache {
         {
             var expectedValue = 1234;
             var testKey = "a test key";
-            var cache = GetManager<int>();
+            var cache = GetManager2();
             cache.Put(testKey, expectedValue);
             var retrievedValue = cache.Get(testKey);
             Assert.AreEqual(expectedValue, retrievedValue);

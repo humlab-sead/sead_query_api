@@ -1,0 +1,61 @@
+{
+  "requestId": "1",
+  "requestType": "populate",
+  "targetCode": "sites",
+  "triggerCode": "sites",
+  "facetConfigs": [
+    {
+      "facetCode": "sites",
+      "position": 0,
+      "startRow": 0,
+      "rowCount": 150,
+      "textFilter": "",
+      "picks": [
+        {
+          "pickType": 1,
+          "pickValue": 1470,
+          "text": "1470"
+        },
+        {
+          "pickType": 1,
+          "pickValue": 447,
+          "text": "447"
+        },
+        {
+          "pickType": 1,
+          "pickValue": 951,
+          "text": "951"
+        },
+        {
+          "pickType": 1,
+          "pickValue": 445,
+          "text": "445"
+        }
+      ]
+    },
+    {
+      "facetCode": "ecocode",
+      "position": 1,
+      "startRow": 0,
+      "rowCount": 150,
+      "textFilter": "",
+      "picks": [
+        {
+          "pickType": 1,
+          "pickValue": 38,
+          "text": "38"
+        },
+        {
+          "pickType": 1,
+          "pickValue": 12,
+          "text": "12"
+        },
+        {
+          "pickType": 1,
+          "pickValue": 92,
+          "text": "92"
+        }
+      ]
+    }
+  ]
+}

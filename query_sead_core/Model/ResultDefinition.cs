@@ -7,61 +7,76 @@ using System.Linq;
 
 namespace QuerySeadDomain
 {
-    public enum EResultType {
-        single_item = 1,
-        text_agg_item = 2,
-        count_item = 3,
-        link_item = 4,
-        sort_item = 5,
-        link_item_filtered = 6
+
+    public class ResultFieldType
+    {
+        public string FieldTypeId { get; set; }
+        public bool IsResultValue { get; set; }
+        public bool IsSortField { get; set; }
+        public bool IsAggregateField { get; set; }
+        public bool IsItemField { get; set; }
+        public string SqlFieldCompiler { get; set; }
+        public string SqlTemplate { get; set; }
+
+        public bool IsGroupByField => IsItemField || IsSortField;
+
+        private ISqlFieldCompiler __compiler = null;
+        public ISqlFieldCompiler Compiler => __compiler ?? (__compiler = CreateCompiler());
+
+        private ISqlFieldCompiler CreateCompiler()
+        {
+            return (ISqlFieldCompiler)Activator.CreateInstance(Type.GetType($"QuerySeadDomain.{SqlFieldCompiler}"), this);
+        }
+
     }
 
-    public class ResultType {
-        public EResultType ResultTypeId { get; set; }
-        public string ResultTypeName { get; set; }
-    }
+    public class ResultAggregate {
 
-    public class ResultDefinition {
-
-        public int ResultDefinitionId { get; set; }
-        public string Key { get; set; }
+        public int AggregateId { get; set; }
+        public string AggregateKey { get; set; }
         public string DisplayText { get; set; }
         public bool IsApplicable { get; set; }
         public bool IsActivated { get; set; }
-        public string AggregationType { get; set; }
         public string InputType { get; set; }
-        public bool HasAggregationSelector { get; set; }
+        public bool HasSelector { get; set; }
 
-        public List<ResultDefinitionField> Fields { get; set; }
+        public List<ResultAggregateField> Fields { get; set; }
+
+        public List<ResultAggregateField> GetResultFields()
+            => GetFields().Where(z => z.FieldType.IsResultValue).ToList();
+
+        public List<ResultAggregateField> GetFields()
+            => Fields.OrderBy(z => z.AggregateFieldId).ToList();
+
     }
 
-    public class ResultDefinitionField {
+    public class ResultAggregateField {
 
-        public int ResultDefinitionFieldId { get; set; }
-        public int ResultDefinitionId { get; set; }
+        public int AggregateFieldId { get; set; }
+
+        public int AggregateId { get; set; }
+        public ResultAggregate Aggregate { get; set; }
+
         public int ResultFieldId { get; set; }
-        public EResultType ResultTypeId { get; set; }
-
-        [JsonIgnore]
-        public ResultDefinition ResultDefinition { get; set; }
-
         public ResultField ResultField { get; set; }
-        public ResultType ResultType { get; set; }
+
+        public string FieldTypeId { get; set; }
+        public ResultFieldType FieldType { get; set; }
     }
 
     public class ResultField {
 
-        public int ResultFieldId { get; set; }
+        [JsonIgnore] public int ResultFieldId { get; set; }
+        [JsonIgnore] public string TableName { get; set; }
+        [JsonIgnore] public string ColumnName { get; set; }
         public string ResultFieldKey { get; set; }
-        [JsonIgnore]
-        public string TableName { get; set; }
-        [JsonIgnore]
-        public string ColumnName { get; set; }
         public string DisplayText { get; set; }
-        public string ResultType { get; set; }
+        public string FieldTypeId { get; set; }
         public bool Activated { get; set; }
         public string LinkUrl { get; set; }
         public string LinkLabel { get; set; }
+
+        public ResultFieldType FieldType { get; set; }
 
     }
 }

@@ -13,7 +13,7 @@ namespace QuerySeadTests.FacetsConfig
     [TestClass]
     public class FacetsConfigTests {
 
-        private fixtures.SetupFacetsConfig fixture;
+        private fixtures.FacetConfigFixture fixture;
         private IContainer container;
 
         [ClassInitialize()]
@@ -24,7 +24,7 @@ namespace QuerySeadTests.FacetsConfig
 
         [TestInitialize()]
         public void Initialize() {
-            fixture = new fixtures.SetupFacetsConfig();
+            fixture = new fixtures.FacetConfigFixture();
         }
 
         [TestMethod]

@@ -9,34 +9,70 @@ using System.Linq;
 
 namespace QuerySeadDomain {
 
-    public class ResultRepository : Repository<ResultDefinition>
+    public class ResultRepository : Repository<ResultAggregate>
     {
         public ResultRepository(DomainModelDbContext context) : base(context)
         {
         }
 
-        public Dictionary<string, ResultDefinition> ToDictionary()
+        public Dictionary<string, ResultAggregate> ToDictionary()
         {
-            return GetAll().ToDictionary(x => x.Key);
+            return GetAll().ToDictionary(x => x.AggregateKey);
         }
 
-        public override IEnumerable<ResultDefinition> GetAll()
+        public override IEnumerable<ResultAggregate> GetAll()
         {
-            return Context.Set<ResultDefinition>().BuildEntity().ToList();
+            return Context.Set<ResultAggregate>().BuildEntity().ToList();
         }
 
-        public ResultDefinition GetByKey(string key)
+        public ResultAggregate GetByKey(string key)
         {
-            return GetAll().FirstOrDefault(x => x.Key == key);
+            return GetAll().FirstOrDefault(x => x.AggregateKey == key);
         }
+
+        public IEnumerable<ResultField> GetAllFields()
+        {
+            return Context.Set<ResultField>().ToList();
+        }
+
+        public List<ResultViewType> GetViewTypes()
+        {
+            return Context.Set<ResultViewType>().ToList();
+        }
+
+        public ResultViewType GetViewType(string viewTypeId)
+        {
+            return GetViewTypes().FirstOrDefault(z => z.ViewTypeId == viewTypeId);
+        }
+
+        public IEnumerable<ResultFieldType> GetAllFieldTypes()
+        {
+            return Context.Set<ResultFieldType>().ToList();
+        }
+
+        public List<ResultAggregate> GetByKeys(List<string> keys)
+        {
+            return (keys ?? new List<string>()).Select(key => GetByKey(key)).ToList();
+        }
+
+        public List<ResultAggregateField> GetFieldsByKeys(List<string> keys)
+        {
+            return GetByKeys(keys).SelectMany(x => x.GetFields()).ToList();
+        }
+
     }
 
     public static class ResultDefinitionRepositoryEagerBuilder {
 
-        public static IQueryable<ResultDefinition> BuildEntity(this IQueryable<ResultDefinition> query)
+        public static IQueryable<ResultAggregate> BuildEntity(this IQueryable<ResultAggregate> query)
         {
-            return query.Include(x => x.Fields);
+            return query.Include(x => x.Fields)
+                        .Include("Fields.FieldType").Include("Fields.ResultField"); ;
         }
 
+        //public static IQueryable<ResultDefinitionField> BuildEntity(this IQueryable<ResultDefinitionField> query)
+        //{
+        //    return query.Include(x => x.ResultField).Include(x => x.ResultType);
+        //}
     }
 }

@@ -137,10 +137,10 @@ namespace QuerySeadTests.IoC {
                 Assert.IsNotNull(aggregate4.UnitOfWork);
                 Assert.IsNotNull(aggregate4.Setting);
 
-                var aggregate5 = scope.Resolve<IResultServiceAggregate>();
-                Assert.IsNotNull(aggregate5);
-                Assert.IsNotNull(aggregate5.MapResultService);
-                Assert.IsNotNull(aggregate5.ResultService);
+                //var aggregate5 = scope.Resolve<IResultServiceAggregate>();
+                //Assert.IsNotNull(aggregate5);
+                //Assert.IsNotNull(aggregate5.MapResultService);
+                //Assert.IsNotNull(aggregate5.ResultService);
 
                 Assert.IsNotNull(scope.Resolve<ILoadFacetService>());
 

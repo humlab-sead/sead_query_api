@@ -42,9 +42,9 @@ namespace QuerySeadDomain
         {
             QuerySetup query = QueryBuilder.Build(facetsConfig, facetCode);
 
-            string sql = ValidPicksSqlQueryBuilder.compile(query, config.Facet, config.GetPickValues());
+            string sql = ValidPicksSqlQueryBuilder.Compile(query, config.Facet, config.GetPickValues());
 
-            List<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EFacetPickType.discrete, x.GetInt32(0), x.GetString(1))).ToList();
+            List<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EFacetPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
             return rows;
         }
     }
