@@ -46,7 +46,7 @@ namespace QuerySeadTests
 
             List<ResultAggregate> resultDefinitions = repository.GetAll().ToList();
 
-            Assert.AreEqual(resultDefinitions.Count, 3);
+            Assert.AreEqual(4, resultDefinitions.Count);
             foreach (ResultAggregate value in resultDefinitions) {
                 Assert.IsNotNull(value.Fields);
                 Assert.IsTrue(value.Fields.Count > 0);

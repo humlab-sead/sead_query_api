@@ -5,65 +5,53 @@ using System.Linq;
 
 namespace QuerySeadDomain.QueryBuilder
 {
-
-    public class FacetPickFilterCompiler {
-
-        public FacetPickFilterCompiler()
-        {
-        }
-
-        public virtual string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
-        {
-            return null;
-        }
-
-        protected static Dictionary<EFacetType, FacetPickFilterCompiler> compilers = null;
-        public static FacetPickFilterCompiler GetCompiler(EFacetType type)
-        {
-            if (compilers == null)
-                compilers = new Dictionary<EFacetType, FacetPickFilterCompiler>() {
-                    { EFacetType.Discrete, new DiscreteFacetPickFilterCompiler() },
-                    { EFacetType.Range, new RangeFacetPickFilterCompiler() },
-                    { EFacetType.Unknown, new FacetPickFilterCompiler() }
-                };
-            return compilers.ContainsKey(type) ? compilers[type] : compilers[EFacetType.Unknown];
-        }
+    public interface IFacetPickFilterCompiler
+    {
+        string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config);
     }
 
-    class RangeFacetPickFilterCompiler : FacetPickFilterCompiler {
+    public class RangeFacetPickFilterCompiler : IFacetPickFilterCompiler {
 
-        public override string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
         {
-            var bound = config.GetPickedLowerUpperBounds();
-            int lower = (int)bound[EFacetPickType.lower];
-            int upper = (int)bound[EFacetPickType.upper];
+            var picks = config.GetPickValues(true);
+            return picks.Count != 2 ? "" 
+                : UtilitySqlCompiler.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
+                    .AddIf(" AND ", currentFacet.QueryCriteria);
+        }
 
-            string criteria;
-            if (lower == upper) {                                                 // Safer to do it this way if equal
-                criteria = $" (floor({currentFacet.CategoryIdExpr}) = {lower})";
-            } else {
-                criteria = $" ({currentFacet.CategoryIdExpr} >= {lower} and {currentFacet.CategoryIdExpr} <= {upper})";
-            }
-            criteria += str_prefix(" AND ", currentFacet.QueryCriteria);
+        private string CompileSql(string expr, decimal lower, decimal upper)
+        {
+            return (lower == upper) ? $" (floor({expr}) = {lower})" : $" ({expr} >= {lower} and {expr} <= {upper})";
+        }
 
+    }
+
+    public class DiscreteFacetPickFilterCompiler : IFacetPickFilterCompiler {
+
+        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        {
+            if (targetFacet.FacetCode == currentFacet.FacetCode || !config.HasPicks())
+                return "";
+
+            string criteria = UtilitySqlCompiler.InExpr(currentFacet.CategoryIdExpr, config.GetPickValues());
             return criteria;
         }
     }
 
-    class DiscreteFacetPickFilterCompiler : FacetPickFilterCompiler {
-
-        public override string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+    public class GeoFacetPickFilterCompiler : IFacetPickFilterCompiler
+    {
+        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
         {
-            if (targetFacet.FacetCode == currentFacet.FacetCode)
-                return "";
+            throw new NotImplementedException();
+        }
+    }
 
-            List<string> picks = config.GetPickValues().Select(x => $"'{x}'").ToList();
-
-            if (picks.Count == 0)
-                return "";
-
-            string criteria = $" ({currentFacet.CategoryIdExpr}::text in (" + String.Join(", ", picks) + ")) ";
-            return criteria;
+    public class UndefinedFacetPickFilterCompiler : IFacetPickFilterCompiler
+    {
+        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        {
+            throw new ArgumentException();
         }
     }
 }

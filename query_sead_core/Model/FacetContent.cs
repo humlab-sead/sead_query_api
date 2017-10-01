@@ -42,10 +42,6 @@ namespace QuerySeadDomain
         [JsonIgnore]
         public int ItemCount { get => Items.Count(); }
         [JsonIgnore]
-        public int PageOffset { get => FacetsConfig.TargetConfig.StartRow; }
-        [JsonIgnore]
-        public int PageSize { get => FacetsConfig.TargetConfig.RowCount; }
-        [JsonIgnore]
         public int Interval { get; set; }
         [JsonIgnore]
         public string IntervalQuery { get; set; }
@@ -67,17 +63,5 @@ namespace QuerySeadDomain
             Picks = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
         }
 
-        public (int,int) GetPage(int minSize=12)
-        {
-            if (FacetsConfig.TargetFacet.FacetTypeId == EFacetType.Range) {
-                return (0, 250);
-            }
-            (int offset, int size) = FacetsConfig.TargetConfig.GetPage();
-            if (RequestType == "populate_text_search") {
-                offset = Items.MyFindClosestIndex(FacetsConfig.TargetConfig.TextFilter, z => z.Name);
-                offset = Math.Max(0, Math.Min(offset, ItemCount - minSize));
-            }
-            return (offset, size);
-        }
     }
 }

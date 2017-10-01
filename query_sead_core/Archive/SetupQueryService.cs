@@ -43,13 +43,8 @@ namespace QuerySeadDomain.QueryBuilder
 
         public static QuerySetup setup(IUnitOfWork context, FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null)
         {
-            List<string> facetCodes = facetsConfig.GetFacetCodes();
-            if (facetCodes.Contains(facetCode)) {
-                facetCodes.Add(facetCode);
-            }
-            if (extraTables == null) {
-                extraTables = new List<string>();
-            }
+            List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetCode);
+            extraTables == extraTables ?? new List<string>();
             QuerySetup querySetup = setup(context, facetsConfig, facetCode, extraTables, facetCodes);
             return querySetup;
         }

@@ -43,6 +43,11 @@ namespace QuerySeadAPI {
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
+            builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(0);
+            builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(1);
+            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(2);
+            builder.RegisterType<GeoFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(3);
+
             #region __Count Services__
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
             builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
@@ -69,7 +74,7 @@ namespace QuerySeadAPI {
             builder.RegisterAggregateService<IControllerServiceAggregate>();
 
             #region __Result Services__
-            builder.RegisterType<ResultService>().Keyed<IResultService>("tabular");
+            builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
             builder.RegisterType<TabularResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("tabular");

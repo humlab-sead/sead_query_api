@@ -35,33 +35,45 @@ namespace QuerySeadTests
         [TestMethod]
         public void LoadOfFinishSitesShouldEqualExpectedItems()
         {
+            var testConfigs = new List<(string, string, string, int)>()
+            {
+                ("tabular", "site_level", "sites@sites:country@73/sites:", 30 ),
+                ("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1 ),
+                ("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30 ),
+                ("map", "map_result", "sites@sites:country@73/sites:", 32 )
+            };
+            foreach (var (viewTypeId, resultKey, uri, expectedCount) in testConfigs)
+                ExecuteLoadContent(expectedCount, viewTypeId, resultKey, uri);
+        }
+
+        private void ExecuteLoadContent(int expectedCount, string viewTypeId, string resultKey, string uri)
+        {
+
             // Arrange
             IContainer container = new TestDependencyService().Register();
-            var facetsConfig = facetConfigFixture.GenerateByUri("sites@sites:country@73/sites:");
-            var resultConfig = resultConfigFixture.GenerateConfig("tabular", "site_level");
-            using (var scope = container.BeginLifetimeScope())
-            {
+            var facetsConfig = facetConfigFixture.GenerateByUri(uri);
+            var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
+            using (var scope = container.BeginLifetimeScope()) {
                 var context = scope.Resolve<IUnitOfWork>();
                 facetsConfig.SetContext(context);
 
-                var service = scope.ResolveKeyed<IResultService>("tabular");
-                var definition = context.Results.GetByKey(resultConfig.AggregateKeys[0]);
+                var service = scope.ResolveKeyed<IResultService>(viewTypeId);
+                var aggregate = context.Results.GetByKey(resultConfig.AggregateKeys[0]);
+
                 // Act
                 var resultSet = service.Load(facetsConfig, resultConfig);
 
                 // Assert
                 Assert.IsNotNull(resultSet);
-                var expectedFields = definition.GetResultFields();
+                var expectedFields = aggregate.GetResultFields();
                 var items = resultSet.Data.DataCollection.ToList();
-                Assert.AreEqual(expectedFields.Count, items[0].Length, "Item count unexpected");
-                Assert.IsTrue(items.All(x => x.Length == expectedFields.Count), "Item count unexpected");
-                Assert.AreEqual(35, items.Count);
+                Assert.IsTrue(items.All(x => x.Length == expectedFields.Count), $"Field count unexpected. {viewTypeId}/{resultKey}");
+                Assert.AreEqual(expectedCount, items.Count, $"Item count unexpected. {viewTypeId}/{resultKey}");
 
                 var columns = resultSet.Meta.Columns;
 
                 Assert.AreEqual(expectedFields.Count, columns.Count);
             }
-
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿//using Newtonsoft.Json;
 using QuerySeadDomain.QueryBuilder;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Reflection;
 using static QuerySeadDomain.Utility;
 
-namespace QuerySeadDomain {
+namespace QuerySeadDomain
+{
+
+    #region __SQL field compilers__
 
     public interface ISqlFieldCompiler
     {
@@ -17,7 +17,7 @@ namespace QuerySeadDomain {
     
     public class SqlFieldCompiler : ISqlFieldCompiler
     {
-        [JsonIgnore] public ResultFieldType FieldType { get; private set; }
+        /* [JsonIgnore] */ public ResultFieldType FieldType { get; private set; }
         public SqlFieldCompiler(ResultFieldType fieldType)
         {
             FieldType = fieldType;
@@ -59,9 +59,10 @@ namespace QuerySeadDomain {
         public TemplateFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
         public override string Compile(string expr) { return string.Format(FieldType.SqlTemplate, expr); }
     }
+    #endregion
 
     class ValidPicksSqlQueryBuilder {
-        //public static function deleteBogusPicks(&facetsConfig)
+ 
         public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, List<int> picks)
         {
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
@@ -85,7 +86,7 @@ namespace QuerySeadDomain {
             string sql = $@"
             SELECT category, count(category) AS count, lower, upper
             FROM (
-                SELECT COALESCE(lower||' => '||upper, 'data missing') AS category, group_column, lower, upper
+                SELECT COALESCE(lower || ' => ' || upper, 'data missing') AS category, group_column, lower, upper
                 FROM  (
                     SELECT lower, upper, {countColumn} AS group_column
                     FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
@@ -126,12 +127,12 @@ namespace QuerySeadDomain {
     }
 
     class RangeCategoryBoundSqlQueryBuilder {
-        // RangeMinMaxFacetCounter::templateSQL(query, facet, facetCode): string
+
         public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string facetCode)
         {
             string clauses = String.Join("", facet.Clauses.Select(x => x.Clause));
             string sql = $@"
-               SELECT 'facetCode' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
+               SELECT '{facetCode}' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
                FROM {facet.TargetTableName} 
                  {query.Joins.Combine("")} 
              {"WHERE ".AddIf(clauses)}";
@@ -140,8 +141,8 @@ namespace QuerySeadDomain {
     }
 
     class FacetContentExtraRowInfoSqlQueryBuilder {
-        // FacetContentLoader::getExtraRowInfo
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet)
+
+        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet)
         {
             string sql = $@"
             SELECT DISTINCT id, name
@@ -160,7 +161,7 @@ namespace QuerySeadDomain {
     }
 
     class RangeLowerUpperSqlQueryBuilder {
-        // RangeFacetContentLoader::computeRangeLowerUpper(facetCode)
+
         public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet)
         {
             string sql = $@"
@@ -172,7 +173,7 @@ namespace QuerySeadDomain {
     }
 
     class RangeIntervalSqlQueryBuilder {
-        // RangeFacetContentLoader::getRangeQuery($interval, $min_value, $max_value, $interval_count)
+
         public static string Compile(int interval, int min, int max, int interval_count)
         {
             List<string> pieces = new List<string>();
@@ -191,7 +192,7 @@ namespace QuerySeadDomain {
     }
 
     class DiscreteContentSqlQueryBuilder {
-        // DiscreteFacetContentLoader::compileSQL(facetsConfig, facet, query): string
+
         public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string text_filter)
         {
             string text_criteria = text_filter.IsEmpty() ? "" : $" AND {facet.CategoryNameExpr} ILIKE '{text_filter}' ";
@@ -210,6 +211,9 @@ namespace QuerySeadDomain {
         }
 
     }
+
+    #region IResultSqlQueryCompiler
+
     public interface IResultSqlQueryCompiler
     {
         string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config);
@@ -238,6 +242,7 @@ namespace QuerySeadDomain {
 
     public class MapResultSqlQueryBuilder : IResultSqlQueryCompiler {
 
+        // FIXME Use ResultQuerySetup to build query. If possible, merge TabularResultSqlQueryBuilder & MapResultSqlQueryBuilder
         public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config)
         {
             string sql = $@"
@@ -250,6 +255,7 @@ namespace QuerySeadDomain {
             return sql;
         }
     }
+    #endregion
 
     public class JoinClauseCompiler
     {
@@ -263,5 +269,35 @@ namespace QuerySeadDomain {
                             $"{edge.SourceTableName}.\"{edge.SourceColumnName}\" ";
             return sql;
         }
+    }
+
+    public class UtilitySqlCompiler
+    {
+        // LikeExpr(Facet.CategoryNameExpr, TextFilter)
+        public static string LikeExpr(string expr, string filter)
+        {
+            return (filter == "") ? "" : $" AND {expr} ILIKE '{filter}' ";
+        }
+
+        public static string InExpr(string expr, List<decimal> values)
+        {
+            return InExpr(expr, values.ConvertAll(z => (int)z));
+        }
+
+        public static string InExpr(string expr, List<int> values)
+        {
+            return $" ({expr}::int in (" + String.Join(", ", values) + ")) ";
+        }
+
+        public static string InExpr(string expr, List<string> values)
+        {
+            return $" ({expr}::text in (" + String.Join(", ", values.ConvertAll(z => $"'{z}'")) + ")) ";
+        }
+
+        public static string BetweenExpr(string expr, decimal lower, decimal upper)
+        {
+            return (lower == upper) ? $" (floor({expr}) = {lower})" : $" ({expr} >= {lower} and {expr} <= {upper})";
+        }
+
     }
 }

@@ -11,6 +11,13 @@ namespace QuerySeadDomain {
     public static class MyListExtensions
     {
 
+        public static List<string> AddIfMissing(this List<string> array, string element)
+        {
+            if (element != null && !array.Contains(element))
+                array.Add(element);
+            return array;
+        }
+
         public static IEnumerable<string> AppendIf(this IEnumerable<string> array, string element)
         {
             return element.IsEmpty() ? array : array.Append(element);

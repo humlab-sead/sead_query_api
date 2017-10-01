@@ -22,13 +22,16 @@ namespace QuerySeadDomain {
         ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig);
     }
 
-    public class ResultService : QueryServiceBase, IResultService {
+    public class DefaultResultService : QueryServiceBase, IResultService {
+
+        public string FacetCode { get; protected set; }
 
         public IResultQueryCompiler ResultQueryCompiler { get; set; }
         public IIndex<EFacetType, ICategoryCountService> CategoryCountServices { get; set; }
 
-        public ResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler resultQueryCompiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
+        public DefaultResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler resultQueryCompiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
         {
+            FacetCode = "result_facet";
             ResultQueryCompiler = resultQueryCompiler;
             CategoryCountServices = categoryCountServices;
         }
@@ -54,42 +57,42 @@ namespace QuerySeadDomain {
 
         protected virtual string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            return ResultQueryCompiler.Compile(facetsConfig, resultConfig);
+            return ResultQueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
         }
     }
 
-    public class MapResultService : ResultService {
+    public class MapResultService : DefaultResultService {
 
-        public string facetCode = "map_result";
-        public string resultKey = "map_result";
+        private readonly string ResultKey = "map_result";
 
         public MapResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler resultQueryCompiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices)
             : base(config, context, builder, resultQueryCompiler, categoryCountServices)
         {
+            FacetCode = "map_result";
         }
 
         public override ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            resultConfig.AggregateKeys = new List<string>() { resultKey };
+            resultConfig.AggregateKeys = new List<string>() { ResultKey };
             return base.Load(facetsConfig, resultConfig);
         }
 
         private Dictionary<string, CategoryCountItem> GetCategoryCounts(FacetsConfig2 facetsConfig)
         {
-            return CategoryCountServices[EFacetType.Discrete].Load(facetCode, facetsConfig, null);
+            return CategoryCountServices[EFacetType.Discrete].Load(FacetCode, facetsConfig, null);
         }
 
         protected override dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
         {
             CatCountDict data = GetCategoryCounts(facetsConfig);
-            CatCountDict filtered = data ?? new Dictionary<string, CategoryCountItem>();
+            CatCountDict filtered = data ?? new CatCountDict();
             CatCountDict unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.DeletePicks()) : filtered;
             return (filtered, unfiltered);
         }
 
         protected override string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            return ResultQueryCompiler.Compile(facetsConfig, resultConfig, facetCode);
+            return ResultQueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
         }
     }
 

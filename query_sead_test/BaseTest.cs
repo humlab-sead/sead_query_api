@@ -39,6 +39,7 @@ namespace QuerySeadTests
         {
             fixture = new fixtures.FacetConfigFixture();
         }
+
     }
 
 }

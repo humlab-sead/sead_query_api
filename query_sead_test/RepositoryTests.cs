@@ -40,6 +40,7 @@ namespace QuerySeadTests.Repository {
 
             // http://docs.autofac.org/en/latest/register/registration.html
 
+            builder.RegisterInstance<IQueryBuilderSetting>(Startup.Options).SingleInstance().ExternallyOwned();
             builder.RegisterType<DomainModelDbContext>().SingleInstance();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 

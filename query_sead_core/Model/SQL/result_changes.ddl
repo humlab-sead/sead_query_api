@@ -137,3 +137,35 @@ create table facet.result_view_type (
 insert into facet.result_view_type (values ('tabular', 'Tabular', TRUE), ('map', 'Map', FALSE))
 
 select * from facet.result_view_type
+select * from facet.facet
+select * from facet.result_aggregate;
+select * from facet.result_aggregate_field;
+select * from facet.result_field;
+select * from facet.result_field_type;
+
+ALTER TABLE facet.result_field ALTER COLUMN table_name DROP NOT NULL;
+
+INSERT INTO facet.result_field (result_field_key, table_name, column_name, display_text, field_type_id, activated, link_url, link_label)
+    values ('latitude_dd', null, 'latitude_dd', 'Latitude (dd)', 'single_item', TRUE, NULL, NULL),
+           ('longitude_dd', null, 'longitude_dd', 'Longitude (dd)', 'single_item', TRUE, NULL, NULL),
+           ('category_id', null, 'latitude_dd', 'Latitude (dd)', 'single_item', TRUE, NULL, NULL),
+           ('category_name', null, 'latitude_dd', 'Latitude (dd)', 'single_item', TRUE, NULL, NULL)
+
+INSERT INTO facet.result_aggregate (aggregate_id, aggregate_key, display_text, is_applicable, is_activated, input_type, has_selector)
+    VALUES (4, 'map_result', 'Map result', FALSE, FALSE, 'checkboxes', FALSE)
+
+INSERT INTO facet.result_aggregate_field (aggregate_id, result_field_id, field_type_id)
+    VALUES (4, 20, 'single_item'), (4, 21, 'single_item'), (4, 18, 'single_item'), (4, 19, 'single_item')
+
+ update facet.result_field_type set is_sort_field = not is_sort_field;
+
+select * from facet.facet_type
+
+
+
+            SELECT alias_1, ARRAY_TO_STRING(ARRAY_AGG(DISTINCT alias_2),',') AS text_agg_of_alias_2, COUNT(alias_3) AS count_of_alias_3, alias_4, alias_6
+            FROM (
+                SELECT tbl_sites.site_name AS alias_1, tbl_record_types.record_type_name AS alias_2, tbl_analysis_entities.analysis_entity_id AS alias_3, tbl_sites.site_id AS alias_4, tbl_sites.site_name AS alias_5, tbl_sites.site_id AS alias_6
+                FROM tbl_analysis_entities 
+                      LEFT JOIN tbl_physical_samples  ON tbl_physical_samples."physical_sample_id" = tbl_analysis_entities."physical_sample_id"  LEFT JOIN tbl_sample_groups  ON tbl_sample_groups."sample_group_id" = tbl_physical_samples."sample_group_id"  LEFT JOIN tbl_sites  ON tbl_sites."site_id" = tbl_sample_groups."site_id"  LEFT JOIN tbl_datasets  ON tbl_datasets."dataset_id" = tbl_analysis_entities."dataset_id"  LEFT JOIN tbl_methods  ON tbl_methods."method_id" = tbl_datasets."method_id"  LEFT JOIN tbl_record_types  ON 
+                      

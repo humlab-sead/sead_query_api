@@ -21,7 +21,7 @@ namespace QuerySeadDomain {
         public abstract bool IsSatisfiedBy(T entity);
     }
 
-    public class IsValidFacetsConfigSpecification : IsValidDomainEntitySpecification<FacetsConfig2>
+    public class FacetsConfigSpecification : IsValidDomainEntitySpecification<FacetsConfig2>
     {
 
         public override bool IsSatisfiedBy(FacetsConfig2 facetsConfig)
@@ -79,7 +79,7 @@ namespace QuerySeadDomain {
         {
             public string FacetCode { get; set; }
             public EFacetType FacetType { get; set; }
-            public List<int> PickValues { get; set; }
+            public List<decimal> PickValues { get; set; }
             public string Title { get; set; }
         }
 
@@ -118,7 +118,7 @@ namespace QuerySeadDomain {
                 return facetConfigs;
             }
             set {
-                if (Context == null || new IsValidFacetsConfigSpecification().IsSatisfiedBy(value)) {
+                if (Context == null || new FacetsConfigSpecification().IsSatisfiedBy(value)) {
                     facetConfigs = value.OrderBy(z => z.Position).ToList();
                 }
             }
@@ -134,16 +134,19 @@ namespace QuerySeadDomain {
         [JsonIgnore]
         public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
 
+        private FacetDefinition targetFacet = null;
+        private FacetDefinition triggerFacet = null;
+
         [JsonIgnore]
         public FacetDefinition TargetFacet                                              // Target facet definition
         {
-            get => empty(TargetCode) ? null : Context?.Facets?.GetByCode(TargetCode);
+            get => empty(TargetCode) ? null : (targetFacet ?? (targetFacet = Context?.Facets?.GetByCode(TargetCode)));
         }
 
         [JsonIgnore]
         public FacetDefinition TriggerFacet
         {
-            get => empty(TriggerCode) ? null : Context?.Facets?.GetByCode(TriggerCode);
+            get => empty(TriggerCode) ? null : (triggerFacet ?? (triggerFacet = Context?.Facets?.GetByCode(TriggerCode)));
         }
 
         [JsonIgnore]
@@ -230,10 +233,9 @@ namespace QuerySeadDomain {
 
         public string FacetCode { get; set; } = "";
         public int Position { get; set; } = 0;
-        public int StartRow { get; set; } = 0;
-        public int RowCount { get; set; } = 0;
         public string TextFilter { get; set; } = "";
 
+        // FIXM Refactor away dependency to Context
         [JsonIgnore]
         public IUnitOfWork Context { get; set; }    // FIXME Remove dependecy to Context
 
@@ -242,66 +244,29 @@ namespace QuerySeadDomain {
         [JsonIgnore]
         public FacetDefinition Facet { get => Context?.Facets?.GetByCode(FacetCode); }
 
-        //public FacetConfig2()
-        //{
-        //}
         [JsonConstructor]
-        public FacetConfig2(IUnitOfWork context) //: this()
+        public FacetConfig2(IUnitOfWork context)
         {
             Context = context;
         }
 
-        public FacetConfig2(string facetCode, int position, int startRow, int rowCount, string filter, List<FacetConfigPick> picks)
+        public FacetConfig2(string facetCode, int position, string filter, List<FacetConfigPick> picks)
         {
             FacetCode = facetCode;
             Position = position;
-            StartRow = startRow;
-            RowCount = rowCount;
             TextFilter = filter;
             Picks = picks ?? new List<FacetConfigPick>();
         }
 
-        public bool HasPicks()
-        {
-            return (Picks?.Count ?? 0) > 0;
-        }
+        public bool HasPicks() => (Picks?.Count ?? 0) > 0;
+        public void ClearPicks() => Picks.Clear();
 
-        public List<int> GetPickValues(bool sort = false)
+        public List<decimal> GetPickValues(bool sort = false)
         {
-            List<int>  values = Picks.Select(x => Int32.Parse(x.PickValue)).ToList();
+            List<decimal> values = Picks.Select(x => x.ToDecimal()).ToList();
             if (sort)
                 values.Sort();
             return values;
-        }
-
-        public void ClearPicks()
-        {
-            Picks.Clear();
-        }
-
-        // TODO: Move to SqlQueryBuilder
-        public string GetTextFilterClause()
-        {
-            return (TextFilter == "") ? "" : $" AND {Facet.CategoryNameExpr} ILIKE '{TextFilter}' ";
-        }
-
-        public (int StartRow, int RowCount) GetPage()
-        {
-            return (StartRow, RowCount);
-        }
-
-        public Dictionary<EFacetPickType, decimal> GetPickedLowerUpperBounds()
-        {
-            return Picks
-                .GroupBy(x => x.PickType)
-                .Select(g => new { Type = g.Key, Value = g.Max(z => Decimal.Parse(z.PickValue)) })
-                .ToDictionary(x => x.Type, y => y.Value);
-        }
-
-        public Dictionary<EFacetPickType, decimal> getStorageLowerUpperBounds()
-        {
-            dynamic bound = Context.Facets.GetUpperLowerBounds(Facet);
-            return new Dictionary<EFacetPickType, decimal>() { { EFacetPickType.lower, bound.lower }, { EFacetPickType.upper, bound.upper } };
         }
 
         public List<string> GetJoinTables()
@@ -313,7 +278,8 @@ namespace QuerySeadDomain {
 
     }
 
-    public enum EFacetPickType {
+    // FIXME Eliminate explicit EPickType - should be a configurable in case if new kinds of facets...
+    public enum EPickType {
         unknown = 0,
         discrete = 1,
         lower = 2,
@@ -322,16 +288,26 @@ namespace QuerySeadDomain {
 
     public class FacetConfigPick {
 
-        public EFacetPickType PickType;
+        public EPickType PickType;
         public string PickValue;
         public string Text;
 
-        public FacetConfigPick(EFacetPickType type, string value, string text)
+        public FacetConfigPick(EPickType type, string value, string text)
         {
             PickType = type;
             PickValue = value;
             Text = text;
         }
-    }
 
+        public decimal ToDecimal()
+        {
+            return decimal.Parse(PickValue);
+        }
+
+        public int ToInt()
+        {
+            return int.Parse(PickValue);
+        }
+
+    }
 }

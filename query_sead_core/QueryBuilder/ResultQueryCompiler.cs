@@ -14,7 +14,7 @@ namespace QuerySeadDomain {
     //}
 
     public interface IResultQueryCompiler {
-        string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode = null);
+        string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode);
     }
 
     public class ResultQueryCompiler : QueryServiceBase, IResultQueryCompiler
@@ -26,7 +26,7 @@ namespace QuerySeadDomain {
             QueryCompilers = queryCompilers;
         }
 
-        public string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode = "result_facet")
+        public string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode)
         {
             var resultFields = Context.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
             ResultQuerySetup resultQuerySetup = new ResultQuerySetup(resultFields);

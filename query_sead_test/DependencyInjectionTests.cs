@@ -126,10 +126,7 @@ namespace QuerySeadTests.IoC {
                 Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));
                 Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
 
-                var aggregate3 = scope.Resolve<IQuerySetupCompilers>();
-                Assert.IsNotNull(aggregate3);
-                Assert.IsNotNull(aggregate3.DefaultQuerySetupCompiler);
-                Assert.IsNotNull(aggregate3.MapQuerySetupCompiler);
+                Assert.IsNotNull(scope.Resolve<IResultQueryCompiler>());
 
                 var aggregate4 = scope.Resolve<IControllerServiceAggregate>();
                 Assert.IsNotNull(aggregate4);

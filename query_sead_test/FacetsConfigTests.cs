@@ -14,13 +14,6 @@ namespace QuerySeadTests.FacetsConfig
     public class FacetsConfigTests {
 
         private fixtures.FacetConfigFixture fixture;
-        private IContainer container;
-
-        [ClassInitialize()]
-        public void SetupDependencies()
-        {
-            container = new TestDependencyService().Register();
-        }
 
         [TestInitialize()]
         public void Initialize() {
@@ -38,9 +31,11 @@ namespace QuerySeadTests.FacetsConfig
         public void CanCreateSimpleConfigByJSON()
         {
             FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
-            string output = JsonConvert.SerializeObject(facetsConfig);
-            FacetsConfig2 facetsConfig2 = JsonConvert.DeserializeObject<FacetsConfig2>(output);
-            Assert.AreEqual(facetsConfig, facetsConfig2);
+            string json1 = JsonConvert.SerializeObject(facetsConfig);
+            FacetsConfig2 facetsConfig2 = JsonConvert.DeserializeObject<FacetsConfig2>(json1);
+            facetsConfig2.SetContext(fixture.Context);
+            string json2 = JsonConvert.SerializeObject(facetsConfig);
+            Assert.AreEqual(json1, json2);
         }
     }
 }

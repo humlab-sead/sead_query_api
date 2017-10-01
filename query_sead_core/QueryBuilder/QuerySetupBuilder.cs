@@ -1,13 +1,9 @@
-using System;
+using Autofac.Features.Indexed;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using static QuerySeadDomain.Utility;
 
-namespace QuerySeadDomain.QueryBuilder {
-
+namespace QuerySeadDomain.QueryBuilder
+{
     public interface IQuerySetupBuilder
     {
         IFacetsGraph Graph { get; set; }
@@ -19,18 +15,18 @@ namespace QuerySeadDomain.QueryBuilder {
     public class QuerySetupBuilder : IQuerySetupBuilder {
         public IUnitOfWork Context { get; set; }
         public IFacetsGraph Graph { get; set; }
+        public IIndex<int, IFacetPickFilterCompiler> PickCompilers { get; set; }
 
-        public QuerySetupBuilder(IUnitOfWork _context, IFacetsGraph graph) {
+        public QuerySetupBuilder(IUnitOfWork _context, IFacetsGraph graph, IIndex<int, IFacetPickFilterCompiler> pickCompilers) {
             Context = _context;
             Graph = graph;
+            PickCompilers = pickCompilers;
             //File.WriteAllText(@"C:\TEMP\dotnet_facet_graph.csv", Graph.ToCSV());
         }
 
         public QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null)
         {
-            List<string> facetCodes = facetsConfig.GetFacetCodes();
-            if (!facetCodes.Contains(facetCode))
-                facetCodes.Add(facetCode);
+            List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetCode);
             return Build(facetsConfig, facetCode, extraTables ?? new List<string>(), facetCodes);
         }
 
@@ -86,9 +82,9 @@ namespace QuerySeadDomain.QueryBuilder {
             return tableCriterias.ContainsKey(edge.SourceTableName) || tableCriterias.ContainsKey(edge.TargetTableName);
         }
 
-        private FacetPickFilterCompiler GetCompiler(FacetConfig2 c)
+        private IFacetPickFilterCompiler GetCompiler(FacetConfig2 c)
         {
-            return FacetPickFilterCompiler.GetCompiler(c.Facet.FacetTypeId);
+            return PickCompilers[(int)c.Facet.FacetTypeId];
         }
     }
 

@@ -67,16 +67,14 @@ namespace QuerySeadDomain {
         public IEnumerable<FacetDefinition> GetOfType(EFacetType type)
             => Find(z => z.FacetTypeId == type);
 
-        public dynamic GetUpperLowerBounds(FacetDefinition facet)
+        public (decimal, decimal) GetUpperLowerBounds(FacetDefinition facet)
         {
             string sql = RangeLowerUpperSqlQueryBuilder.compile(null, facet);
             var item = QueryRow(sql, r => new {
-                lower = r.IsDBNull(0) ? 0 : (int)r.GetDecimal(0),
-                upper = r.IsDBNull(1) ? 0 : (int)r.GetDecimal(1)
+                lower = r.IsDBNull(0) ? 0 : r.GetDecimal(0),
+                upper = r.IsDBNull(1) ? 0 : r.GetDecimal(1)
             });
-            if (item != null) 
-                return new Dictionary<EFacetPickType, decimal>() { { EFacetPickType.lower, item.lower }, { EFacetPickType.upper, item.upper } };
-            return item;
+            return item == null ? (0, 0) : (item.lower, item.upper);
         }
 
         public string GenerateStateId()

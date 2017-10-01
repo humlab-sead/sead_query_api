@@ -93,11 +93,11 @@ namespace QuerySeadDomain
 
         private (decimal, decimal) GetLowerUpperBound(FacetConfig2 config)
         {
-            var bounds = config.GetPickedLowerUpperBounds();                    // Get client picked bound if exists...
-            if (bounds.Count != 2) {
-                bounds = Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
+            var picks = config.GetPickValues(true);                    // Get client picked bound if exists...
+            if (picks.Count >= 2) {
+                return (picks[0], picks[1]);
             }
-            return (bounds[EFacetPickType.lower], bounds[EFacetPickType.upper]);
+            return Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
         }
 
         protected override (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval_count=120)

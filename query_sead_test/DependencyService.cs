@@ -53,22 +53,26 @@ namespace QuerySeadTests
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
+            builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(0);
+            builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(1);
+            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(2);
+            builder.RegisterType<GeoFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(3);
+
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
             builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
 
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
-            builder.RegisterAggregateService<IQuerySetupCompilers>();
-            builder.RegisterType<ResultQueryCompiler>();
-            builder.RegisterType<MapQuerySetupCompiler>();
-
-            // QuerySeadDomain.IQuerySetupCompiler
+            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
 
             builder.RegisterAggregateService<IControllerServiceAggregate>();
 
-            builder.RegisterType<ResultService>().Keyed<IResultService>("tabular");
+            builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
+
+            builder.RegisterType<TabularResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("tabular");
+            builder.RegisterType<MapResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("map");
 
             if (options.Store.UseRedisCache) {
                 builder.RegisterType<QuerySeadAPI.Services.CachedLoadFacetService>().As<QuerySeadAPI.Services.ILoadFacetService>();

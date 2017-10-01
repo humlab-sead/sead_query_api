@@ -97,7 +97,7 @@ namespace QuerySeadTests.FacetsConfig
             },
 
             { "tbl_denormalized_measured_values_33_0", new List<List<string>> {
-                    new List<string> { "metainformation.tbl_denormalized_measured_values", "tbl_physical_samples", "tbl_analysis_entities" }
+                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/metainformation.tbl_denormalized_measured_values" }
                 }
             }
         };

@@ -177,13 +177,14 @@ namespace QuerySeadTests.FacetsConfig
             }
         }
 
+        //[DataRow("abundances_all")]
+        [DataRow("tbl_denormalized_measured_values_33_0")]
         [TestMethod]
-        public void CanLoadSingleRangeConfigWithoutPicks()
+        public void CanLoadSingleRangeConfigWithoutPicks(string facetCode)
         {
-            string facetCode = "tbl_denormalized_measured_values_33_0"; // "abundances_all"
             IContainer container = new TestDependencyService().Register();
             FacetsConfig2 facetsConfig = fixture.GenerateByUri($"{facetCode}:{facetCode}");
-            Utility.SaveAsJson(facetsConfig, "facet_load_config_", logDir);
+            //Utility.SaveAsJson(facetsConfig, "facet_load_config_", logDir);
 
             using (var scope = container.BeginLifetimeScope())
             {
@@ -196,7 +197,7 @@ namespace QuerySeadTests.FacetsConfig
                 Assert.AreEqual(facetsConfig, facetContent.FacetsConfig);
                 Assert.AreEqual(496, facetContent.Items.Where(z => z.Name == "312 to 336").FirstOrDefault().Count);
                 Assert.AreEqual(8, facetContent.Items.Where(z => z.Name == "1032 to 1056").FirstOrDefault().Count);
-                Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
+                //Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
             }
         }
 

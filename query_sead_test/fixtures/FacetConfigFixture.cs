@@ -84,7 +84,7 @@ namespace QuerySeadTests.fixtures
             return new FacetsConfig2(Context)
             {
                 RequestId = "1",
-                Language = "en_GB",
+                Language = "",
                 TargetCode = targetCode,
                 RequestType = "populate",
                 TriggerCode = triggerCode,
@@ -98,8 +98,6 @@ namespace QuerySeadTests.fixtures
             {
                 FacetCode = facetCode,
                 Position = position,
-                StartRow = 0,
-                RowCount = 150,
                 TextFilter = filter,
                 Picks = picks ?? new List<FacetConfigPick>()
             };
@@ -107,7 +105,7 @@ namespace QuerySeadTests.fixtures
 
         public List<FacetConfigPick> GenerateDiscreteFacetPicks(List<int> ids)
         {
-            return ids.Select(z => new FacetConfigPick(EFacetPickType.discrete, z.ToString(), z.ToString())).ToList();
+            return ids.Select(z => new FacetConfigPick(EPickType.discrete, z.ToString(), z.ToString())).ToList();
         }
 
         //public List<FacetConfigPick> GenerateRangeFacetPicks(decimal lower, decimal upper)
@@ -127,7 +125,7 @@ namespace QuerySeadTests.fixtures
         {
             var position = 0;
             var facetConfigs = config.FacetCodes
-                .Select(z => GenerateFacetConfig(z.Key, position++, z.Value?.Select(w => new FacetConfigPick(EFacetPickType.discrete, w.ToString(), w.ToString())).ToList())).ToList();
+                .Select(z => GenerateFacetConfig(z.Key, position++, z.Value?.Select(w => new FacetConfigPick(EPickType.discrete, w.ToString(), w.ToString())).ToList())).ToList();
             return GenerateFacetsConfig(config.TargetCode, config.TargetCode, facetConfigs);
         }
 
