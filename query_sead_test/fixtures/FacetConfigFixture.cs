@@ -3,47 +3,28 @@ using System;
 using System.Collections.Generic;
 using Autofac;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace QuerySeadTests.fixtures
 {
 
-    public class TestRoute
+
+    public class FacetConfigURI
     {
-        public List<string> Trail { get; set; }
-        public List<string> Pairs { get { return ToPairs(Trail); } }
-        public TestRoute(List<string> trail)
-        {
-            Trail = trail;
-        }
-        public static List<string> ToPairs(List<string> trail)
-        {
-            return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
-        }
+        private Regex tupleRegex = new Regex(@"^[\(](\d+)[\,](\d+)[\)]$");
 
-        public static List<string> ToPairs(params string[] trail)
-        {
-            return ToPairs(trail.ToList());
-        }
-
-    }
-
-    public class TestConfig
-    {
         /// <summary>
-        /// Uri format: "taget-facet[@trigger-facet]:(facet-code[@picks])+
+        /// Uri format: "taget-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
         /// </summary>
         public string UriConfig { get; set; }
-
         public List<List<string>> ExpectedRoutes { get; set; }
         public int ExpectedCount { get; set; }
         public List<(int, int)> ExpectedData { get; set; }
-
-        // Derived properties
         public string TargetCode { get; set; }
         public string TriggerCode { get; set; }
-        public Dictionary<string, List<int>> FacetCodes { get; set; }
+        public Dictionary<string, List<FacetConfigPick>> FacetCodes { get; set; }
 
-        public TestConfig(string uriConfig, List<List<string>> expectedTrails = null, int expectedCount = 0)
+        public FacetConfigURI(string uriConfig, List<List<string>> expectedTrails = null, int expectedCount = 0)
         {
             UriConfig = uriConfig;
             ExpectedRoutes = expectedTrails?.Select(z => TestRoute.ToPairs(z)).ToList();
@@ -52,7 +33,8 @@ namespace QuerySeadTests.fixtures
             var codes = parts[0].Split("@");
             TargetCode = codes[0];
             TriggerCode = codes.Length > 1 ? codes[1] : TargetCode;
-            FacetCodes = parts[1]
+            var facetConfigs =  parts.Count > 1 ? parts[1] : TargetCode;
+            FacetCodes = facetConfigs
                 .Split('/')
                 .Where(z => z.Trim() != "")
                 .Select(z => z.Split("@"))
@@ -60,19 +42,25 @@ namespace QuerySeadTests.fixtures
                 .ToDictionary(z => z.FacetCode, z => z.Picks);
         }
 
-        private List<int> ParsePicks(string data)
+        public List<FacetConfigPick> ParsePicks(string data)
         {
-            return data.Split(",").Select(z => Int32.TryParse(z.Trim(), out int x) ? x : -1).Where(z => z >= 0).ToList();
+            Match m  = tupleRegex.Match(data);
+            if (m.Success && m.Groups.Count == 3) {
+                return FacetConfigPick.CreateLowerUpper(Decimal.Parse(m.Groups[1].Value), Decimal.Parse(m.Groups[2].Value));
+            }
+            return data.Split(",").Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
         }
+
     }
-    public class FacetConfigFixture
+
+    public class FacetConfigGenerator
     {
 
         public IContainer Container { get; set; }
         public IUnitOfWork Context { get; set; }
         public FacetConfigFixtureData Data { get; set; }
 
-        public FacetConfigFixture()
+        public FacetConfigGenerator()
         {
             Container = new TestDependencyService().Register();
             Context = Container.Resolve<IUnitOfWork>();
@@ -108,30 +96,41 @@ namespace QuerySeadTests.fixtures
             return ids.Select(z => new FacetConfigPick(EPickType.discrete, z.ToString(), z.ToString())).ToList();
         }
 
-        //public List<FacetConfigPick> GenerateRangeFacetPicks(decimal lower, decimal upper)
-        //{
-        //    return new List<FacetConfigPick>() {
-        //        new FacetConfigPick(EFacetPickType.lower, lower, lower.ToString())),
-        //        new FacetConfigPick(EFacetPickType.lower, lower, lower.ToString())),
-        //    };
-        //}
-
         public FacetsConfig2 GenerateSingleFacetsConfigWithoutPicks(string facetCode)
         {
             return GenerateFacetsConfig(facetCode, facetCode, new List<FacetConfig2>() { GenerateFacetConfig(facetCode, 0, new List<FacetConfigPick>()) });
         }
 
-        public FacetsConfig2 GenerateByConfig(TestConfig config)
+        public FacetsConfig2 GenerateByConfig(FacetConfigURI config)
         {
             var position = 0;
-            var facetConfigs = config.FacetCodes
-                .Select(z => GenerateFacetConfig(z.Key, position++, z.Value?.Select(w => new FacetConfigPick(EPickType.discrete, w.ToString(), w.ToString())).ToList())).ToList();
+            var facetConfigs = config.FacetCodes.Select(z => GenerateFacetConfig(z.Key, position++, z.Value)).ToList();
             return GenerateFacetsConfig(config.TargetCode, config.TargetCode, facetConfigs);
         }
 
         public FacetsConfig2 GenerateByUri(string uri, List<List<string>> expectedTrails = null, int expectedCount = 0)
         {
-            return GenerateByConfig(new TestConfig(uri, expectedTrails, expectedCount));
+            return GenerateByConfig(new FacetConfigURI(uri, expectedTrails, expectedCount));
+        }
+
+    }
+
+    public class TestRoute
+    {
+        public List<string> Trail { get; set; }
+        public List<string> Pairs { get { return ToPairs(Trail); } }
+        public TestRoute(List<string> trail)
+        {
+            Trail = trail;
+        }
+        public static List<string> ToPairs(List<string> trail)
+        {
+            return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
+        }
+
+        public static List<string> ToPairs(params string[] trail)
+        {
+            return ToPairs(trail.ToList());
         }
 
     }

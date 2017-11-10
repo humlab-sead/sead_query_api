@@ -148,8 +148,8 @@ ALTER TABLE facet.result_field ALTER COLUMN table_name DROP NOT NULL;
 INSERT INTO facet.result_field (result_field_key, table_name, column_name, display_text, field_type_id, activated, link_url, link_label)
     values ('latitude_dd', null, 'latitude_dd', 'Latitude (dd)', 'single_item', TRUE, NULL, NULL),
            ('longitude_dd', null, 'longitude_dd', 'Longitude (dd)', 'single_item', TRUE, NULL, NULL),
-           ('category_id', null, 'latitude_dd', 'Latitude (dd)', 'single_item', TRUE, NULL, NULL),
-           ('category_name', null, 'latitude_dd', 'Latitude (dd)', 'single_item', TRUE, NULL, NULL)
+           ('category_id', null, 'site_id', 'Site Id', 'single_item', TRUE, NULL, NULL),
+           ('category_name', null, 'site_name', 'Site', 'single_item', TRUE, NULL, NULL)
 
 INSERT INTO facet.result_aggregate (aggregate_id, aggregate_key, display_text, is_applicable, is_activated, input_type, has_selector)
     VALUES (4, 'map_result', 'Map result', FALSE, FALSE, 'checkboxes', FALSE)
@@ -157,15 +157,50 @@ INSERT INTO facet.result_aggregate (aggregate_id, aggregate_key, display_text, i
 INSERT INTO facet.result_aggregate_field (aggregate_id, result_field_id, field_type_id)
     VALUES (4, 20, 'single_item'), (4, 21, 'single_item'), (4, 18, 'single_item'), (4, 19, 'single_item')
 
+
  update facet.result_field_type set is_sort_field = not is_sort_field;
 
-select * from facet.facet_type
+/* Bugg FIX: Result field sort order not defined */
+
+update facet.result_field set result_field_key = 'category_id', table_name = 'tbl_sites', column_name = 'category_id', display_text = 'Site ID' where result_field_id = 18;
+update facet.result_field set result_field_key = 'category_name', table_name = 'tbl_sites', column_name = 'category_name', display_text = 'Site Name' where result_field_id = 19;
+update facet.result_field set result_field_key = 'latitude_dd', table_name = '', column_name = 'latitude_dd', display_text = 'Latitude (dd)' where result_field_id = 20;
+update facet.result_field set result_field_key = 'longitude_dd', table_name = '', column_name = 'longitude_dd', display_text = 'Longitude (dd)' where result_field_id = 21;
+
+-- ADD SORT ORDER SEQUENCE ID
+alter table facet.result_aggregate_field add column sequence_id int not null default(0);
+
+select -- ra.aggregate_key, raf.aggregate_field_id, raf.field_type_id, raf.sequence_id, rf.result_field_id, rf.result_field_key,
+	'UPDATE facet.result_aggregate_field set sequence_id = ' || rf.result_field_id || ' where aggregate_field_id = ' || raf.aggregate_field_id || '; -- ' || ra.aggregate_key || '.' || rf.result_field_key
+from facet.result_aggregate ra
+join facet.result_aggregate_field raf
+  on raf.aggregate_id = ra.aggregate_id
+join facet.result_field rf
+  on rf.result_field_id = raf.result_field_id
+order by ra.aggregate_id, raf.aggregate_field_id;
+
+UPDATE facet.result_aggregate_field set sequence_id = 1 where aggregate_field_id = 4; -- site_level.sitename'
+UPDATE facet.result_aggregate_field set sequence_id = 2 where aggregate_field_id = 5; -- site_level.record_type'
+UPDATE facet.result_aggregate_field set sequence_id = 3 where aggregate_field_id = 8; -- site_level.analysis_entities'
+UPDATE facet.result_aggregate_field set sequence_id = 4 where aggregate_field_id = 10; -- site_level.site_link'
+UPDATE facet.result_aggregate_field set sequence_id = 5 where aggregate_field_id = 16; -- site_level.site_link_filtered'
+UPDATE facet.result_aggregate_field set sequence_id = 99 where aggregate_field_id = 13; -- site_level.sitename'
+
+UPDATE facet.result_aggregate_field set sequence_id = 1 where aggregate_field_id = 15; -- aggregate_all.aggregate_all_filtered'
+UPDATE facet.result_aggregate_field set sequence_id = 2 where aggregate_field_id = 7; -- aggregate_all.analysis_entities'
+
+UPDATE facet.result_aggregate_field set sequence_id = 1 where aggregate_field_id = 1; -- sample_group_level.sitename'
+UPDATE facet.result_aggregate_field set sequence_id = 2 where aggregate_field_id = 2; -- sample_group_level.sample_group'
+UPDATE facet.result_aggregate_field set sequence_id = 3 where aggregate_field_id = 3; -- sample_group_level.record_type'
+UPDATE facet.result_aggregate_field set sequence_id = 4 where aggregate_field_id = 6; -- sample_group_level.analysis_entities'
+UPDATE facet.result_aggregate_field set sequence_id = 5 where aggregate_field_id = 9; -- sample_group_level.sample_group_link'
+UPDATE facet.result_aggregate_field set sequence_id = 6 where aggregate_field_id = 14; -- sample_group_level.sample_group_link_filtered'
+UPDATE facet.result_aggregate_field set sequence_id = 99 where aggregate_field_id = 11; -- sample_group_level.sitename'
+UPDATE facet.result_aggregate_field set sequence_id = 99 where aggregate_field_id = 12; -- sample_group_level.sample_group'
+
+UPDATE facet.result_aggregate_field set sequence_id = 1 where aggregate_field_id = 23; -- map_result.category_id'
+UPDATE facet.result_aggregate_field set sequence_id = 2 where aggregate_field_id = 24; -- map_result.category_name'
+UPDATE facet.result_aggregate_field set sequence_id = 3 where aggregate_field_id = 21; -- map_result.latitude_dd'
+UPDATE facet.result_aggregate_field set sequence_id = 4 where aggregate_field_id = 22; -- map_result.longitude_dd'
 
 
-
-            SELECT alias_1, ARRAY_TO_STRING(ARRAY_AGG(DISTINCT alias_2),',') AS text_agg_of_alias_2, COUNT(alias_3) AS count_of_alias_3, alias_4, alias_6
-            FROM (
-                SELECT tbl_sites.site_name AS alias_1, tbl_record_types.record_type_name AS alias_2, tbl_analysis_entities.analysis_entity_id AS alias_3, tbl_sites.site_id AS alias_4, tbl_sites.site_name AS alias_5, tbl_sites.site_id AS alias_6
-                FROM tbl_analysis_entities 
-                      LEFT JOIN tbl_physical_samples  ON tbl_physical_samples."physical_sample_id" = tbl_analysis_entities."physical_sample_id"  LEFT JOIN tbl_sample_groups  ON tbl_sample_groups."sample_group_id" = tbl_physical_samples."sample_group_id"  LEFT JOIN tbl_sites  ON tbl_sites."site_id" = tbl_sample_groups."site_id"  LEFT JOIN tbl_datasets  ON tbl_datasets."dataset_id" = tbl_analysis_entities."dataset_id"  LEFT JOIN tbl_methods  ON tbl_methods."method_id" = tbl_datasets."method_id"  LEFT JOIN tbl_record_types  ON 
-                      

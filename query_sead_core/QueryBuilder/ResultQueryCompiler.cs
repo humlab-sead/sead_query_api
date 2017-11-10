@@ -36,43 +36,6 @@ namespace QuerySeadDomain {
             }
             return "";
         }
-
-        protected virtual IResultSqlQueryCompiler GetCompiler()
-        {
-            return new TabularResultSqlQueryBuilder();
-        }
     }
-
-
-    //public class MapQuerySetupCompiler : TabularQuerySetupCompiler
-    //{
-
-    //    public MapQuerySetupCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
-    //    {
-    //    }
-
-    //    protected override IResultSqlQueryBuilder GetCompiler()
-    //    {
-    //        return new MapResultSqlQueryBuilder();
-    //    }
-
-    //}
-
-    //public class MapQuerySetupCompiler : QuerySetupCompiler {
-
-    //    public MapQuerySetupCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
-    //    {
-    //    }
-
-    //    public override string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode)
-    //    {
-    //        // TODO Merge with DefaultQuerySetupCompiler, but use "AggregateKey" = "map_result" instead...?
-    //        var resultFields = Context.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
-    //        ResultQuerySetup resultQuerySetup = new ResultQuerySetup(resultFields);
-    //        QuerySetup query = QueryBuilder.Build(facetsConfig, facetCode);
-    //        string sql = new MapResultSqlQueryBuilder().Compile(query, Context.Facets.GetByCode(facetCode), resultQuerySetup);
-    //        return sql;
-    //    }
-    //}
-
+    
 }

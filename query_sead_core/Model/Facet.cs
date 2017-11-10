@@ -136,10 +136,10 @@ namespace QuerySeadDomain
         public FacetGroup FacetGroup { get; set; }
 
         [JsonIgnore]
-        public List<FacetTable> Tables { get; set; } // = new List<FacetTable>();
+        public List<FacetTable> Tables { get; set; }
 
         [JsonIgnore]
-        public List<FacetConditionClause> Clauses { get; set; } // = new List<FacetConditionClause>();
+        public List<FacetConditionClause> Clauses { get; set; }
 
         [JsonIgnore]
         [NotMapped]

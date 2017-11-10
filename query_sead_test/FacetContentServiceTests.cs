@@ -8,15 +8,17 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System;
+using QuerySeadTests.fixtures;
+using System.Text.RegularExpressions;
 
 namespace QuerySeadTests.FacetsConfig
 {
     [TestClass]
     public class FacetContentServiceTests
     {
-        private fixtures.FacetConfigFixture fixture;
+        private fixtures.FacetConfigGenerator fixture;
         private static IContainer container;
-        private string logDir = @"\temp\json\";
+        //private string logDir = @"\temp\json\";
 
         private TestContext testContextInstance;
 
@@ -39,7 +41,7 @@ namespace QuerySeadTests.FacetsConfig
         [TestInitialize()]
         public void Initialize()
         {
-            fixture = new fixtures.FacetConfigFixture();
+            fixture = new fixtures.FacetConfigGenerator();
         }
 
         [TestMethod]
@@ -145,59 +147,56 @@ namespace QuerySeadTests.FacetsConfig
             }
         }
 
+        [DataRow("species@species")]
+        //[DataRow("sites@sites:sites@1470,447,951,445/ecocode@38,12,92")]
         [TestMethod]
-        public void CanLoadDualDiscreteConfigWithPicks()
+        public void CanLoadDiscreteFacets(string uri)
         {
-            FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
-                "sites",
-                "sites",
-                new List<FacetConfig2>() {
-                    fixture.GenerateFacetConfig(
-                        "sites", 0, fixture.GenerateDiscreteFacetPicks(new List<int>() { 1470, 447, 951, 445 })
-                    ),
-                    fixture.GenerateFacetConfig(
-                        "ecocode", 1, fixture.GenerateDiscreteFacetPicks(new List<int>() { 38, 12, 92 })
-                    )
-                }
-             );
-            Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
-
             IContainer container = new TestDependencyService().Register();
-
             using (var scope = container.BeginLifetimeScope())
             {
+                // Arrange
+                FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
                 facetsConfig.SetContext(scope.Resolve<IUnitOfWork>());
-                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
-                var facetContent = service.Load(facetsConfig);
-                string output = JsonConvert.SerializeObject(facetContent);
-                Assert.IsTrue(facetContent.Items.Count > 0);
 
-                Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
+                // Act
+                var facetContent = service.Load(facetsConfig);
+
+                // Assert
+                // string output = JsonConvert.SerializeObject(facetContent);
+                Assert.IsTrue(facetContent.Items.Count > 0);
             }
+        }
+        public JArray ParseJSON(string path)
+        {
+            //JArray data = ParseJSON($"C:\\Users\\roma0050\\Documents\\Projects\\SEAD\\query_sead_api_core\\query_sead_test/fixtures/json/{facetCode}.json");
+            return JArray.Parse(File.ReadAllText(path, Encoding.UTF8));
         }
 
         //[DataRow("abundances_all")]
-        [DataRow("tbl_denormalized_measured_values_33_0")]
+        //[DataRow("tbl_denormalized_measured_values_33_0")]
+        [DataRow("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(0,10)")]
         [TestMethod]
-        public void CanLoadSingleRangeConfigWithoutPicks(string facetCode)
+        public void CanLoadRangeFacets(string uri)
         {
             IContainer container = new TestDependencyService().Register();
-            FacetsConfig2 facetsConfig = fixture.GenerateByUri($"{facetCode}:{facetCode}");
-            //Utility.SaveAsJson(facetsConfig, "facet_load_config_", logDir);
 
             using (var scope = container.BeginLifetimeScope())
             {
+                // Arrange
+                FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
                 facetsConfig.Context = scope.Resolve<IUnitOfWork>();
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+
+                // Act
                 var facetContent = service.Load(facetsConfig);
 
-                Assert.AreEqual(121, facetContent.Items.Count);
-                Assert.AreEqual(facetsConfig, facetContent.FacetsConfig);
-                Assert.AreEqual(496, facetContent.Items.Where(z => z.Name == "312 to 336").FirstOrDefault().Count);
-                Assert.AreEqual(8, facetContent.Items.Where(z => z.Name == "1032 to 1056").FirstOrDefault().Count);
-                //Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
+                // Assert
+                var expectedData = new RangeFacetCategoryCountData().Data[facetsConfig.TargetCode];
+                Assert.AreEqual(expectedData.Where(z => z.Value > 0).Count(), facetContent.Items.Where(z => z.Count > 0).Count(), "Number of categories differs");
+                facetContent.Items.Where(z => z.Count > 0).ForEach(z => Assert.AreEqual(expectedData.GetValueOrDefault(z.Category), z.Count, z.Category));
             }
         }
 

@@ -43,16 +43,17 @@ namespace QuerySeadDomain
         public List<ResultAggregateField> Fields { get; set; }
 
         public List<ResultAggregateField> GetResultFields()
-            => GetFields().Where(z => z.FieldType.IsResultValue).ToList();
+            => GetFields().Where(z => z.FieldType.IsResultValue).OrderBy(z => z.SequenceId).ToList();
 
         public List<ResultAggregateField> GetFields()
-            => Fields.OrderBy(z => z.AggregateFieldId).ToList();
+            => Fields.OrderBy(z => z.SequenceId).ToList();
 
     }
 
     public class ResultAggregateField {
 
         public int AggregateFieldId { get; set; }
+        public int SequenceId { get; set; }
 
         public int AggregateId { get; set; }
         public ResultAggregate Aggregate { get; set; }

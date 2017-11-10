@@ -99,18 +99,6 @@ namespace QuerySeadDomain {
             }
         }
 
-        //public List<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector)
-        //{
-        //    return context.Database.ExecuteSqlQuery(sql)
-        //        .DbDataReader.Select(x => new KeyValuePair<K, V>(keySelector(x), valueSelector(x))).ToList();
-        //}
-
-        //public List<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1) // Func<DbDataReader, KeyValuePair<K, V>> selector)
-        //{
-        //    return context.Database.ExecuteSqlQuery(sql)
-        //        .DbDataReader.Select(x => new Key1Value<K, V>(x.GetFieldValue<K>(keyIndex), x.GetFieldValue<V>(valueIndex))).ToList();
-        //}
-
         public List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2)
         {
             using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader)

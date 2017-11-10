@@ -67,12 +67,9 @@ namespace QuerySeadDomain {
         public static IQueryable<ResultAggregate> BuildEntity(this IQueryable<ResultAggregate> query)
         {
             return query.Include(x => x.Fields)
-                        .Include("Fields.FieldType").Include("Fields.ResultField"); ;
+                        .Include("Fields.FieldType")
+                        .Include("Fields.ResultField");
         }
 
-        //public static IQueryable<ResultDefinitionField> BuildEntity(this IQueryable<ResultDefinitionField> query)
-        //{
-        //    return query.Include(x => x.ResultField).Include(x => x.ResultType);
-        //}
     }
 }

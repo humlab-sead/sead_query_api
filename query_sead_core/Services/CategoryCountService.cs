@@ -63,11 +63,8 @@ namespace QuerySeadDomain
             return Context.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
                     Category = x.IsDBNull(0) ? "(null)" : x.GetString(0),
-                    Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
-                    Extent = new List<decimal>() { x.IsDBNull(2) ? 0 : x.GetInt32(2), x.IsDBNull(3) ? 0 : x.GetInt32(3) }
-                    //Values =  new Dictionary<EFacetPickType, decimal>() {
-                    //    { EFacetPickType.lower, x.GetInt32(2) },
-                    //    { EFacetPickType.upper, x.GetInt32(3) } }
+                    Count = x.IsDBNull(3) ? 0 : x.GetInt32(3),
+                    Extent = new List<decimal>() { x.IsDBNull(1) ? 0 : x.GetInt32(1), x.IsDBNull(2) ? 0 : x.GetInt32(2) }
                 }).ToList();
         }
     }

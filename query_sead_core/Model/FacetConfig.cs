@@ -201,11 +201,6 @@ namespace QuerySeadDomain {
             return FacetConfigs.Any(z => z.Picks.Count > 0 && (facetType == EFacetType.Unknown || facetType == z.Facet.FacetTypeId));
         }
 
-        //public void deleteBogusPicks()
-        //{
-        //    new DeleteBogusPickService().Delete(this);
-        //}
-
         public string GetPicksCacheId()
         {
             StringBuilder key = new StringBuilder("");
@@ -292,11 +287,24 @@ namespace QuerySeadDomain {
         public string PickValue;
         public string Text;
 
+        [JsonConstructor]
         public FacetConfigPick(EPickType type, string value, string text)
         {
             PickType = type;
             PickValue = value;
             Text = text;
+        }
+
+        public FacetConfigPick(EPickType type, string value) : this(type, value, value)
+        {
+        }
+
+        public FacetConfigPick(EPickType type, int value) : this(type, value.ToString(), value.ToString())
+        {
+        }
+
+        public FacetConfigPick(EPickType type, decimal value) : this(type, value.ToString(), value.ToString())
+        {
         }
 
         public decimal ToDecimal()
@@ -309,5 +317,12 @@ namespace QuerySeadDomain {
             return int.Parse(PickValue);
         }
 
+        public static List<FacetConfigPick> CreateLowerUpper(decimal lower, decimal upper)
+        {
+            return new List<FacetConfigPick>() {
+                new FacetConfigPick(EPickType.lower, lower),
+                new FacetConfigPick(EPickType.upper, upper)
+            };
+        }
     }
 }

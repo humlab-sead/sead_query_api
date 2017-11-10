@@ -13,11 +13,11 @@ namespace QuerySeadTests.FacetsConfig
     [TestClass]
     public class FacetsConfigTests {
 
-        private fixtures.FacetConfigFixture fixture;
+        private fixtures.FacetConfigGenerator fixture;
 
         [TestInitialize()]
         public void Initialize() {
-            fixture = new fixtures.FacetConfigFixture();
+            fixture = new fixtures.FacetConfigGenerator();
         }
 
         [TestMethod]

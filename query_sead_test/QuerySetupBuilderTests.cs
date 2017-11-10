@@ -16,7 +16,7 @@ namespace QuerySeadTests.FacetsConfig
     [TestClass]
     public class QueryCompilerTests
     {
-        private fixtures.FacetConfigFixture fixture;
+        private fixtures.FacetConfigGenerator fixture;
         private static IContainer container;
         private TestContext testContextInstance;
 
@@ -38,7 +38,7 @@ namespace QuerySeadTests.FacetsConfig
 
         [TestInitialize()]
         public void Initialize() {
-            fixture = new fixtures.FacetConfigFixture();
+            fixture = new fixtures.FacetConfigGenerator();
         }
 
         [TestMethod]

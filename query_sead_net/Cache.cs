@@ -10,6 +10,10 @@ namespace QuerySeadAPI
 {
     public interface IQueryCache {
         ICacheManager<object> Store { get; set; }
+        //void Put(string key, T entity);
+        //bool Exists(string key);
+        //T Get(string key);
+        //void Clear();
     }
 
     public class QueryCacheFactory {
@@ -50,6 +54,15 @@ namespace QuerySeadAPI
         public T    Get(string key)           => Store.Exists(Prefix + key) ? Store.Get<T>(Prefix + key) : default(T);
         public void Clear() => Store.Clear();
     }
+
+    //public class NullCacheService<T>
+    //{
+    //    public NullCacheService(IQueryCache<T> cache, string prefix) { }
+    //    public void Put(string key, T entity) { }
+    //    public bool Exists(string key) => false;
+    //    public T Get(string key) => default(T);
+    //    public void Clear() { }
+    //}
 
     public class FacetConfigCache : CacheService<FacetsConfig2> {
         public FacetConfigCache(IQueryCache cache) : base(cache, "config_") { }

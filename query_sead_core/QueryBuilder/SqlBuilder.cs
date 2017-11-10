@@ -68,12 +68,12 @@ namespace QuerySeadDomain
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"
             SELECT DISTINCT pick_id, {facet.CategoryNameExpr} AS name
-            FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
             JOIN (VALUES {picks_clause}) AS x(pick_id)
               ON x.pick_id = {facet.CategoryIdExpr}::text
               {query.Joins.Combine("")}
             WHERE 1 = 1
-              {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+              {" AND ".GlueTo(query.Criterias.Combine(" AND "))}
         ";
             return sql;
         }
@@ -84,25 +84,37 @@ namespace QuerySeadDomain
         public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string intervalQuery, string countColumn)
         {
             string sql = $@"
-            SELECT category, count(category) AS count, lower, upper
-            FROM (
-                SELECT COALESCE(lower || ' => ' || upper, 'data missing') AS category, group_column, lower, upper
-                FROM  (
-                    SELECT lower, upper, {countColumn} AS group_column
-                    FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
-                    LEFT JOIN ( {intervalQuery} ) AS temp_interval
-                        ON {facet.CategoryIdExpr}::integer >= lower
-                        AND {facet.CategoryIdExpr}::integer < upper
-                            {query.Joins.Combine("")}
-                      {"AND ".AddIf(query.Criterias.Combine(" AND "))}
-                    GROUP BY lower, upper, {countColumn}
-                    ORDER BY lower) AS x
-                GROUP by lower, upper, group_column) AS y
-            WHERE lower is not null
-            AND upper is not null
-            GROUP BY category, lower, upper
-            ORDER BY lower, upper";
+            WITH categories(category, lower, upper) AS ({intervalQuery})
+                SELECT category, lower, upper, COUNT(DISTINCT {countColumn}) AS count_column
+                FROM categories
+                LEFT JOIN {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+                  ON {facet.CategoryIdExpr}::integer >= lower
+                 AND {facet.CategoryIdExpr}::integer <= upper
+                {query.Joins.Combine("")}
+                {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
+                GROUP BY category, lower, upper
+                ORDER BY lower";
             return sql;
+            //string sql = $@"
+            //SELECT category, count(category) AS count, lower, upper
+            //FROM (
+            //    SELECT COALESCE(lower || ' => ' || upper, 'data missing') AS category, count_column, lower, upper
+            //    FROM  (
+            //        SELECT lower, upper, {countColumn} AS count_column
+            //        FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+            //        LEFT JOIN ( {intervalQuery} ) AS temp_interval
+            //            ON {facet.CategoryIdExpr}::integer >= lower
+            //            AND {facet.CategoryIdExpr}::integer < upper
+            //                {query.Joins.Combine("")}
+            //          {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+            //        GROUP BY lower, upper, {countColumn}
+            //        ORDER BY lower) AS x
+            //    GROUP by lower, upper, count_column) AS y
+            //WHERE lower is not null
+            //AND upper is not null
+            //GROUP BY category, lower, upper
+            //ORDER BY lower, upper";
+            //return sql;
         }
     }
 
@@ -114,10 +126,10 @@ namespace QuerySeadDomain
             SELECT category, {aggType}(value) AS count
             FROM (
                 SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS value
-                FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
-                {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+                {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
                 GROUP BY {facet.CategoryIdExpr}, {countFacet.CategoryIdExpr}
             ) AS x
             GROUP BY category;
@@ -126,16 +138,22 @@ namespace QuerySeadDomain
         }
     }
 
-    class RangeCategoryBoundSqlQueryBuilder {
+    public interface ICategoryBoundSqlQueryBuilder
+    {
+        string Compile(QuerySetup query, FacetDefinition facet, string facetCode);
+    }
 
-        public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string facetCode)
+    public class RangeCategoryBoundSqlQueryBuilder : ICategoryBoundSqlQueryBuilder
+    {
+
+        public string Compile(QuerySetup query, FacetDefinition facet, string facetCode)
         {
             string clauses = String.Join("", facet.Clauses.Select(x => x.Clause));
             string sql = $@"
                SELECT '{facetCode}' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
                FROM {facet.TargetTableName} 
                  {query.Joins.Combine("")} 
-             {"WHERE ".AddIf(clauses)}";
+             {"WHERE ".GlueTo(clauses)}";
             return sql;
         }
     }
@@ -148,10 +166,10 @@ namespace QuerySeadDomain
             SELECT DISTINCT id, name
             FROM (
                 SELECT {facet.CategoryIdExpr} AS id, COALESCE({facet.CategoryNameExpr},'No value') AS name, {facet.SortExpr} AS sort_column
-                FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
-                {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+                {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
                 GROUP BY name, id, sort_column
                 ORDER BY {facet.SortExpr}
             ) AS tmp
@@ -183,10 +201,7 @@ namespace QuerySeadDomain
                 lower += interval;
             }
             string values = String.Join("\n,", pieces);
-            string sql = $@"
-                SELECT category, lower, upper, category as name
-                FROM (VALUES {values}) AS X(category, lower, upper)
-            ";
+            string sql = $"(VALUES {values})";
             return sql;
         }
     }
@@ -200,11 +215,11 @@ namespace QuerySeadDomain
 
             string sql = $@"
             SELECT {facet.CategoryIdExpr} AS category, {facet.CategoryNameExpr} AS name
-            FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
             WHERE 1 = 1
               {text_criteria}
-            {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+            {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
             GROUP BY {facet.CategoryIdExpr}, {facet.CategoryNameExpr}
             {sort_clause}";
             return sql;
@@ -227,14 +242,14 @@ namespace QuerySeadDomain
             SELECT {config.DataFields.Combine(", ")}
             FROM (
                 SELECT {config.AliasPairs.Select(x => $"{x.Item1} AS {x.Item2}").ToList().Combine(", ")}
-                FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
-                {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+                {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
                 GROUP BY {config.InnerGroupByFields.Combine(", ")}
             ) AS X 
-            {"GROUP BY ".AddIf(config.GroupByFields.Combine(", "))}
-            {"ORDER BY ".AddIf(config.SortFields.Combine(", "))}
+            {"GROUP BY ".GlueTo(config.GroupByFields.Combine(", "))}
+            {"ORDER BY ".GlueTo(config.SortFields.Combine(", "))}
         ";
             return sql;
         }
@@ -246,11 +261,11 @@ namespace QuerySeadDomain
         public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config)
         {
             string sql = $@"
-            SELECT DISTINCT {facet.CategoryNameExpr} AS name, latitude_dd, longitude_dd, {facet.CategoryIdExpr} AS id_column
-            FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+            SELECT DISTINCT {facet.CategoryIdExpr} AS id_column, {facet.CategoryNameExpr} AS name, coalesce(latitude_dd, 0.0) AS latitude_dd, coalesce(longitude_dd, 0) AS longitude_dd
+            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
             WHERE 1 = 1
-            {"AND ".AddIf(query.Criterias.Combine(" AND "))}
+            {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
         ";
             return sql;
         }

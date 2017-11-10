@@ -31,39 +31,39 @@ namespace QuerySeadTests.fixtures
 
         public Dictionary<string, int> DiscreteFacetComputeCount { get { return __DiscreteFacetComputeCount; } }
 
-        public List<TestConfig> DiscreteTestConfigsWithoutPicks = new List<TestConfig> {
+        public List<FacetConfigURI> DiscreteTestConfigsWithoutPicks = new List<FacetConfigURI> {
 
             /* No picks */
-            new TestConfig("sites:sites", new List<List<string>> {
+            new FacetConfigURI("sites:sites", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }
             ),
-            new TestConfig("country:country", new List<List<string>> {
+            new FacetConfigURI("country:country", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
                     Trail("tbl_site_locations", "countries"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }
             ),
-            new TestConfig("ecocode:sites/ecocode", new List<List<string>> {
+            new FacetConfigURI("ecocode:sites/ecocode", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
                     Trail("tbl_analysis_entities", "tbl_physical_samples"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }
             ),
-            new TestConfig("country:sites/country", new List<List<string>> {
+            new FacetConfigURI("country:sites/country", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
                     Trail("tbl_site_locations", "countries"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }
             ),
-            new TestConfig("ecocode:country/sites/ecocode", new List<List<string>> {
+            new FacetConfigURI("ecocode:country/sites/ecocode", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
                     Trail("tbl_analysis_entities", "tbl_physical_samples"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }
             ),
-            new TestConfig("sites:country/sites/ecocode", new List<List<string>> {
+            new FacetConfigURI("sites:country/sites/ecocode", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
                     Trail("tbl_analysis_entities", "tbl_physical_samples"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
@@ -71,27 +71,27 @@ namespace QuerySeadTests.fixtures
             )
         };
 
-        public List<TestConfig> DiscreteTestConfigsWithPicks = new List<TestConfig> {
+        public List<FacetConfigURI> DiscreteTestConfigsWithPicks = new List<FacetConfigURI> {
 
-            new TestConfig("country@country:sites/country@73:", new List<List<string>> {
+            new FacetConfigURI("country@country:sites/country@73:", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }, __DiscreteFacetComputeCount["country"]
             ),
 
-            new TestConfig("country@sites:sites/country@73:", new List<List<string>> {
+            new FacetConfigURI("country@sites:sites/country@73:", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }, __DiscreteFacetComputeCount["country"]
             ),
 
-            new TestConfig("sites@sites:country@73/sites:", new List<List<string>> {
+            new FacetConfigURI("sites@sites:country@73/sites:", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }, 30
             ),
 
-            new TestConfig("sites@country:country@73/sites:", new List<List<string>> {
+            new FacetConfigURI("sites@country:country@73/sites:", new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
                 }, 30
@@ -99,10 +99,10 @@ namespace QuerySeadTests.fixtures
 
         };
 
-        public List<TestConfig> RangeTestConfigsWithoutPicks = new List<TestConfig> {
+        public List<FacetConfigURI> RangeTestConfigsWithoutPicks = new List<FacetConfigURI> {
 
             /* MS */
-            new TestConfig("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0:", new List<List<string>> {
+            new FacetConfigURI("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0:", new List<List<string>> {
                     Trail("metainformation.tbl_denormalized_measured_values", "tbl_physical_samples", "tbl_analysis_entities")
                 }, 11
             )
@@ -143,5 +143,6 @@ namespace QuerySeadTests.fixtures
                         { "1524", 1 }
                     };
         #endregion
+
     }
 }

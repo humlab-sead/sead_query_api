@@ -17,7 +17,7 @@ namespace QuerySeadDomain.QueryBuilder
             var picks = config.GetPickValues(true);
             return picks.Count != 2 ? "" 
                 : UtilitySqlCompiler.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
-                    .AddIf(" AND ", currentFacet.QueryCriteria);
+                    .GlueIf(currentFacet.QueryCriteria, " AND ");
         }
 
         private string CompileSql(string expr, decimal lower, decimal upper)

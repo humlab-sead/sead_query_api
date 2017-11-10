@@ -27,8 +27,8 @@ namespace QuerySeadTests
     [TestClass]
     public class ResultControllerTests
     {
-        private FacetConfigFixture facetConfigFixture;
-        private ResultConfigFixture resultConfigFixture;
+        private FacetConfigGenerator facetConfigFixture;
+        private ResultConfigGenerator resultConfigFixture;
 
         private TestContext testContextInstance;
         public TestContext TestContext
@@ -40,8 +40,8 @@ namespace QuerySeadTests
         [TestInitialize()]
         public void Initialize()
         {
-            facetConfigFixture = new fixtures.FacetConfigFixture();
-            resultConfigFixture = new fixtures.ResultConfigFixture();
+            facetConfigFixture = new fixtures.FacetConfigGenerator();
+            resultConfigFixture = new fixtures.ResultConfigGenerator();
         }
 
         [TestMethod]

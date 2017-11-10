@@ -16,21 +16,23 @@ namespace QuerySeadAPI.Services {
 
     public class LoadResultService : AppServiceBase, ILoadResultService {
 
-        public IResultServiceIndex ContentServices { get; private set; }
+        public IResultServiceIndex ResultServices { get; private set; }
+        private IDeleteBogusPickService BogusPickService;
 
         public LoadResultService(
             IQueryBuilderSetting config,
-            IUnitOfWork context, IQueryCache cache,
-            IResultServiceIndex services) : base(config, context, cache) {
-            ContentServices = services;
+            IUnitOfWork context,
+            IQueryCache cache,
+            IResultServiceIndex services,
+            IDeleteBogusPickService bogusPickService) : base(config, context, cache) {
+            ResultServices = services;
+            BogusPickService = bogusPickService;
         }
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            // FIXME: DeleteBogusPicks not called???
-            //deleteBogusPicks()
-            var resultContent = ContentServices[resultConfig.ViewTypeId].Load(facetsConfig, resultConfig);
-            return resultContent;
+            // BogusPickService.Delete(facetsConfig);
+            return ResultServices[resultConfig.ViewTypeId].Load(facetsConfig, resultConfig);
         }
 
     }
@@ -40,8 +42,10 @@ namespace QuerySeadAPI.Services {
 
         public CachedLoadResultService(
             IQueryBuilderSetting config,
-            IUnitOfWork context, IQueryCache cache,
-            IResultServiceIndex services) : base(config, context, cache, services)
+            IUnitOfWork context,
+            IQueryCache cache,
+            IResultServiceIndex services,
+            IDeleteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
         {
         }
 

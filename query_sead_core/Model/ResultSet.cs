@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -61,6 +62,7 @@ namespace QuerySeadDomain.Model
             Data = new ResultData() { DataCollection = Iterator.ToList() };
             RequestId = resultConfig.RequestId;
         }
+
         [JsonIgnore] public IEnumerable<object[]> Iterator
         {
             get {
@@ -75,12 +77,12 @@ namespace QuerySeadDomain.Model
         }
     }
 
-    public class MapResultContentSet : TabularResultContentSet
-    {
-        public MapResultContentSet(ResultConfig resultConfig, List<ResultAggregateField> resultFields, IDataReader reader) : base(resultConfig, resultFields, reader)
-        {
-        }
-    }
+    //public class MapResultContentSet : TabularResultContentSet
+    //{
+    //    public MapResultContentSet(ResultConfig resultConfig, List<ResultAggregateField> resultFields, IDataReader reader) : base(resultConfig, resultFields, reader)
+    //    {
+    //    }
+    //}
 
     public class SourceColumnType
     {

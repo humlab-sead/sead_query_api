@@ -63,7 +63,6 @@ namespace QuerySeadDomain {
             Context.Set<TEntity>().RemoveRange(entities);
         }
 
-        //QueryRow("", r => new { CatName = r.GetString(0), CarDOB = r.GetDateTime(1), CatStatus = r.GetInt32(2) });
         public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
         {
             using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)

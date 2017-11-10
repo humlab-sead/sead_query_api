@@ -1,0 +1,1938 @@
+﻿[
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "0",
+        "value": "0"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "0",
+        "value": "24"
+      }
+    ],
+    "name": "0 to 24",
+    "direct_counts": "41162"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "1",
+        "value": "24"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "1",
+        "value": "48"
+      }
+    ],
+    "name": "24 to 48",
+    "direct_counts": "18733"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "2",
+        "value": "48"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "2",
+        "value": "72"
+      }
+    ],
+    "name": "48 to 72",
+    "direct_counts": "9223"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "3",
+        "value": "72"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "3",
+        "value": "96"
+      }
+    ],
+    "name": "72 to 96",
+    "direct_counts": "3307"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "4",
+        "value": "96"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "4",
+        "value": "120"
+      }
+    ],
+    "name": "96 to 120",
+    "direct_counts": "2371"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "5",
+        "value": "120"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "5",
+        "value": "144"
+      }
+    ],
+    "name": "120 to 144",
+    "direct_counts": "1917"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "6",
+        "value": "144"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "6",
+        "value": "168"
+      }
+    ],
+    "name": "144 to 168",
+    "direct_counts": "1416"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "7",
+        "value": "168"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "7",
+        "value": "192"
+      }
+    ],
+    "name": "168 to 192",
+    "direct_counts": "1170"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "8",
+        "value": "192"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "8",
+        "value": "216"
+      }
+    ],
+    "name": "192 to 216",
+    "direct_counts": "961"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "9",
+        "value": "216"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "9",
+        "value": "240"
+      }
+    ],
+    "name": "216 to 240",
+    "direct_counts": "772"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "10",
+        "value": "240"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "10",
+        "value": "264"
+      }
+    ],
+    "name": "240 to 264",
+    "direct_counts": "674"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "11",
+        "value": "264"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "11",
+        "value": "288"
+      }
+    ],
+    "name": "264 to 288",
+    "direct_counts": "684"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "12",
+        "value": "288"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "12",
+        "value": "312"
+      }
+    ],
+    "name": "288 to 312",
+    "direct_counts": "525"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "13",
+        "value": "312"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "13",
+        "value": "336"
+      }
+    ],
+    "name": "312 to 336",
+    "direct_counts": "496"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "14",
+        "value": "336"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "14",
+        "value": "360"
+      }
+    ],
+    "name": "336 to 360",
+    "direct_counts": "425"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "15",
+        "value": "360"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "15",
+        "value": "384"
+      }
+    ],
+    "name": "360 to 384",
+    "direct_counts": "385"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "16",
+        "value": "384"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "16",
+        "value": "408"
+      }
+    ],
+    "name": "384 to 408",
+    "direct_counts": "330"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "17",
+        "value": "408"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "17",
+        "value": "432"
+      }
+    ],
+    "name": "408 to 432",
+    "direct_counts": "248"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "18",
+        "value": "432"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "18",
+        "value": "456"
+      }
+    ],
+    "name": "432 to 456",
+    "direct_counts": "270"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "19",
+        "value": "456"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "19",
+        "value": "480"
+      }
+    ],
+    "name": "456 to 480",
+    "direct_counts": "200"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "20",
+        "value": "480"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "20",
+        "value": "504"
+      }
+    ],
+    "name": "480 to 504",
+    "direct_counts": "226"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "21",
+        "value": "504"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "21",
+        "value": "528"
+      }
+    ],
+    "name": "504 to 528",
+    "direct_counts": "157"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "22",
+        "value": "528"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "22",
+        "value": "552"
+      }
+    ],
+    "name": "528 to 552",
+    "direct_counts": "238"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "23",
+        "value": "552"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "23",
+        "value": "576"
+      }
+    ],
+    "name": "552 to 576",
+    "direct_counts": "199"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "24",
+        "value": "576"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "24",
+        "value": "600"
+      }
+    ],
+    "name": "576 to 600",
+    "direct_counts": "172"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "25",
+        "value": "600"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "25",
+        "value": "624"
+      }
+    ],
+    "name": "600 to 624",
+    "direct_counts": "129"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "26",
+        "value": "624"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "26",
+        "value": "648"
+      }
+    ],
+    "name": "624 to 648",
+    "direct_counts": "89"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "27",
+        "value": "648"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "27",
+        "value": "672"
+      }
+    ],
+    "name": "648 to 672",
+    "direct_counts": "79"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "28",
+        "value": "672"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "28",
+        "value": "696"
+      }
+    ],
+    "name": "672 to 696",
+    "direct_counts": "75"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "29",
+        "value": "696"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "29",
+        "value": "720"
+      }
+    ],
+    "name": "696 to 720",
+    "direct_counts": "37"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "30",
+        "value": "720"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "30",
+        "value": "744"
+      }
+    ],
+    "name": "720 to 744",
+    "direct_counts": "22"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "31",
+        "value": "744"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "31",
+        "value": "768"
+      }
+    ],
+    "name": "744 to 768",
+    "direct_counts": "24"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "32",
+        "value": "768"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "32",
+        "value": "792"
+      }
+    ],
+    "name": "768 to 792",
+    "direct_counts": "31"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "33",
+        "value": "792"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "33",
+        "value": "816"
+      }
+    ],
+    "name": "792 to 816",
+    "direct_counts": "24"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "34",
+        "value": "816"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "34",
+        "value": "840"
+      }
+    ],
+    "name": "816 to 840",
+    "direct_counts": "27"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "35",
+        "value": "840"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "35",
+        "value": "864"
+      }
+    ],
+    "name": "840 to 864",
+    "direct_counts": "26"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "36",
+        "value": "864"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "36",
+        "value": "888"
+      }
+    ],
+    "name": "864 to 888",
+    "direct_counts": "19"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "37",
+        "value": "888"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "37",
+        "value": "912"
+      }
+    ],
+    "name": "888 to 912",
+    "direct_counts": "10"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "38",
+        "value": "912"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "38",
+        "value": "936"
+      }
+    ],
+    "name": "912 to 936",
+    "direct_counts": "22"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "39",
+        "value": "936"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "39",
+        "value": "960"
+      }
+    ],
+    "name": "936 to 960",
+    "direct_counts": "6"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "40",
+        "value": "960"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "40",
+        "value": "984"
+      }
+    ],
+    "name": "960 to 984",
+    "direct_counts": "9"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "41",
+        "value": "984"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "41",
+        "value": "1008"
+      }
+    ],
+    "name": "984 to 1008",
+    "direct_counts": "5"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "42",
+        "value": "1008"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "42",
+        "value": "1032"
+      }
+    ],
+    "name": "1008 to 1032",
+    "direct_counts": "1"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "43",
+        "value": "1032"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "43",
+        "value": "1056"
+      }
+    ],
+    "name": "1032 to 1056",
+    "direct_counts": "8"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "44",
+        "value": "1056"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "44",
+        "value": "1080"
+      }
+    ],
+    "name": "1056 to 1080",
+    "direct_counts": "13"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "45",
+        "value": "1080"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "45",
+        "value": "1104"
+      }
+    ],
+    "name": "1080 to 1104",
+    "direct_counts": "6"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "46",
+        "value": "1104"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "46",
+        "value": "1128"
+      }
+    ],
+    "name": "1104 to 1128",
+    "direct_counts": "7"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "47",
+        "value": "1128"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "47",
+        "value": "1152"
+      }
+    ],
+    "name": "1128 to 1152",
+    "direct_counts": "5"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "48",
+        "value": "1152"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "48",
+        "value": "1176"
+      }
+    ],
+    "name": "1152 to 1176",
+    "direct_counts": "5"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "49",
+        "value": "1176"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "49",
+        "value": "1200"
+      }
+    ],
+    "name": "1176 to 1200",
+    "direct_counts": "3"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "50",
+        "value": "1200"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "50",
+        "value": "1224"
+      }
+    ],
+    "name": "1200 to 1224",
+    "direct_counts": "7"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "51",
+        "value": "1224"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "51",
+        "value": "1248"
+      }
+    ],
+    "name": "1224 to 1248",
+    "direct_counts": "2"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "52",
+        "value": "1248"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "52",
+        "value": "1272"
+      }
+    ],
+    "name": "1248 to 1272",
+    "direct_counts": "8"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "53",
+        "value": "1272"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "53",
+        "value": "1296"
+      }
+    ],
+    "name": "1272 to 1296",
+    "direct_counts": "10"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "54",
+        "value": "1296"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "54",
+        "value": "1320"
+      }
+    ],
+    "name": "1296 to 1320",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "55",
+        "value": "1320"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "55",
+        "value": "1344"
+      }
+    ],
+    "name": "1320 to 1344",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "56",
+        "value": "1344"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "56",
+        "value": "1368"
+      }
+    ],
+    "name": "1344 to 1368",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "57",
+        "value": "1368"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "57",
+        "value": "1392"
+      }
+    ],
+    "name": "1368 to 1392",
+    "direct_counts": "8"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "58",
+        "value": "1392"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "58",
+        "value": "1416"
+      }
+    ],
+    "name": "1392 to 1416",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "59",
+        "value": "1416"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "59",
+        "value": "1440"
+      }
+    ],
+    "name": "1416 to 1440",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "60",
+        "value": "1440"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "60",
+        "value": "1464"
+      }
+    ],
+    "name": "1440 to 1464",
+    "direct_counts": "2"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "61",
+        "value": "1464"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "61",
+        "value": "1488"
+      }
+    ],
+    "name": "1464 to 1488",
+    "direct_counts": "3"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "62",
+        "value": "1488"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "62",
+        "value": "1512"
+      }
+    ],
+    "name": "1488 to 1512",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "63",
+        "value": "1512"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "63",
+        "value": "1536"
+      }
+    ],
+    "name": "1512 to 1536",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "64",
+        "value": "1536"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "64",
+        "value": "1560"
+      }
+    ],
+    "name": "1536 to 1560",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "65",
+        "value": "1560"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "65",
+        "value": "1584"
+      }
+    ],
+    "name": "1560 to 1584",
+    "direct_counts": "2"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "66",
+        "value": "1584"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "66",
+        "value": "1608"
+      }
+    ],
+    "name": "1584 to 1608",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "67",
+        "value": "1608"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "67",
+        "value": "1632"
+      }
+    ],
+    "name": "1608 to 1632",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "68",
+        "value": "1632"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "68",
+        "value": "1656"
+      }
+    ],
+    "name": "1632 to 1656",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "69",
+        "value": "1656"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "69",
+        "value": "1680"
+      }
+    ],
+    "name": "1656 to 1680",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "70",
+        "value": "1680"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "70",
+        "value": "1704"
+      }
+    ],
+    "name": "1680 to 1704",
+    "direct_counts": "3"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "71",
+        "value": "1704"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "71",
+        "value": "1728"
+      }
+    ],
+    "name": "1704 to 1728",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "72",
+        "value": "1728"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "72",
+        "value": "1752"
+      }
+    ],
+    "name": "1728 to 1752",
+    "direct_counts": "1"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "73",
+        "value": "1752"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "73",
+        "value": "1776"
+      }
+    ],
+    "name": "1752 to 1776",
+    "direct_counts": "5"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "74",
+        "value": "1776"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "74",
+        "value": "1800"
+      }
+    ],
+    "name": "1776 to 1800",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "75",
+        "value": "1800"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "75",
+        "value": "1824"
+      }
+    ],
+    "name": "1800 to 1824",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "76",
+        "value": "1824"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "76",
+        "value": "1848"
+      }
+    ],
+    "name": "1824 to 1848",
+    "direct_counts": "5"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "77",
+        "value": "1848"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "77",
+        "value": "1872"
+      }
+    ],
+    "name": "1848 to 1872",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "78",
+        "value": "1872"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "78",
+        "value": "1896"
+      }
+    ],
+    "name": "1872 to 1896",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "79",
+        "value": "1896"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "79",
+        "value": "1920"
+      }
+    ],
+    "name": "1896 to 1920",
+    "direct_counts": "2"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "80",
+        "value": "1920"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "80",
+        "value": "1944"
+      }
+    ],
+    "name": "1920 to 1944",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "81",
+        "value": "1944"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "81",
+        "value": "1968"
+      }
+    ],
+    "name": "1944 to 1968",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "82",
+        "value": "1968"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "82",
+        "value": "1992"
+      }
+    ],
+    "name": "1968 to 1992",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "83",
+        "value": "1992"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "83",
+        "value": "2016"
+      }
+    ],
+    "name": "1992 to 2016",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "84",
+        "value": "2016"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "84",
+        "value": "2040"
+      }
+    ],
+    "name": "2016 to 2040",
+    "direct_counts": "5"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "85",
+        "value": "2040"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "85",
+        "value": "2064"
+      }
+    ],
+    "name": "2040 to 2064",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "86",
+        "value": "2064"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "86",
+        "value": "2088"
+      }
+    ],
+    "name": "2064 to 2088",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "87",
+        "value": "2088"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "87",
+        "value": "2112"
+      }
+    ],
+    "name": "2088 to 2112",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "88",
+        "value": "2112"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "88",
+        "value": "2136"
+      }
+    ],
+    "name": "2112 to 2136",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "89",
+        "value": "2136"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "89",
+        "value": "2160"
+      }
+    ],
+    "name": "2136 to 2160",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "90",
+        "value": "2160"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "90",
+        "value": "2184"
+      }
+    ],
+    "name": "2160 to 2184",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "91",
+        "value": "2184"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "91",
+        "value": "2208"
+      }
+    ],
+    "name": "2184 to 2208",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "92",
+        "value": "2208"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "92",
+        "value": "2232"
+      }
+    ],
+    "name": "2208 to 2232",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "93",
+        "value": "2232"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "93",
+        "value": "2256"
+      }
+    ],
+    "name": "2232 to 2256",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "94",
+        "value": "2256"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "94",
+        "value": "2280"
+      }
+    ],
+    "name": "2256 to 2280",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "95",
+        "value": "2280"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "95",
+        "value": "2304"
+      }
+    ],
+    "name": "2280 to 2304",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "96",
+        "value": "2304"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "96",
+        "value": "2328"
+      }
+    ],
+    "name": "2304 to 2328",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "97",
+        "value": "2328"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "97",
+        "value": "2352"
+      }
+    ],
+    "name": "2328 to 2352",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "98",
+        "value": "2352"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "98",
+        "value": "2376"
+      }
+    ],
+    "name": "2352 to 2376",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "99",
+        "value": "2376"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "99",
+        "value": "2400"
+      }
+    ],
+    "name": "2376 to 2400",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "100",
+        "value": "2400"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "100",
+        "value": "2424"
+      }
+    ],
+    "name": "2400 to 2424",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "101",
+        "value": "2424"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "101",
+        "value": "2448"
+      }
+    ],
+    "name": "2424 to 2448",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "102",
+        "value": "2448"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "102",
+        "value": "2472"
+      }
+    ],
+    "name": "2448 to 2472",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "103",
+        "value": "2472"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "103",
+        "value": "2496"
+      }
+    ],
+    "name": "2472 to 2496",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "104",
+        "value": "2496"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "104",
+        "value": "2520"
+      }
+    ],
+    "name": "2496 to 2520",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "105",
+        "value": "2520"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "105",
+        "value": "2544"
+      }
+    ],
+    "name": "2520 to 2544",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "106",
+        "value": "2544"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "106",
+        "value": "2568"
+      }
+    ],
+    "name": "2544 to 2568",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "107",
+        "value": "2568"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "107",
+        "value": "2592"
+      }
+    ],
+    "name": "2568 to 2592",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "108",
+        "value": "2592"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "108",
+        "value": "2616"
+      }
+    ],
+    "name": "2592 to 2616",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "109",
+        "value": "2616"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "109",
+        "value": "2640"
+      }
+    ],
+    "name": "2616 to 2640",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "110",
+        "value": "2640"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "110",
+        "value": "2664"
+      }
+    ],
+    "name": "2640 to 2664",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "111",
+        "value": "2664"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "111",
+        "value": "2688"
+      }
+    ],
+    "name": "2664 to 2688",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "112",
+        "value": "2688"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "112",
+        "value": "2712"
+      }
+    ],
+    "name": "2688 to 2712",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "113",
+        "value": "2712"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "113",
+        "value": "2736"
+      }
+    ],
+    "name": "2712 to 2736",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "114",
+        "value": "2736"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "114",
+        "value": "2760"
+      }
+    ],
+    "name": "2736 to 2760",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "115",
+        "value": "2760"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "115",
+        "value": "2784"
+      }
+    ],
+    "name": "2760 to 2784",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "116",
+        "value": "2784"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "116",
+        "value": "2808"
+      }
+    ],
+    "name": "2784 to 2808",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "117",
+        "value": "2808"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "117",
+        "value": "2832"
+      }
+    ],
+    "name": "2808 to 2832",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "118",
+        "value": "2832"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "118",
+        "value": "2856"
+      }
+    ],
+    "name": "2832 to 2856",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "119",
+        "value": "2856"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "119",
+        "value": "2880"
+      }
+    ],
+    "name": "2856 to 2880",
+    "direct_counts": "0"
+  },
+  {
+    "values": [
+      {
+        "value_type": "lower",
+        "value_id": "120",
+        "value": "2880"
+      },
+      {
+        "value_type": "upper",
+        "value_id": "120",
+        "value": "2904"
+      }
+    ],
+    "name": "2880 to 2904",
+    "direct_counts": "5"
+  }
+]

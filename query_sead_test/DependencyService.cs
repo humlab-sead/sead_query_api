@@ -16,8 +16,6 @@ namespace QuerySeadTests
 {
     public class TestDependencyService : DependencyService
     {
-        private bool clear_cache;
-
         public TestDependencyService()
         {
         }
@@ -36,18 +34,15 @@ namespace QuerySeadTests
             builder.Register(c => GetCacheManager()).SingleInstance().ExternallyOwned();
             builder.RegisterAggregateService<IQueryCache>();
 
-            DomainModelDbContext context = new DomainModelDbContext(options);
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-
-            //builder.Register(c => context).SingleInstance();
-            //builder.Register(c => unitOfWork).SingleInstance();
+            //DomainModelDbContext context = new DomainModelDbContext(options);
+            //IUnitOfWork unitOfWork = new UnitOfWork(context);
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().SingleInstance();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance().ExternallyOwned();
 
-            //builder.Register(c => GetCacheManager()).SingleInstance().ExternallyOwned();
+            builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
+            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build());
 
-            builder.Register<IFacetsGraph>(c => new FacetGraphFactory().Build(c.Resolve<IUnitOfWork>()));
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
 
@@ -67,6 +62,8 @@ namespace QuerySeadTests
             builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
 
             builder.RegisterAggregateService<IControllerServiceAggregate>();
+
+            builder.RegisterType<RangeCategoryBoundSqlQueryBuilder>().Keyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range);
 
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");

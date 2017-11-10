@@ -12,7 +12,7 @@ namespace QuerySeadTests
     public class BaseTest
     {
 
-        protected fixtures.FacetConfigFixture fixture;
+        protected fixtures.FacetConfigGenerator fixture;
         protected static IContainer container;
         protected string logDir = @"\temp\json\";
 
@@ -37,7 +37,7 @@ namespace QuerySeadTests
         [TestInitialize()]
         public void Initialize()
         {
-            fixture = new fixtures.FacetConfigFixture();
+            fixture = new fixtures.FacetConfigGenerator();
         }
 
     }

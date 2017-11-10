@@ -6,10 +6,15 @@ using System.Text;
 
 namespace QuerySeadDomain
 {
+
     using NodesDictS = Dictionary<string, GraphNode>;
     using NodesDictI = Dictionary<int, GraphNode>;
-
     using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
+
+    public interface IFacetGraphFactory
+    {
+        IFacetsGraph Build();
+    }
 
     public interface IFacetsGraph {
         List<FacetDefinition> AliasFacets { get; }
@@ -100,24 +105,24 @@ namespace QuerySeadDomain
 
     }
 
-    public class FacetGraphFactory
+    public class FacetGraphFactory : IFacetGraphFactory
     {
-        public static IFacetsGraph instance = null;
+        public IUnitOfWork Context { get; private set; }
 
-        public static IFacetsGraph Create(IUnitOfWork context)
+        public FacetGraphFactory(IUnitOfWork context)
         {
-            return instance ?? (instance = new FacetGraphFactory().Build(context));
+            Context = context;
         }
 
-        public IFacetsGraph Build(IUnitOfWork context)
+        public IFacetsGraph Build()
         {
             // FIXME! Edges where source_table = target_table?? Key=(tbl_dataset,tbl_dataset)
             // Could it be that key must be "table_name.column_name"
 
-            var edges = context.Edges.GetAll().ToList();
-            var nodes = context.Nodes.GetAll().ToDictionary(x => x.TableName);
+            var edges = Context.Edges.GetAll().ToList();
+            var nodes = Context.Nodes.GetAll().ToDictionary(x => x.TableName);
 
-            var aliasFacets = context.Facets.FindThoseWithAlias().ToList();
+            var aliasFacets = Context.Facets.FindThoseWithAlias().ToList();
 
             nodes = AddAliasNodes(aliasFacets, nodes);
             edges = AddAliasEdges(edges, nodes, aliasFacets);

@@ -37,7 +37,10 @@ namespace QuerySeadAPI {
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => new FacetGraphFactory().Build(c.Resolve<IUnitOfWork>()));
+
+            builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
+            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build());
+
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
 
@@ -57,21 +60,14 @@ namespace QuerySeadAPI {
             //builder.RegisterType<DiscreteCategoryCountService>();
             #endregion
 
-            #region __Content Services__
 
-            // alt #1 using index
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
-            // alt #2 using an aggregate
-            //builder.RegisterAggregateService<IFacetContentServiceAggregate>();
-            //builder.RegisterType<RangeFacetContentService>();
-            //builder.RegisterType<DiscreteFacetContentService>();
-            #endregion
-
             builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
-
             builder.RegisterAggregateService<IControllerServiceAggregate>();
+
+            builder.RegisterType<RangeCategoryBoundSqlQueryBuilder>().Keyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range);
 
             #region __Result Services__
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");

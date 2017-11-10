@@ -126,6 +126,7 @@ namespace DataAccessPostgreSqlProvider {
 
             builder.Entity<ResultAggregateField>().ToTable("result_aggregate_field", "facet").HasKey(b => b.AggregateFieldId);
             builder.Entity<ResultAggregateField>().Property(b => b.AggregateFieldId).HasColumnName("aggregate_field_id").IsRequired();
+            builder.Entity<ResultAggregateField>().Property(b => b.SequenceId).HasColumnName("sequence_id").IsRequired();
             builder.Entity<ResultAggregateField>().Property(b => b.AggregateId).HasColumnName("aggregate_id").IsRequired();
             builder.Entity<ResultAggregateField>().Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();
             builder.Entity<ResultAggregateField>().Property(b => b.FieldTypeId).HasColumnName("field_type_id").IsRequired();

@@ -12,12 +12,6 @@ namespace QuerySeadDomain {
 
     using CatCountDict = Dictionary<string, CategoryCountItem>;
 
-    //public interface IResultServiceAggregate
-    //{
-    //    ResultService ResultService { get; set; }
-    //    MapResultService MapResultService { get; set; }
-    //}
-
     public interface IResultService {
         ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig);
     }
@@ -26,28 +20,25 @@ namespace QuerySeadDomain {
 
         public string FacetCode { get; protected set; }
 
-        public IResultQueryCompiler ResultQueryCompiler { get; set; }
+        public IResultQueryCompiler QueryCompiler { get; set; }
         public IIndex<EFacetType, ICategoryCountService> CategoryCountServices { get; set; }
 
-        public DefaultResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler resultQueryCompiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
+        public DefaultResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler compiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
         {
             FacetCode = "result_facet";
-            ResultQueryCompiler = resultQueryCompiler;
+            QueryCompiler = compiler;
             CategoryCountServices = categoryCountServices;
         }
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             string sql = CompileSql(facetsConfig, resultConfig);
-            return empty(sql) ? null : new TabularResultContentSet(
-                resultConfig,
-                GetResultFields(resultConfig).ToList(),
-                Context.Query(sql)) { Payload = GetExtraPayload(facetsConfig) };
+            return empty(sql) ? null : new TabularResultContentSet(resultConfig, GetResultFields(resultConfig), Context.Query(sql)) { Payload = GetExtraPayload(facetsConfig) };
         }
 
-        protected virtual IEnumerable<ResultAggregateField> GetResultFields(ResultConfig resultConfig)
+        protected virtual List<ResultAggregateField> GetResultFields(ResultConfig resultConfig)
         {
-            return Context.Results.GetFieldsByKeys(resultConfig.AggregateKeys).Where(z => z.FieldType.IsResultValue);
+            return Context.Results.GetFieldsByKeys(resultConfig.AggregateKeys).Where(z => z.FieldType.IsResultValue).ToList();
         }
 
         protected virtual dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
@@ -57,7 +48,7 @@ namespace QuerySeadDomain {
 
         protected virtual string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            return ResultQueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
+            return QueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
         }
     }
 
@@ -92,7 +83,7 @@ namespace QuerySeadDomain {
 
         protected override string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            return ResultQueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
+            return QueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
         }
     }
 

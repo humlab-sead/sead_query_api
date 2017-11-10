@@ -10,11 +10,6 @@ namespace QuerySeadDomain
 {
     using CatCountDict = Dictionary<string, CategoryCountItem>;
 
-    public interface IFacetContentServiceAggregate {
-        DiscreteFacetContentService DiscreteFacetContentService { get; set; }
-        RangeFacetContentService RangeFacetContentService { get; set; }
-    }
-
     public interface IFacetContentService {
         FacetContent Load(FacetsConfig2 facetsConfig);
     }

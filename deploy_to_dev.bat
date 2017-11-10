@@ -7,7 +7,8 @@ SET PASSWORD=schi11er
 SET WINSCP="C:\Program Files (x86)\WinSCP\WinSCP.com"
 SET SOURCE_DIR="C:\Users\roma0050\Documents\Projects\SEAD\query_sead_api_core"
 SET BUILD_DIR=%SOURCE_DIR%\"query_sead_net\bin\%RELEASE%\%FRAMEWORK%\%TARGET_PLATFORM%"\publish
-SET ZIP_FILE=%SOURCE_DIR%\publish.zip
+SET ZIP_FILENAME=publish.zip
+SET ZIP_PATH=%SOURCE_DIR%\%ZIP_FILENAME%
 SET FTP_SCRIPT=%SOURCE_DIR%\ftp_deploy_script.txt
 
 cd %SOURCE_DIR%
@@ -36,9 +37,9 @@ rem dotnet build --configuration %RELEASE% --runtime %TARGET_PLATFORM%
 
 :zip_file
 
-@del %ZIP_FILE%
+@del %ZIP_PATH%
 
-/usr/bin/7za a %ZIP_FILE% %BUILD_DIR%
+/usr/bin/7za a %ZIP_PATH% %BUILD_DIR%
 if '%ERRORLEVEL%' neq '0' (
     echo "ZIP failed"
     goto failure
@@ -63,8 +64,8 @@ echo cd applications/pending>>%FTP_SCRIPT%
 rem echo rm ./publish>>%FTP_SCRIPT%
 echo binary>>%FTP_SCRIPT%
 rem echo prompt>>%FTP_SCRIPT%
-echo rm %ZIP_FILE%>>%FTP_SCRIPT%
-echo put %ZIP_FILE%>>%FTP_SCRIPT%
+echo rm %ZIP_FILENAME%>>%FTP_SCRIPT%
+echo put %ZIP_PATH%>>%FTP_SCRIPT%
 echo exit>>%FTP_SCRIPT%
 goto:EOF
 
@@ -74,4 +75,5 @@ pause
 :end
 
 REM del %FTP_SCRIPT%
-REM del %ZIP_FILE%
+del %ZIP_PATH%
+pause

@@ -1,0 +1,13 @@
+﻿{ 
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "species",
+  "facetConfigs": [
+    {
+      "facetCode": "species",
+      "position": 1,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}
