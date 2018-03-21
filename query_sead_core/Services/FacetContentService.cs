@@ -88,10 +88,12 @@ namespace QuerySeadDomain
 
         private (decimal, decimal) GetLowerUpperBound(FacetConfig2 config)
         {
-            var picks = config.GetPickValues(true);                    // Get client picked bound if exists...
-            if (picks.Count >= 2) {
-                return (picks[0], picks[1]);
-            }
+            // FIXME: Always use DB lower, upper???
+            //var picks = config.GetPickValues(true);                    // Get client picked bound if exists...
+            //if (picks.Count >= 2) {
+            //    return (picks[0], picks[1]);
+            //}
+            Debug.WriteLine("Warning! FacetConfig.lower/upper has been disabled!!!");
             return Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
         }
 

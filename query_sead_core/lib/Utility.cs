@@ -136,15 +136,15 @@ namespace QuerySeadDomain {
         //public static bool empty(int? x) => x == null;
         //public static bool empty<T>(T x) => x == null;
 
-        public static string str_prefix(string prefix, string text, string glue = "")
-        {
-            return empty(text) ? "" : $"{prefix}{glue}{text}";
-        }
+        //public static string str_prefix(string prefix, string text, string glue = "")
+        //{
+        //    return empty(text) ? "" : $"{prefix}{glue}{text}";
+        //}
 
-        public static string array_join_surround<T>(List<T> array, string glue = "", string prefix = "", string suffix = "", string default_value = "")
-        {
-            return String.Join(glue, array.Select(x => $"{prefix}{x.ToString()??default_value}{suffix}").ToList());
-        }
+        //public static string array_join_surround<T>(List<T> array, string glue = "", string prefix = "", string suffix = "", string default_value = "")
+        //{
+        //    return String.Join(glue, array.Select(x => $"{prefix}{x.ToString()??default_value}{suffix}").ToList());
+        //}
 
         public static string Coalesce(params string[] data)
         {

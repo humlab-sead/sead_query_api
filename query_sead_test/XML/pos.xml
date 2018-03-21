@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type='text/xsl' href='pos_xml_transform.xslt'?>
+<corpus>
+  <paragraph>
+<sentence id="e94c6-e4316">
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|gjutning|" lex="|gjutning..nn.1|" sense="|gjutning..1:-1.000|" complemgram="|" compwf="|" sentiment="0.8894" ref="01" dephead="34" deprel="SS">Gjutning</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="02" dephead="01" deprel="ET">av</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.SIN.DEF.NOM" lemma="|ringformig|" lex="|ringformig..av.1|" sense="|ringformig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.2862" ref="03" dephead="06" deprel="AT">ringformiga</w>
+<w pos="AB" msd="AB.AN" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="04" dephead="06" deprel="NA">resp.</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.PLU.IND+DEF.NOM" lemma="|ihålig|" lex="|ihålig..av.1|" sense="|ihålig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3895" ref="05" dephead="06" deprel="AT">ihåliga</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|kropp|" lex="|kropp..nn.1|" sense="|kropp..1:0.857|kropp..3:0.106|kropp..2:0.037|" complemgram="|" compwf="|" sentiment="0.132997" ref="06" dephead="02" deprel="PA">kroppar</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="07" dephead="01" deprel="IK">,</w>
+<w pos="KN" msd="KN" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="08" dephead="12" deprel="CA">såsom</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|hjulring|" lex="|" sense="|" complemgram="|hjul..nn.1+ring..nn.1:3.085e-11|" compwf="|hjul+ringar|" ref="09" dephead="12" deprel="CJ">hjulringar</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="10" dephead="12" deprel="IK">,</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|trumma|" lex="|trumma..nn.1|" sense="|trumma..2:0.422|trumma..4:0.305|trumma..1:0.273|" complemgram="|trumma..nn.1+mor..nn.2:7.647e-13|trumma..nn.1+mor..nn.1:7.647e-13|" compwf="|trum+mor|" sentiment="0.338814" ref="11" dephead="12" deprel="CJ">trummor</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="12" dephead="01" deprel="AN">,</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|" lex="|" sense="|" complemgram="|granat..nn.1+hölje..nn.1:1.726e-14|" compwf="|granat+höljen|" ref="13" dephead="12" deprel="CJ">granathöljen</w>
+<w pos="AB" msd="AB.AN" lemma="|m.m.|" lex="|m.m...aba.1|" sense="|med_mera..1:-1.000|" complemgram="|" compwf="|" sentiment="0.1402" ref="14" dephead="12" deprel="CJ">m.m.</w>
+<w pos="PP" msd="PP" lemma="|under|" lex="|under..pp.1|" sense="|under..1:-1.000|under..2:-1.000|" complemgram="|" compwf="|" sentiment="0.90065" ref="15" dephead="34" deprel="TA">under</w>
+<w pos="PC" msd="PC.PRS.UTR+NEU.SIN+PLU.IND+DEF.NOM" lemma="|försätta|" lex="|försätta..vb.1|" sense="|försätta..3:0.645|försätta..1:0.339|försätta..2:0.016|" complemgram="|föra..vb.1+sätta..vb.1:3.157e-20|för..nn.1+sätta..vb.1:2.617e-24|" compwf="|för+sättande|" sentiment="0.326413" ref="16" dephead="15" deprel="PA">försättande</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="17" dephead="16" deprel="HD">av</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|gjutform|" lex="|gjutform..nn.1|" sense="|gjutform..1:-1.000|" complemgram="|gjuta..vb.1+form..nn.2:7.152e-15|gjuta..vb.1+form..nn.3:7.152e-15|gjuta..vb.1+form..nn.1:7.152e-15|gjuta..vb.1+fora..nn.1+men..nn.1:6.116e-29|gjuta..vb.1+fora..nn.1+men..nn.2:6.116e-29|gjuta..vb.1+fora..nn.1+m..nn.1:6.116e-29|" compwf="|gjut+formen|gjut+for+men|" sentiment="0.9082" ref="18" dephead="16" deprel="PA">gjutformen</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="19" dephead="18" deprel="ET">i</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|hastig|" lex="|hastig..av.1|" sense="|hastig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9983" ref="20" dephead="21" deprel="AT">hastig</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|rotation|" lex="|rotation..nn.1|" sense="|rotation..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3858" ref="21" dephead="19" deprel="PA">rotation</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="22" dephead="15" deprel="IK">,</w>
+<w pos="HA" msd="HA" lemma="|varvid|" lex="|varvid..ab.1|" sense="|varvid..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9111" ref="23" dephead="25" deprel="AA">varvid</w>
+<w pos="PN" msd="PN.UTR.SIN.DEF.SUB+OBJ" lemma="|den|" lex="|den..pn.1|" sense="|den..2:-1.000|" complemgram="|" compwf="|" sentiment="0.1232" ref="24" dephead="25" deprel="SS">den</w>
+<w pos="VB" msd="VB.INF.AKT" lemma="|smälta|" lex="|smälta..vb.1|smälta..vb.2|" sense="|smälta..1:0.750|smälta..2:0.212|smälta..4:0.035|smälta..5:0.003|smälta..6:0.000|" complemgram="|" compwf="|" sentiment="0.320213" ref="25" dephead="15" deprel="PA">smälta</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|metall|" lex="|metall..nn.1|" sense="|metall..1:-1.000|" complemgram="|metall..nn.1+l..nn.1:1.789e-19|meta..vb.1+all..sxc.1+l..nn.1:6.764e-34|meta..vb.1+al..nn.1+l..nn.1:3.983e-35|" compwf="|metall+len|met+all+len|met+al+len|" sentiment="0.5193" ref="26" dephead="25" deprel="SS">metallen</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="27" dephead="26" deprel="ET">av</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|centrifugalkraft|" lex="|centrifugalkraft..nn.1|" sense="|centrifugalkraft..1:-1.000|" complemgram="|centrifugal..av.1+kraft..nn.1:4.328e-15|centrifug..nn.1+al..nn.1+kraft..nn.1:2.830e-20|" compwf="|centrifugal+kraften|centrifug+al+kraften|" sentiment="0.2971" ref="28" dephead="27" deprel="PA">centrifugalkraften</w>
+<w pos="VB" msd="VB.PRS.SFO" lemma="|pressa|" lex="|pressa..vb.1|" sense="|pressa..1:0.930|pressa..3:0.062|pressa..4:0.006|pressa..2:0.002|" complemgram="|press..nn.2+säga..vb.1:5.143e-13|press..nn.1+säga..vb.1:5.143e-13|pressa..vb.1+säga..vb.1:1.665e-22|" compwf="|press+sas|" sentiment="0.964459" ref="29" dephead="15" deprel="+F">pressas</w>
+<w pos="PP" msd="PP" lemma="|mot|" lex="|mot..pp.1|" sense="|mot..1:-1.000|mot..2:-1.000|" complemgram="|" compwf="|" sentiment="0.1891" ref="30" dephead="29" deprel="OA">mot</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.GEN" lemma="|form|" lex="|form..nn.1|form..nn.2|form..nn.3|" sense="|form..3:0.497|form..1:0.354|form..2:0.100|form..4:0.050|" complemgram="|fora..nn.1+m..nn.1:4.079e-18|fora..nn.1+men..nn.1:4.079e-18|fora..nn.1+men..nn.2:4.079e-18|fora..nn.1+mens..nn.1:4.079e-18|" compwf="|for+mens|" sentiment="0.575178" ref="31" dephead="32" deprel="DT">formens</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|ytterkontur|" lex="|" sense="|" complemgram="|ytter..nn.1+kontur..nn.1:7.283e-14|ytter..nn.1+kon..nn.1+tur..nn.1:7.933e-18|ytter..nn.1+kona..nn.1+tur..nn.1:7.933e-18|ytter..nn.1+kona..nn.1+tur..nn.2:7.933e-18|ytter..nn.1+kon..nn.1+tur..nn.2:7.933e-18|" compwf="|ytter+kontur|ytter+kon+tur|" ref="32" dephead="30" deprel="PA">ytterkontur</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="33" dephead="15" deprel="IK">,</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|ha|" lex="|ha..vb.1|" sense="|ha..1:0.846|ha..3:0.154|" complemgram="|" compwf="|" sentiment="0.089075" ref="34" deprel="ROOT">har</w>
+<w pos="VB" msd="VB.SUP.AKT" lemma="|vara|" lex="|vara..vb.1|" sense="|vara..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5553" ref="35" dephead="34" deprel="VG">varit</w>
+<w pos="PC" msd="PC.PRF.UTR.SIN.IND.NOM" lemma="|känd|känna|" lex="|känd..av.1|känna..vb.1|" sense="|känd..1:0.732|känna..1:0.223|känna..3:0.045|" complemgram="|" compwf="|" sentiment="0.762277" ref="36" dephead="35" deprel="SP">känd</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="37" dephead="35" deprel="TA">i</w>
+<w pos="AB" msd="AB.KOM" lemma="|mer|mycket|" lex="|mer..ab.1|mycket..ab.1|" sense="|mer..1:0.441|mycket..1:0.329|mycket..2:0.230|" complemgram="|" compwf="|" sentiment="0.58607" ref="38" dephead="40" deprel="AA">mer</w>
+<w pos="KN" msd="KN" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="39" dephead="38" deprel="HD">än</w>
+<w pos="RG" msd="RG.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="40" dephead="41" deprel="DT">100</w>
+<w pos="NN" msd="NN.NEU.PLU.IND.NOM" lemma="|år|" lex="|år..nn.1|" sense="|år..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6809" ref="41" dephead="37" deprel="PA">år</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="42" dephead="34" deprel="IP">.</w>
+</sentence>
+<sentence id="e907d-eaef7">
+<w pos="PN" msd="PN.UTR.SIN.IND.SUB" lemma="|man|" lex="|man..pn.1|" sense="|man..1:-1.000|" complemgram="|" compwf="|" sentiment="0.081" ref="01" dephead="02" deprel="SS">Man</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|erhålla|" lex="|erhålla..vb.1|" sense="|erhålla..1:-1.000|" complemgram="|erhålla..vb.1+le..vb.1:3.690e-16|era..nn.1+hålla..vb.1:2.812e-19|era..nn.1+håll..nn.1+le..vb.1:7.861e-27|era..nn.1+håla..nn.1+le..vb.1:3.599e-27|era..nn.1+hål..nn.1+le..vb.1:3.599e-27|era..nn.1+hålla..vb.1+le..vb.1:1.482e-30|era..nn.1+håla..vb.1+le..vb.1:1.006e-38|" compwf="|erhåll+ler|er+håller|er+håll+ler|er+hål+ler|" sentiment="0.0184" ref="02" dephead="10" deprel="MS">erhåller</w>
+<w pos="PP" msd="PP" lemma="|genom|" lex="|genom..pp.1|" sense="|genom..1:-1.000|genom..3:-1.000|" complemgram="|" compwf="|" sentiment="0.173" ref="03" dephead="02" deprel="AA">genom</w>
+<w pos="DT" msd="DT.UTR.SIN.DEF" lemma="|denna|" lex="|denna..pn.1|" sense="|denna..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3954" ref="04" dephead="05" deprel="DT">denna</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|gjutmetod|" lex="|" sense="|" complemgram="|gjuta..vb.1+metod..nn.1:1.022e-14|" compwf="|gjut+metod|" ref="05" dephead="06" deprel="CJ">gjutmetod</w>
+<w pos="KN" msd="KN" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="06" dephead="03" deprel="PA">dels</w>
+<w pos="DT" msd="DT.NEU.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="07" dephead="09" deprel="DT">ett</w>
+<w pos="JJ" msd="JJ.POS.NEU.SIN.IND.NOM" lemma="|tät|" lex="|tät..av.1|" sense="|tät..1:0.768|tät..2:0.163|tät..3:0.069|" complemgram="|" compwf="|" sentiment="0.219794" ref="08" dephead="09" deprel="AT">tätt</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|gods|" lex="|gods..nn.1|" sense="|gods..1:0.494|gods..3:0.443|gods..2:0.063|" complemgram="|" compwf="|" sentiment="0.234651" ref="09" dephead="06" deprel="CJ">gods</w>
+<w pos="KN" msd="KN" lemma="|och|" lex="|och..kn.1|" sense="|och..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5924" ref="10" deprel="ROOT">och</w>
+<w pos="KN" msd="KN" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="11" dephead="10" deprel="+F">dels</w>
+<w pos="DT" msd="DT.UTR.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="12" dephead="13" deprel="DT">en</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|förenkling|" lex="|förenkling..nn.1|" sense="|förenkling..1:-1.000|" complemgram="|förena..vb.1+kling..nn.1:2.041e-22|" compwf="|fören+kling|" sentiment="0.5816" ref="13" dephead="11" deprel="SS">förenkling</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="14" dephead="13" deprel="ET">av</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.SIN.DEF.NOM" lemma="|själv|själva|" lex="|själv..pn.1|själva..pn.1|" sense="|själv..1:-1.000|själv..2:-1.000|själv..3:-1.000|" complemgram="|" compwf="|" sentiment="0.526833" ref="15" dephead="16" deprel="DT">själva</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|gjutform|" lex="|gjutform..nn.1|" sense="|gjutform..1:-1.000|" complemgram="|gjuta..vb.1+form..nn.2:7.152e-15|gjuta..vb.1+form..nn.3:7.152e-15|gjuta..vb.1+form..nn.1:7.152e-15|gjuta..vb.1+fora..nn.1+men..nn.1:6.116e-29|gjuta..vb.1+fora..nn.1+men..nn.2:6.116e-29|gjuta..vb.1+fora..nn.1+m..nn.1:6.116e-29|" compwf="|gjut+formen|gjut+for+men|" sentiment="0.9082" ref="16" dephead="14" deprel="PA">gjutformen</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="17" dephead="10" deprel="IP">.</w>
+</sentence>
+<sentence id="edf7f-eadd7">
+<w pos="DT" msd="DT.NEU.SIN.DEF" lemma="|den|en|" lex="|den..pn.1|en..al.1|" sense="|den..2:-1.000|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.494333" ref="01" dephead="03" deprel="DT">Det</w>
+<w pos="RO" msd="RO.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="02" dephead="03" deprel="DT">första</w>
+<w pos="NN" msd="NN.NEU.SIN.DEF.NOM" lemma="|patent|" lex="|patent..nn.1|" sense="|patent..1:-1.000|" complemgram="|" compwf="|" sentiment="0.4544" ref="03" dephead="07" deprel="SP">patentet</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="04" dephead="03" deprel="ET">av</w>
+<w pos="DT" msd="DT.NEU.SIN.DEF" lemma="|denna|" lex="|denna..pn.1|" sense="|denna..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3954" ref="05" dephead="06" deprel="DT">detta</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|slag|" lex="|slag..nn.1|" sense="|slag..2:0.371|slag..8:0.346|slag..1:0.147|slag..3:0.088|slag..6:0.021|slag..4:0.015|slag..5:0.010|slag..7:0.002|" complemgram="|" compwf="|" sentiment="0.533775" ref="06" dephead="04" deprel="PA">slag</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|vara|" lex="|vara..vb.1|" sense="|vara..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5553" ref="07" deprel="ROOT">är</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.SIN.DEF.NOM" lemma="|engelsk|" lex="|engelsk..av.1|" sense="|engelsk..1:0.912|engelsk..2:0.088|" complemgram="|" compwf="|" sentiment="0.562945" ref="08" dephead="09" deprel="AT">engelska</w>
+<w pos="NN" msd="NN.NEU.SIN.DEF.NOM" lemma="|patent|" lex="|patent..nn.1|" sense="|patent..1:-1.000|" complemgram="|" compwf="|" sentiment="0.4544" ref="09" dephead="07" deprel="SS">patentet</w>
+<w pos="RG" msd="RG.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="10" dephead="09" deprel="ET">1232</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="11" dephead="10" deprel="AG">av</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|år|" lex="|år..nn.1|" sense="|år..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6809" ref="12" dephead="11" deprel="PA">år</w>
+<w pos="RG" msd="RG.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="13" dephead="10" deprel="ET">1855</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="14" dephead="13" deprel="IK">,</w>
+<w pos="PM" msd="PM.NOM" lemma="|Jackson|" lex="|Jackson..pm.1|Jackson..pm.2|" sense="|Jackson..1:-1.000|Jackson..2:-1.000|" complemgram="|" compwf="|" sentiment="0.7671" ref="15" dephead="13" deprel="ET">Jackson</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.GEN" lemma="|bro|" lex="|bro..nn.1|" sense="|bro..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5809" ref="16" dephead="15" deprel="ET">Bros</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="17" dephead="16" deprel="IK">,</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|P|p|" lex="|P..nna.1|p..nn.1|" sense="|p..1:0.845|fosfor..1:0.155|" complemgram="|" compwf="|" sentiment="0.225033" ref="18" dephead="16" deprel="HD">P</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="19" dephead="07" deprel="IP">.</w>
+<w pos="PM" msd="PM.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="20" dephead="31" deprel="CJ">Gaudet</w>
+<w pos="PM" msd="PM.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="21" dephead="20" deprel="HD">et</w>
+<w pos="PM" msd="PM.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="22" dephead="20" deprel="HD">C</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="23" dephead="20" deprel="IP">.</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="24" dephead="20" deprel="IK">,</w>
+<w pos="PC" msd="PC.PRS.UTR+NEU.SIN+PLU.IND+DEF.NOM" lemma="|avse|" lex="|avse..vb.1|" sense="|avse..1:-1.000|" complemgram="|avse..vb.1+enda..av.1:8.657e-14|av..ab.1+seende..av.1:7.266e-19|av..ab.1+se..vb.1:9.833e-25|av..av.1+seende..av.1:1.408e-28|av..av.1+se..vb.1:4.332e-34|av..ab.1+se..vb.1+enda..av.1:9.673e-17|av..av.1+se..vb.1+enda..av.1:2.130e-29|" compwf="|avse+ende|av+seende|av+se+ende|" sentiment="0.9901" ref="25" dephead="26" deprel="AT">avseende</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|gjutning|" lex="|gjutning..nn.1|" sense="|gjutning..1:-1.000|" complemgram="|" compwf="|" sentiment="0.8894" ref="26" dephead="20" deprel="AN">gjutning</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="27" dephead="26" deprel="ET">av</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.PLU.IND+DEF.NOM" lemma="|ringformig|" lex="|ringformig..av.1|" sense="|ringformig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.2862" ref="28" dephead="29" deprel="AT">ringformiga</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|kropp|" lex="|kropp..nn.1|" sense="|kropp..1:0.838|kropp..3:0.082|kropp..2:0.079|" complemgram="|" compwf="|" sentiment="0.137837" ref="29" dephead="27" deprel="PA">kroppar</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="30" dephead="20" deprel="IK">,</w>
+<w pos="KN" msd="KN" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="31" dephead="07" deprel="SP">såsom</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|hjul|" lex="|hjul..nn.1|" sense="|hjul..1:-1.000|" complemgram="|" compwf="|" sentiment="0.381" ref="32" dephead="31" deprel="CJ">hjul</w>
+</sentence>
+</paragraph>
+<paragraph>
+<sentence id="e276f-e6ccb">
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="1" dephead="2" deprel="AT">ll</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="2" deprel="ROOT">ndervattenskabel</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="3" dephead="2" deprel="IP">.</w>
+</sentence>
+</paragraph>
+<paragraph>
+<sentence id="ee6ab-e51b4">
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|centrifugalgjutning|" lex="|" sense="|" complemgram="|centrifugal..av.1+gjutning..nn.1:9.001e-18|centrifug..nn.1+al..nn.1+gjutning..nn.1:4.541e-23|" compwf="|centrifugal+gjutning|centrifug+al+gjutning|" ref="1" deprel="ROOT">Centrifugalgjutning</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="2" dephead="1" deprel="IP">.</w>
+</sentence>
+</paragraph>
+<paragraph>
+<sentence id="efa2b-ee338">
+<w pos="RG" msd="RG.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="1" deprel="ROOT">159</w>
+</sentence>
+</paragraph>
+<paragraph>
+<sentence id="e653e-e9ced">
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|luftkonditionering|" lex="|luftkonditionering..nn.1|" sense="|luftkonditionering..1:-1.000|" complemgram="|luft..nn.1+konditionering..nn.1:3.492e-15|luft..nn.2+konditionering..nn.1:3.492e-15|" compwf="|luft+konditionering|" sentiment="0.9672" ref="1" deprel="ROOT">Luftkonditionering</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="2" dephead="1" deprel="IP">.</w>
+</sentence>
+</paragraph>
+<paragraph>
+<sentence id="e3d0f-ea910">
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|ring|" lex="|ring..nn.1|" sense="|ring..1:0.430|ring..2:0.305|ring..3:0.265|" complemgram="|" compwf="|" sentiment="0.409069" ref="1" deprel="ROOT">ringar</w>
+<w pos="AB" msd="AB.AN" lemma="|etc.|" lex="|etc...aba.1|" sense="|etcetera..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5648" ref="2" dephead="1" deprel="ET">etc.</w>
+</sentence>
+<sentence id="e321e-e4c01">
+<w pos="DT" msd="DT.UTR.SIN.DEF" lemma="|den|en|" lex="|den..pn.1|en..al.1|" sense="|den..2:-1.000|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.494333" ref="01" dephead="03" deprel="DT">Den</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.SIN.DEF.NOM" lemma="|kärnlös|" lex="|" sense="|" complemgram="|kärna..nn.1+lös..av.1:1.421e-14|kärna..nn.1+lös..av.2:1.421e-14|kärna..vb.1+lös..av.1:7.038e-22|kärna..vb.1+lös..av.2:7.038e-22|" compwf="|kärn+lösa|" ref="02" dephead="03" deprel="AT">kärnlösa</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|form|" lex="|form..nn.1|form..nn.2|form..nn.3|" sense="|form..1:0.450|form..3:0.431|form..2:0.104|form..4:0.015|" complemgram="|fora..nn.1+m..nn.1:3.403e-19|fora..nn.1+men..nn.2:3.403e-19|fora..nn.1+men..nn.1:3.403e-19|" compwf="|for+men|" sentiment="0.586787" ref="03" dephead="04" deprel="SS">formen</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|vara|" lex="|vara..vb.1|" sense="|vara..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5553" ref="04" dephead="15" deprel="MS">är</w>
+<w pos="PC" msd="PC.PRF.UTR.SIN.IND.NOM" lemma="|montera|" lex="|montera..vb.1|" sense="|montera..1:-1.000|" complemgram="|" compwf="|" sentiment="0.984" ref="05" dephead="04" deprel="SP">monterad</w>
+<w pos="PP" msd="PP" lemma="|på|" lex="|på..pp.1|" sense="|på..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6675" ref="06" dephead="04" deprel="OA">på</w>
+<w pos="DT" msd="DT.UTR.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="07" dephead="09" deprel="DT">en</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|horisontal|" lex="|horisontal..av.1|" sense="|horisontell..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9376" ref="08" dephead="09" deprel="CJ">horisontal</w>
+<w pos="KN" msd="KN" lemma="|eller|" lex="|eller..kn.1|" sense="|eller..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6939" ref="09" dephead="06" deprel="PA">eller</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|vertikal|" lex="|vertikal..av.1|" sense="|vertikal..1:-1.000|" complemgram="|" compwf="|" sentiment="0.2514" ref="10" dephead="14" deprel="DT">vertikal</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="11" dephead="10" deprel="IK">,</w>
+<w pos="AB" msd="AB.POS" lemma="|hastig|" lex="|hastig..av.1|" sense="|hastig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9983" ref="12" dephead="13" deprel="AA">hastigt</w>
+<w pos="PC" msd="PC.PRS.UTR+NEU.SIN+PLU.IND+DEF.NOM" lemma="|rotera|" lex="|rotera..vb.1|" sense="|rotera..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9808" ref="13" dephead="14" deprel="AT">roterande</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|axel|" lex="|axel..nn.1|" sense="|axel..2:0.666|axel..1:0.334|" complemgram="|ax..nn.2+el..nn.1:1.165e-11|ax..nn.1+el..nn.1:1.165e-11|" compwf="|ax+el|" sentiment="0.427226" ref="14" dephead="09" deprel="CJ">axel</w>
+<w pos="KN" msd="KN" lemma="|och|" lex="|och..kn.1|" sense="|och..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5924" ref="15" deprel="ROOT">och</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|vara|" lex="|vara..vb.1|" sense="|vara..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5553" ref="16" dephead="15" deprel="+F">är</w>
+<w pos="PC" msd="PC.PRF.UTR.SIN.IND.NOM" lemma="|förse|försedd|" lex="|förse..vb.1|försedd..av.1|" sense="|förse..1:1.000|försedd..1:0.000|" complemgram="|föra..vb.1+se..vb.1:1.290e-18|för..nn.1+se..vb.1:1.069e-22|" compwf="|för+sedd|" sentiment="0.9829" ref="17" dephead="16" deprel="SP">försedd</w>
+<w pos="PP" msd="PP" lemma="|med|" lex="|med..pp.1|" sense="|med..1:-1.000|med..2:-1.000|" complemgram="|" compwf="|" sentiment="0.29285" ref="18" dephead="16" deprel="OA">med</w>
+<w pos="DT" msd="DT.NEU.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="19" dephead="21" deprel="DT">ett</w>
+<w pos="JJ" msd="JJ.POS.NEU.SIN.IND.NOM" lemma="|avtagbar|" lex="|avtagbar..av.1|" sense="|avtagbar..1:-1.000|" complemgram="|avta..vb.1+bar..av.1:1.190e-17|av..ab.1+tag..nn.2+bar..av.1:9.777e-17|av..ab.1+tag..nn.1+bar..av.1:9.777e-17|av..ab.1+ta..vb.1+bar..av.1:1.158e-20|av..av.1+tag..nn.2+bar..av.1:1.140e-26|av..av.1+tag..nn.1+bar..av.1:1.140e-26|av..av.1+ta..vb.1+bar..av.1:2.550e-33|" compwf="|avtag+bart|av+tag+bart|" sentiment="0.0723" ref="20" dephead="21" deprel="AT">avtagbart</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|lock|" lex="|lock..nn.2|" sense="|lock..2:-1.000|" complemgram="|" compwf="|" sentiment="0.2995" ref="21" dephead="18" deprel="PA">lock</w>
+<w pos="PP" msd="PP" lemma="|med|" lex="|med..pp.1|" sense="|med..1:-1.000|med..2:-1.000|" complemgram="|" compwf="|" sentiment="0.29285" ref="22" dephead="21" deprel="ET">med</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|central|" lex="|central..av.1|" sense="|central..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6318" ref="23" dephead="24" deprel="AT">central</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|öppning|" lex="|öppning..nn.1|" sense="|öppning..1:0.916|öppning..2:0.065|öppning..3:0.018|" complemgram="|" compwf="|" sentiment="0.457585" ref="24" dephead="22" deprel="PA">öppning</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="25" dephead="16" deprel="IK">,</w>
+<w pos="PP" msd="PP" lemma="|genom|" lex="|genom..pp.1|" sense="|genom..1:-1.000|genom..3:-1.000|" complemgram="|" compwf="|" sentiment="0.173" ref="26" dephead="16" deprel="AA">genom</w>
+<w pos="HP" msd="HP.UTR.SIN.IND" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="27" dephead="31" deprel="SS">vilken</w>
+<w pos="DT" msd="DT.UTR.SIN.DEF" lemma="|den|en|" lex="|den..pn.1|en..al.1|" sense="|den..2:-1.000|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.494333" ref="28" dephead="31" deprel="FP">den</w>
+<w pos="VB" msd="VB.INF.AKT" lemma="|smälta|" lex="|smälta..vb.1|smälta..vb.2|" sense="|smälta..1:0.666|smälta..2:0.194|smälta..4:0.101|smälta..5:0.032|smälta..6:0.007|" complemgram="|" compwf="|" sentiment="0.298841" ref="29" dephead="26" deprel="PA">smälta</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|metall|" lex="|metall..nn.1|" sense="|metall..1:-1.000|" complemgram="|metall..nn.1+l..nn.1:1.789e-19|meta..vb.1+all..sxc.1+l..nn.1:6.764e-34|meta..vb.1+al..nn.1+l..nn.1:3.983e-35|" compwf="|metall+len|met+all+len|met+al+len|" sentiment="0.5193" ref="30" dephead="29" deprel="SS">metallen</w>
+<w pos="VB" msd="VB.PRT.SFO" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="31" dephead="29" deprel="VG">ifylles</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="32" dephead="15" deprel="IP">.</w>
+</sentence>
+<sentence id="ec058-e7320">
+<w pos="NN" msd="NN.NEU.SIN.DEF.NOM" lemma="|patent|" lex="|patent..nn.1|" sense="|patent..1:-1.000|" complemgram="|" compwf="|" sentiment="0.4544" ref="01" dephead="10" deprel="SS">Patentet</w>
+<w pos="RG" msd="RG.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="02" dephead="01" deprel="ET">1308</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="03" dephead="02" deprel="AG">av</w>
+<w pos="NN" msd="NN.NEU.SIN.IND.NOM" lemma="|år|" lex="|år..nn.1|" sense="|år..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6809" ref="04" dephead="03" deprel="PA">år</w>
+<w pos="RG" msd="RG.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="05" dephead="02" deprel="ET">1855</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="06" dephead="05" deprel="IK">,</w>
+<w pos="PM" msd="PM.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="07" dephead="09" deprel="CA">R</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="08" dephead="07" deprel="IP">.</w>
+<w pos="PM" msd="PM.NOM" lemma="|Peter|" lex="|Peter..pm.1|" sense="|Peter..1:-1.000|" complemgram="|" compwf="|" sentiment="0.954" ref="09" dephead="05" deprel="AN">Peters</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|avse|" lex="|avse..vb.1|" sense="|avse..1:-1.000|" complemgram="|av..ab.1+se..vb.1:1.286e-08|av..av.1+se..vb.1:4.803e-19|" compwf="|av+ser|" sentiment="0.9901" ref="10" deprel="ROOT">avser</w>
+<w pos="DT" msd="DT.UTR.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="11" dephead="12" deprel="DT">en</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|gjutmaskin|" lex="|" sense="|" complemgram="|gjuta..vb.1+maskin..nn.1:5.499e-15|gjuta..vb.1+mask..nn.1+i..nn.1:3.298e-29|gjuta..vb.1+maska..nn.1+i..nn.1:3.298e-29|gjuta..vb.1+mask..nn.2+i..nn.1:3.298e-29|gjuta..vb.1+maska..vb.1+i..nn.1:1.142e-38|gjuta..vb.1+maska..vb.2+i..nn.1:1.142e-38|" compwf="|gjut+maskin|gjut+mask+in|" ref="12" dephead="15" deprel="DT">gjutmaskin</w>
+<w pos="PP" msd="PP" lemma="|för|" lex="|för..pp.1|" sense="|för..1:-1.000|för..5:-1.000|för..6:-1.000|för..7:-1.000|för..9:-1.000|" complemgram="|" compwf="|" sentiment="0.51738" ref="13" dephead="15" deprel="DT">för</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|granat|" lex="|granat..nn.1|" sense="|granat..1:0.570|granat..2:0.241|granat..3:0.189|" complemgram="|" compwf="|" sentiment="0.549598" ref="14" dephead="15" deprel="CJ">granater</w>
+<w pos="KN" msd="KN" lemma="|och|" lex="|och..kn.1|" sense="|och..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5924" ref="15" dephead="10" deprel="OO">och</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.PLU.IND+DEF.NOM" lemma="|andra|annan|" lex="|andra..av.1|annan..pn.1|" sense="|andra..2:-1.000|annan..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3499" ref="16" dephead="18" deprel="DT">andra</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.PLU.IND+DEF.NOM" lemma="|ihålig|" lex="|ihålig..av.1|" sense="|ihålig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3895" ref="17" dephead="18" deprel="AT">ihåliga</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|kropp|" lex="|kropp..nn.1|" sense="|kropp..1:0.883|kropp..3:0.094|kropp..2:0.023|" complemgram="|" compwf="|" sentiment="0.11382" ref="18" dephead="15" deprel="CJ">kroppar</w>
+<w pos="PP" msd="PP" lemma="|med|" lex="|med..pp.1|" sense="|med..1:-1.000|med..2:-1.000|" complemgram="|" compwf="|" sentiment="0.29285" ref="19" dephead="10" deprel="OA">med</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|gjutform|" lex="|gjutform..nn.1|" sense="|gjutform..1:-1.000|" complemgram="|gjuta..vb.1+form..nn.2:7.152e-15|gjuta..vb.1+form..nn.3:7.152e-15|gjuta..vb.1+form..nn.1:7.152e-15|gjuta..vb.1+fora..nn.1+men..nn.1:6.116e-29|gjuta..vb.1+fora..nn.1+men..nn.2:6.116e-29|gjuta..vb.1+fora..nn.1+m..nn.1:6.116e-29|" compwf="|gjut+formen|gjut+for+men|" sentiment="0.9082" ref="20" dephead="22" deprel="DT">gjutformen</w>
+<w pos="PC" msd="PC.PRF.UTR.SIN.IND.NOM" lemma="|anordna|" lex="|anordna..vb.1|" sense="|anordna..1:-1.000|" complemgram="|an..ab.1+ordna..vb.1:2.418e-18|" compwf="|an+ordnad|" sentiment="0.9842" ref="21" dephead="22" deprel="DT">anordnad</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|roterbar|" lex="|roterbar..av.1|" sense="|roterbar..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3081" ref="22" dephead="19" deprel="PA">roterbar</w>
+<w pos="AB" msd="AB" lemma="|samtidig|" lex="|samtidig..av.1|" sense="|samtidig..1:-1.000|" complemgram="|sam..sxc.1+tidig..av.1:3.436e-19|" compwf="|sam+tidigt|" sentiment="0.6159" ref="23" dephead="25" deprel="AA">samtidigt</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="24" dephead="23" deprel="HD">i</w>
+<w pos="RG" msd="RG.NOM" lemma="|två|" lex="|två..nl.1|" sense="|två..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6648" ref="25" dephead="10" deprel="+F">två</w>
+<w pos="PP" msd="PP" lemma="|mot|" lex="|mot..pp.1|" sense="|mot..1:-1.000|mot..2:-1.000|" complemgram="|" compwf="|" sentiment="0.1891" ref="26" dephead="25" deprel="OA">mot</w>
+<w pos="PN" msd="PN.UTR+NEU.PLU.DEF.OBJ" lemma="|varandra|" lex="|varandra..pn.1|" sense="|varandra..1:-1.000|" complemgram="|" compwf="|" sentiment="0.7192" ref="27" dephead="29" deprel="DT">varandra</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.PLU.IND+DEF.NOM" lemma="|vinkelrät|" lex="|vinkelrät..av.1|" sense="|vinkelrät..1:-1.000|" complemgram="|vinkel..nn.1+rät..av.1:3.306e-13|vinkla..vb.1+rät..av.1:2.114e-22|vink..nn.1+el..nn.1+rät..av.1:7.338e-20|vina..nn.1+kel..nn.1+rät..av.1:3.477e-20|vin..nn.1+kel..nn.1+rät..av.1:3.477e-20|vin..nn.2+kel..nn.1+rät..av.1:3.477e-20|vinka..vb.1+el..nn.1+rät..av.1:6.980e-28|vina..vb.2+kel..nn.1+rät..av.1:1.355e-29|vina..vb.1+kel..nn.1+rät..av.1:1.355e-29|vina..nn.1+kela..vb.1+rät..av.1:3.127e-31|vin..nn.1+kela..vb.1+rät..av.1:3.127e-31|vin..nn.2+kela..vb.1+rät..av.1:3.127e-31|vina..vb.1+kela..vb.1+rät..av.1:7.306e-40|vina..vb.2+kela..vb.1+rät..av.1:7.306e-40|" compwf="|vinkel+räta|vink+el+räta|vin+kel+räta|" sentiment="0.6453" ref="28" dephead="29" deprel="AT">vinkelräta</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|riktning|" lex="|riktning..nn.1|" sense="|riktning..1:0.999|riktning..2:0.001|" complemgram="|" compwf="|" sentiment="0.562706" ref="29" dephead="26" deprel="PA">riktningar</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="30" dephead="10" deprel="IP">.</w>
+</sentence>
+<sentence id="e56c6-ee159">
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|gjutform|" lex="|gjutform..nn.1|" sense="|gjutform..1:-1.000|" complemgram="|gjuta..vb.1+form..nn.2:4.525e-15|gjuta..vb.1+form..nn.3:4.525e-15|gjuta..vb.1+form..nn.1:4.525e-15|gjuta..vb.1+fora..nn.1+men..nn.1:3.870e-29|gjuta..vb.1+fora..nn.1+men..nn.2:3.870e-29|gjuta..vb.1+fora..nn.1+m..nn.1:3.870e-29|" compwf="|gjut+formen|gjut+for+men|" sentiment="0.9082" ref="01" dephead="02" deprel="SS">Gjutformen</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|vara|" lex="|vara..vb.1|" sense="|vara..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5553" ref="02" dephead="07" deprel="MS">är</w>
+<w pos="PC" msd="PC.PRF.UTR.SIN.IND.NOM" lemma="|utföra|" lex="|utföra..vb.1|" sense="|utföra..1:0.940|utföra..2:0.049|utföra..3:0.011|" complemgram="|ut..ab.1+föra..vb.1:9.650e-17|" compwf="|ut+förd|" sentiment="0.968622" ref="03" dephead="02" deprel="SP">utförd</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="04" dephead="02" deprel="RA">i</w>
+<w pos="RG" msd="RG.NOM" lemma="|två|" lex="|två..nl.1|" sense="|två..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6648" ref="05" dephead="06" deprel="DT">två</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|halva|" lex="|halva..nn.1|" sense="|halva..1:0.990|halva..2:0.010|" complemgram="|" compwf="|" sentiment="0.354085" ref="06" dephead="04" deprel="PA">halvor</w>
+<w pos="KN" msd="KN" lemma="|och|" lex="|och..kn.1|" sense="|och..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5924" ref="07" deprel="ROOT">och</w>
+<w pos="VB" msd="VB.PRS.SFO" lemma="|uppbära|" lex="|uppbära..vb.1|" sense="|uppbära..1:0.656|uppbära..2:0.344|" complemgram="|upp..ab.1+bära..vb.1:1.215e-11|" compwf="|upp+bäres|" sentiment="0.855066" ref="08" dephead="07" deprel="+F">uppbäres</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="09" dephead="08" deprel="RA">i</w>
+<w pos="DT" msd="DT.UTR.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="10" dephead="12" deprel="DT">en</w>
+<w pos="JJ" msd="JJ.KOM.UTR+NEU.SIN+PLU.IND+DEF.NOM" lemma="|inre|" lex="|inre..av.1|" sense="|inre..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5472" ref="11" dephead="12" deprel="AT">inre</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|ram|" lex="|ram..nn.1|" sense="|ram..1:0.536|ram..4:0.336|ram..2:0.070|ram..3:0.058|" complemgram="|" compwf="|" sentiment="0.57145" ref="12" dephead="09" deprel="PA">ram</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="13" dephead="07" deprel="IK">,</w>
+<w pos="PP" msd="PP" lemma="|i|i sin|" lex="|i..pp.1|i_sin..avm.1|" sense="|i..2:-1.000|i_sin..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6633" ref="14" dephead="18" deprel="TA">i</w>
+<w pos="PS" msd="PS.UTR.SIN.DEF" lemma="|sig|i sin:14|" lex="|sig..pn.1|i_sin..avm.1:14|" sense="|sig..1:-1.000|i_sin..1:14:-1.000|" complemgram="|" compwf="|" sentiment="0.4954" ref="15" dephead="14" deprel="HD">sin</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|tur|" lex="|tur..nn.1|tur..nn.2|" sense="|tur..3:0.656|tur..5:0.171|tur..2:0.104|tur..4:0.042|tur..1:0.027|" complemgram="|" compwf="|" sentiment="0.24086" ref="16" dephead="14" deprel="HD">tur</w>
+<w pos="AB" msd="AB.POS" lemma="|roterbar|" lex="|roterbar..av.1|" sense="|roterbar..1:-1.000|" complemgram="|rot..nn.1+era..nn.1+bar..av.1:1.073e-28|rot..sxc.1+era..nn.1+bar..av.1:1.073e-28|rota..vb.1+era..nn.1+bar..av.1:8.310e-37|" compwf="|rot+er+bart|" sentiment="0.3081" ref="17" dephead="18" deprel="AA">roterbart</w>
+<w pos="PC" msd="PC.PRF.UTR.SIN.IND.NOM" lemma="|uppburen|uppbära|" lex="|uppburen..av.1|uppbära..vb.1|" sense="|uppburen..1:0.468|uppbära..2:0.287|uppbära..1:0.245|" complemgram="|upp..ab.1+buren..avh.1:3.800e-11|upp..ab.1+bära..vb.1:5.142e-17|" compwf="|upp+buren|" sentiment="0.708728" ref="18" dephead="07" deprel="+F">uppburen</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="19" dephead="18" deprel="AG">av</w>
+<w pos="DT" msd="DT.UTR.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="20" dephead="24" deprel="DT">en</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|fast|" lex="|fast..av.1|" sense="|fast..1:-1.000|" complemgram="|" compwf="|" sentiment="0.0101" ref="21" dephead="22" deprel="CJ">fast</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="22" dephead="24" deprel="AT">,</w>
+<w pos="JJ" msd="JJ.KOM.UTR+NEU.SIN+PLU.IND+DEF.NOM" lemma="|yttre|" lex="|yttre..av.1|" sense="|yttre..1:-1.000|" complemgram="|" compwf="|" sentiment="0.4996" ref="23" dephead="22" deprel="CJ">yttre</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|ram|" lex="|ram..nn.1|" sense="|ram..3:0.479|ram..1:0.396|ram..4:0.122|ram..2:0.003|" complemgram="|" compwf="|" sentiment="0.475639" ref="24" dephead="19" deprel="PA">ram</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="25" dephead="07" deprel="IP">.</w>
+</sentence>
+<sentence id="e3a0e-e18a6">
+<w pos="DT" msd="DT.UTR.SIN.DEF" lemma="|den|en|" lex="|den..pn.1|en..al.1|" sense="|den..2:-1.000|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.494333" ref="01" dephead="03" deprel="DT">Den</w>
+<w pos="JJ" msd="JJ.KOM.UTR+NEU.SIN+PLU.IND+DEF.NOM" lemma="|inre|" lex="|inre..av.1|" sense="|inre..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5472" ref="02" dephead="03" deprel="AT">inre</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|ram|" lex="|ram..nn.1|" sense="|ram..1:0.436|ram..3:0.343|ram..4:0.218|ram..2:0.004|" complemgram="|" compwf="|" sentiment="0.512475" ref="03" dephead="04" deprel="SS">ramen</w>
+<w pos="VB" msd="VB.PRS.SFO" lemma="|rotera|" lex="|rotera..vb.1|" sense="|rotera..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9808" ref="04" deprel="ROOT">roteras</w>
+<w pos="PP" msd="PP" lemma="|från|" lex="|från..pp.1|" sense="|från..1:-1.000|" complemgram="|" compwf="|" sentiment="0.4973" ref="05" dephead="04" deprel="ET">från</w>
+<w pos="DT" msd="DT.UTR.SIN.IND" lemma="|en|" lex="|en..al.1|" sense="|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.6799" ref="06" dephead="08" deprel="DT">en</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|drivaxel|" lex="|drivaxel..nn.1|" sense="|drivaxel..1:-1.000|" complemgram="|driv..nn.1+axel..nn.1:2.949e-12|driv..nn.2+axel..nn.1:2.949e-12|driva..nn.1+axel..nn.1:2.949e-12|driva..vb.1+axel..nn.1:2.053e-14|driva..vb.2+axel..nn.1:2.053e-14|driv..nn.2+ax..nn.1+el..nn.1:1.080e-18|driv..nn.1+ax..nn.2+el..nn.1:1.080e-18|driv..nn.2+ax..nn.2+el..nn.1:1.080e-18|driv..nn.1+ax..nn.1+el..nn.1:1.080e-18|driva..nn.1+ax..nn.2+el..nn.1:1.080e-18|driva..nn.1+ax..nn.1+el..nn.1:1.080e-18|driva..vb.2+ax..nn.2+el..nn.1:1.694e-20|driva..vb.2+ax..nn.1+el..nn.1:1.694e-20|driva..vb.1+ax..nn.2+el..nn.1:1.694e-20|driva..vb.1+ax..nn.1+el..nn.1:1.694e-20|" compwf="|driv+axel|driv+ax+el|" sentiment="0.9748" ref="07" dephead="08" deprel="CJ">drivaxel</w>
+<w pos="KN" msd="KN" lemma="|och|" lex="|och..kn.1|" sense="|och..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5924" ref="08" dephead="05" deprel="PA">och</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|rörelse|" lex="|rörelse..nn.1|" sense="|rörelse..1:0.969|rörelse..5:0.025|rörelse..4:0.005|rörelse..2:0.001|rörelse..3:0.001|" complemgram="|röra..vb.1+el..nn.1+s..nn.1:1.006e-24|rör..nn.1+el..nn.1+s..nn.1:6.416e-25|" compwf="|rör+el+sen|" sentiment="0.086845" ref="09" dephead="08" deprel="CJ">rörelsen</w>
+<w pos="VB" msd="VB.PRS.SFO" lemma="|överföra|" lex="|överföra..vb.1|" sense="|överföra..1:-1.000|" complemgram="|över..ab.1+föra..vb.1:2.115e-11|över..av.1+föra..vb.1:6.943e-22|öva..vb.1+era..nn.1+föra..vb.1:1.009e-34|" compwf="|över+föres|öv+er+föres|" sentiment="0.9779" ref="10" dephead="04" deprel="VG">överföres</w>
+<w pos="PL" msd="PL" lemma="|till|" lex="|till..ab.1|" sense="|till..2:-1.000|" complemgram="|" compwf="|" sentiment="0.0885" ref="11" dephead="10" deprel="PL">till</w>
+<w pos="PP" msd="PP" lemma="|mot|" lex="|mot..pp.1|" sense="|mot..1:-1.000|mot..2:-1.000|" complemgram="|" compwf="|" sentiment="0.1891" ref="12" dephead="10" deprel="OA">mot</w>
+<w pos="PN" msd="PN.UTR+NEU.PLU.DEF.OBJ" lemma="|varandra|" lex="|varandra..pn.1|" sense="|varandra..1:-1.000|" complemgram="|" compwf="|" sentiment="0.7192" ref="13" dephead="12" deprel="PA">varandra</w>
+<w pos="AB" msd="AB.POS" lemma="|vinkelrät|" lex="|vinkelrät..av.1|" sense="|vinkelrät..1:-1.000|" complemgram="|vinkel..nn.1+rätt..av.1:5.661e-11|vinkla..vb.1+rätt..av.1:3.621e-20|vink..nn.1+el..nn.1+rätt..av.1:1.257e-17|vin..nn.1+kel..nn.1+rätt..av.1:5.955e-18|vin..nn.2+kel..nn.1+rätt..av.1:5.955e-18|vina..nn.1+kel..nn.1+rätt..av.1:5.955e-18|vinka..vb.1+el..nn.1+rätt..av.1:1.195e-25|vina..vb.2+kel..nn.1+rätt..av.1:2.320e-27|vina..vb.1+kel..nn.1+rätt..av.1:2.320e-27|vina..nn.1+kela..vb.1+rätt..av.1:5.356e-29|vin..nn.1+kela..vb.1+rätt..av.1:5.356e-29|vin..nn.2+kela..vb.1+rätt..av.1:5.356e-29|vina..vb.2+kela..vb.1+rätt..av.1:1.251e-37|vina..vb.1+kela..vb.1+rätt..av.1:1.251e-37|" compwf="|vinkel+rätt|vink+el+rätt|vin+kel+rätt|" sentiment="0.6453" ref="14" dephead="17" deprel="NA">vinkelrätt</w>
+<w pos="PC" msd="PC.PRF.UTR+NEU.PLU.IND+DEF.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="15" dephead="17" deprel="AT">anbragta</w>
+<w pos="JJ" msd="JJ.POS.UTR+NEU.PLU.IND+DEF.NOM" lemma="|konisk|" lex="|konisk..av.1|" sense="|konisk..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6642" ref="16" dephead="17" deprel="AT">koniska</w>
+<w pos="NN" msd="NN.NEU.PLU.IND.NOM" lemma="|kugghjul|" lex="|kugghjul..nn.1|" sense="|kugghjul..1:-1.000|" complemgram="|kugge..nn.1+hjul..nn.1:2.781e-13|kugga..vb.1+hjul..nn.1:1.355e-20|" compwf="|kugg+hjul|" sentiment="0.1254" ref="17" dephead="04" deprel="AN">kugghjul</w>
+<w pos="PP" msd="PP" lemma="|för|" lex="|för..pp.1|" sense="|för..1:-1.000|för..5:-1.000|för..6:-1.000|för..7:-1.000|för..9:-1.000|" complemgram="|" compwf="|" sentiment="0.51738" ref="18" dephead="17" deprel="ET">för</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|drivning|" lex="|drivning..nn.1|" sense="|drivning..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6054" ref="19" dephead="18" deprel="PA">drivning</w>
+<w pos="PP" msd="PP" lemma="|av|" lex="|av..pp.1|" sense="|av..1:-1.000|" complemgram="|" compwf="|" sentiment="0.6214" ref="20" dephead="19" deprel="ET">av</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|gjutform|" lex="|gjutform..nn.1|" sense="|gjutform..1:-1.000|" complemgram="|gjuta..vb.1+form..nn.2:7.152e-15|gjuta..vb.1+form..nn.3:7.152e-15|gjuta..vb.1+form..nn.1:7.152e-15|gjuta..vb.1+fora..nn.1+men..nn.1:6.116e-29|gjuta..vb.1+fora..nn.1+men..nn.2:6.116e-29|gjuta..vb.1+fora..nn.1+m..nn.1:6.116e-29|" compwf="|gjut+formen|gjut+for+men|" sentiment="0.9082" ref="21" dephead="20" deprel="PA">gjutformen</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="22" dephead="04" deprel="IP">.</w>
+</sentence>
+<sentence id="e4c17-ee247">
+<w pos="HA" msd="HA" lemma="|när|" lex="|när..ab.1|" sense="|när..1:0.667|nära..1:0.333|" complemgram="|" compwf="|" sentiment="0.570556" ref="01" dephead="03" deprel="TA">När</w>
+<w pos="PN" msd="PN.UTR.SIN.DEF.SUB+OBJ" lemma="|den|" lex="|den..pn.1|" sense="|den..2:-1.000|" complemgram="|" compwf="|" sentiment="0.1232" ref="02" dephead="03" deprel="SS">den</w>
+<w pos="VB" msd="VB.INF.AKT" lemma="|smälta|" lex="|smälta..vb.1|smälta..vb.2|" sense="|smälta..1:0.671|smälta..2:0.276|smälta..4:0.043|smälta..5:0.007|smälta..6:0.003|" complemgram="|" compwf="|" sentiment="0.34919" ref="03" dephead="08" deprel="MS">smälta</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|metall|" lex="|metall..nn.1|" sense="|metall..1:-1.000|" complemgram="|metall..nn.1+l..nn.1:1.789e-19|meta..vb.1+all..sxc.1+l..nn.1:6.764e-34|meta..vb.1+al..nn.1+l..nn.1:3.983e-35|" compwf="|metall+len|met+all+len|met+al+len|" sentiment="0.5193" ref="04" dephead="03" deprel="OO">metallen</w>
+<w pos="PC" msd="PC.PRF.UTR+NEU.SIN.DEF.GEN" lemma="|fylla i|" lex="|fylla_i..vbm.1|" sense="|fylla_i..1:-1.000|fylla_i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.42425" ref="05" dephead="03" deprel="OP">ifyllts</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="06" dephead="03" deprel="AA">i</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.NOM" lemma="|form|" lex="|form..nn.1|form..nn.2|form..nn.3|" sense="|form..3:0.565|form..1:0.252|form..2:0.169|form..4:0.013|" complemgram="|fora..nn.1+m..nn.1:3.403e-19|fora..nn.1+men..nn.2:3.403e-19|fora..nn.1+men..nn.1:3.403e-19|" compwf="|for+men|" sentiment="0.572312" ref="07" dephead="06" deprel="PA">formen</w>
+<w pos="KN" msd="KN" lemma="|och|" lex="|och..kn.1|" sense="|och..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5924" ref="08" deprel="ROOT">och</w>
+<w pos="PN" msd="PN.UTR.SIN.DEF.SUB+OBJ" lemma="|denna|" lex="|denna..pn.1|" sense="|denna..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3954" ref="09" dephead="10" deprel="SS">denna</w>
+<w pos="VB" msd="VB.PRS.SFO" lemma="|försätta|" lex="|försätta..vb.1|" sense="|försätta..1:0.713|försätta..3:0.267|försätta..2:0.020|" complemgram="|föra..vb.1+sätta..vb.1:2.446e-15|för..nn.1+sätta..vb.1:3.285e-18|" compwf="|för+sättes|" sentiment="0.357479" ref="10" dephead="08" deprel="MS">försättes</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="11" dephead="10" deprel="RA">i</w>
+<w pos="JJ" msd="JJ.POS.UTR.SIN.IND.NOM" lemma="|hastig|" lex="|hastig..av.1|" sense="|hastig..1:-1.000|" complemgram="|" compwf="|" sentiment="0.9983" ref="12" dephead="13" deprel="AT">hastig</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|rotation|" lex="|rotation..nn.1|" sense="|rotation..1:-1.000|" complemgram="|" compwf="|" sentiment="0.3858" ref="13" dephead="11" deprel="PA">rotation</w>
+<w pos="MID" msd="MID" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="14" dephead="10" deprel="IK">,</w>
+<w pos="VB" msd="VB.INF.SFO" lemma="|slunga|" lex="|slunga..vb.1|" sense="|slunga..1:-1.000|" complemgram="|" compwf="|" sentiment="0.8865" ref="15" dephead="10" deprel="+F">slungas</w>
+<w pos="NN" msd="NN.NEU.SIN.DEF.NOM" lemma="|material|" lex="|material..nn.1|" sense="|material..1:0.874|material..2:0.126|" complemgram="|materia..nn.1+l..nn.1:6.555e-12|mate..nn.1+ri..nn.1+ale..nn.1:8.316e-22|mate..nn.1+ria..nn.1+ale..nn.1:8.316e-22|mate..nn.1+ria..vb.1+ale..nn.1:3.526e-31|" compwf="|materia+let|mate+ri+alet|" sentiment="0.352728" ref="16" dephead="15" deprel="OO">materialet</w>
+<w pos="PL" msd="PL" lemma="|ut|" lex="|ut..ab.1|" sense="|ut..1:0.984|ut..2:0.016|" complemgram="|" compwf="|" sentiment="0.813218" ref="17" dephead="16" deprel="TA">ut</w>
+<w pos="PP" msd="PP" lemma="|i|" lex="|i..pp.1|" sense="|i..2:-1.000|" complemgram="|" compwf="|" sentiment="0.836" ref="18" dephead="17" deprel="TA">i</w>
+<w pos="NN" msd="NN.UTR.SIN.DEF.GEN" lemma="|form|" lex="|form..nn.1|form..nn.2|form..nn.3|" sense="|form..3:0.382|form..1:0.312|form..2:0.268|form..4:0.039|" complemgram="|fora..nn.1+m..nn.1:4.079e-18|fora..nn.1+men..nn.1:4.079e-18|fora..nn.1+men..nn.2:4.079e-18|fora..nn.1+mens..nn.1:4.079e-18|" compwf="|for+mens|" sentiment="0.604822" ref="19" dephead="18" deprel="HD">formens</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|ytterkontur|" lex="|" sense="|" complemgram="|ytter..nn.1+kontur..nn.1:7.283e-14|ytter..nn.1+kon..nn.1+tur..nn.1:7.933e-18|ytter..nn.1+kona..nn.1+tur..nn.1:7.933e-18|ytter..nn.1+kona..nn.1+tur..nn.2:7.933e-18|ytter..nn.1+kon..nn.1+tur..nn.2:7.933e-18|" compwf="|ytter+kontur|ytter+kon+tur|" ref="20" dephead="18" deprel="HD">ytterkontur</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="21" dephead="08" deprel="IP">.</w>
+</sentence>
+<sentence id="e4614-ea4db">
+<w pos="DT" msd="DT.UTR.SIN.DEF" lemma="|den|en|" lex="|den..pn.1|en..al.1|" sense="|den..2:-1.000|den..1:-1.000|en..2:-1.000|" complemgram="|" compwf="|" sentiment="0.494333" ref="01" dephead="02" deprel="DT">Den</w>
+<w pos="RO" msd="RO.MAS.SIN.IND+DEF.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="02" dephead="07" deprel="SS">förste</w>
+<w pos="HP" msd="HP.-.-.-" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="03" dephead="05" deprel="SS">som</w>
+<w pos="AB" msd="AB.POS" lemma="|praktisk|" lex="|praktisk..av.1|" sense="|praktisk..1:0.554|praktisk..3:0.289|praktisk..2:0.157|" complemgram="|" compwf="|" sentiment="0.597359" ref="04" dephead="05" deprel="TA">praktiskt</w>
+<w pos="VB" msd="VB.SUP.AKT" lemma="|utnyttja|" lex="|utnyttja..vb.1|" sense="|utnyttja..1:-1.000|" complemgram="|ut..ab.1+nyttja..vb.1:7.388e-11|" compwf="|ut+nyttjat|" sentiment="0.9911" ref="05" dephead="02" deprel="ET">utnyttjat</w>
+<w pos="NN" msd="NN.UTR.SIN.IND.NOM" lemma="|centrifugalgjutning|" lex="|" sense="|" complemgram="|centrifugal..av.1+gjutning..nn.1:1.305e-16|centrifug..nn.1+al..nn.1+gjutning..nn.1:8.532e-22|" compwf="|centrifugal+gjutning|centrifug+al+gjutning|" ref="06" dephead="05" deprel="OO">centrifugalgjutning</w>
+<w pos="VB" msd="VB.PRS.AKT" lemma="|skola|" lex="|skola..vb.2|" sense="|skola..4:-1.000|" complemgram="|" compwf="|" sentiment="0.2222" ref="07" deprel="ROOT">skall</w>
+<w pos="VB" msd="VB.INF.AKT" lemma="|ha|" lex="|ha..vb.1|" sense="|ha..1:0.862|ha..3:0.138|" complemgram="|" compwf="|" sentiment="0.090054" ref="08" dephead="07" deprel="VG">ha</w>
+<w pos="VB" msd="VB.SUP.AKT" lemma="|vara|" lex="|vara..vb.1|" sense="|vara..1:-1.000|" complemgram="|" compwf="|" sentiment="0.5553" ref="09" dephead="08" deprel="VG">varit</w>
+<w pos="PM" msd="PM.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="10" dephead="09" deprel="SS">H</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="11" dephead="07" deprel="IP">.</w>
+<w pos="NN" msd="NN.UTR.PLU.IND.NOM" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="12" dephead="07" deprel="OO">Bessemer</w>
+<w pos="MAD" msd="MAD" lemma="|" lex="|" sense="|" complemgram="|" compwf="|" ref="13" dephead="07" deprel="IP">.</w>
+</sentence>
+</paragraph>
+</corpus>
