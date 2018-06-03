@@ -20,10 +20,13 @@ namespace QuerySeadAPI
 
         public ICacheManager<object> Create()
         {
-            var cacheConfig = ConfigurationBuilder.BuildConfiguration(settings => {
-                settings
+            try {
+                var cacheConfig = ConfigurationBuilder.BuildConfiguration(settings =>
+                {
+                    settings
                     .WithJsonSerializer()
-                    .WithRedisConfiguration("redis", config => {
+                    .WithRedisConfiguration("redis", config =>
+                    {
                         config.WithAllowAdmin()
                         .WithDatabase(0)
                         .WithEndpoint("localhost", 6379);
@@ -32,9 +35,12 @@ namespace QuerySeadAPI
                     .WithRetryTimeout(100)
                     .WithRedisBackplane("redis")
                     .WithRedisCacheHandle("redis", true);
-            });
-            ICacheManager<object> cache = CacheFactory.FromConfiguration<object>(cacheConfig);
-            return cache;
+                });
+                ICacheManager<object> cache = CacheFactory.FromConfiguration<object>(cacheConfig);
+                return cache;
+            } catch {
+                return null;
+            }
         }
     }
 
@@ -49,10 +55,27 @@ namespace QuerySeadAPI
             Prefix = prefix;
         }
 
-        public void Put(string key, T entity) => Store.Put(Prefix + key, entity);
-        public bool Exists(string key)        => Store.Exists(Prefix + key);
-        public T    Get(string key)           => Store.Exists(Prefix + key) ? Store.Get<T>(Prefix + key) : default(T);
-        public void Clear() => Store.Clear();
+        public void Put(string key, T entity)
+        {
+            if (Store != null)
+                Store.Put(Prefix + key, entity);
+        }
+
+        public bool Exists(string key)
+        {
+            return Store != null && Store.Exists(Prefix + key);
+        }
+
+        public T Get(string key)
+        {
+            return Store.Exists(Prefix + key) ? Store.Get<T>(Prefix + key) : default(T);
+        }
+
+        public void Clear()
+        {
+            if (Store != null)
+                Store.Clear();
+        }
     }
 
     //public class NullCacheService<T>

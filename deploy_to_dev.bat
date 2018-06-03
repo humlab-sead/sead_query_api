@@ -1,17 +1,21 @@
 @Echo Off
-SET WINSCP="C:\Program Files (x86)\WinSCP\WinSCP.exe"
-SET RELEASE=Release
-SET TARGET_PLATFORM=debian.8-x64
-SET FRAMEWORK=netcoreapp2.0
-SET PASSWORD=schi11er
-SET WINSCP="C:\Program Files (x86)\WinSCP\WinSCP.com"
-SET SOURCE_DIR="C:\Users\roma0050\Documents\Projects\SEAD\query_sead_api_core"
-SET BUILD_DIR=%SOURCE_DIR%\"query_sead_net\bin\%RELEASE%\%FRAMEWORK%\%TARGET_PLATFORM%"\publish
-SET ZIP_FILENAME=publish.zip
-SET ZIP_PATH=%SOURCE_DIR%\%ZIP_FILENAME%
-SET FTP_SCRIPT=%SOURCE_DIR%\ftp_deploy_script.txt
 
-cd %SOURCE_DIR%
+SET PROJECT_FOLDER="%~dp0%"
+
+SET FTP_COMMAND="C:\Program Files (x86)\WinSCP\WinSCP.com"
+SET FTP_OPTIONS=/newinstance /console
+SET TARGET_PLATFORM=debian.8-x64
+SET TARGET_FRAMEWORK=netcoreapp2.0
+SET TARGET_HOST=snares.humlab.umu.se
+SET TARGET_FOLDER=/home/%QUERYSEAD_TARGET_USERNAME%/applications/pending
+SET TARGET_FILENAME=publish.zip
+
+SET RELEASE=Release
+SET RELEASE_FOLDER=%PROJECT_FOLDER%\"query_sead_net\bin\%RELEASE%\%TARGET_FRAMEWORK%\%TARGET_PLATFORM%"\publish
+
+SET FTP_SCRIPT=%PROJECT_FOLDER%\ftp_deploy_script.txt
+
+cd %PROJECT_FOLDER%
 
 @dotnet clean
 @if '%ERRORLEVEL%' neq '0' (
@@ -37,9 +41,9 @@ rem dotnet build --configuration %RELEASE% --runtime %TARGET_PLATFORM%
 
 :zip_file
 
-@del %ZIP_PATH%
+@del %PROJECT_FOLDER%\%TARGET_FILENAME%
 
-/usr/bin/7za a %ZIP_PATH% %BUILD_DIR%
+/usr/bin/7za a %PROJECT_FOLDER%\%TARGET_FILENAME%  %RELEASE_FOLDER%
 if '%ERRORLEVEL%' neq '0' (
     echo "ZIP failed"
     goto failure
@@ -47,7 +51,7 @@ if '%ERRORLEVEL%' neq '0' (
 
 Call :Create_FTP_Script
 
-%WINSCP% < %FTP_SCRIPT% 
+%FTP_COMMAND% %FTP_OPTIONS% < %FTP_SCRIPT% 
 REM if '%ERRORLEVEL%' neq '0' (
 REM     echo "FTP failed"
 REM     goto failure
@@ -56,16 +60,16 @@ REM )
 GOTO :end
 
 :Create_FTP_Script
-echo open dev.humlab.umu.se>%FTP_SCRIPT%
-echo roger>>%FTP_SCRIPT%
-echo schi11er>>%FTP_SCRIPT%
-rem echo lcd %PUBLISH_DIR%>>%FTP_SCRIPT%
-echo cd applications/pending>>%FTP_SCRIPT%
-rem echo rm ./publish>>%FTP_SCRIPT%
+echo open %TARGET_HOST%>%FTP_SCRIPT%
+echo %QUERYSEAD_TARGET_USERNAME%>>%FTP_SCRIPT%
+echo %QUERYSEAD_TARGET_PASSWORD%>>%FTP_SCRIPT%
+echo cd %TARGET_FOLDER%>>%FTP_SCRIPT%
+echo lcd %PROJECT_FOLDER%>>%FTP_SCRIPT%
 echo binary>>%FTP_SCRIPT%
-rem echo prompt>>%FTP_SCRIPT%
-echo rm %ZIP_FILENAME%>>%FTP_SCRIPT%
-echo put %ZIP_PATH%>>%FTP_SCRIPT%
+echo option echo off
+echo rm %TARGET_FILENAME%>>%FTP_SCRIPT%
+echo option echo on
+echo put %TARGET_FILENAME%>>%FTP_SCRIPT%
 echo exit>>%FTP_SCRIPT%
 goto:EOF
 
@@ -75,5 +79,5 @@ pause
 :end
 
 REM del %FTP_SCRIPT%
-del %ZIP_PATH%
+del %TARGET_PATH%
 pause

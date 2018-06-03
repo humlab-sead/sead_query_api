@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace QuerySeadDomain {
 
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity, K> : IRepository<TEntity, K> where TEntity : class
     {
         protected readonly DomainModelDbContext Context;
 
@@ -28,7 +28,7 @@ namespace QuerySeadDomain {
             return set;
         }
 
-        public TEntity Get(int id)
+        public TEntity Get(K id)
         {
             return Context.Set<TEntity>().Find(id);
         }

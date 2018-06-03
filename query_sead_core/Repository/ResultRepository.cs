@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace QuerySeadDomain {
 
-    public class ResultRepository : Repository<ResultAggregate>
+    public class ResultRepository : Repository<ResultAggregate, int>
     {
         public ResultRepository(DomainModelDbContext context) : base(context)
         {

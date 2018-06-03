@@ -1,13 +1,4 @@
 ﻿
-select *
-from facet.result_definition
-
-select *
-from facet.result_definition_field
-
-select array_agg(result_field_key)
-from facet.result_field
-
 alter table facet.result_field_type rename column result_field_type to field_type;
 alter table facet.result_field_type rename column result_field_type_id to field_type_id;
 
@@ -26,8 +17,6 @@ ALTER TABLE facet.result_field
       REFERENCES facet.result_field_type (field_type_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-select * from facet.result_definition_field
-select * from facet.result_field_type;
 alter table facet.result_definition_field drop column result_type_id
 
 update facet.result_definition_field
@@ -41,15 +30,6 @@ update facet.result_definition_field
 
 insert into facet.result_field_type values ('single_item', TRUE), ('text_agg_item', TRUE), ('count_item', TRUE), ('link_item', TRUE), ('sort_item', FALSE), ('link_item_filtered', TRUE);
 
-
-GRANT SELECT ON TABLE facet.result_definition TO seadread;
-GRANT SELECT ON TABLE facet.result_definition_field TO seadread;
-GRANT SELECT ON TABLE facet.result_type TO seadread;
-GRANT SELECT ON TABLE facet.result_field TO seadread;
-
-
-select * from facet.result_field;
-select * from facet.result_field_type;
 
 alter table facet.result_field_type add column is_result_value boolean not null default(true);
 alter table facet.result_field_type add column sql_field_compiler character varying(40) not null default('');
@@ -95,13 +75,6 @@ update facet.result_field_type set sql_template = '{0}' where field_type_id in (
       ON UPDATE NO ACTION ON DELETE NO ACTION
 
 
-select * --d.result_definition_key, f.*
-from facet.result_definition d
-join facet.result_definition_field f
-  on f.result_definition_id = d.result_definition_id
-
-"site_level", "aggregate_all", "sample_group_level"
-
 alter table facet.result_definition drop column aggregation_type
 alter table facet.result_definition rename column result_definition_key to aggregation_key
 
@@ -115,18 +88,6 @@ alter table facet.result_definition_field rename column result_definition_id to 
 alter table facet.result_definition rename to result_aggregate;
 alter table facet.result_definition_field rename to result_aggregate_field;
 
-
-
-GRANT SELECT ON TABLE facet.result_aggregate TO seadread;
-GRANT SELECT ON TABLE facet.result_aggregate_field TO seadread;
-GRANT SELECT ON TABLE facet.result_field_type TO seadread;
-GRANT SELECT ON TABLE facet.result_field TO seadread;
-
-GRANT SELECT ON TABLE facet.result_aggregate TO seadworker;
-GRANT SELECT ON TABLE facet.result_aggregate_field TO seadworker;
-GRANT SELECT ON TABLE facet.result_field_type TO seadworker;
-GRANT SELECT ON TABLE facet.result_field TO seadworker;
-
 create table facet.result_view_type (
 	view_type_id varchar(40) not null,
 	view_name varchar(40) not null,
@@ -135,13 +96,6 @@ create table facet.result_view_type (
 );
 
 insert into facet.result_view_type (values ('tabular', 'Tabular', TRUE), ('map', 'Map', FALSE))
-
-select * from facet.result_view_type
-select * from facet.facet
-select * from facet.result_aggregate;
-select * from facet.result_aggregate_field;
-select * from facet.result_field;
-select * from facet.result_field_type;
 
 ALTER TABLE facet.result_field ALTER COLUMN table_name DROP NOT NULL;
 
@@ -202,5 +156,4 @@ UPDATE facet.result_aggregate_field set sequence_id = 1 where aggregate_field_id
 UPDATE facet.result_aggregate_field set sequence_id = 2 where aggregate_field_id = 24; -- map_result.category_name'
 UPDATE facet.result_aggregate_field set sequence_id = 3 where aggregate_field_id = 21; -- map_result.latitude_dd'
 UPDATE facet.result_aggregate_field set sequence_id = 4 where aggregate_field_id = 22; -- map_result.longitude_dd'
-
 

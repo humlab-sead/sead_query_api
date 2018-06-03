@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Model\SQL\facet_dataserver_20180506.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
@@ -41,6 +45,8 @@
 
   <ItemGroup>
     <None Include="Archive\SetupQueryService.cs" />
+    <None Include="Model\SQL\99_archived_facet_schema.ddl" />
+    <None Include="Model\SQL\cr_01_change_set_results.sql" />
     <None Include="Repository\VIewStateRepository.cs" />
     <None Include="Services\CategoryCountService.cs" />
     <None Include="Model\ResultConfig.cs" />

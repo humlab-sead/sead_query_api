@@ -19,6 +19,7 @@ namespace QuerySeadDomain {
         ResultRepository Results { get; }
         FacetGroupRepository FacetGroups { get; }
         FacetTypeRepository FacetTypes { get; }
+        ViewStateRepository ViewStates { get; }
 
         int Commit();
         void Dispose();
@@ -67,6 +68,7 @@ namespace QuerySeadDomain {
             Results = new ResultRepository(context);
             FacetGroups = new FacetGroupRepository(context);
             FacetTypes = new FacetTypeRepository(context);
+            ViewStates = new ViewStateRepository(context);
         }
 
         public FacetRepository Facets { get; private set; }
@@ -75,6 +77,7 @@ namespace QuerySeadDomain {
         public ResultRepository Results { get; private set; }
         public FacetGroupRepository FacetGroups { get; private set; }
         public FacetTypeRepository FacetTypes { get; private set; }
+        public ViewStateRepository ViewStates { get; private set; }
 
         public int Commit() => context.SaveChanges();
         public void Dispose() => context.Dispose();

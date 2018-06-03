@@ -86,20 +86,19 @@ namespace QuerySeadDomain
             CountService = countServices[EFacetType.Range];
         }
 
-        private (decimal, decimal) GetLowerUpperBound(FacetConfig2 config)
+        private (decimal, decimal, int) GetLowerUpperBound(FacetConfig2 config, int default_interval_count=120)
         {
-            // FIXME: Always use DB lower, upper???
-            //var picks = config.GetPickValues(true);                    // Get client picked bound if exists...
-            //if (picks.Count >= 2) {
-            //    return (picks[0], picks[1]);
-            //}
-            Debug.WriteLine("Warning! FacetConfig.lower/upper has been disabled!!!");
-            return Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
+            var picks = config.GetPickValues(true);                    // Get client picked bound if exists...
+            if (picks.Count >= 2) {
+                return (picks[0], picks[1], (picks.Count > 2) && ((int)picks[2] > 0) ? (int)picks[2] : default_interval_count);
+            }
+            var bound = Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
+            return (bound.Item1, bound.Item2, default_interval_count);
         }
 
-        protected override (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval_count=120)
+        protected override (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count=120)
         {
-            (decimal lower, decimal upper) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode));
+            (decimal lower, decimal upper, int interval_count) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode), default_interval_count);
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
             string sql = RangeIntervalSqlQueryBuilder.Compile(interval, (int)lower, (int)upper, interval_count);
             return ( interval, sql );

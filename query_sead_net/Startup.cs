@@ -22,10 +22,10 @@ namespace QuerySeadAPI {
   
         public Startup(IHostingEnvironment env)
         {
+            var configFile = "appsettings.json"; //  Path.Combine("some_hidden_place", "appsettings.json");
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile(configFile, optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -35,7 +35,6 @@ namespace QuerySeadAPI {
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-
             services.AddCors();
             services.AddMvc();
 
@@ -74,8 +73,6 @@ namespace QuerySeadAPI {
 
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
 
-            //app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-
             app.UseMvcWithDefaultRoute();
             app.UseResponseBuffering();
             if (env.IsDevelopment())
@@ -83,28 +80,30 @@ namespace QuerySeadAPI {
                 app.UseDeveloperExceptionPage();
             }
 
-            //// Enable middleware to serve generated Swagger as a JSON endpoint.
-            //app.UseSwagger();
-
-            //// Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query SEAD API V1");
-            //    //c.EnabledValidator();
-            //    //c.BooleanValues(new object[] { 0, 1 });
-            //    //c.DocExpansion("full");
-            //    //c.InjectOnCompleteJavaScript("/swagger-ui/on-complete.js");
-            //    //c.InjectOnFailureJavaScript("/swagger-ui/on-failure.js");
-            //    //c.SupportedSubmitMethods(new[] { "get", "post", "put", "patch" });
-            //    c.ShowRequestHeaders();
-            //    c.ShowJsonEditor();
-            //});
-
             appLifetime.ApplicationStopped.Register(() => this.Container.Dispose());
         }
 
     }
 }
+
+//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+
+//// Enable middleware to serve generated Swagger as a JSON endpoint.
+//app.UseSwagger();
+
+//// Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+//app.UseSwaggerUI(c =>
+//{
+//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query SEAD API V1");
+//    //c.EnabledValidator();
+//    //c.BooleanValues(new object[] { 0, 1 });
+//    //c.DocExpansion("full");
+//    //c.InjectOnCompleteJavaScript("/swagger-ui/on-complete.js");
+//    //c.InjectOnFailureJavaScript("/swagger-ui/on-failure.js");
+//    //c.SupportedSubmitMethods(new[] { "get", "post", "put", "patch" });
+//    c.ShowRequestHeaders();
+//    c.ShowJsonEditor();
+//});
 
 //services.AddCors(options =>
 //{

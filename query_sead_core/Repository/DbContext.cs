@@ -82,7 +82,7 @@ namespace DataAccessPostgreSqlProvider {
             //builder.Entity<FacetTable>().HasOne<FacetDefinition>(x => x.FacetDefinition).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
             builder.Entity<FacetTable>().HasOne<FacetDefinition>(x => x.FacetDefinition).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
 
-            builder.Entity<ResultViewType>().ToTable("result_view_tyoe", "facet").HasKey(b => b.ViewTypeId);
+            builder.Entity<ResultViewType>().ToTable("result_view_type", "facet").HasKey(b => b.ViewTypeId);
 
             builder.Entity<ResultViewType>().Property(b => b.ViewTypeId).HasColumnName("view_type_id").IsRequired();
             builder.Entity<ResultViewType>().Property(b => b.ViewName).HasColumnName("view_name").IsRequired();
@@ -155,11 +155,9 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.SourceTable).WithMany().HasForeignKey(p => p.SourceTableId);
             builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.TargetTable).WithMany().HasForeignKey(p => p.TargetTableId);
 
-            builder.Entity<ViewState>().ToTable("tbl_view_states", "metainformation").HasKey(b => b.ViewStateId);
-            builder.Entity<ViewState>().Property(b => b.ViewStateId).HasColumnName("view_state_id").ValueGeneratedOnAdd().IsRequired();
-            builder.Entity<ViewState>().Property(b => b.SessionId).HasColumnName("session_id").IsRequired();
-            builder.Entity<ViewState>().Property(b => b.Data).HasColumnName("view_state").IsRequired();
-            builder.Entity<ViewState>().Property(b => b.CreateTime).HasColumnName("creatation_date").IsRequired();
+            builder.Entity<ViewState>().ToTable("view_state", "facet").HasKey(b => b.Key);
+            builder.Entity<ViewState>().Property(b => b.Key).HasColumnName("view_state_key").IsRequired();
+            builder.Entity<ViewState>().Property(b => b.Data).HasColumnName("view_state_data").IsRequired();
 
             base.OnModelCreating(builder);
         }

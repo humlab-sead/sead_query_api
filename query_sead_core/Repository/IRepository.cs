@@ -8,9 +8,9 @@ namespace QuerySeadDomain {
 
     }
 
-    public interface IRepository<TEntity> : IRepository2 where TEntity : class
+    public interface IRepository<TEntity, K> : IRepository2 where TEntity : class
     {
-        TEntity Get(int id);
+        TEntity Get(K id);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         void Add(TEntity entity);

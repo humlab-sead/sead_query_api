@@ -9,18 +9,12 @@ using System.Linq;
 
 namespace QuerySeadDomain {
 
-    public class ViewStateRepository : Repository<ViewState>
+    public class ViewStateRepository : Repository<ViewState, string>
     {
         public ViewStateRepository(DomainModelDbContext context) : base(context)
         {
         }
 
-        public List<ViewState> GetBySessionId(string sessionId, int count=5)
-        {
-            return Context.ViewStates
-                .Where(x => x.SessionId == sessionId)
-                .OrderByDescending(z => z.CreateTime).Take(count).ToList();
-        }
     }
 
 }

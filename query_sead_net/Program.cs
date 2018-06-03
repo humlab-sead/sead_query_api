@@ -11,21 +11,20 @@ namespace QuerySeadAPI {
 
     public class Program
     {
+
         public static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                 .AddJsonFile("hosting.json", optional: true)
-                //&.AddCommandLine(args)
+                .AddJsonFile("hosting.json", optional: true)
+                .AddCommandLine(args)
                 .Build();
 
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseConfiguration(config)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
                 .UseStartup<Startup>()
-                //.UseApplicationInsights()
                 .Build();
 
             host.Run();

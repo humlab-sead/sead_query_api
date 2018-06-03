@@ -37,7 +37,8 @@ namespace QuerySeadDomain
         {
             FacetDefinition facet = Context.Facets.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
-            Dictionary<string, CategoryCountItem> data = Query(sql).ToList().ToDictionary(z => Coalesce(z.Category, "(null)"));
+            var values =  Query(sql).ToList();
+            Dictionary<string, CategoryCountItem> data = values.ToDictionary(z => Coalesce(z.Category, "(null)"));
             return data; 
         }
 
@@ -103,11 +104,18 @@ namespace QuerySeadDomain
             return tables.Distinct().ToList();
         }
 
+        private string Category2String(System.Data.Common.DbDataReader x, int ordinal)
+        {
+            if (x.GetDataTypeName(ordinal) == "numeric")
+                return String.Format("{0:0.####}", x.GetDecimal(ordinal));
+            return x.GetInt32(ordinal).ToString();
+        }
+
         protected override List<CategoryCountItem> Query(string sql)
         {
             return Context.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
-                    Category =  x.IsDBNull(0) ? null : x.GetInt32(0).ToString(),
+                    Category =  x.IsDBNull(0) ? null : Category2String(x, 0),
                     Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
                     Extent = new List<decimal>() { x.IsDBNull(1) ? 0 : x.GetInt32(1) }
                     //CategoryValues = new Dictionary<EFacetPickType, decimal>() {

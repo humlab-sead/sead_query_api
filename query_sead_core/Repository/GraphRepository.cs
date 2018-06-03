@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace QuerySeadDomain {
 
-    public class NodeRepository : Repository<GraphNode> {
+    public class NodeRepository : Repository<GraphNode, int> {
 
         public NodeRepository(DomainModelDbContext context) : base(context)
         {
         }
     }
 
-    public class EdgeRepository : Repository<GraphEdge> {
+    public class EdgeRepository : Repository<GraphEdge, int> {
 
         public EdgeRepository(DomainModelDbContext context) : base(context)
         {

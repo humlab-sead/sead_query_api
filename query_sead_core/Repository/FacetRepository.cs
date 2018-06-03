@@ -9,25 +9,25 @@ using System.Linq;
 
 namespace QuerySeadDomain {
 
-    public interface IFacetRepository : IRepository<FacetDefinition> {
+    public interface IFacetRepository : IRepository<FacetDefinition, int> {
 
     }
 
-    public class FacetTypeRepository : Repository<FacetType>
+    public class FacetTypeRepository : Repository<FacetType, int>
     {
         public FacetTypeRepository(DomainModelDbContext context) : base(context)
         {
         }
     }
 
-    public class FacetGroupRepository : Repository<FacetGroup>
+    public class FacetGroupRepository : Repository<FacetGroup, int>
     {
         public FacetGroupRepository(DomainModelDbContext context) : base(context)
         {
         }
     }
 
-    public class FacetRepository : Repository<FacetDefinition>, IFacetRepository
+    public class FacetRepository : Repository<FacetDefinition, int>, IFacetRepository
     {
         private Dictionary<string, FacetDefinition> dictionary = null;
 
