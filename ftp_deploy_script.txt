@@ -1,8 +1,0 @@
-open dev.humlab.umu.se
-roger
-schi11er
-cd applications/pending
-binary
-rm publish.zip
-put "C:\Users\roma0050\Documents\Projects\SEAD\query_sead_api_core"\publish.zip
-exit
