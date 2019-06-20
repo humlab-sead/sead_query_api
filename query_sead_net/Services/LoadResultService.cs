@@ -22,7 +22,7 @@ namespace QuerySeadAPI.Services {
         public LoadResultService(
             IQueryBuilderSetting config,
             IUnitOfWork context,
-            IQueryCache cache,
+            ICache cache,
             IResultServiceIndex services,
             IDeleteBogusPickService bogusPickService) : base(config, context, cache) {
             ResultServices = services;
@@ -43,7 +43,7 @@ namespace QuerySeadAPI.Services {
         public CachedLoadResultService(
             IQueryBuilderSetting config,
             IUnitOfWork context,
-            IQueryCache cache,
+            ICache cache,
             IResultServiceIndex services,
             IDeleteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
         {
@@ -51,18 +51,18 @@ namespace QuerySeadAPI.Services {
 
         public override ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            var cacheId = facetsConfig.GetCacheId();
-            var resultCacheId = resultConfig.GetCacheId(facetsConfig);
+            var configCacheId = "config_" + facetsConfig.GetCacheId();
+            var resultCacheId = "result_" + resultConfig.GetCacheId(facetsConfig);
             var viewType = Context.Results.GetViewType(resultConfig.ViewTypeId);
-            var resultContent = viewType.IsCachable ? ResultCache.Get(resultCacheId) : null;
-            if (resultContent == null)
+            var result = viewType.IsCachable ? Cache.Get<ResultContentSet>(resultCacheId) : null;
+            if (result == null)
             {
-                resultContent = base.Load(facetsConfig, resultConfig);
-                ConfigCache.Put(cacheId, facetsConfig);
+                result = base.Load(facetsConfig, resultConfig);
+                Cache.Set<FacetsConfig2>(configCacheId, facetsConfig);
                 if (Context.Results.GetViewType(resultConfig.ViewTypeId).IsCachable)
-                    ResultCache.Put(resultCacheId, resultContent);
+                    Cache.Set<ResultContentSet>(resultCacheId, result);
             }
-            return resultContent;
+            return result;
         }
     }
 

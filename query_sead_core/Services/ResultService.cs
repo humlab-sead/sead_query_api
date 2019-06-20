@@ -33,7 +33,16 @@ namespace QuerySeadDomain {
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             string sql = CompileSql(facetsConfig, resultConfig);
-            return empty(sql) ? null : new TabularResultContentSet(resultConfig, GetResultFields(resultConfig), Context.Query(sql)) { Payload = GetExtraPayload(facetsConfig) };
+
+            if (empty(sql))
+                return null;
+
+            var resultSet = new TabularResultContentSet(resultConfig, GetResultFields(resultConfig), Context.Query(sql)) {
+                Payload = GetExtraPayload(facetsConfig),
+                Query = sql
+            };
+
+            return resultSet;
         }
 
         protected virtual List<ResultAggregateField> GetResultFields(ResultConfig resultConfig)
@@ -78,7 +87,9 @@ namespace QuerySeadDomain {
             CatCountDict data = GetCategoryCounts(facetsConfig);
             CatCountDict filtered = data ?? new CatCountDict();
             CatCountDict unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.DeletePicks()) : filtered;
-            return (filtered, unfiltered);
+            return new {
+                FilteredCategoryCounts = filtered,
+                FullCategoryCounts = unfiltered };
         }
 
         protected override string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)

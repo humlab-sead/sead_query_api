@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.api", "query_sead_net\query.sead.api.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
 EndProject
@@ -12,11 +12,25 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		deploy_to_dev.bat = deploy_to_dev.bat
+		deploy_query_sead = deploy_query_sead
+		deploy_query_sead.bash = deploy_query_sead.bash
+		publish_release.bat = publish_release.bat
 		README.md = README.md
-		..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf = ..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf
-		..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf = ..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
+		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf
+		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf
+		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conf", "Conf", "{E07C014F-0A85-48D9-B035-B06F12A78C83}"
+	ProjectSection(SolutionItems) = preProject
+		conf\appsettings.Debug.json = conf\appsettings.Debug.json
+		conf\appsettings.Release.json = conf\appsettings.Release.json
+		conf\appsettings.Test.json = conf\appsettings.Test.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{49AA1790-4719-441E-B3B6-5FBB1E77ED97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{19B49B72-6F5C-4435-8B15-0451E93648A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +53,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E07C014F-0A85-48D9-B035-B06F12A78C83} = {01CB666F-601C-4279-B756-5C06A6BA6B7A}
+		{49AA1790-4719-441E-B3B6-5FBB1E77ED97} = {01CB666F-601C-4279-B756-5C06A6BA6B7A}
+		{19B49B72-6F5C-4435-8B15-0451E93648A8} = {49AA1790-4719-441E-B3B6-5FBB1E77ED97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5283932E-66A7-41F3-9EEE-C02D5737EFC6}

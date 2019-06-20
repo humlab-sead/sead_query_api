@@ -1,0 +1,3342 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <facets>
+        <facet_c>
+            <request_id>30</request_id>
+            <f_code><![CDATA[tbl_denormalized_measured_values_33_0]]></f_code>
+            <report><![CDATA[ Aktuella filter   <BR>    select
+  198 as lower,
+  209 as upper, '198=>209' :: text as id,
+  '' as name
+union all
+select
+  209 as lower,
+  220 as upper, '209=>220' :: text as id,
+  '' as name
+union all
+select
+  220 as lower,
+  231 as upper, '220=>231' :: text as id,
+  '' as name
+union all
+select
+  231 as lower,
+  242 as upper, '231=>242' :: text as id,
+  '' as name
+union all
+select
+  242 as lower,
+  253 as upper, '242=>253' :: text as id,
+  '' as name
+union all
+select
+  253 as lower,
+  264 as upper, '253=>264' :: text as id,
+  '' as name
+union all
+select
+  264 as lower,
+  275 as upper, '264=>275' :: text as id,
+  '' as name
+union all
+select
+  275 as lower,
+  286 as upper, '275=>286' :: text as id,
+  '' as name
+union all
+select
+  286 as lower,
+  297 as upper, '286=>297' :: text as id,
+  '' as name
+union all
+select
+  297 as lower,
+  308 as upper, '297=>308' :: text as id,
+  '' as name
+union all
+select
+  308 as lower,
+  319 as upper, '308=>319' :: text as id,
+  '' as name
+union all
+select
+  319 as lower,
+  330 as upper, '319=>330' :: text as id,
+  '' as name
+union all
+select
+  330 as lower,
+  341 as upper, '330=>341' :: text as id,
+  '' as name
+union all
+select
+  341 as lower,
+  352 as upper, '341=>352' :: text as id,
+  '' as name
+union all
+select
+  352 as lower,
+  363 as upper, '352=>363' :: text as id,
+  '' as name
+union all
+select
+  363 as lower,
+  374 as upper, '363=>374' :: text as id,
+  '' as name
+union all
+select
+  374 as lower,
+  385 as upper, '374=>385' :: text as id,
+  '' as name
+union all
+select
+  385 as lower,
+  396 as upper, '385=>396' :: text as id,
+  '' as name
+union all
+select
+  396 as lower,
+  407 as upper, '396=>407' :: text as id,
+  '' as name
+union all
+select
+  407 as lower,
+  418 as upper, '407=>418' :: text as id,
+  '' as name
+union all
+select
+  418 as lower,
+  429 as upper, '418=>429' :: text as id,
+  '' as name
+union all
+select
+  429 as lower,
+  440 as upper, '429=>440' :: text as id,
+  '' as name
+union all
+select
+  440 as lower,
+  451 as upper, '440=>451' :: text as id,
+  '' as name
+union all
+select
+  451 as lower,
+  462 as upper, '451=>462' :: text as id,
+  '' as name
+union all
+select
+  462 as lower,
+  473 as upper, '462=>473' :: text as id,
+  '' as name
+union all
+select
+  473 as lower,
+  484 as upper, '473=>484' :: text as id,
+  '' as name
+union all
+select
+  484 as lower,
+  495 as upper, '484=>495' :: text as id,
+  '' as name
+union all
+select
+  495 as lower,
+  506 as upper, '495=>506' :: text as id,
+  '' as name
+union all
+select
+  506 as lower,
+  517 as upper, '506=>517' :: text as id,
+  '' as name
+union all
+select
+  517 as lower,
+  528 as upper, '517=>528' :: text as id,
+  '' as name
+union all
+select
+  528 as lower,
+  539 as upper, '528=>539' :: text as id,
+  '' as name
+union all
+select
+  539 as lower,
+  550 as upper, '539=>550' :: text as id,
+  '' as name
+union all
+select
+  550 as lower,
+  561 as upper, '550=>561' :: text as id,
+  '' as name
+union all
+select
+  561 as lower,
+  572 as upper, '561=>572' :: text as id,
+  '' as name
+union all
+select
+  572 as lower,
+  583 as upper, '572=>583' :: text as id,
+  '' as name
+union all
+select
+  583 as lower,
+  594 as upper, '583=>594' :: text as id,
+  '' as name
+union all
+select
+  594 as lower,
+  605 as upper, '594=>605' :: text as id,
+  '' as name
+union all
+select
+  605 as lower,
+  616 as upper, '605=>616' :: text as id,
+  '' as name
+union all
+select
+  616 as lower,
+  627 as upper, '616=>627' :: text as id,
+  '' as name
+union all
+select
+  627 as lower,
+  638 as upper, '627=>638' :: text as id,
+  '' as name
+union all
+select
+  638 as lower,
+  649 as upper, '638=>649' :: text as id,
+  '' as name
+union all
+select
+  649 as lower,
+  660 as upper, '649=>660' :: text as id,
+  '' as name
+union all
+select
+  660 as lower,
+  671 as upper, '660=>671' :: text as id,
+  '' as name
+union all
+select
+  671 as lower,
+  682 as upper, '671=>682' :: text as id,
+  '' as name
+union all
+select
+  682 as lower,
+  693 as upper, '682=>693' :: text as id,
+  '' as name
+union all
+select
+  693 as lower,
+  704 as upper, '693=>704' :: text as id,
+  '' as name
+union all
+select
+  704 as lower,
+  715 as upper, '704=>715' :: text as id,
+  '' as name
+union all
+select
+  715 as lower,
+  726 as upper, '715=>726' :: text as id,
+  '' as name
+union all
+select
+  726 as lower,
+  737 as upper, '726=>737' :: text as id,
+  '' as name
+union all
+select
+  737 as lower,
+  748 as upper, '737=>748' :: text as id,
+  '' as name
+union all
+select
+  748 as lower,
+  759 as upper, '748=>759' :: text as id,
+  '' as name
+union all
+select
+  759 as lower,
+  770 as upper, '759=>770' :: text as id,
+  '' as name
+union all
+select
+  770 as lower,
+  781 as upper, '770=>781' :: text as id,
+  '' as name
+union all
+select
+  781 as lower,
+  792 as upper, '781=>792' :: text as id,
+  '' as name
+union all
+select
+  792 as lower,
+  803 as upper, '792=>803' :: text as id,
+  '' as name
+union all
+select
+  803 as lower,
+  814 as upper, '803=>814' :: text as id,
+  '' as name
+union all
+select
+  814 as lower,
+  825 as upper, '814=>825' :: text as id,
+  '' as name
+union all
+select
+  825 as lower,
+  836 as upper, '825=>836' :: text as id,
+  '' as name
+union all
+select
+  836 as lower,
+  847 as upper, '836=>847' :: text as id,
+  '' as name
+union all
+select
+  847 as lower,
+  858 as upper, '847=>858' :: text as id,
+  '' as name
+union all
+select
+  858 as lower,
+  869 as upper, '858=>869' :: text as id,
+  '' as name
+union all
+select
+  869 as lower,
+  880 as upper, '869=>880' :: text as id,
+  '' as name
+union all
+select
+  880 as lower,
+  891 as upper, '880=>891' :: text as id,
+  '' as name
+union all
+select
+  891 as lower,
+  902 as upper, '891=>902' :: text as id,
+  '' as name
+union all
+select
+  902 as lower,
+  913 as upper, '902=>913' :: text as id,
+  '' as name
+union all
+select
+  913 as lower,
+  924 as upper, '913=>924' :: text as id,
+  '' as name
+union all
+select
+  924 as lower,
+  935 as upper, '924=>935' :: text as id,
+  '' as name
+union all
+select
+  935 as lower,
+  946 as upper, '935=>946' :: text as id,
+  '' as name
+union all
+select
+  946 as lower,
+  957 as upper, '946=>957' :: text as id,
+  '' as name
+union all
+select
+  957 as lower,
+  968 as upper, '957=>968' :: text as id,
+  '' as name
+union all
+select
+  968 as lower,
+  979 as upper, '968=>979' :: text as id,
+  '' as name
+union all
+select
+  979 as lower,
+  990 as upper, '979=>990' :: text as id,
+  '' as name
+union all
+select
+  990 as lower,
+  1001 as upper, '990=>1001' :: text as id,
+  '' as name
+union all
+select
+  1001 as lower,
+  1012 as upper, '1001=>1012' :: text as id,
+  '' as name
+union all
+select
+  1012 as lower,
+  1023 as upper, '1012=>1023' :: text as id,
+  '' as name
+union all
+select
+  1023 as lower,
+  1034 as upper, '1023=>1034' :: text as id,
+  '' as name
+union all
+select
+  1034 as lower,
+  1045 as upper, '1034=>1045' :: text as id,
+  '' as name
+union all
+select
+  1045 as lower,
+  1056 as upper, '1045=>1056' :: text as id,
+  '' as name
+union all
+select
+  1056 as lower,
+  1067 as upper, '1056=>1067' :: text as id,
+  '' as name
+union all
+select
+  1067 as lower,
+  1078 as upper, '1067=>1078' :: text as id,
+  '' as name
+union all
+select
+  1078 as lower,
+  1089 as upper, '1078=>1089' :: text as id,
+  '' as name
+union all
+select
+  1089 as lower,
+  1100 as upper, '1089=>1100' :: text as id,
+  '' as name
+union all
+select
+  1100 as lower,
+  1111 as upper, '1100=>1111' :: text as id,
+  '' as name
+union all
+select
+  1111 as lower,
+  1122 as upper, '1111=>1122' :: text as id,
+  '' as name
+union all
+select
+  1122 as lower,
+  1133 as upper, '1122=>1133' :: text as id,
+  '' as name
+union all
+select
+  1133 as lower,
+  1144 as upper, '1133=>1144' :: text as id,
+  '' as name
+union all
+select
+  1144 as lower,
+  1155 as upper, '1144=>1155' :: text as id,
+  '' as name
+union all
+select
+  1155 as lower,
+  1166 as upper, '1155=>1166' :: text as id,
+  '' as name
+union all
+select
+  1166 as lower,
+  1177 as upper, '1166=>1177' :: text as id,
+  '' as name
+union all
+select
+  1177 as lower,
+  1188 as upper, '1177=>1188' :: text as id,
+  '' as name
+union all
+select
+  1188 as lower,
+  1199 as upper, '1188=>1199' :: text as id,
+  '' as name
+union all
+select
+  1199 as lower,
+  1210 as upper, '1199=>1210' :: text as id,
+  '' as name
+union all
+select
+  1210 as lower,
+  1221 as upper, '1210=>1221' :: text as id,
+  '' as name
+union all
+select
+  1221 as lower,
+  1232 as upper, '1221=>1232' :: text as id,
+  '' as name
+union all
+select
+  1232 as lower,
+  1243 as upper, '1232=>1243' :: text as id,
+  '' as name
+union all
+select
+  1243 as lower,
+  1254 as upper, '1243=>1254' :: text as id,
+  '' as name
+union all
+select
+  1254 as lower,
+  1265 as upper, '1254=>1265' :: text as id,
+  '' as name
+union all
+select
+  1265 as lower,
+  1276 as upper, '1265=>1276' :: text as id,
+  '' as name
+union all
+select
+  1276 as lower,
+  1287 as upper, '1276=>1287' :: text as id,
+  '' as name
+union all
+select
+  1287 as lower,
+  1298 as upper, '1287=>1298' :: text as id,
+  '' as name
+union all
+select
+  1298 as lower,
+  1309 as upper, '1298=>1309' :: text as id,
+  '' as name
+union all
+select
+  1309 as lower,
+  1320 as upper, '1309=>1320' :: text as id,
+  '' as name
+union all
+select
+  1320 as lower,
+  1331 as upper, '1320=>1331' :: text as id,
+  '' as name
+union all
+select
+  1331 as lower,
+  1342 as upper, '1331=>1342' :: text as id,
+  '' as name
+union all
+select
+  1342 as lower,
+  1353 as upper, '1342=>1353' :: text as id,
+  '' as name
+union all
+select
+  1353 as lower,
+  1364 as upper, '1353=>1364' :: text as id,
+  '' as name
+union all
+select
+  1364 as lower,
+  1375 as upper, '1364=>1375' :: text as id,
+  '' as name
+union all
+select
+  1375 as lower,
+  1386 as upper, '1375=>1386' :: text as id,
+  '' as name
+union all
+select
+  1386 as lower,
+  1397 as upper, '1386=>1397' :: text as id,
+  '' as name
+union all
+select
+  1397 as lower,
+  1408 as upper, '1397=>1408' :: text as id,
+  '' as name
+union all
+select
+  1408 as lower,
+  1419 as upper, '1408=>1419' :: text as id,
+  '' as name
+union all
+select
+  1419 as lower,
+  1430 as upper, '1419=>1430' :: text as id,
+  '' as name
+union all
+select
+  1430 as lower,
+  1441 as upper, '1430=>1441' :: text as id,
+  '' as name
+union all
+select
+  1441 as lower,
+  1452 as upper, '1441=>1452' :: text as id,
+  '' as name
+union all
+select
+  1452 as lower,
+  1463 as upper, '1452=>1463' :: text as id,
+  '' as name
+union all
+select
+  1463 as lower,
+  1474 as upper, '1463=>1474' :: text as id,
+  '' as name
+union all
+select
+  1474 as lower,
+  1485 as upper, '1474=>1485' :: text as id,
+  '' as name
+union all
+select
+  1485 as lower,
+  1496 as upper, '1485=>1496' :: text as id,
+  '' as name
+union all
+select
+  1496 as lower,
+  1507 as upper, '1496=>1507' :: text as id,
+  '' as name
+union all
+select
+  1507 as lower,
+  1518 as upper, '1507=>1518' :: text as id,
+  '' as name
+union all
+select
+  1518 as lower,
+  1529 as upper, '1518=>1529' :: text as id,
+  '' as name  ;
+  select
+  lower,
+  upper,
+  facet_term,
+  count(facet_term) as direct_count
+from
+  (
+    select
+      COALESCE(
+        lower || '=>' || upper, 'data missing'
+      ) as facet_term,
+      group_column,
+      lower,
+      upper
+    from
+      (
+        select
+          lower,
+          upper,
+          tbl_analysis_entities.analysis_entity_id as group_column
+        from
+          metainformation.tbl_denormalized_measured_values
+          left join (
+            select
+              198 as lower,
+              209 as upper, '198=>209' :: text as id,
+              '' as name
+            union all
+            select
+              209 as lower,
+              220 as upper, '209=>220' :: text as id,
+              '' as name
+            union all
+            select
+              220 as lower,
+              231 as upper, '220=>231' :: text as id,
+              '' as name
+            union all
+            select
+              231 as lower,
+              242 as upper, '231=>242' :: text as id,
+              '' as name
+            union all
+            select
+              242 as lower,
+              253 as upper, '242=>253' :: text as id,
+              '' as name
+            union all
+            select
+              253 as lower,
+              264 as upper, '253=>264' :: text as id,
+              '' as name
+            union all
+            select
+              264 as lower,
+              275 as upper, '264=>275' :: text as id,
+              '' as name
+            union all
+            select
+              275 as lower,
+              286 as upper, '275=>286' :: text as id,
+              '' as name
+            union all
+            select
+              286 as lower,
+              297 as upper, '286=>297' :: text as id,
+              '' as name
+            union all
+            select
+              297 as lower,
+              308 as upper, '297=>308' :: text as id,
+              '' as name
+            union all
+            select
+              308 as lower,
+              319 as upper, '308=>319' :: text as id,
+              '' as name
+            union all
+            select
+              319 as lower,
+              330 as upper, '319=>330' :: text as id,
+              '' as name
+            union all
+            select
+              330 as lower,
+              341 as upper, '330=>341' :: text as id,
+              '' as name
+            union all
+            select
+              341 as lower,
+              352 as upper, '341=>352' :: text as id,
+              '' as name
+            union all
+            select
+              352 as lower,
+              363 as upper, '352=>363' :: text as id,
+              '' as name
+            union all
+            select
+              363 as lower,
+              374 as upper, '363=>374' :: text as id,
+              '' as name
+            union all
+            select
+              374 as lower,
+              385 as upper, '374=>385' :: text as id,
+              '' as name
+            union all
+            select
+              385 as lower,
+              396 as upper, '385=>396' :: text as id,
+              '' as name
+            union all
+            select
+              396 as lower,
+              407 as upper, '396=>407' :: text as id,
+              '' as name
+            union all
+            select
+              407 as lower,
+              418 as upper, '407=>418' :: text as id,
+              '' as name
+            union all
+            select
+              418 as lower,
+              429 as upper, '418=>429' :: text as id,
+              '' as name
+            union all
+            select
+              429 as lower,
+              440 as upper, '429=>440' :: text as id,
+              '' as name
+            union all
+            select
+              440 as lower,
+              451 as upper, '440=>451' :: text as id,
+              '' as name
+            union all
+            select
+              451 as lower,
+              462 as upper, '451=>462' :: text as id,
+              '' as name
+            union all
+            select
+              462 as lower,
+              473 as upper, '462=>473' :: text as id,
+              '' as name
+            union all
+            select
+              473 as lower,
+              484 as upper, '473=>484' :: text as id,
+              '' as name
+            union all
+            select
+              484 as lower,
+              495 as upper, '484=>495' :: text as id,
+              '' as name
+            union all
+            select
+              495 as lower,
+              506 as upper, '495=>506' :: text as id,
+              '' as name
+            union all
+            select
+              506 as lower,
+              517 as upper, '506=>517' :: text as id,
+              '' as name
+            union all
+            select
+              517 as lower,
+              528 as upper, '517=>528' :: text as id,
+              '' as name
+            union all
+            select
+              528 as lower,
+              539 as upper, '528=>539' :: text as id,
+              '' as name
+            union all
+            select
+              539 as lower,
+              550 as upper, '539=>550' :: text as id,
+              '' as name
+            union all
+            select
+              550 as lower,
+              561 as upper, '550=>561' :: text as id,
+              '' as name
+            union all
+            select
+              561 as lower,
+              572 as upper, '561=>572' :: text as id,
+              '' as name
+            union all
+            select
+              572 as lower,
+              583 as upper, '572=>583' :: text as id,
+              '' as name
+            union all
+            select
+              583 as lower,
+              594 as upper, '583=>594' :: text as id,
+              '' as name
+            union all
+            select
+              594 as lower,
+              605 as upper, '594=>605' :: text as id,
+              '' as name
+            union all
+            select
+              605 as lower,
+              616 as upper, '605=>616' :: text as id,
+              '' as name
+            union all
+            select
+              616 as lower,
+              627 as upper, '616=>627' :: text as id,
+              '' as name
+            union all
+            select
+              627 as lower,
+              638 as upper, '627=>638' :: text as id,
+              '' as name
+            union all
+            select
+              638 as lower,
+              649 as upper, '638=>649' :: text as id,
+              '' as name
+            union all
+            select
+              649 as lower,
+              660 as upper, '649=>660' :: text as id,
+              '' as name
+            union all
+            select
+              660 as lower,
+              671 as upper, '660=>671' :: text as id,
+              '' as name
+            union all
+            select
+              671 as lower,
+              682 as upper, '671=>682' :: text as id,
+              '' as name
+            union all
+            select
+              682 as lower,
+              693 as upper, '682=>693' :: text as id,
+              '' as name
+            union all
+            select
+              693 as lower,
+              704 as upper, '693=>704' :: text as id,
+              '' as name
+            union all
+            select
+              704 as lower,
+              715 as upper, '704=>715' :: text as id,
+              '' as name
+            union all
+            select
+              715 as lower,
+              726 as upper, '715=>726' :: text as id,
+              '' as name
+            union all
+            select
+              726 as lower,
+              737 as upper, '726=>737' :: text as id,
+              '' as name
+            union all
+            select
+              737 as lower,
+              748 as upper, '737=>748' :: text as id,
+              '' as name
+            union all
+            select
+              748 as lower,
+              759 as upper, '748=>759' :: text as id,
+              '' as name
+            union all
+            select
+              759 as lower,
+              770 as upper, '759=>770' :: text as id,
+              '' as name
+            union all
+            select
+              770 as lower,
+              781 as upper, '770=>781' :: text as id,
+              '' as name
+            union all
+            select
+              781 as lower,
+              792 as upper, '781=>792' :: text as id,
+              '' as name
+            union all
+            select
+              792 as lower,
+              803 as upper, '792=>803' :: text as id,
+              '' as name
+            union all
+            select
+              803 as lower,
+              814 as upper, '803=>814' :: text as id,
+              '' as name
+            union all
+            select
+              814 as lower,
+              825 as upper, '814=>825' :: text as id,
+              '' as name
+            union all
+            select
+              825 as lower,
+              836 as upper, '825=>836' :: text as id,
+              '' as name
+            union all
+            select
+              836 as lower,
+              847 as upper, '836=>847' :: text as id,
+              '' as name
+            union all
+            select
+              847 as lower,
+              858 as upper, '847=>858' :: text as id,
+              '' as name
+            union all
+            select
+              858 as lower,
+              869 as upper, '858=>869' :: text as id,
+              '' as name
+            union all
+            select
+              869 as lower,
+              880 as upper, '869=>880' :: text as id,
+              '' as name
+            union all
+            select
+              880 as lower,
+              891 as upper, '880=>891' :: text as id,
+              '' as name
+            union all
+            select
+              891 as lower,
+              902 as upper, '891=>902' :: text as id,
+              '' as name
+            union all
+            select
+              902 as lower,
+              913 as upper, '902=>913' :: text as id,
+              '' as name
+            union all
+            select
+              913 as lower,
+              924 as upper, '913=>924' :: text as id,
+              '' as name
+            union all
+            select
+              924 as lower,
+              935 as upper, '924=>935' :: text as id,
+              '' as name
+            union all
+            select
+              935 as lower,
+              946 as upper, '935=>946' :: text as id,
+              '' as name
+            union all
+            select
+              946 as lower,
+              957 as upper, '946=>957' :: text as id,
+              '' as name
+            union all
+            select
+              957 as lower,
+              968 as upper, '957=>968' :: text as id,
+              '' as name
+            union all
+            select
+              968 as lower,
+              979 as upper, '968=>979' :: text as id,
+              '' as name
+            union all
+            select
+              979 as lower,
+              990 as upper, '979=>990' :: text as id,
+              '' as name
+            union all
+            select
+              990 as lower,
+              1001 as upper, '990=>1001' :: text as id,
+              '' as name
+            union all
+            select
+              1001 as lower,
+              1012 as upper, '1001=>1012' :: text as id,
+              '' as name
+            union all
+            select
+              1012 as lower,
+              1023 as upper, '1012=>1023' :: text as id,
+              '' as name
+            union all
+            select
+              1023 as lower,
+              1034 as upper, '1023=>1034' :: text as id,
+              '' as name
+            union all
+            select
+              1034 as lower,
+              1045 as upper, '1034=>1045' :: text as id,
+              '' as name
+            union all
+            select
+              1045 as lower,
+              1056 as upper, '1045=>1056' :: text as id,
+              '' as name
+            union all
+            select
+              1056 as lower,
+              1067 as upper, '1056=>1067' :: text as id,
+              '' as name
+            union all
+            select
+              1067 as lower,
+              1078 as upper, '1067=>1078' :: text as id,
+              '' as name
+            union all
+            select
+              1078 as lower,
+              1089 as upper, '1078=>1089' :: text as id,
+              '' as name
+            union all
+            select
+              1089 as lower,
+              1100 as upper, '1089=>1100' :: text as id,
+              '' as name
+            union all
+            select
+              1100 as lower,
+              1111 as upper, '1100=>1111' :: text as id,
+              '' as name
+            union all
+            select
+              1111 as lower,
+              1122 as upper, '1111=>1122' :: text as id,
+              '' as name
+            union all
+            select
+              1122 as lower,
+              1133 as upper, '1122=>1133' :: text as id,
+              '' as name
+            union all
+            select
+              1133 as lower,
+              1144 as upper, '1133=>1144' :: text as id,
+              '' as name
+            union all
+            select
+              1144 as lower,
+              1155 as upper, '1144=>1155' :: text as id,
+              '' as name
+            union all
+            select
+              1155 as lower,
+              1166 as upper, '1155=>1166' :: text as id,
+              '' as name
+            union all
+            select
+              1166 as lower,
+              1177 as upper, '1166=>1177' :: text as id,
+              '' as name
+            union all
+            select
+              1177 as lower,
+              1188 as upper, '1177=>1188' :: text as id,
+              '' as name
+            union all
+            select
+              1188 as lower,
+              1199 as upper, '1188=>1199' :: text as id,
+              '' as name
+            union all
+            select
+              1199 as lower,
+              1210 as upper, '1199=>1210' :: text as id,
+              '' as name
+            union all
+            select
+              1210 as lower,
+              1221 as upper, '1210=>1221' :: text as id,
+              '' as name
+            union all
+            select
+              1221 as lower,
+              1232 as upper, '1221=>1232' :: text as id,
+              '' as name
+            union all
+            select
+              1232 as lower,
+              1243 as upper, '1232=>1243' :: text as id,
+              '' as name
+            union all
+            select
+              1243 as lower,
+              1254 as upper, '1243=>1254' :: text as id,
+              '' as name
+            union all
+            select
+              1254 as lower,
+              1265 as upper, '1254=>1265' :: text as id,
+              '' as name
+            union all
+            select
+              1265 as lower,
+              1276 as upper, '1265=>1276' :: text as id,
+              '' as name
+            union all
+            select
+              1276 as lower,
+              1287 as upper, '1276=>1287' :: text as id,
+              '' as name
+            union all
+            select
+              1287 as lower,
+              1298 as upper, '1287=>1298' :: text as id,
+              '' as name
+            union all
+            select
+              1298 as lower,
+              1309 as upper, '1298=>1309' :: text as id,
+              '' as name
+            union all
+            select
+              1309 as lower,
+              1320 as upper, '1309=>1320' :: text as id,
+              '' as name
+            union all
+            select
+              1320 as lower,
+              1331 as upper, '1320=>1331' :: text as id,
+              '' as name
+            union all
+            select
+              1331 as lower,
+              1342 as upper, '1331=>1342' :: text as id,
+              '' as name
+            union all
+            select
+              1342 as lower,
+              1353 as upper, '1342=>1353' :: text as id,
+              '' as name
+            union all
+            select
+              1353 as lower,
+              1364 as upper, '1353=>1364' :: text as id,
+              '' as name
+            union all
+            select
+              1364 as lower,
+              1375 as upper, '1364=>1375' :: text as id,
+              '' as name
+            union all
+            select
+              1375 as lower,
+              1386 as upper, '1375=>1386' :: text as id,
+              '' as name
+            union all
+            select
+              1386 as lower,
+              1397 as upper, '1386=>1397' :: text as id,
+              '' as name
+            union all
+            select
+              1397 as lower,
+              1408 as upper, '1397=>1408' :: text as id,
+              '' as name
+            union all
+            select
+              1408 as lower,
+              1419 as upper, '1408=>1419' :: text as id,
+              '' as name
+            union all
+            select
+              1419 as lower,
+              1430 as upper, '1419=>1430' :: text as id,
+              '' as name
+            union all
+            select
+              1430 as lower,
+              1441 as upper, '1430=>1441' :: text as id,
+              '' as name
+            union all
+            select
+              1441 as lower,
+              1452 as upper, '1441=>1452' :: text as id,
+              '' as name
+            union all
+            select
+              1452 as lower,
+              1463 as upper, '1452=>1463' :: text as id,
+              '' as name
+            union all
+            select
+              1463 as lower,
+              1474 as upper, '1463=>1474' :: text as id,
+              '' as name
+            union all
+            select
+              1474 as lower,
+              1485 as upper, '1474=>1485' :: text as id,
+              '' as name
+            union all
+            select
+              1485 as lower,
+              1496 as upper, '1485=>1496' :: text as id,
+              '' as name
+            union all
+            select
+              1496 as lower,
+              1507 as upper, '1496=>1507' :: text as id,
+              '' as name
+            union all
+            select
+              1507 as lower,
+              1518 as upper, '1507=>1518' :: text as id,
+              '' as name
+            union all
+            select
+              1518 as lower,
+              1529 as upper, '1518=>1529' :: text as id,
+              '' as name
+          ) as temp_interval on metainformation.tbl_denormalized_measured_values.value_33_0 :: integer >= lower
+          and metainformation.tbl_denormalized_measured_values.value_33_0 :: integer < upper
+          inner join tbl_physical_samples on tbl_physical_samples."physical_sample_id" = metainformation.tbl_denormalized_measured_values."physical_sample_id"
+          left join tbl_analysis_entities on tbl_analysis_entities."physical_sample_id" = tbl_physical_samples."physical_sample_id"
+          and (
+            (
+              metainformation.tbl_denormalized_measured_values.value_33_0 >= 198
+              and metainformation.tbl_denormalized_measured_values.value_33_0 <= 1530
+            )
+          ) -- Make nice
+        group by
+          lower,
+          upper,
+          tbl_analysis_entities.analysis_entity_id
+        order by
+          lower
+      ) as tmp4
+    group by
+      lower,
+      upper,
+      group_column
+  ) as tmp3
+where
+  lower is not null
+  and upper is not null
+group by
+  lower,
+  upper,
+  facet_term
+order by
+  lower,
+  upper ;
+
+198  till 209
+209  till 220
+220  till 231
+231  till 242
+242  till 253
+253  till 264
+264  till 275
+275  till 286
+286  till 297
+297  till 308
+308  till 319
+319  till 330
+330  till 341
+341  till 352
+352  till 363
+363  till 374
+374  till 385
+385  till 396
+396  till 407
+407  till 418
+418  till 429
+429  till 440
+440  till 451
+451  till 462
+462  till 473
+473  till 484
+484  till 495
+495  till 506
+506  till 517
+517  till 528
+528  till 539
+539  till 550
+550  till 561
+561  till 572
+572  till 583
+583  till 594
+594  till 605
+605  till 616
+616  till 627
+627  till 638
+638  till 649
+649  till 660
+660  till 671
+671  till 682
+682  till 693
+693  till 704
+704  till 715
+715  till 726
+726  till 737
+737  till 748
+748  till 759
+759  till 770
+770  till 781
+781  till 792
+792  till 803
+803  till 814
+814  till 825
+825  till 836
+836  till 847
+847  till 858
+858  till 869
+869  till 880
+880  till 891
+891  till 902
+902  till 913
+913  till 924
+924  till 935
+935  till 946
+946  till 957
+957  till 968
+968  till 979
+979  till 990
+990  till 1001
+1001  till 1012
+1012  till 1023
+1023  till 1034
+1034  till 1045
+1045  till 1056
+1056  till 1067
+1067  till 1078
+1078  till 1089
+1089  till 1100
+1100  till 1111
+1111  till 1122
+1122  till 1133
+1133  till 1144
+1144  till 1155
+1155  till 1166
+1166  till 1177
+1177  till 1188
+1188  till 1199
+1199  till 1210
+1210  till 1221
+1221  till 1232
+1232  till 1243
+1243  till 1254
+1254  till 1265
+1265  till 1276
+1276  till 1287
+1287  till 1298
+1298  till 1309
+1309  till 1320
+1320  till 1331
+1331  till 1342
+1342  till 1353
+1353  till 1364
+1364  till 1375
+1375  till 1386
+1386  till 1397
+1397  till 1408
+1408  till 1419
+1419  till 1430
+1430  till 1441
+1441  till 1452
+1452  till 1463
+1463  till 1474
+1474  till 1485
+1485  till 1496
+1496  till 1507
+1507  till 1518
+1518  till 1529]]></report>
+            <report_html><![CDATA[]]></report_html>
+            <report_xml></report_xml>
+            <count_of_selections></count_of_selections>
+            <range_interval>11</range_interval>
+            <total_number_of_rows><![CDATA[121]]></total_number_of_rows>
+            <start_row>0</start_row>
+            <scroll_to_row>0</scroll_to_row>
+            <action_type><![CDATA[selection_change]]></action_type>
+            <rows>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[0]]></value_id>
+                            <value><![CDATA[198]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[0]]></value_id>
+                            <value><![CDATA[209]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[198  till 209]]></name>
+                    <direct_counts><![CDATA[415]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[1]]></value_id>
+                            <value><![CDATA[209]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[1]]></value_id>
+                            <value><![CDATA[220]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[209  till 220]]></name>
+                    <direct_counts><![CDATA[440]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[2]]></value_id>
+                            <value><![CDATA[220]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[2]]></value_id>
+                            <value><![CDATA[231]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[220  till 231]]></name>
+                    <direct_counts><![CDATA[381]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[3]]></value_id>
+                            <value><![CDATA[231]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[3]]></value_id>
+                            <value><![CDATA[242]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[231  till 242]]></name>
+                    <direct_counts><![CDATA[309]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[4]]></value_id>
+                            <value><![CDATA[242]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[4]]></value_id>
+                            <value><![CDATA[253]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[242  till 253]]></name>
+                    <direct_counts><![CDATA[291]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[5]]></value_id>
+                            <value><![CDATA[253]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[5]]></value_id>
+                            <value><![CDATA[264]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[253  till 264]]></name>
+                    <direct_counts><![CDATA[332]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[6]]></value_id>
+                            <value><![CDATA[264]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[6]]></value_id>
+                            <value><![CDATA[275]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[264  till 275]]></name>
+                    <direct_counts><![CDATA[318]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[7]]></value_id>
+                            <value><![CDATA[275]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[7]]></value_id>
+                            <value><![CDATA[286]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[275  till 286]]></name>
+                    <direct_counts><![CDATA[302]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[8]]></value_id>
+                            <value><![CDATA[286]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[8]]></value_id>
+                            <value><![CDATA[297]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[286  till 297]]></name>
+                    <direct_counts><![CDATA[266]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[9]]></value_id>
+                            <value><![CDATA[297]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[9]]></value_id>
+                            <value><![CDATA[308]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[297  till 308]]></name>
+                    <direct_counts><![CDATA[248]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[10]]></value_id>
+                            <value><![CDATA[308]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[10]]></value_id>
+                            <value><![CDATA[319]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[308  till 319]]></name>
+                    <direct_counts><![CDATA[241]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[11]]></value_id>
+                            <value><![CDATA[319]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[11]]></value_id>
+                            <value><![CDATA[330]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[319  till 330]]></name>
+                    <direct_counts><![CDATA[201]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[12]]></value_id>
+                            <value><![CDATA[330]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[12]]></value_id>
+                            <value><![CDATA[341]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[330  till 341]]></name>
+                    <direct_counts><![CDATA[244]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[13]]></value_id>
+                            <value><![CDATA[341]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[13]]></value_id>
+                            <value><![CDATA[352]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[341  till 352]]></name>
+                    <direct_counts><![CDATA[190]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[14]]></value_id>
+                            <value><![CDATA[352]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[14]]></value_id>
+                            <value><![CDATA[363]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[352  till 363]]></name>
+                    <direct_counts><![CDATA[160]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[15]]></value_id>
+                            <value><![CDATA[363]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[15]]></value_id>
+                            <value><![CDATA[374]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[363  till 374]]></name>
+                    <direct_counts><![CDATA[149]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[16]]></value_id>
+                            <value><![CDATA[374]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[16]]></value_id>
+                            <value><![CDATA[385]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[374  till 385]]></name>
+                    <direct_counts><![CDATA[213]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[17]]></value_id>
+                            <value><![CDATA[385]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[17]]></value_id>
+                            <value><![CDATA[396]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[385  till 396]]></name>
+                    <direct_counts><![CDATA[161]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[18]]></value_id>
+                            <value><![CDATA[396]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[18]]></value_id>
+                            <value><![CDATA[407]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[396  till 407]]></name>
+                    <direct_counts><![CDATA[143]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[19]]></value_id>
+                            <value><![CDATA[407]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[19]]></value_id>
+                            <value><![CDATA[418]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[407  till 418]]></name>
+                    <direct_counts><![CDATA[90]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[20]]></value_id>
+                            <value><![CDATA[418]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[20]]></value_id>
+                            <value><![CDATA[429]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[418  till 429]]></name>
+                    <direct_counts><![CDATA[132]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[21]]></value_id>
+                            <value><![CDATA[429]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[21]]></value_id>
+                            <value><![CDATA[440]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[429  till 440]]></name>
+                    <direct_counts><![CDATA[149]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[22]]></value_id>
+                            <value><![CDATA[440]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[22]]></value_id>
+                            <value><![CDATA[451]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[440  till 451]]></name>
+                    <direct_counts><![CDATA[93]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[23]]></value_id>
+                            <value><![CDATA[451]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[23]]></value_id>
+                            <value><![CDATA[462]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[451  till 462]]></name>
+                    <direct_counts><![CDATA[107]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[24]]></value_id>
+                            <value><![CDATA[462]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[24]]></value_id>
+                            <value><![CDATA[473]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[462  till 473]]></name>
+                    <direct_counts><![CDATA[97]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[25]]></value_id>
+                            <value><![CDATA[473]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[25]]></value_id>
+                            <value><![CDATA[484]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[473  till 484]]></name>
+                    <direct_counts><![CDATA[96]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[26]]></value_id>
+                            <value><![CDATA[484]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[26]]></value_id>
+                            <value><![CDATA[495]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[484  till 495]]></name>
+                    <direct_counts><![CDATA[112]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[27]]></value_id>
+                            <value><![CDATA[495]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[27]]></value_id>
+                            <value><![CDATA[506]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[495  till 506]]></name>
+                    <direct_counts><![CDATA[89]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[28]]></value_id>
+                            <value><![CDATA[506]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[28]]></value_id>
+                            <value><![CDATA[517]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[506  till 517]]></name>
+                    <direct_counts><![CDATA[70]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[29]]></value_id>
+                            <value><![CDATA[517]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[29]]></value_id>
+                            <value><![CDATA[528]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[517  till 528]]></name>
+                    <direct_counts><![CDATA[75]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[30]]></value_id>
+                            <value><![CDATA[528]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[30]]></value_id>
+                            <value><![CDATA[539]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[528  till 539]]></name>
+                    <direct_counts><![CDATA[147]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[31]]></value_id>
+                            <value><![CDATA[539]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[31]]></value_id>
+                            <value><![CDATA[550]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[539  till 550]]></name>
+                    <direct_counts><![CDATA[76]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[32]]></value_id>
+                            <value><![CDATA[550]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[32]]></value_id>
+                            <value><![CDATA[561]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[550  till 561]]></name>
+                    <direct_counts><![CDATA[108]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[33]]></value_id>
+                            <value><![CDATA[561]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[33]]></value_id>
+                            <value><![CDATA[572]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[561  till 572]]></name>
+                    <direct_counts><![CDATA[89]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[34]]></value_id>
+                            <value><![CDATA[572]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[34]]></value_id>
+                            <value><![CDATA[583]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[572  till 583]]></name>
+                    <direct_counts><![CDATA[72]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[35]]></value_id>
+                            <value><![CDATA[583]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[35]]></value_id>
+                            <value><![CDATA[594]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[583  till 594]]></name>
+                    <direct_counts><![CDATA[83]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[36]]></value_id>
+                            <value><![CDATA[594]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[36]]></value_id>
+                            <value><![CDATA[605]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[594  till 605]]></name>
+                    <direct_counts><![CDATA[66]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[37]]></value_id>
+                            <value><![CDATA[605]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[37]]></value_id>
+                            <value><![CDATA[616]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[605  till 616]]></name>
+                    <direct_counts><![CDATA[27]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[38]]></value_id>
+                            <value><![CDATA[616]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[38]]></value_id>
+                            <value><![CDATA[627]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[616  till 627]]></name>
+                    <direct_counts><![CDATA[85]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[39]]></value_id>
+                            <value><![CDATA[627]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[39]]></value_id>
+                            <value><![CDATA[638]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[627  till 638]]></name>
+                    <direct_counts><![CDATA[40]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[40]]></value_id>
+                            <value><![CDATA[638]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[40]]></value_id>
+                            <value><![CDATA[649]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[638  till 649]]></name>
+                    <direct_counts><![CDATA[44]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[41]]></value_id>
+                            <value><![CDATA[649]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[41]]></value_id>
+                            <value><![CDATA[660]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[649  till 660]]></name>
+                    <direct_counts><![CDATA[32]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[42]]></value_id>
+                            <value><![CDATA[660]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[42]]></value_id>
+                            <value><![CDATA[671]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[660  till 671]]></name>
+                    <direct_counts><![CDATA[30]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[43]]></value_id>
+                            <value><![CDATA[671]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[43]]></value_id>
+                            <value><![CDATA[682]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[671  till 682]]></name>
+                    <direct_counts><![CDATA[58]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[44]]></value_id>
+                            <value><![CDATA[682]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[44]]></value_id>
+                            <value><![CDATA[693]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[682  till 693]]></name>
+                    <direct_counts><![CDATA[24]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[45]]></value_id>
+                            <value><![CDATA[693]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[45]]></value_id>
+                            <value><![CDATA[704]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[693  till 704]]></name>
+                    <direct_counts><![CDATA[21]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[46]]></value_id>
+                            <value><![CDATA[704]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[46]]></value_id>
+                            <value><![CDATA[715]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[704  till 715]]></name>
+                    <direct_counts><![CDATA[10]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[47]]></value_id>
+                            <value><![CDATA[715]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[47]]></value_id>
+                            <value><![CDATA[726]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[715  till 726]]></name>
+                    <direct_counts><![CDATA[16]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[48]]></value_id>
+                            <value><![CDATA[726]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[48]]></value_id>
+                            <value><![CDATA[737]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[726  till 737]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[49]]></value_id>
+                            <value><![CDATA[737]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[49]]></value_id>
+                            <value><![CDATA[748]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[737  till 748]]></name>
+                    <direct_counts><![CDATA[10]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[50]]></value_id>
+                            <value><![CDATA[748]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[50]]></value_id>
+                            <value><![CDATA[759]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[748  till 759]]></name>
+                    <direct_counts><![CDATA[7]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[51]]></value_id>
+                            <value><![CDATA[759]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[51]]></value_id>
+                            <value><![CDATA[770]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[759  till 770]]></name>
+                    <direct_counts><![CDATA[16]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[52]]></value_id>
+                            <value><![CDATA[770]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[52]]></value_id>
+                            <value><![CDATA[781]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[770  till 781]]></name>
+                    <direct_counts><![CDATA[20]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[53]]></value_id>
+                            <value><![CDATA[781]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[53]]></value_id>
+                            <value><![CDATA[792]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[781  till 792]]></name>
+                    <direct_counts><![CDATA[9]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[54]]></value_id>
+                            <value><![CDATA[792]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[54]]></value_id>
+                            <value><![CDATA[803]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[792  till 803]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[55]]></value_id>
+                            <value><![CDATA[803]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[55]]></value_id>
+                            <value><![CDATA[814]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[803  till 814]]></name>
+                    <direct_counts><![CDATA[17]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[56]]></value_id>
+                            <value><![CDATA[814]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[56]]></value_id>
+                            <value><![CDATA[825]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[814  till 825]]></name>
+                    <direct_counts><![CDATA[7]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[57]]></value_id>
+                            <value><![CDATA[825]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[57]]></value_id>
+                            <value><![CDATA[836]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[825  till 836]]></name>
+                    <direct_counts><![CDATA[15]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[58]]></value_id>
+                            <value><![CDATA[836]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[58]]></value_id>
+                            <value><![CDATA[847]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[836  till 847]]></name>
+                    <direct_counts><![CDATA[23]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[59]]></value_id>
+                            <value><![CDATA[847]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[59]]></value_id>
+                            <value><![CDATA[858]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[847  till 858]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[60]]></value_id>
+                            <value><![CDATA[858]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[60]]></value_id>
+                            <value><![CDATA[869]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[858  till 869]]></name>
+                    <direct_counts><![CDATA[17]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[61]]></value_id>
+                            <value><![CDATA[869]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[61]]></value_id>
+                            <value><![CDATA[880]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[869  till 880]]></name>
+                    <direct_counts><![CDATA[4]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[62]]></value_id>
+                            <value><![CDATA[880]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[62]]></value_id>
+                            <value><![CDATA[891]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[880  till 891]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[63]]></value_id>
+                            <value><![CDATA[891]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[63]]></value_id>
+                            <value><![CDATA[902]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[891  till 902]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[64]]></value_id>
+                            <value><![CDATA[902]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[64]]></value_id>
+                            <value><![CDATA[913]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[902  till 913]]></name>
+                    <direct_counts><![CDATA[10]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[65]]></value_id>
+                            <value><![CDATA[913]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[65]]></value_id>
+                            <value><![CDATA[924]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[913  till 924]]></name>
+                    <direct_counts><![CDATA[12]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[66]]></value_id>
+                            <value><![CDATA[924]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[66]]></value_id>
+                            <value><![CDATA[935]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[924  till 935]]></name>
+                    <direct_counts><![CDATA[10]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[67]]></value_id>
+                            <value><![CDATA[935]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[67]]></value_id>
+                            <value><![CDATA[946]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[935  till 946]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[68]]></value_id>
+                            <value><![CDATA[946]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[68]]></value_id>
+                            <value><![CDATA[957]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[946  till 957]]></name>
+                    <direct_counts><![CDATA[6]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[69]]></value_id>
+                            <value><![CDATA[957]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[69]]></value_id>
+                            <value><![CDATA[968]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[957  till 968]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[70]]></value_id>
+                            <value><![CDATA[968]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[70]]></value_id>
+                            <value><![CDATA[979]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[968  till 979]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[71]]></value_id>
+                            <value><![CDATA[979]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[71]]></value_id>
+                            <value><![CDATA[990]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[979  till 990]]></name>
+                    <direct_counts><![CDATA[6]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[72]]></value_id>
+                            <value><![CDATA[990]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[72]]></value_id>
+                            <value><![CDATA[1001]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[990  till 1001]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[73]]></value_id>
+                            <value><![CDATA[1001]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[73]]></value_id>
+                            <value><![CDATA[1012]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1001  till 1012]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[74]]></value_id>
+                            <value><![CDATA[1012]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[74]]></value_id>
+                            <value><![CDATA[1023]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1012  till 1023]]></name>
+                    <direct_counts><![CDATA[1]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[75]]></value_id>
+                            <value><![CDATA[1023]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[75]]></value_id>
+                            <value><![CDATA[1034]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1023  till 1034]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[76]]></value_id>
+                            <value><![CDATA[1034]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[76]]></value_id>
+                            <value><![CDATA[1045]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1034  till 1045]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[77]]></value_id>
+                            <value><![CDATA[1045]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[77]]></value_id>
+                            <value><![CDATA[1056]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1045  till 1056]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[78]]></value_id>
+                            <value><![CDATA[1056]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[78]]></value_id>
+                            <value><![CDATA[1067]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1056  till 1067]]></name>
+                    <direct_counts><![CDATA[8]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[79]]></value_id>
+                            <value><![CDATA[1067]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[79]]></value_id>
+                            <value><![CDATA[1078]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1067  till 1078]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[80]]></value_id>
+                            <value><![CDATA[1078]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[80]]></value_id>
+                            <value><![CDATA[1089]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1078  till 1089]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[81]]></value_id>
+                            <value><![CDATA[1089]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[81]]></value_id>
+                            <value><![CDATA[1100]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1089  till 1100]]></name>
+                    <direct_counts><![CDATA[6]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[82]]></value_id>
+                            <value><![CDATA[1100]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[82]]></value_id>
+                            <value><![CDATA[1111]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1100  till 1111]]></name>
+                    <direct_counts><![CDATA[4]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[83]]></value_id>
+                            <value><![CDATA[1111]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[83]]></value_id>
+                            <value><![CDATA[1122]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1111  till 1122]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[84]]></value_id>
+                            <value><![CDATA[1122]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[84]]></value_id>
+                            <value><![CDATA[1133]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1122  till 1133]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[85]]></value_id>
+                            <value><![CDATA[1133]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[85]]></value_id>
+                            <value><![CDATA[1144]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1133  till 1144]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[86]]></value_id>
+                            <value><![CDATA[1144]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[86]]></value_id>
+                            <value><![CDATA[1155]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1144  till 1155]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[87]]></value_id>
+                            <value><![CDATA[1155]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[87]]></value_id>
+                            <value><![CDATA[1166]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1155  till 1166]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[88]]></value_id>
+                            <value><![CDATA[1166]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[88]]></value_id>
+                            <value><![CDATA[1177]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1166  till 1177]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[89]]></value_id>
+                            <value><![CDATA[1177]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[89]]></value_id>
+                            <value><![CDATA[1188]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1177  till 1188]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[90]]></value_id>
+                            <value><![CDATA[1188]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[90]]></value_id>
+                            <value><![CDATA[1199]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1188  till 1199]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[91]]></value_id>
+                            <value><![CDATA[1199]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[91]]></value_id>
+                            <value><![CDATA[1210]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1199  till 1210]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[92]]></value_id>
+                            <value><![CDATA[1210]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[92]]></value_id>
+                            <value><![CDATA[1221]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1210  till 1221]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[93]]></value_id>
+                            <value><![CDATA[1221]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[93]]></value_id>
+                            <value><![CDATA[1232]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1221  till 1232]]></name>
+                    <direct_counts><![CDATA[7]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[94]]></value_id>
+                            <value><![CDATA[1232]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[94]]></value_id>
+                            <value><![CDATA[1243]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1232  till 1243]]></name>
+                    <direct_counts><![CDATA[2]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[95]]></value_id>
+                            <value><![CDATA[1243]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[95]]></value_id>
+                            <value><![CDATA[1254]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1243  till 1254]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[96]]></value_id>
+                            <value><![CDATA[1254]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[96]]></value_id>
+                            <value><![CDATA[1265]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1254  till 1265]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[97]]></value_id>
+                            <value><![CDATA[1265]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[97]]></value_id>
+                            <value><![CDATA[1276]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1265  till 1276]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[98]]></value_id>
+                            <value><![CDATA[1276]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[98]]></value_id>
+                            <value><![CDATA[1287]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1276  till 1287]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[99]]></value_id>
+                            <value><![CDATA[1287]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[99]]></value_id>
+                            <value><![CDATA[1298]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1287  till 1298]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[100]]></value_id>
+                            <value><![CDATA[1298]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[100]]></value_id>
+                            <value><![CDATA[1309]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1298  till 1309]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[101]]></value_id>
+                            <value><![CDATA[1309]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[101]]></value_id>
+                            <value><![CDATA[1320]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1309  till 1320]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[102]]></value_id>
+                            <value><![CDATA[1320]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[102]]></value_id>
+                            <value><![CDATA[1331]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1320  till 1331]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[103]]></value_id>
+                            <value><![CDATA[1331]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[103]]></value_id>
+                            <value><![CDATA[1342]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1331  till 1342]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[104]]></value_id>
+                            <value><![CDATA[1342]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[104]]></value_id>
+                            <value><![CDATA[1353]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1342  till 1353]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[105]]></value_id>
+                            <value><![CDATA[1353]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[105]]></value_id>
+                            <value><![CDATA[1364]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1353  till 1364]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[106]]></value_id>
+                            <value><![CDATA[1364]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[106]]></value_id>
+                            <value><![CDATA[1375]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1364  till 1375]]></name>
+                    <direct_counts><![CDATA[2]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[107]]></value_id>
+                            <value><![CDATA[1375]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[107]]></value_id>
+                            <value><![CDATA[1386]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1375  till 1386]]></name>
+                    <direct_counts><![CDATA[5]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[108]]></value_id>
+                            <value><![CDATA[1386]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[108]]></value_id>
+                            <value><![CDATA[1397]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1386  till 1397]]></name>
+                    <direct_counts><![CDATA[1]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[109]]></value_id>
+                            <value><![CDATA[1397]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[109]]></value_id>
+                            <value><![CDATA[1408]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1397  till 1408]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[110]]></value_id>
+                            <value><![CDATA[1408]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[110]]></value_id>
+                            <value><![CDATA[1419]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1408  till 1419]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[111]]></value_id>
+                            <value><![CDATA[1419]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[111]]></value_id>
+                            <value><![CDATA[1430]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1419  till 1430]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[112]]></value_id>
+                            <value><![CDATA[1430]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[112]]></value_id>
+                            <value><![CDATA[1441]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1430  till 1441]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[113]]></value_id>
+                            <value><![CDATA[1441]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[113]]></value_id>
+                            <value><![CDATA[1452]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1441  till 1452]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[114]]></value_id>
+                            <value><![CDATA[1452]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[114]]></value_id>
+                            <value><![CDATA[1463]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1452  till 1463]]></name>
+                    <direct_counts><![CDATA[2]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[115]]></value_id>
+                            <value><![CDATA[1463]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[115]]></value_id>
+                            <value><![CDATA[1474]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1463  till 1474]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[116]]></value_id>
+                            <value><![CDATA[1474]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[116]]></value_id>
+                            <value><![CDATA[1485]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1474  till 1485]]></name>
+                    <direct_counts><![CDATA[3]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[117]]></value_id>
+                            <value><![CDATA[1485]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[117]]></value_id>
+                            <value><![CDATA[1496]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1485  till 1496]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[118]]></value_id>
+                            <value><![CDATA[1496]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[118]]></value_id>
+                            <value><![CDATA[1507]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1496  till 1507]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[119]]></value_id>
+                            <value><![CDATA[1507]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[119]]></value_id>
+                            <value><![CDATA[1518]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1507  till 1518]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+                <row>
+                    <values>
+                        <value_item>
+                            <value_type><![CDATA[lower]]></value_type>
+                            <value_id><![CDATA[120]]></value_id>
+                            <value><![CDATA[1518]]></value>
+                        </value_item>
+                        <value_item>
+                            <value_type><![CDATA[upper]]></value_type>
+                            <value_id><![CDATA[120]]></value_id>
+                            <value><![CDATA[1529]]></value>
+                        </value_item>
+                    </values>
+                    <name><![CDATA[1518  till 1529]]></name>
+                    <direct_counts><![CDATA[0]]></direct_counts>
+                </row>
+            </rows>
+            <rows_num>121</rows_num>
+        </facet_c>
+    </facets>
+    <duration><![CDATA[]]></duration>
+</data>

@@ -222,5 +222,30 @@ namespace QuerySeadTests.FacetsConfig
                 Assert.IsTrue(isEqual);
             }
         }
+
+        [TestMethod]
+        public void RangeFacetBugTest_PD20181107()
+        {
+            var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
+            IContainer container = new TestDependencyService().Register();
+
+            using (var scope = container.BeginLifetimeScope())
+            {
+                // Arrange
+                FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
+                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+
+                // Act
+                var facetContent = service.Load(facetsConfig);
+
+                // Assert
+                Assert.Fail();
+                //var expectedData = "";  // new RangeFacetCategoryCountData().Data[facetsConfig.TargetCode];
+                //Assert.AreEqual(expectedData.Where(z => z.Value > 0).Count(), facetContent.Items.Where(z => z.Count > 0).Count(), "Number of categories differs");
+                //facetContent.Items.Where(z => z.Count > 0).ForEach(z => Assert.AreEqual(expectedData.GetValueOrDefault(z.Category), z.Count, z.Category));
+            }
+        }
     }
 }

@@ -1,0 +1,1177 @@
+{
+    "facetsConfig": {
+        "requestId": "2",
+        "requestType": "populate",
+        "targetCode": "tbl_denormalized_measured_values_33_0",
+        "triggerCode": "",
+        "facetConfigs": [
+            {
+                "facetCode": "tbl_denormalized_measured_values_33_0",
+                "position": 1,
+                "textFilter": "",
+                "picks": [
+                    {
+                        "pickType": 2,
+                        "pickValue": "110",
+                        "text": "110"
+                    },
+                    {
+                        "pickType": 3,
+                        "pickValue": "2904",
+                        "text": "2904"
+                    }
+                ]
+            }
+        ]
+    },
+    "items": [
+        {
+            "category": "110 => 133",
+            "displayName": "110 to 133",
+            "name": "110 to 133",
+            "count": 1970,
+            "extent": [
+                110,
+                133
+            ]
+        },
+        {
+            "category": "133 => 156",
+            "displayName": "133 to 156",
+            "name": "133 to 156",
+            "count": 1720,
+            "extent": [
+                133,
+                156
+            ]
+        },
+        {
+            "category": "156 => 179",
+            "displayName": "156 to 179",
+            "name": "156 to 179",
+            "count": 1188,
+            "extent": [
+                156,
+                179
+            ]
+        },
+        {
+            "category": "179 => 202",
+            "displayName": "179 to 202",
+            "name": "179 to 202",
+            "count": 1103,
+            "extent": [
+                179,
+                202
+            ]
+        },
+        {
+            "category": "202 => 225",
+            "displayName": "202 to 225",
+            "name": "202 to 225",
+            "count": 865,
+            "extent": [
+                202,
+                225
+            ]
+        },
+        {
+            "category": "225 => 248",
+            "displayName": "225 to 248",
+            "name": "225 to 248",
+            "count": 702,
+            "extent": [
+                225,
+                248
+            ]
+        },
+        {
+            "category": "248 => 271",
+            "displayName": "248 to 271",
+            "name": "248 to 271",
+            "count": 688,
+            "extent": [
+                248,
+                271
+            ]
+        },
+        {
+            "category": "271 => 294",
+            "displayName": "271 to 294",
+            "name": "271 to 294",
+            "count": 646,
+            "extent": [
+                271,
+                294
+            ]
+        },
+        {
+            "category": "294 => 317",
+            "displayName": "294 to 317",
+            "name": "294 to 317",
+            "count": 529,
+            "extent": [
+                294,
+                317
+            ]
+        },
+        {
+            "category": "317 => 340",
+            "displayName": "317 to 340",
+            "name": "317 to 340",
+            "count": 499,
+            "extent": [
+                317,
+                340
+            ]
+        },
+        {
+            "category": "340 => 363",
+            "displayName": "340 to 363",
+            "name": "340 to 363",
+            "count": 386,
+            "extent": [
+                340,
+                363
+            ]
+        },
+        {
+            "category": "363 => 386",
+            "displayName": "363 to 386",
+            "name": "363 to 386",
+            "count": 377,
+            "extent": [
+                363,
+                386
+            ]
+        },
+        {
+            "category": "386 => 409",
+            "displayName": "386 to 409",
+            "name": "386 to 409",
+            "count": 331,
+            "extent": [
+                386,
+                409
+            ]
+        },
+        {
+            "category": "409 => 432",
+            "displayName": "409 to 432",
+            "name": "409 to 432",
+            "count": 244,
+            "extent": [
+                409,
+                432
+            ]
+        },
+        {
+            "category": "432 => 455",
+            "displayName": "432 to 455",
+            "name": "432 to 455",
+            "count": 270,
+            "extent": [
+                432,
+                455
+            ]
+        },
+        {
+            "category": "455 => 478",
+            "displayName": "455 to 478",
+            "name": "455 to 478",
+            "count": 204,
+            "extent": [
+                455,
+                478
+            ]
+        },
+        {
+            "category": "478 => 501",
+            "displayName": "478 to 501",
+            "name": "478 to 501",
+            "count": 241,
+            "extent": [
+                478,
+                501
+            ]
+        },
+        {
+            "category": "501 => 524",
+            "displayName": "501 to 524",
+            "name": "501 to 524",
+            "count": 144,
+            "extent": [
+                501,
+                524
+            ]
+        },
+        {
+            "category": "524 => 547",
+            "displayName": "524 to 547",
+            "name": "524 to 547",
+            "count": 242,
+            "extent": [
+                524,
+                547
+            ]
+        },
+        {
+            "category": "547 => 570",
+            "displayName": "547 to 570",
+            "name": "547 to 570",
+            "count": 206,
+            "extent": [
+                547,
+                570
+            ]
+        },
+        {
+            "category": "570 => 593",
+            "displayName": "570 to 593",
+            "name": "570 to 593",
+            "count": 185,
+            "extent": [
+                570,
+                593
+            ]
+        },
+        {
+            "category": "593 => 616",
+            "displayName": "593 to 616",
+            "name": "593 to 616",
+            "count": 108,
+            "extent": [
+                593,
+                616
+            ]
+        },
+        {
+            "category": "616 => 639",
+            "displayName": "616 to 639",
+            "name": "616 to 639",
+            "count": 125,
+            "extent": [
+                616,
+                639
+            ]
+        },
+        {
+            "category": "639 => 662",
+            "displayName": "639 to 662",
+            "name": "639 to 662",
+            "count": 86,
+            "extent": [
+                639,
+                662
+            ]
+        },
+        {
+            "category": "662 => 685",
+            "displayName": "662 to 685",
+            "name": "662 to 685",
+            "count": 98,
+            "extent": [
+                662,
+                685
+            ]
+        },
+        {
+            "category": "685 => 708",
+            "displayName": "685 to 708",
+            "name": "685 to 708",
+            "count": 45,
+            "extent": [
+                685,
+                708
+            ]
+        },
+        {
+            "category": "708 => 731",
+            "displayName": "708 to 731",
+            "name": "708 to 731",
+            "count": 21,
+            "extent": [
+                708,
+                731
+            ]
+        },
+        {
+            "category": "731 => 754",
+            "displayName": "731 to 754",
+            "name": "731 to 754",
+            "count": 12,
+            "extent": [
+                731,
+                754
+            ]
+        },
+        {
+            "category": "754 => 777",
+            "displayName": "754 to 777",
+            "name": "754 to 777",
+            "count": 34,
+            "extent": [
+                754,
+                777
+            ]
+        },
+        {
+            "category": "777 => 800",
+            "displayName": "777 to 800",
+            "name": "777 to 800",
+            "count": 21,
+            "extent": [
+                777,
+                800
+            ]
+        },
+        {
+            "category": "800 => 823",
+            "displayName": "800 to 823",
+            "name": "800 to 823",
+            "count": 24,
+            "extent": [
+                800,
+                823
+            ]
+        },
+        {
+            "category": "823 => 846",
+            "displayName": "823 to 846",
+            "name": "823 to 846",
+            "count": 38,
+            "extent": [
+                823,
+                846
+            ]
+        },
+        {
+            "category": "846 => 869",
+            "displayName": "846 to 869",
+            "name": "846 to 869",
+            "count": 22,
+            "extent": [
+                846,
+                869
+            ]
+        },
+        {
+            "category": "869 => 892",
+            "displayName": "869 to 892",
+            "name": "869 to 892",
+            "count": 7,
+            "extent": [
+                869,
+                892
+            ]
+        },
+        {
+            "category": "892 => 915",
+            "displayName": "892 to 915",
+            "name": "892 to 915",
+            "count": 12,
+            "extent": [
+                892,
+                915
+            ]
+        },
+        {
+            "category": "915 => 938",
+            "displayName": "915 to 938",
+            "name": "915 to 938",
+            "count": 22,
+            "extent": [
+                915,
+                938
+            ]
+        },
+        {
+            "category": "938 => 961",
+            "displayName": "938 to 961",
+            "name": "938 to 961",
+            "count": 11,
+            "extent": [
+                938,
+                961
+            ]
+        },
+        {
+            "category": "961 => 984",
+            "displayName": "961 to 984",
+            "name": "961 to 984",
+            "count": 4,
+            "extent": [
+                961,
+                984
+            ]
+        },
+        {
+            "category": "984 => 1007",
+            "displayName": "984 to 1007",
+            "name": "984 to 1007",
+            "count": 5,
+            "extent": [
+                984,
+                1007
+            ]
+        },
+        {
+            "category": "1007 => 1030",
+            "displayName": "1007 to 1030",
+            "name": "1007 to 1030",
+            "count": 1,
+            "extent": [
+                1007,
+                1030
+            ]
+        },
+        {
+            "category": "1030 => 1053",
+            "displayName": "1030 to 1053",
+            "name": "1030 to 1053",
+            "count": 8,
+            "extent": [
+                1030,
+                1053
+            ]
+        },
+        {
+            "category": "1053 => 1076",
+            "displayName": "1053 to 1076",
+            "name": "1053 to 1076",
+            "count": 14,
+            "extent": [
+                1053,
+                1076
+            ]
+        },
+        {
+            "category": "1076 => 1099",
+            "displayName": "1076 to 1099",
+            "name": "1076 to 1099",
+            "count": 6,
+            "extent": [
+                1076,
+                1099
+            ]
+        },
+        {
+            "category": "1099 => 1122",
+            "displayName": "1099 to 1122",
+            "name": "1099 to 1122",
+            "count": 4,
+            "extent": [
+                1099,
+                1122
+            ]
+        },
+        {
+            "category": "1122 => 1145",
+            "displayName": "1122 to 1145",
+            "name": "1122 to 1145",
+            "count": 8,
+            "extent": [
+                1122,
+                1145
+            ]
+        },
+        {
+            "category": "1145 => 1168",
+            "displayName": "1145 to 1168",
+            "name": "1145 to 1168",
+            "count": 5,
+            "extent": [
+                1145,
+                1168
+            ]
+        },
+        {
+            "category": "1168 => 1191",
+            "displayName": "1168 to 1191",
+            "name": "1168 to 1191",
+            "count": 3,
+            "extent": [
+                1168,
+                1191
+            ]
+        },
+        {
+            "category": "1214 => 1237",
+            "displayName": "1214 to 1237",
+            "name": "1214 to 1237",
+            "count": 9,
+            "extent": [
+                1214,
+                1237
+            ]
+        },
+        {
+            "category": "1237 => 1260",
+            "displayName": "1237 to 1260",
+            "name": "1237 to 1260",
+            "count": 3,
+            "extent": [
+                1237,
+                1260
+            ]
+        },
+        {
+            "category": "1260 => 1283",
+            "displayName": "1260 to 1283",
+            "name": "1260 to 1283",
+            "count": 10,
+            "extent": [
+                1260,
+                1283
+            ]
+        },
+        {
+            "category": "1283 => 1306",
+            "displayName": "1283 to 1306",
+            "name": "1283 to 1306",
+            "count": 5,
+            "extent": [
+                1283,
+                1306
+            ]
+        },
+        {
+            "category": "1352 => 1375",
+            "displayName": "1352 to 1375",
+            "name": "1352 to 1375",
+            "count": 2,
+            "extent": [
+                1352,
+                1375
+            ]
+        },
+        {
+            "category": "1375 => 1398",
+            "displayName": "1375 to 1398",
+            "name": "1375 to 1398",
+            "count": 6,
+            "extent": [
+                1375,
+                1398
+            ]
+        },
+        {
+            "category": "1444 => 1467",
+            "displayName": "1444 to 1467",
+            "name": "1444 to 1467",
+            "count": 2,
+            "extent": [
+                1444,
+                1467
+            ]
+        },
+        {
+            "category": "1467 => 1490",
+            "displayName": "1467 to 1490",
+            "name": "1467 to 1490",
+            "count": 3,
+            "extent": [
+                1467,
+                1490
+            ]
+        },
+        {
+            "category": "1559 => 1582",
+            "displayName": "1559 to 1582",
+            "name": "1559 to 1582",
+            "count": 2,
+            "extent": [
+                1559,
+                1582
+            ]
+        },
+        {
+            "category": "1674 => 1697",
+            "displayName": "1674 to 1697",
+            "name": "1674 to 1697",
+            "count": 3,
+            "extent": [
+                1674,
+                1697
+            ]
+        },
+        {
+            "category": "1720 => 1743",
+            "displayName": "1720 to 1743",
+            "name": "1720 to 1743",
+            "count": 1,
+            "extent": [
+                1720,
+                1743
+            ]
+        },
+        {
+            "category": "1743 => 1766",
+            "displayName": "1743 to 1766",
+            "name": "1743 to 1766",
+            "count": 5,
+            "extent": [
+                1743,
+                1766
+            ]
+        },
+        {
+            "category": "1812 => 1835",
+            "displayName": "1812 to 1835",
+            "name": "1812 to 1835",
+            "count": 5,
+            "extent": [
+                1812,
+                1835
+            ]
+        },
+        {
+            "category": "1881 => 1904",
+            "displayName": "1881 to 1904",
+            "name": "1881 to 1904",
+            "count": 2,
+            "extent": [
+                1881,
+                1904
+            ]
+        },
+        {
+            "category": "2019 => 2042",
+            "displayName": "2019 to 2042",
+            "name": "2019 to 2042",
+            "count": 5,
+            "extent": [
+                2019,
+                2042
+            ]
+        },
+        {
+            "category": "2870 => 2893",
+            "displayName": "2870 to 2893",
+            "name": "2870 to 2893",
+            "count": 5,
+            "extent": [
+                2870,
+                2893
+            ]
+        }
+    ],
+    "distribution": {
+        "110 => 133": {
+            "extent": [
+                110,
+                133
+            ],
+            "category": "110 => 133",
+            "count": 1970
+        },
+        "133 => 156": {
+            "extent": [
+                133,
+                156
+            ],
+            "category": "133 => 156",
+            "count": 1720
+        },
+        "156 => 179": {
+            "extent": [
+                156,
+                179
+            ],
+            "category": "156 => 179",
+            "count": 1188
+        },
+        "179 => 202": {
+            "extent": [
+                179,
+                202
+            ],
+            "category": "179 => 202",
+            "count": 1103
+        },
+        "202 => 225": {
+            "extent": [
+                202,
+                225
+            ],
+            "category": "202 => 225",
+            "count": 865
+        },
+        "225 => 248": {
+            "extent": [
+                225,
+                248
+            ],
+            "category": "225 => 248",
+            "count": 702
+        },
+        "248 => 271": {
+            "extent": [
+                248,
+                271
+            ],
+            "category": "248 => 271",
+            "count": 688
+        },
+        "271 => 294": {
+            "extent": [
+                271,
+                294
+            ],
+            "category": "271 => 294",
+            "count": 646
+        },
+        "294 => 317": {
+            "extent": [
+                294,
+                317
+            ],
+            "category": "294 => 317",
+            "count": 529
+        },
+        "317 => 340": {
+            "extent": [
+                317,
+                340
+            ],
+            "category": "317 => 340",
+            "count": 499
+        },
+        "340 => 363": {
+            "extent": [
+                340,
+                363
+            ],
+            "category": "340 => 363",
+            "count": 386
+        },
+        "363 => 386": {
+            "extent": [
+                363,
+                386
+            ],
+            "category": "363 => 386",
+            "count": 377
+        },
+        "386 => 409": {
+            "extent": [
+                386,
+                409
+            ],
+            "category": "386 => 409",
+            "count": 331
+        },
+        "409 => 432": {
+            "extent": [
+                409,
+                432
+            ],
+            "category": "409 => 432",
+            "count": 244
+        },
+        "432 => 455": {
+            "extent": [
+                432,
+                455
+            ],
+            "category": "432 => 455",
+            "count": 270
+        },
+        "455 => 478": {
+            "extent": [
+                455,
+                478
+            ],
+            "category": "455 => 478",
+            "count": 204
+        },
+        "478 => 501": {
+            "extent": [
+                478,
+                501
+            ],
+            "category": "478 => 501",
+            "count": 241
+        },
+        "501 => 524": {
+            "extent": [
+                501,
+                524
+            ],
+            "category": "501 => 524",
+            "count": 144
+        },
+        "524 => 547": {
+            "extent": [
+                524,
+                547
+            ],
+            "category": "524 => 547",
+            "count": 242
+        },
+        "547 => 570": {
+            "extent": [
+                547,
+                570
+            ],
+            "category": "547 => 570",
+            "count": 206
+        },
+        "570 => 593": {
+            "extent": [
+                570,
+                593
+            ],
+            "category": "570 => 593",
+            "count": 185
+        },
+        "593 => 616": {
+            "extent": [
+                593,
+                616
+            ],
+            "category": "593 => 616",
+            "count": 108
+        },
+        "616 => 639": {
+            "extent": [
+                616,
+                639
+            ],
+            "category": "616 => 639",
+            "count": 125
+        },
+        "639 => 662": {
+            "extent": [
+                639,
+                662
+            ],
+            "category": "639 => 662",
+            "count": 86
+        },
+        "662 => 685": {
+            "extent": [
+                662,
+                685
+            ],
+            "category": "662 => 685",
+            "count": 98
+        },
+        "685 => 708": {
+            "extent": [
+                685,
+                708
+            ],
+            "category": "685 => 708",
+            "count": 45
+        },
+        "708 => 731": {
+            "extent": [
+                708,
+                731
+            ],
+            "category": "708 => 731",
+            "count": 21
+        },
+        "731 => 754": {
+            "extent": [
+                731,
+                754
+            ],
+            "category": "731 => 754",
+            "count": 12
+        },
+        "754 => 777": {
+            "extent": [
+                754,
+                777
+            ],
+            "category": "754 => 777",
+            "count": 34
+        },
+        "777 => 800": {
+            "extent": [
+                777,
+                800
+            ],
+            "category": "777 => 800",
+            "count": 21
+        },
+        "800 => 823": {
+            "extent": [
+                800,
+                823
+            ],
+            "category": "800 => 823",
+            "count": 24
+        },
+        "823 => 846": {
+            "extent": [
+                823,
+                846
+            ],
+            "category": "823 => 846",
+            "count": 38
+        },
+        "846 => 869": {
+            "extent": [
+                846,
+                869
+            ],
+            "category": "846 => 869",
+            "count": 22
+        },
+        "869 => 892": {
+            "extent": [
+                869,
+                892
+            ],
+            "category": "869 => 892",
+            "count": 7
+        },
+        "892 => 915": {
+            "extent": [
+                892,
+                915
+            ],
+            "category": "892 => 915",
+            "count": 12
+        },
+        "915 => 938": {
+            "extent": [
+                915,
+                938
+            ],
+            "category": "915 => 938",
+            "count": 22
+        },
+        "938 => 961": {
+            "extent": [
+                938,
+                961
+            ],
+            "category": "938 => 961",
+            "count": 11
+        },
+        "961 => 984": {
+            "extent": [
+                961,
+                984
+            ],
+            "category": "961 => 984",
+            "count": 4
+        },
+        "984 => 1007": {
+            "extent": [
+                984,
+                1007
+            ],
+            "category": "984 => 1007",
+            "count": 5
+        },
+        "1007 => 1030": {
+            "extent": [
+                1007,
+                1030
+            ],
+            "category": "1007 => 1030",
+            "count": 1
+        },
+        "1030 => 1053": {
+            "extent": [
+                1030,
+                1053
+            ],
+            "category": "1030 => 1053",
+            "count": 8
+        },
+        "1053 => 1076": {
+            "extent": [
+                1053,
+                1076
+            ],
+            "category": "1053 => 1076",
+            "count": 14
+        },
+        "1076 => 1099": {
+            "extent": [
+                1076,
+                1099
+            ],
+            "category": "1076 => 1099",
+            "count": 6
+        },
+        "1099 => 1122": {
+            "extent": [
+                1099,
+                1122
+            ],
+            "category": "1099 => 1122",
+            "count": 4
+        },
+        "1122 => 1145": {
+            "extent": [
+                1122,
+                1145
+            ],
+            "category": "1122 => 1145",
+            "count": 8
+        },
+        "1145 => 1168": {
+            "extent": [
+                1145,
+                1168
+            ],
+            "category": "1145 => 1168",
+            "count": 5
+        },
+        "1168 => 1191": {
+            "extent": [
+                1168,
+                1191
+            ],
+            "category": "1168 => 1191",
+            "count": 3
+        },
+        "1214 => 1237": {
+            "extent": [
+                1214,
+                1237
+            ],
+            "category": "1214 => 1237",
+            "count": 9
+        },
+        "1237 => 1260": {
+            "extent": [
+                1237,
+                1260
+            ],
+            "category": "1237 => 1260",
+            "count": 3
+        },
+        "1260 => 1283": {
+            "extent": [
+                1260,
+                1283
+            ],
+            "category": "1260 => 1283",
+            "count": 10
+        },
+        "1283 => 1306": {
+            "extent": [
+                1283,
+                1306
+            ],
+            "category": "1283 => 1306",
+            "count": 5
+        },
+        "1352 => 1375": {
+            "extent": [
+                1352,
+                1375
+            ],
+            "category": "1352 => 1375",
+            "count": 2
+        },
+        "1375 => 1398": {
+            "extent": [
+                1375,
+                1398
+            ],
+            "category": "1375 => 1398",
+            "count": 6
+        },
+        "1444 => 1467": {
+            "extent": [
+                1444,
+                1467
+            ],
+            "category": "1444 => 1467",
+            "count": 2
+        },
+        "1467 => 1490": {
+            "extent": [
+                1467,
+                1490
+            ],
+            "category": "1467 => 1490",
+            "count": 3
+        },
+        "1559 => 1582": {
+            "extent": [
+                1559,
+                1582
+            ],
+            "category": "1559 => 1582",
+            "count": 2
+        },
+        "1674 => 1697": {
+            "extent": [
+                1674,
+                1697
+            ],
+            "category": "1674 => 1697",
+            "count": 3
+        },
+        "1720 => 1743": {
+            "extent": [
+                1720,
+                1743
+            ],
+            "category": "1720 => 1743",
+            "count": 1
+        },
+        "1743 => 1766": {
+            "extent": [
+                1743,
+                1766
+            ],
+            "category": "1743 => 1766",
+            "count": 5
+        },
+        "1812 => 1835": {
+            "extent": [
+                1812,
+                1835
+            ],
+            "category": "1812 => 1835",
+            "count": 5
+        },
+        "1881 => 1904": {
+            "extent": [
+                1881,
+                1904
+            ],
+            "category": "1881 => 1904",
+            "count": 2
+        },
+        "2019 => 2042": {
+            "extent": [
+                2019,
+                2042
+            ],
+            "category": "2019 => 2042",
+            "count": 5
+        },
+        "2870 => 2893": {
+            "extent": [
+                2870,
+                2893
+            ],
+            "category": "2870 => 2893",
+            "count": 5
+        }
+    },
+    "picks": {
+        "tbl_denormalized_measured_values_33_0": {
+            "facetCode": "tbl_denormalized_measured_values_33_0",
+            "facetType": 2,
+            "pickValues": [
+                110,
+                2904
+            ],
+            "title": "MS "
+        }
+    },
+    "countOfSelections": 0
+}
