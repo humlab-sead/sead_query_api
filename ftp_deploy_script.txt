@@ -1,8 +1,9 @@
-open dev.humlab.umu.se
+open snares.humlab.umu.se
 roger
 schi11er
-cd applications/pending
+cd /home/roger/applications/pending
+lcd "C:\Users\roma0050\Documents\Projects\SEAD\query_sead_api_core\"
 binary
 rm publish.zip
-put "C:\Users\roma0050\Documents\Projects\SEAD\query_sead_api_core"\publish.zip
+put publish.zip
 exit

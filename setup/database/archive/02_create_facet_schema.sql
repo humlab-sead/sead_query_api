@@ -1,13 +1,27 @@
 ﻿
+
+CREATE USER querysead_worker WITH LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+ALTER USER querysead_worker WITH ENCRYPTED PASSWORD 'XXX';
+
+GRANT CONNECT ON DATABASE sead_bugs_import_20180503 TO querysead_worker;
+GRANT USAGE ON SCHEMA public, metainformation TO querysead_worker;
+GRANT sead_read TO querysead_worker;
+
+GRANT SELECT ON ALL TABLES IN SCHEMA  public, metainformation TO querysead_worker;
+GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA  public, metainformation to querysead_worker;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public, metainformation TO querysead_worker;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public, metainformation GRANT SELECT, TRIGGER ON TABLES TO querysead_worker;
+
 DO $$
 BEGIN
 
 	IF current_role != 'querysead_worker' THEN
 		RAISE NOTICE 'This script must be run as querysead_worker!';
 	END IF;
-	
+
 	DROP SCHEMA IF EXISTS facet CASCADE;
-	
+
 	CREATE SCHEMA IF NOT EXISTS facet AUTHORIZATION querysead_worker;
 
 	GRANT USAGE ON SCHEMA facet TO public;
@@ -89,7 +103,7 @@ CREATE TABLE IF NOT EXISTS facet.graph_table_relation
 	source_table_id integer not null,
 	target_table_id integer not null,
 	weight integer not null default(0),
-	
+
 	source_column_name information_schema.sql_identifier NOT NULL,
 	target_column_name information_schema.sql_identifier NOT NULL
 );
@@ -247,7 +261,7 @@ INSERT INTO facet.facet (facet_id, facet_key, display_title, facet_group_id, fac
 INSERT INTO facet.facet (facet_id, facet_key, display_title, facet_group_id, facet_type_id, category_id_expr, category_name_expr, icon_id_expr, sort_expr, is_applicable, is_default, aggregate_type, aggregate_title, aggregate_facet_id) VALUES (36, 'tbl_biblio_sample_groups', 'Bibligraphy sites/Samplegroups', 1, 1, 'tbl_biblio.biblio_id', 'tbl_biblio.title||''  ''||tbl_biblio.author', 'tbl_biblio.biblio_id', 'tbl_biblio.author', true, false, 'count', 'Number of samples', 1);
 INSERT INTO facet.facet (facet_id, facet_key, display_title, facet_group_id, facet_type_id, category_id_expr, category_name_expr, icon_id_expr, sort_expr, is_applicable, is_default, aggregate_type, aggregate_title, aggregate_facet_id) VALUES (37, 'tbl_biblio_sites', 'Bibligraphy sites', 1, 1, 'tbl_biblio.biblio_id', 'tbl_biblio.title||''  ''||tbl_biblio.author', 'tbl_biblio.biblio_id', 'tbl_biblio.author', false, false, 'count', 'Number of samples', 1);
 
-/*INSERT INTO facet.facet (facet_id, facet_key, display_title, facet_group_id, facet_type_id, category_id_expr, category_name_expr, icon_id_expr, sort_expr, is_default, is_applicable, aggregate_type, aggregate_title, aggregate_facet_id) VALUES (25,'species', 'Taxa', 6, 1, 'tbl_taxa_tree_master.taxon_id', 
+/*INSERT INTO facet.facet (facet_id, facet_key, display_title, facet_group_id, facet_type_id, category_id_expr, category_name_expr, icon_id_expr, sort_expr, is_default, is_applicable, aggregate_type, aggregate_title, aggregate_facet_id) VALUES (25,'species', 'Taxa', 6, 1, 'tbl_taxa_tree_master.taxon_id',
 	'concat_ws('' '', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species, tbl_taxa_tree_authors.author_name)',
 	'tbl_taxa_tree_master.taxon_id',
 	'concat_ws('' '', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species)'

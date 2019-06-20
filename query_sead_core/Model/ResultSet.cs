@@ -50,6 +50,7 @@ namespace QuerySeadDomain.Model
         public ResultMetaData Meta { get; set; }
         public ResultData Data { get; set; }
         public dynamic Payload { get; set; } = null;
+        public string Query { get; set; } = "Hej Hopp";
 
     }
 

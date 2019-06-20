@@ -22,14 +22,20 @@ namespace QuerySeadAPI {
   
         public Startup(IHostingEnvironment env)
         {
-            var configFile = "appsettings.json"; //  Path.Combine("some_hidden_place", "appsettings.json");
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/index?tabs=basicconfiguration&view=aspnetcore-2.1#simple-configuration
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-2.1:
+            // ASP.NET Core reads the environment variable ASPNETCORE_ENVIRONMENT at app startup and stores the value in IHostingEnvironment.EnvironmentName.
+            // You can set ASPNETCORE_ENVIRONMENT to any value, but three values are supported by the framework: 
+            // Development, Staging, and Production. If ASPNETCORE_ENVIRONMENT isn't set, it defaults to Production.
+
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile(configFile, optional: false, reloadOnChange: true)
+                //.SetBasePath(env.ContentRootPath)  // Directory.GetCurrentDirectory()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
             Options = Configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
+
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)

@@ -4,6 +4,7 @@ SET PROJECT_FOLDER="%~dp0%"
 
 SET FTP_COMMAND="C:\Program Files (x86)\WinSCP\WinSCP.com"
 SET FTP_OPTIONS=/newinstance /console
+
 SET TARGET_PLATFORM=debian.8-x64
 SET TARGET_FRAMEWORK=netcoreapp2.0
 SET TARGET_HOST=snares.humlab.umu.se

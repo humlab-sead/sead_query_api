@@ -9,12 +9,6 @@ pg_dump -Fc -v --host=<host> --username=<name> --dbname=<database name>
 */
 
 
-CREATE USER querysead_worker WITH LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
-ALTER USER querysead_worker WITH ENCRYPTED PASSWORD 'XXX';
-
-GRANT CONNECT ON DATABASE sead_bugs_import_20180503 TO querysead_worker;
-GRANT USAGE ON SCHEMA public, metainformation TO querysead_worker;
-GRANT sead_read TO querysead_worker;
 
 GRANT SELECT ON ALL TABLES IN SCHEMA  public, metainformation TO querysead_worker;
 GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA  public, metainformation to querysead_worker;
@@ -22,5 +16,36 @@ GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public, metainformation TO querysead_wo
 ALTER DEFAULT PRIVILEGES IN SCHEMA public, metainformation GRANT SELECT, TRIGGER ON TABLES TO querysead_worker;
 
 DROP SCHEMA IF EXISTS facet CASCADE;
-	
+
 CREATE SCHEMA IF NOT EXISTS facet AUTHORIZATION querysead_worker;
+
+
+-- This script must be run as a super-user connected to target database
+DO $$
+BEGIN
+
+   IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'querysead_worker') THEN
+
+        DROP SCHEMA IF EXISTS facet CASCADE;
+
+        DROP ROLE IF EXISTS querysead_worker;
+
+        RAISE NOTICE 'create querysead_worker must be run as superuser';
+
+        CREATE USER querysead_worker WITH LOGIN NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION VALID UNTIL 'infinity';
+        ALTER USER querysead_worker WITH ENCRYPTED PASSWORD 'XXX';
+
+        GRANT sead_read TO clearinghouse_worker;
+
+        GRANT CONNECT ON DATABASE sead_production TO querysead_worker;
+
+        GRANT USAGE ON SCHEMA public, metainformation TO querysead_worker;
+
+   ELSE
+        RAISE NOTICE 'querysead_worker does exists';
+   END IF;
+
+END $$ LANGUAGE plpgsql;
+
+
+
