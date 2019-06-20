@@ -14,16 +14,16 @@ using System.Diagnostics;
 
 namespace QuerySeadTests
 {
+
     public class TestDependencyService : DependencyService
     {
         public TestDependencyService()
         {
         }
 
-        public override ICacheManager<object> GetCacheManager()
+        public override ICache GetCache(StoreSetting settings)
         {
-            var cache = new QueryCacheFactory().Create();
-            return cache;
+            return new NullCacheProvider();
         }
 
         public override IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
@@ -31,11 +31,7 @@ namespace QuerySeadTests
             var builder = new Autofac.ContainerBuilder();
 
             builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
-            builder.Register(c => GetCacheManager()).SingleInstance().ExternallyOwned();
-            builder.RegisterAggregateService<IQueryCache>();
-
-            //DomainModelDbContext context = new DomainModelDbContext(options);
-            //IUnitOfWork unitOfWork = new UnitOfWork(context);
+            builder.Register(c => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().SingleInstance();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance().ExternallyOwned();
@@ -61,7 +57,7 @@ namespace QuerySeadTests
 
             builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
 
-            builder.RegisterAggregateService<IControllerServiceAggregate>();
+            // builder.RegisterAggregateService<IControllerServiceAggregate>();
 
             builder.RegisterType<RangeCategoryBoundSqlQueryBuilder>().Keyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range);
 

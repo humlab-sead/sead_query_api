@@ -108,8 +108,7 @@ namespace QuerySeadTests.IoC {
             using (var scope = container.BeginLifetimeScope())
             {
                 Assert.IsNotNull(scope.Resolve<IQueryBuilderSetting>());
-                Assert.IsNotNull(scope.Resolve<ICacheManager<object>>());
-                Assert.IsNotNull(scope.Resolve<IQueryCache>());
+                Assert.IsNotNull(scope.Resolve<ICache>());
                 Assert.IsNotNull(scope.Resolve<DomainModelDbContext>());
                 Assert.IsNotNull(scope.Resolve<IUnitOfWork>());
                 Assert.IsNotNull(scope.Resolve<IFacetsGraph>());
@@ -128,11 +127,11 @@ namespace QuerySeadTests.IoC {
 
                 Assert.IsNotNull(scope.Resolve<IResultQueryCompiler>());
 
-                var aggregate4 = scope.Resolve<IControllerServiceAggregate>();
-                Assert.IsNotNull(aggregate4);
-                Assert.IsNotNull(aggregate4.QueryCache);
-                Assert.IsNotNull(aggregate4.UnitOfWork);
-                Assert.IsNotNull(aggregate4.Setting);
+                //var aggregate4 = scope.Resolve<IControllerServiceAggregate>();
+                //Assert.IsNotNull(aggregate4);
+                //Assert.IsNotNull(aggregate4.QueryCache);
+                //Assert.IsNotNull(aggregate4.UnitOfWork);
+                //Assert.IsNotNull(aggregate4.Setting);
 
                 //var aggregate5 = scope.Resolve<IResultServiceAggregate>();
                 //Assert.IsNotNull(aggregate5);

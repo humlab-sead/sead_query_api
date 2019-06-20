@@ -12,21 +12,13 @@ namespace QuerySeadAPI.Services
 
         public IFacetSetting Config { get; set; }
         public IUnitOfWork Context { get; set; }
-        public IQueryCache Cache { get; set; }
+        public ICache Cache { get; set; }
 
-        public CacheService<FacetsConfig2> ConfigCache { get; private set; }
-        public CacheService<FacetContent> ContentCache { get; private set; }
-        public CacheService<ResultContentSet> ResultCache { get; private set; }
-
-        public AppServiceBase(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache)
+        public AppServiceBase(IQueryBuilderSetting config, IUnitOfWork context, ICache cache)
         {
             Config = config.Facet;
             Context = context;
             Cache = cache;
-
-            ConfigCache = new FacetConfigCache(cache);
-            ContentCache = new FacetContentCache(cache);
-            ResultCache = new FaceResultCache(cache);
         }
 
     }

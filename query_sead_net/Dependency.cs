@@ -8,21 +8,30 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuerySeadDomain;
 using QuerySeadDomain.QueryBuilder;
+using System;
 
 namespace QuerySeadAPI {
 
-    public interface IControllerServiceAggregate
-    {
-        IQueryBuilderSetting Setting { get; set; }
-        IQueryCache QueryCache { get; set; }
-        IUnitOfWork UnitOfWork { get; set; }
-    }
+    //public interface IControllerServiceAggregate
+    //{
+    //    IQueryBuilderSetting Setting { get; set; }
+    //    ICacheContainer QueryCache { get; set; }
+    //    IUnitOfWork UnitOfWork { get; set; }
+    //}
 
     public class DependencyService
     {
-        public virtual ICacheManager<object> GetCacheManager()
+
+        public virtual ICache GetCache(StoreSetting settings)
         {
-            return new QueryCacheFactory().Create();
+            try {
+                if (settings?.UseRedisCache == true)
+                    return new RedisCacheProvider();
+            } catch (InvalidOperationException) {
+                Console.WriteLine("Failed to connect to Redis!");
+            }
+            Console.WriteLine("Warning: Using in memoty cache provider!");
+            return new SimpleMemoryCacheProvider();
         }
 
         public virtual IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
@@ -32,8 +41,10 @@ namespace QuerySeadAPI {
             // http://docs.autofac.org/en/latest/register/registration.html
 
             builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
-            builder.Register(c => GetCacheManager()).SingleInstance().ExternallyOwned();
-            builder.RegisterAggregateService<IQueryCache>();
+
+            // builder.Register(c => GetCacheManager(options?.Store)).SingleInstance().ExternallyOwned();
+            // builder.RegisterAggregateService<ICacheContainer>();
+            builder.Register(z => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
@@ -60,12 +71,12 @@ namespace QuerySeadAPI {
             //builder.RegisterType<DiscreteCategoryCountService>();
             #endregion
 
-
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
             builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
-            builder.RegisterAggregateService<IControllerServiceAggregate>();
+
+            //builder.RegisterAggregateService<IControllerServiceAggregate>();
 
             builder.RegisterType<RangeCategoryBoundSqlQueryBuilder>().Keyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range);
 

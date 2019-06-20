@@ -10,9 +10,9 @@ namespace query_sead_net.Controllers
     [Route("api/[controller]")]
     public class CacheController : Controller
     {
-        private IQueryCache cache;
+        private ICache cache;
 
-        public CacheController(IQueryCache cache)
+        public CacheController(ICache cache)
         {
             this.cache = cache;
 
@@ -20,7 +20,7 @@ namespace query_sead_net.Controllers
         [HttpGet("clear")]
         public string Clear()
         {
-            cache.Store.Clear();
+            cache.Clear();
             return "OK";
         }
 

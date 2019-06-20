@@ -1,0 +1,18 @@
+﻿using System;
+
+namespace QuerySeadAPI
+{
+    public interface ICache
+    {
+        string KeyPrefix { get; set; }
+        T Get<T>(string key);
+        void Set<T>(string key, T value);
+        void SetSliding<T>(string key, T value);
+        void Set<T>(string key, T value, int duration);
+        void SetSliding<T>(string key, T value, int duration);
+        void Set<T>(string key, T value, DateTimeOffset expiration);
+        bool Exists(string key);
+        void Remove(string key);
+        void Clear();
+    }
+}

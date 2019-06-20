@@ -16,7 +16,7 @@ namespace QuerySeadAPI.Services
         public IDeleteBogusPickService BogusPickService { get; private set; }
         public IIndex<EFacetType, IFacetContentService> ContentServices { get; private set; }
 
-        public LoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache,
+        public LoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, ICache cache,
             IDeleteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache)
         {
             BogusPickService = bogusService;
@@ -35,7 +35,7 @@ namespace QuerySeadAPI.Services
     public class CachedLoadFacetService : LoadFacetService
     {
 
-        public CachedLoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, IQueryCache cache,
+        public CachedLoadFacetService(IQueryBuilderSetting config, IUnitOfWork context, ICache cache,
             IDeleteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache, bogusService, services)
         {
         }
@@ -43,11 +43,13 @@ namespace QuerySeadAPI.Services
         public override FacetContent Load(FacetsConfig2 facetsConfig)
         {
             var cacheId = facetsConfig.GetCacheId();
-            if (ContentCache.Exists(cacheId))
-                return ContentCache.Get(cacheId);
+            var configCacheId = "config_{cacheId}";
+            var contentCacheId = "content_{cacheId}";
+            if (Cache.Exists(contentCacheId))
+                return Cache.Get<FacetContent>(contentCacheId);
             var facetContent = base.Load(facetsConfig);
-            ConfigCache.Put(cacheId, facetsConfig);
-            ContentCache.Put(cacheId, facetContent);
+            Cache.Set<FacetsConfig2>(configCacheId, facetsConfig);
+            Cache.Set<FacetContent>(contentCacheId, facetContent);
             return facetContent;
         }
     }
