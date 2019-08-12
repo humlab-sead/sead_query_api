@@ -2,10 +2,10 @@ version: '3.4'
 
 services:
   sead.query.api:
-    image: ${DOCKER_REGISTRY-}queryseadapi
+    image: ${DOCKER_REGISTRY-}sead_query_api
     build:
       context: .
-      dockerfile: query_sead_net/Dockerfile
+      dockerfile: sead_query_api/Dockerfile
     depends_on:
       - data.cache
   data.cache:
