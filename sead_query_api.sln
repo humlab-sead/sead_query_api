@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.api", "query_sead_net\query.sead.api.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.api", "sead.query.api\sead.query.api.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.domain", "query_sead_core\query.sead.domain.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.core", "sead.query.core\sead.query.core.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.tests", "query_sead_test\query.sead.tests.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.test", "sead.query.test\sead.query.test.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
 	ProjectSection(SolutionItems) = preProject

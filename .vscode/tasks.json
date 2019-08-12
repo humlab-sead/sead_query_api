@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/query_sead_net/QuerySeadAPI.csproj"
+                "${workspaceRoot}/query_sead_net/SeadQueryAPI.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

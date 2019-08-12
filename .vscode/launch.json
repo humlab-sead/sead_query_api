@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/query_sead_net/bin/Debug/netcoreapp1.1/QuerySeadAPI.dll",
+            "program": "${workspaceRoot}/query_sead_net/bin/Debug/netcoreapp1.1/SeadQueryAPI.dll",
             "args": [],
             "cwd": "${workspaceRoot}/query_sead_net",
             "stopAtEntry": false,
