@@ -66,7 +66,21 @@ namespace QuerySeadTests
         }
 
         [TestMethod]
-        public void ShouldBeAbleToFetchAllResultFields()
+        public void ShouldBeAbleToFetchAllResultFieldTypesByContext()
+        {
+            var values = context.Set<ResultFieldType>().ToList();
+            Assert.IsTrue(values.Count > 0);
+        }
+
+        [TestMethod]
+        public void ShouldBeAbleToFetchAllResultFieldsByContext()
+        {
+            List<ResultField> values = context.Set<ResultField>().ToList();
+            Assert.IsTrue(values.Count > 0);
+        }
+
+        [TestMethod]
+        public void ShouldBeAbleToFetchAllResultFieldsByRepository()
         {
             var repository = new ResultRepository(context);
             List<ResultField> values = repository.GetAllFields().ToList();

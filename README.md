@@ -26,3 +26,5 @@ ex:
 %HOMEPATH%\.nuget\packages\redis-64\3.0.503\tools\redis-server.exe %HOMEPATH%\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
 
 Debian: Download source code and compile it on target machine, install as daemon (see doc)
+
+

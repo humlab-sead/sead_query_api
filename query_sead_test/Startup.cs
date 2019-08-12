@@ -17,22 +17,23 @@ namespace QuerySeadTests
         [AssemblyInitialize()]
         public static void AssemblyInit(TestContext context)
         {
-            Configure(context);
-            ConfigureServices(context);
+            Configure();
+            ConfigureServices();
         }
 
-        public static void Configure(TestContext context)
+        public static void Configure()
         {
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug, false, false);
             var builder = new ConfigurationBuilder()
                 .SetBasePath(System.AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.test.json", optional: true);
+                .AddJsonFile("appsettings.test.json", optional: true)
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
             Options = Configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
         }
 
-        public static void ConfigureServices(TestContext context)
+        public static void ConfigureServices()
         {
         }
 

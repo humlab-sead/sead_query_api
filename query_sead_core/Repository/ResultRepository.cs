@@ -27,7 +27,7 @@ namespace QuerySeadDomain {
 
         public ResultAggregate GetByKey(string key)
         {
-            return GetAll().FirstOrDefault(x => x.AggregateKey == key);
+            return GetAll().FirstOrDefault(x => x.AggregateKey.Equals(key));
         }
 
         public IEnumerable<ResultField> GetAllFields()

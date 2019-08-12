@@ -92,7 +92,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<ResultField>().Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();
             builder.Entity<ResultField>().Property(b => b.ResultFieldKey).HasColumnName("result_field_key").IsRequired();
             builder.Entity<ResultField>().Property(b => b.FieldTypeId).HasColumnName("field_type_id").IsRequired();
-            builder.Entity<ResultField>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
+            builder.Entity<ResultField>().Property(b => b.TableName).HasColumnName("table_name"); //.IsRequired();
             builder.Entity<ResultField>().Property(b => b.ColumnName).HasColumnName("column_name").IsRequired();
             builder.Entity<ResultField>().Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
             builder.Entity<ResultField>().Property(b => b.Activated).HasColumnName("activated").IsRequired();

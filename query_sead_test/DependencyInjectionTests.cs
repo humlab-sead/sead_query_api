@@ -94,7 +94,8 @@ namespace QuerySeadTests.IoC {
         }
 
         [TestMethod]
-        public void TestCanRegisterDependencies()
+        [ExpectedException(typeof(ArgumentNullException), "Value cannot be null.")]
+        public void DependenciesWithNullOptionCannotBeRegistered()
         {
             var container = new DependencyService().Register(null,null);
             Assert.IsNotNull(container);
@@ -102,7 +103,7 @@ namespace QuerySeadTests.IoC {
         #endregion
 
         [TestMethod]
-        public void CanResolveDependencies()
+        public void CanResolveRegisteredDependencies()
         {
             var container = new TestDependencyService().Register();
             using (var scope = container.BeginLifetimeScope())
@@ -111,36 +112,38 @@ namespace QuerySeadTests.IoC {
                 Assert.IsNotNull(scope.Resolve<ICache>());
                 Assert.IsNotNull(scope.Resolve<DomainModelDbContext>());
                 Assert.IsNotNull(scope.Resolve<IUnitOfWork>());
+                Assert.IsNotNull(scope.Resolve<IFacetGraphFactory>());
                 Assert.IsNotNull(scope.Resolve<IFacetsGraph>());
                 Assert.IsNotNull(scope.Resolve<IQuerySetupBuilder>());
                 Assert.IsNotNull(scope.Resolve<IDeleteBogusPickService>());
                 Assert.IsNotNull(scope.Resolve<ICategoryBoundsService>());
-
-                //var aggregate1 = scope.Resolve<ICategoryCountServiceAggregate>();
-                //Assert.IsNotNull(aggregate1);
-                //Assert.IsNotNull(aggregate1.DiscreteCategoryCountService);
-                //Assert.IsNotNull(aggregate1.RangeCategoryCountService);
-
                 Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));
                 Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));
-                Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
+                Assert.IsNotNull(scope.ResolveKeyed<ICategoryCountService>(EFacetType.Discrete));
+                Assert.IsNotNull(scope.ResolveKeyed<ICategoryCountService>(EFacetType.Range));
+                Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));
+                Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));
+                Assert.IsNotNull(scope.ResolveKeyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range));
+                Assert.IsNotNull(scope.ResolveKeyed<IResultSqlQueryCompiler>("tabular"));
+                Assert.IsNotNull(scope.ResolveKeyed<IResultSqlQueryCompiler>("map"));
+                Assert.IsNotNull(scope.ResolveKeyed<IResultService>("tabular"));
+                Assert.IsNotNull(scope.ResolveKeyed<IResultService>("map"));
 
                 Assert.IsNotNull(scope.Resolve<IResultQueryCompiler>());
-
-                //var aggregate4 = scope.Resolve<IControllerServiceAggregate>();
-                //Assert.IsNotNull(aggregate4);
-                //Assert.IsNotNull(aggregate4.QueryCache);
-                //Assert.IsNotNull(aggregate4.UnitOfWork);
-                //Assert.IsNotNull(aggregate4.Setting);
-
-                //var aggregate5 = scope.Resolve<IResultServiceAggregate>();
-                //Assert.IsNotNull(aggregate5);
-                //Assert.IsNotNull(aggregate5.MapResultService);
-                //Assert.IsNotNull(aggregate5.ResultService);
-
                 Assert.IsNotNull(scope.Resolve<ILoadFacetService>());
-
+                Assert.IsNotNull(scope.Resolve<ILoadResultService>());
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Autofac.Core.Registration.ComponentNotRegisteredException))]
+        public void CannotResolveGeoDependency()
+        {
+            var container = new TestDependencyService().Register();
+            using (var scope = container.BeginLifetimeScope()) {
+                Assert.IsNotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
+            }
+        }
+
     }
 }

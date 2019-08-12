@@ -1,27 +1,4 @@
 #!/bin/sh
-#
-# The MIT License
-#
-# Copyright 2014-2017 Jakub Jirutka <jakub@jirutka.cz>.
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
-
 
 usage() {
 	cat <<- EOF
@@ -41,35 +18,67 @@ usage() {
 pgexec() {
 	local cmd=$1
 	psql --no-psqlrc --no-align --tuples-only --record-separator=\0 --quiet \
-		--echo-queries --command="$cmd" "$DB_NAME"
+		--echo-queries --command="$cmd" "$db_name"
 }
 
 
-DB_NAME=''
-ROLE=''
-SCHEMA='public'
-while getopts 'hd:u:s:' OPTION; do
-	case $OPTION in
+db_name=''
+role=''
+schema='public'
+while getopts 'hd:u:s:' option; do
+	case $option in
 		h) usage; exit 1;;
-		d) DB_NAME=$OPTARG;;
-		u) ROLE=$OPTARG;;
-		s) SCHEMA=$OPTARG;;
+		d) db_name=$optarg;;
+		u) role=$optarg;;
+		s) schema=$optarg;;
 	esac
 done
 
-if [ -z "$DB_NAME" ] || [ -z "$ROLE" ]; then
+if [ -z "$db_name" ] || [ -z "$role" ]; then
 	usage
 	exit 1
 fi
+# grant rw to, r/o to querysead_worker, querysead_owner
+pgexec "
+	grant connect on database $db_name to $role;
+	grant usage on schema $schema to $role;
+	grant select on all tables in schema $schema to $role;
+	grant select on all sequences in schema $schema to $role;
+	alter default privileges in schema $schema grant select on tables to $role;
+	alter default privileges in schema $schema grant select on sequences to $role;
+"
 
-pgexec "GRANT CONNECT ON DATABASE $DB_NAME TO $ROLE;
-GRANT USAGE ON SCHEMA $SCHEMA TO $ROLE;
-GRANT SELECT ON ALL TABLES IN SCHEMA $SCHEMA TO $ROLE;
-GRANT SELECT ON ALL SEQUENCES IN SCHEMA $SCHEMA TO $ROLE;
-ALTER DEFAULT PRIVILEGES IN SCHEMA $SCHEMA GRANT SELECT ON TABLES TO $ROLE;
-ALTER DEFAULT PRIVILEGES IN SCHEMA $SCHEMA GRANT SELECT ON SEQUENCES TO $ROLE;"
+#pgexec "grant execute on all functions in schema $schema to $role;
+#alter default privileges in schema $schema grant execute on functions to $role;
 
-# Uncomment to also grant privileges on all functions/procedures in the schema.
-# It's usually NOT what you want - functions can modify data!
-#pgexec "GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA $SCHEMA TO $ROLE;
-#ALTER DEFAULT PRIVILEGES IN SCHEMA $SCHEMA GRANT EXECUTE ON FUNCTIONS TO $ROLE;"
+    if not exists (select from pg_catalog.pg_roles where rolname = 'querysead_owner') then
+
+        create user querysead_owner
+            with login nosuperuser inherit nocreatedb nocreaterole noreplication valid until 'infinity';
+
+    end if;
+
+    if not exists (select from pg_catalog.pg_roles where rolname = 'querysead_worker') then
+
+        create user querysead_worker
+            with login nosuperuser inherit nocreatedb nocreaterole noreplication valid until 'infinity';
+
+    end if;
+
+    grant connect on database sead_staging to querysead_worker, querysead_owner;
+    grant usage on schema public, metainformation to querysead_owner, querysead_worker, sead_read, sead_write;
+
+    revoke all on all tables in schema public, metainformation from querysead_owner, querysead_worker;
+
+    grant select on all tables in schema public, metainformation to querysead_owner, querysead_worker;
+    grant select, usage on all sequences in schema public, metainformation to querysead_owner, querysead_worker;
+    grant execute on all functions in schema public, metainformation to querysead_owner, querysead_worker;
+
+    alter default privileges in schema public, metainformation grant select, trigger on tables to querysead_owner, querysead_worker;
+
+    alter default privileges in schema facet grant select on tables to public, querysead_worker, sead_read, sead_write;
+    alter default privileges in schema facet grant select, usage on sequences to public, querysead_worker, sead_read, sead_write;
+    alter default privileges in schema facet grant execute on functions to public, querysead_worker, sead_read, sead_write;
+
+-- alter user querysead_owner with encrypted password 'xxx';
+-- alter user querysead_worker with encrypted password 'xxx';

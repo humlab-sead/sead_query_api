@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "query.sead.api", "query_sead_net\query.sead.api.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
 EndProject
@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		deploy_query_sead = deploy_query_sead
 		deploy_query_sead.bash = deploy_query_sead.bash
+		Dockerfile.txt = Dockerfile.txt
+		setup\pg_grant_read_to_db.bash = setup\pg_grant_read_to_db.bash
 		publish_release.bat = publish_release.bat
 		README.md = README.md
 		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf
@@ -28,9 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conf", "Conf", "{E07C014F-0
 		conf\appsettings.Test.json = conf\appsettings.Test.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{49AA1790-4719-441E-B3B6-5FBB1E77ED97}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{19B49B72-6F5C-4435-8B15-0451E93648A8}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,14 +50,16 @@ Global
 		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E07C014F-0A85-48D9-B035-B06F12A78C83} = {01CB666F-601C-4279-B756-5C06A6BA6B7A}
-		{49AA1790-4719-441E-B3B6-5FBB1E77ED97} = {01CB666F-601C-4279-B756-5C06A6BA6B7A}
-		{19B49B72-6F5C-4435-8B15-0451E93648A8} = {49AA1790-4719-441E-B3B6-5FBB1E77ED97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5283932E-66A7-41F3-9EEE-C02D5737EFC6}

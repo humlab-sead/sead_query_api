@@ -12,8 +12,8 @@ namespace QuerySeadTests.Repository {
     public class RepositoryTests {
 
         DomainModelDbContext context;
-        IContainer container;
-        IQueryBuilderSetting settings;
+        readonly IContainer container;
+        readonly IQueryBuilderSetting settings;
 
         public RepositoryTests()
         {
@@ -107,5 +107,26 @@ namespace QuerySeadTests.Repository {
             Assert.AreEqual(1, aliasFacets.Count);
             Assert.AreSame(facet, aliasFacets[0]);
         }
+
+        //[TestMethod]
+        //public void CanGetAliasFacets()
+        //{
+        //    var repository = new FacetRepository(context);
+        //    List<FacetDefinition> facets = repository.GetAll().ToList();
+        //    FacetDefinition facet = repository.Get(21);
+        //    Assert.AreEqual("country", facet.FacetCode);
+        //    Assert.AreEqual("Country", facet.DisplayTitle);
+        //    Assert.IsNotNull(facet.FacetGroup);
+        //    Assert.IsNotNull(facet.TargetTable);
+        //    Assert.IsNotNull(facet.FacetType);
+        //    Assert.IsNotNull(facet.Tables);
+        //    Assert.IsTrue(facet.Tables.Count > 0);
+
+        //    List<FacetDefinition> aliasFacets = repository.FindThoseWithAlias().ToList();
+        //    Assert.AreEqual(1, aliasFacets.Count);
+        //    Assert.AreSame(facet, aliasFacets[0]);
+        //}
+
+
     }
 }
