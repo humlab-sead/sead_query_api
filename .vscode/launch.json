@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/query_sead_net/bin/Debug/netcoreapp1.1/SeadQueryAPI.dll",
+            "program": "${workspaceRoot}/sead.query.api/bin/Debug/netcoreapp2.2/sead.query.api.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/query_sead_net",
+            "cwd": "${workspaceRoot}/sead.query.api",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -20,7 +20,7 @@
                 "args": "${auto-detect-url}",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}"
+                    "args": "/C start ${auto-detect-url}/api/values"
                 },
                 "osx": {
                     "command": "open"
