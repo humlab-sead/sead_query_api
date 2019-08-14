@@ -55,7 +55,7 @@ namespace SeadQueryTest.FacetsConfig
 
                 using (var scope = container.BeginLifetimeScope())
                 {
-                    facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                    facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                     var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
@@ -85,7 +85,7 @@ namespace SeadQueryTest.FacetsConfig
 
                 using (var scope = container.BeginLifetimeScope())
                 {
-                    facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                    facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                     var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
                     var facetContent = service.Load(facetsConfig);
@@ -111,7 +111,7 @@ namespace SeadQueryTest.FacetsConfig
 
                 using (var scope = container.BeginLifetimeScope())
                 {
-                    facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                    facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                     var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
                     var facetContent = service.Load(facetsConfig);
@@ -138,7 +138,7 @@ namespace SeadQueryTest.FacetsConfig
 
             using (var scope = container.BeginLifetimeScope())
             {
-                facetsConfig.SetContext(scope.Resolve<IUnitOfWork>());
+                facetsConfig.SetContext(scope.Resolve<IRepositoryRegistry>());
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
                 var facetContent = service.Load(facetsConfig);
@@ -157,7 +157,7 @@ namespace SeadQueryTest.FacetsConfig
             {
                 // Arrange
                 FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
-                facetsConfig.SetContext(scope.Resolve<IUnitOfWork>());
+                facetsConfig.SetContext(scope.Resolve<IRepositoryRegistry>());
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
                 // Act
@@ -186,7 +186,7 @@ namespace SeadQueryTest.FacetsConfig
             {
                 // Arrange
                 FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
-                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
@@ -208,7 +208,7 @@ namespace SeadQueryTest.FacetsConfig
             FacetsConfig2 facetsConfig = fixture.GenerateByConfig(config);
             using (var scope = container.BeginLifetimeScope())
             {
-                var context = scope.Resolve<IUnitOfWork>();
+                var context = scope.Resolve<IRepositoryRegistry>();
                 facetsConfig.SetContext(context);
 
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
@@ -233,7 +233,7 @@ namespace SeadQueryTest.FacetsConfig
             {
                 // Arrange
                 FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
-                facetsConfig.Context = scope.Resolve<IUnitOfWork>();
+                facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
                 facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 

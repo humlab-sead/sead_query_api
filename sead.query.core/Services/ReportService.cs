@@ -11,7 +11,7 @@ namespace SeadQueryCore.Services
     {
         public string FacetCode { get; protected set; }
 
-        public ReportService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public ReportService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
             FacetCode = "distinct_expr";
         }

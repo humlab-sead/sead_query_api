@@ -29,7 +29,7 @@ namespace SeadQueryCore
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
 
-        public CategoryCountService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public CategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
         }
 
@@ -49,7 +49,7 @@ namespace SeadQueryCore
 
     public class RangeCategoryCountService : CategoryCountService {
 
-        public RangeCategoryCountService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder) { }
+        public RangeCategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder) { }
 
         protected override string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
@@ -72,7 +72,7 @@ namespace SeadQueryCore
 
     public class DiscreteCategoryCountService : CategoryCountService {
 
-        public DiscreteCategoryCountService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder) { }
+        public DiscreteCategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder) { }
 
         protected override string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string payload)
         {

@@ -32,7 +32,7 @@ namespace SeadQueryCore.QueryBuilder
         Returns:
             Query object with SQL-parts
         */
-        public QuerySetup setup(IUnitOfWork context, FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables, List<string> facetCodes)
+        public QuerySetup setup(IRepositoryRegistry context, FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables, List<string> facetCodes)
         {
             FacetsGraph graph = new FacetsGraph(context);
 
@@ -41,7 +41,7 @@ namespace SeadQueryCore.QueryBuilder
             return querySetup;
         }
 
-        public QuerySetup setup(IUnitOfWork context, FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null)
+        public QuerySetup setup(IRepositoryRegistry context, FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null)
         {
             List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetCode);
             extraTables == extraTables ?? new List<string>();

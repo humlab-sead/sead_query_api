@@ -87,7 +87,7 @@ namespace SeadQueryCore {
         //{
         //}
         [JsonConstructor]
-        public FacetsConfig2(IUnitOfWork context)
+        public FacetsConfig2(IRepositoryRegistry context)
         {
             Context = context;
         }
@@ -108,7 +108,7 @@ namespace SeadQueryCore {
         public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
 
         [JsonIgnore]
-        public IUnitOfWork Context { get; set; }
+        public IRepositoryRegistry Context { get; set; }
 
         [JsonIgnore]
         private List<FacetConfig2> facetConfigs;
@@ -124,7 +124,7 @@ namespace SeadQueryCore {
             }
         }
 
-        public FacetsConfig2 SetContext(IUnitOfWork context)
+        public FacetsConfig2 SetContext(IRepositoryRegistry context)
         {
             Context = context;
             FacetConfigs.ForEach(z => z.Context = context);
@@ -232,7 +232,7 @@ namespace SeadQueryCore {
 
         // FIXM Refactor away dependency to Context
         [JsonIgnore]
-        public IUnitOfWork Context { get; set; }    // FIXME Remove dependecy to Context
+        public IRepositoryRegistry Context { get; set; }    // FIXME Remove dependecy to Context
 
         public List<FacetConfigPick> Picks { get; set; }
 
@@ -240,7 +240,7 @@ namespace SeadQueryCore {
         public FacetDefinition Facet { get => Context?.Facets?.GetByCode(FacetCode); }
 
         [JsonConstructor]
-        public FacetConfig2(IUnitOfWork context)
+        public FacetConfig2(IRepositoryRegistry context)
         {
             Context = context;
         }

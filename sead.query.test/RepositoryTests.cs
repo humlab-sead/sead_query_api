@@ -5,6 +5,7 @@ using System.Linq;
 using SeadQueryCore;
 using System.Diagnostics;
 using Autofac;
+using SeadQueryInfra;
 
 namespace SeadQueryTest.Repository {
 
@@ -42,12 +43,12 @@ namespace SeadQueryTest.Repository {
 
             builder.RegisterInstance<IQueryBuilderSetting>(Startup.Options).SingleInstance().ExternallyOwned();
             builder.RegisterType<DomainModelDbContext>().SingleInstance();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>();
 
             var container = builder.Build();
             using (var scope = container.BeginLifetimeScope())
             {
-                var service = scope.Resolve<IUnitOfWork>();
+                var service = scope.Resolve<IRepositoryRegistry>();
                 Assert.IsTrue(service.Facets.GetAll().Count() > 0);
             }
         }

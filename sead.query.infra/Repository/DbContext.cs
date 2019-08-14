@@ -4,6 +4,7 @@ using SeadQueryCore;
 using System.Diagnostics;
 
 namespace DataAccessPostgreSqlProvider {
+
     public class DomainModelDbContext : DbContext {
         public StoreSetting Settings { get; set; }
 

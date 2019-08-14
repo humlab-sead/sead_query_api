@@ -23,7 +23,7 @@ namespace SeadQueryCore {
         public IResultQueryCompiler QueryCompiler { get; set; }
         public IIndex<EFacetType, ICategoryCountService> CategoryCountServices { get; set; }
 
-        public DefaultResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler compiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
+        public DefaultResultService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IResultQueryCompiler compiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
         {
             FacetCode = "result_facet";
             QueryCompiler = compiler;
@@ -65,7 +65,7 @@ namespace SeadQueryCore {
 
         private readonly string ResultKey = "map_result";
 
-        public MapResultService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IResultQueryCompiler resultQueryCompiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices)
+        public MapResultService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IResultQueryCompiler resultQueryCompiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices)
             : base(config, context, builder, resultQueryCompiler, categoryCountServices)
         {
             FacetCode = "map_result";

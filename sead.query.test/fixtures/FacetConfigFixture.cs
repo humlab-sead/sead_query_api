@@ -57,13 +57,13 @@ namespace SeadQueryTest.fixtures
     {
 
         public IContainer Container { get; set; }
-        public IUnitOfWork Context { get; set; }
+        public IRepositoryRegistry Context { get; set; }
         public FacetConfigFixtureData Data { get; set; }
 
         public FacetConfigGenerator()
         {
             Container = new TestDependencyService().Register();
-            Context = Container.Resolve<IUnitOfWork>();
+            Context = Container.Resolve<IRepositoryRegistry>();
             Data = new FacetConfigFixtureData();
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using CacheManager.Core;
 
-namespace SeadQueryAPI
+namespace SeadQueryInfra
 {
 
     public class CacheManagerProvider : CacheProviderBase<ICacheManager<object>>

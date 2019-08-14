@@ -2,15 +2,18 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using SeadQueryCore;
 
-namespace SeadQueryCore {
-    public class NodeRepository : Repository<GraphNode, int> {
+namespace SeadQueryInfra {
+
+    public class NodeRepository : Repository<GraphNode, int>, INodeRepository {
         public NodeRepository(DomainModelDbContext context) : base(context)
         {
         }
     }
 
-    public class EdgeRepository : Repository<GraphEdge, int> {
+    public class EdgeRepository : Repository<GraphEdge, int>, IEdgeRepository
+    {
         public EdgeRepository(DomainModelDbContext context) : base(context)
         {
         }

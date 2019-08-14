@@ -13,10 +13,10 @@ namespace SeadQueryAPI.Controllers
     [Route("api/[controller]")]
     public class ResultController : Controller
     {
-        public IUnitOfWork Context { get; private set; }
+        public IRepositoryRegistry Context { get; private set; }
         private Services.ILoadResultService ResultService { get; set; }
 
-        public ResultController(IUnitOfWork context, Services.ILoadResultService resultService)
+        public ResultController(IRepositoryRegistry context, Services.ILoadResultService resultService)
         {
             Context = context;
             ResultService = resultService;

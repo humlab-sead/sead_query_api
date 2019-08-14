@@ -12,7 +12,7 @@ namespace SeadQueryCore
 
     public class DeleteBogusPickService : QueryServiceBase, IDeleteBogusPickService {
 
-        public DeleteBogusPickService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public DeleteBogusPickService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
         }
 

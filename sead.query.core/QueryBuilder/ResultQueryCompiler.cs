@@ -20,7 +20,7 @@ namespace SeadQueryCore {
     {
         protected IIndex<string, IResultSqlQueryCompiler> QueryCompilers;
 
-        public ResultQueryCompiler(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IIndex<string, IResultSqlQueryCompiler> queryCompilers) : base(config, context, builder)
+        public ResultQueryCompiler(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IIndex<string, IResultSqlQueryCompiler> queryCompilers) : base(config, context, builder)
         {
             QueryCompilers = queryCompilers;
         }

@@ -40,9 +40,11 @@ namespace SeadQueryAPI {
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            // Configuration.GetSection("Logging")
             services.AddOptions();
             services.AddCors();
             services.AddMvc();
+            services.AddLogging(builder => builder.AddConsole());
 
             //AddSwagger(services);
 
@@ -74,9 +76,6 @@ namespace SeadQueryAPI {
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
 
             app.UseMvcWithDefaultRoute();
@@ -92,33 +91,3 @@ namespace SeadQueryAPI {
     }
 }
 
-//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-
-//// Enable middleware to serve generated Swagger as a JSON endpoint.
-//app.UseSwagger();
-
-//// Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
-//app.UseSwaggerUI(c =>
-//{
-//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Query SEAD API V1");
-//    //c.EnabledValidator();
-//    //c.BooleanValues(new object[] { 0, 1 });
-//    //c.DocExpansion("full");
-//    //c.InjectOnCompleteJavaScript("/swagger-ui/on-complete.js");
-//    //c.InjectOnFailureJavaScript("/swagger-ui/on-failure.js");
-//    //c.SupportedSubmitMethods(new[] { "get", "post", "put", "patch" });
-//    c.ShowRequestHeaders();
-//    c.ShowJsonEditor();
-//});
-
-//services.AddCors(options =>
-//{
-//    options.AddPolicy("QuerySeadCorsPolicy",
-//        builder => builder
-//            .AllowAnyOrigin()
-//            .AllowAnyMethod()
-//            .AllowAnyHeader()
-//            .AllowCredentials());
-//});
-
-//app.UseCors("QuerySeadCorsPolicy");

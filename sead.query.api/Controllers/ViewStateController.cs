@@ -17,13 +17,13 @@ namespace SeadQueryAPI.Controllers
         /// <summary>
         /// Reference to current DB context
         /// </summary>
-        public IUnitOfWork Context { get; private set; }
+        public IRepositoryRegistry Context { get; private set; }
         /// <summary>
         /// Reference to facet contetnt load service
         /// </summary>
         public Services.ILoadFacetService LoadService { get; private set; }
 
-        public ViewStateController(IUnitOfWork context)
+        public ViewStateController(IRepositoryRegistry context)
         {
             Context = context;
         }

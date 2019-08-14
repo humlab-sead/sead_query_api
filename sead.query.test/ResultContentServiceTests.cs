@@ -54,7 +54,7 @@ namespace SeadQueryTest
             var facetsConfig = facetConfigFixture.GenerateByUri(uri);
             var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
             using (var scope = container.BeginLifetimeScope()) {
-                var context = scope.Resolve<IUnitOfWork>();
+                var context = scope.Resolve<IRepositoryRegistry>();
                 facetsConfig.SetContext(context);
 
                 var service = scope.ResolveKeyed<IResultService>(viewTypeId);

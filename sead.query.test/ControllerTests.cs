@@ -48,7 +48,6 @@ namespace SeadQueryTest
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging")).AddDebug();
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
             app.UseMvcWithDefaultRoute();
         }
@@ -72,7 +71,15 @@ namespace SeadQueryTest
                 .UseKestrel()
                 //.UseConfiguration(config)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<T>();
+                .UseStartup<T>()
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    // Requires `using Microsoft.Extensions.Logging;`
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    logging.AddDebug();
+                    logging.AddEventSourceLogger();
+                });
         }
 
         [TestMethod]

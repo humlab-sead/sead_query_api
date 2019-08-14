@@ -1,7 +1,8 @@
 ﻿using Autofac;
-using CacheManager.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeadQueryAPI;
+using SeadQueryCore;
+using SeadQueryInfra;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace SeadQueryTest.Cache {
     public class CacheTests
     {
 
-        protected virtual ICache GetCache()
+        protected virtual ISeadQueryCache GetCache()
         {
             //try {
             //    return new RedisCacheProvider();
@@ -63,7 +64,7 @@ namespace SeadQueryTest.Cache {
             var container = new TestDependencyService().Register(null, options);
             using (var scope = container.BeginLifetimeScope()) {
                 // Assert.IsNotNull(scope.Resolve<ICacheManager<object>>());
-                Assert.IsNotNull(scope.Resolve<ICache>());
+                Assert.IsNotNull(scope.Resolve<ISeadQueryCache>());
             }
         }
 

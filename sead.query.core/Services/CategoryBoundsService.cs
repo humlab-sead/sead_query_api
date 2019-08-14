@@ -15,7 +15,7 @@ namespace SeadQueryCore
 
         private IIndex<EFacetType, ICategoryBoundSqlQueryBuilder> Compilers;
 
-        public RangeCategoryBoundsService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryBoundSqlQueryBuilder> compilers) : base(config, context, builder)
+        public RangeCategoryBoundsService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryBoundSqlQueryBuilder> compilers) : base(config, context, builder)
         {
             Compilers = compilers;
         }

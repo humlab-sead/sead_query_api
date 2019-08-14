@@ -1,16 +1,11 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Autofac.Extras.AggregateService;
-using CacheManager.Core;
 using DataAccessPostgreSqlProvider;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Npgsql.Logging;
 using SeadQueryAPI;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using System.Diagnostics;
+using SeadQueryInfra;
 
 namespace SeadQueryTest
 {
@@ -21,7 +16,7 @@ namespace SeadQueryTest
         {
         }
 
-        public override ICache GetCache(StoreSetting settings)
+        public override ISeadQueryCache GetCache(StoreSetting settings)
         {
             return new NullCacheProvider();
         }
@@ -34,7 +29,7 @@ namespace SeadQueryTest
             builder.Register(c => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().SingleInstance();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance().ExternallyOwned();
+            builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
             builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build());

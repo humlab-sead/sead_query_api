@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SeadQueryAPI;
+﻿using Microsoft.AspNetCore.Mvc;
+using SeadQueryCore;
 
 namespace query_sead_net.Controllers
 {
     [Route("api/[controller]")]
     public class CacheController : Controller
     {
-        private ICache cache;
+        private ISeadQueryCache cache;
 
-        public CacheController(ICache cache)
+        public CacheController(ISeadQueryCache cache)
         {
             this.cache = cache;
 

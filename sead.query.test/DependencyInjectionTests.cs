@@ -109,9 +109,9 @@ namespace SeadQueryTest.IoC {
             using (var scope = container.BeginLifetimeScope())
             {
                 Assert.IsNotNull(scope.Resolve<IQueryBuilderSetting>());
-                Assert.IsNotNull(scope.Resolve<ICache>());
+                Assert.IsNotNull(scope.Resolve<ISeadQueryCache>());
                 Assert.IsNotNull(scope.Resolve<DomainModelDbContext>());
-                Assert.IsNotNull(scope.Resolve<IUnitOfWork>());
+                Assert.IsNotNull(scope.Resolve<IRepositoryRegistry>());
                 Assert.IsNotNull(scope.Resolve<IFacetGraphFactory>());
                 Assert.IsNotNull(scope.Resolve<IFacetsGraph>());
                 Assert.IsNotNull(scope.Resolve<IQuerySetupBuilder>());

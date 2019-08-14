@@ -8,9 +8,9 @@ namespace SeadQueryCore
     public class ServiceBase
     {
         public IFacetSetting Config { get; set; }
-        public IUnitOfWork Context { get; set; }
+        public IRepositoryRegistry Context { get; set; }
 
-        public ServiceBase(IQueryBuilderSetting config, IUnitOfWork context)
+        public ServiceBase(IQueryBuilderSetting config, IRepositoryRegistry context)
         {
             Config = config.Facet;
             Context = context;
@@ -21,7 +21,7 @@ namespace SeadQueryCore
     public class QueryServiceBase : ServiceBase {
         public IQuerySetupBuilder QueryBuilder { get; set; }
 
-        public QueryServiceBase(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context)
+        public QueryServiceBase(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context)
         {
             QueryBuilder = builder;
         }

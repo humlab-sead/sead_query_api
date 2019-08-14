@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "query_sead_net": {
+    "query.sead.api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

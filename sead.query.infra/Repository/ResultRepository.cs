@@ -7,8 +7,9 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace SeadQueryCore {
-    public class ResultRepository : Repository<ResultAggregate, int>
+namespace SeadQueryInfra {
+
+    public class ResultRepository : Repository<ResultAggregate, int>, IResultRepository
     {
         public ResultRepository(DomainModelDbContext context) : base(context)
         {

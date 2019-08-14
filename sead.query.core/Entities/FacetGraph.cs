@@ -104,9 +104,9 @@ namespace SeadQueryCore
 
     public class FacetGraphFactory : IFacetGraphFactory
     {
-        public IUnitOfWork Context { get; private set; }
+        public IRepositoryRegistry Context { get; private set; }
 
-        public FacetGraphFactory(IUnitOfWork context)
+        public FacetGraphFactory(IRepositoryRegistry context)
         {
             Context = context;
         }

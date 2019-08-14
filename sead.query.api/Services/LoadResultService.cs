@@ -21,8 +21,8 @@ namespace SeadQueryAPI.Services {
 
         public LoadResultService(
             IQueryBuilderSetting config,
-            IUnitOfWork context,
-            ICache cache,
+            IRepositoryRegistry context,
+            ISeadQueryCache cache,
             IResultServiceIndex services,
             IDeleteBogusPickService bogusPickService) : base(config, context, cache) {
             ResultServices = services;
@@ -42,8 +42,8 @@ namespace SeadQueryAPI.Services {
 
         public CachedLoadResultService(
             IQueryBuilderSetting config,
-            IUnitOfWork context,
-            ICache cache,
+            IRepositoryRegistry context,
+            ISeadQueryCache cache,
             IResultServiceIndex services,
             IDeleteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
         {

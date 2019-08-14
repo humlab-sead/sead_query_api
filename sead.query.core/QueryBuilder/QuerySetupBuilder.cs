@@ -13,11 +13,11 @@ namespace SeadQueryCore.QueryBuilder
     }
 
     public class QuerySetupBuilder : IQuerySetupBuilder {
-        public IUnitOfWork Context { get; set; }
+        public IRepositoryRegistry Context { get; set; }
         public IFacetsGraph Graph { get; set; }
         public IIndex<int, IFacetPickFilterCompiler> PickCompilers { get; set; }
 
-        public QuerySetupBuilder(IUnitOfWork _context, IFacetsGraph graph, IIndex<int, IFacetPickFilterCompiler> pickCompilers) {
+        public QuerySetupBuilder(IRepositoryRegistry _context, IFacetsGraph graph, IIndex<int, IFacetPickFilterCompiler> pickCompilers) {
             Context = _context;
             Graph = graph;
             PickCompilers = pickCompilers;

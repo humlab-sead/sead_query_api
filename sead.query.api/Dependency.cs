@@ -1,28 +1,26 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Autofac.Extras.AggregateService;
-using CacheManager.Core;
 using DataAccessPostgreSqlProvider;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryInfra;
 using System;
 
-namespace SeadQueryAPI {
+namespace SeadQueryAPI
+{
 
     //public interface IControllerServiceAggregate
     //{
     //    IQueryBuilderSetting Setting { get; set; }
     //    ICacheContainer QueryCache { get; set; }
-    //    IUnitOfWork UnitOfWork { get; set; }
+    //    IRepositoryRegistry UnitOfWork { get; set; }
     //}
 
     public class DependencyService
     {
 
-        public virtual ICache GetCache(StoreSetting settings)
+        public virtual ISeadQueryCache GetCache(StoreSetting settings)
         {
             try {
                 if (settings?.UseRedisCache == true)
@@ -47,7 +45,7 @@ namespace SeadQueryAPI {
             builder.Register(z => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
             builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
             builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build());

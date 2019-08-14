@@ -8,57 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using System.Dynamic;
 using System.Data;
 using System.Reflection;
+using SeadQueryCore;
 
-namespace SeadQueryCore {
-    public interface IUnitOfWork {
+namespace SeadQueryInfra {
 
-        EdgeRepository Edges { get; }
-        FacetRepository Facets { get; }
-        NodeRepository Nodes { get; }
-        ResultRepository Results { get; }
-        FacetGroupRepository FacetGroups { get; }
-        FacetTypeRepository FacetTypes { get; }
-        ViewStateRepository ViewStates { get; }
 
-        int Commit();
-        void Dispose();
-        //List<KeyValuePair<K, V>> QueryKeyValuePairs<K, V>(string sql, Func<DbDataReader, K> keySelector, Func<DbDataReader, V> valueSelector);
-        //List<Key1Value<K, V>> QueryKeyValues<K, V>(string sql, int keyIndex = 0, int valueIndex = 1);
-        List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2);
-        T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null);
-        List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector);
-        DbDataReader Query(string sql);
-
-        //IEnumerable<dynamic> QueryDynamic(string sql, Func<DbDataReader, dynamic> selector);
-        //IEnumerable<T> QueryPopulate<T>(string sql) where T : class;
-    }
-
-    //[SerializableAttribute]
-    //public struct Key1Value<K, V> {
-    //    public Key1Value(K k, V v)
-    //    {
-    //        Key = k; Value = v;
-    //    }
-    //    K Key { get; set; }
-    //    V Value { get; set; }
-    //}
-
-    //[SerializableAttribute]
-    public struct Key2Value<K, V> {
-        public Key2Value(K k, V v1, V v2)
-        {
-            Key = k; Value1 = v1; Value2 = v2;
-        }
-        K Key { get; set; }
-        V Value1 { get; set; }
-        V Value2 { get; set; }
-    }
-
-    public class UnitOfWork : IUnitOfWork {
+    public class RepositoryRegistry : IRepositoryRegistry {
 
         private readonly DomainModelDbContext context;
 
-        public UnitOfWork(DomainModelDbContext _context)
+        public RepositoryRegistry(DomainModelDbContext _context)
         {
             context = _context;
             Facets = new FacetRepository(context);
@@ -70,13 +29,13 @@ namespace SeadQueryCore {
             ViewStates = new ViewStateRepository(context);
         }
 
-        public FacetRepository Facets { get; private set; }
-        public EdgeRepository Edges { get; private set; }
-        public NodeRepository Nodes { get; private set; }
-        public ResultRepository Results { get; private set; }
-        public FacetGroupRepository FacetGroups { get; private set; }
-        public FacetTypeRepository FacetTypes { get; private set; }
-        public ViewStateRepository ViewStates { get; private set; }
+        public IFacetRepository Facets { get; private set; }
+        public IEdgeRepository Edges { get; private set; }
+        public INodeRepository Nodes { get; private set; }
+        public IResultRepository Results { get; private set; }
+        public IFacetGroupRepository FacetGroups { get; private set; }
+        public IFacetTypeRepository FacetTypes { get; private set; }
+        public IViewStateRepository ViewStates { get; private set; }
 
         public int Commit() => context.SaveChanges();
         public void Dispose() => context.Dispose();

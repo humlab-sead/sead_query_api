@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Configuration;
+using SeadQueryCore;
 
-namespace SeadQueryAPI
+namespace SeadQueryInfra
 {
-    public abstract class CacheProviderBase<TCache> : ICache
+    public abstract class CacheProviderBase<TCache> : ISeadQueryCache
     {
         public int CacheDuration { get; set; }
         protected readonly TCache Cache;

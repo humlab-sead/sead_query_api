@@ -1,7 +1,7 @@
 ﻿using CacheManager.Core;
 using System;
 
-namespace SeadQueryAPI
+namespace SeadQueryInfra
 {
     public class RedisCacheManagerFactory
     {

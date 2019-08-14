@@ -18,7 +18,7 @@ namespace SeadQueryCore
 
         public ICategoryCountService CountService { get; set; }
 
-        public FacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public FacetContentService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
         {
         }
 
@@ -65,7 +65,7 @@ namespace SeadQueryCore
     }
 
     public class DiscreteFacetContentService : FacetContentService {
-        public DiscreteFacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder,
+        public DiscreteFacetContentService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder,
             IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder)
         {
             CountService = countServices[EFacetType.Discrete];
@@ -81,7 +81,7 @@ namespace SeadQueryCore
     }
 
     public class RangeFacetContentService : FacetContentService {
-        public RangeFacetContentService(IQueryBuilderSetting config, IUnitOfWork context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder)
+        public RangeFacetContentService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder)
         {
             CountService = countServices[EFacetType.Range];
         }

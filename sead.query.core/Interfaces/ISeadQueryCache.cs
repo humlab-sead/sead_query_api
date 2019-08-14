@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SeadQueryAPI
+namespace SeadQueryCore
 {
-    public interface ICache
+    public interface ISeadQueryCache
     {
         string KeyPrefix { get; set; }
         T Get<T>(string key);

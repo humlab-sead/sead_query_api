@@ -7,18 +7,17 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace SeadQueryCore {
-    public interface IFacetRepository : IRepository<FacetDefinition, int> {
-    }
+namespace SeadQueryInfra {
 
-    public class FacetTypeRepository : Repository<FacetType, int>
+
+    public class FacetTypeRepository : Repository<FacetType, int>, IFacetTypeRepository
     {
         public FacetTypeRepository(DomainModelDbContext context) : base(context)
         {
         }
     }
 
-    public class FacetGroupRepository : Repository<FacetGroup, int>
+    public class FacetGroupRepository : Repository<FacetGroup, int>, IFacetGroupRepository
     {
         public FacetGroupRepository(DomainModelDbContext context) : base(context)
         {
@@ -53,7 +52,7 @@ namespace SeadQueryCore {
 
         public IEnumerable<FacetDefinition> FindThoseWithAlias()
         {
-            return GetAll().Where(p => p.Tables.Any(c => ! c.Alias.Equals("")));
+            return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
             //var query = GetAll()         // source
             //  .Join(context.Tables,         // target
             //     c => c.CategoryId,          // FK

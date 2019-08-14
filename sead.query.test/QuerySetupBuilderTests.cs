@@ -63,7 +63,7 @@ namespace SeadQueryTest.FacetsConfig
                 {
                     // Arrange
                     IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                    IUnitOfWork context = scope.Resolve<IUnitOfWork>();
+                    IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.SetContext(context);
 
                     // Act
@@ -114,7 +114,7 @@ namespace SeadQueryTest.FacetsConfig
                 {
                     // Arrange
                     IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                    IUnitOfWork context = scope.Resolve<IUnitOfWork>();
+                    IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.SetContext(context);
 
                     FacetDefinition facet = context.Facets.GetByCode(facetCode);
@@ -217,7 +217,7 @@ namespace SeadQueryTest.FacetsConfig
                 {
                     // Arrange
                     IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                    IUnitOfWork context = scope.Resolve<IUnitOfWork>();
+                    IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.SetContext(context);
 
                     FacetDefinition targetFacet = context.Facets.GetByCode(targetCode);
