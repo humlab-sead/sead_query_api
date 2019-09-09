@@ -1,5 +1,6 @@
 ﻿using System;
 using CacheManager.Core;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace SeadQueryInfra
 {
@@ -57,15 +58,5 @@ namespace SeadQueryInfra
 
     }
 
-    public class SimpleMemoryCacheProvider : CacheManagerProvider
-    {
-        protected override ICacheManager<object> InitCache()
-        {
-            var config = new ConfigurationBuilder()
-                .WithSystemRuntimeCacheHandle()
-                .Build();
-            var cache = new BaseCacheManager<object>(config);
-            return cache;
-        }
-    }
+
 }

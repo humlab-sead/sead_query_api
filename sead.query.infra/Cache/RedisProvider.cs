@@ -8,7 +8,7 @@ namespace SeadQueryInfra
         public string Hostname { get; set; } = "localhost";
         public int Port { get; set; } = 6379;
 
-        public ICacheManagerConfiguration CreateConfig()
+        public ICacheManagerConfiguration CreateConfig(int port=6379)
         {
             return ConfigurationBuilder.BuildConfiguration(settings =>
             {
