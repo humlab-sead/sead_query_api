@@ -58,7 +58,7 @@ namespace SeadQueryCore.QueryBuilder
                 .GroupBy(p => p.Tablename, p => p.Criteria, (key, g) => new { TableName = key, Clauses = g.ToList() })
                 .ToDictionary(z => z.TableName, z => "(" + z.Clauses.Combine(" AND ") + ")");
 
-            // FIXME Check start node should be ResolvedName or TargetTableName
+            // FIXME Check start node should be ResolvedName or TargetName
             // Find all routes between target facet's table and all tabled collected in affected facets
             List<GraphRoute> routes = Graph.Find(targetFacet.ResolvedName /*TargetTableNamec*/, tables);
 
@@ -79,7 +79,7 @@ namespace SeadQueryCore.QueryBuilder
 
         private bool HasUserPicks(GraphEdge edge, Dictionary<string, string> tableCriterias)
         {
-            return tableCriterias.ContainsKey(edge.SourceTableName) || tableCriterias.ContainsKey(edge.TargetTableName);
+            return tableCriterias.ContainsKey(edge.SourceName) || tableCriterias.ContainsKey(edge.TargetName);
         }
 
         private IFacetPickFilterCompiler GetCompiler(FacetConfig2 c)

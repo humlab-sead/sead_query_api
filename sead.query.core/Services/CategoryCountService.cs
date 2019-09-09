@@ -53,7 +53,7 @@ namespace SeadQueryCore
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
-            List<string> tables = new List<string>() { facet.TargetTableName, Config.DirectCountTable };
+            List<string> tables = new List<string>() { facet.TargetName, Config.DirectCountTable };
             QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
             string sql = RangeCounterSqlQueryBuilder.Compile(query, facet, intervalQuery, Config.DirectCountColumn);
             return sql;
@@ -99,7 +99,7 @@ namespace SeadQueryCore
                 tables.Add(targetFacet.ResolvedName);
             }
             if (computeFacet.FacetCode != targetFacet.FacetCode) {
-                tables.Add(computeFacet.TargetTableName);
+                tables.Add(computeFacet.TargetName);
             }
             return tables.Distinct().ToList();
         }

@@ -37,7 +37,7 @@ namespace SeadQueryTest
             //Assert.AreEqual(facet.FacetCode, "places");
             //Assert.AreEqual(facet.DisplayTitle, "Places");
             //Assert.IsNotNull(facet.FacetGroup);
-            //Assert.IsNotNull(facet.TargetTable);
+            //Assert.IsNotNull(facet.TargetNode);
             //Assert.IsNotNull(facet.FacetType);
             //Assert.IsNotNull(facet.Tables);
             //Assert.IsTrue(facet.Tables.Count > 0);
@@ -55,7 +55,7 @@ namespace SeadQueryTest
         //    Assert.AreEqual("country", facet.FacetCode);
         //    Assert.AreEqual("Country", facet.DisplayTitle);
         //    Assert.IsNotNull(facet.FacetGroup);
-        //    Assert.IsNotNull(facet.TargetTable);
+        //    Assert.IsNotNull(facet.TargetNode);
         //    Assert.IsNotNull(facet.FacetType);
         //    Assert.IsNotNull(facet.Tables);
         //    Assert.IsTrue(facet.Tables.Count > 0);

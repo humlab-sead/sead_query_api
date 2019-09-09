@@ -46,10 +46,10 @@ namespace SeadQueryCore
             NodesIds = nodes.Values.ToDictionary(x => x.NodeId);
             Edges = edges.ToDictionary(z => z.Key);
             AliasFacets = aliasFacets;
-            //AliasTables = aliasFacets.ToDictionary(x => x.TargetTableName, x => x.AliasName);
-            AliasTables = aliasFacets.ToDictionary(x => x.AliasName, x => x.TargetTableName);
+            //AliasTables = aliasFacets.ToDictionary(x => x.TargetName, x => x.AliasName);
+            AliasTables = aliasFacets.ToDictionary(x => x.AliasName, x => x.TargetName);
 
-            Weights = edges.GroupBy(p => p.SourceTableId, (key, g) => (key, g.ToDictionary(x => x.TargetTableId, x => x.Weight)))
+            Weights = edges.GroupBy(p => p.SourceNodeId, (key, g) => (key, g.ToDictionary(x => x.TargetNodeId, x => x.Weight)))
                 .ToDictionary(x => x.Item1, y => y.Item2);
         }
 
@@ -98,7 +98,7 @@ namespace SeadQueryCore
         {
             StringBuilder sb = new StringBuilder();
             foreach (var edge in Edges)
-                sb.Append($"{edge.Value.SourceTableName};{edge.Value.TargetTableName};{edge.Value.Weight}\n");
+                sb.Append($"{edge.Value.SourceName};{edge.Value.TargetName};{edge.Value.Weight}\n");
             return sb.ToString();
         }
     }
@@ -150,10 +150,10 @@ namespace SeadQueryCore
             foreach (var facet in aliasFacets)
             {
                 // ...fetch all relations where target is a node...
-                var targetEdges = edges.Where(x => x.SourceTableName == facet.TargetTableName || x.TargetTableName == facet.TargetTableName);
+                var targetEdges = edges.Where(x => x.SourceName == facet.TargetName || x.TargetName == facet.TargetName);
 
                 // ...for each target relation, create a corresponding alias relation...
-                var aliasEdges = targetEdges.Select(z => z.Alias(nodes[facet.TargetTableName], nodes[facet.AliasName]));
+                var aliasEdges = targetEdges.Select(z => z.Alias(nodes[facet.TargetName], nodes[facet.AliasName]));
 
                 // ...filter away edges that already exists...
                 aliasEdges = aliasEdges.Where(z => !edges.Exists(w => w.EqualAs(z)));
@@ -165,7 +165,7 @@ namespace SeadQueryCore
 
         private List<GraphEdge> AddReverseEdges(List<GraphEdge> edges)
         {
-            var reverse = edges.Where(z => z.SourceTableId != z.TargetTableId).Select(x => x.Reverse()).ToList();
+            var reverse = edges.Where(z => z.SourceNodeId != z.TargetNodeId).Select(x => x.Reverse()).ToList();
             edges.AddRange(reverse);
             return edges;
         }

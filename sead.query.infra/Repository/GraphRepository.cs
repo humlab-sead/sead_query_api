@@ -27,7 +27,7 @@ namespace SeadQueryInfra {
     public static class EdgeRepositoryEagerBuilder {
         public static IQueryable<GraphEdge> BuildEntity(this IQueryable<GraphEdge> query)
         {
-            return query.Include(x => x.SourceTable).Include(x => x.TargetTable);
+            return query.Include(x => x.SourceNode).Include(x => x.TargetNode);
         }
     }
 }

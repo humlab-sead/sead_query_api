@@ -158,12 +158,12 @@ namespace SeadQueryTest.Model
                 typeof(GraphEdge),
                 5,
                 new Dictionary<string, object>() {
-                    { "RelationId", 5 },
-                    { "SourceTableId", 44 },
-                    { "TargetTableId", 142 },
+                    { "EdgeId", 5 },
+                    { "SourceNodeId", 44 },
+                    { "TargetNodeId", 142 },
                     { "Weight", 20 },
-                    { "SourceColumnName", "modification_type_id" },
-                    { "TargetColumnName", "modification_type_id" }
+                    { "SourceKeyName", "modification_type_id" },
+                    { "TargetKeyName", "modification_type_id" }
                 }
             },
             new object[] {

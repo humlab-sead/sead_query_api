@@ -66,7 +66,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<Facet>().Property(b => b.AggregateType).HasColumnName("aggregate_type").IsRequired();
             builder.Entity<Facet>().Property(b => b.AggregateTitle).HasColumnName("aggregate_title").IsRequired();
             builder.Entity<Facet>().Property(b => b.AggregateFacetId).HasColumnName("aggregate_facet_id").IsRequired();
-            builder.Entity<Facet>().Ignore(z => z.ExtraTables).Ignore(z => z.TargetTable);
+            builder.Entity<Facet>().Ignore(z => z.ExtraTables).Ignore(z => z.TargetNode);
 
             builder.Entity<Facet>().HasOne<FacetType>(x => x.FacetType).WithMany().HasForeignKey(p => p.FacetTypeId);
             builder.Entity<Facet>().HasOne<FacetGroup>(x => x.FacetGroup).WithMany(x => x.Facets).HasForeignKey(p => p.FacetGroupId);
@@ -156,15 +156,15 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<GraphNode>().Property(b => b.NodeId).HasColumnName("table_id").IsRequired();
             builder.Entity<GraphNode>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
 
-            builder.Entity<GraphEdge>().ToTable("graph_table_relation", "facet").HasKey(b => b.RelationId);
-            builder.Entity<GraphEdge>().Property(b => b.RelationId).HasColumnName("relation_id").IsRequired();
-            builder.Entity<GraphEdge>().Property(b => b.SourceTableId).HasColumnName("source_table_id").IsRequired();
-            builder.Entity<GraphEdge>().Property(b => b.TargetTableId).HasColumnName("target_table_id").IsRequired();
+            builder.Entity<GraphEdge>().ToTable("graph_table_relation", "facet").HasKey(b => b.EdgeId);
+            builder.Entity<GraphEdge>().Property(b => b.EdgeId).HasColumnName("relation_id").IsRequired();
+            builder.Entity<GraphEdge>().Property(b => b.SourceNodeId).HasColumnName("source_table_id").IsRequired();
+            builder.Entity<GraphEdge>().Property(b => b.TargetNodeId).HasColumnName("target_table_id").IsRequired();
             builder.Entity<GraphEdge>().Property(b => b.Weight).HasColumnName("weight").IsRequired();
-            builder.Entity<GraphEdge>().Property(b => b.SourceColumnName).HasColumnName("source_column_name").IsRequired();
-            builder.Entity<GraphEdge>().Property(b => b.TargetColumnName).HasColumnName("target_column_name").IsRequired();
-            builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.SourceTable).WithMany().HasForeignKey(p => p.SourceTableId);
-            builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.TargetTable).WithMany().HasForeignKey(p => p.TargetTableId);
+            builder.Entity<GraphEdge>().Property(b => b.SourceKeyName).HasColumnName("source_column_name").IsRequired();
+            builder.Entity<GraphEdge>().Property(b => b.TargetKeyName).HasColumnName("target_column_name").IsRequired();
+            builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.SourceNode).WithMany().HasForeignKey(p => p.SourceNodeId);
+            builder.Entity<GraphEdge>().HasOne<GraphNode>(x => x.TargetNode).WithMany().HasForeignKey(p => p.TargetNodeId);
 
             builder.Entity<ViewState>().ToTable("view_state", "facet").HasKey(b => b.Key);
             builder.Entity<ViewState>().Property(b => b.Key).HasColumnName("view_state_key").IsRequired();
@@ -363,46 +363,46 @@ namespace DataAccessPostgreSqlProvider {
 
         //    modelBuilder.Entity<GraphEdge>(entity =>
         //    {
-        //        entity.HasKey(e => e.RelationId)
+        //        entity.HasKey(e => e.EdgeId)
         //            .HasName("graph_table_relation_pkey");
 
         //        entity.ToTable("graph_table_relation", "facet");
 
-        //        entity.HasIndex(e => e.SourceTableId)
+        //        entity.HasIndex(e => e.SourceNodeId)
         //            .HasName("idx_graph_table_relation_fk1");
 
-        //        entity.HasIndex(e => e.TargetTableId)
+        //        entity.HasIndex(e => e.TargetNodeId)
         //            .HasName("idx_graph_table_relation_fk2");
 
-        //        entity.Property(e => e.RelationId)
+        //        entity.Property(e => e.EdgeId)
         //            .HasColumnName("relation_id")
         //            .HasDefaultValueSql("nextval('facet.graph_table_relation_relation_id_seq'::regclass)");
 
-        //        entity.Property(e => e.SourceColumnName)
+        //        entity.Property(e => e.SourceKeyName)
         //            .IsRequired()
         //            .HasColumnName("source_column_name")
         //            .HasColumnType("character varying");
 
-        //        entity.Property(e => e.SourceTableId).HasColumnName("source_table_id");
+        //        entity.Property(e => e.SourceNodeId).HasColumnName("source_table_id");
 
-        //        entity.Property(e => e.TargetColumnName)
+        //        entity.Property(e => e.TargetKeyName)
         //            .IsRequired()
         //            .HasColumnName("target_column_name")
         //            .HasColumnType("character varying");
 
-        //        entity.Property(e => e.TargetTableId).HasColumnName("target_table_id");
+        //        entity.Property(e => e.TargetNodeId).HasColumnName("target_table_id");
 
         //        entity.Property(e => e.Weight).HasColumnName("weight");
 
-        //        entity.HasOne(d => d.SourceTable)
+        //        entity.HasOne(d => d.SourceNode)
         //            .WithMany() // p => p.GraphTableRelationSourceTable)
-        //            .HasForeignKey(d => d.SourceTableId)
+        //            .HasForeignKey(d => d.SourceNodeId)
         //            .OnDelete(DeleteBehavior.ClientSetNull)
         //            .HasConstraintName("graph_table_relation_source_table_id_fkey");
 
-        //        entity.HasOne(d => d.TargetTable)
+        //        entity.HasOne(d => d.TargetNode)
         //            .WithMany() // p => p.GraphTableRelationTargetTable)
-        //            .HasForeignKey(d => d.TargetTableId)
+        //            .HasForeignKey(d => d.TargetNodeId)
         //            .OnDelete(DeleteBehavior.ClientSetNull)
         //            .HasConstraintName("graph_table_relation_target_table_id_fkey");
         //    });

@@ -18,7 +18,7 @@ namespace SeadQueryCore
 
         public bool Contains(GraphEdge item)
         {
-            return Items.Any(x => x.SourceTable.NodeId == item.SourceTable.NodeId && x.TargetTable.NodeId == item.TargetTable.NodeId);
+            return Items.Any(x => x.SourceNode.NodeId == item.SourceNode.NodeId && x.TargetNode.NodeId == item.TargetNode.NodeId);
         }
 
         public GraphRoute ReduceBy(List<GraphRoute> routes)
@@ -28,7 +28,7 @@ namespace SeadQueryCore
 
         public override string ToString()
         {
-            return String.Join("\n", Items.Select(z => $"{z.SourceTableName};{z.TargetTableName};{z.Weight}"));
+            return String.Join("\n", Items.Select(z => $"{z.SourceName};{z.TargetName};{z.Weight}"));
         }
 
         public static class Utility

@@ -66,7 +66,7 @@ namespace SeadQueryCore
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"
             SELECT DISTINCT pick_id, {facet.CategoryNameExpr} AS name
-            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+            FROM {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
             JOIN (VALUES {picks_clause}) AS x(pick_id)
               ON x.pick_id = {facet.CategoryIdExpr}::text
               {query.Joins.Combine("")}
@@ -84,7 +84,7 @@ namespace SeadQueryCore
             WITH categories(category, lower, upper) AS ({intervalQuery})
                 SELECT category, lower, upper, COUNT(DISTINCT {countColumn}) AS count_column
                 FROM categories
-                LEFT JOIN {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+                LEFT JOIN {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
                   ON {facet.CategoryIdExpr}::integer >= lower
                  AND {facet.CategoryIdExpr}::integer <= upper
                 {query.Joins.Combine("")}
@@ -98,7 +98,7 @@ namespace SeadQueryCore
             //    SELECT COALESCE(lower || ' => ' || upper, 'data missing') AS category, count_column, lower, upper
             //    FROM  (
             //        SELECT lower, upper, {countColumn} AS count_column
-            //        FROM {query.Facet.TargetTableName} {"AS ".AddIf(query.Facet.AliasName)}
+            //        FROM {query.Facet.TargetName} {"AS ".AddIf(query.Facet.AliasName)}
             //        LEFT JOIN ( {intervalQuery} ) AS temp_interval
             //            ON {facet.CategoryIdExpr}::integer >= lower
             //            AND {facet.CategoryIdExpr}::integer < upper
@@ -122,7 +122,7 @@ namespace SeadQueryCore
             SELECT category, {aggType}(value) AS count
             FROM (
                 SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS value
-                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+                FROM {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
@@ -146,7 +146,7 @@ namespace SeadQueryCore
             string clauses = String.Join("", facet.Clauses.Select(x => x.Clause));
             string sql = $@"
                SELECT '{facetCode}' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
-               FROM {facet.TargetTableName}
+               FROM {facet.TargetName}
                  {query.Joins.Combine("")}
              {"WHERE ".GlueTo(clauses)}";
             return sql;
@@ -160,7 +160,7 @@ namespace SeadQueryCore
             SELECT DISTINCT id, name
             FROM (
                 SELECT {facet.CategoryIdExpr} AS id, COALESCE({facet.CategoryNameExpr},'No value') AS name, {facet.SortExpr} AS sort_column
-                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+                FROM {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
@@ -177,7 +177,7 @@ namespace SeadQueryCore
         {
             string sql = $@"
           SELECT MIN({facet.CategoryIdExpr}) AS lower, MAX({facet.CategoryIdExpr}) AS upper
-          FROM {facet.TargetTableName}
+          FROM {facet.TargetName}
         ";
             return sql;
         }
@@ -216,7 +216,7 @@ namespace SeadQueryCore
 
             string sql = $@"
             SELECT cast({facet.CategoryIdExpr} AS varchar) AS category, {facet.CategoryNameExpr} AS name
-            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+            FROM {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
             WHERE 1 = 1
               {text_criteria}
@@ -241,7 +241,7 @@ namespace SeadQueryCore
             SELECT {config.DataFields.Combine(", ")}
             FROM (
                 SELECT {config.AliasPairs.Select(x => $"{x.Item1} AS {x.Item2}").ToList().Combine(", ")}
-                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+                FROM {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
@@ -260,7 +260,7 @@ namespace SeadQueryCore
         {
             string sql = $@"
             SELECT DISTINCT {facet.CategoryIdExpr} AS id_column, {facet.CategoryNameExpr} AS name, coalesce(latitude_dd, 0.0) AS latitude_dd, coalesce(longitude_dd, 0) AS longitude_dd
-            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+            FROM {query.Facet.TargetName} {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
             WHERE 1 = 1
             {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
@@ -274,12 +274,12 @@ namespace SeadQueryCore
     {
         public static string Compile(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false)
         {
-            var resolvedTableName = graph.ResolveTargetName(edge.TargetTableName);
-            var resolvedAliasName = graph.ResolveAliasName(edge.TargetTableName);
+            var resolvedTableName = graph.ResolveTargetName(edge.TargetName);
+            var resolvedAliasName = graph.ResolveAliasName(edge.TargetName);
             var joinType = innerJoin ? "INNER" : "LEFT";
             var sql = $" {joinType} JOIN {resolvedTableName} {resolvedAliasName ?? ""}" +
-                    $" ON {resolvedAliasName ?? resolvedTableName}.\"{edge.TargetColumnName}\" = " +
-                            $"{edge.SourceTableName}.\"{edge.SourceColumnName}\" ";
+                    $" ON {resolvedAliasName ?? resolvedTableName}.\"{edge.TargetKeyName}\" = " +
+                            $"{edge.SourceName}.\"{edge.SourceKeyName}\" ";
             return sql;
         }
     }

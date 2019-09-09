@@ -235,7 +235,7 @@ namespace SeadQueryTest.FacetsConfig
                         tables.Add(targetFacet.ResolvedName);
 
                     if (computeFacet.FacetCode != targetFacet.FacetCode)
-                        tables.Add(computeFacet.TargetTableName);
+                        tables.Add(computeFacet.TargetName);
 
                     tables = tables.Distinct().ToList();
                     // Act
@@ -267,7 +267,7 @@ namespace SeadQueryTest.FacetsConfig
                 tables.Add(targetFacet.ResolvedName);
 
             if (countFacet.FacetCode != targetFacet.FacetCode)
-                tables.Add(countFacet.TargetTableName);
+                tables.Add(countFacet.TargetName);
 
             return tables.Distinct().ToList();
         }

@@ -96,10 +96,10 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         [NotMapped]
-        public FacetTable TargetTable => Tables?.Find(z => z.SequenceId == 1) ?? null;
+        public FacetTable TargetNode => Tables?.Find(z => z.SequenceId == 1) ?? null;
 
         [JsonIgnore]
-        public string TargetTableName => TargetTable?.TableName ?? "";
+        public string TargetName => TargetNode?.TableName ?? "";
 
         [JsonIgnore]
         [NotMapped]
@@ -130,7 +130,7 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         [NotMapped]
-        public string ResolvedName  => AliasName != "" ? AliasName : TargetTableName;
+        public string ResolvedName  => AliasName != "" ? AliasName : TargetName;
 
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));

@@ -8,67 +8,67 @@ namespace SeadQueryCore
 {
 
     public class GraphEdge {
-        public int RelationId { get; set; }
-        public int SourceTableId { get; set; }
-        public int TargetTableId { get; set; }
+        public int EdgeId { get; set; }
+        public int SourceNodeId { get; set; }
+        public int TargetNodeId { get; set; }
         public int Weight { get; set; }
 
-        public string SourceColumnName { get; set; }
-        public string TargetColumnName { get; set; }
+        public string SourceKeyName { get; set; }
+        public string TargetKeyName { get; set; }
 
-        [JsonIgnore] private GraphNode _SourceTable, _TargetTable;
+        [JsonIgnore] private GraphNode _SourceNode, _TargetNode;
 
-        public GraphNode SourceTable { get { return _SourceTable; } set { _SourceTable = value; SourceTableId = value?.NodeId ?? SourceTableId;  } }
-        public GraphNode TargetTable { get { return _TargetTable; } set { _TargetTable = value; TargetTableId = value?.NodeId ?? TargetTableId; } }
+        public GraphNode SourceNode { get { return _SourceNode; } set { _SourceNode = value; SourceNodeId = value?.NodeId ?? SourceNodeId;  } }
+        public GraphNode TargetNode { get { return _TargetNode; } set { _TargetNode = value; TargetNodeId = value?.NodeId ?? TargetNodeId; } }
 
-        [JsonIgnore] public string SourceTableName { get { return SourceTable.TableName; } }
-        [JsonIgnore] public string TargetTableName { get { return TargetTable.TableName; } }
+        [JsonIgnore] public string SourceName { get { return SourceNode.TableName; } }
+        [JsonIgnore] public string TargetName { get { return TargetNode.TableName; } }
 
         public GraphEdge Clone()
         {
             return new GraphEdge() {
-                RelationId = RelationId + 1000,
+                EdgeId = EdgeId + 1000,
                 Weight = Weight,
-                SourceTableId = SourceTableId,
-                TargetTableId = TargetTableId,
-                SourceTable = SourceTable,
-                TargetTable = TargetTable,
-                SourceColumnName = SourceColumnName,
-                TargetColumnName = TargetColumnName
+                SourceNodeId = SourceNodeId,
+                TargetNodeId = TargetNodeId,
+                SourceNode = SourceNode,
+                TargetNode = TargetNode,
+                SourceKeyName = SourceKeyName,
+                TargetKeyName = TargetKeyName
             };
         }
 
         public GraphEdge Reverse()
         {
             var x = Clone();
-            x.RelationId = -x.RelationId;
-            (x.SourceTableId, x.TargetTableId) = (x.TargetTableId, x.SourceTableId);
-            (x.SourceTable, x.TargetTable) = (x.TargetTable, x.SourceTable);
-            (x.SourceColumnName, x.TargetColumnName) = (x.TargetColumnName, x.SourceColumnName);
+            x.EdgeId = -x.EdgeId;
+            (x.SourceNodeId, x.TargetNodeId) = (x.TargetNodeId, x.SourceNodeId);
+            (x.SourceNode, x.TargetNode) = (x.TargetNode, x.SourceNode);
+            (x.SourceKeyName, x.TargetKeyName) = (x.TargetKeyName, x.SourceKeyName);
             return x;
         }
 
         public GraphEdge Alias(GraphNode node, GraphNode alias)
         {
             var x = Clone();
-            if (node.NodeId == SourceTable.NodeId)
-                x.SourceTable = alias;
+            if (node.NodeId == SourceNode.NodeId)
+                x.SourceNode = alias;
             else
-                x.TargetTable = alias;
+                x.TargetNode = alias;
             return x;
         }
 
-        public Tuple<string, string> Key { get { return new Tuple<string, string>(SourceTableName, TargetTableName); } }
+        public Tuple<string, string> Key { get { return new Tuple<string, string>(SourceName, TargetName); } }
 
         public bool EqualAs(GraphEdge x)
         {
-            //return (SourceTableId == x.SourceTableId) && (TargetTableId == x.TargetTableId);
-            return (SourceTableName == x.SourceTableName) && (TargetTableName == x.TargetTableName);
+            //return (SourceNodeId == x.SourceNodeId) && (TargetNodeId == x.TargetNodeId);
+            return (SourceName == x.SourceName) && (TargetName == x.TargetName);
         }
 
         public string ToStringPair()
         {
-            return $"{SourceTableName}/{TargetTableName}";
+            return $"{SourceName}/{TargetName}";
         }
     }
 }

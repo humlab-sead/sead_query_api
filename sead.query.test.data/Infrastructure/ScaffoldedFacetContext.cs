@@ -227,46 +227,46 @@ namespace sead.query.test.data.Infrastructure
 
             modelBuilder.Entity<GraphEdge>(entity =>
             {
-                entity.HasKey(e => e.RelationId)
+                entity.HasKey(e => e.EdgeId)
                     .HasName("graph_table_relation_pkey");
 
                 entity.ToTable("graph_table_relation", "facet");
 
-                entity.HasIndex(e => e.SourceTableId)
+                entity.HasIndex(e => e.SourceNodeId)
                     .HasName("idx_graph_table_relation_fk1");
 
-                entity.HasIndex(e => e.TargetTableId)
+                entity.HasIndex(e => e.TargetNodeId)
                     .HasName("idx_graph_table_relation_fk2");
 
-                entity.Property(e => e.RelationId)
+                entity.Property(e => e.EdgeId)
                     .HasColumnName("relation_id")
                     .HasDefaultValueSql("nextval('facet.graph_table_relation_relation_id_seq'::regclass)");
 
-                entity.Property(e => e.SourceColumnName)
+                entity.Property(e => e.SourceKeyName)
                     .IsRequired()
                     .HasColumnName("source_column_name")
                     .HasColumnType("character varying");
 
-                entity.Property(e => e.SourceTableId).HasColumnName("source_table_id");
+                entity.Property(e => e.SourceNodeId).HasColumnName("source_table_id");
 
-                entity.Property(e => e.TargetColumnName)
+                entity.Property(e => e.TargetKeyName)
                     .IsRequired()
                     .HasColumnName("target_column_name")
                     .HasColumnType("character varying");
 
-                entity.Property(e => e.TargetTableId).HasColumnName("target_table_id");
+                entity.Property(e => e.TargetNodeId).HasColumnName("target_table_id");
 
                 entity.Property(e => e.Weight).HasColumnName("weight");
 
-                entity.HasOne(d => d.SourceTable)
+                entity.HasOne(d => d.SourceNode)
                     .WithMany()
-                    .HasForeignKey(d => d.SourceTableId)
+                    .HasForeignKey(d => d.SourceNodeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("graph_table_relation_source_table_id_fkey");
 
-                entity.HasOne(d => d.TargetTable)
+                entity.HasOne(d => d.TargetNode)
                     .WithMany()
-                    .HasForeignKey(d => d.TargetTableId)
+                    .HasForeignKey(d => d.TargetNodeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("graph_table_relation_target_table_id_fkey");
             });
