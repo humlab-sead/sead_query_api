@@ -4,28 +4,10 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-    public interface IQueryBuilderSetting {
-        FacetSetting Facet { get; set; }
-        StoreSetting Store { get; set; }
-    }
-
-    public interface IFacetSetting {
-        string DirectCountTable { get; set; }
-        string DirectCountColumn { get; set; }
-        string IndirectCountTable { get; set; }
-        string IndirectCountColumn { get; set; }
-        int ResultQueryLimit { get; set; }
-        bool CategoryNameFilter { get; set; }
-    }
-
-    public interface IStoreSetting {
-        string ConnectionString { get; set; }
-        string CacheSeq { get; set; }
-        string CacheDir { get; set; }
-        int CurrentViewStateId { get; set; }
-        string ViewStateTable { get; set; }
-        bool UseRedisCache { get; set; }
-    }
+    // public interface IStoreSetting {
+    //     string ConnectionString { get; set; }
+    //     bool UseRedisCache { get; set; }
+    // }
 
     public class FacetSetting : IFacetSetting {
         public string DirectCountTable { get; set; }
@@ -37,11 +19,11 @@ namespace SeadQueryCore
     }
 
     public class StoreSetting /*: IStoreSetting*/ {
-        public string ConnectionString { get; set; }
-        public string CacheSeq { get; set; } = "metainformation.file_name_data_download_seq";
-        public string CacheDir { get; set; }
-        public int CurrentViewStateId { get; set; } = 7;
-        public string ViewStateTable { get; set; }
+        public string Host { get; set; }
+        public string Database { get; set; }
+        public string Port { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
         public bool UseRedisCache { get; set; } = false;
     }
 
