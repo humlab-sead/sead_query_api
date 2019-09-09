@@ -1,46 +1,54 @@
 version: '3.4'
 
 services:
+
   sead.query.api:
-    image: ${DOCKER_REGISTRY-}sead_query_api
+    image: sead_query_api
     build:
       context: .
-      dockerfile: sead_query_api/Dockerfile
+      dockerfile: Dockerfile
+    restart: always
     depends_on:
-      - data.cache
-  redis:
-    container_name: REDIS
-    hostname: ${REDIS_HOSTNAME}
-    image: redis:4.0.10
-    expose:
-      - ${REDIS_CONTAINER_PORT}
-    volumes:
-      - redisdata:/data
+      - redis.cache
     networks:
-      - sead_query
-  nginx-proxy:
-    container_name: NGINX_PROXY
-    hostname: nginx-proxy
-    image: claritynlp/nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
+      - sead_query_net
+
+  redis.cache:
+    image: "${REDIS_DOCKER_TAG:-redis:5-alpine}"
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    restart: always
     volumes:
-      - certs:/etc/nginx/certs:ro
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - dhparam:/etc/nginx/dhparam
-      - htpasswd:/etc/nginx/htpasswd
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    environment:
-      - SOLR_USERNAME=${SOLR_USERNAME}
-      - SOLR_PASSWORD=${SOLR_PASSWORD}
-      - SOLR_SUBDOMAIN=${SOLR_SUBDOMAIN}
-      - SCHEDULER_USERNAME=${SCHEDULER_USERNAME}
-      - SCHEDULER_PASSWORD=${SCHEDULER_PASSWORD}
-      - SCHEDULER_SUBDOMAIN=${SCHEDULER_SUBDOMAIN}
-      - DOMAIN=${DOMAIN}
-    labels:
-      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+      - ${REDIS_DATA_DIR:-/tmp}:/data
     networks:
-      - cibmtr
+      - sead_query_net
+
+networks:
+  sead_query_net:
+
+  # nginx-proxy:
+  #   container_name: NGINX_PROXY
+  #   hostname: nginx-proxy
+  #   image: claritynlp/nginx-proxy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - certs:/etc/nginx/certs:ro
+  #     - vhost:/etc/nginx/vhost.d
+  #     - html:/usr/share/nginx/html
+  #     - dhparam:/etc/nginx/dhparam
+  #     - htpasswd:/etc/nginx/htpasswd
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #   environment:
+  #     - SOLR_USERNAME=${SOLR_USERNAME}
+  #     - SOLR_PASSWORD=${SOLR_PASSWORD}
+  #     - SOLR_SUBDOMAIN=${SOLR_SUBDOMAIN}
+  #     - SCHEDULER_USERNAME=${SCHEDULER_USERNAME}
+  #     - SCHEDULER_PASSWORD=${SCHEDULER_PASSWORD}
+  #     - SCHEDULER_SUBDOMAIN=${SCHEDULER_SUBDOMAIN}
+  #     - DOMAIN=${DOMAIN}
+  #   labels:
+  #     - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+  #   networks:
+  #     - cibmtr

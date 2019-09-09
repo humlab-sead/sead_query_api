@@ -1,10 +1,20 @@
 version: '3.4'
 
 services:
+
   sead.query.api:
+    container_name: sead_query_api
+    ports:
+      - "8089:8089"
+    # expose:
+    #   - "8089/tcp"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
+      - ASPNETCORE_URLS=http://+:8089
+    env_file: conf/api/.env
+  redis.cache:
+    container_name: redis_cache
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${REDIS_DATA_DIR:-/tmp}:/data
+    expose:
+      - "6379/tcp"
