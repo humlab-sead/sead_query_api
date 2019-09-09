@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
 using Npgsql.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace SeadQueryAPI {
 
@@ -22,12 +23,7 @@ namespace SeadQueryAPI {
 
         public Startup(IHostingEnvironment env)
         {
-            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/index?tabs=basicconfiguration&view=aspnetcore-2.1#simple-configuration
-            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-2.1:
-            // ASP.NET Core reads the environment variable ASPNETCORE_ENVIRONMENT at app startup and stores the value in IHostingEnvironment.EnvironmentName.
-            // You can set ASPNETCORE_ENVIRONMENT to any value, but three values are supported by the framework:
             // Development, Staging, and Production. If ASPNETCORE_ENVIRONMENT isn't set, it defaults to Production.
-
             var builder = new ConfigurationBuilder()
                 //.SetBasePath(env.ContentRootPath)  // Directory.GetCurrentDirectory()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -35,17 +31,22 @@ namespace SeadQueryAPI {
 
             Configuration = builder.Build();
             Options = Configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
-
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Configuration.GetSection("Logging")
-            services.AddOptions();
-            services.AddCors();
-            services.AddMvc();
+            services
+                .AddOptions()
+                .AddCors()
+                .AddMvc()
+                .AddJsonOptions(options => {
+                    var settings = options.SerializerSettings;
+                    // settings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+                    var resolver = new SeadQueryAPI.Serializers.SeadQueryResolver();
+                    settings.ContractResolver = resolver as DefaultContractResolver;
+                 });
             services.AddLogging(builder => builder.AddConsole());
-
             //AddSwagger(services);
 
             Container = new DependencyService().Register(services, Options);
@@ -63,7 +64,7 @@ namespace SeadQueryAPI {
                 {
                     Title = "Query SEAD API",
                     Version = "v1",
-                    Description = "API used by the Query SEAD client",
+                    Description = "API used by the SEAD Query clientS",
                     TermsOfService = "None"
                 });
                 string[] files = { "SeadQueryAPI.xml", "SeadQueryCore.xml" };
@@ -80,6 +81,7 @@ namespace SeadQueryAPI {
 
             app.UseMvcWithDefaultRoute();
             app.UseResponseBuffering();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
