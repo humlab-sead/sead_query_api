@@ -8,7 +8,7 @@ namespace SeadQueryCore
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         DbSet<GraphTableRelation> Edges { get; set; }
-        DbSet<Facet> FacetDefinitions { get; set; }
+        DbSet<Facet> Facets { get; set; }
         DbSet<FacetGroup> FacetGroups { get; set; }
         DbSet<FacetType> FacetTypes { get; set; }
         DbSet<GraphTable> Nodes { get; set; }

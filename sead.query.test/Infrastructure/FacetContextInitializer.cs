@@ -20,7 +20,7 @@ namespace SeadQueryTest.Infrastructure
     {
         public override void Initialize(FacetContext context)
         {
-            if (context.FacetDefinitions.Any()) {
+            if (context.Facets.Any()) {
                 return;
             }
 

@@ -40,7 +40,7 @@ namespace SeadQueryTest.Model
             using (var context = ScaffoldUtility.DefaultFacetContext()) {
 
                 // Act
-                var facet = context.FacetDefinitions.Find(1);
+                var facet = context.Facets.Find(1);
 
                 // Assert
                 Assert.NotNull(facet);

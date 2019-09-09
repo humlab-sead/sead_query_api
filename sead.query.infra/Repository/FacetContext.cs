@@ -29,7 +29,7 @@ namespace DataAccessPostgreSqlProvider {
         public DbSet<ResultAggregate> ResultDefinitions { get; set; }
         public DbSet<ResultField> ResultFields { get; set; }
         public DbSet<ResultFieldType> ResultFieldTypes { get; set; }
-        public DbSet<Facet> FacetDefinitions { get; set; }
+        public DbSet<Facet> Facets { get; set; }
         public DbSet<GraphTableRelation> Edges { get; set; }
         public DbSet<GraphTable> Nodes { get; set; }
         public DbSet<ViewState> ViewStates { get; set; }

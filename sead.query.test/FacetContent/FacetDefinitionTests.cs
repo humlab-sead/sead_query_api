@@ -68,7 +68,7 @@ namespace SeadQueryTest
         //[TestMethod]
         //public void CanGetFacetsFromStore()
         //{
-        //    var facets = context.FacetDefinitions
+        //    var facets = context.Facets
         //        .Include(x => x.FacetGroup)
         //        .Include(x => x.FacetType)
         //        .Include(x => x.Tables)
