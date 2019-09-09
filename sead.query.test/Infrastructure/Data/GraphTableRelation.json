@@ -1,0 +1,1738 @@
+[
+  {
+    "RelationId": 1,
+    "SourceTableId": 38,
+    "TargetTableId": 110,
+    "Weight": 20,
+    "SourceColumnName": "record_type_id",
+    "TargetColumnName": "record_type_id"
+  },
+  {
+    "RelationId": 2,
+    "SourceTableId": 50,
+    "TargetTableId": 88,
+    "Weight": 20,
+    "SourceColumnName": "abundance_id",
+    "TargetColumnName": "abundance_id"
+  },
+  {
+    "RelationId": 3,
+    "SourceTableId": 50,
+    "TargetTableId": 146,
+    "Weight": 20,
+    "SourceColumnName": "identification_level_id",
+    "TargetColumnName": "identification_level_id"
+  },
+  {
+    "RelationId": 4,
+    "SourceTableId": 44,
+    "TargetTableId": 88,
+    "Weight": 20,
+    "SourceColumnName": "abundance_id",
+    "TargetColumnName": "abundance_id"
+  },
+  {
+    "RelationId": 5,
+    "SourceTableId": 44,
+    "TargetTableId": 142,
+    "Weight": 20,
+    "SourceColumnName": "modification_type_id",
+    "TargetColumnName": "modification_type_id"
+  },
+  {
+    "RelationId": 6,
+    "SourceTableId": 88,
+    "TargetTableId": 38,
+    "Weight": 20,
+    "SourceColumnName": "abundance_element_id",
+    "TargetColumnName": "abundance_element_id"
+  },
+  {
+    "RelationId": 7,
+    "SourceTableId": 88,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 8,
+    "SourceTableId": 145,
+    "TargetTableId": 47,
+    "Weight": 20,
+    "SourceColumnName": "aggregate_order_type_id",
+    "TargetColumnName": "aggregate_order_type_id"
+  },
+  {
+    "RelationId": 9,
+    "SourceTableId": 115,
+    "TargetTableId": 145,
+    "Weight": 20,
+    "SourceColumnName": "aggregate_dataset_id",
+    "TargetColumnName": "aggregate_dataset_id"
+  },
+  {
+    "RelationId": 10,
+    "SourceTableId": 115,
+    "TargetTableId": 96,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_age_id",
+    "TargetColumnName": "analysis_entity_age_id"
+  },
+  {
+    "RelationId": 11,
+    "SourceTableId": 2,
+    "TargetTableId": 145,
+    "Weight": 20,
+    "SourceColumnName": "aggregate_dataset_id",
+    "TargetColumnName": "aggregate_dataset_id"
+  },
+  {
+    "RelationId": 12,
+    "SourceTableId": 2,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 13,
+    "SourceTableId": 96,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 14,
+    "SourceTableId": 96,
+    "TargetTableId": 117,
+    "Weight": 20,
+    "SourceColumnName": "chronology_id",
+    "TargetColumnName": "chronology_id"
+  },
+  {
+    "RelationId": 15,
+    "SourceTableId": 93,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 16,
+    "SourceTableId": 93,
+    "TargetTableId": 98,
+    "Weight": 20,
+    "SourceColumnName": "dimension_id",
+    "TargetColumnName": "dimension_id"
+  },
+  {
+    "RelationId": 17,
+    "SourceTableId": 3,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 18,
+    "SourceTableId": 3,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 19,
+    "SourceTableId": 137,
+    "TargetTableId": 84,
+    "Weight": 20,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 20,
+    "SourceTableId": 137,
+    "TargetTableId": 34,
+    "Weight": 20,
+    "SourceColumnName": "keyword_id",
+    "TargetColumnName": "keyword_id"
+  },
+  {
+    "RelationId": 21,
+    "SourceTableId": 139,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 22,
+    "SourceTableId": 139,
+    "TargetTableId": 97,
+    "Weight": 20,
+    "SourceColumnName": "ceramics_measurement_id",
+    "TargetColumnName": "ceramics_measurement_id"
+  },
+  {
+    "RelationId": 23,
+    "SourceTableId": 81,
+    "TargetTableId": 97,
+    "Weight": 20,
+    "SourceColumnName": "ceramics_measurement_id",
+    "TargetColumnName": "ceramics_measurement_id"
+  },
+  {
+    "RelationId": 24,
+    "SourceTableId": 97,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 25,
+    "SourceTableId": 59,
+    "TargetTableId": 147,
+    "Weight": 20,
+    "SourceColumnName": "chron_control_type_id",
+    "TargetColumnName": "chron_control_type_id"
+  },
+  {
+    "RelationId": 26,
+    "SourceTableId": 59,
+    "TargetTableId": 117,
+    "Weight": 20,
+    "SourceColumnName": "chronology_id",
+    "TargetColumnName": "chronology_id"
+  },
+  {
+    "RelationId": 27,
+    "SourceTableId": 117,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 28,
+    "SourceTableId": 117,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 29,
+    "SourceTableId": 120,
+    "TargetTableId": 66,
+    "Weight": 20,
+    "SourceColumnName": "publisher_id",
+    "TargetColumnName": "publisher_id"
+  },
+  {
+    "RelationId": 30,
+    "SourceTableId": 14,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 31,
+    "SourceTableId": 106,
+    "TargetTableId": 98,
+    "Weight": 20,
+    "SourceColumnName": "dimension_id",
+    "TargetColumnName": "dimension_id"
+  },
+  {
+    "RelationId": 32,
+    "SourceTableId": 106,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 33,
+    "SourceTableId": 83,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 34,
+    "SourceTableId": 83,
+    "TargetTableId": 123,
+    "Weight": 20,
+    "SourceColumnName": "contact_type_id",
+    "TargetColumnName": "contact_type_id"
+  },
+  {
+    "RelationId": 35,
+    "SourceTableId": 83,
+    "TargetTableId": 86,
+    "Weight": 20,
+    "SourceColumnName": "dataset_id",
+    "TargetColumnName": "dataset_id"
+  },
+  {
+    "RelationId": 36,
+    "SourceTableId": 76,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 37,
+    "SourceTableId": 86,
+    "TargetTableId": 135,
+    "Weight": 20,
+    "SourceColumnName": "data_type_id",
+    "TargetColumnName": "data_type_id"
+  },
+  {
+    "RelationId": 38,
+    "SourceTableId": 86,
+    "TargetTableId": 76,
+    "Weight": 20,
+    "SourceColumnName": "master_set_id",
+    "TargetColumnName": "master_set_id"
+  },
+  {
+    "RelationId": 39,
+    "SourceTableId": 86,
+    "TargetTableId": 58,
+    "Weight": 20,
+    "SourceColumnName": "project_id",
+    "TargetColumnName": "project_id"
+  },
+  {
+    "RelationId": 40,
+    "SourceTableId": 86,
+    "TargetTableId": 86,
+    "Weight": 20,
+    "SourceColumnName": "updated_dataset_id",
+    "TargetColumnName": "dataset_id"
+  },
+  {
+    "RelationId": 41,
+    "SourceTableId": 133,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 42,
+    "SourceTableId": 133,
+    "TargetTableId": 86,
+    "Weight": 20,
+    "SourceColumnName": "dataset_id",
+    "TargetColumnName": "dataset_id"
+  },
+  {
+    "RelationId": 43,
+    "SourceTableId": 133,
+    "TargetTableId": 140,
+    "Weight": 20,
+    "SourceColumnName": "submission_type_id",
+    "TargetColumnName": "submission_type_id"
+  },
+  {
+    "RelationId": 44,
+    "SourceTableId": 135,
+    "TargetTableId": 104,
+    "Weight": 20,
+    "SourceColumnName": "data_type_group_id",
+    "TargetColumnName": "data_type_group_id"
+  },
+  {
+    "RelationId": 45,
+    "SourceTableId": 85,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 46,
+    "SourceTableId": 134,
+    "TargetTableId": 38,
+    "Weight": 20,
+    "SourceColumnName": "abundance_element_id",
+    "TargetColumnName": "abundance_element_id"
+  },
+  {
+    "RelationId": 47,
+    "SourceTableId": 134,
+    "TargetTableId": 60,
+    "Weight": 20,
+    "SourceColumnName": "geochron_id",
+    "TargetColumnName": "geochron_id"
+  },
+  {
+    "RelationId": 48,
+    "SourceTableId": 134,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 49,
+    "SourceTableId": 69,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 50,
+    "SourceTableId": 69,
+    "TargetTableId": 100,
+    "Weight": 20,
+    "SourceColumnName": "dendro_measurement_id",
+    "TargetColumnName": "dendro_measurement_id"
+  },
+  {
+    "RelationId": 51,
+    "SourceTableId": 127,
+    "TargetTableId": 138,
+    "Weight": 20,
+    "SourceColumnName": "dendro_date_id",
+    "TargetColumnName": "dendro_date_id"
+  },
+  {
+    "RelationId": 52,
+    "SourceTableId": 138,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 53,
+    "SourceTableId": 138,
+    "TargetTableId": 5,
+    "Weight": 20,
+    "SourceColumnName": "dating_uncertainty_id",
+    "TargetColumnName": "dating_uncertainty_id"
+  },
+  {
+    "RelationId": 54,
+    "SourceTableId": 138,
+    "TargetTableId": 74,
+    "Weight": 20,
+    "SourceColumnName": "years_type_id",
+    "TargetColumnName": "years_type_id"
+  },
+  {
+    "RelationId": 55,
+    "SourceTableId": 23,
+    "TargetTableId": 100,
+    "Weight": 20,
+    "SourceColumnName": "dendro_measurement_id",
+    "TargetColumnName": "dendro_measurement_id"
+  },
+  {
+    "RelationId": 56,
+    "SourceTableId": 100,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 57,
+    "SourceTableId": 98,
+    "TargetTableId": 33,
+    "Weight": 20,
+    "SourceColumnName": "method_group_id",
+    "TargetColumnName": "method_group_id"
+  },
+  {
+    "RelationId": 58,
+    "SourceTableId": 98,
+    "TargetTableId": 72,
+    "Weight": 20,
+    "SourceColumnName": "unit_id",
+    "TargetColumnName": "unit_id"
+  },
+  {
+    "RelationId": 59,
+    "SourceTableId": 62,
+    "TargetTableId": 51,
+    "Weight": 20,
+    "SourceColumnName": "ecocode_group_id",
+    "TargetColumnName": "ecocode_group_id"
+  },
+  {
+    "RelationId": 60,
+    "SourceTableId": 51,
+    "TargetTableId": 128,
+    "Weight": 20,
+    "SourceColumnName": "ecocode_system_id",
+    "TargetColumnName": "ecocode_system_id"
+  },
+  {
+    "RelationId": 61,
+    "SourceTableId": 101,
+    "TargetTableId": 62,
+    "Weight": 20,
+    "SourceColumnName": "ecocode_definition_id",
+    "TargetColumnName": "ecocode_definition_id"
+  },
+  {
+    "RelationId": 62,
+    "SourceTableId": 101,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 63,
+    "SourceTableId": 75,
+    "TargetTableId": 6,
+    "Weight": 20,
+    "SourceColumnName": "feature_type_id",
+    "TargetColumnName": "feature_type_id"
+  },
+  {
+    "RelationId": 64,
+    "SourceTableId": 60,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 65,
+    "SourceTableId": 60,
+    "TargetTableId": 85,
+    "Weight": 20,
+    "SourceColumnName": "dating_lab_id",
+    "TargetColumnName": "dating_lab_id"
+  },
+  {
+    "RelationId": 66,
+    "SourceTableId": 60,
+    "TargetTableId": 5,
+    "Weight": 20,
+    "SourceColumnName": "dating_uncertainty_id",
+    "TargetColumnName": "dating_uncertainty_id"
+  },
+  {
+    "RelationId": 67,
+    "SourceTableId": 87,
+    "TargetTableId": 60,
+    "Weight": 20,
+    "SourceColumnName": "geochron_id",
+    "TargetColumnName": "geochron_id"
+  },
+  {
+    "RelationId": 68,
+    "SourceTableId": 22,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 69,
+    "SourceTableId": 80,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 70,
+    "SourceTableId": 145,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 71,
+    "SourceTableId": 4,
+    "TargetTableId": 86,
+    "Weight": 1,
+    "SourceColumnName": "dataset_id",
+    "TargetColumnName": "dataset_id"
+  },
+  {
+    "RelationId": 72,
+    "SourceTableId": 4,
+    "TargetTableId": 102,
+    "Weight": 1,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 73,
+    "SourceTableId": 86,
+    "TargetTableId": 89,
+    "Weight": 1,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 74,
+    "SourceTableId": 86,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 75,
+    "SourceTableId": 128,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 76,
+    "SourceTableId": 87,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 77,
+    "SourceTableId": 1,
+    "TargetTableId": 89,
+    "Weight": 70,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 78,
+    "SourceTableId": 76,
+    "TargetTableId": 84,
+    "Weight": 200,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 79,
+    "SourceTableId": 35,
+    "TargetTableId": 92,
+    "Weight": 20,
+    "SourceColumnName": "location_type_id",
+    "TargetColumnName": "location_type_id"
+  },
+  {
+    "RelationId": 80,
+    "SourceTableId": 70,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 81,
+    "SourceTableId": 18,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 82,
+    "SourceTableId": 19,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 83,
+    "SourceTableId": 12,
+    "TargetTableId": 98,
+    "Weight": 20,
+    "SourceColumnName": "dimension_id",
+    "TargetColumnName": "dimension_id"
+  },
+  {
+    "RelationId": 84,
+    "SourceTableId": 12,
+    "TargetTableId": 121,
+    "Weight": 20,
+    "SourceColumnName": "measured_value_id",
+    "TargetColumnName": "measured_value_id"
+  },
+  {
+    "RelationId": 85,
+    "SourceTableId": 121,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 86,
+    "SourceTableId": 89,
+    "TargetTableId": 33,
+    "Weight": 20,
+    "SourceColumnName": "method_group_id",
+    "TargetColumnName": "method_group_id"
+  },
+  {
+    "RelationId": 87,
+    "SourceTableId": 89,
+    "TargetTableId": 110,
+    "Weight": 20,
+    "SourceColumnName": "record_type_id",
+    "TargetColumnName": "record_type_id"
+  },
+  {
+    "RelationId": 88,
+    "SourceTableId": 132,
+    "TargetTableId": 75,
+    "Weight": 20,
+    "SourceColumnName": "feature_id",
+    "TargetColumnName": "feature_id"
+  },
+  {
+    "RelationId": 89,
+    "SourceTableId": 132,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 90,
+    "SourceTableId": 102,
+    "TargetTableId": 136,
+    "Weight": 20,
+    "SourceColumnName": "alt_ref_type_id",
+    "TargetColumnName": "alt_ref_type_id"
+  },
+  {
+    "RelationId": 91,
+    "SourceTableId": 102,
+    "TargetTableId": 105,
+    "Weight": 20,
+    "SourceColumnName": "sample_type_id",
+    "TargetColumnName": "sample_type_id"
+  },
+  {
+    "RelationId": 92,
+    "SourceTableId": 58,
+    "TargetTableId": 9,
+    "Weight": 20,
+    "SourceColumnName": "project_stage_id",
+    "TargetColumnName": "project_stage_id"
+  },
+  {
+    "RelationId": 93,
+    "SourceTableId": 58,
+    "TargetTableId": 17,
+    "Weight": 20,
+    "SourceColumnName": "project_type_id",
+    "TargetColumnName": "project_type_id"
+  },
+  {
+    "RelationId": 94,
+    "SourceTableId": 48,
+    "TargetTableId": 24,
+    "Weight": 20,
+    "SourceColumnName": "rdb_code_id",
+    "TargetColumnName": "rdb_code_id"
+  },
+  {
+    "RelationId": 95,
+    "SourceTableId": 48,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 96,
+    "SourceTableId": 24,
+    "TargetTableId": 143,
+    "Weight": 20,
+    "SourceColumnName": "rdb_system_id",
+    "TargetColumnName": "rdb_system_id"
+  },
+  {
+    "RelationId": 97,
+    "SourceTableId": 68,
+    "TargetTableId": 71,
+    "Weight": 20,
+    "SourceColumnName": "relative_age_id",
+    "TargetColumnName": "relative_age_id"
+  },
+  {
+    "RelationId": 98,
+    "SourceTableId": 71,
+    "TargetTableId": 37,
+    "Weight": 20,
+    "SourceColumnName": "relative_age_type_id",
+    "TargetColumnName": "relative_age_type_id"
+  },
+  {
+    "RelationId": 99,
+    "SourceTableId": 55,
+    "TargetTableId": 5,
+    "Weight": 20,
+    "SourceColumnName": "dating_uncertainty_id",
+    "TargetColumnName": "dating_uncertainty_id"
+  },
+  {
+    "RelationId": 100,
+    "SourceTableId": 55,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 101,
+    "SourceTableId": 55,
+    "TargetTableId": 71,
+    "Weight": 20,
+    "SourceColumnName": "relative_age_id",
+    "TargetColumnName": "relative_age_id"
+  },
+  {
+    "RelationId": 102,
+    "SourceTableId": 10,
+    "TargetTableId": 136,
+    "Weight": 20,
+    "SourceColumnName": "alt_ref_type_id",
+    "TargetColumnName": "alt_ref_type_id"
+  },
+  {
+    "RelationId": 103,
+    "SourceTableId": 10,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 104,
+    "SourceTableId": 32,
+    "TargetTableId": 14,
+    "Weight": 20,
+    "SourceColumnName": "colour_id",
+    "TargetColumnName": "colour_id"
+  },
+  {
+    "RelationId": 105,
+    "SourceTableId": 32,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 106,
+    "SourceTableId": 8,
+    "TargetTableId": 106,
+    "Weight": 20,
+    "SourceColumnName": "coordinate_method_dimension_id",
+    "TargetColumnName": "coordinate_method_dimension_id"
+  },
+  {
+    "RelationId": 107,
+    "SourceTableId": 8,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 108,
+    "SourceTableId": 111,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 109,
+    "SourceTableId": 111,
+    "TargetTableId": 73,
+    "Weight": 20,
+    "SourceColumnName": "sample_description_type_id",
+    "TargetColumnName": "sample_description_type_id"
+  },
+  {
+    "RelationId": 110,
+    "SourceTableId": 56,
+    "TargetTableId": 73,
+    "Weight": 20,
+    "SourceColumnName": "sample_description_type_id",
+    "TargetColumnName": "sample_description_type_id"
+  },
+  {
+    "RelationId": 111,
+    "SourceTableId": 56,
+    "TargetTableId": 40,
+    "Weight": 20,
+    "SourceColumnName": "sampling_context_id",
+    "TargetColumnName": "sampling_context_id"
+  },
+  {
+    "RelationId": 112,
+    "SourceTableId": 116,
+    "TargetTableId": 98,
+    "Weight": 20,
+    "SourceColumnName": "dimension_id",
+    "TargetColumnName": "dimension_id"
+  },
+  {
+    "RelationId": 113,
+    "SourceTableId": 116,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 114,
+    "SourceTableId": 30,
+    "TargetTableId": 106,
+    "Weight": 20,
+    "SourceColumnName": "coordinate_method_dimension_id",
+    "TargetColumnName": "coordinate_method_dimension_id"
+  },
+  {
+    "RelationId": 115,
+    "SourceTableId": 30,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 116,
+    "SourceTableId": 130,
+    "TargetTableId": 54,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_description_type_id",
+    "TargetColumnName": "sample_group_description_type_id"
+  },
+  {
+    "RelationId": 117,
+    "SourceTableId": 130,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 118,
+    "SourceTableId": 28,
+    "TargetTableId": 54,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_description_type_id",
+    "TargetColumnName": "sample_group_description_type_id"
+  },
+  {
+    "RelationId": 119,
+    "SourceTableId": 28,
+    "TargetTableId": 40,
+    "Weight": 20,
+    "SourceColumnName": "sampling_context_id",
+    "TargetColumnName": "sampling_context_id"
+  },
+  {
+    "RelationId": 120,
+    "SourceTableId": 112,
+    "TargetTableId": 98,
+    "Weight": 20,
+    "SourceColumnName": "dimension_id",
+    "TargetColumnName": "dimension_id"
+  },
+  {
+    "RelationId": 121,
+    "SourceTableId": 112,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 122,
+    "SourceTableId": 124,
+    "TargetTableId": 16,
+    "Weight": 20,
+    "SourceColumnName": "image_type_id",
+    "TargetColumnName": "image_type_id"
+  },
+  {
+    "RelationId": 123,
+    "SourceTableId": 124,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 124,
+    "SourceTableId": 52,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 125,
+    "SourceTableId": 42,
+    "TargetTableId": 91,
+    "Weight": 20,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 126,
+    "SourceTableId": 91,
+    "TargetTableId": 40,
+    "Weight": 20,
+    "SourceColumnName": "sampling_context_id",
+    "TargetColumnName": "sampling_context_id"
+  },
+  {
+    "RelationId": 127,
+    "SourceTableId": 41,
+    "TargetTableId": 1,
+    "Weight": 20,
+    "SourceColumnName": "horizon_id",
+    "TargetColumnName": "horizon_id"
+  },
+  {
+    "RelationId": 128,
+    "SourceTableId": 41,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 129,
+    "SourceTableId": 61,
+    "TargetTableId": 16,
+    "Weight": 20,
+    "SourceColumnName": "image_type_id",
+    "TargetColumnName": "image_type_id"
+  },
+  {
+    "RelationId": 130,
+    "SourceTableId": 61,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 131,
+    "SourceTableId": 49,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 132,
+    "SourceTableId": 49,
+    "TargetTableId": 144,
+    "Weight": 20,
+    "SourceColumnName": "sample_location_type_id",
+    "TargetColumnName": "sample_location_type_id"
+  },
+  {
+    "RelationId": 133,
+    "SourceTableId": 65,
+    "TargetTableId": 144,
+    "Weight": 20,
+    "SourceColumnName": "sample_location_type_id",
+    "TargetColumnName": "sample_location_type_id"
+  },
+  {
+    "RelationId": 134,
+    "SourceTableId": 65,
+    "TargetTableId": 40,
+    "Weight": 20,
+    "SourceColumnName": "sampling_context_id",
+    "TargetColumnName": "sampling_context_id"
+  },
+  {
+    "RelationId": 135,
+    "SourceTableId": 94,
+    "TargetTableId": 102,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 136,
+    "SourceTableId": 82,
+    "TargetTableId": 108,
+    "Weight": 20,
+    "SourceColumnName": "season_type_id",
+    "TargetColumnName": "season_type_id"
+  },
+  {
+    "RelationId": 137,
+    "SourceTableId": 64,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 138,
+    "SourceTableId": 64,
+    "TargetTableId": 16,
+    "Weight": 20,
+    "SourceColumnName": "image_type_id",
+    "TargetColumnName": "image_type_id"
+  },
+  {
+    "RelationId": 139,
+    "SourceTableId": 64,
+    "TargetTableId": 119,
+    "Weight": 20,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 140,
+    "SourceTableId": 113,
+    "TargetTableId": 119,
+    "Weight": 20,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 141,
+    "SourceTableId": 89,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 142,
+    "SourceTableId": 102,
+    "TargetTableId": 91,
+    "Weight": 1,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 143,
+    "SourceTableId": 48,
+    "TargetTableId": 35,
+    "Weight": 150,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "location_id"
+  },
+  {
+    "RelationId": 144,
+    "SourceTableId": 143,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 145,
+    "SourceTableId": 143,
+    "TargetTableId": 35,
+    "Weight": 150,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "location_id"
+  },
+  {
+    "RelationId": 146,
+    "SourceTableId": 68,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 147,
+    "SourceTableId": 55,
+    "TargetTableId": 89,
+    "Weight": 70,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 148,
+    "SourceTableId": 116,
+    "TargetTableId": 89,
+    "Weight": 150,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 149,
+    "SourceTableId": 91,
+    "TargetTableId": 89,
+    "Weight": 150,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 150,
+    "SourceTableId": 91,
+    "TargetTableId": 119,
+    "Weight": 1,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 151,
+    "SourceTableId": 113,
+    "TargetTableId": 35,
+    "Weight": 5,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "location_id"
+  },
+  {
+    "RelationId": 152,
+    "SourceTableId": 42,
+    "TargetTableId": 84,
+    "Weight": 90,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 153,
+    "SourceTableId": 78,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumnName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "RelationId": 154,
+    "SourceTableId": 78,
+    "TargetTableId": 119,
+    "Weight": 20,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 155,
+    "SourceTableId": 95,
+    "TargetTableId": 119,
+    "Weight": 20,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 156,
+    "SourceTableId": 15,
+    "TargetTableId": 119,
+    "Weight": 20,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 157,
+    "SourceTableId": 131,
+    "TargetTableId": 118,
+    "Weight": 20,
+    "SourceColumnName": "association_type_id",
+    "TargetColumnName": "association_type_id"
+  },
+  {
+    "RelationId": 158,
+    "SourceTableId": 131,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 159,
+    "SourceTableId": 103,
+    "TargetTableId": 79,
+    "Weight": 20,
+    "SourceColumnName": "language_id",
+    "TargetColumnName": "language_id"
+  },
+  {
+    "RelationId": 160,
+    "SourceTableId": 103,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 161,
+    "SourceTableId": 20,
+    "TargetTableId": 16,
+    "Weight": 20,
+    "SourceColumnName": "image_type_id",
+    "TargetColumnName": "image_type_id"
+  },
+  {
+    "RelationId": 162,
+    "SourceTableId": 20,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 163,
+    "SourceTableId": 126,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 164,
+    "SourceTableId": 141,
+    "TargetTableId": 29,
+    "Weight": 20,
+    "SourceColumnName": "contact_id",
+    "TargetColumnName": "contact_id"
+  },
+  {
+    "RelationId": 165,
+    "SourceTableId": 141,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 166,
+    "SourceTableId": 27,
+    "TargetTableId": 11,
+    "Weight": 20,
+    "SourceColumnName": "activity_type_id",
+    "TargetColumnName": "activity_type_id"
+  },
+  {
+    "RelationId": 167,
+    "SourceTableId": 27,
+    "TargetTableId": 82,
+    "Weight": 20,
+    "SourceColumnName": "season_id",
+    "TargetColumnName": "season_id"
+  },
+  {
+    "RelationId": 168,
+    "SourceTableId": 27,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 169,
+    "SourceTableId": 109,
+    "TargetTableId": 39,
+    "Weight": 20,
+    "SourceColumnName": "author_id",
+    "TargetColumnName": "author_id"
+  },
+  {
+    "RelationId": 170,
+    "SourceTableId": 21,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 171,
+    "SourceTableId": 21,
+    "TargetTableId": 43,
+    "Weight": 20,
+    "SourceColumnName": "taxonomic_order_system_id",
+    "TargetColumnName": "taxonomic_order_system_id"
+  },
+  {
+    "RelationId": 172,
+    "SourceTableId": 63,
+    "TargetTableId": 43,
+    "Weight": 20,
+    "SourceColumnName": "taxonomic_order_system_id",
+    "TargetColumnName": "taxonomic_order_system_id"
+  },
+  {
+    "RelationId": 173,
+    "SourceTableId": 53,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 174,
+    "SourceTableId": 107,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 175,
+    "SourceTableId": 107,
+    "TargetTableId": 5,
+    "Weight": 20,
+    "SourceColumnName": "dating_uncertainty_id",
+    "TargetColumnName": "dating_uncertainty_id"
+  },
+  {
+    "RelationId": 176,
+    "SourceTableId": 107,
+    "TargetTableId": 31,
+    "Weight": 20,
+    "SourceColumnName": "tephra_id",
+    "TargetColumnName": "tephra_id"
+  },
+  {
+    "RelationId": 177,
+    "SourceTableId": 129,
+    "TargetTableId": 31,
+    "Weight": 20,
+    "SourceColumnName": "tephra_id",
+    "TargetColumnName": "tephra_id"
+  },
+  {
+    "RelationId": 178,
+    "SourceTableId": 122,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 179,
+    "SourceTableId": 90,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 180,
+    "SourceTableId": 67,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 181,
+    "SourceTableId": 88,
+    "TargetTableId": 4,
+    "Weight": 1,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 182,
+    "SourceTableId": 89,
+    "TargetTableId": 72,
+    "Weight": 150,
+    "SourceColumnName": "unit_id",
+    "TargetColumnName": "unit_id"
+  },
+  {
+    "RelationId": 183,
+    "SourceTableId": 71,
+    "TargetTableId": 35,
+    "Weight": 70,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "location_id"
+  },
+  {
+    "RelationId": 184,
+    "SourceTableId": 77,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 185,
+    "SourceTableId": 77,
+    "TargetTableId": 119,
+    "Weight": 150,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 186,
+    "SourceTableId": 77,
+    "TargetTableId": 110,
+    "Weight": 150,
+    "SourceColumnName": "record_type_id",
+    "TargetColumnName": "record_type_id"
+  },
+  {
+    "RelationId": 187,
+    "SourceTableId": 131,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 188,
+    "SourceTableId": 27,
+    "TargetTableId": 35,
+    "Weight": 60,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "location_id"
+  },
+  {
+    "RelationId": 189,
+    "SourceTableId": 13,
+    "TargetTableId": 39,
+    "Weight": 150,
+    "SourceColumnName": "author_id",
+    "TargetColumnName": "author_id"
+  },
+  {
+    "RelationId": 190,
+    "SourceTableId": 13,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 191,
+    "SourceTableId": 122,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 192,
+    "SourceTableId": 13,
+    "TargetTableId": 36,
+    "Weight": 150,
+    "SourceColumnName": "family_id",
+    "TargetColumnName": "family_id"
+  },
+  {
+    "RelationId": 193,
+    "SourceTableId": 13,
+    "TargetTableId": 148,
+    "Weight": 150,
+    "SourceColumnName": "genus_id",
+    "TargetColumnName": "genus_id"
+  },
+  {
+    "RelationId": 194,
+    "SourceTableId": 13,
+    "TargetTableId": 109,
+    "Weight": 150,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 195,
+    "SourceTableId": 36,
+    "TargetTableId": 45,
+    "Weight": 1,
+    "SourceColumnName": "order_id",
+    "TargetColumnName": "order_id"
+  },
+  {
+    "RelationId": 196,
+    "SourceTableId": 148,
+    "TargetTableId": 36,
+    "Weight": 1,
+    "SourceColumnName": "family_id",
+    "TargetColumnName": "family_id"
+  },
+  {
+    "RelationId": 197,
+    "SourceTableId": 109,
+    "TargetTableId": 148,
+    "Weight": 1,
+    "SourceColumnName": "genus_id",
+    "TargetColumnName": "genus_id"
+  },
+  {
+    "RelationId": 198,
+    "SourceTableId": 45,
+    "TargetTableId": 110,
+    "Weight": 1,
+    "SourceColumnName": "record_type_id",
+    "TargetColumnName": "record_type_id"
+  },
+  {
+    "RelationId": 199,
+    "SourceTableId": 63,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 200,
+    "SourceTableId": 53,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 201,
+    "SourceTableId": 90,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 202,
+    "SourceTableId": 67,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 203,
+    "SourceTableId": 129,
+    "TargetTableId": 84,
+    "Weight": 150,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 204,
+    "SourceTableId": 46,
+    "TargetTableId": 7,
+    "Weight": 20,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "rel_to_id"
+  },
+  {
+    "RelationId": 205,
+    "SourceTableId": 35,
+    "TargetTableId": 7,
+    "Weight": 1,
+    "SourceColumnName": "location_id",
+    "TargetColumnName": "rel_to_id"
+  },
+  {
+    "RelationId": 206,
+    "SourceTableId": 15,
+    "TargetTableId": 84,
+    "Weight": 90,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 207,
+    "SourceTableId": 102,
+    "TargetTableId": 125,
+    "Weight": 20,
+    "SourceColumnName": "physical_sample_id",
+    "TargetColumnName": "physical_sample_id"
+  },
+  {
+    "RelationId": 208,
+    "SourceTableId": 25,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 209,
+    "SourceTableId": 25,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "RelationId": 211,
+    "SourceTableId": 57,
+    "TargetTableId": 109,
+    "Weight": 20,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 212,
+    "SourceTableId": 114,
+    "TargetTableId": 84,
+    "Weight": 80,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 213,
+    "SourceTableId": 114,
+    "TargetTableId": 91,
+    "Weight": 15,
+    "SourceColumnName": "sample_group_id",
+    "TargetColumnName": "sample_group_id"
+  },
+  {
+    "RelationId": 214,
+    "SourceTableId": 26,
+    "TargetTableId": 84,
+    "Weight": 80,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 215,
+    "SourceTableId": 26,
+    "TargetTableId": 119,
+    "Weight": 15,
+    "SourceColumnName": "site_id",
+    "TargetColumnName": "site_id"
+  },
+  {
+    "RelationId": 216,
+    "SourceTableId": 99,
+    "TargetTableId": 84,
+    "Weight": 10,
+    "SourceColumnName": "biblio_id",
+    "TargetColumnName": "biblio_id"
+  },
+  {
+    "RelationId": 217,
+    "SourceTableId": 99,
+    "TargetTableId": 109,
+    "Weight": 2,
+    "SourceColumnName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "RelationId": 210,
+    "SourceTableId": 57,
+    "TargetTableId": 4,
+    "Weight": 2,
+    "SourceColumnName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  }
+]

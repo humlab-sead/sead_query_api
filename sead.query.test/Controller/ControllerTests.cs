@@ -30,13 +30,7 @@ namespace SeadQueryTest
 
         public ControllerTestStartup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.test.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
-            Options = Configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
+            Options = new MockOptionBuilder().Build().Value;
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)

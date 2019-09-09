@@ -1,14 +1,10 @@
 ﻿using Autofac;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SeadQueryAPI;
+using Xunit;
 using SeadQueryCore;
 using SeadQueryInfra;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SeadQueryTest.Cache {
-    [TestClass]
+
     public class CacheTests
     {
 
@@ -22,7 +18,7 @@ namespace SeadQueryTest.Cache {
             return new SimpleMemoryCacheProvider();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCacheSimpleValue()
         {
             const int expectedValue = 1234;
@@ -30,10 +26,10 @@ namespace SeadQueryTest.Cache {
             var cache = GetCache();
             cache.Set(testKey, expectedValue);
             var retrievedValue = cache.Get<int>(testKey);
-            Assert.AreEqual(expectedValue, retrievedValue);
+            Assert.Equal(expectedValue, retrievedValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCacheComplexValue()
         {
             var expectedValue = new { A = 1, B = 2 };
@@ -41,10 +37,10 @@ namespace SeadQueryTest.Cache {
             var cache = GetCache();
             cache.Set(testKey, expectedValue);
             var retrievedValue = cache.Get<object>(testKey);
-            Assert.AreEqual(expectedValue, retrievedValue);
+            Assert.Equal(expectedValue, retrievedValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCacheComplexValue2()
         {
             var cache = GetCache();
@@ -53,18 +49,18 @@ namespace SeadQueryTest.Cache {
             var testKey = "a test key";
             cache.Set(testKey, expectedValue);
             dynamic retrievedValue = cache.Get<object>(testKey);
-            Assert.AreEqual(expectedValue.A, retrievedValue.A);
-            Assert.AreEqual(expectedValue.B, retrievedValue.B);
+            Assert.Equal(expectedValue.A, retrievedValue.A);
+            Assert.Equal(expectedValue.B, retrievedValue.B);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanResolveCacheService()
         {
             var options = Startup.Options;
             var container = new TestDependencyService().Register(null, options);
             using (var scope = container.BeginLifetimeScope()) {
                 // Assert.IsNotNull(scope.Resolve<ICacheManager<object>>());
-                Assert.IsNotNull(scope.Resolve<ISeadQueryCache>());
+                Assert.NotNull(scope.Resolve<ISeadQueryCache>());
             }
         }
 

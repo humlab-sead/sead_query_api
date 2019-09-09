@@ -23,12 +23,14 @@ namespace SeadQueryTest
 
         public override IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
         {
+            options = options ?? (IQueryBuilderSetting)new MockOptionBuilder().Build().Value;
+
             var builder = new Autofac.ContainerBuilder();
 
-            builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance(options).SingleInstance().ExternallyOwned();
             builder.Register(c => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
-            builder.RegisterType<DomainModelDbContext>().SingleInstance().SingleInstance();
+            builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();

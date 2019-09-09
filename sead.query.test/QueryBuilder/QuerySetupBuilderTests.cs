@@ -117,12 +117,12 @@ namespace SeadQueryTest.FacetsConfig
                     IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.SetContext(context);
 
-                    FacetDefinition facet = context.Facets.GetByCode(facetCode);
-                    FacetDefinition countFacet = context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
+                    Facet facet = context.Facets.GetByCode(facetCode);
+                    Facet countFacet = context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
 
                     string targetCode = Utility.Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
 
-                    FacetDefinition targetFacet = context.Facets.GetByCode(targetCode);
+                    Facet targetFacet = context.Facets.GetByCode(targetCode);
                     List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
 
                     List<string> facetCodes = facetsConfig.GetFacetCodes();
@@ -220,8 +220,8 @@ namespace SeadQueryTest.FacetsConfig
                     IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
                     facetsConfig.SetContext(context);
 
-                    FacetDefinition targetFacet = context.Facets.GetByCode(targetCode);
-                    FacetDefinition computeFacet = targetFacet;
+                    Facet targetFacet = context.Facets.GetByCode(targetCode);
+                    Facet computeFacet = targetFacet;
                     List<string> facetCodes = facetsConfig.GetFacetCodes();
                     List<string> tables = targetFacet.ExtraTables.Select(x => x.TableName).ToList();
 
@@ -259,7 +259,7 @@ namespace SeadQueryTest.FacetsConfig
                 }
             }
         }
-        private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, FacetDefinition countFacet, FacetDefinition targetFacet)
+        private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
         {
             List<string> tables = targetFacet.ExtraTables.Select(x => x.TableName).ToList();
 

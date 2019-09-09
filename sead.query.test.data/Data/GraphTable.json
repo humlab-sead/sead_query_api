@@ -1,0 +1,594 @@
+[
+  {
+    "TableId": 1,
+    "TableName": "tbl_horizons"
+  },
+  {
+    "TableId": 2,
+    "TableName": "tbl_aggregate_samples"
+  },
+  {
+    "TableId": 3,
+    "TableName": "tbl_analysis_entity_prep_methods"
+  },
+  {
+    "TableId": 4,
+    "TableName": "tbl_analysis_entities"
+  },
+  {
+    "TableId": 5,
+    "TableName": "tbl_dating_uncertainty"
+  },
+  {
+    "TableId": 6,
+    "TableName": "tbl_feature_types"
+  },
+  {
+    "TableId": 7,
+    "TableName": "view_places_relations"
+  },
+  {
+    "TableId": 8,
+    "TableName": "tbl_sample_coordinates"
+  },
+  {
+    "TableId": 9,
+    "TableName": "tbl_project_stages"
+  },
+  {
+    "TableId": 10,
+    "TableName": "tbl_sample_alt_refs"
+  },
+  {
+    "TableId": 11,
+    "TableName": "tbl_activity_types"
+  },
+  {
+    "TableId": 12,
+    "TableName": "tbl_measured_value_dimensions"
+  },
+  {
+    "TableId": 13,
+    "TableName": "tbl_taxa_synonyms"
+  },
+  {
+    "TableId": 14,
+    "TableName": "tbl_colours"
+  },
+  {
+    "TableId": 15,
+    "TableName": "tbl_site_references"
+  },
+  {
+    "TableId": 16,
+    "TableName": "tbl_image_types"
+  },
+  {
+    "TableId": 17,
+    "TableName": "tbl_project_types"
+  },
+  {
+    "TableId": 18,
+    "TableName": "tbl_mcr_names"
+  },
+  {
+    "TableId": 19,
+    "TableName": "tbl_mcr_summary_data"
+  },
+  {
+    "TableId": 20,
+    "TableName": "tbl_taxa_images"
+  },
+  {
+    "TableId": 21,
+    "TableName": "tbl_taxonomic_order"
+  },
+  {
+    "TableId": 22,
+    "TableName": "tbl_imported_taxa_replacements"
+  },
+  {
+    "TableId": 23,
+    "TableName": "tbl_dendro_measurement_lookup"
+  },
+  {
+    "TableId": 24,
+    "TableName": "tbl_rdb_codes"
+  },
+  {
+    "TableId": 25,
+    "TableName": "metainformation.view_abundances_by_taxon_analysis_entity"
+  },
+  {
+    "TableId": 26,
+    "TableName": "metainformation.view_site_references"
+  },
+  {
+    "TableId": 27,
+    "TableName": "tbl_taxa_seasonality"
+  },
+  {
+    "TableId": 28,
+    "TableName": "tbl_sample_group_description_type_sampling_contexts"
+  },
+  {
+    "TableId": 29,
+    "TableName": "tbl_contacts"
+  },
+  {
+    "TableId": 30,
+    "TableName": "tbl_sample_group_coordinates"
+  },
+  {
+    "TableId": 31,
+    "TableName": "tbl_tephras"
+  },
+  {
+    "TableId": 32,
+    "TableName": "tbl_sample_colours"
+  },
+  {
+    "TableId": 33,
+    "TableName": "tbl_method_groups"
+  },
+  {
+    "TableId": 34,
+    "TableName": "tbl_keywords"
+  },
+  {
+    "TableId": 35,
+    "TableName": "tbl_locations"
+  },
+  {
+    "TableId": 36,
+    "TableName": "tbl_taxa_tree_families"
+  },
+  {
+    "TableId": 37,
+    "TableName": "tbl_relative_age_types"
+  },
+  {
+    "TableId": 38,
+    "TableName": "tbl_abundance_elements"
+  },
+  {
+    "TableId": 39,
+    "TableName": "tbl_taxa_tree_authors"
+  },
+  {
+    "TableId": 40,
+    "TableName": "tbl_sample_group_sampling_contexts"
+  },
+  {
+    "TableId": 41,
+    "TableName": "tbl_sample_horizons"
+  },
+  {
+    "TableId": 42,
+    "TableName": "tbl_sample_group_references"
+  },
+  {
+    "TableId": 43,
+    "TableName": "tbl_taxonomic_order_systems"
+  },
+  {
+    "TableId": 44,
+    "TableName": "tbl_abundance_modifications"
+  },
+  {
+    "TableId": 45,
+    "TableName": "tbl_taxa_tree_orders"
+  },
+  {
+    "TableId": 46,
+    "TableName": "countries"
+  },
+  {
+    "TableId": 47,
+    "TableName": "tbl_aggregate_order_types"
+  },
+  {
+    "TableId": 48,
+    "TableName": "tbl_rdb"
+  },
+  {
+    "TableId": 49,
+    "TableName": "tbl_sample_locations"
+  },
+  {
+    "TableId": 50,
+    "TableName": "tbl_abundance_ident_levels"
+  },
+  {
+    "TableId": 51,
+    "TableName": "tbl_ecocode_groups"
+  },
+  {
+    "TableId": 52,
+    "TableName": "tbl_sample_group_notes"
+  },
+  {
+    "TableId": 53,
+    "TableName": "tbl_taxonomy_notes"
+  },
+  {
+    "TableId": 54,
+    "TableName": "tbl_sample_group_description_types"
+  },
+  {
+    "TableId": 55,
+    "TableName": "tbl_relative_dates"
+  },
+  {
+    "TableId": 56,
+    "TableName": "tbl_sample_description_sample_group_contexts"
+  },
+  {
+    "TableId": 57,
+    "TableName": "metainformation.view_abundance"
+  },
+  {
+    "TableId": 58,
+    "TableName": "tbl_projects"
+  },
+  {
+    "TableId": 59,
+    "TableName": "tbl_chron_controls"
+  },
+  {
+    "TableId": 60,
+    "TableName": "tbl_geochronology"
+  },
+  {
+    "TableId": 61,
+    "TableName": "tbl_sample_images"
+  },
+  {
+    "TableId": 62,
+    "TableName": "tbl_ecocode_definitions"
+  },
+  {
+    "TableId": 63,
+    "TableName": "tbl_taxonomic_order_biblio"
+  },
+  {
+    "TableId": 64,
+    "TableName": "tbl_site_images"
+  },
+  {
+    "TableId": 65,
+    "TableName": "tbl_sample_location_type_sampling_contexts"
+  },
+  {
+    "TableId": 66,
+    "TableName": "tbl_publishers"
+  },
+  {
+    "TableId": 67,
+    "TableName": "tbl_text_identification_keys"
+  },
+  {
+    "TableId": 68,
+    "TableName": "tbl_relative_age_refs"
+  },
+  {
+    "TableId": 69,
+    "TableName": "tbl_dendro"
+  },
+  {
+    "TableId": 70,
+    "TableName": "tbl_mcrdata_birmbeetledat"
+  },
+  {
+    "TableId": 71,
+    "TableName": "tbl_relative_ages"
+  },
+  {
+    "TableId": 72,
+    "TableName": "tbl_units"
+  },
+  {
+    "TableId": 73,
+    "TableName": "tbl_sample_description_types"
+  },
+  {
+    "TableId": 74,
+    "TableName": "tbl_years_types"
+  },
+  {
+    "TableId": 75,
+    "TableName": "tbl_features"
+  },
+  {
+    "TableId": 76,
+    "TableName": "tbl_dataset_masters"
+  },
+  {
+    "TableId": 77,
+    "TableName": "tbl_site_other_records"
+  },
+  {
+    "TableId": 78,
+    "TableName": "tbl_site_natgridrefs"
+  },
+  {
+    "TableId": 79,
+    "TableName": "tbl_languages"
+  },
+  {
+    "TableId": 80,
+    "TableName": "tbl_lithology"
+  },
+  {
+    "TableId": 81,
+    "TableName": "tbl_ceramics_measurement_lookup"
+  },
+  {
+    "TableId": 82,
+    "TableName": "tbl_seasons"
+  },
+  {
+    "TableId": 83,
+    "TableName": "tbl_dataset_contacts"
+  },
+  {
+    "TableId": 84,
+    "TableName": "tbl_biblio"
+  },
+  {
+    "TableId": 85,
+    "TableName": "tbl_dating_labs"
+  },
+  {
+    "TableId": 86,
+    "TableName": "tbl_datasets"
+  },
+  {
+    "TableId": 87,
+    "TableName": "tbl_geochron_refs"
+  },
+  {
+    "TableId": 88,
+    "TableName": "tbl_abundances"
+  },
+  {
+    "TableId": 89,
+    "TableName": "tbl_methods"
+  },
+  {
+    "TableId": 90,
+    "TableName": "tbl_text_distribution"
+  },
+  {
+    "TableId": 91,
+    "TableName": "tbl_sample_groups"
+  },
+  {
+    "TableId": 92,
+    "TableName": "tbl_location_types"
+  },
+  {
+    "TableId": 93,
+    "TableName": "tbl_analysis_entity_dimensions"
+  },
+  {
+    "TableId": 94,
+    "TableName": "tbl_sample_notes"
+  },
+  {
+    "TableId": 95,
+    "TableName": "tbl_site_preservation_status"
+  },
+  {
+    "TableId": 96,
+    "TableName": "tbl_analysis_entity_ages"
+  },
+  {
+    "TableId": 97,
+    "TableName": "tbl_ceramics_measurements"
+  },
+  {
+    "TableId": 98,
+    "TableName": "tbl_dimensions"
+  },
+  {
+    "TableId": 99,
+    "TableName": "metainformation.view_taxa_biblio"
+  },
+  {
+    "TableId": 100,
+    "TableName": "tbl_dendro_measurements"
+  },
+  {
+    "TableId": 101,
+    "TableName": "tbl_ecocodes"
+  },
+  {
+    "TableId": 102,
+    "TableName": "tbl_physical_samples"
+  },
+  {
+    "TableId": 103,
+    "TableName": "tbl_taxa_common_names"
+  },
+  {
+    "TableId": 104,
+    "TableName": "tbl_data_type_groups"
+  },
+  {
+    "TableId": 105,
+    "TableName": "tbl_sample_types"
+  },
+  {
+    "TableId": 106,
+    "TableName": "tbl_coordinate_method_dimensions"
+  },
+  {
+    "TableId": 107,
+    "TableName": "tbl_tephra_dates"
+  },
+  {
+    "TableId": 108,
+    "TableName": "tbl_season_types"
+  },
+  {
+    "TableId": 109,
+    "TableName": "tbl_taxa_tree_master"
+  },
+  {
+    "TableId": 110,
+    "TableName": "tbl_record_types"
+  },
+  {
+    "TableId": 111,
+    "TableName": "tbl_sample_descriptions"
+  },
+  {
+    "TableId": 112,
+    "TableName": "tbl_sample_group_dimensions"
+  },
+  {
+    "TableId": 113,
+    "TableName": "tbl_site_locations"
+  },
+  {
+    "TableId": 114,
+    "TableName": "metainformation.view_sample_group_references"
+  },
+  {
+    "TableId": 115,
+    "TableName": "tbl_aggregate_sample_ages"
+  },
+  {
+    "TableId": 116,
+    "TableName": "tbl_sample_dimensions"
+  },
+  {
+    "TableId": 117,
+    "TableName": "tbl_chronologies"
+  },
+  {
+    "TableId": 118,
+    "TableName": "tbl_species_association_types"
+  },
+  {
+    "TableId": 119,
+    "TableName": "tbl_sites"
+  },
+  {
+    "TableId": 120,
+    "TableName": "tbl_collections_or_journals"
+  },
+  {
+    "TableId": 121,
+    "TableName": "tbl_measured_values"
+  },
+  {
+    "TableId": 122,
+    "TableName": "tbl_text_biology"
+  },
+  {
+    "TableId": 123,
+    "TableName": "tbl_contact_types"
+  },
+  {
+    "TableId": 124,
+    "TableName": "tbl_sample_group_images"
+  },
+  {
+    "TableId": 125,
+    "TableName": "metainformation.tbl_denormalized_measured_values"
+  },
+  {
+    "TableId": 126,
+    "TableName": "tbl_taxa_measured_attributes"
+  },
+  {
+    "TableId": 127,
+    "TableName": "tbl_dendro_date_notes"
+  },
+  {
+    "TableId": 128,
+    "TableName": "tbl_ecocode_systems"
+  },
+  {
+    "TableId": 129,
+    "TableName": "tbl_tephra_refs"
+  },
+  {
+    "TableId": 130,
+    "TableName": "tbl_sample_group_descriptions"
+  },
+  {
+    "TableId": 131,
+    "TableName": "tbl_species_associations"
+  },
+  {
+    "TableId": 132,
+    "TableName": "tbl_physical_sample_features"
+  },
+  {
+    "TableId": 133,
+    "TableName": "tbl_dataset_submissions"
+  },
+  {
+    "TableId": 134,
+    "TableName": "tbl_dating_material"
+  },
+  {
+    "TableId": 135,
+    "TableName": "tbl_data_types"
+  },
+  {
+    "TableId": 136,
+    "TableName": "tbl_alt_ref_types"
+  },
+  {
+    "TableId": 137,
+    "TableName": "tbl_biblio_keywords"
+  },
+  {
+    "TableId": 138,
+    "TableName": "tbl_dendro_dates"
+  },
+  {
+    "TableId": 139,
+    "TableName": "tbl_ceramics"
+  },
+  {
+    "TableId": 140,
+    "TableName": "tbl_dataset_submission_types"
+  },
+  {
+    "TableId": 141,
+    "TableName": "tbl_taxa_reference_specimens"
+  },
+  {
+    "TableId": 142,
+    "TableName": "tbl_modification_types"
+  },
+  {
+    "TableId": 143,
+    "TableName": "tbl_rdb_systems"
+  },
+  {
+    "TableId": 144,
+    "TableName": "tbl_sample_location_types"
+  },
+  {
+    "TableId": 145,
+    "TableName": "tbl_aggregate_datasets"
+  },
+  {
+    "TableId": 146,
+    "TableName": "tbl_identification_levels"
+  },
+  {
+    "TableId": 147,
+    "TableName": "tbl_chron_control_types"
+  },
+  {
+    "TableId": 148,
+    "TableName": "tbl_taxa_tree_genera"
+  }
+]
