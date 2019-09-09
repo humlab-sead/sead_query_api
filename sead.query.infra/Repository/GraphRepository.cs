@@ -6,7 +6,7 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra {
 
-    public class NodeRepository : Repository<GraphTable, int>, INodeRepository {
+    public class NodeRepository : Repository<GraphNode, int>, INodeRepository {
         public NodeRepository(IFacetContext context) : base(context)
         {
         }

@@ -6,8 +6,8 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-    using NodesDictS = Dictionary<string, GraphTable>;
-    using NodesDictI = Dictionary<int, GraphTable>;
+    using NodesDictS = Dictionary<string, GraphNode>;
+    using NodesDictI = Dictionary<int, GraphNode>;
     using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
 
     public interface IFacetGraphFactory
@@ -81,7 +81,7 @@ namespace SeadQueryCore
 
         public GraphRoute Find(int startTableId, int destinationTableId)
         {
-            GraphRoute CreateRoute(List<GraphTable> nodes)
+            GraphRoute CreateRoute(List<GraphNode> nodes)
             {
                 List<GraphTableRelation> items = new List<GraphTableRelation>();
                 for (int i = 0; i < nodes.Count - 1; i++)
@@ -136,11 +136,11 @@ namespace SeadQueryCore
             return nodes;
         }
 
-        private List<GraphTable> GetAliasNodes(NodesDictS nodes, List<Facet> aliasFacets)
+        private List<GraphNode> GetAliasNodes(NodesDictS nodes, List<Facet> aliasFacets)
         {
             int id = 10000;
             return aliasFacets
-                .Select(z => new GraphTable() { NodeId = id++, TableName = z.AliasName })
+                .Select(z => new GraphNode() { NodeId = id++, TableName = z.AliasName })
                 .Where(z => !nodes.ContainsKey(z.TableName)).ToList();
         }
 

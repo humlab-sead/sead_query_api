@@ -31,7 +31,7 @@ namespace DataAccessPostgreSqlProvider {
         public DbSet<ResultFieldType> ResultFieldTypes { get; set; }
         public DbSet<Facet> Facets { get; set; }
         public DbSet<GraphTableRelation> Edges { get; set; }
-        public DbSet<GraphTable> Nodes { get; set; }
+        public DbSet<GraphNode> Nodes { get; set; }
         public DbSet<ViewState> ViewStates { get; set; }
         public DbSet<ResultViewType> ViewTypes { get; set; }
         public DbSet<FacetType> FacetTypes { get; set; }
@@ -152,9 +152,9 @@ namespace DataAccessPostgreSqlProvider {
                 .WithMany()
                 .HasForeignKey(p => p.ResultFieldId);
 
-            builder.Entity<GraphTable>().ToTable("graph_table", "facet").HasKey(b => b.NodeId);
-            builder.Entity<GraphTable>().Property(b => b.NodeId).HasColumnName("table_id").IsRequired();
-            builder.Entity<GraphTable>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
+            builder.Entity<GraphNode>().ToTable("graph_table", "facet").HasKey(b => b.NodeId);
+            builder.Entity<GraphNode>().Property(b => b.NodeId).HasColumnName("table_id").IsRequired();
+            builder.Entity<GraphNode>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
 
             builder.Entity<GraphTableRelation>().ToTable("graph_table_relation", "facet").HasKey(b => b.RelationId);
             builder.Entity<GraphTableRelation>().Property(b => b.RelationId).HasColumnName("relation_id").IsRequired();
@@ -163,8 +163,8 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<GraphTableRelation>().Property(b => b.Weight).HasColumnName("weight").IsRequired();
             builder.Entity<GraphTableRelation>().Property(b => b.SourceColumnName).HasColumnName("source_column_name").IsRequired();
             builder.Entity<GraphTableRelation>().Property(b => b.TargetColumnName).HasColumnName("target_column_name").IsRequired();
-            builder.Entity<GraphTableRelation>().HasOne<GraphTable>(x => x.SourceTable).WithMany().HasForeignKey(p => p.SourceTableId);
-            builder.Entity<GraphTableRelation>().HasOne<GraphTable>(x => x.TargetTable).WithMany().HasForeignKey(p => p.TargetTableId);
+            builder.Entity<GraphTableRelation>().HasOne<GraphNode>(x => x.SourceTable).WithMany().HasForeignKey(p => p.SourceTableId);
+            builder.Entity<GraphTableRelation>().HasOne<GraphNode>(x => x.TargetTable).WithMany().HasForeignKey(p => p.TargetTableId);
 
             builder.Entity<ViewState>().ToTable("view_state", "facet").HasKey(b => b.Key);
             builder.Entity<ViewState>().Property(b => b.Key).HasColumnName("view_state_key").IsRequired();
@@ -344,7 +344,7 @@ namespace DataAccessPostgreSqlProvider {
         //        entity.Property(e => e.ReloadAsTarget).HasColumnName("reload_as_target");
         //    });
 
-        //    modelBuilder.Entity<GraphTable>(entity =>
+        //    modelBuilder.Entity<GraphNode>(entity =>
         //    {
         //        entity.HasKey(e => e.TableId)
         //            .HasName("graph_table_pkey");

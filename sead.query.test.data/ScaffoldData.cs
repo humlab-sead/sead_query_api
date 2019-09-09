@@ -103,7 +103,7 @@ namespace sead.query.test.data
 //SerializeToFile(serializer, context.FacetGroup, Path.Combine(outputPath, "FacetGroup.json"));
 //SerializeToFile(serializer, context.FacetTable, Path.Combine(outputPath, "FacetTable.json"));
 //SerializeToFile(serializer, context.FacetType, Path.Combine(outputPath, "FacetType.json"));
-//SerializeToFile(serializer, context.GraphTable, Path.Combine(outputPath, "GraphTable.json"));
+//SerializeToFile(serializer, context.GraphNode, Path.Combine(outputPath, "GraphNode.json"));
 //SerializeToFile(serializer, context.GraphTableRelation, Path.Combine(outputPath, "GraphTableRelation.json"));
 //SerializeToFile(serializer, context.ResultAggregate, Path.Combine(outputPath, "ResultAggregate.json"));
 //SerializeToFile(serializer, context.ResultAggregateField, Path.Combine(outputPath, "ResultAggregateField.json"));

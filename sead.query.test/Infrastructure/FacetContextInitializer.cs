@@ -51,7 +51,7 @@ namespace SeadQueryTest.Infrastructure
             //context.AttachRange(reader.Deserialize<FacetGroup>(path));
             //context.AttachRange(reader.Deserialize<FacetTable>(path));
             //context.AttachRange(reader.Deserialize<FacetType>(path));
-            //context.AttachRange(reader.Deserialize<GraphTable>(path));
+            //context.AttachRange(reader.Deserialize<GraphNode>(path));
             //context.AttachRange(reader.Deserialize<GraphTableRelation>(path));
             //context.AttachRange(reader.Deserialize<ResultAggregate>(path));
             //context.AttachRange(reader.Deserialize<ResultAggregateField>(path));

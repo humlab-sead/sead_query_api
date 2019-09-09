@@ -59,7 +59,7 @@ namespace SeadQueryTest.Infrastructure
             FacetContext.AddRange(reader.Deserialize<FacetTable>(path));
             FacetContext.AddRange(reader.Deserialize<Facet>(path));
             FacetContext.AddRange(reader.Deserialize<ViewState>(path));
-            FacetContext.AddRange(reader.Deserialize<GraphTable>(path));
+            FacetContext.AddRange(reader.Deserialize<GraphNode>(path));
             FacetContext.AddRange(reader.Deserialize<GraphTableRelation>(path));
             FacetContext.AddRange(reader.Deserialize<ResultViewType>(path));
             FacetContext.AddRange(reader.Deserialize<ResultFieldType>(path));
@@ -68,7 +68,7 @@ namespace SeadQueryTest.Infrastructure
             FacetContext.AddRange(reader.Deserialize<ResultAggregate>(path));
 
             FacetContext.SaveChanges();
- 
+
         }
 
     }

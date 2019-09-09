@@ -26,7 +26,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
                     typeof(FacetGroup),
                     typeof(FacetTable),
                     typeof(FacetType),
-                    typeof(GraphTable),
+                    typeof(GraphNode),
                     typeof(GraphTableRelation),
                     typeof(ResultAggregate),
                     typeof(ResultAggregateField),

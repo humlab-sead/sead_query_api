@@ -147,7 +147,7 @@ namespace SeadQueryTest.Model
                 }
             },
             new object[] {
-                typeof(GraphTable),
+                typeof(GraphNode),
                 13,
                 new Dictionary<string, object>() {
                     { "TableId", 13 },

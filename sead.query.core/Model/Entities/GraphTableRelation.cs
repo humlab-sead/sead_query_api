@@ -16,10 +16,10 @@ namespace SeadQueryCore
         public string SourceColumnName { get; set; }
         public string TargetColumnName { get; set; }
 
-        [JsonIgnore] private GraphTable _SourceTable, _TargetTable;
+        [JsonIgnore] private GraphNode _SourceTable, _TargetTable;
 
-        public GraphTable SourceTable { get { return _SourceTable; } set { _SourceTable = value; SourceTableId = value?.NodeId ?? SourceTableId;  } }
-        public GraphTable TargetTable { get { return _TargetTable; } set { _TargetTable = value; TargetTableId = value?.NodeId ?? TargetTableId; } }
+        public GraphNode SourceTable { get { return _SourceTable; } set { _SourceTable = value; SourceTableId = value?.NodeId ?? SourceTableId;  } }
+        public GraphNode TargetTable { get { return _TargetTable; } set { _TargetTable = value; TargetTableId = value?.NodeId ?? TargetTableId; } }
 
         [JsonIgnore] public string SourceTableName { get { return SourceTable.TableName; } }
         [JsonIgnore] public string TargetTableName { get { return TargetTable.TableName; } }
@@ -48,7 +48,7 @@ namespace SeadQueryCore
             return x;
         }
 
-        public GraphTableRelation Alias(GraphTable node, GraphTable alias)
+        public GraphTableRelation Alias(GraphNode node, GraphNode alias)
         {
             var x = Clone();
             if (node.NodeId == SourceTable.NodeId)

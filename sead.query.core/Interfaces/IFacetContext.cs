@@ -11,7 +11,7 @@ namespace SeadQueryCore
         DbSet<Facet> Facets { get; set; }
         DbSet<FacetGroup> FacetGroups { get; set; }
         DbSet<FacetType> FacetTypes { get; set; }
-        DbSet<GraphTable> Nodes { get; set; }
+        DbSet<GraphNode> Nodes { get; set; }
         DbSet<ResultAggregate> ResultDefinitions { get; set; }
         DbSet<ResultField> ResultFields { get; set; }
         DbSet<ResultFieldType> ResultFieldTypes { get; set; }

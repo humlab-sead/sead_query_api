@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-    public class GraphTable {
+    public class GraphNode {
         public int NodeId { get; set; }
         public string TableName { get; set; }
     }

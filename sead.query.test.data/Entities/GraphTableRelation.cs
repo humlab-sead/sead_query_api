@@ -14,8 +14,8 @@ namespace sead.query.test.data.Entities
         public string TargetColumnName { get; set; }
 
         [JsonIgnore]
-        public virtual GraphTable SourceTable { get; set; }
+        public virtual GraphNode SourceTable { get; set; }
         [JsonIgnore]
-        public virtual GraphTable TargetTable { get; set; }
+        public virtual GraphNode TargetTable { get; set; }
     }
 }
