@@ -35,7 +35,7 @@ namespace SeadQueryCore
 
         public Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {
-            FacetDefinition facet = Context.Facets.GetByCode(facetCode);
+            Facet facet = Context.Facets.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
             var values =  Query(sql).ToList();
             Dictionary<string, CategoryCountItem> data = values.ToDictionary(z => Coalesce(z.Category, "(null)"));
@@ -44,14 +44,14 @@ namespace SeadQueryCore
 
         protected virtual List<CategoryCountItem> Query(string sql) => throw new NotSupportedException();
 
-        protected virtual string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery) => throw new NotSupportedException();
+        protected virtual string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery) => throw new NotSupportedException();
     }
 
     public class RangeCategoryCountService : CategoryCountService {
 
         public RangeCategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder) { }
 
-        protected override string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string intervalQuery)
+        protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
             List<string> tables = new List<string>() { facet.TargetTableName, Config.DirectCountTable };
             QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
@@ -74,13 +74,13 @@ namespace SeadQueryCore
 
         public DiscreteCategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder) { }
 
-        protected override string Compile(FacetDefinition facet, FacetsConfig2 facetsConfig, string payload)
+        protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
-            FacetDefinition computeFacet = Context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
+            Facet computeFacet = Context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
 
             string targetCode = Coalesce(facetsConfig?.TargetCode, computeFacet.FacetCode);
 
-            FacetDefinition targetFacet = Context.Facets.GetByCode(targetCode);
+            Facet targetFacet = Context.Facets.GetByCode(targetCode);
 
             List<string> tables = GetTables(facetsConfig, targetFacet, computeFacet);
             List<string> facetCodes = facetsConfig.GetFacetCodes();
@@ -92,7 +92,7 @@ namespace SeadQueryCore
             return sql;
         }
 
-        private List<string> GetTables(FacetsConfig2 facetsConfig, FacetDefinition targetFacet, FacetDefinition computeFacet)
+        private List<string> GetTables(FacetsConfig2 facetsConfig, Facet targetFacet, Facet computeFacet)
         {
             List<string> tables = targetFacet.ExtraTables.Select(x => x.TableName).ToList();
             if (facetsConfig.TargetCode != null) {

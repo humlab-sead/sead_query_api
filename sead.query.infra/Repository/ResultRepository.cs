@@ -11,7 +11,7 @@ namespace SeadQueryInfra {
 
     public class ResultRepository : Repository<ResultAggregate, int>, IResultRepository
     {
-        public ResultRepository(DomainModelDbContext context) : base(context)
+        public ResultRepository(IFacetContext context) : base(context)
         {
         }
 

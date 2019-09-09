@@ -28,7 +28,7 @@ namespace SeadQueryAPI
             } catch (InvalidOperationException) {
                 Console.WriteLine("Failed to connect to Redis!");
             }
-            Console.WriteLine("Warning: Using in memoty cache provider!");
+            Console.WriteLine("Warning: Using in memory cache provider!");
             return new SimpleMemoryCacheProvider();
         }
 
@@ -44,7 +44,7 @@ namespace SeadQueryAPI
             // builder.RegisterAggregateService<ICacheContainer>();
             builder.Register(z => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
-            builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
+            builder.RegisterType<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();

@@ -61,7 +61,7 @@ namespace SeadQueryCore
     #endregion
 
     public static class ValidPicksSqlQueryBuilder {
-        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, List<int> picks)
+        public static string Compile(QueryBuilder.QuerySetup query, Facet facet, List<int> picks)
         {
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"
@@ -78,7 +78,7 @@ namespace SeadQueryCore
     }
 
     public static class RangeCounterSqlQueryBuilder {
-        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string intervalQuery, string countColumn)
+        public static string Compile(QueryBuilder.QuerySetup query, Facet facet, string intervalQuery, string countColumn)
         {
             string sql = $@"
             WITH categories(category, lower, upper) AS ({intervalQuery})
@@ -116,7 +116,7 @@ namespace SeadQueryCore
     }
 
     public static class DiscreteCounterSqlQueryBuilder {
-        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, FacetDefinition countFacet, string aggType)
+        public static string Compile(QueryBuilder.QuerySetup query, Facet facet, Facet countFacet, string aggType)
         {
             string sql = $@"
             SELECT category, {aggType}(value) AS count
@@ -136,12 +136,12 @@ namespace SeadQueryCore
 
     public interface ICategoryBoundSqlQueryBuilder
     {
-        string Compile(QuerySetup query, FacetDefinition facet, string facetCode);
+        string Compile(QuerySetup query, Facet facet, string facetCode);
     }
 
     public class RangeCategoryBoundSqlQueryBuilder : ICategoryBoundSqlQueryBuilder
     {
-        public string Compile(QuerySetup query, FacetDefinition facet, string facetCode)
+        public string Compile(QuerySetup query, Facet facet, string facetCode)
         {
             string clauses = String.Join("", facet.Clauses.Select(x => x.Clause));
             string sql = $@"
@@ -154,7 +154,7 @@ namespace SeadQueryCore
     }
 
     public static class FacetContentExtraRowInfoSqlQueryBuilder {
-        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet)
+        public static string Compile(QueryBuilder.QuerySetup query, Facet facet)
         {
             string sql = $@"
             SELECT DISTINCT id, name
@@ -173,7 +173,7 @@ namespace SeadQueryCore
     }
 
     public static class RangeLowerUpperSqlQueryBuilder {
-        public static string compile(QueryBuilder.QuerySetup query, FacetDefinition facet)
+        public static string compile(QueryBuilder.QuerySetup query, Facet facet)
         {
             string sql = $@"
           SELECT MIN({facet.CategoryIdExpr}) AS lower, MAX({facet.CategoryIdExpr}) AS upper
@@ -209,13 +209,13 @@ namespace SeadQueryCore
     }
 
     public static class DiscreteContentSqlQueryBuilder {
-        public static string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, string text_filter)
+        public static string Compile(QueryBuilder.QuerySetup query, Facet facet, string text_filter)
         {
             string text_criteria = text_filter.IsEmpty() ? "" : $" AND {facet.CategoryNameExpr} ILIKE '{text_filter}' ";
             string sort_clause = empty(facet.SortExpr) ? "" : $", {facet.SortExpr} ORDER BY {facet.SortExpr}";
 
             string sql = $@"
-            SELECT {facet.CategoryIdExpr} AS category, {facet.CategoryNameExpr} AS name
+            SELECT cast({facet.CategoryIdExpr} AS varchar) AS category, {facet.CategoryNameExpr} AS name
             FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
             WHERE 1 = 1
@@ -231,11 +231,11 @@ namespace SeadQueryCore
 
     public interface IResultSqlQueryCompiler
     {
-        string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config);
+        string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config);
     }
 
     public class TabularResultSqlQueryBuilder : IResultSqlQueryCompiler {
-        public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config)
+        public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
         {
             string sql = $@"
             SELECT {config.DataFields.Combine(", ")}
@@ -256,7 +256,7 @@ namespace SeadQueryCore
 
     public class MapResultSqlQueryBuilder : IResultSqlQueryCompiler {
         // FIXME Use ResultQuerySetup to build query. If possible, merge TabularResultSqlQueryBuilder & MapResultSqlQueryBuilder
-        public string Compile(QueryBuilder.QuerySetup query, FacetDefinition facet, ResultQuerySetup config)
+        public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
         {
             string sql = $@"
             SELECT DISTINCT {facet.CategoryIdExpr} AS id_column, {facet.CategoryNameExpr} AS name, coalesce(latitude_dd, 0.0) AS latitude_dd, coalesce(longitude_dd, 0) AS longitude_dd
@@ -272,7 +272,7 @@ namespace SeadQueryCore
 
     public static class JoinClauseCompiler
     {
-        public static string Compile(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false)
+        public static string Compile(IFacetsGraph graph, GraphTableRelation edge, bool innerJoin = false)
         {
             var resolvedTableName = graph.ResolveTargetName(edge.TargetTableName);
             var resolvedAliasName = graph.ResolveAliasName(edge.TargetTableName);

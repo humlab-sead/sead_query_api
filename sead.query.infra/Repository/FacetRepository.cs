@@ -12,27 +12,27 @@ namespace SeadQueryInfra {
 
     public class FacetTypeRepository : Repository<FacetType, int>, IFacetTypeRepository
     {
-        public FacetTypeRepository(DomainModelDbContext context) : base(context)
+        public FacetTypeRepository(IFacetContext context) : base(context)
         {
         }
     }
 
     public class FacetGroupRepository : Repository<FacetGroup, int>, IFacetGroupRepository
     {
-        public FacetGroupRepository(DomainModelDbContext context) : base(context)
+        public FacetGroupRepository(IFacetContext context) : base(context)
         {
         }
     }
 
-    public class FacetRepository : Repository<FacetDefinition, int>, IFacetRepository
+    public class FacetRepository : Repository<Facet, int>, IFacetRepository
     {
-        private Dictionary<string, FacetDefinition> dictionary = null;
+        private Dictionary<string, Facet> dictionary = null;
 
-        public FacetRepository(DomainModelDbContext context) : base(context)
+        public FacetRepository(IFacetContext context) : base(context)
         {
         }
 
-        protected override IQueryable<FacetDefinition> GetInclude(IQueryable<FacetDefinition> set)
+        protected override IQueryable<Facet> GetInclude(IQueryable<Facet> set)
         {
             return set.Include(x => x.FacetGroup)
                       .Include(x => x.FacetType)
@@ -40,17 +40,17 @@ namespace SeadQueryInfra {
                       .Include(x => x.Clauses);
         }
 
-        public Dictionary<string, FacetDefinition> ToDictionary()
+        public Dictionary<string, Facet> ToDictionary()
         {
             return dictionary ?? (dictionary = GetAll().ToDictionary(x => x.FacetCode));
         }
 
-        public FacetDefinition GetByCode(string facetCode)
+        public Facet GetByCode(string facetCode)
         {
             return ToDictionary()?[facetCode];
         }
 
-        public IEnumerable<FacetDefinition> FindThoseWithAlias()
+        public IEnumerable<Facet> FindThoseWithAlias()
         {
             return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
             //var query = GetAll()         // source
@@ -61,10 +61,10 @@ namespace SeadQueryInfra {
             //  .Select(x => x.Category);  // select result
         }
 
-        public IEnumerable<FacetDefinition> GetOfType(EFacetType type)
+        public IEnumerable<Facet> GetOfType(EFacetType type)
             => Find(z => z.FacetTypeId == type);
 
-        public (decimal, decimal) GetUpperLowerBounds(FacetDefinition facet)
+        public (decimal, decimal) GetUpperLowerBounds(Facet facet)
         {
             string sql = RangeLowerUpperSqlQueryBuilder.compile(null, facet);
             var item = QueryRow(sql, r => new {
@@ -74,17 +74,17 @@ namespace SeadQueryInfra {
             return item == null ? (0, 0) : (item.lower, item.upper);
         }
 
-        public string GenerateStateId()
-        {
-            var sql = $"select nextval('{Context.Settings.CacheSeq}') as cache_id;";
-            using (var dr = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
-                return "state_id_" + dr.GetInt32(0).ToString();
-            }
-        }
+        // public string GenerateStateId()
+        // {
+        //     var sql = $"select nextval('{Context.Settings.CacheSeq}') as cache_id;";
+        //     using (var dr = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+        //         return "state_id_" + dr.GetInt32(0).ToString();
+        //     }
+        // }
     }
 
     public static class FacetRepositoryEagerBuilder {
-        public static IQueryable<FacetDefinition> BuildFacetDefinition(this IQueryable<FacetDefinition> query)
+        public static IQueryable<Facet> BuildFacetDefinition(this IQueryable<Facet> query)
         {
             return query.Include(x => x.FacetGroup)
                         .Include(x => x.FacetType)

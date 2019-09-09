@@ -2,14 +2,14 @@
 
 namespace SeadQueryCore
 {
-    public interface IFacetRepository : IRepository<FacetDefinition, int>
+    public interface IFacetRepository : IRepository<Facet, int>
     {
-        IEnumerable<FacetDefinition> FindThoseWithAlias();
-        string GenerateStateId();
-        FacetDefinition GetByCode(string facetCode);
-        IEnumerable<FacetDefinition> GetOfType(EFacetType type);
-        (decimal, decimal) GetUpperLowerBounds(FacetDefinition facet);
-        Dictionary<string, FacetDefinition> ToDictionary();
+        IEnumerable<Facet> FindThoseWithAlias();
+        // string GenerateStateId();
+        Facet GetByCode(string facetCode);
+        IEnumerable<Facet> GetOfType(EFacetType type);
+        (decimal, decimal) GetUpperLowerBounds(Facet facet);
+        Dictionary<string, Facet> ToDictionary();
     }
 
 

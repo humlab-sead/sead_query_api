@@ -29,7 +29,7 @@ namespace SeadQueryAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Produces("application/json", Type = typeof(IEnumerable<FacetDefinition>))]
+        [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
         public ViewState Get(string id)
         {
             var value = Context.ViewStates.Get(id);

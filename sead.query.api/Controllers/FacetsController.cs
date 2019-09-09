@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SeadQueryCore;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SeadQueryCore;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Cors;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace SeadQueryAPI.Controllers
 {
@@ -40,9 +36,9 @@ namespace SeadQueryAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Produces("application/json", Type = typeof(IEnumerable<FacetDefinition>))]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.OK , Type = typeof(IEnumerable<FacetDefinition>))]
-        public IEnumerable<FacetDefinition> Get()
+        [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK , Type = typeof(IEnumerable<Facet>))]
+        public IEnumerable<Facet> Get()
         {
             return Context.Facets.GetAll().Where(z => z.FacetGroupId != 0 && z.IsApplicable == true).ToList();
         }
@@ -52,10 +48,10 @@ namespace SeadQueryAPI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacetDefinition))]
+        //[SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Facet))]
         [HttpGet("{id}")]
-        [Produces("application/json", Type = typeof(IEnumerable<FacetDefinition>))]
-        public FacetDefinition Get(int id)
+        [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
+        public Facet Get(int id)
         {
             return Context.Facets.Get(id);
         }

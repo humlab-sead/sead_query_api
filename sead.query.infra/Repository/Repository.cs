@@ -9,18 +9,38 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace SeadQueryInfra {
+
     public class Repository<TEntity, K> : IRepository<TEntity, K> where TEntity : class
     {
-        protected readonly DomainModelDbContext Context;
+        protected readonly IFacetContext Context;
 
-        public Repository(DomainModelDbContext context)
+        public Repository(IFacetContext context)
         {
             this.Context = context;
         }
 
+        protected virtual IFacetContext GetContext()
+        {
+            return Context;
+        }
+        protected virtual DbContext GetDbContext()
+        {
+            return (DbContext)Context;
+        }
+
+        protected virtual DbSet<TEntity> GetDbSet()
+        {
+            return GetContext().Set<TEntity>();
+        }
+
+        protected virtual DbDataReader ExecuteSqlQuery(string sql)
+        {
+            return GetDbContext().Database.ExecuteSqlQuery(sql).DbDataReader;
+        }
+
         protected IQueryable<TEntity> GetSet()
         {
-            return GetInclude(Context.Set<TEntity>());
+            return GetInclude(GetDbSet());
         }
 
         protected virtual IQueryable<TEntity> GetInclude(IQueryable<TEntity> set)
@@ -30,7 +50,7 @@ namespace SeadQueryInfra {
 
         public TEntity Get(K id)
         {
-            return Context.Set<TEntity>().Find(id);
+            return GetDbSet().Find(id);
         }
 
         public virtual IEnumerable<TEntity> GetAll()
@@ -45,27 +65,27 @@ namespace SeadQueryInfra {
 
         public void Add(TEntity entity)
         {
-            Context.Set<TEntity>().Add(entity);
+            GetDbSet().Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
-            Context.Set<TEntity>().AddRange(entities);
+            GetDbSet().AddRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(entity);
+            GetDbSet().Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            Context.Set<TEntity>().RemoveRange(entities);
+            GetDbSet().RemoveRange(entities);
         }
 
         public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
         {
-            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
+            using (var reader = ExecuteSqlQuery(sql))
             {
                 return reader.Select(selector).Take(1).FirstOrDefault();
             }
@@ -73,7 +93,7 @@ namespace SeadQueryInfra {
 
         public List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
         {
-            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
+            using (var reader = ExecuteSqlQuery(sql))
             {
                 return reader.Select(selector).ToList();
             }

@@ -32,7 +32,7 @@ namespace SeadQueryCore.QueryBuilder
 
         public QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables, List<string> facetCodes)
         {
-            FacetDefinition targetFacet = Context.Facets.GetByCode(facetCode);
+            Facet targetFacet = Context.Facets.GetByCode(facetCode);
 
             if (facetsConfig == null)
                 facetCodes = new List<string>();
@@ -77,7 +77,7 @@ namespace SeadQueryCore.QueryBuilder
             return querySetup;
         }
 
-        private bool HasUserPicks(GraphEdge edge, Dictionary<string, string> tableCriterias)
+        private bool HasUserPicks(GraphTableRelation edge, Dictionary<string, string> tableCriterias)
         {
             return tableCriterias.ContainsKey(edge.SourceTableName) || tableCriterias.ContainsKey(edge.TargetTableName);
         }

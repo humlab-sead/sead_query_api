@@ -7,7 +7,7 @@ namespace SeadQueryCore.QueryBuilder
 {
     public class QuerySetup {
         public FacetConfig2 TargetConfig;
-        public FacetDefinition Facet;
+        public Facet Facet;
         public List<GraphRoute> Routes;
         public List<GraphRoute> ReducedRoutes;
 
@@ -16,7 +16,7 @@ namespace SeadQueryCore.QueryBuilder
 
         public string CategoryTextFilter { get { return TargetConfig?.TextFilter ?? "";  } }
 
-        public QuerySetup(FacetConfig2 targetConfig, FacetDefinition facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
+        public QuerySetup(FacetConfig2 targetConfig, Facet facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
         {
             TargetConfig = targetConfig;
             Facet = facet;

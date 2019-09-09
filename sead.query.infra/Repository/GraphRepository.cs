@@ -6,26 +6,26 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra {
 
-    public class NodeRepository : Repository<GraphNode, int>, INodeRepository {
-        public NodeRepository(DomainModelDbContext context) : base(context)
+    public class NodeRepository : Repository<GraphTable, int>, INodeRepository {
+        public NodeRepository(IFacetContext context) : base(context)
         {
         }
     }
 
-    public class EdgeRepository : Repository<GraphEdge, int>, IEdgeRepository
+    public class EdgeRepository : Repository<GraphTableRelation, int>, IEdgeRepository
     {
-        public EdgeRepository(DomainModelDbContext context) : base(context)
+        public EdgeRepository(IFacetContext context) : base(context)
         {
         }
 
-        public override IEnumerable<GraphEdge> GetAll()
+        public override IEnumerable<GraphTableRelation> GetAll()
         {
-            return Context.Set<GraphEdge>().BuildEntity().ToList();
+            return Context.Set<GraphTableRelation>().BuildEntity().ToList();
         }
     }
 
     public static class EdgeRepositoryEagerBuilder {
-        public static IQueryable<GraphEdge> BuildEntity(this IQueryable<GraphEdge> query)
+        public static IQueryable<GraphTableRelation> BuildEntity(this IQueryable<GraphTableRelation> query)
         {
             return query.Include(x => x.SourceTable).Include(x => x.TargetTable);
         }

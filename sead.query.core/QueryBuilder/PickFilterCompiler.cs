@@ -7,11 +7,11 @@ namespace SeadQueryCore.QueryBuilder
 {
     public interface IFacetPickFilterCompiler
     {
-        string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config);
+        string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config);
     }
 
     public class RangeFacetPickFilterCompiler : IFacetPickFilterCompiler {
-        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             var picks = config.GetPickValues(true);
             return picks.Count != 2 ? ""
@@ -26,7 +26,7 @@ namespace SeadQueryCore.QueryBuilder
     }
 
     public class DiscreteFacetPickFilterCompiler : IFacetPickFilterCompiler {
-        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             if (targetFacet.FacetCode == currentFacet.FacetCode || !config.HasPicks())
                 return "";
@@ -38,7 +38,7 @@ namespace SeadQueryCore.QueryBuilder
 
     public class GeoFacetPickFilterCompiler : IFacetPickFilterCompiler
     {
-        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace SeadQueryCore.QueryBuilder
 
     public class UndefinedFacetPickFilterCompiler : IFacetPickFilterCompiler
     {
-        public string Compile(FacetDefinition targetFacet, FacetDefinition currentFacet, FacetConfig2 config)
+        public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             throw new ArgumentException();
         }

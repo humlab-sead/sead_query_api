@@ -23,7 +23,7 @@ namespace SeadQueryCore
         public List<Key2Value<int, float>> Load()
         {
             List<string> sqls = new List<string>();
-            foreach (FacetDefinition facet in Context.Facets.GetOfType(EFacetType.Range)) {
+            foreach (Facet facet in Context.Facets.GetOfType(EFacetType.Range)) {
                 QuerySetup query = QueryBuilder.Build(null, facet.FacetCode, ToList(facet.TargetTableName), ToList(facet.FacetCode));
                 sqls.Add(Compilers[EFacetType.Range].Compile(query, facet, facet.FacetCode));
             }

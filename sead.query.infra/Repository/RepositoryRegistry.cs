@@ -15,11 +15,11 @@ namespace SeadQueryInfra {
 
     public class RepositoryRegistry : IRepositoryRegistry {
 
-        private readonly DomainModelDbContext context;
+        private readonly FacetContext context;
 
-        public RepositoryRegistry(DomainModelDbContext _context)
+        public RepositoryRegistry(IFacetContext _context)
         {
-            context = _context;
+            context = (FacetContext)_context;
             Facets = new FacetRepository(context);
             Edges = new EdgeRepository(context);
             Nodes = new NodeRepository(context);
@@ -78,17 +78,6 @@ namespace SeadQueryInfra {
                 }
             }
         }
-
-        //public IEnumerable<dynamic> QueryDynamic(string sql, Func<DbDataReader, dynamic> selector)
-        //{
-        //    return context.Database.ExecuteSqlQuery(sql).DbDataReader.Select(x => selector(x)); //.ToList();
-        //}
-
-        //public IEnumerable<T> QueryPopulate<T>(string sql) where T : class
-        //{
-        //    return context.Database.ExecuteSqlQuery(sql).DbDataReader.Populate<T>();
-        //}
-
     }
 
     public static class QueryDynamicExt {
