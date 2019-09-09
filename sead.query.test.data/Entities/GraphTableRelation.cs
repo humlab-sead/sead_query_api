@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace sead.query.test.data.Entities
 {
-    public partial class GraphTableRelation
+    public partial class GraphEdge
     {
         public int RelationId { get; set; }
         public int SourceTableId { get; set; }

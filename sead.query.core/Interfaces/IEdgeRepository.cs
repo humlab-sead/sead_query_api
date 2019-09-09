@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IEdgeRepository : IRepository<GraphTableRelation, int>
+    public interface IEdgeRepository : IRepository<GraphEdge, int>
     {
     }
 }

@@ -27,7 +27,7 @@ namespace sead.query.test.data.Infrastructure
                 typeof(FacetTable),
                 typeof(FacetType),
                 typeof(GraphNode),
-                typeof(GraphTableRelation),
+                typeof(GraphEdge),
                 typeof(ResultAggregate),
                 typeof(ResultAggregateField),
                 typeof(ResultField),

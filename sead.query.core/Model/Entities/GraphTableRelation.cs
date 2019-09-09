@@ -7,7 +7,7 @@ using System.Text;
 namespace SeadQueryCore
 {
 
-    public class GraphTableRelation {
+    public class GraphEdge {
         public int RelationId { get; set; }
         public int SourceTableId { get; set; }
         public int TargetTableId { get; set; }
@@ -24,9 +24,9 @@ namespace SeadQueryCore
         [JsonIgnore] public string SourceTableName { get { return SourceTable.TableName; } }
         [JsonIgnore] public string TargetTableName { get { return TargetTable.TableName; } }
 
-        public GraphTableRelation Clone()
+        public GraphEdge Clone()
         {
-            return new GraphTableRelation() {
+            return new GraphEdge() {
                 RelationId = RelationId + 1000,
                 Weight = Weight,
                 SourceTableId = SourceTableId,
@@ -38,7 +38,7 @@ namespace SeadQueryCore
             };
         }
 
-        public GraphTableRelation Reverse()
+        public GraphEdge Reverse()
         {
             var x = Clone();
             x.RelationId = -x.RelationId;
@@ -48,7 +48,7 @@ namespace SeadQueryCore
             return x;
         }
 
-        public GraphTableRelation Alias(GraphNode node, GraphNode alias)
+        public GraphEdge Alias(GraphNode node, GraphNode alias)
         {
             var x = Clone();
             if (node.NodeId == SourceTable.NodeId)
@@ -60,7 +60,7 @@ namespace SeadQueryCore
 
         public Tuple<string, string> Key { get { return new Tuple<string, string>(SourceTableName, TargetTableName); } }
 
-        public bool EqualAs(GraphTableRelation x)
+        public bool EqualAs(GraphEdge x)
         {
             //return (SourceTableId == x.SourceTableId) && (TargetTableId == x.TargetTableId);
             return (SourceTableName == x.SourceTableName) && (TargetTableName == x.TargetTableName);

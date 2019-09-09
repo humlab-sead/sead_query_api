@@ -77,7 +77,7 @@ namespace SeadQueryCore.QueryBuilder
             return querySetup;
         }
 
-        private bool HasUserPicks(GraphTableRelation edge, Dictionary<string, string> tableCriterias)
+        private bool HasUserPicks(GraphEdge edge, Dictionary<string, string> tableCriterias)
         {
             return tableCriterias.ContainsKey(edge.SourceTableName) || tableCriterias.ContainsKey(edge.TargetTableName);
         }

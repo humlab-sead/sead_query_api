@@ -272,7 +272,7 @@ namespace SeadQueryCore
 
     public static class JoinClauseCompiler
     {
-        public static string Compile(IFacetsGraph graph, GraphTableRelation edge, bool innerJoin = false)
+        public static string Compile(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false)
         {
             var resolvedTableName = graph.ResolveTargetName(edge.TargetTableName);
             var resolvedAliasName = graph.ResolveAliasName(edge.TargetTableName);

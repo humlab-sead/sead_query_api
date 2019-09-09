@@ -155,7 +155,7 @@ namespace SeadQueryTest.Model
                 }
             },
             new object[] {
-                typeof(GraphTableRelation),
+                typeof(GraphEdge),
                 5,
                 new Dictionary<string, object>() {
                     { "RelationId", 5 },

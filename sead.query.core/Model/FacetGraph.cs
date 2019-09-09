@@ -17,12 +17,12 @@ namespace SeadQueryCore
 
     public interface IFacetsGraph {
         List<Facet> AliasFacets { get; }
-        Dictionary<Tuple<string, string>, GraphTableRelation> Edges { get; }
+        Dictionary<Tuple<string, string>, GraphEdge> Edges { get; }
         NodesDictI NodesIds { get; }
         NodesDictS Nodes { get; }
         Dictionary<int, Dictionary<int, int>> Weights { get; }
-        GraphTableRelation GetEdge(int sourceId, int targetId);
-        GraphTableRelation GetEdge(string source, string target);
+        GraphEdge GetEdge(int sourceId, int targetId);
+        GraphEdge GetEdge(string source, string target);
         GraphRoute Find(string start_table, string destination_table);
         List<GraphRoute> Find(string start_table, List<string> destination_tables);
         bool IsAlias(string tableName);
@@ -35,12 +35,12 @@ namespace SeadQueryCore
 
         public NodesDictS Nodes { get; set; }
         public NodesDictI NodesIds { get; set; }
-        public Dictionary<Tuple<string, string>, GraphTableRelation> Edges { get; set; }
+        public Dictionary<Tuple<string, string>, GraphEdge> Edges { get; set; }
         public List<Facet> AliasFacets { get; set; }
         public Dictionary<string, string> AliasTables;
         public WeightDictionary Weights { get; set; }
 
-        public FacetsGraph(NodesDictS nodes, List<GraphTableRelation> edges, List<Facet> aliasFacets)
+        public FacetsGraph(NodesDictS nodes, List<GraphEdge> edges, List<Facet> aliasFacets)
         {
             Nodes = nodes;
             NodesIds = nodes.Values.ToDictionary(x => x.NodeId);
@@ -53,8 +53,8 @@ namespace SeadQueryCore
                 .ToDictionary(x => x.Item1, y => y.Item2);
         }
 
-        public GraphTableRelation GetEdge(string source, string target) => Edges[Tuple.Create(source, target)];
-        public GraphTableRelation GetEdge(int sourceId, int targetId) => Edges[Tuple.Create(NodesIds[sourceId].TableName, NodesIds[targetId].TableName)];
+        public GraphEdge GetEdge(string source, string target) => Edges[Tuple.Create(source, target)];
+        public GraphEdge GetEdge(int sourceId, int targetId) => Edges[Tuple.Create(NodesIds[sourceId].TableName, NodesIds[targetId].TableName)];
 
         public bool IsAlias(string name) => AliasTables.ContainsKey(name);
 
@@ -83,7 +83,7 @@ namespace SeadQueryCore
         {
             GraphRoute CreateRoute(List<GraphNode> nodes)
             {
-                List<GraphTableRelation> items = new List<GraphTableRelation>();
+                List<GraphEdge> items = new List<GraphEdge>();
                 for (int i = 0; i < nodes.Count - 1; i++)
                     items.Add(GetEdge(nodes[i].TableName, nodes[i + 1].TableName));
                 return new GraphRoute(items);
@@ -144,7 +144,7 @@ namespace SeadQueryCore
                 .Where(z => !nodes.ContainsKey(z.TableName)).ToList();
         }
 
-        private List<GraphTableRelation> AddAliasEdges(List<GraphTableRelation> edges, NodesDictS nodes, List<Facet> aliasFacets)
+        private List<GraphEdge> AddAliasEdges(List<GraphEdge> edges, NodesDictS nodes, List<Facet> aliasFacets)
         {
             // Copy target tables relations for all alias facets...
             foreach (var facet in aliasFacets)
@@ -163,7 +163,7 @@ namespace SeadQueryCore
             return edges;
         }
 
-        private List<GraphTableRelation> AddReverseEdges(List<GraphTableRelation> edges)
+        private List<GraphEdge> AddReverseEdges(List<GraphEdge> edges)
         {
             var reverse = edges.Where(z => z.SourceTableId != z.TargetTableId).Select(x => x.Reverse()).ToList();
             edges.AddRange(reverse);

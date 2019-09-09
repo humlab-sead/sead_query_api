@@ -19,7 +19,7 @@ namespace sead.query.test.data.Infrastructure
         public virtual DbSet<FacetTable> FacetTable { get; set; }
         public virtual DbSet<FacetType> FacetType { get; set; }
         public virtual DbSet<GraphNode> GraphNode { get; set; }
-        public virtual DbSet<GraphTableRelation> GraphTableRelation { get; set; }
+        public virtual DbSet<GraphEdge> GraphEdge { get; set; }
         public virtual DbSet<ResultAggregate> ResultAggregate { get; set; }
         public virtual DbSet<ResultAggregateField> ResultAggregateField { get; set; }
         public virtual DbSet<ResultField> ResultField { get; set; }
@@ -225,7 +225,7 @@ namespace sead.query.test.data.Infrastructure
                     .HasColumnType("character varying");
             });
 
-            modelBuilder.Entity<GraphTableRelation>(entity =>
+            modelBuilder.Entity<GraphEdge>(entity =>
             {
                 entity.HasKey(e => e.RelationId)
                     .HasName("graph_table_relation_pkey");
