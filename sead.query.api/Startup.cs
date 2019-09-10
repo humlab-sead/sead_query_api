@@ -23,14 +23,19 @@ namespace SeadQueryAPI {
 
         public Startup(IHostingEnvironment env)
         {
+
             // Development, Staging, and Production. If ASPNETCORE_ENVIRONMENT isn't set, it defaults to Production.
-            var builder = new ConfigurationBuilder()
+
+            Configuration = new ConfigurationBuilder()
                 //.SetBasePath(env.ContentRootPath)  // Directory.GetCurrentDirectory()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables()
+                .Build();
 
-            Configuration = builder.Build();
-            Options = Configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
+            Options = Configuration
+                .GetSection("QueryBuilderSetting")
+                .Get<QueryBuilderSetting>();
+
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -46,6 +51,7 @@ namespace SeadQueryAPI {
                     var resolver = new SeadQueryAPI.Serializers.SeadQueryResolver();
                     settings.ContractResolver = resolver as DefaultContractResolver;
                  });
+
             services.AddLogging(builder => builder.AddConsole());
             //AddSwagger(services);
 
@@ -53,6 +59,7 @@ namespace SeadQueryAPI {
 
             return Container.Resolve<IServiceProvider>();
         }
+
 
         private static void AddSwagger(IServiceCollection services)
         {

@@ -44,7 +44,9 @@ namespace SeadQueryAPI
             // builder.RegisterAggregateService<ICacheContainer>();
             builder.Register(z => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
-            builder.RegisterType<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
+            // builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
+
+            builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();

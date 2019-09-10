@@ -22,8 +22,8 @@ namespace sead.query.test.data
                 { "QueryBuilderSetting:Facet:IndirectCountColumn",  "tbl_dating_periods.dating_period_id"       },
                 { "QueryBuilderSetting:Facet:ResultQueryLimit",     "10000"                                     },
                 { "QueryBuilderSetting:Facet:CategoryNameFilter",   "true"                                      },
-                { "QueryBuilderSetting:Store:Host",                 "true"                                      },
-                { "QueryBuilderSetting:Store:Port",                 "seadserv.humlab.umu.se"                    },
+                { "QueryBuilderSetting:Store:Host",                 "seadserv.humlab.umu.se"                                      },
+                { "QueryBuilderSetting:Store:Port",                 "5432"                    },
                 { "QueryBuilderSetting:Store:Database",             "sead_staging_facet"                        },
                 { "QueryBuilderSetting:Store:UseRedisCache",        "false"                                     }
             };
@@ -55,7 +55,7 @@ namespace sead.query.test.data
         }
 
         [Fact]
-        public async void WriteDbEntitiesFromContextToFiles()
+        public void WriteDbEntitiesFromContextToFiles()
         {
             var connectionString = GetConnectionString();
             var optionsBuilder = new DbContextOptionsBuilder<ScaffoldedFacetContext>();
@@ -74,7 +74,7 @@ namespace sead.query.test.data
         }
 
         [Fact]
-        public async void ReadEntitiesFromFileToContext()
+        public void ReadEntitiesFromFileToContext()
         {
             var connectionString = GetConnectionString();
             var optionsBuilder = new DbContextOptionsBuilder<ScaffoldedFacetContext>();

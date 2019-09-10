@@ -93,7 +93,7 @@ namespace SeadQueryTest.Model
                 AssertPropertiesEquals(expectedProperties, facet);
 
                 Assert.NotNull(facet.FacetGroup);
-                Assert.NotNull(facet.TargetNode);
+                Assert.NotNull(facet.TargetTable);
                 Assert.NotNull(facet.FacetType);
                 Assert.NotNull(facet.Tables);
 
@@ -115,7 +115,7 @@ namespace SeadQueryTest.Model
                 Assert.Equal("country", facet.FacetCode);
                 Assert.Equal("Country", facet.DisplayTitle);
                 Assert.NotNull(facet.FacetGroup);
-                Assert.NotNull(facet.TargetNode);
+                Assert.NotNull(facet.TargetTable);
                 Assert.NotNull(facet.FacetType);
                 Assert.True(facet.Tables.Count > 0);
 

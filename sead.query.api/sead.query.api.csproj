@@ -59,13 +59,13 @@
     <ProjectReference Include="..\sead.query.infra\sead.query.infra.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <ContentWithTargetPath Include="..\conf\api\appsettings.Development.json">
+    <ContentWithTargetPath Include="..\conf\appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-      <ContentWithTargetPath Include="..\conf\api\appsettings.Production.json">
+      <ContentWithTargetPath Include="..\conf\appsettings.Production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>

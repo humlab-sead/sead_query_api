@@ -21,7 +21,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             var filename = Path.Combine(folder, $"{typeof(T).Name}.json");
             if (!File.Exists(filename)) {
                 throw new FileNotFoundException(filename);
-                return new List<T>();
+                // return new List<T>();
             }
             using (StreamReader stream = new StreamReader(filename)) {
                 var json = $"{{ \"data\": {stream.ReadToEnd()} }}";
@@ -50,7 +50,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             var filename = Path.Combine(folder, $"{typeof(T).Name}.json");
             if (!File.Exists(filename)) {
                 throw new FileNotFoundException(filename);
-                return new List<T>();
+                // return new List<T>();
             }
 
             var settings = new JsonSerializerSettings() {
@@ -76,7 +76,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             var filename = Path.Combine(folder, $"{typeof(T).Name}.json");
             if (!File.Exists(filename)) {
                 throw new FileNotFoundException(filename);
-                return new List<T>();
+                // return new List<T>();
             }
 
             using (StreamReader stream = new StreamReader(filename)) {
@@ -102,7 +102,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             var filename = Path.Combine(folder, $"{typeof(T).Name}.json");
             if (!File.Exists(filename)) {
                 throw new FileNotFoundException(filename);
-                return new List<T>();
+                // return new List<T>();
             }
 
             using (StreamReader stream = new StreamReader(filename)) {

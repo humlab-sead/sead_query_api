@@ -24,7 +24,7 @@ namespace SeadQueryCore
         {
             List<string> sqls = new List<string>();
             foreach (Facet facet in Context.Facets.GetOfType(EFacetType.Range)) {
-                QuerySetup query = QueryBuilder.Build(null, facet.FacetCode, ToList(facet.TargetName), ToList(facet.FacetCode));
+                QuerySetup query = QueryBuilder.Build(null, facet.FacetCode, ToList(facet.TargetTableName), ToList(facet.FacetCode));
                 sqls.Add(Compilers[EFacetType.Range].Compile(query, facet, facet.FacetCode));
             }
             string sql = String.Join("\nUNION\n", sqls);

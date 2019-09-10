@@ -47,7 +47,7 @@ namespace SeadQueryCore
             Edges = edges.ToDictionary(z => z.Key);
             AliasFacets = aliasFacets;
             //AliasTables = aliasFacets.ToDictionary(x => x.TargetName, x => x.AliasName);
-            AliasTables = aliasFacets.ToDictionary(x => x.AliasName, x => x.TargetName);
+            AliasTables = aliasFacets.ToDictionary(x => x.AliasName, x => x.TargetTableName);
 
             Weights = edges.GroupBy(p => p.SourceNodeId, (key, g) => (key, g.ToDictionary(x => x.TargetNodeId, x => x.Weight)))
                 .ToDictionary(x => x.Item1, y => y.Item2);
@@ -150,10 +150,10 @@ namespace SeadQueryCore
             foreach (var facet in aliasFacets)
             {
                 // ...fetch all relations where target is a node...
-                var targetEdges = edges.Where(x => x.SourceName == facet.TargetName || x.TargetName == facet.TargetName);
+                var targetEdges = edges.Where(x => x.SourceName == facet.TargetTableName || x.TargetName == facet.TargetTableName);
 
                 // ...for each target relation, create a corresponding alias relation...
-                var aliasEdges = targetEdges.Select(z => z.Alias(nodes[facet.TargetName], nodes[facet.AliasName]));
+                var aliasEdges = targetEdges.Select(z => z.Alias(nodes[facet.TargetTableName], nodes[facet.AliasName]));
 
                 // ...filter away edges that already exists...
                 aliasEdges = aliasEdges.Where(z => !edges.Exists(w => w.EqualAs(z)));
