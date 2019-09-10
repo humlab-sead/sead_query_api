@@ -66,7 +66,7 @@ namespace SeadQueryInfra {
 
         public (decimal, decimal) GetUpperLowerBounds(Facet facet)
         {
-            string sql = RangeLowerUpperSqlQueryBuilder.compile(null, facet);
+            string sql = new RangeLowerUpperSqlQueryCompiler().Compile(null, facet);
             var item = QueryRow(sql, r => new {
                 lower = r.IsDBNull(0) ? 0 : r.GetDecimal(0),
                 upper = r.IsDBNull(1) ? 0 : r.GetDecimal(1)

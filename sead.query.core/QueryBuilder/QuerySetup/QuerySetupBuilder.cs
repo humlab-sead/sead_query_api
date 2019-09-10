@@ -15,12 +15,19 @@ namespace SeadQueryCore.QueryBuilder
     public class QuerySetupBuilder : IQuerySetupBuilder {
         public IRepositoryRegistry Context { get; set; }
         public IFacetsGraph Graph { get; set; }
-        public IIndex<int, IFacetPickFilterCompiler> PickCompilers { get; set; }
+        public IIndex<int, IPickFilterCompiler> PickCompilers { get; set; }
+        public IEdgeSqlCompiler EdgeCompiler { get; }
 
-        public QuerySetupBuilder(IRepositoryRegistry _context, IFacetsGraph graph, IIndex<int, IFacetPickFilterCompiler> pickCompilers) {
+        public QuerySetupBuilder(
+            IRepositoryRegistry _context,
+            IFacetsGraph graph,
+            IIndex<int, IPickFilterCompiler> pickCompilers,
+            IEdgeSqlCompiler edgeCompiler
+        ) {
             Context = _context;
             Graph = graph;
             PickCompilers = pickCompilers;
+            EdgeCompiler = edgeCompiler;
             //File.WriteAllText(@"C:\TEMP\dotnet_facet_graph.csv", Graph.ToCSV());
         }
 
@@ -68,7 +75,7 @@ namespace SeadQueryCore.QueryBuilder
             // Compile list of joins for the reduced route
             List<string> joins = reducedRoutes
                 .SelectMany(route => route.Items)
-                .Select(edge => JoinClauseCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
+                .Select(edge => EdgeCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
                 .ToList();
             //Debug.Print(GraphRoute.Utility.ToString(reducedRoutes));
 
@@ -82,7 +89,7 @@ namespace SeadQueryCore.QueryBuilder
             return tableCriterias.ContainsKey(edge.SourceName) || tableCriterias.ContainsKey(edge.TargetName);
         }
 
-        private IFacetPickFilterCompiler GetCompiler(FacetConfig2 c)
+        private IPickFilterCompiler GetCompiler(FacetConfig2 c)
         {
             return PickCompilers[(int)c.Facet.FacetTypeId];
         }

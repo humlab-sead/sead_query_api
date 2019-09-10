@@ -65,26 +65,43 @@ namespace SeadQueryCore
     }
 
     public class DiscreteFacetContentService : FacetContentService {
-        public DiscreteFacetContentService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder,
-            IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder)
+        public DiscreteFacetContentService(
+            IQueryBuilderSetting config,
+            IRepositoryRegistry context,
+            IQuerySetupBuilder builder,
+            IIndex<EFacetType, ICategoryCountService> countServices,
+            IDiscreteContentSqlQueryBuilder sqlBuilder
+            ) : base(config, context, builder)
         {
             CountService = countServices[EFacetType.Discrete];
+            SqlBuilder = sqlBuilder;
         }
+
+        public IDiscreteContentSqlQueryBuilder SqlBuilder { get; }
 
         protected override (int, string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
         {
             QuerySetup query = QueryBuilder.Build(facetsConfig, facetsConfig.TargetCode, null, facetsConfig.GetFacetCodes());
-            string sql = DiscreteContentSqlQueryBuilder.Compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
+            string sql = SqlBuilder.Compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
             Debug.Print($"{facetCode}: {sql}");
             return ( 1, sql );
         }
     }
 
     public class RangeFacetContentService : FacetContentService {
-        public RangeFacetContentService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryCountService> countServices) : base(config, context, builder)
+        public RangeFacetContentService(
+            IQueryBuilderSetting config,
+            IRepositoryRegistry context,
+            IQuerySetupBuilder builder,
+            IIndex<EFacetType,
+            ICategoryCountService> countServices,
+            IRangeIntervalSqlQueryCompiler rangeSqlCompiler) : base(config, context, builder)
         {
             CountService = countServices[EFacetType.Range];
+            RangeSqlCompiler = rangeSqlCompiler;
         }
+
+        public IRangeIntervalSqlQueryCompiler RangeSqlCompiler { get; }
 
         private (decimal, decimal, int) GetLowerUpperBound(FacetConfig2 config, int default_interval_count=120)
         {
@@ -100,7 +117,7 @@ namespace SeadQueryCore
         {
             (decimal lower, decimal upper, int interval_count) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode), default_interval_count);
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
-            string sql = RangeIntervalSqlQueryBuilder.Compile(interval, (int)lower, (int)upper, interval_count);
+            string sql = RangeSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
             return ( interval, sql );
         }
 

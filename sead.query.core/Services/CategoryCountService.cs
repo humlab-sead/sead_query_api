@@ -49,13 +49,22 @@ namespace SeadQueryCore
 
     public class RangeCategoryCountService : CategoryCountService {
 
-        public RangeCategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder) { }
+        public RangeCategoryCountService(
+            IQueryBuilderSetting config,
+            IRepositoryRegistry context,
+            IQuerySetupBuilder builder,
+            IRangeCounterSqlQueryCompiler rangeCountSqlCompiler
+        ) : base(config, context, builder) {
+            RangeCountSqlCompiler = rangeCountSqlCompiler;
+        }
+
+        private IRangeCounterSqlQueryCompiler RangeCountSqlCompiler { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
             List<string> tables = new List<string>() { facet.TargetTableName, Config.DirectCountTable };
             QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
-            string sql = RangeCounterSqlQueryBuilder.Compile(query, facet, intervalQuery, Config.DirectCountColumn);
+            string sql = RangeCountSqlCompiler.Compile(query, facet, intervalQuery, Config.DirectCountColumn);
             return sql;
         }
 
@@ -72,7 +81,15 @@ namespace SeadQueryCore
 
     public class DiscreteCategoryCountService : CategoryCountService {
 
-        public DiscreteCategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder) { }
+        public DiscreteCategoryCountService(
+            IQueryBuilderSetting config,
+            IRepositoryRegistry context,
+            IQuerySetupBuilder builder,
+            IDiscreteCounterSqlQueryCompiler countSqlCompiler) : base(config, context, builder) {
+            CountSqlCompiler = countSqlCompiler;
+        }
+
+        public IDiscreteCounterSqlQueryCompiler CountSqlCompiler { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
@@ -88,7 +105,7 @@ namespace SeadQueryCore
             facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
 
             QuerySetup query = QueryBuilder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
-            string sql = DiscreteCounterSqlQueryBuilder.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
+            string sql = CountSqlCompiler.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }
 

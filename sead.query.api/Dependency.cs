@@ -57,10 +57,10 @@ namespace SeadQueryAPI
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
-            builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(0);
-            builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(1);
-            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(2);
-            builder.RegisterType<GeoFacetPickFilterCompiler>().Keyed<IFacetPickFilterCompiler>(3);
+            builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
+            builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(1);
+            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(2);
+            builder.RegisterType<GeoFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(3);
 
             #region __Count Services__
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
@@ -71,6 +71,13 @@ namespace SeadQueryAPI
             //builder.RegisterType<DiscreteCategoryCountService>();
             #endregion
 
+            builder.RegisterType<EdgeSqlCompiler>().As<IEdgeSqlCompiler>();
+            builder.RegisterType<DiscreteContentSqlQueryBuilder>().As<IDiscreteContentSqlQueryBuilder>();
+            builder.RegisterType<DiscreteCounterSqlQueryCompiler>().As<IDiscreteCounterSqlQueryCompiler>();
+            builder.RegisterType<RangeCounterSqlQueryCompiler>().As<IRangeCounterSqlQueryCompiler>();
+            builder.RegisterType<RangeIntervalSqlQueryCompiler>().As<IRangeIntervalSqlQueryCompiler>();
+            builder.RegisterType<RangeLowerUpperSqlQueryCompiler>().As<IRangeLowerUpperSqlQueryCompiler>();
+            
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
