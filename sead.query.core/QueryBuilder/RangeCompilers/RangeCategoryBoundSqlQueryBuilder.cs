@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class RangeCategoryBoundSqlQueryBuilder : ICategoryBoundSqlQueryBuilder
+    public class RangeCategoryBoundSqlQueryCompiler : ICategoryBoundSqlQueryCompiler
     {
         public string Compile(QuerySetup query, Facet facet, string facetCode)
         {

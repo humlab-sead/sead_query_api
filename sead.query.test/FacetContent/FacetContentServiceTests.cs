@@ -119,30 +119,31 @@ namespace SeadQueryTest.FacetsConfig
         //        }
         //    }
         //}
-        //[TestMethod]
-        //public void CanLoadSingleDiscreteConfigWithPicks()
-        //{
-        //    FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
-        //        "sites", "sites",
-        //        new List<FacetConfig2>() {
-        //            fixture.GenerateFacetConfig(
-        //                "sites", 0, fixture.GenerateDiscreteFacetPicks(new List<int>() { 1470, 447, 951, 445 })
-        //            )
-        //        }
-        //    );
 
-        //    IContainer container = new TestDependencyService().Register();
+        [Fact]
+        public void CanLoadSingleDiscreteConfigWithPicks()
+        {
+            var fixture = new fixtures.FacetConfigGenerator();
+            FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
+                "sites", "sites",
+                new List<FacetConfig2>() {
+                    fixture.GenerateFacetConfig(
+                        "sites", 0, fixture.GenerateDiscreteFacetPicks(new List<int>() { 1470, 447, 951, 445 })
+                    )
+                }
+            );
 
-        //    using (var scope = container.BeginLifetimeScope())
-        //    {
-        //        facetsConfig.SetContext(scope.Resolve<IRepositoryRegistry>());
-        //        facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
-        //        var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
-        //        var facetContent = service.Load(facetsConfig);
-        //        string output = JsonConvert.SerializeObject(facetContent);
-        //        Assert.IsTrue(facetContent.Items.Count > 0);
-        //    }
-        //}
+            IContainer container = new TestDependencyService().Register();
+
+            using (var scope = container.BeginLifetimeScope()) {
+                facetsConfig.SetContext(scope.Resolve<IRepositoryRegistry>());
+                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+                var facetContent = service.Load(facetsConfig);
+                string output = JsonConvert.SerializeObject(facetContent);
+                Assert.True(facetContent.Items.Count > 0);
+            }
+        }
 
         //[DataRow("species@species")]
         ////[DataRow("sites@sites:sites@1470,447,951,445/ecocode@38,12,92")]
@@ -220,29 +221,30 @@ namespace SeadQueryTest.FacetsConfig
         //    }
         //}
 
-        //[TestMethod]
-        //public void RangeFacetBugTest_PD20181107()
-        //{
-        //    var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-        //    IContainer container = new TestDependencyService().Register();
+        [Fact]
+        public void RangeFacetBugTest_PD20181107()
+        {
+            var fixture = new fixtures.FacetConfigGenerator();
 
-        //    using (var scope = container.BeginLifetimeScope())
-        //    {
-        //        // Arrange
-        //        FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
-        //        facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
-        //        facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
-        //        var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+            var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)";
+            IContainer container = new TestDependencyService().Register();
 
-        //        // Act
-        //        var facetContent = service.Load(facetsConfig);
+            using (var scope = container.BeginLifetimeScope()) {
+                // Arrange
+                FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
+                // var json = JsonConvert.SerializeObject(facetsConfig).ToString();
+                facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
+                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
+                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
-        //        // Assert
-        //        Assert.Fail();
-        //        //var expectedData = "";  // new RangeFacetCategoryCountData().Data[facetsConfig.TargetCode];
-        //        //Assert.AreEqual(expectedData.Where(z => z.Value > 0).Count(), facetContent.Items.Where(z => z.Count > 0).Count(), "Number of categories differs");
-        //        //facetContent.Items.Where(z => z.Count > 0).ForEach(z => Assert.AreEqual(expectedData.GetValueOrDefault(z.Category), z.Count, z.Category));
-        //    }
-        //}
+                // Act
+                var facetContent = service.Load(facetsConfig);
+
+                // Assert
+                //var expectedData = "";  // new RangeFacetCategoryCountData().Data[facetsConfig.TargetCode];
+                //Assert.AreEqual(expectedData.Where(z => z.Value > 0).Count(), facetContent.Items.Where(z => z.Count > 0).Count(), "Number of categories differs");
+                //facetContent.Items.Where(z => z.Count > 0).ForEach(z => Assert.AreEqual(expectedData.GetValueOrDefault(z.Category), z.Count, z.Category));
+            }
+        }
     }
 }

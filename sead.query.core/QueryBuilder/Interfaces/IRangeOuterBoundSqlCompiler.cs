@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IRangeLowerUpperSqlQueryCompiler
+    public interface IRangeOuterBoundSqlCompiler
     {
         string Compile(QuerySetup query, Facet facet);
     }

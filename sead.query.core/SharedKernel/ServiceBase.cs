@@ -19,11 +19,11 @@ namespace SeadQueryCore
     }
 
     public class QueryServiceBase : ServiceBase {
-        public IQuerySetupBuilder QueryBuilder { get; set; }
+        public IQuerySetupBuilder QuerySetupBuilder { get; set; }
 
         public QueryServiceBase(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context)
         {
-            QueryBuilder = builder;
+            QuerySetupBuilder = builder;
         }
 
     }

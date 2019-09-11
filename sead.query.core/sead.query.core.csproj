@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Archive\FacetContentExtraRowInfoSqlQueryBuilder.cs" />
     <Compile Remove="Archive\SetupQueryService.cs" />
     <Compile Remove="CategoryDistributionLoader.cs" />
   </ItemGroup>
@@ -35,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Archive\FacetContentExtraRowInfoSqlQueryBuilder.cs" />
     <None Include="Archive\SetupQueryService.cs" />
     <None Include="Services\CategoryCountService.cs" />
     <None Include="Model\ResultConfig.cs" />

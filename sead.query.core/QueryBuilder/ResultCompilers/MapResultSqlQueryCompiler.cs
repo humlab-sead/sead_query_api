@@ -2,8 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public class MapResultSqlQueryBuilder : IResultSqlQueryCompiler {
-        // FIXME Use ResultQuerySetup to build query. If possible, merge TabularResultSqlQueryBuilder & MapResultSqlQueryBuilder
+    public class MapResultSqlQueryCompiler : IResultSqlQueryCompiler {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
         {
             string sql = $@"

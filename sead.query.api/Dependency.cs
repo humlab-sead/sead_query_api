@@ -71,28 +71,29 @@ namespace SeadQueryAPI
             //builder.RegisterType<DiscreteCategoryCountService>();
             #endregion
 
+            builder.RegisterType<ValidPicksSqlQueryCompiler>().As<IValidPicksSqlQueryCompiler>();
             builder.RegisterType<EdgeSqlCompiler>().As<IEdgeSqlCompiler>();
-            builder.RegisterType<DiscreteContentSqlQueryBuilder>().As<IDiscreteContentSqlQueryBuilder>();
-            builder.RegisterType<DiscreteCounterSqlQueryCompiler>().As<IDiscreteCounterSqlQueryCompiler>();
-            builder.RegisterType<RangeCounterSqlQueryCompiler>().As<IRangeCounterSqlQueryCompiler>();
+            builder.RegisterType<DiscreteContentSqlQueryBuilder>().As<IDiscreteContentSqlQueryCompiler>();
+            builder.RegisterType<DiscreteCategoryCountSqlQueryCompiler>().As<IDiscreteCategoryCountSqlQueryCompiler>();
+            builder.RegisterType<RangeCategoryCountSqlQueryCompiler>().As<IRangeCategoryCountSqlQueryCompiler>();
             builder.RegisterType<RangeIntervalSqlQueryCompiler>().As<IRangeIntervalSqlQueryCompiler>();
-            builder.RegisterType<RangeLowerUpperSqlQueryCompiler>().As<IRangeLowerUpperSqlQueryCompiler>();
+            builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
             
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
-            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
+            builder.RegisterType<ResultCompiler>().As<IResultCompiler>();
 
             //builder.RegisterAggregateService<IControllerServiceAggregate>();
 
-            builder.RegisterType<RangeCategoryBoundSqlQueryBuilder>().Keyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range);
+            builder.RegisterType<RangeCategoryBoundSqlQueryCompiler>().Keyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range);
 
             #region __Result Services__
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            builder.RegisterType<TabularResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("tabular");
-            builder.RegisterType<MapResultSqlQueryBuilder>().Keyed<IResultSqlQueryCompiler>("map");
+            builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("tabular");
+            builder.RegisterType<MapResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("map");
 
             #endregion
 

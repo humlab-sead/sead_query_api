@@ -1,7 +1,7 @@
 ﻿
 namespace SeadQueryCore
 {
-    public class RangeLowerUpperSqlQueryCompiler : IRangeLowerUpperSqlQueryCompiler
+    public class RangeOuterBoundSqlCompiler : IRangeOuterBoundSqlCompiler
     {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet)
         {

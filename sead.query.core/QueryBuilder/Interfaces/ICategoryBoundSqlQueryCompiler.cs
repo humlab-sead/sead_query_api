@@ -8,7 +8,7 @@ using static SeadQueryCore.Utility;
 namespace SeadQueryCore
 {
 
-    public interface ICategoryBoundSqlQueryBuilder
+    public interface ICategoryBoundSqlQueryCompiler
     {
         string Compile(QuerySetup query, Facet facet, string facetCode);
     }

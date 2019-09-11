@@ -6,7 +6,7 @@
             if (targetFacet.FacetCode == currentFacet.FacetCode || !config.HasPicks())
                 return "";
 
-            string criteria = UtilitySqlCompiler.InExpr(currentFacet.CategoryIdExpr, config.GetPickValues());
+            string criteria = SqlCompileUtility.InExpr(currentFacet.CategoryIdExpr, config.GetPickValues());
             return criteria;
         }
     }

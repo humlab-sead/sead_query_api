@@ -5,7 +5,7 @@
     //    MapQuerySetupCompiler MapQuerySetupCompiler { get; }
     //}
 
-    public interface IResultQueryCompiler {
+    public interface IResultCompiler {
         string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode);
     }
 }

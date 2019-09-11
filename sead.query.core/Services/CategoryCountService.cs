@@ -53,17 +53,17 @@ namespace SeadQueryCore
             IQueryBuilderSetting config,
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IRangeCounterSqlQueryCompiler rangeCountSqlCompiler
+            IRangeCategoryCountSqlQueryCompiler rangeCountSqlCompiler
         ) : base(config, context, builder) {
             RangeCountSqlCompiler = rangeCountSqlCompiler;
         }
 
-        private IRangeCounterSqlQueryCompiler RangeCountSqlCompiler { get; }
+        private IRangeCategoryCountSqlQueryCompiler RangeCountSqlCompiler { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
             List<string> tables = new List<string>() { facet.TargetTableName, Config.DirectCountTable };
-            QuerySetup query = QueryBuilder.Build(facetsConfig, facet.FacetCode, tables);
+            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facet.FacetCode, tables);
             string sql = RangeCountSqlCompiler.Compile(query, facet, intervalQuery, Config.DirectCountColumn);
             return sql;
         }
@@ -85,11 +85,11 @@ namespace SeadQueryCore
             IQueryBuilderSetting config,
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IDiscreteCounterSqlQueryCompiler countSqlCompiler) : base(config, context, builder) {
+            IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler) : base(config, context, builder) {
             CountSqlCompiler = countSqlCompiler;
         }
 
-        public IDiscreteCounterSqlQueryCompiler CountSqlCompiler { get; }
+        public IDiscreteCategoryCountSqlQueryCompiler CountSqlCompiler { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
@@ -104,7 +104,7 @@ namespace SeadQueryCore
 
             facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
 
-            QuerySetup query = QueryBuilder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
+            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
             string sql = CountSqlCompiler.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }

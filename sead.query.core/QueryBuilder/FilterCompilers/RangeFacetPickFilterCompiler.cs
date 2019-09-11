@@ -5,7 +5,7 @@
         {
             var picks = config.GetPickValues(true);
             return picks.Count != 2 ? ""
-                : UtilitySqlCompiler.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
+                : SqlCompileUtility.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
                     .GlueIf(currentFacet.QueryCriteria, " AND ");
         }
 

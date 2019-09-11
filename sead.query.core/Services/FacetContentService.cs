@@ -70,18 +70,18 @@ namespace SeadQueryCore
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
-            IDiscreteContentSqlQueryBuilder sqlBuilder
+            IDiscreteContentSqlQueryCompiler sqlBuilder
             ) : base(config, context, builder)
         {
             CountService = countServices[EFacetType.Discrete];
             SqlBuilder = sqlBuilder;
         }
 
-        public IDiscreteContentSqlQueryBuilder SqlBuilder { get; }
+        public IDiscreteContentSqlQueryCompiler SqlBuilder { get; }
 
         protected override (int, string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
         {
-            QuerySetup query = QueryBuilder.Build(facetsConfig, facetsConfig.TargetCode, null, facetsConfig.GetFacetCodes());
+            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetCode, null, facetsConfig.GetFacetCodes());
             string sql = SqlBuilder.Compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
             Debug.Print($"{facetCode}: {sql}");
             return ( 1, sql );
@@ -116,6 +116,9 @@ namespace SeadQueryCore
         protected override (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count=120)
         {
             (decimal lower, decimal upper, int interval_count) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode), default_interval_count);
+            // var width = upper - lower;
+            // if (width < interval_count)
+            //     interval_count = (int)width;
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
             string sql = RangeSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
             return ( interval, sql );

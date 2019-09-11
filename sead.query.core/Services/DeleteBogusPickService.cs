@@ -12,9 +12,12 @@ namespace SeadQueryCore
 
     public class DeleteBogusPickService : QueryServiceBase, IDeleteBogusPickService {
 
-        public DeleteBogusPickService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public DeleteBogusPickService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IValidPicksSqlQueryCompiler picksCompiler) : base(config, context, builder)
         {
+            PicksCompiler = picksCompiler;
         }
+
+        public IValidPicksSqlQueryCompiler PicksCompiler { get; }
 
         //***************************************************************************************************************************************************
         /*
@@ -40,9 +43,9 @@ namespace SeadQueryCore
 
         private List<FacetConfigPick> GetValidPicks(FacetsConfig2 facetsConfig, string facetCode, FacetConfig2 config)
         {
-            QuerySetup query = QueryBuilder.Build(facetsConfig, facetCode);
+            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facetCode);
 
-            string sql = ValidPicksSqlQueryBuilder.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
+            string sql = PicksCompiler.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
 
             List<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
             return rows;

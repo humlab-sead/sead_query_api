@@ -122,13 +122,13 @@ namespace SeadQueryTest.IoC
                 Assert.NotNull(scope.ResolveKeyed<ICategoryCountService>(EFacetType.Range));
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));
-                Assert.NotNull(scope.ResolveKeyed<ICategoryBoundSqlQueryBuilder>(EFacetType.Range));
+                Assert.NotNull(scope.ResolveKeyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range));
                 Assert.NotNull(scope.ResolveKeyed<IResultSqlQueryCompiler>("tabular"));
                 Assert.NotNull(scope.ResolveKeyed<IResultSqlQueryCompiler>("map"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("tabular"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("map"));
 
-                Assert.NotNull(scope.Resolve<IResultQueryCompiler>());
+                Assert.NotNull(scope.Resolve<IResultCompiler>());
                 Assert.NotNull(scope.Resolve<ILoadFacetService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
             }

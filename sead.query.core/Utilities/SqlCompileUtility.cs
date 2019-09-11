@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-    public static class UtilitySqlCompiler
+    public static class SqlCompileUtility
     {
         // LikeExpr(Facet.CategoryNameExpr, TextFilter)
         public static string LikeExpr(string expr, string filter)

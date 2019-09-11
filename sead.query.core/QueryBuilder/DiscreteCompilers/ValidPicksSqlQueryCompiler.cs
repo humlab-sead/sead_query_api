@@ -3,8 +3,9 @@
 namespace SeadQueryCore
 {
 
-    public static class ValidPicksSqlQueryBuilder {
-        public static string Compile(QueryBuilder.QuerySetup query, Facet facet, List<int> picks)
+    public class ValidPicksSqlQueryCompiler : IValidPicksSqlQueryCompiler
+    {
+        public string Compile(QueryBuilder.QuerySetup query, Facet facet, List<int> picks)
         {
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"

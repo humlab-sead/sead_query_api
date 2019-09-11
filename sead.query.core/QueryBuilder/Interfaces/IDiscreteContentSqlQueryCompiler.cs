@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IDiscreteContentSqlQueryBuilder
+    public interface IDiscreteContentSqlQueryCompiler
     {
         string Compile(QuerySetup query, Facet facet, string text_filter);
     }

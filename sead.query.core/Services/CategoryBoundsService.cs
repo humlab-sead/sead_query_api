@@ -13,9 +13,9 @@ namespace SeadQueryCore
 
     public class RangeCategoryBoundsService : QueryServiceBase, ICategoryBoundsService {
 
-        private IIndex<EFacetType, ICategoryBoundSqlQueryBuilder> Compilers;
+        private IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> Compilers;
 
-        public RangeCategoryBoundsService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryBoundSqlQueryBuilder> compilers) : base(config, context, builder)
+        public RangeCategoryBoundsService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> compilers) : base(config, context, builder)
         {
             Compilers = compilers;
         }
@@ -24,7 +24,7 @@ namespace SeadQueryCore
         {
             List<string> sqls = new List<string>();
             foreach (Facet facet in Context.Facets.GetOfType(EFacetType.Range)) {
-                QuerySetup query = QueryBuilder.Build(null, facet.FacetCode, ToList(facet.TargetTableName), ToList(facet.FacetCode));
+                QuerySetup query = QuerySetupBuilder.Build(null, facet.FacetCode, ToList(facet.TargetTableName), ToList(facet.FacetCode));
                 sqls.Add(Compilers[EFacetType.Range].Compile(query, facet, facet.FacetCode));
             }
             string sql = String.Join("\nUNION\n", sqls);

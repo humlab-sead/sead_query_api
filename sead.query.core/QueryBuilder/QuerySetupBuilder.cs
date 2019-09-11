@@ -77,7 +77,6 @@ namespace SeadQueryCore.QueryBuilder
                 .SelectMany(route => route.Items)
                 .Select(edge => EdgeCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
                 .ToList();
-            //Debug.Print(GraphRoute.Utility.ToString(reducedRoutes));
 
             QuerySetup querySetup = new QuerySetup(facetsConfig?.TargetConfig, targetFacet, joins, pickCriterias, routes, reducedRoutes);
 

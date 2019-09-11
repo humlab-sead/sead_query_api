@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class TabularResultSqlQueryBuilder : IResultSqlQueryCompiler {
+    public class TabularResultSqlQueryCompiler : IResultSqlQueryCompiler {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
         {
             string sql = $@"
