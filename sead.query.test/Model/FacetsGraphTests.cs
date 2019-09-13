@@ -1,20 +1,184 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Diagnostics;
-using DataAccessPostgreSqlProvider;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Autofac;
+using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SeadQueryTest;
+using System;
+using System.Collections.Generic;
+using Xunit;
+using Autofac;
+using System.Linq;
+using SeadQueryTest.Infrastructure;
 
-namespace SeadQueryTest.Graph {
-
-    [TestClass]
-    public class GraphTests
+namespace SeadQueryTest2.Model
+{
+    public class FacetsGraphTests : IDisposable
     {
+        // private MockRepository mockRepository;
+        // private Mock<Dictionary> mockDictionary;
+        private Mock<List<GraphEdge>> mockListGraphEdge;
+        private Mock<List<Facet>> mockListFacet;
+
+        public FacetsGraphTests()
+        {
+            // this.mockRepository = new MockRepository(MockBehavior.Strict);
+
+            // this.mockDictionary = this.mockRepository.Create<Dictionary>();
+            this.mockListGraphEdge = this.mockRepository.Create<List<GraphEdge>>();
+            this.mockListFacet = this.mockRepository.Create<List<Facet>>();
+        }
+
+        public void Dispose()
+        {
+            //this.mockRepository.VerifyAll();
+        }
+
+        private FacetsGraph CreateFacetsGraph()
+        {
+            return new FacetsGraph(
+                this.mockDictionary.Object,
+                this.mockListGraphEdge.Object,
+                this.mockListFacet.Object);
+        }
+
+        [Fact]
+        public void GetEdge_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            string source = null;
+            string target = null;
+
+            // Act
+            var result = facetsGraph.GetEdge(
+                source,
+                target);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void GetEdge_StateUnderTest_ExpectedBehavior1()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            int sourceId = 0;
+            int targetId = 0;
+
+            // Act
+            var result = facetsGraph.GetEdge(
+                sourceId,
+                targetId);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void IsAlias_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            string name = null;
+
+            // Act
+            var result = facetsGraph.IsAlias(
+                name);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void ResolveTargetName_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            string aliasOrTable = null;
+
+            // Act
+            var result = facetsGraph.ResolveTargetName(
+                aliasOrTable);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void ResolveAliasName_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            string aliasOrTable = null;
+
+            // Act
+            var result = facetsGraph.ResolveAliasName(
+                aliasOrTable);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Find_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            string start_table = null;
+            List<string> destination_tables = null;
+
+            // Act
+            var result = facetsGraph.Find(start_table,destination_tables);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Find_StateUnderTest_ExpectedBehavior1()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            string startTable = null;
+            string destinationTable = null;
+
+            // Act
+            var result = facetsGraph.Find(
+                startTable,
+                destinationTable);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void Find_StateUnderTest_ExpectedBehavior2()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+            int startTableId = 0;
+            int destinationTableId = 0;
+
+            // Act
+            var result = facetsGraph.Find(
+                startTableId,
+                destinationTableId);
+
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact]
+        public void ToCSV_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var facetsGraph = this.CreateFacetsGraph();
+
+            // Act
+            var result = facetsGraph.ToCSV();
+
+            // Assert
+            Assert.True(false);
+        }
+
 
         private dynamic expectedEdges = new dynamic[] {
             new {  SourceName = "countries", TargetName = "tbl_location_types", Weight = 20},
@@ -466,51 +630,48 @@ namespace SeadQueryTest.Graph {
         };
 
 
-        [TestMethod]
+        [Fact]
         public void CanCreateExpectedFacetGraph()
         {
             var container = new TestDependencyService().Register();
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IFacetsGraph>();
-                Assert.AreEqual(expectedEdges.Length, service.Edges.ToList().Count);
-                foreach (var expected in expectedEdges)
-                {
+                Assert.Equal(expectedEdges.Length, service.Edges.ToList().Count);
+                foreach (var expected in expectedEdges) {
                     var edge = service.GetEdge(expected.SourceName, expected.TargetName);
-                    Assert.IsNotNull(edge, "Expected but not found: " + expected.SourceName + " " + expected.TargetName);
-                    Assert.AreEqual(expected.Weight, edge.Weight, "Weight mismatch: " + expected.SourceName + " " + expected.TargetName);
+                    Assert.NotNull(edge);
+                    Assert.Equal(expected.Weight, edge.Weight, "Weight mismatch: " + expected.SourceName + " " + expected.TargetName);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AdjecentCloseNodesShouldHaveSingleEdgeInPath()
         {
             var container = new TestDependencyService().Register();
-            using (var scope = container.BeginLifetimeScope())
-            {
+            using (var scope = container.BeginLifetimeScope()) {
                 var graph = scope.Resolve<IFacetsGraph>();
 
                 GraphRoute route = graph.Find("tbl_locations", "tbl_site_locations");
 
-                Assert.IsNotNull(route);
-                Assert.AreEqual(1, route.Items.Count);
-                Assert.AreEqual("tbl_locations", route.Items[0].SourceName);
-                Assert.AreEqual("tbl_site_locations", route.Items[0].TargetName);
+                Assert.NotNull(route);
+                Assert.Single(route.Items);
+                Assert.Equal("tbl_locations", route.Items[0].SourceName);
+                Assert.Equal("tbl_site_locations", route.Items[0].TargetName);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void StartSameAsStopShouldBeEmpty()
         {
             var container = new TestDependencyService().Register();
-            using (var scope = container.BeginLifetimeScope())
-            {
+            using (var scope = container.BeginLifetimeScope()) {
                 var graph = scope.Resolve<IFacetsGraph>();
 
                 GraphRoute route = graph.Find("tbl_locations", "tbl_locations");
 
-                Assert.IsNotNull(route);
-                Assert.AreEqual(0, route.Items.Count);
+                Assert.NotNull(route);
+                Assert.Empty(route.Items);
             }
         }
     }

@@ -1,151 +1,148 @@
 ﻿using Autofac;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using Autofac.Features.Indexed;
+using Moq;
 using SeadQueryCore;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using System;
 using SeadQueryCore.QueryBuilder;
-using System.Diagnostics;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
-namespace SeadQueryTest.FacetsConfig
+namespace SeadQueryTest2.QueryCompilerTests
 {
-    [TestClass]
     public class QueryCompilerTests
     {
-        private fixtures.FacetConfigGenerator fixture;
-        private static IContainer container;
-        private TestContext testContextInstance;
 
-        /// <summary>
-        ///  Gets or sets the test context which provides
-        ///  information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
-
-        [ClassInitialize()]
-        public static void InitializeClass(TestContext context)
-        {
-            container = new TestDependencyService().Register();
-        }
-
-        [TestInitialize()]
-        public void Initialize() {
-            fixture = new fixtures.FacetConfigGenerator();
-        }
-
-        [TestMethod]
+        [Fact]
         public void CanResolveQueryBuilder()
         {
-            IContainer container = new TestDependencyService().Register();
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register())
             using (var scope = container.BeginLifetimeScope()) {
                 IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                Assert.IsNotNull(builder);
+                Assert.NotNull(builder);
             }
         }
 
-        [TestMethod]
-        public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks()
+        [Theory]
+        [InlineData("sites")]
+        [InlineData("country")]
+        [InlineData("ecocode")]
+        public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode)
         {
-            List<string> testCodes = new List<string>(){ "sites", "country", "ecocode" };
-            foreach (var facetCode in testCodes)
-            {
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register())
+            using (var scope = container.BeginLifetimeScope()) {
+
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+
                 FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
-                IContainer container = new TestDependencyService().Register();
-                using (var scope = container.BeginLifetimeScope())
-                {
-                    // Arrange
-                    IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                    IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
-                    facetsConfig.SetContext(context);
+                // Arrange
+                IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
+                facetsConfig.SetContext(fixture.RepositoryRegistry);
 
-                    // Act
+                // Act
 
-                    QuerySetup querySetup = builder.Build(facetsConfig, facetCode, new List<string>(), new List<string>() { facetCode });
+                QuerySetup querySetup = builder.Build(facetsConfig, facetCode, new List<string>(), new List<string>() { facetCode });
 
-                    // Assert
+                // Assert
 
-                    var facet = context.Facets.GetByCode(facetCode);
+                var facet = fixture.RepositoryRegistry.Facets.GetByCode(facetCode);
 
-                    Assert.IsNotNull(querySetup);
-                    Assert.AreEqual(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
-                    Assert.AreEqual(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
+                Assert.NotNull(querySetup);
+                Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
+                Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
 
-                }
             }
         }
 
-        Dictionary<string, List<List<string>>> singleExpectedRoutes = new Dictionary<string, List<List<string>>> {
-            { "sites", new List<List<string>> {
+        public static List<object[]> RouteTestData = new List<object[]>() {
+            new object[] { "sites", new List<List<string>> {
                     new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites" },
                     new List<string> { "tbl_analysis_entities/tbl_datasets" }
                 }
             },
 
-            { "country", new List<List<string>> {
+            new object[] { "country", new List<List<string>> {
                     new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites", "tbl_sites/tbl_site_locations" },
                     new List<string> { "tbl_site_locations/countries" },
                     new List<string> { "tbl_analysis_entities/tbl_datasets" }
                 }
             },
 
-            { "tbl_denormalized_measured_values_33_0", new List<List<string>> {
+            new object[] { "tbl_denormalized_measured_values_33_0", new List<List<string>> {
                     new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/metainformation.tbl_denormalized_measured_values" }
                 }
             }
         };
-
-        [TestMethod]
-        public void CanBuildCategoryCountQuerySetupForSingleDiscreteFacetWithoutPicks()
+        internal class MockIndex<T, T1> : Dictionary<T, T1>, IIndex<T, T1>
         {
-            var testCodes = singleExpectedRoutes.Keys;
-            foreach (var facetCode in singleExpectedRoutes.Keys)
-            {
+        }
+
+        [Theory]
+        [MemberData(nameof(RouteTestData))]
+        public void CanBuildCategoryCountQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode, List<List<string>> expectedRoutes)
+        {
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register())
+            using (var scope = container.BeginLifetimeScope()) {
+
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+
                 FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
-                IContainer container = new TestDependencyService().Register();
-                using (var scope = container.BeginLifetimeScope())
+
+                // Arrange
+                IRepositoryRegistry registry = fixture.RepositoryRegistry;
+                IFacetsGraph graph = new FacetGraphFactory(registry).Build();
+                IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
+
+                var mockPickCompiler = new Mock<IPickFilterCompiler>();
+                mockPickCompiler.Setup(
+                    foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())
+                ).Returns("");
+
+                IIndex<int, IPickFilterCompiler> pickCompilers = new MockIndex<int, IPickFilterCompiler>
                 {
-                    // Arrange
-                    IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                    IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
-                    facetsConfig.SetContext(context);
+                    { 1, mockPickCompiler.Object /* new DiscreteFacetPickFilterCompiler() */},
+                    { 2, mockPickCompiler.Object /* new RangeFacetPickFilterCompiler() */ }
+                };
 
-                    Facet facet = context.Facets.GetByCode(facetCode);
-                    Facet countFacet = context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
+                IQuerySetupBuilder builder = new QuerySetupBuilder(
+                    registry,
+                    graph,
+                    pickCompilers,
+                    edgeCompiler
+                );
+                facetsConfig.SetContext(registry);
 
-                    string targetCode = Utility.Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
+                Facet facet = registry.Facets.GetByCode(facetCode);
+                Facet countFacet = registry.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
 
-                    Facet targetFacet = context.Facets.GetByCode(targetCode);
-                    List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
+                string targetCode = Utility.Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
 
-                    List<string> facetCodes = facetsConfig.GetFacetCodes();
-                    facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, countFacet.FacetCode);
+                Facet targetFacet = registry.Facets.GetByCode(targetCode);
+                List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
 
-                    // Act
-                    QuerySetup querySetup = builder.Build(facetsConfig, countFacet.FacetCode, tables, facetCodes);
+                List<string> facetCodes = facetsConfig.GetFacetCodes();
+                facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, countFacet.FacetCode);
 
-                    // Assert
-                    var expected = singleExpectedRoutes[facetCode];
-                    Assert.IsNotNull(querySetup);
-                    Assert.AreEqual(countFacet.FacetCode, querySetup.Facet.FacetCode);
-                    for (var i = 0; i < expected.Count; i++)
+                // Act
+                QuerySetup querySetup = builder.Build(facetsConfig, countFacet.FacetCode, tables, facetCodes);
+
+                // Assert
+                var expected = expectedRoutes;
+                Assert.NotNull(querySetup);
+                Assert.Equal(countFacet.FacetCode, querySetup.Facet.FacetCode);
+                for (var i = 0; i < expected.Count; i++)
+                {
+                    Assert.Equal(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count);
+                    for (var j = 0; j < expected[i].Count; j++)
                     {
-                        Assert.AreEqual(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count);
-                        for (var j = 0; j < expected[i].Count; j++)
-                        {
-                            Assert.AreEqual(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
-                        }
+                        Assert.Equal(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
                     }
-                    // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
-
                 }
+                // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
             }
         }
 
@@ -165,109 +162,126 @@ namespace SeadQueryTest.FacetsConfig
             }
         }
 
-        [TestMethod]
-        public void CanBuildCategoryCountQuerySetupForDiscreteFacetWithoutPicks()
-        {
-            Dictionary<string, List<List<string>>> expectedRoutes = new Dictionary<string, List<List<string>>> {
-                { "sites:sites", new List<List<string>> {
+        public static List<object[]> DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks = new List<object[]>() {
+                new object[] {
+                    "sites:sites", new List<List<string>> {
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
                     }
                 },
-                { "country:country", new List<List<string>> {
+                new object[] { "country:country", new List<List<string>> {
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
                         TestRoute.ToPairs("tbl_site_locations", "countries"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
                     }
                 },
-                { "ecocode:sites/ecocode", new List<List<string>> {
+                new object[] { "ecocode:sites/ecocode", new List<List<string>> {
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
                     }
                 },
-
-                { "country:sites/country", new List<List<string>> {
+                new object[] { "country:sites/country", new List<List<string>> {
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
                         TestRoute.ToPairs("tbl_site_locations", "countries"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
                     }
                 },
-
-                { "ecocode:country/sites/ecocode", new List<List<string>> {
+                new object[] { "ecocode:country/sites/ecocode", new List<List<string>> {
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
                     }
                 },
-                { "sites:country/sites/ecocode", new List<List<string>> {
+                new object[] { "sites:country/sites/ecocode", new List<List<string>> {
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                         TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
                     }
                 }
             };
-            foreach (var key in expectedRoutes.Keys)
-            {
-                var parts = key.Split(':').ToList();
-                var testCodes = parts[1].Split('/').ToList();
-                var targetCode = parts[0];
+
+        [Theory]
+        [MemberData(nameof(DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks))]
+        public void CanBuildCategoryCountQuerySetupForDiscreteFacetWithoutPicks(string uri, List<List<string>> expectedRoutes)
+        {
+            var parts = uri.Split(':').ToList();
+            var testCodes = parts[1].Split('/').ToList();
+            var targetCode = parts[0];
+ 
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register())
+            using (var scope = container.BeginLifetimeScope()) {
+
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
                 FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(targetCode, targetCode, testCodes.Select(z => fixture.GenerateFacetConfig(z, testCodes.IndexOf(z))).ToList());
-                IContainer container = new TestDependencyService().Register();
-                using (var scope = container.BeginLifetimeScope())
+
+                // Arrange
+                IFacetsGraph graph = new FacetGraphFactory(fixture.RepositoryRegistry).Build();
+                IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
+
+                var mockPickCompiler = new Mock<IPickFilterCompiler>();
+                mockPickCompiler.Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())).Returns("");
+
+                IIndex<int, IPickFilterCompiler> pickCompilers = new MockIndex<int, IPickFilterCompiler>
                 {
-                    // Arrange
-                    IQuerySetupBuilder builder = scope.Resolve<IQuerySetupBuilder>();
-                    IRepositoryRegistry context = scope.Resolve<IRepositoryRegistry>();
-                    facetsConfig.SetContext(context);
+                    { 1, mockPickCompiler.Object },
+                    { 2, mockPickCompiler.Object }
+                };
 
-                    Facet targetFacet = context.Facets.GetByCode(targetCode);
-                    Facet computeFacet = targetFacet;
-                    List<string> facetCodes = facetsConfig.GetFacetCodes();
-                    List<string> tables = targetFacet.ExtraTables.Select(x => x.TableName).ToList();
+                IQuerySetupBuilder builder = new QuerySetupBuilder(
+                    fixture.RepositoryRegistry,
+                    graph,
+                    pickCompilers,
+                    edgeCompiler
+                );
+                facetsConfig.SetContext(fixture.RepositoryRegistry);
 
-                    if (true)
-                    {
-                        computeFacet = context.Facets.Get(targetFacet.AggregateFacetId);
-                        facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
-                    }
+                Facet targetFacet = fixture.RepositoryRegistry.Facets.GetByCode(targetCode);
+                Facet computeFacet = targetFacet;
+                List<string> facetCodes = facetsConfig.GetFacetCodes();
+                List<string> tables = targetFacet.ExtraTables.Select(x => x.ObjectName).ToList();
 
-                    if (facetsConfig.TargetCode != null)
-                        tables.Add(targetFacet.ResolvedName);
-
-                    if (computeFacet.FacetCode != targetFacet.FacetCode)
-                        tables.Add(computeFacet.TargetTableName);
-
-                    tables = tables.Distinct().ToList();
-                    // Act
-                    QuerySetup querySetup = builder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
-
-                    // Assert
-                    Assert.IsNotNull(querySetup, key);
-                    var expected = expectedRoutes[key];
-                    Assert.AreEqual(computeFacet.FacetCode, querySetup.Facet.FacetCode, key);
-                    Assert.AreEqual(expected.Count, querySetup.ReducedRoutes.Count, key);
-                    for (var i = 0; i < expected.Count; i++)
-                    {
-                        Assert.AreEqual(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count, key);
-                        for (var j = 0; j < expected[i].Count; j++)
-                        {
-                            Assert.AreEqual(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair(), key);
-                        }
-                    }
-                    // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
-
+                if (true)
+                {
+                    computeFacet = fixture.RepositoryRegistry.Facets.Get(targetFacet.AggregateFacetId);
+                    facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
                 }
+
+                if (facetsConfig.TargetCode != null)
+                    tables.Add(targetFacet.ResolvedName);
+
+                if (computeFacet.FacetCode != targetFacet.FacetCode)
+                    tables.Add(computeFacet.TargetTable.ObjectName);
+
+                tables = tables.Distinct().ToList();
+                // Act
+                QuerySetup querySetup = builder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
+
+                // Assert
+                Assert.NotNull(querySetup);
+                Assert.Equal(computeFacet.FacetCode, querySetup.Facet.FacetCode);
+                Assert.Equal(expectedRoutes.Count, querySetup.ReducedRoutes.Count);
+                for (var i = 0; i < expectedRoutes.Count; i++)
+                {
+                    Assert.Equal(expectedRoutes[i].Count, querySetup.ReducedRoutes[i].Items.Count);
+                    for (var j = 0; j < expectedRoutes[i].Count; j++)
+                    {
+                        Assert.Equal(expectedRoutes[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
+                    }
+                }
+                // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
+
             }
         }
         private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
         {
-            List<string> tables = targetFacet.ExtraTables.Select(x => x.TableName).ToList();
+            List<string> tables = targetFacet.ExtraTables.Select(x => x.ObjectName).ToList();
 
             if (facetsConfig.TargetCode != null)
                 tables.Add(targetFacet.ResolvedName);
 
             if (countFacet.FacetCode != targetFacet.FacetCode)
-                tables.Add(countFacet.TargetTableName);
+                tables.Add(countFacet.TargetTable.ObjectName);
 
             return tables.Distinct().ToList();
         }

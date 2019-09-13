@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
+using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest
 {
@@ -55,7 +56,7 @@ namespace SeadQueryTest
         [TestInitialize()]
         public void Initialize()
         {
-            fixture = new fixtures.FacetConfigGenerator();
+            fixture = new fixtures.FacetConfigGenerator(null, null);
         }
 
         [TestMethod]

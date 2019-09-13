@@ -7,7 +7,7 @@ using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
 
-namespace SeadQueryTest
+namespace SeadQueryTest.Infrastructure
 {
 
     public class TestDependencyService : DependencyService
@@ -15,6 +15,13 @@ namespace SeadQueryTest
         public TestDependencyService()
         {
         }
+
+        public TestDependencyService(IFacetContext dbContext)
+        {
+            FacetDbContext = dbContext;
+        }
+
+        public IFacetContext FacetDbContext { get; } = null;
 
         public override ISeadQueryCache GetCache(StoreSetting settings)
         {
@@ -30,7 +37,12 @@ namespace SeadQueryTest
             builder.RegisterInstance(options).SingleInstance().ExternallyOwned();
             builder.Register(c => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
-            builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
+            if (FacetDbContext is null) {
+                builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
+            } else {
+                builder.RegisterInstance(FacetDbContext).SingleInstance().ExternallyOwned();
+            }
+
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();

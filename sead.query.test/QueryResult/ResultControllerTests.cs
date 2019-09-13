@@ -40,7 +40,7 @@ namespace SeadQueryTest
         [TestInitialize()]
         public void Initialize()
         {
-            facetConfigFixture = new fixtures.FacetConfigGenerator();
+            facetConfigFixture = new fixtures.FacetConfigGenerator(null, null);
             resultConfigFixture = new fixtures.ResultConfigGenerator();
         }
 

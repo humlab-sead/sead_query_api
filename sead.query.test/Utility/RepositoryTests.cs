@@ -6,8 +6,10 @@ using SeadQueryCore;
 using System.Diagnostics;
 using Autofac;
 using SeadQueryInfra;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest;
 
-namespace SeadQueryTest.Repository {
+namespace SeadQueryTest2.Repository {
 
     public class RepositoryTests {
 

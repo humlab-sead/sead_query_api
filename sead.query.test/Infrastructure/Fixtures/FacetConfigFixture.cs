@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Autofac;
 using System.Linq;
 using System.Text.RegularExpressions;
+using SeadQueryInfra;
+using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest.fixtures
 {
@@ -57,19 +59,21 @@ namespace SeadQueryTest.fixtures
     {
 
         public IContainer Container { get; set; }
-        public IRepositoryRegistry Context { get; set; }
+        public IFacetContext Context { get; set; }
         public FacetConfigFixtureData Data { get; set; }
+        public IRepositoryRegistry RepositoryRegistry { get; set; }
 
-        public FacetConfigGenerator()
+        public FacetConfigGenerator(IContainer container, IFacetContext context)
         {
-            Container = new TestDependencyService().Register();
-            Context = Container.Resolve<IRepositoryRegistry>();
+            Container = container ?? new TestDependencyService().Register();
+            Context = context ?? Container.Resolve<IFacetContext>();
             Data = new FacetConfigFixtureData();
+            RepositoryRegistry = new RepositoryRegistry(Context);
         }
 
         public FacetsConfig2 GenerateFacetsConfig(string targetCode, string triggerCode, List<FacetConfig2> facetConfigs)
         {
-            return new FacetsConfig2(Context)
+            return new FacetsConfig2(RepositoryRegistry)
             {
                 RequestId = "1",
                 Language = "",
@@ -82,7 +86,7 @@ namespace SeadQueryTest.fixtures
 
         public FacetConfig2 GenerateFacetConfig(string facetCode, int position, List<FacetConfigPick> picks = null, string filter = "")
         {
-            return new FacetConfig2(Context)
+            return new FacetConfig2(RepositoryRegistry)
             {
                 FacetCode = facetCode,
                 Position = position,

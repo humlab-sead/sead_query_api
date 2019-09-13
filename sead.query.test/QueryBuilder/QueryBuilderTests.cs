@@ -1,22 +1,13 @@
 ﻿using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using SeadQueryCore;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using System;
-using SeadQueryCore.QueryBuilder;
-using System.Diagnostics;
+using SeadQueryTest.Infrastructure;
 
-namespace SeadQueryTest.FacetsConfig
+namespace SeadQueryTest2.FacetsConfig
 {
     [TestClass]
     public class QueryBuilderTests
     {
-        private fixtures.FacetConfigGenerator fixture;
+        private SeadQueryTest.fixtures.FacetConfigGenerator fixture;
         private static IContainer container;
         private TestContext testContextInstance;
 
@@ -38,7 +29,7 @@ namespace SeadQueryTest.FacetsConfig
 
         [TestInitialize()]
         public void Initialize() {
-            fixture = new fixtures.FacetConfigGenerator();
+            fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
         }
 
 

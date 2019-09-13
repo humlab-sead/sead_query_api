@@ -1,41 +1,55 @@
-﻿using Autofac;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SeadQueryCore;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using Newtonsoft.Json.Linq;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
+using Xunit;
 
-namespace SeadQueryTest.FacetsConfig
+namespace SeadQueryTest2.FacetsConfig
 {
-    [TestClass]
-    public class FacetsConfigTests {
-
-        private fixtures.FacetConfigGenerator fixture;
-
-        [TestInitialize()]
-        public void Initialize() {
-            fixture = new fixtures.FacetConfigGenerator();
-        }
-
-        [TestMethod]
+    public class FacetsConfigTests
+    {
+        [Fact]
         public void CanCreateSimpleConfig()
         {
-            FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
-            Assert.AreEqual(facetsConfig.TargetCode, facetsConfig.TargetFacet.FacetCode);
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register()) {
+
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+
+                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
+
+                Assert.Equal("sites", facetsConfig.TargetCode);
+                Assert.Equal(facetsConfig.TargetCode, facetsConfig.TargetFacet.FacetCode);
+            }
         }
 
-        [TestMethod]
+        [Fact]
         public void CanCreateSimpleConfigByJSON()
         {
-            FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
-            string json1 = JsonConvert.SerializeObject(facetsConfig);
-            FacetsConfig2 facetsConfig2 = JsonConvert.DeserializeObject<FacetsConfig2>(json1);
-            facetsConfig2.SetContext(fixture.Context);
-            string json2 = JsonConvert.SerializeObject(facetsConfig);
-            Assert.AreEqual(json1, json2);
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register())
+              {
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
+                string json1 = JsonConvert.SerializeObject(facetsConfig);
+                FacetsConfig2 facetsConfig2 = JsonConvert.DeserializeObject<FacetsConfig2>(json1);
+                facetsConfig2.SetContext(fixture.RepositoryRegistry);
+                string json2 = JsonConvert.SerializeObject(facetsConfig);
+                Assert.Equal(json1, json2);
+            }
+        }
+
+        [Fact]
+        public void CanGenerateSingleFacetsConfigWithoutPicks()
+        {
+            using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService(context).Register()) {
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+                foreach (var facetCode in fixture.Data.DiscreteFacetComputeCount.Keys) {
+                    FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
+                    Assert.Equal(facetCode, facetsConfig.TargetFacet.FacetCode);
+                }
+            }
         }
     }
 }

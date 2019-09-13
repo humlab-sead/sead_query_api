@@ -13,7 +13,7 @@ using SeadQueryTest.Infrastructure.Scaffolding;
 using System.Collections;
 using Microsoft.EntityFrameworkCore;
 
-namespace SeadQueryTest.Model
+namespace SeadQueryTest2.Model
 {
 
     public class EntityModelTests : FacetTestBase

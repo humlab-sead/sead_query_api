@@ -2,6 +2,7 @@
 using Xunit;
 using SeadQueryCore;
 using SeadQueryInfra;
+using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest.Cache {
 

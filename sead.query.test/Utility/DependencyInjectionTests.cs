@@ -5,12 +5,14 @@ using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
+using SeadQueryTest;
+using SeadQueryTest.Infrastructure;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.IoC
+namespace SeadQueryTest2.IoC
 {
 
     public interface IDependent {

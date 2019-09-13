@@ -7,9 +7,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using SeadQueryTest.Infrastructure;
 using SeadQueryTest.fixtures;
 
-namespace SeadQueryTest.FacetsConfig
+namespace SeadQueryTest2.FacetsConfig
 {
     public class FacetContentServiceTests
     {
@@ -45,7 +46,7 @@ namespace SeadQueryTest.FacetsConfig
         [Fact]
         public void CanLoadSingleDiscreteConfigWithoutPicks()
         {
-            var fixture = new fixtures.FacetConfigGenerator();
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
 
             foreach (var facetCode in fixture.Data.DiscreteFacetComputeCount.Keys)
             {
@@ -123,7 +124,7 @@ namespace SeadQueryTest.FacetsConfig
         [Fact]
         public void CanLoadSingleDiscreteConfigWithPicks()
         {
-            var fixture = new fixtures.FacetConfigGenerator();
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
             FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
                 "sites", "sites",
                 new List<FacetConfig2>() {
@@ -224,7 +225,7 @@ namespace SeadQueryTest.FacetsConfig
         [Fact]
         public void RangeFacetBugTest_PD20181107()
         {
-            var fixture = new fixtures.FacetConfigGenerator();
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
 
             var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)";
             IContainer container = new TestDependencyService().Register();

@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.Model
+namespace SeadQueryTest2.Model
 {
 
     public class RepositoryTests : FacetTestBase
