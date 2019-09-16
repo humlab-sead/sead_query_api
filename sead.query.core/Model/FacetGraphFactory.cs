@@ -7,69 +7,52 @@ namespace SeadQueryCore
 
     public class FacetGraphFactory : IFacetGraphFactory
     {
-        public IRepositoryRegistry Context { get; private set; }
 
-        public FacetGraphFactory(IRepositoryRegistry repositoryRegistry)
-        {
-            Context = repositoryRegistry;
-        }
-
-        public IFacetsGraph Build()
+        public IFacetsGraph Build(List<GraphNode> nodes, List<GraphEdge> edges, List<Facet> aliasFacets)
         {
             // FIXME! Edges where source_table = target_table?? Key=(tbl_dataset,tbl_dataset)
             // Could it be that key must be "table_name.column_name"
 
-            var edges = Context.Edges.GetAll().ToList();
-            var nodes = Context.Nodes.GetAll().ToDictionary(x => x.TableName);
+            var id = 10000;
+            var aliasNodes = aliasFacets
+                .Where(f => !nodes.Any(n => f.AliasName == n.TableName))
+                .Select(f => new GraphNode() { NodeId = id++, TableName = f.AliasName });
 
-            var aliasFacets = Context.Facets.FindThoseWithAlias().ToList();
+            nodes = nodes.Concat(aliasNodes).Distinct().ToList();
 
-            nodes = AddAliasNodes(aliasFacets, nodes);
-            edges = AddAliasEdges(edges, nodes, aliasFacets);
-            edges = AddReverseEdges(edges);
+            var aliasEdges = GetAliasEdges(edges, nodes, aliasFacets).ToList<GraphEdge>();
+            aliasEdges = aliasEdges.Where(x => !edges.Contains(x)).ToList();
+            edges.AddRange(aliasEdges);
 
-            return new FacetsGraph(nodes, edges, aliasFacets);
+            var aliases = aliasFacets?
+                .ToDictionary(x => x.AliasName, x => (x.TargetTable?.ObjectName ?? ""));
+
+            return new FacetsGraph(nodes, edges, aliases);
         }
 
-        private NodesDictS AddAliasNodes(List<Facet> aliasFacets, NodesDictS nodes)
+        private List<GraphEdge> GetAliasEdges(
+            List<GraphEdge> edges,
+            List<GraphNode> nodes,
+            List<Facet> aliasFacets
+        )
         {
-            var aliases = GetAliasNodes(nodes, aliasFacets).ToList();
-            aliases.ForEach(z => nodes[z.TableName] = z);
-            return nodes;
-        }
+            List<GraphEdge> aliasEdges = new List<GraphEdge>();
 
-        private List<GraphNode> GetAliasNodes(NodesDictS nodes, List<Facet> aliasFacets)
-        {
-            int id = 10000;
-            return aliasFacets
-                .Select(z => new GraphNode() { NodeId = id++, TableName = z.AliasName })
-                .Where(z => !nodes.ContainsKey(z.TableName)).ToList();
-        }
+            var nodesDict = nodes.ToDictionary(x => x.TableName);
 
-        private List<GraphEdge> AddAliasEdges(List<GraphEdge> edges, NodesDictS nodes, List<Facet> aliasFacets)
-        {
             // Copy target tables relations for all alias facets...
             foreach (var facet in aliasFacets)
             {
                 // ...fetch all relations where target is a node...
                 var targetEdges = edges.Where(x => x.SourceName == facet.TargetTable?.ObjectName || x.TargetName == facet.TargetTable?.ObjectName);
 
-                // ...for each target relation, create a corresponding alias relation...
-                var aliasEdges = targetEdges.Select(z => z.Alias(nodes[facet.TargetTable.ObjectName], nodes[facet.AliasName]));
+                // ...add a corresponding alias relation for each target relation, ...
+                aliasEdges.AddRange(
+                    targetEdges.Select(z => z.Alias(nodesDict[facet.TargetTable.ObjectName], nodesDict[facet.AliasName]))
+                );
 
-                // ...filter away edges that already exists...
-                aliasEdges = aliasEdges.Where(z => !edges.Exists(w => w.EqualAs(z)));
-
-                edges.AddRange(aliasEdges);
             }
-            return edges;
-        }
-
-        private List<GraphEdge> AddReverseEdges(List<GraphEdge> edges)
-        {
-            var reverse = edges.Where(z => z.SourceNodeId != z.TargetNodeId).Select(x => x.Reverse()).ToList();
-            edges.AddRange(reverse);
-            return edges;
+            return aliasEdges.Distinct().ToList();
         }
     }
 }

@@ -12,7 +12,8 @@ namespace SeadQueryCore
 
     public interface IFacetGraphFactory
     {
-        IFacetsGraph Build();
+        IFacetsGraph Build(List<GraphNode> nodes, List<GraphEdge> edges, List<Facet> aliasFacets);
+
     }
 
     public interface IFacetsGraph {
@@ -36,24 +37,39 @@ namespace SeadQueryCore
         public NodesDictS Nodes { get; set; }
         public NodesDictI NodesIds { get; set; }
         public Dictionary<Tuple<string, string>, GraphEdge> Edges { get; set; }
-        //public List<Facet> AliasFacets { get; set; }
         public Dictionary<string, string> AliasTables;
         public WeightDictionary Weights { get; set; }
 
-        public FacetsGraph(NodesDictS nodes, List<GraphEdge> edges, List<Facet> aliasFacets)
+        public FacetsGraph(
+            List<GraphNode> nodes,
+            List<GraphEdge> edges,
+            Dictionary<string, string> aliases,
+            bool addReversed=true
+        )
         {
-            Nodes = nodes;
+            Nodes = nodes.ToDictionary(x => x.TableName);
+            NodesIds = nodes.ToDictionary(x => x.NodeId);
 
-            NodesIds = nodes.Values.ToDictionary(x => x.NodeId);
+            //edges = edges.Distinct();
+
+            if (addReversed) {
+                IEnumerable<GraphEdge> reversed = ReversedEdges(edges);
+                edges.AddRange(reversed);
+            }
 
             Edges = edges.ToDictionary(z => z.Key);
-
-            //AliasFacets = aliasFacets ?? new List<Facet>();
-            AliasTables = (aliasFacets ?? new List<Facet>())
-                    .ToDictionary(x => x.AliasName, x => (x.TargetTable?.ObjectName ?? ""));
+            AliasTables = aliases ?? new Dictionary<string, string>();
 
             Weights = edges.GroupBy(p => p.SourceNodeId, (key, g) => (key, g.ToDictionary(x => x.TargetNodeId, x => x.Weight)))
                 .ToDictionary(x => x.Item1, y => y.Item2);
+        }
+
+        private IEnumerable<GraphEdge> ReversedEdges(List<GraphEdge> edges)
+        {
+            return edges
+                .Where(z => z.SourceNodeId != z.TargetNodeId)
+                .Select(x => x.Reverse())
+                .Where(z => !edges.Any(w => w.Equals(z)));
         }
 
         public GraphEdge GetEdge(string source, string target) => Edges[Tuple.Create(source, target)];

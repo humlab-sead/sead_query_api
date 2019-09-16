@@ -6,10 +6,11 @@ using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SeadQueryAPI
 {
-
     //public interface IControllerServiceAggregate
     //{
     //    IQueryBuilderSetting Setting { get; set; }
@@ -19,7 +20,6 @@ namespace SeadQueryAPI
 
     public class DependencyService
     {
-
         public virtual ISeadQueryCache GetCache(StoreSetting settings)
         {
             try {
@@ -32,6 +32,15 @@ namespace SeadQueryAPI
             return new SimpleMemoryCacheProvider();
         }
 
+        public IFacetsGraph DefaultFacetsGraph(IFacetGraphFactory factory, IRepositoryRegistry registry)
+        {
+            List<GraphNode> nodes = registry.Nodes.GetAll().ToList();
+            List<GraphEdge> edges = registry.Edges.GetAll().ToList();
+            List<Facet> facets = registry.Facets.FindThoseWithAlias().ToList();
+            var graph = factory.Build(nodes, edges, facets);
+            return graph;
+        }
+
         public virtual IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
         {
             var builder = new Autofac.ContainerBuilder();
@@ -40,17 +49,12 @@ namespace SeadQueryAPI
 
             builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
 
-            // builder.Register(c => GetCacheManager(options?.Store)).SingleInstance().ExternallyOwned();
-            // builder.RegisterAggregateService<ICacheContainer>();
-            builder.Register(z => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
-
-            // builder.RegisterType<DomainModelDbContext>().SingleInstance().InstancePerLifetimeScope();
-
+            builder.Register(_ => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
             builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build());
+            builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>()));
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
@@ -78,7 +82,6 @@ namespace SeadQueryAPI
             builder.RegisterType<RangeCategoryCountSqlQueryCompiler>().As<IRangeCategoryCountSqlQueryCompiler>();
             builder.RegisterType<RangeIntervalSqlQueryCompiler>().As<IRangeIntervalSqlQueryCompiler>();
             builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
-            
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
