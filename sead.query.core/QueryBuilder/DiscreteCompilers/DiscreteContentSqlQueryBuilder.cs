@@ -11,7 +11,7 @@ namespace SeadQueryCore
 
             string sql = $@"
             SELECT cast({facet.CategoryIdExpr} AS varchar) AS category, {facet.CategoryNameExpr} AS name
-            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+            FROM {query.Facet.TargetTable.ObjectName}{query.Facet.TargetTable.ObjectArgs ?? ""}  {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
             WHERE 1 = 1
               {text_criteria}

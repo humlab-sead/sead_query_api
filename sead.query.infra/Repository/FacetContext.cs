@@ -89,7 +89,8 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetTable>().Property(b => b.FacetId).HasColumnName("facet_id").IsRequired();
             builder.Entity<FacetTable>().Property(b => b.SequenceId).HasColumnName("sequence_id").IsRequired();
             builder.Entity<FacetTable>().Property(b => b.SchemaName).HasColumnName("schema_name").IsRequired();
-            builder.Entity<FacetTable>().Property(b => b.TableName).HasColumnName("table_name").IsRequired();
+            builder.Entity<FacetTable>().Property(b => b.ObjectName).HasColumnName("table_or_udf_name").IsRequired();
+            builder.Entity<FacetTable>().Property(b => b.ObjectArgs).HasColumnName("udf_call_arguments");
             builder.Entity<FacetTable>().Property(b => b.Alias).HasColumnName("alias").IsRequired();
             builder.Entity<FacetTable>().HasOne<Facet>(x => x.Facet).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
 

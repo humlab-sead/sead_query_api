@@ -10,7 +10,7 @@ namespace SeadQueryCore
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"
             SELECT DISTINCT pick_id, {facet.CategoryNameExpr} AS name
-            FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+            FROM {query.Facet.TargetTable.ObjectName}{query.Facet.TargetTable.ObjectArgs ?? ""}  {"AS ".GlueTo(query.Facet.AliasName)}
             JOIN (VALUES {picks_clause}) AS x(pick_id)
               ON x.pick_id = {facet.CategoryIdExpr}::text
               {query.Joins.Combine("")}

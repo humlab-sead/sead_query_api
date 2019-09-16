@@ -265,7 +265,7 @@ namespace SeadQueryCore
 
         public List<string> GetJoinTables()
         {
-            var tables = Facet.ExtraTables.Select(z => z.TableName).ToList();
+            var tables = Facet.ExtraTables.Select(z => z.ObjectName).ToList();
             tables.Add(Facet.ResolvedName);
             return tables;
         }

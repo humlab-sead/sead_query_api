@@ -16,7 +16,8 @@ namespace SeadQueryCore
         public int FacetId { get; set; }
         public int SequenceId { get; set; }
         public string SchemaName { get; set; }
-        public string TableName { get; set; }
+        public string ObjectName { get; set; }
+        public string ObjectArgs { get; set; }
         public string Alias { get; set; }
 
         [JsonIgnore]

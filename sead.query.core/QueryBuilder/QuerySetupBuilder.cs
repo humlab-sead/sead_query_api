@@ -48,7 +48,7 @@ namespace SeadQueryCore.QueryBuilder
 
             // Collect all affected tables (those defined in affected facets)
             List<string> tables = (extraTables ?? new List<string>())               // ...extra tables (if any)...
-                .Concat(targetFacet.ExtraTables.Select(z => z.TableName))           // ...target facet's extra tables...
+                .Concat(targetFacet.ExtraTables.Select(z => z.ObjectName))           // ...target facet's extra tables...
                 .Concat(affectedConfigs.SelectMany(c => c.GetJoinTables()))         // ...tables from affected facets...
                 .Distinct().ToList();
 
@@ -77,6 +77,7 @@ namespace SeadQueryCore.QueryBuilder
                 .SelectMany(route => route.Items)
                 .Select(edge => EdgeCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
                 .ToList();
+            //Debug.Print(GraphRoute.Utility.ToString(reducedRoutes));
 
             QuerySetup querySetup = new QuerySetup(facetsConfig?.TargetConfig, targetFacet, joins, pickCriterias, routes, reducedRoutes);
 
