@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class FacetsConfigSpecification : IsValidDomainEntitySpecification<FacetsConfig2>
+    public class FacetsConfigSpecification : QuerySeadSpecification<FacetsConfig2>
     {
 
         public override bool IsSatisfiedBy(FacetsConfig2 facetsConfig)

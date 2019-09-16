@@ -3,7 +3,7 @@
 namespace SeadQueryCore
 {
 
-    public abstract class IsValidDomainEntitySpecification<T>
+    public abstract class QuerySeadSpecification<T>
     {
         public abstract bool IsSatisfiedBy(T entity);
     }
