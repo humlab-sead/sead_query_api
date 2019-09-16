@@ -5,12 +5,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace SeadQueryTest.MockRepository
+namespace SeadQueryTest.RepositoryMocks
 {
     public class FakeFacetRepository : FakeRepository<Facet, int>, IFacetRepository, IEquatable<FakeFacetRepository>
     {
-        public FakeFacetRepository(System.Linq.IQueryable<Facet> entities) : base(entities)
+        public FakeFacetRepository(System.Linq.IQueryable<Facet> entities=null) : base(entities)
         {
+            throw new NotSupportedException("This fake repository is not supported FTTB");
         }
 
         public Facet GetByCode(string facetCode)

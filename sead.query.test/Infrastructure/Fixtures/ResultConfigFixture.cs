@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Autofac;
 using System.Linq;
 using System.Text.RegularExpressions;
+using SeadQueryCore.Model;
 
 namespace SeadQueryTest.fixtures
 {
