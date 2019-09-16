@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryCore {
+namespace SeadQueryCore.Model {
 
     public class ResultConfig
     {

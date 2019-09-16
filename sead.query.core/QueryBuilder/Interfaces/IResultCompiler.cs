@@ -1,4 +1,6 @@
-﻿namespace SeadQueryCore
+﻿using SeadQueryCore.Model;
+
+namespace SeadQueryCore
 {
     //public interface IQuerySetupCompilers {
     //    TabularQuerySetupCompiler DefaultQuerySetupCompiler { get; }

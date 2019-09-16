@@ -39,7 +39,7 @@
     <None Include="Archive\FacetContentExtraRowInfoSqlQueryBuilder.cs" />
     <None Include="Archive\SetupQueryService.cs" />
     <None Include="Services\CategoryCountService.cs" />
-    <None Include="Model\ResultConfig.cs" />
+    <None Include="Model\Result\ResultConfig.cs" />
     <None Include="Services\FacetContentService.cs" />
     <None Include="Services\ResultService.cs" />
   </ItemGroup>

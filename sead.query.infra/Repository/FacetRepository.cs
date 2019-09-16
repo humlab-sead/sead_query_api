@@ -53,12 +53,6 @@ namespace SeadQueryInfra {
         public IEnumerable<Facet> FindThoseWithAlias()
         {
             return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
-            //var query = GetAll()         // source
-            //  .Join(context.Tables,         // target
-            //     c => c.CategoryId,          // FK
-            //     cm => cm.ChildCategoryId,   // PK
-            //     (c, cm) => new { Category = c, CategoryMaps = cm }) // project result
-            //  .Select(x => x.Category);  // select result
         }
 
         public IEnumerable<Facet> GetOfType(EFacetType type)
@@ -74,13 +68,6 @@ namespace SeadQueryInfra {
             return item == null ? (0, 0) : (item.lower, item.upper);
         }
 
-        // public string GenerateStateId()
-        // {
-        //     var sql = $"select nextval('{Context.Settings.CacheSeq}') as cache_id;";
-        //     using (var dr = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
-        //         return "state_id_" + dr.GetInt32(0).ToString();
-        //     }
-        // }
     }
 
     public static class FacetRepositoryEagerBuilder {

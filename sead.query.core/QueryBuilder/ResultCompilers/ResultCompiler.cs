@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using SeadQueryCore.QueryBuilder;
 using Autofac.Features.Indexed;
+using SeadQueryCore.Model;
 
 namespace SeadQueryCore
 {
