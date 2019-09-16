@@ -21,8 +21,8 @@ namespace SeadQueryCore
         public GraphNode SourceNode { get { return _SourceNode; } set { _SourceNode = value; SourceNodeId = value?.NodeId ?? SourceNodeId;  } }
         public GraphNode TargetNode { get { return _TargetNode; } set { _TargetNode = value; TargetNodeId = value?.NodeId ?? TargetNodeId; } }
 
-        [JsonIgnore] public string SourceName { get { return SourceNode.TableName; } }
-        [JsonIgnore] public string TargetName { get { return TargetNode.TableName; } }
+        [JsonIgnore] public string SourceName { get { return SourceNode?.TableName ?? ""; } }
+        [JsonIgnore] public string TargetName { get { return TargetNode?.TableName ?? ""; } }
 
         public GraphEdge Clone()
         {
@@ -60,10 +60,19 @@ namespace SeadQueryCore
 
         public Tuple<string, string> Key { get { return new Tuple<string, string>(SourceName, TargetName); } }
 
-        public bool EqualAs(GraphEdge x)
+        public override bool Equals(object x)
         {
-            //return (SourceNodeId == x.SourceNodeId) && (TargetNodeId == x.TargetNodeId);
-            return (SourceName == x.SourceName) && (TargetName == x.TargetName);
+            return Equal(x as GraphEdge);
+        }
+
+        public bool Equal(GraphEdge x)
+        {
+            return x != null && (SourceName == x.SourceName) && (TargetName == x.TargetName);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Key.GetHashCode();
         }
 
         public string ToStringPair()

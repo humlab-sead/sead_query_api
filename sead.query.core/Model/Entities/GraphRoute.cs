@@ -31,6 +31,14 @@ namespace SeadQueryCore
             return String.Join("\n", Items.Select(z => $"{z.SourceName};{z.TargetName};{z.Weight}"));
         }
 
+        public List<string> Trail()
+        {
+            if (Items.Count > 0) {
+                return Items.Select(z => z.TargetName).Prepend(Items[0].SourceName).ToList();
+            }
+            return new List<string>();
+        }
+
         public static class Utility
         {
             public static bool ExistsAny(List<GraphRoute> routes, GraphEdge item)
