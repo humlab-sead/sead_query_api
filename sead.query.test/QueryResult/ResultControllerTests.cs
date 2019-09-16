@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Text;
 using SeadQueryTest.fixtures;
 using SeadQueryCore.Model;
+using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest
 {

@@ -6,23 +6,17 @@ using Xunit;
 using Autofac;
 using System.Linq;
 using SeadQueryTest.Infrastructure;
+using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
+using System.Diagnostics;
+using DataAccessPostgreSqlProvider;
 
-namespace SeadQueryTest2.Model
+namespace SeadQueryTest.Model
 {
     public class FacetsGraphTests : IDisposable
     {
-        // private MockRepository mockRepository;
-        // private Mock<Dictionary> mockDictionary;
-        private Mock<List<GraphEdge>> mockListGraphEdge;
-        private Mock<List<Facet>> mockListFacet;
-
         public FacetsGraphTests()
         {
-            // this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            // this.mockDictionary = this.mockRepository.Create<Dictionary>();
-            this.mockListGraphEdge = this.mockRepository.Create<List<GraphEdge>>();
-            this.mockListFacet = this.mockRepository.Create<List<Facet>>();
         }
 
         public void Dispose()
@@ -30,157 +24,212 @@ namespace SeadQueryTest2.Model
             //this.mockRepository.VerifyAll();
         }
 
-        private FacetsGraph CreateFacetsGraph()
+        private class GraphGenerator
         {
-            return new FacetsGraph(
-                this.mockDictionary.Object,
-                this.mockListGraphEdge.Object,
-                this.mockListFacet.Object);
+            public List<GraphNode> Nodes { get; }
+            public Dictionary<string, GraphNode> NodeMap { get; }
+            public List<GraphEdge> Edges { get; } = new List<GraphEdge>();
+
+            public GraphGenerator(int n)
+            {
+                Nodes = GenerateNodes(n).ToList();
+                NodeMap = Nodes.ToDictionary(z => z.TableName);
+            }
+
+            public IEnumerable<GraphNode> GenerateNodes(int n)
+            {
+                for (var i = 1; i <= n; i++)
+                    yield return new GraphNode() { NodeId = i, TableName = Convert.ToChar('A' + i - 1).ToString() };
+            }
+
+            public GraphGenerator Add(string x, string y, int w)
+            {
+                var edge = new GraphEdge() {
+                    EdgeId = Edges.Count + 1,
+                    SourceNode = NodeMap[x],
+                    TargetNode = NodeMap[y],
+                    Weight = w,
+                    SourceKeyName = $"{x.ToLower()}{y.ToLower()}_key",
+                    TargetKeyName = $"{x.ToLower()}{y.ToLower()}_key"
+                };
+                Edges.Add(edge);
+                return this;
+            }
+
+            public GraphGenerator Add(List<(string x, string y, int w)> xyws)
+            {
+                foreach (var (x,y,w) in xyws) {
+                    Add(x, y, w);
+                }
+                return this;
+            }
+
+            public GraphGenerator Add(string x, Dictionary<string, int> yw)
+            {
+                foreach (var y in yw.Keys) {
+                    Add(x, y, yw[y]);
+                }
+                return this;
+            }
+        }
+
+        private IFacetsGraph CreateSimpleFacetsGraph()
+        {
+            var generator = new GraphGenerator(8);
+            generator.Add("A", new Dictionary<string, int> { { "B", 7 }, { "C", 8 } });
+            generator.Add("B", new Dictionary<string, int> { { "A", 7 }, { "F", 2 } });
+            generator.Add("C", new Dictionary<string, int> { { "A", 8 }, { "F", 6 }, { "G", 4 } });
+            generator.Add("D", new Dictionary<string, int> { { "F", 8 } });
+            generator.Add("E", new Dictionary<string, int> { { "H", 1 } });
+            generator.Add("F", new Dictionary<string, int> { { "B", 2 }, { "C", 6 }, { "D", 8 }, { "G", 9 }, { "H", 3 } });
+            generator.Add("G", new Dictionary<string, int> { { "C", 4 }, { "F", 9 } });
+            generator.Add("H", new Dictionary<string, int> { { "E", 1 }, { "F", 3 } });
+            var facetsGraph = new FacetsGraph(
+                nodes: generator.Nodes,
+                edges: generator.Edges,
+                aliases: new Dictionary<string, string>() { { "X", "A" } }
+            );
+            return facetsGraph;
+        }
+
+        private IFacetsGraph CreateFacetsGraphByFakeContext(FacetContext testContext)
+        {
+            return ScaffoldUtility.CreateFacetsGraphByFakeContext(testContext);
         }
 
         [Fact]
-        public void GetEdge_StateUnderTest_ExpectedBehavior()
+        public void GetEdge_ByNodeNames_WhenEdgeExists_ReturnsEdge()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            string source = null;
-            string target = null;
+            var facetsGraph = this.CreateSimpleFacetsGraph();
+
+            const string source = "D";
+            const string target = "F";
 
             // Act
-            var result = facetsGraph.GetEdge(
-                source,
-                target);
+            var result = facetsGraph.GetEdge(source, target);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(source, result.SourceName);
+            Assert.Equal(target, result.TargetName);
+            Assert.Equal(8, result.Weight);
         }
 
         [Fact]
-        public void GetEdge_StateUnderTest_ExpectedBehavior1()
+        public void GetEdge_ByNodeId_WhenEdgeExists_ReturnsEdge()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            int sourceId = 0;
-            int targetId = 0;
+            var facetsGraph = CreateSimpleFacetsGraph();
+            const int sourceId = 4;
+            const int targetId = 6;
 
             // Act
-            var result = facetsGraph.GetEdge(
-                sourceId,
-                targetId);
+            var result = facetsGraph.GetEdge(sourceId, targetId);
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.Equal(4, result.SourceNodeId);
+            Assert.Equal(6, result.TargetNodeId);
+            Assert.Equal(8, result.Weight);
         }
 
         [Fact]
-        public void IsAlias_StateUnderTest_ExpectedBehavior()
+        public void IsAlias_WhenGraphHasAlias_ShouldBeTrue()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            string name = null;
+            var facetsGraph = this.CreateSimpleFacetsGraph();
+            const string name = "X";
 
             // Act
-            var result = facetsGraph.IsAlias(
-                name);
+            var result = facetsGraph.IsAlias(name);
 
             // Assert
-            Assert.True(false);
+            Assert.True(result);
         }
 
         [Fact]
-        public void ResolveTargetName_StateUnderTest_ExpectedBehavior()
+        public void ResolveTargetName_WhenGraphHasAlias_ShouldBeTargetName()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            string aliasOrTable = null;
+            var facetsGraph = this.CreateSimpleFacetsGraph();
+            const string aliasOrTable = "X";
 
             // Act
             var result = facetsGraph.ResolveTargetName(
                 aliasOrTable);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal("A", result);
         }
 
         [Fact]
-        public void ResolveAliasName_StateUnderTest_ExpectedBehavior()
+        public void ResolveAliasName_WhenGraphHasAlias_ShouldBeAliasName()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            string aliasOrTable = null;
+            var facetsGraph = this.CreateSimpleFacetsGraph();
+            const string aliasOrTable = "X";
 
             // Act
-            var result = facetsGraph.ResolveAliasName(
-                aliasOrTable);
+            var result = facetsGraph.ResolveAliasName(aliasOrTable);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal("X", result);
         }
 
         [Fact]
-        public void Find_StateUnderTest_ExpectedBehavior()
+        public void Find_WhenStartHasPathToStop_ShouldBeShortestPath()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            string start_table = null;
-            List<string> destination_tables = null;
+            var facetsGraph = this.CreateSimpleFacetsGraph();
+            const string start_table = "A";
+            List<string> destination_tables = new List<string>() { "H" };
 
             // Act
             var result = facetsGraph.Find(start_table,destination_tables);
 
             // Assert
-            Assert.True(false);
+            Assert.Single(result);
+            Assert.Equal(3, result[0].Items.Count);
+            Assert.Equal(Tuple.Create("A", "B"), result[0].Items[0].Key);
+            Assert.Equal(Tuple.Create("B", "F"), result[0].Items[1].Key);
+            Assert.Equal(Tuple.Create("F", "H"), result[0].Items[2].Key);
         }
 
         [Fact]
-        public void Find_StateUnderTest_ExpectedBehavior1()
+        public void Find_WhenStartAndStopAreSwitched_ShouldBeReversedPath()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            string startTable = null;
-            string destinationTable = null;
+            var facetsGraph = this.CreateSimpleFacetsGraph();
+            const string startTable = "H";
+            const string destinationTable = "A";
 
             // Act
-            var result = facetsGraph.Find(
-                startTable,
-                destinationTable);
+            var route = facetsGraph.Find(startTable, destinationTable);
+            var routeReversed = facetsGraph.Find(destinationTable, startTable);
 
             // Assert
-            Assert.True(false);
+            string trail = String.Join('-', route.Trail());
+            Assert.Equal("H-F-B-A", trail);
+
+            string traiiReversed = String.Join('-', routeReversed.Trail());
+            Assert.Equal("A-B-F-H", traiiReversed);
         }
 
         [Fact]
-        public void Find_StateUnderTest_ExpectedBehavior2()
+        public void ToCSV_AnyState_ShouldBeStringOfDelimitedLines()
         {
             // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
-            int startTableId = 0;
-            int destinationTableId = 0;
-
-            // Act
-            var result = facetsGraph.Find(
-                startTableId,
-                destinationTableId);
-
-            // Assert
-            Assert.True(false);
-        }
-
-        [Fact]
-        public void ToCSV_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var facetsGraph = this.CreateFacetsGraph();
+            var facetsGraph = this.CreateSimpleFacetsGraph();
 
             // Act
             var result = facetsGraph.ToCSV();
 
             // Assert
-            Assert.True(false);
+            const string expected = "A;B;7\nA;C;8\nB;A;7\nB;F;2\nC;A;8\nC;F;6\nC;G;4\nD;F;8\nE;H;1\nF;B;2\nF;C;6\nF;D;8\nF;G;9\nF;H;3\nG;C;4\nG;F;9\nH;E;1\nH;F;3\n";
+            Assert.Equal(expected, result);
         }
 
-
-        private dynamic expectedEdges = new dynamic[] {
+        private readonly dynamic expectedEdges = new dynamic[] {
             new {  SourceName = "countries", TargetName = "tbl_location_types", Weight = 20},
             new {  SourceName = "countries", TargetName = "tbl_rdb", Weight = 150},
             new {  SourceName = "countries", TargetName = "tbl_rdb_systems", Weight = 150},
@@ -626,47 +675,46 @@ namespace SeadQueryTest2.Model
             new {  SourceName = "tbl_years_types", TargetName = "tbl_dendro_dates", Weight = 20},
             new {  SourceName = "view_places_relations", TargetName = "countries", Weight = 20},
             new {  SourceName = "view_places_relations", TargetName = "tbl_locations", Weight = 1}
-
         };
 
-
         [Fact]
-        public void CanCreateExpectedFacetGraph()
+        public void Build_WhenResolvedByIoC_HasExpectedEdges()
         {
-            var container = new TestDependencyService().Register();
-            using (var scope = container.BeginLifetimeScope()) {
-                var service = scope.Resolve<IFacetsGraph>();
-                Assert.Equal(expectedEdges.Length, service.Edges.ToList().Count);
-                foreach (var expected in expectedEdges) {
-                    var edge = service.GetEdge(expected.SourceName, expected.TargetName);
-                    Assert.NotNull(edge);
-                    Assert.Equal(expected.Weight, edge.Weight, "Weight mismatch: " + expected.SourceName + " " + expected.TargetName);
+            using (var testContext = ScaffoldUtility.DefaultFacetContext()) {
+                var container = new TestDependencyService(testContext).Register();
+                using (var scope = container.BeginLifetimeScope()) {
+                    var service = scope.Resolve<IFacetsGraph>();
+                    Assert.Equal(expectedEdges.Length, service.Edges.ToList().Count);
+                    foreach (var expected in expectedEdges) {
+                        var edge = service.GetEdge(expected.SourceName, expected.TargetName);
+                        Assert.NotNull(edge);
+                        Assert.Equal(expected.Weight, edge.Weight);
+                    }
                 }
             }
         }
 
         [Fact]
-        public void AdjecentCloseNodesShouldHaveSingleEdgeInPath()
+        public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
         {
             var container = new TestDependencyService().Register();
-            using (var scope = container.BeginLifetimeScope()) {
-                var graph = scope.Resolve<IFacetsGraph>();
+            var scope = container.BeginLifetimeScope();
+            var graph = scope.Resolve<IFacetsGraph>();
 
-                GraphRoute route = graph.Find("tbl_locations", "tbl_site_locations");
+            GraphRoute route = graph.Find("tbl_locations", "tbl_site_locations");
 
-                Assert.NotNull(route);
-                Assert.Single(route.Items);
-                Assert.Equal("tbl_locations", route.Items[0].SourceName);
-                Assert.Equal("tbl_site_locations", route.Items[0].TargetName);
-            }
+            Assert.NotNull(route);
+            Assert.Single(route.Items);
+            Assert.Equal("tbl_locations", route.Items[0].SourceName);
+            Assert.Equal("tbl_site_locations", route.Items[0].TargetName);
         }
 
         [Fact]
-        public void StartSameAsStopShouldBeEmpty()
+        public void Find_WhenStartEqualsStop_ReturnsEmptyRoute()
         {
-            var container = new TestDependencyService().Register();
-            using (var scope = container.BeginLifetimeScope()) {
-                var graph = scope.Resolve<IFacetsGraph>();
+            using (var testContext = ScaffoldUtility.DefaultFacetContext()) {
+
+                var graph = CreateFacetsGraphByFakeContext(testContext);
 
                 GraphRoute route = graph.Find("tbl_locations", "tbl_locations");
 

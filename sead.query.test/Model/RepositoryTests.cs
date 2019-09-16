@@ -14,54 +14,7 @@ namespace SeadQueryTest2.Model
     public class RepositoryTests : FacetTestBase
     {
 
-        [Fact]
-        public void ShouldBeAbleToFetchAllResultFields()
-        {
-            // Arrange
-            using (var context = ScaffoldUtility.DefaultFacetContext()) {
-
-                var sut = new ResultRepository(context);
-
-                var expected = context.Set<ResultField>().ToList().Count;
-
-                Assert.Equal(expected, sut.GetAllFields().ToList().Count);
-            }
-        }
-
-        [Fact]
-        public void ShouldBeAbleToFetchAllResultAggregates()
-        {
-            using (var context = ScaffoldUtility.DefaultFacetContext()) {
-
-                var sut = new ResultRepository(context);
-                List<ResultAggregate> items = sut.GetAll().ToList();
-
-                Assert.Equal(4, items.Count);
-                foreach (ResultAggregate value in items) {
-                    Assert.NotNull(value.Fields);
-                    Assert.True(value.Fields.Count > 0);
-                    value.Fields.ForEach(z => Assert.NotNull(z.ResultField));
-                    value.Fields.ForEach(z => Assert.NotNull(z.FieldType));
-                }
-            }
-        }
-
-        [Fact]
-        public void ShouldBeAbleToFetchAllResultTypes()
-        {
-            using (var context = ScaffoldUtility.DefaultFacetContext()) {
-
-                var repository = new ResultRepository(context);
-
-                List<ResultFieldType> fieldTypes = repository.GetAllFieldTypes().ToList();
-
-                Assert.True(fieldTypes.Count > 0);
-
-                var expected = new List<string>() { "single_item", "text_agg_item", "count_item", "link_item", "sort_item", "link_item_filtered" };
-
-                Assert.True(expected.All(x => fieldTypes.Exists(w => w.FieldTypeId == x)));
-            }
-        }
+ 
 
 
         [Fact]

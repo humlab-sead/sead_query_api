@@ -13,7 +13,6 @@ namespace SeadQueryTest2.QueryCompilerTests
 {
     public class QueryCompilerTests
     {
-
         [Fact]
         public void CanResolveQueryBuilder()
         {
@@ -34,7 +33,6 @@ namespace SeadQueryTest2.QueryCompilerTests
             using (var context = ScaffoldUtility.DefaultFacetContext())
             using (var container = new TestDependencyService(context).Register())
             using (var scope = container.BeginLifetimeScope()) {
-
                 var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
 
                 FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
@@ -53,7 +51,6 @@ namespace SeadQueryTest2.QueryCompilerTests
                 Assert.NotNull(querySetup);
                 Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
                 Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
-
             }
         }
 
@@ -76,6 +73,7 @@ namespace SeadQueryTest2.QueryCompilerTests
                 }
             }
         };
+
         internal class MockIndex<T, T1> : Dictionary<T, T1>, IIndex<T, T1>
         {
         }
@@ -93,8 +91,10 @@ namespace SeadQueryTest2.QueryCompilerTests
                 FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
 
                 // Arrange
-                IRepositoryRegistry registry = fixture.RepositoryRegistry;
-                IFacetsGraph graph = new FacetGraphFactory(registry).Build();
+                var registry = fixture.RepositoryRegistry;
+                var factory = new FacetGraphFactory();
+
+                var graph = ScaffoldUtility.CreateFacetsGraphByFakeContext(context);
                 IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
 
                 var mockPickCompiler = new Mock<IPickFilterCompiler>();
@@ -146,16 +146,19 @@ namespace SeadQueryTest2.QueryCompilerTests
             }
         }
 
-        class TestRoute
+        private class TestRoute
         {
             public List<string> Trail { get; set; }
             public List<string> Pairs { get { return ToPairs(Trail); } }
+
             public TestRoute(List<string> trail) {
                 Trail = trail;
             }
+
             public static List<string>  ToPairs(List<string> trail) {
                 return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
             }
+
             public static List<string> ToPairs(params string[] trail)
             {
                 return ToPairs(trail.ToList());
@@ -200,6 +203,19 @@ namespace SeadQueryTest2.QueryCompilerTests
                 }
             };
 
+        private static IIndex<int, IPickFilterCompiler> MockPickCompilers(string returnValue = "")
+        {
+            var mockPickCompiler = new Mock<IPickFilterCompiler>();
+            mockPickCompiler.Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())).Returns(returnValue);
+
+            IIndex<int, IPickFilterCompiler> pickCompilers = new MockIndex<int, IPickFilterCompiler>
+            {
+                    { 1, mockPickCompiler.Object },
+                    { 2, mockPickCompiler.Object }
+                };
+            return pickCompilers;
+        }
+
         [Theory]
         [MemberData(nameof(DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks))]
         public void CanBuildCategoryCountQuerySetupForDiscreteFacetWithoutPicks(string uri, List<List<string>> expectedRoutes)
@@ -207,26 +223,18 @@ namespace SeadQueryTest2.QueryCompilerTests
             var parts = uri.Split(':').ToList();
             var testCodes = parts[1].Split('/').ToList();
             var targetCode = parts[0];
- 
+
             using (var context = ScaffoldUtility.DefaultFacetContext())
             using (var container = new TestDependencyService(context).Register())
             using (var scope = container.BeginLifetimeScope()) {
-
                 var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
                 FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(targetCode, targetCode, testCodes.Select(z => fixture.GenerateFacetConfig(z, testCodes.IndexOf(z))).ToList());
 
                 // Arrange
-                IFacetsGraph graph = new FacetGraphFactory(fixture.RepositoryRegistry).Build();
+                var graph = ScaffoldUtility.CreateFacetsGraphByFakeContext(context);
                 IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
 
-                var mockPickCompiler = new Mock<IPickFilterCompiler>();
-                mockPickCompiler.Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())).Returns("");
-
-                IIndex<int, IPickFilterCompiler> pickCompilers = new MockIndex<int, IPickFilterCompiler>
-                {
-                    { 1, mockPickCompiler.Object },
-                    { 2, mockPickCompiler.Object }
-                };
+                IIndex<int, IPickFilterCompiler> pickCompilers = MockPickCompilers("");
 
                 IQuerySetupBuilder builder = new QuerySetupBuilder(
                     fixture.RepositoryRegistry,
@@ -241,8 +249,7 @@ namespace SeadQueryTest2.QueryCompilerTests
                 List<string> facetCodes = facetsConfig.GetFacetCodes();
                 List<string> tables = targetFacet.ExtraTables.Select(x => x.ObjectName).ToList();
 
-                if (true)
-                {
+                if (true) {
                     computeFacet = fixture.RepositoryRegistry.Facets.Get(targetFacet.AggregateFacetId);
                     facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
                 }
@@ -254,6 +261,7 @@ namespace SeadQueryTest2.QueryCompilerTests
                     tables.Add(computeFacet.TargetTable.ObjectName);
 
                 tables = tables.Distinct().ToList();
+
                 // Act
                 QuerySetup querySetup = builder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
 
@@ -261,11 +269,9 @@ namespace SeadQueryTest2.QueryCompilerTests
                 Assert.NotNull(querySetup);
                 Assert.Equal(computeFacet.FacetCode, querySetup.Facet.FacetCode);
                 Assert.Equal(expectedRoutes.Count, querySetup.ReducedRoutes.Count);
-                for (var i = 0; i < expectedRoutes.Count; i++)
-                {
+                for (var i = 0; i < expectedRoutes.Count; i++) {
                     Assert.Equal(expectedRoutes[i].Count, querySetup.ReducedRoutes[i].Items.Count);
-                    for (var j = 0; j < expectedRoutes[i].Count; j++)
-                    {
+                    for (var j = 0; j < expectedRoutes[i].Count; j++) {
                         Assert.Equal(expectedRoutes[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
                     }
                 }
@@ -273,6 +279,7 @@ namespace SeadQueryTest2.QueryCompilerTests
 
             }
         }
+
         private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
         {
             List<string> tables = targetFacet.ExtraTables.Select(x => x.ObjectName).ToList();
@@ -285,7 +292,5 @@ namespace SeadQueryTest2.QueryCompilerTests
 
             return tables.Distinct().ToList();
         }
-
-
     }
 }

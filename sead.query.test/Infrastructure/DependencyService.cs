@@ -6,10 +6,10 @@ using SeadQueryAPI;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
+using System.Diagnostics;
 
 namespace SeadQueryTest.Infrastructure
 {
-
     public class TestDependencyService : DependencyService
     {
         public TestDependencyService()
@@ -35,9 +35,10 @@ namespace SeadQueryTest.Infrastructure
             var builder = new Autofac.ContainerBuilder();
 
             builder.RegisterInstance(options).SingleInstance().ExternallyOwned();
-            builder.Register(c => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
+            builder.Register(_ => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
             if (FacetDbContext is null) {
+                Debug.Print("Warning: Falling back to default online DB connection for test");
                 builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
             } else {
                 builder.RegisterInstance(FacetDbContext).SingleInstance().ExternallyOwned();
@@ -46,7 +47,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build());
+            builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>())).SingleInstance();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
@@ -111,5 +112,4 @@ namespace SeadQueryTest.Infrastructure
             return Register(services, Startup.Options);
         }
     }
-
 }

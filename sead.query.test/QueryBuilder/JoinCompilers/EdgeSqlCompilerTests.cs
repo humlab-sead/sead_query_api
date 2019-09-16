@@ -22,7 +22,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
         }
 
         [Fact]
-        public void Compile_StateUnderTest_ExpectedBehavior()
+        public void Compile_WithSingleEdge_ReturnSingleJoin()
         {
             // Arrange
             var edgeSqlCompiler = this.CreateEdgeSqlCompiler();

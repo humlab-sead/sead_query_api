@@ -9,6 +9,7 @@ using System.Text;
 using System.Data;
 using System.Dynamic;
 using Newtonsoft.Json;
+using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest
 {

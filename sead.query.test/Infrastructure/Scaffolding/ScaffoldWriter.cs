@@ -33,6 +33,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
                 Serializer.Serialize(writer, entities);
             }
         }
+
         public void SerializeToFile<T>(object entities, string path)
         {
             SerializeToFile(typeof(T), entities, path);

@@ -1,12 +1,13 @@
 ﻿using DataAccessPostgreSqlProvider;
 using SeadQueryCore;
+using SeadQueryInfra;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SeadQueryTest.Infrastructure.Scaffolding
 {
-
     public static class ScaffoldUtility
     {
         public static string GetRootFolder()
@@ -37,10 +38,41 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
                 };
         }
 
+        public static List<T> LoadJSON<T>(int count=0)
+        {
+            var folder = Path.Combine(GetRootFolder(), "Infrastructure", "Data");
+            var reader = new ScaffoldReader();
+            List<T> entities = new List<T>(reader.Deserialize<T>(folder));
+            return entities;
+        }
+        public static T LoadSingleJSON<T>(int index=0)
+        {
+            var folder = Path.Combine(GetRootFolder(), "Infrastructure", "Data");
+            var reader = new ScaffoldReader();
+            List<T> entities = new List<T>(reader.Deserialize<T>(folder));
+            return LoadJSON<T>()[index];
+        }
+
         public static FacetContext DefaultFacetContext()
         {
             var folder = Path.Combine(GetRootFolder(), "Infrastructure", "Data");
-            return new FacetContextFixtureSeededByFolder(folder).FacetContext;
+            var seeder = new FacetContextFixtureSeededByFolder(folder);
+            return seeder.FacetContext;
+        }
+
+        public static IFacetsGraph CreateFacetsGraphByFakeContext(FacetContext testContext)
+        {
+            var registry = new RepositoryRegistry(testContext);
+            var factory = new FacetGraphFactory();
+            List<GraphNode> nodes = registry.Nodes.GetAll().ToList();
+            List<GraphEdge> edges = registry.Edges.GetAll().ToList();
+            List<Facet> facets = registry.Facets.FindThoseWithAlias().ToList();
+            var g = factory.Build(
+                nodes,
+                edges,
+                facets
+            );
+            return g;
         }
     }
 }
