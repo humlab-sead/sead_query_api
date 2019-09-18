@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Features.Indexed;
 using SeadQueryCore.Model;
+using SeadQueryCore.Services.Result;
 
 namespace SeadQueryAPI.Services {
 
@@ -17,14 +18,14 @@ namespace SeadQueryAPI.Services {
     public class LoadResultService : AppServiceBase, ILoadResultService {
 
         public IResultServiceIndex ResultServices { get; private set; }
-        private IDeleteBogusPickService BogusPickService;
+        private IDiscreteBogusPickService BogusPickService;
 
         public LoadResultService(
             IQueryBuilderSetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,
-            IDeleteBogusPickService bogusPickService) : base(config, context, cache) {
+            IDiscreteBogusPickService bogusPickService) : base(config, context, cache) {
             ResultServices = services;
             BogusPickService = bogusPickService;
         }
@@ -45,7 +46,7 @@ namespace SeadQueryAPI.Services {
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,
-            IDeleteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
+            IDiscreteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
         {
         }
 

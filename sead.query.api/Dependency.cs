@@ -1,13 +1,14 @@
-﻿using Autofac;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DataAccessPostgreSqlProvider;
 using Microsoft.Extensions.DependencyInjection;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SeadQueryAPI
 {
@@ -57,7 +58,7 @@ namespace SeadQueryAPI
             builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>()));
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
-            builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
+            builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
