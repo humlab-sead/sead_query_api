@@ -7,9 +7,6 @@ using static SeadQueryCore.Utility;
 
 namespace SeadQueryCore
 {
-    public interface ICategoryBoundsService  {
-        List<Key2Value<int, float>> Load();
-    }
 
     public class RangeCategoryBoundsService : QueryServiceBase, ICategoryBoundsService {
 
