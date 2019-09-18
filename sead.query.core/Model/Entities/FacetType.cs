@@ -25,7 +25,7 @@ namespace SeadQueryCore
         /// <summary>
         /// Specifies if facets of type should be reloaded when is target facet
         /// </summary>
-        public bool ReloadAsTarget { get; set; }
+        public virtual bool ReloadAsTarget { get; set; }
 
     }
 }

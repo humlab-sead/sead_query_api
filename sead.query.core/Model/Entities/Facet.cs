@@ -33,7 +33,7 @@ namespace SeadQueryCore
         /// <summary>
         /// Domain key / ID
         /// </summary>
-        public string FacetCode { get; set; }
+        public virtual string FacetCode { get; set; }
 
         /// <summary>
         /// Display text

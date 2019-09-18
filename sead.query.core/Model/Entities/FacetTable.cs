@@ -14,11 +14,11 @@ namespace SeadQueryCore
 
         public int FacetTableId { get; set; }
         public int FacetId { get; set; }
-        public int SequenceId { get; set; }
+        public virtual int SequenceId { get; set; }
         public string SchemaName { get; set; }
         public string ObjectName { get; set; }
         public string ObjectArgs { get; set; }
-        public string Alias { get; set; }
+        public virtual string Alias { get; set; }
 
         [JsonIgnore]
         public virtual Facet Facet { get; set; }
