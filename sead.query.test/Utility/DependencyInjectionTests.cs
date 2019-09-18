@@ -1,15 +1,15 @@
-using Autofac;
-using DataAccessPostgreSqlProvider;
-using SeadQueryAPI;
-using SeadQueryAPI.Services;
-using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SeadQueryInfra;
-using SeadQueryTest;
-using SeadQueryTest.Infrastructure;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Autofac;
+using DataAccessPostgreSqlProvider;
+using SeadQueryAPI.Services;
+using SeadQueryCore;
+using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Services.Result;
+using SeadQueryInfra;
+using SeadQueryTest;
+using SeadQueryTest.Infrastructure;
 using Xunit;
 
 namespace SeadQueryTest2.IoC
@@ -116,7 +116,7 @@ namespace SeadQueryTest2.IoC
                 Assert.NotNull(scope.Resolve<IFacetGraphFactory>());
                 Assert.NotNull(scope.Resolve<IFacetsGraph>());
                 Assert.NotNull(scope.Resolve<IQuerySetupBuilder>());
-                Assert.NotNull(scope.Resolve<IDeleteBogusPickService>());
+                Assert.NotNull(scope.Resolve<IDiscreteBogusPickService>());
                 Assert.NotNull(scope.Resolve<ICategoryBoundsService>());
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));

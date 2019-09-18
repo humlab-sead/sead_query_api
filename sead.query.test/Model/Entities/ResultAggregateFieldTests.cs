@@ -1,44 +1,43 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class ResultAggregateFieldTests : IDisposable
+    public class ResultAggregateFieldTests : FacetTestBase
     {
-        private Moq.MockRepository mockRepository;
+        // Class has no logic...
 
+        public static List<object[]> TestData = new List<object[]>() {
+             new object[] {
+                typeof(ResultAggregateField),
+                13,
+                new Dictionary<string, object>() {
+                    { "AggregateFieldId", 13 },
+                    { "AggregateId", 1 },
+                    { "ResultFieldId", 1 },
+                    { "FieldTypeId", "sort_item" },
+                    { "SequenceId", 99 }
+                }
+            }
+        };
 
-
-        public ResultAggregateFieldTests()
-        {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private ResultAggregateField CreateResultAggregateField()
-        {
-            return new ResultAggregateField();
-        }
-
-        [Fact]
-        public void TestMethod1()
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public void Find_FromRepository_IsComplete(Type type, object id, Dictionary<string, object> expected)
         {
             // Arrange
-            var resultAggregateField = this.CreateResultAggregateField();
-
-            // Act
-
-
-            // Assert
-            Assert.True(false);
+            using (var context = ScaffoldUtility.DefaultFacetContext()) {
+                // Act
+                var entity = context.Find(type, new object[] { id });
+                // Assert
+                Assert.NotNull(entity);
+                Asserter.EqualByDictionary(type, expected, entity);
+            }
         }
     }
 }

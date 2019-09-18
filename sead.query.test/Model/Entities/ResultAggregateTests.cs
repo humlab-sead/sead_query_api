@@ -1,57 +1,92 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class ResultAggregateTests : IDisposable
+    public class ResultAggregateTests : FacetTestBase
     {
-        private Moq.MockRepository mockRepository;
-
-
-
-        public ResultAggregateTests()
-        {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
         private ResultAggregate CreateResultAggregate()
         {
-            return new ResultAggregate();
+            return new ResultAggregate() {
+                AggregateId = 3,
+                AggregateKey = "sample_group_level",
+                Fields = new List<ResultAggregateField>() {
+                    new ResultAggregateField() {
+                        AggregateFieldId = 1,
+                        FieldTypeId = "count_item",
+                        SequenceId = 1,
+                        ResultField = new ResultField() {
+                            ResultFieldKey = "xxx",
+                            FieldTypeId = "single_item"
+                        },
+                        FieldType = new ResultFieldType() {
+                            IsResultValue = true
+                        }
+                    },
+
+                    new ResultAggregateField() {
+                        AggregateFieldId = 2,
+                        FieldTypeId = "count_item",
+                        SequenceId = 2,
+                        ResultField = new ResultField() {
+                            ResultFieldKey = "yyy",
+                            FieldTypeId = "single_item"
+                        },
+                        FieldType = new ResultFieldType() {
+                            IsResultValue = false
+                        }
+                    }
+                }
+            };
         }
 
+        //private ResultAggregate CreateMockedResultAggregate()
+        //{
+        //    var field1 = new Mock<ResultAggregateField>();
+        //    field1.Setup(o => o.FieldType.IsResultValue).Returns(false);
+        //    field1.Setup(o => o.AggregateFieldId).Returns(1);
+
+        //    var field2 = new Mock<ResultAggregateField>();
+        //    field2.Setup(o => o.FieldType.IsResultValue).Returns(true);
+        //    field1.Setup(o => o.AggregateFieldId).Returns(2);
+
+        //    var fields = (new List<ResultAggregateField>() { field1.Object, field2.Object });
+        //    var mockResultAggregate = new Mock<ResultAggregate>();
+        //    mockResultAggregate.Setup(x => x.Fields).Returns<ICollection<ResultAggregateField>>(_ => fields);
+
+        //    return mockResultAggregate.Object;
+        //}
+
         [Fact]
-        public void GetResultFields_StateUnderTest_ExpectedBehavior()
+        public void GetFields_WithTwoFieldsField_ReturnsFields()
         {
             // Arrange
-            var resultAggregate = this.CreateResultAggregate();
+            var item = CreateResultAggregate();
 
             // Act
-            var result = resultAggregate.GetResultFields();
+            var result = item.GetFields();
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(2, result.Count);
         }
 
+
         [Fact]
-        public void GetFields_StateUnderTest_ExpectedBehavior()
+        public void GetResultFields_WithTwoFields_ReturnsTwoResultFields()
         {
             // Arrange
-            var resultAggregate = this.CreateResultAggregate();
+            var item = CreateResultAggregate();
 
             // Act
-            var result = resultAggregate.GetFields();
+            var result = item.GetResultFields();
 
             // Assert
-            Assert.True(false);
+            Assert.Single(result);
         }
     }
 }

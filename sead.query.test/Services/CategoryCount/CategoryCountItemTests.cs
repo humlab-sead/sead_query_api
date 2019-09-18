@@ -3,17 +3,17 @@ using SeadQueryCore;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Services
+namespace SeadQueryTest.Services.CategoryCount
 {
     public class CategoryCountItemTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
+        private MockRepository mockRepository;
 
 
 
         public CategoryCountItemTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
+            this.mockRepository = new MockRepository(MockBehavior.Strict);
 
 
         }

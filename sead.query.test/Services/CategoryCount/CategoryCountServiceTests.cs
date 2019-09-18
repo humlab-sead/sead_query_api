@@ -4,25 +4,23 @@ using SeadQueryCore.QueryBuilder;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Services
+namespace SeadQueryTest.Services.CategoryCount
 {
-    public class DeleteBogusPickServiceTests : IDisposable
+    public class CategoryCountServiceTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
+        private MockRepository mockRepository;
 
         private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
         private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
-        private Mock<IValidPicksSqlQueryCompiler> mockValidPicksSqlQueryCompiler;
 
-        public DeleteBogusPickServiceTests()
+        public CategoryCountServiceTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
+            this.mockRepository = new MockRepository(MockBehavior.Strict);
 
             this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
             this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
-            this.mockValidPicksSqlQueryCompiler = this.mockRepository.Create<IValidPicksSqlQueryCompiler>();
         }
 
         public void Dispose()
@@ -30,25 +28,28 @@ namespace SeadQueryTest.Services
             this.mockRepository.VerifyAll();
         }
 
-        private DeleteBogusPickService CreateService()
+        private CategoryCountService CreateService()
         {
-            return new DeleteBogusPickService(
+            return new CategoryCountService(
                 this.mockQueryBuilderSetting.Object,
                 this.mockRepositoryRegistry.Object,
-                this.mockQuerySetupBuilder.Object,
-                this.mockValidPicksSqlQueryCompiler.Object);
+                this.mockQuerySetupBuilder.Object);
         }
 
         [Fact]
-        public void Delete_StateUnderTest_ExpectedBehavior()
+        public void Load_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
             var service = this.CreateService();
+            string facetCode = null;
             FacetsConfig2 facetsConfig = null;
+            string intervalQuery = null;
 
             // Act
-            var result = service.Delete(
-                facetsConfig);
+            var result = service.Load(
+                facetCode,
+                facetsConfig,
+                intervalQuery);
 
             // Assert
             Assert.True(false);

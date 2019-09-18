@@ -1,6 +1,7 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using Xunit;
 
@@ -8,39 +9,39 @@ namespace SeadQueryTest.Repository
 {
     public class ViewStateRepositoryTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
-
-        private Mock<IFacetContext> mockFacetContext;
+        private IFacetContext mockFacetContext;
 
         public ViewStateRepositoryTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-            this.mockFacetContext = this.mockRepository.Create<IFacetContext>();
+            this.mockFacetContext = ScaffoldUtility.DefaultFacetContext();
         }
 
         public void Dispose()
         {
-            this.mockRepository.VerifyAll();
         }
 
-        private ViewStateRepository CreateViewStateRepository()
+        private ViewStateRepository CreateRepository()
         {
-            return new ViewStateRepository(
-                this.mockFacetContext.Object);
+            return new ViewStateRepository(this.mockFacetContext);
         }
 
         [Fact]
-        public void TestMethod1()
+        public void Find_WhenCalleWithExistingId_ReturnsType()
         {
             // Arrange
-            var viewStateRepository = this.CreateViewStateRepository();
+            var repository = this.CreateRepository();
+            var key = "key";
+            var data = "data";
+
+            repository.Add(new ViewState() { Key = key, Data = data });
+
+            mockFacetContext.SaveChanges();
 
             // Act
-
+            var result = repository.Get(key);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(data, result.Data);
         }
     }
 }

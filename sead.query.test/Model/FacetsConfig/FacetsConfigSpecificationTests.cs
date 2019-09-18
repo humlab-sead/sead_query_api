@@ -1,27 +1,13 @@
 using Moq;
 using SeadQueryCore;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Model.FacetsConfig
 {
-    public class FacetsConfigSpecificationTests : IDisposable
+    public class FacetsConfigSpecificationTests
     {
-        private MockRepository mockRepository;
-
-
-
-        public FacetsConfigSpecificationTests()
-        {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
 
         private FacetsConfigSpecification CreateFacetsConfigSpecification()
         {
@@ -48,11 +34,10 @@ namespace SeadQueryTest.Model.FacetsConfig
         {
             // Arrange
             var facetsConfigSpecification = this.CreateFacetsConfigSpecification();
-            List configs = null;
+            List<FacetConfig2> configs = null;
 
             // Act
-            var result = facetsConfigSpecification.IsSatisfiedBy(
-                configs);
+            var result = facetsConfigSpecification.IsSatisfiedBy(configs);
 
             // Assert
             Assert.True(false);

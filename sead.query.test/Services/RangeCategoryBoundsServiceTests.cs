@@ -9,7 +9,7 @@ namespace SeadQueryTest.Services
 {
     public class RangeCategoryBoundsServiceTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
+        private MockRepository mockRepository;
 
         private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
@@ -18,7 +18,7 @@ namespace SeadQueryTest.Services
 
         public RangeCategoryBoundsServiceTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
+            this.mockRepository = new MockRepository(MockBehavior.Strict);
 
             this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();

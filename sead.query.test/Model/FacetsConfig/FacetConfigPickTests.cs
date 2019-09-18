@@ -5,73 +5,52 @@ using Xunit;
 
 namespace SeadQueryTest.Model.FacetsConfig
 {
-    public class FacetConfigPickTests : IDisposable
+    public class FacetConfigPickTests
     {
-        private MockRepository mockRepository;
-
-
-
-        public FacetConfigPickTests()
-        {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private FacetConfigPick CreateFacetConfigPick()
-        {
-            return new FacetConfigPick(
-                TODO,
-                TODO,
-                TODO);
-        }
 
         [Fact]
         public void ToDecimal_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var facetConfigPick = this.CreateFacetConfigPick();
+            decimal pickValue = 19.1M;
+            var facetConfigPick = new FacetConfigPick(EPickType.discrete, pickValue);
 
             // Act
             var result = facetConfigPick.ToDecimal();
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(pickValue, result);
         }
 
         [Fact]
-        public void ToInt_StateUnderTest_ExpectedBehavior()
+        public void ToInt_DiscreteIntegerStringPick_ConvertedToCorrespondingInt()
         {
             // Arrange
-            var facetConfigPick = this.CreateFacetConfigPick();
-
+            var pickValue = "19";
+            var facetConfigPick = new FacetConfigPick(EPickType.discrete, pickValue);
             // Act
             var result = facetConfigPick.ToInt();
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(19, result);
         }
 
         [Fact]
-        public void CreateLowerUpper_StateUnderTest_ExpectedBehavior()
+        public void CreateLowerUpper_LowerUpper_ListOfTwoPicks()
         {
             // Arrange
-            var facetConfigPick = this.CreateFacetConfigPick();
-            decimal lower = 0;
-            decimal upper = 0;
+            decimal lower = 5;
+            decimal upper = 10;
 
             // Act
-            var result = facetConfigPick.CreateLowerUpper(
-                lower,
-                upper);
+            var result = FacetConfigPick.CreateLowerUpper(lower, upper);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(2, result.Count);
+            Assert.Equal(EPickType.lower, result[0].PickType);
+            Assert.Equal(lower.ToString(), result[0].PickValue);
+            Assert.Equal(EPickType.upper, result[0].PickType);
+            Assert.Equal(upper.ToString(), result[1].PickValue);
         }
     }
 }

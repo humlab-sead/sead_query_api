@@ -1,44 +1,15 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class ResultViewTypeTests : IDisposable
+    public class ResultViewTypeTests : FacetTestBase
     {
-        private Moq.MockRepository mockRepository;
-
-
-
-        public ResultViewTypeTests()
-        {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private ResultViewType CreateResultViewType()
-        {
-            return new ResultViewType();
-        }
-
-        [Fact]
-        public void TestMethod1()
-        {
-            // Arrange
-            var resultViewType = this.CreateResultViewType();
-
-            // Act
-
-
-            // Assert
-            Assert.True(false);
-        }
+        // Has no logic
     }
 }

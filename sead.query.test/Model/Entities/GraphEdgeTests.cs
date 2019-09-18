@@ -1,35 +1,29 @@
-using Moq;
-using SeadQueryCore;
 using System;
+using System.Collections.Generic;
+using KellermanSoftware.CompareNetObjects;
+using SeadQueryCore;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class GraphEdgeTests : IDisposable
+    public class GraphEdgeTests : FacetTestBase
     {
-        private Moq.MockRepository mockRepository;
-
-
-
-        public GraphEdgeTests()
-        {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
         private GraphEdge CreateGraphEdge()
         {
-            return new GraphEdge();
+            return new GraphEdge() {
+                EdgeId = 1,
+                SourceNode = new GraphNode() { NodeId = 1, TableName = "A" },
+                TargetNode = new GraphNode() { NodeId = 2, TableName = "B" },
+                Weight = 6,
+                SourceKeyName = "a_b",
+                TargetKeyName = "a_b"
+            };
         }
 
         [Fact]
-        public void Clone_StateUnderTest_ExpectedBehavior()
+        public void Clone_OfAnyEdge_HasSameState()
         {
             // Arrange
             var graphEdge = this.CreateGraphEdge();
@@ -38,11 +32,11 @@ namespace SeadQueryTest.Model.Entities
             var result = graphEdge.Clone();
 
             // Assert
-            Assert.True(false);
+            Asserter.EqualByProperty( graphEdge, result);
         }
 
         [Fact]
-        public void Reverse_StateUnderTest_ExpectedBehavior()
+        public void Reverse_OfAnyGraph_SwitchesNodes()
         {
             // Arrange
             var graphEdge = this.CreateGraphEdge();
@@ -51,71 +45,46 @@ namespace SeadQueryTest.Model.Entities
             var result = graphEdge.Reverse();
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(result.SourceName, graphEdge.TargetName);
+            Assert.Equal(result.SourceNode, graphEdge.TargetNode);
+            Assert.Equal(result.TargetName, graphEdge.SourceName);
+            Assert.Equal(result.TargetNode, graphEdge.SourceNode);
+            Assert.Equal(result.SourceKeyName, graphEdge.TargetKeyName);
+            Assert.Equal(result.TargetKeyName, graphEdge.SourceKeyName);
+            Assert.Equal(result.Weight, graphEdge.Weight);
         }
 
         [Fact]
-        public void Alias_StateUnderTest_ExpectedBehavior()
+        public void Alias_OfAnyGraph_ReplacesNodeWithSameId()
         {
             // Arrange
             var graphEdge = this.CreateGraphEdge();
-            GraphNode node = null;
-            GraphNode alias = null;
+            GraphNode node = graphEdge.TargetNode;
+            GraphNode alias = new GraphNode { NodeId = node.NodeId, TableName = "ALIAS" };
 
             // Act
-            var result = graphEdge.Alias(
-                node,
-                alias);
+            var result = graphEdge.Alias(node, alias);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal("ALIAS", result.TargetNode.TableName);
         }
 
         [Fact]
-        public void Equals_StateUnderTest_ExpectedBehavior()
+        public void Equals_OfIdenticalEdges_IsTrue()
         {
             // Arrange
-            var graphEdge = this.CreateGraphEdge();
-            object x = null;
+            var graphEdge1 = this.CreateGraphEdge();
+            var graphEdge2 = this.CreateGraphEdge();
 
             // Act
-            var result = graphEdge.Equals(
-                x);
+            var result = graphEdge1.Equals(graphEdge1);
 
             // Assert
-            Assert.True(false);
+            Assert.True(result);
         }
 
         [Fact]
-        public void Equal_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var graphEdge = this.CreateGraphEdge();
-            GraphEdge x = null;
-
-            // Act
-            var result = graphEdge.Equal(
-                x);
-
-            // Assert
-            Assert.True(false);
-        }
-
-        [Fact]
-        public void GetHashCode_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var graphEdge = this.CreateGraphEdge();
-
-            // Act
-            var result = graphEdge.GetHashCode();
-
-            // Assert
-            Assert.True(false);
-        }
-
-        [Fact]
-        public void ToStringPair_StateUnderTest_ExpectedBehavior()
+        public void ToStringPair_OfAnyEdge_ReturnsPair()
         {
             // Arrange
             var graphEdge = this.CreateGraphEdge();
@@ -124,7 +93,36 @@ namespace SeadQueryTest.Model.Entities
             var result = graphEdge.ToStringPair();
 
             // Assert
-            Assert.True(false);
+            Assert.Equal($"{graphEdge.SourceName}/{graphEdge.TargetName}", result);
+        }
+
+        public static List<object[]> TestData = new List<object[]>() {
+             new object[] {
+                typeof(GraphEdge),
+                5,
+                new Dictionary<string, object>() {
+                    { "EdgeId", 5 },
+                    { "SourceNodeId", 44 },
+                    { "TargetNodeId", 142 },
+                    { "Weight", 20 },
+                    { "SourceKeyName", "modification_type_id" },
+                    { "TargetKeyName", "modification_type_id" }
+                }
+            }
+        };
+
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public void Find_FromRepository_IsComplete(Type type, object id, Dictionary<string, object> expected)
+        {
+            // Arrange
+            using (var context = ScaffoldUtility.DefaultFacetContext()) {
+                // Act
+                var entity = context.Find(type, new object[] { id });
+                // Assert
+                Assert.NotNull(entity);
+                Asserter.EqualByDictionary(type, expected, entity);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SeadQueryAPI;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
 using System.Diagnostics;
 
@@ -50,7 +51,7 @@ namespace SeadQueryTest.Infrastructure
             builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>())).SingleInstance();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
-            builder.RegisterType<DeleteBogusPickService>().As<IDeleteBogusPickService>();
+            builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
@@ -74,8 +75,6 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
             builder.RegisterType<ResultCompiler>().As<IResultCompiler>();
-
-            // builder.RegisterAggregateService<IControllerServiceAggregate>();
 
             builder.RegisterType<RangeCategoryBoundSqlQueryCompiler>().Keyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range);
 
@@ -102,13 +101,11 @@ namespace SeadQueryTest.Infrastructure
 
         public IContainer Register()
         {
-            // This is a good place to injext stubs and mockups!
             return Register(null);
         }
 
         public IContainer Register(IServiceCollection services)
         {
-            // This is a good place to injext stubs and mockups!
             return Register(services, Startup.Options);
         }
     }

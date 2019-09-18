@@ -10,6 +10,7 @@ using System.Data;
 using System.Dynamic;
 using Newtonsoft.Json;
 using SeadQueryTest.Infrastructure;
+using SeadQueryCore.Services.Result;
 
 namespace SeadQueryTest
 {

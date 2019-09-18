@@ -11,32 +11,27 @@ namespace SeadQueryTest.Repository
 {
     public class ResultRepositoryTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
-
-        private Mock<IFacetContext> mockFacetContext;
+        private IFacetContext mockFacetContext;
 
         public ResultRepositoryTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-            this.mockFacetContext = this.mockRepository.Create<IFacetContext>();
+            this.mockFacetContext = ScaffoldUtility.DefaultFacetContext();
         }
 
         public void Dispose()
         {
-            this.mockRepository.VerifyAll();
         }
 
-        private ResultRepository CreateResultRepository()
+        private ResultRepository CreateRepository()
         {
-            return new ResultRepository(this.mockFacetContext.Object);
+            return new ResultRepository(this.mockFacetContext);
         }
 
         [Fact]
         public void ToDictionary_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
 
             // Act
             var result = resultRepository.ToDictionary();
@@ -49,7 +44,7 @@ namespace SeadQueryTest.Repository
         public void GetAll_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
 
             // Act
             var result = resultRepository.GetAll();
@@ -62,7 +57,7 @@ namespace SeadQueryTest.Repository
         public void GetByKey_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
             string key = null;
 
             // Act
@@ -77,7 +72,7 @@ namespace SeadQueryTest.Repository
         public void GetAllFields_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
 
             // Act
             var result = resultRepository.GetAllFields();
@@ -90,7 +85,7 @@ namespace SeadQueryTest.Repository
         public void GetViewTypes_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
 
             // Act
             var result = resultRepository.GetViewTypes();
@@ -103,7 +98,7 @@ namespace SeadQueryTest.Repository
         public void GetViewType_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
             string viewTypeId = null;
 
             // Act
@@ -118,7 +113,7 @@ namespace SeadQueryTest.Repository
         public void GetAllFieldTypes_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
 
             // Act
             var result = resultRepository.GetAllFieldTypes();
@@ -131,7 +126,7 @@ namespace SeadQueryTest.Repository
         public void GetByKeys_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
             List<string> keys = null;
 
             // Act
@@ -146,7 +141,7 @@ namespace SeadQueryTest.Repository
         public void GetFieldsByKeys_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultRepository = this.CreateResultRepository();
+            var resultRepository = this.CreateRepository();
             List<string> keys = null;
 
             // Act

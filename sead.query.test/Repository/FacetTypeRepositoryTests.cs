@@ -1,6 +1,7 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using Xunit;
 
@@ -8,39 +9,33 @@ namespace SeadQueryTest.Repository
 {
     public class FacetTypeRepositoryTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
-
-        private Mock<IFacetContext> mockFacetContext;
+        private IFacetContext mockFacetContext;
 
         public FacetTypeRepositoryTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-            this.mockFacetContext = this.mockRepository.Create<IFacetContext>();
+            this.mockFacetContext = ScaffoldUtility.DefaultFacetContext();
         }
 
         public void Dispose()
         {
-            this.mockRepository.VerifyAll();
         }
 
         private FacetTypeRepository CreateFacetTypeRepository()
         {
-            return new FacetTypeRepository(
-                this.mockFacetContext.Object);
+            return new FacetTypeRepository(this.mockFacetContext);
         }
 
         [Fact]
-        public void TestMethod1()
+        public void Find_WhenCalleWithExistingId_ReturnsType()
         {
             // Arrange
             var facetTypeRepository = this.CreateFacetTypeRepository();
 
             // Act
-
+            var result = facetTypeRepository.Get(1);
 
             // Assert
-            Assert.True(false);
+            Assert.Equal(EFacetType.Discrete, result.FacetTypeId);
         }
     }
 }

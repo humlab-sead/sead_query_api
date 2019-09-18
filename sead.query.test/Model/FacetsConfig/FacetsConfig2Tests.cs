@@ -4,6 +4,7 @@ using SeadQueryCore;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Model.FacetsConfig
@@ -149,7 +150,7 @@ namespace SeadQueryTest.Model.FacetsConfig
         {
             // Arrange
             var facetsConfig2 = this.CreateFacetsConfig2();
-            List facetCodes = null;
+            List<string> facetCodes = null;
             Facet targetFacet = null;
 
             // Act

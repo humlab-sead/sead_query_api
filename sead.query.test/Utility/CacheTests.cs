@@ -20,7 +20,7 @@ namespace SeadQueryTest.Cache {
         }
 
         [Fact]
-        public void CanCacheSimpleValue()
+        public void Set_WhenSimple_IsCached()
         {
             const int expectedValue = 1234;
             var testKey = "a test key";
@@ -31,18 +31,7 @@ namespace SeadQueryTest.Cache {
         }
 
         [Fact]
-        public void CanCacheComplexValue()
-        {
-            var expectedValue = new { A = 1, B = 2 };
-            var testKey = "a test key";
-            var cache = GetCache();
-            cache.Set(testKey, expectedValue);
-            var retrievedValue = cache.Get<object>(testKey);
-            Assert.Equal(expectedValue, retrievedValue);
-        }
-
-        [Fact]
-        public void CanCacheComplexValue2()
+        public void Set_WhenComplexValue_IsCached()
         {
             var cache = GetCache();
 
@@ -55,7 +44,7 @@ namespace SeadQueryTest.Cache {
         }
 
         [Fact]
-        public void CanResolveCacheService()
+        public void Resolve_CanResolveCacheService()
         {
             var options = Startup.Options;
             var container = new TestDependencyService().Register(null, options);

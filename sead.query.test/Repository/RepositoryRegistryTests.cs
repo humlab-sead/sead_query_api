@@ -1,6 +1,7 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using Xunit;
 
@@ -8,26 +9,21 @@ namespace SeadQueryTest.Repository
 {
     public class RepositoryRegistryTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
-
-        private Mock<IFacetContext> mockFacetContext;
+        private IFacetContext mockFacetContext;
 
         public RepositoryRegistryTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-            this.mockFacetContext = this.mockRepository.Create<IFacetContext>();
+            this.mockFacetContext = ScaffoldUtility.DefaultFacetContext();
         }
 
         public void Dispose()
         {
-            this.mockRepository.VerifyAll();
         }
 
         private RepositoryRegistry CreateRepositoryRegistry()
         {
             return new RepositoryRegistry(
-                this.mockFacetContext.Object);
+                this.mockFacetContext);
         }
 
         [Fact]
@@ -38,19 +34,6 @@ namespace SeadQueryTest.Repository
 
             // Act
             var result = repositoryRegistry.Commit();
-
-            // Assert
-            Assert.True(false);
-        }
-
-        [Fact]
-        public void Dispose_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var repositoryRegistry = this.CreateRepositoryRegistry();
-
-            // Act
-            repositoryRegistry.Dispose();
 
             // Assert
             Assert.True(false);
