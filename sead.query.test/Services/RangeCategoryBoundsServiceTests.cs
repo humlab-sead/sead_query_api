@@ -13,7 +13,7 @@ namespace SeadQueryTest.Services
 
         private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IIndex<EFacetType, ICategoryBoundSqlQueryCompiler>> mockIndex;
 
         public RangeCategoryBoundsServiceTests()
@@ -22,7 +22,7 @@ namespace SeadQueryTest.Services
 
             this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
+            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
             this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryBoundSqlQueryCompiler>>();
         }
 
@@ -34,7 +34,6 @@ namespace SeadQueryTest.Services
         private RangeCategoryBoundsService CreateService()
         {
             return new RangeCategoryBoundsService(
-                this.mockQueryBuilderSetting.Object,
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object,
                 this.mockIndex.Object);

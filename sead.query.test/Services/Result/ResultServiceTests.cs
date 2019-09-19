@@ -1,81 +1,107 @@
-﻿using Autofac;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Autofac;
+using Autofac.Features.Indexed;
+using Moq;
 using SeadQueryCore;
-using SeadQueryTest.fixtures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
-using System.Dynamic;
-using Newtonsoft.Json;
-using SeadQueryTest.Infrastructure;
+using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
+using SeadQueryInfra;
+using SeadQueryTest.fixtures;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
+using Xunit;
 
 namespace SeadQueryTest
 {
-    [TestClass]
     public class ResultContentServiceTests
     {
+        private QueryBuilderSetting mockQueryBuilderSetting;
+        private RepositoryRegistry mockRegistry;
         private FacetConfigGenerator facetConfigFixture;
         private ResultConfigGenerator resultConfigFixture;
 
-        private TestContext testContextInstance;
-        public TestContext TestContext
+        public ResultContentServiceTests()
         {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
-
-        [TestInitialize()]
-        public void Initialize()
-        {
-            facetConfigFixture = new fixtures.FacetConfigGenerator(null, null);
+            mockQueryBuilderSetting = new MockOptionBuilder().Build().Value;
+            mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
+            facetConfigFixture = new fixtures.FacetConfigGenerator(mockRegistry);
             resultConfigFixture = new fixtures.ResultConfigGenerator();
         }
 
-        [TestMethod]
-        public void LoadOfFinishSitesShouldEqualExpectedItems()
+        [Theory]
+        [InlineData("tabular", "site_level", "sites@sites:country@73/sites:", 30)]
+        [InlineData("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1)]
+        [InlineData("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30)]
+        //[InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
+        public void Load_WhenUsingDefaultContext(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
-            var testConfigs = new List<(string, string, string, int)>()
-            {
-                ("tabular", "site_level", "sites@sites:country@73/sites:", 30 ),
-                ("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1 ),
-                ("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30 ),
-                ("map", "map_result", "sites@sites:country@73/sites:", 32 )
-            };
-            foreach (var (viewTypeId, resultKey, uri, expectedCount) in testConfigs)
-                ExecuteLoadContent(expectedCount, viewTypeId, resultKey, uri);
-        }
+            // using (var context = ScaffoldUtility.DefaultFacetContext())
+            using (var container = new TestDependencyService().Register())
+            using (var scope = container.BeginLifetimeScope()) {
 
-        private void ExecuteLoadContent(int expectedCount, string viewTypeId, string resultKey, string uri)
+                // Arrange
+                var facetsConfig = facetConfigFixture.GenerateByUri(uri);
+                var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
+
+                var dumpsFacetConfig = ObjectDumper.Dump(facetsConfig);
+
+                var service = scope.ResolveKeyed<IResultService>(viewTypeId);
+
+                IQuerySetupCompiler builder = scope.Resolve<IQuerySetupCompiler>();
+
+                var resultSet = service.Load(facetsConfig, resultConfig);
+                // Act
+
+            }
+
+        }
+        /*
+         */
+        [Theory]
+        [InlineData("tabular", "site_level", "sites@sites:country@73/sites:", 30)]
+        [InlineData("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1)]
+        [InlineData("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30)]
+        //[InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
+        public void Load_ExecuteLoadContent(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
 
             // Arrange
-            IContainer container = new TestDependencyService().Register();
             var facetsConfig = facetConfigFixture.GenerateByUri(uri);
             var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
-            using (var scope = container.BeginLifetimeScope()) {
-                var context = scope.Resolve<IRepositoryRegistry>();
-                facetsConfig.SetContext(context);
 
-                var service = scope.ResolveKeyed<IResultService>(viewTypeId);
-                var aggregate = context.Results.GetByKey(resultConfig.AggregateKeys[0]);
+            var aggregate = mockRegistry.Results.GetByKey(resultConfig.AggregateKeys[0]);
 
-                // Act
-                var resultSet = service.Load(facetsConfig, resultConfig);
+            var mockResultCompiler = new Mock<IResultCompiler>();
+            mockResultCompiler.Setup(
+                c => c.Compile(facetsConfig, resultConfig, "result_facet")
+            ).Returns("");   
+            var mockCountService = new Mock<ICategoryCountService>();
+            IIndex<EFacetType, ICategoryCountService> mockCountServices = new MockIndex<EFacetType, ICategoryCountService>
+            {
+                { EFacetType.Discrete, mockCountService.Object },
+                { EFacetType.Range, mockCountService.Object }
+            };
+            var tabularSqlCompiler = new TabularResultSqlQueryCompiler();
 
-                // Assert
-                Assert.IsNotNull(resultSet);
-                var expectedFields = aggregate.GetResultFields();
-                var items = resultSet.Data.DataCollection.ToList();
-                Assert.IsTrue(items.All(x => x.Length == expectedFields.Count), $"Field count unexpected. {viewTypeId}/{resultKey}");
-                Assert.AreEqual(expectedCount, items.Count, $"Item count unexpected. {viewTypeId}/{resultKey}");
+            var service = new DefaultResultService(
+                mockRegistry,
+                mockResultCompiler.Object,
+                mockCountServices
+            );
 
-                var columns = resultSet.Meta.Columns;
+            // Act
+            var resultSet = service.Load(facetsConfig, resultConfig);
 
-                Assert.AreEqual(expectedFields.Count, columns.Count);
-            }
+            // Assert
+            Assert.NotNull(resultSet);
+            var expectedFields = aggregate.GetResultFields();
+            var items = resultSet.Data.DataCollection.ToList();
+            Assert.True(items.All(x => x.Length == expectedFields.Count));
+            Assert.Equal(expectedCount, items.Count);
+
+            var columns = resultSet.Meta.Columns;
+
+            Assert.Equal(expectedFields.Count, columns.Count);
         }
     }
 }

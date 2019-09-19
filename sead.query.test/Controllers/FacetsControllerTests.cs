@@ -1,36 +1,37 @@
 using Moq;
 using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Controllers;
+using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
+using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using Xunit;
 
 namespace SeadQueryTest.Controllers
 {
-    public class FacetsControllerTests : IDisposable
+    public class FacetsControllerTests
     {
-        private MockRepository mockRepository;
-
-        private Mock<IRepositoryRegistry> mockRepositoryRegistry;
+        private RepositoryRegistry mockRegistry;
+        private QueryBuilderSetting mockQueryBuilderSetting;
 
         public FacetsControllerTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            mockQueryBuilderSetting = new MockOptionBuilder().Build().Value;
+            mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
         }
 
         private FacetsController CreateFacetsController()
         {
-            var mockLoadFacetService = new Mock<ILoadFacetService>();
+            var mockLoadFacetService = new Mock<IFacetReconstituteService>();
+            var mockReconstituteService = new Mock<IFacetConfigReconstituteService>();
 
-            return new FacetsController(mockRepositoryRegistry.Object, mockLoadFacetService.Object);
+            return new FacetsController(
+                mockRegistry,
+                mockReconstituteService.Object,
+                mockLoadFacetService.Object
+            );
         }
 
         [Fact]

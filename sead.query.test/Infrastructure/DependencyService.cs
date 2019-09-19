@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using DataAccessPostgreSqlProvider;
 using Microsoft.Extensions.DependencyInjection;
 using SeadQueryAPI;
+using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
@@ -36,6 +37,7 @@ namespace SeadQueryTest.Infrastructure
             var builder = new Autofac.ContainerBuilder();
 
             builder.RegisterInstance(options).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<IFacetSetting>(options.Facet).SingleInstance().ExternallyOwned();
             builder.Register(_ => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
 
             if (FacetDbContext is null) {
@@ -50,8 +52,9 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
             builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>())).SingleInstance();
 
-            builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
+            builder.RegisterType<QuerySetupCompiler>().As<IQuerySetupCompiler>();
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
+            builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
@@ -85,10 +88,10 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<MapResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("map");
 
             if (options.Store.UseRedisCache) {
-                builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.ILoadFacetService>();
+                builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             } else {
-                builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.ILoadFacetService>();
+                builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.LoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
             if (services != null)

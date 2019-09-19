@@ -6,32 +6,23 @@ using Xunit;
 
 namespace SeadQueryTest.Services.CategoryCount
 {
-    public class CategoryCountServiceTests : IDisposable
+    public class CategoryCountServiceTests
     {
-        private MockRepository mockRepository;
-
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
+        private IFacetSetting mockSettings;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
 
         public CategoryCountServiceTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            this.mockSettings = new MockOptionBuilder().Build().Value.Facet;
+            this.mockRepositoryRegistry = new Mock<IRepositoryRegistry>();
+            this.mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
         }
 
         private CategoryCountService CreateService()
         {
             return new CategoryCountService(
-                this.mockQueryBuilderSetting.Object,
+                this.mockSettings,
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object);
         }

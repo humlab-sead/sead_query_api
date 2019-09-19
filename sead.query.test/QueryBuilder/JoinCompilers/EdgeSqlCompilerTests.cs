@@ -5,17 +5,8 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.JoinCompilers
 {
-    public class EdgeSqlCompilerTests : IDisposable
+    public class EdgeSqlCompilerTests
     {
-        public EdgeSqlCompilerTests()
-        {
-
-        }
-
-        public void Dispose()
-        {
-        }
-
         private EdgeSqlCompiler CreateEdgeSqlCompiler()
         {
             return new EdgeSqlCompiler();
@@ -51,8 +42,8 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
                 innerJoin);
 
             // Assert
-            var expected = " LEFT JOIN tbl_site_locations  ON tbl_site_locations.\"location_id\" = countries.\"location_id\" ";
-            Assert.Equal(expected, result);
+            var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
+            Assert.Equal(expected, result.ToLower().Trim());
         }
     }
 }

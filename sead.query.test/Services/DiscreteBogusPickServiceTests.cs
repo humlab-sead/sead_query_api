@@ -12,7 +12,7 @@ namespace SeadQueryTest.Services
 
         private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IValidPicksSqlQueryCompiler> mockValidPicksSqlQueryCompiler;
 
         public DeleteBogusPickServiceTests()
@@ -21,7 +21,7 @@ namespace SeadQueryTest.Services
 
             this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
+            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
             this.mockValidPicksSqlQueryCompiler = this.mockRepository.Create<IValidPicksSqlQueryCompiler>();
         }
 
@@ -33,7 +33,6 @@ namespace SeadQueryTest.Services
         private DiscreteBogusPickService CreateService()
         {
             return new DiscreteBogusPickService(
-                this.mockQueryBuilderSetting.Object,
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object,
                 this.mockValidPicksSqlQueryCompiler.Object);

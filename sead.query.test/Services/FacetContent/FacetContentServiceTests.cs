@@ -3,41 +3,36 @@ using Moq;
 using Newtonsoft.Json;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Services
 {
-    public class FacetContentServiceTests : IDisposable
+    public class FacetContentServiceTests
     {
-        private Moq.MockRepository mockRepository;
-
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
-        private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private RepositoryRegistry mockRegistry;
+        private IFacetSetting mockSettings;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
 
         public FacetContentServiceTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            mockSettings = new MockOptionBuilder().Build().Value.Facet;
+            mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
+            mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
+            // TODO: Setup mockQuerySetupBuilder
         }
 
         private FacetContentService CreateService()
         {
             return new FacetContentService(
-                this.mockQueryBuilderSetting.Object,
-                this.mockRepositoryRegistry.Object,
-                this.mockQuerySetupBuilder.Object);
+                mockSettings,
+                mockRegistry,
+                mockQuerySetupBuilder.Object
+           );
         }
 
         [Fact]
@@ -58,17 +53,15 @@ namespace SeadQueryTest.Services
 
 
         [Fact]
-        public void CanLoadSingleDiscreteConfigWithoutPicks()
+        public void Load_SingleDiscreteConfigWithoutPicks_IsLoaded()
         {
-            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
 
             foreach (var facetCode in fixture.Data.DiscreteFacetComputeCount.Keys) {
                 IContainer container = new TestDependencyService().Register();
                 FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
                 //Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
 
-                facetsConfig.Context = container.Resolve<IRepositoryRegistry>();
-                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
                 // Act
@@ -137,7 +130,7 @@ namespace SeadQueryTest.Services
         [Fact]
         public void CanLoadSingleDiscreteConfigWithPicks()
         {
-            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
             FacetsConfig2 facetsConfig = fixture.GenerateFacetsConfig(
                 "sites", "sites",
                 new List<FacetConfig2>() {
@@ -150,8 +143,6 @@ namespace SeadQueryTest.Services
             IContainer container = new TestDependencyService().Register();
 
             using (var scope = container.BeginLifetimeScope()) {
-                facetsConfig.SetContext(scope.Resolve<IRepositoryRegistry>());
-                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
                 var facetContent = service.Load(facetsConfig);
                 string output = JsonConvert.SerializeObject(facetContent);
@@ -238,7 +229,7 @@ namespace SeadQueryTest.Services
         [Fact]
         public void RangeFacetBugTest_PD20181107()
         {
-            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(null, null);
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
 
             var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)";
             IContainer container = new TestDependencyService().Register();
@@ -247,8 +238,6 @@ namespace SeadQueryTest.Services
                 // Arrange
                 FacetsConfig2 facetsConfig = fixture.GenerateByUri(uri);
                 // var json = JsonConvert.SerializeObject(facetsConfig).ToString();
-                facetsConfig.Context = scope.Resolve<IRepositoryRegistry>();
-                facetsConfig.FacetConfigs.ForEach(z => z.Context = facetsConfig.Context);
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
                 // Act

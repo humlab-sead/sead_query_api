@@ -6,34 +6,25 @@ using Xunit;
 
 namespace SeadQueryTest.Services.CategoryCount
 {
-    public class RangeCategoryCountServiceTests : IDisposable
+    public class RangeCategoryCountServiceTests
     {
-        private MockRepository mockRepository;
-
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
+        private IFacetSetting mockSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IRangeCategoryCountSqlQueryCompiler> mockRangeCategoryCountSqlQueryCompiler;
 
         public RangeCategoryCountServiceTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
-            this.mockRangeCategoryCountSqlQueryCompiler = this.mockRepository.Create<IRangeCategoryCountSqlQueryCompiler>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            this.mockSetting = new MockOptionBuilder().Build().Value.Facet;
+            this.mockRepositoryRegistry = new Mock<IRepositoryRegistry>();
+            this.mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
+            this.mockRangeCategoryCountSqlQueryCompiler = new Mock<IRangeCategoryCountSqlQueryCompiler>();
         }
 
         private RangeCategoryCountService CreateService()
         {
             return new RangeCategoryCountService(
-                this.mockQueryBuilderSetting.Object,
+                this.mockSetting,
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object,
                 this.mockRangeCategoryCountSqlQueryCompiler.Object);

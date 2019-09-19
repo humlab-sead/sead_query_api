@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SeadQueryTest.fixtures
 {
-    public class SitesTestData
+    public class Data_Sites
     {
         public Dictionary<string, object> sites = new Dictionary<string, object>() {
 

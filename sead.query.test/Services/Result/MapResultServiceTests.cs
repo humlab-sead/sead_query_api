@@ -13,9 +13,7 @@ namespace SeadQueryTest.Services.Result
     {
         private MockRepository mockRepository;
 
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
         private Mock<IResultCompiler> mockResultCompiler;
         private Mock<IIndex<EFacetType, ICategoryCountService>> mockIndex;
 
@@ -23,9 +21,7 @@ namespace SeadQueryTest.Services.Result
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
             this.mockResultCompiler = this.mockRepository.Create<IResultCompiler>();
             this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryCountService>>();
         }
@@ -38,9 +34,7 @@ namespace SeadQueryTest.Services.Result
         private MapResultService CreateService()
         {
             return new MapResultService(
-                this.mockQueryBuilderSetting.Object,
                 this.mockRepositoryRegistry.Object,
-                this.mockQuerySetupBuilder.Object,
                 this.mockResultCompiler.Object,
                 this.mockIndex.Object);
         }

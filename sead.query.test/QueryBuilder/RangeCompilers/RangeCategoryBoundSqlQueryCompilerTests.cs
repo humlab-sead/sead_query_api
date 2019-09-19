@@ -6,22 +6,10 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
-    public class RangeCategoryBoundSqlQueryCompilerTests : IDisposable
+    public class RangeCategoryBoundSqlQueryCompilerTests 
     {
-        private MockRepository mockRepository;
-
-
-
         public RangeCategoryBoundSqlQueryCompilerTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
         }
 
         private RangeCategoryBoundSqlQueryCompiler CreateRangeCategoryBoundSqlQueryCompiler()

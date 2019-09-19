@@ -12,7 +12,6 @@ namespace SeadQueryTest.Repository
         private Moq.MockRepository mockRepository;
 
         private Mock<IFacetContext> mockFacetContext;
-        private IFacetContext testContext;
 
         public RepositoryTests()
         {

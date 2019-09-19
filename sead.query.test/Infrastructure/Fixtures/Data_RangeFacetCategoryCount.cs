@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SeadQueryTest.fixtures
 {
-    public class RangeFacetCategoryCountData
+    public class Data_RangeFacetCategoryCount
     {
         public Dictionary<string,int> MS_Range_Group_By_Category_Count => new Dictionary<string, int>() {
               { "0 => 24", 41161 },

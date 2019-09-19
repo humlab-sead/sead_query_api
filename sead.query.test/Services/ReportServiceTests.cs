@@ -13,7 +13,7 @@ namespace SeadQueryTest.Services
 
         private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
 
         public ReportServiceTests()
         {
@@ -21,7 +21,7 @@ namespace SeadQueryTest.Services
 
             this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
+            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
         }
 
         public void Dispose()
@@ -32,7 +32,6 @@ namespace SeadQueryTest.Services
         private ReportService CreateService()
         {
             return new ReportService(
-                this.mockQueryBuilderSetting.Object,
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object);
         }

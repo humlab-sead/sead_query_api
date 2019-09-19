@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Autofac.Features.Indexed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -9,6 +10,9 @@ using SeadQueryCore;
 
 namespace SeadQueryTest
 {
+    internal class MockIndex<T, T1> : Dictionary<T, T1>, IIndex<T, T1>
+    {
+    }
 
     /// <summary>
     /// IOptionsBuilder

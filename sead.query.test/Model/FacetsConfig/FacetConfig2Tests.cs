@@ -25,8 +25,7 @@ namespace SeadQueryTest.Model.FacetsConfig
 
         private FacetConfig2 CreateFacetConfig2()
         {
-            return new FacetConfig2(
-                this.mockRepositoryRegistry.Object);
+            return new FacetConfig2();
         }
 
         [Fact]

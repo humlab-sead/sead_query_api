@@ -10,18 +10,18 @@ namespace SeadQueryTest.Services.CategoryCount
     {
         private MockRepository mockRepository;
 
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
+        private Mock<IFacetSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IDiscreteCategoryCountSqlQueryCompiler> mockDiscreteCategoryCountSqlQueryCompiler;
 
         public DiscreteCategoryCountServiceTests()
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
+            this.mockQueryBuilderSetting = this.mockRepository.Create<IFacetSetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
+            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
             this.mockDiscreteCategoryCountSqlQueryCompiler = this.mockRepository.Create<IDiscreteCategoryCountSqlQueryCompiler>();
         }
 

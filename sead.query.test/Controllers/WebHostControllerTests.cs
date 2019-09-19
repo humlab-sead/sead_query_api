@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,6 +18,9 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
 using SeadQueryTest.Infrastructure;
+using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
+using Xunit;
 
 namespace SeadQueryTest
 {
@@ -48,18 +50,17 @@ namespace SeadQueryTest
         }
 
     }
-    [TestClass]
+    
     public class ControllerTests
     {
         private fixtures.FacetConfigGenerator fixture;
 
-        [TestInitialize()]
-        public void Initialize()
+        public ControllerTests()
         {
-            fixture = new fixtures.FacetConfigGenerator(null, null);
+            var registry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
+            fixture = new fixtures.FacetConfigGenerator(null);
         }
 
-        [TestMethod]
         public IWebHostBuilder CreateTestWebHostBuilder2<T>() where T: class
         {
             return new WebHostBuilder()
@@ -77,7 +78,7 @@ namespace SeadQueryTest
                 });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CanTestWebServer2()
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
@@ -86,11 +87,11 @@ namespace SeadQueryTest
                 var response = await server.CreateRequest("/api/values")
                     .SendAsync("GET");
                 response.EnsureSuccessStatusCode();
-                Assert.AreEqual("[\"value1\",\"value2\"]", await response.Content.ReadAsStringAsync());
+                Assert.Equal("[\"value1\",\"value2\"]", await response.Content.ReadAsStringAsync());
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CanGetFacets()
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
@@ -100,11 +101,11 @@ namespace SeadQueryTest
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
-                Assert.AreEqual(22, facets.Count());
+                Assert.Equal(22, facets.Count());
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CanLoadSimpleDiscreteFacetWithoutPicks()
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
@@ -123,13 +124,13 @@ namespace SeadQueryTest
                         var response_content = await response.Content.ReadAsStringAsync();
                         var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
                         var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
-                        Assert.AreEqual(config.ExpectedCount, facetContent.Items.Count, config.TargetCode);
+                        Assert.Equal(config.ExpectedCount, facetContent.Items.Count);
                     }
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CanLoadDiscreteFacetConfigsWithPicks()
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
@@ -148,13 +149,13 @@ namespace SeadQueryTest
                         var response_content = await response.Content.ReadAsStringAsync();
                         var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
                         var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
-                        Assert.AreEqual(config.ExpectedCount, facetContent.Items.Count, config.UriConfig);
+                        Assert.Equal(config.ExpectedCount, facetContent.Items.Count);
                     }
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task LoadOfFinishSitesShouldEqualExpectedItems()
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
@@ -178,7 +179,7 @@ namespace SeadQueryTest
                     Dictionary<string,int> items = facetContent.Items.ToDictionary(z => z.Category, z => z.Count ?? 0);
                     Dictionary<string,int> expected = fixture.Data.FinishSiteCount;
                     var isEqual = (expected == items) || (expected.Count == items.Count && !expected.Except(items).Any());
-                    Assert.IsTrue(isEqual);
+                    Assert.True(isEqual);
                 }
             }
         }

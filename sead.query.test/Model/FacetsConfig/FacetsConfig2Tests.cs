@@ -1,6 +1,8 @@
 using Moq;
 using Newtonsoft.Json;
+using SeadQueryAPI.Serializers;
 using SeadQueryCore;
+using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
@@ -9,28 +11,21 @@ using Xunit;
 
 namespace SeadQueryTest.Model.FacetsConfig
 {
-    public class FacetsConfig2Tests : IDisposable
+    public class FacetsConfig2Tests
     {
-        private MockRepository mockRepository;
+        private RepositoryRegistry mockRegistry;
 
-        private Mock<IRepositoryRegistry> mockRepositoryRegistry;
+        public object ReconstituteFacetConfigService { get; private set; }
 
         public FacetsConfig2Tests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            this.mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
         }
 
         private FacetsConfig2 CreateFacetsConfig2()
         {
-            return new FacetsConfig2(
-                this.mockRepositoryRegistry.Object);
+            return new FacetsConfig2() {
+            };
         }
 
         [Fact]
@@ -39,7 +34,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             using (var context = ScaffoldUtility.DefaultFacetContext())
             using (var container = new TestDependencyService(context).Register()) {
 
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
 
                 FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
 
@@ -49,18 +44,17 @@ namespace SeadQueryTest.Model.FacetsConfig
         }
 
         [Fact]
-        public void CanCreateSimpleConfigByJSON()
+        public void Reconstitute_SingleFacetsConfigWithoutPicks_IsEqual()
         {
-            using (var context = ScaffoldUtility.DefaultFacetContext())
-            using (var container = new TestDependencyService(context).Register()) {
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
-                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
-                string json1 = JsonConvert.SerializeObject(facetsConfig);
-                FacetsConfig2 facetsConfig2 = JsonConvert.DeserializeObject<FacetsConfig2>(json1);
-                facetsConfig2.SetContext(fixture.RepositoryRegistry);
-                string json2 = JsonConvert.SerializeObject(facetsConfig);
-                Assert.Equal(json1, json2);
-            }
+            // Arrange
+            var context = ScaffoldUtility.DefaultFacetContext();
+            var reconstituter = new FacetConfigReconstituteService(mockRegistry);
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
+            FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
+            string json1 = JsonConvert.SerializeObject(facetsConfig);
+            FacetsConfig2 facetsConfig2 = reconstituter.Reconstitute(json1);
+            string json2 = JsonConvert.SerializeObject(facetsConfig2);
+            Assert.Equal(json1, json2);
         }
 
         [Fact]
@@ -68,27 +62,12 @@ namespace SeadQueryTest.Model.FacetsConfig
         {
             using (var context = ScaffoldUtility.DefaultFacetContext())
             using (var container = new TestDependencyService(context).Register()) {
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(container, context);
+                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
                 foreach (var facetCode in fixture.Data.DiscreteFacetComputeCount.Keys) {
                     FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
                     Assert.Equal(facetCode, facetsConfig.TargetFacet.FacetCode);
                 }
             }
-        }
-
-        [Fact]
-        public void SetContext_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var facetsConfig2 = this.CreateFacetsConfig2();
-            IRepositoryRegistry context = null;
-
-            // Act
-            var result = facetsConfig2.SetContext(
-                context);
-
-            // Assert
-            Assert.True(false);
         }
 
         [Fact]
@@ -213,19 +192,6 @@ namespace SeadQueryTest.Model.FacetsConfig
 
             // Act
             var result = facetsConfig2.GetPicksCacheId();
-
-            // Assert
-            Assert.True(false);
-        }
-
-        [Fact]
-        public void GetCacheId_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var facetsConfig2 = this.CreateFacetsConfig2();
-
-            // Act
-            var result = facetsConfig2.GetCacheId();
 
             // Assert
             Assert.True(false);

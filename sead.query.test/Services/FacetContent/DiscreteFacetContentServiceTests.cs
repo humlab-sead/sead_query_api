@@ -11,9 +11,9 @@ namespace SeadQueryTest.Services.FacetContent
     {
         private MockRepository mockRepository;
 
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
+        private IFacetSetting mockSettings;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IIndex<EFacetType, ICategoryCountService>> mockIndex;
         private Mock<IDiscreteContentSqlQueryCompiler> mockDiscreteContentSqlQueryCompiler;
 
@@ -21,9 +21,9 @@ namespace SeadQueryTest.Services.FacetContent
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
+            this.mockSettings = new MockOptionBuilder().Build().Value.Facet;
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
+            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
             this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryCountService>>();
             this.mockDiscreteContentSqlQueryCompiler = this.mockRepository.Create<IDiscreteContentSqlQueryCompiler>();
         }
@@ -36,7 +36,7 @@ namespace SeadQueryTest.Services.FacetContent
         private DiscreteFacetContentService CreateService()
         {
             return new DiscreteFacetContentService(
-                this.mockQueryBuilderSetting.Object,
+                mockSettings,
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object,
                 this.mockIndex.Object,

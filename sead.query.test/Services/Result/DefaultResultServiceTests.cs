@@ -9,38 +9,25 @@ using Xunit;
 
 namespace SeadQueryTest.Services.Result
 {
-    public class DefaultResultServiceTests : IDisposable
+    public class DefaultResultServiceTests 
     {
-        private MockRepository mockRepository;
-
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupBuilder> mockQuerySetupBuilder;
+        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IResultCompiler> mockResultCompiler;
         private Mock<IIndex<EFacetType, ICategoryCountService>> mockIndex;
 
         public DefaultResultServiceTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupBuilder>();
-            this.mockResultCompiler = this.mockRepository.Create<IResultCompiler>();
-            this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryCountService>>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            this.mockRepositoryRegistry = new Mock<IRepositoryRegistry>();
+            this.mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
+            this.mockResultCompiler = new Mock<IResultCompiler>();
+            this.mockIndex = new Mock<IIndex<EFacetType, ICategoryCountService>>();
         }
 
         private DefaultResultService CreateService()
         {
             return new DefaultResultService(
-                this.mockQueryBuilderSetting.Object,
                 this.mockRepositoryRegistry.Object,
-                this.mockQuerySetupBuilder.Object,
                 this.mockResultCompiler.Object,
                 this.mockIndex.Object);
         }

@@ -1,35 +1,34 @@
 using Moq;
 using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Controllers;
+using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
+using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using Xunit;
 
 namespace SeadQueryTest.Controllers
 {
-    public class ResultControllerTests : IDisposable
+    public class ResultControllerTests
     {
-        private MockRepository mockRepository;
-
-        private Mock<IRepositoryRegistry> mockRepositoryRegistry;
+        private RepositoryRegistry mockRepositoryRegistry;
 
         public ResultControllerTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
+            mockRepositoryRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
         }
 
         private ResultController CreateResultController()
         {
             var mockResultService = new Mock<ILoadResultService>();
-            return new ResultController(mockRepositoryRegistry.Object, mockResultService.Object);
+            var mockReconstituteService = new Mock<IFacetConfigReconstituteService>();
+            return new ResultController(
+                mockRepositoryRegistry,
+                mockReconstituteService.Object,
+                mockResultService.Object
+            );
         }
 
         [Fact]

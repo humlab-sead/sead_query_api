@@ -7,7 +7,7 @@ namespace SeadQueryTest.fixtures
     {
         public static List<string> Trail(params string[] trail)
         {
-            return TestRoute.ToPairs(trail.ToList());
+            return RouteGenerator.ToPairs(trail.ToList());
         }
 
         public static Dictionary<string, int> __DiscreteFacetComputeCount = new Dictionary<string, int> {

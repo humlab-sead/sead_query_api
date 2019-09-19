@@ -6,37 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using SeadQueryCore;
 using SeadQueryCore.Model;
+using SeadQueryInfra;
 using SeadQueryTest.fixtures;
 using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Infrastructure.Scaffolding;
+using Xunit;
 
 namespace SeadQueryTest
 {
-
-    [TestClass]
     public class ResultControllerTests
     {
         private FacetConfigGenerator facetConfigFixture;
         private ResultConfigGenerator resultConfigFixture;
 
-        private TestContext testContextInstance;
-        public TestContext TestContext
+        public ResultControllerTests()
         {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
-
-        [TestInitialize()]
-        public void Initialize()
-        {
-            facetConfigFixture = new fixtures.FacetConfigGenerator(null, null);
+            var registry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
+            facetConfigFixture = new fixtures.FacetConfigGenerator(registry);
             resultConfigFixture = new fixtures.ResultConfigGenerator();
         }
 
-        [TestMethod]
         public IWebHostBuilder CreateTestWebHostBuilder2<T>() where T: class
         {
             return new WebHostBuilder()
@@ -46,7 +38,7 @@ namespace SeadQueryTest
                 .UseStartup<T>();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task LoadOfFinishSitesShouldEqualExpectedItems()
         {
             var testConfigs = new Dictionary<(string, string, string), int>()
@@ -71,6 +63,7 @@ namespace SeadQueryTest
 
         private async Task ExecuteLoadCommand(HttpClient client, string viewTypeId, string resultKey, string uri, int expectedCount)
         {
+            // FIXME! Mock
             // Arrange
             FacetsConfig2 facetsConfig = facetConfigFixture.GenerateByUri(uri);
             var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
@@ -85,9 +78,9 @@ namespace SeadQueryTest
             var resultContent = JsonConvert.DeserializeObject<ResultContentSet>(responseJson);
 
             // Assert
-            Assert.IsNotNull(resultContent?.Data?.DataCollection, viewTypeId);
+            Assert.NotNull(resultContent?.Data?.DataCollection);
             var items = resultContent.Data.DataCollection.ToList();
-            Assert.AreEqual(expectedCount, items.Count, viewTypeId);
+            Assert.Equal(expectedCount, items.Count);
         }
     }
 }
