@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public interface IQuerySetupBuilder
+    public interface IQuerySetupCompiler
     {
         IFacetsGraph Graph { get; set; }
 
@@ -12,13 +12,13 @@ namespace SeadQueryCore.QueryBuilder
         QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables, List<string> facetCodes);
     }
 
-    public class QuerySetupBuilder : IQuerySetupBuilder {
+    public class QuerySetupCompiler : IQuerySetupCompiler {
         public IRepositoryRegistry Context { get; set; }
         public IFacetsGraph Graph { get; set; }
         public IIndex<int, IPickFilterCompiler> PickCompilers { get; set; }
         public IEdgeSqlCompiler EdgeCompiler { get; }
 
-        public QuerySetupBuilder(
+        public QuerySetupCompiler(
             IRepositoryRegistry _context,
             IFacetsGraph graph,
             IIndex<int, IPickFilterCompiler> pickCompilers,
@@ -28,7 +28,6 @@ namespace SeadQueryCore.QueryBuilder
             Graph = graph;
             PickCompilers = pickCompilers;
             EdgeCompiler = edgeCompiler;
-            //File.WriteAllText(@"C:\TEMP\dotnet_facet_graph.csv", Graph.ToCSV());
         }
 
         public QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null)
@@ -77,7 +76,6 @@ namespace SeadQueryCore.QueryBuilder
                 .SelectMany(route => route.Items)
                 .Select(edge => EdgeCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
                 .ToList();
-            //Debug.Print(GraphRoute.Utility.ToString(reducedRoutes));
 
             QuerySetup querySetup = new QuerySetup(facetsConfig?.TargetConfig, targetFacet, joins, pickCriterias, routes, reducedRoutes);
 

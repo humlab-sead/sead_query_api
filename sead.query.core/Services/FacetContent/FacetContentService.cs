@@ -1,16 +1,23 @@
+using SeadQueryCore.QueryBuilder;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
-{
+{    
     public class FacetContentService : QueryServiceBase, IFacetContentService {
 
         public ICategoryCountService CountService { get; set; }
+        public IFacetSetting Config { get; }
 
-        public FacetContentService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
+        public FacetContentService(
+            IFacetSetting config,
+            IRepositoryRegistry context,
+            IQuerySetupCompiler builder
+        ) : base(context, builder)
         {
+            Config = config;
         }
 
         public FacetContent Load(FacetsConfig2 facetsConfig)

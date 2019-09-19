@@ -7,15 +7,22 @@ using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore.Services.Result {
 
-    public class DefaultResultService : QueryServiceBase, IResultService
+    public class DefaultResultService : IResultService
     {
+        public IRepositoryRegistry RepositoryRegistry { get; set; }
+
         public string FacetCode { get; protected set; }
 
         public IResultCompiler QueryCompiler { get; set; }
         public IIndex<EFacetType, ICategoryCountService> CategoryCountServices { get; set; }
 
-        public DefaultResultService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder, IResultCompiler compiler, IIndex<EFacetType, ICategoryCountService> categoryCountServices) : base(config, context, builder)
+        public DefaultResultService(
+            IRepositoryRegistry registry,
+            IResultCompiler compiler,
+            IIndex<EFacetType, ICategoryCountService> categoryCountServices
+        ) 
         {
+            RepositoryRegistry = registry;
             FacetCode = "result_facet";
             QueryCompiler = compiler;
             CategoryCountServices = categoryCountServices;
@@ -28,7 +35,7 @@ namespace SeadQueryCore.Services.Result {
             if (Utility.empty(sql))
                 return null;
 
-            var resultSet = new TabularResultContentSet(resultConfig, GetResultFields(resultConfig), Context.Query(sql)) {
+            var resultSet = new TabularResultContentSet(resultConfig, GetResultFields(resultConfig), RepositoryRegistry.Query(sql)) {
                 Payload = GetExtraPayload(facetsConfig),
                 Query = sql
             };
@@ -38,7 +45,7 @@ namespace SeadQueryCore.Services.Result {
 
         protected virtual List<ResultAggregateField> GetResultFields(ResultConfig resultConfig)
         {
-            return Context.Results.GetFieldsByKeys(resultConfig.AggregateKeys).Where(z => z.FieldType.IsResultValue).ToList();
+            return RepositoryRegistry.Results.GetFieldsByKeys(resultConfig.AggregateKeys).Where(z => z.FieldType.IsResultValue).ToList();
         }
 
         protected virtual dynamic GetExtraPayload(FacetsConfig2 facetsConfig)

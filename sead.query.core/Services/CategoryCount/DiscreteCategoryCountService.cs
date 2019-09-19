@@ -9,9 +9,9 @@ namespace SeadQueryCore
     public class DiscreteCategoryCountService : CategoryCountService {
 
         public DiscreteCategoryCountService(
-            IQueryBuilderSetting config,
+            IFacetSetting config,
             IRepositoryRegistry context,
-            IQuerySetupBuilder builder,
+            IQuerySetupCompiler builder,
             IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler) : base(config, context, builder) {
             CountSqlCompiler = countSqlCompiler;
         }

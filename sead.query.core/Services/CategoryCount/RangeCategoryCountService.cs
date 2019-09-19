@@ -7,9 +7,9 @@ namespace SeadQueryCore
     public class RangeCategoryCountService : CategoryCountService {
 
         public RangeCategoryCountService(
-            IQueryBuilderSetting config,
+            IFacetSetting config,
             IRepositoryRegistry context,
-            IQuerySetupBuilder builder,
+            IQuerySetupCompiler builder,
             IRangeCategoryCountSqlQueryCompiler rangeCountSqlCompiler
         ) : base(config, context, builder) {
             RangeCountSqlCompiler = rangeCountSqlCompiler;

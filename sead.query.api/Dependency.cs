@@ -5,6 +5,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DataAccessPostgreSqlProvider;
 using Microsoft.Extensions.DependencyInjection;
+using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
@@ -49,6 +50,7 @@ namespace SeadQueryAPI
             // http://docs.autofac.org/en/latest/register/registration.html
 
             builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<IFacetSetting>(options.Facet).SingleInstance().ExternallyOwned();
 
             builder.Register(_ => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
             builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
@@ -57,8 +59,9 @@ namespace SeadQueryAPI
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
             builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>()));
 
-            builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
+            builder.RegisterType<QuerySetupCompiler>().As<IQuerySetupCompiler>();
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
+            builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
@@ -104,10 +107,10 @@ namespace SeadQueryAPI
             /* App Services */
 
             if (options.Store.UseRedisCache) {
-                builder.RegisterType<Services.CachedLoadFacetService>().As<Services.ILoadFacetService>();
+                builder.RegisterType<Services.CachedLoadFacetService>().As<Services.IFacetReconstituteService>();
                 builder.RegisterType<Services.CachedLoadResultService>().As<Services.ILoadResultService>();
             } else {
-                builder.RegisterType<Services.LoadFacetService>().As<Services.ILoadFacetService>();
+                builder.RegisterType<Services.LoadFacetService>().As<Services.IFacetReconstituteService>();
                 builder.RegisterType<Services.LoadResultService>().As<Services.ILoadResultService>();
             }
             if (services != null)

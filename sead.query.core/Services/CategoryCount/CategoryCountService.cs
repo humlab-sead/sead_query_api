@@ -9,9 +9,13 @@ namespace SeadQueryCore
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
 
-        public CategoryCountService(IQueryBuilderSetting config, IRepositoryRegistry context, IQuerySetupBuilder builder) : base(config, context, builder)
+
+        public CategoryCountService(IFacetSetting config, IRepositoryRegistry context, IQuerySetupCompiler builder) : base(context, builder)
         {
+            Config = config;
         }
+
+        public IFacetSetting Config { get; }
 
         public Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {

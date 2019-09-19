@@ -14,13 +14,11 @@ namespace SeadQueryCore.Services.Result
         private readonly string ResultKey = "map_result";
 
         public MapResultService(
-            IQueryBuilderSetting config,
             IRepositoryRegistry context,
-            IQuerySetupBuilder builder,
             IResultCompiler resultQueryCompiler,
             IIndex<EFacetType, ICategoryCountService> categoryCountServices
         )
-            : base(config, context, builder, resultQueryCompiler, categoryCountServices)
+            : base(context, resultQueryCompiler, categoryCountServices)
         {
             FacetCode = "map_result";
         }

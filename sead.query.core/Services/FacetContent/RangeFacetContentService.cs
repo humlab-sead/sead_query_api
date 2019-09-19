@@ -7,9 +7,9 @@ namespace SeadQueryCore
 {
     public class RangeFacetContentService : FacetContentService {
         public RangeFacetContentService(
-            IQueryBuilderSetting config,
+            IFacetSetting config,
             IRepositoryRegistry context,
-            IQuerySetupBuilder builder,
+            IQuerySetupCompiler builder,
             IIndex<EFacetType,
             ICategoryCountService> countServices,
             IRangeIntervalSqlQueryCompiler rangeSqlCompiler) : base(config, context, builder)

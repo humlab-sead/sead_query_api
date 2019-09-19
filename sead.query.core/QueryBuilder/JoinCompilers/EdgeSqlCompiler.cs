@@ -7,9 +7,9 @@ namespace SeadQueryCore
         {
             var resolvedTableName = graph.ResolveTargetName(edge.TargetName);
             var resolvedAliasName = graph.ResolveAliasName(edge.TargetName);
-            var joinType = innerJoin ? "INNER" : "LEFT";
-            var sql = $" {joinType} JOIN {resolvedTableName} {resolvedAliasName ?? ""}" +
-                    $" ON {resolvedAliasName ?? resolvedTableName}.\"{edge.TargetKeyName}\" = " +
+            var joinType = innerJoin ? "inner" : "left";
+            var sql = $" {joinType} join {resolvedTableName} {resolvedAliasName ?? ""}" +
+                    $" on {resolvedAliasName ?? resolvedTableName}.\"{edge.TargetKeyName}\" = " +
                             $"{edge.SourceName}.\"{edge.SourceKeyName}\" ";
             return sql;
         }
