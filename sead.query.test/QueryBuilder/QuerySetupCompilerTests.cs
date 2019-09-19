@@ -76,11 +76,26 @@ namespace SeadQueryTest.QueryBuilder
                 };
         }
 
+        private QuerySetupCompiler CreateQuerySetupCompiler()
+        {
+            var mockFacetGraph = ScaffoldUtility.CreateFacetsGraphByFakeContext(mockContext);
+            var pickCompilers = ConcretePickCompilers();
+            var edgeCompiler = new EdgeSqlCompiler();
+
+            var builder = new QuerySetupCompiler(
+                mockFacetGraph,
+                pickCompilers,
+                edgeCompiler
+            );
+            return builder;
+        }
+
         [Fact]
         public void Build_WhenFacetsConfigIsSingleDiscreteWithoutPicks_ReturnsValidQuerySetup()
         {
             // Arrange
             var facetCode = "sites";
+            var facet = mockRegistry.Facets.GetByCode(facetCode);
 
             var facetsConfig = new FacetsConfig2 {
                 RequestId = "1",
@@ -95,30 +110,20 @@ namespace SeadQueryTest.QueryBuilder
                         Position = 1,
                         TextFilter = "",
                         Picks = new List<FacetConfigPick> { },
-                        Facet = mockRegistry.Facets.GetByCode(facetCode)
+                        Facet = facet
                     }
                 },
                 InactiveConfigs = null,
-                TargetFacet = mockRegistry.Facets.GetByCode(facetCode),
-                TriggerFacet = mockRegistry.Facets.GetByCode(facetCode)
+                TargetFacet = facet,
+                TriggerFacet = facet
             };
 
-            var mockFacetGraph = ScaffoldUtility.CreateFacetsGraphByFakeContext(mockContext);
-            var pickCompilers = MockPickCompilers();
-            var edgeCompiler = new EdgeSqlCompiler();
-
-            var builder = new QuerySetupCompiler(
-                mockRegistry,
-                mockFacetGraph,
-                pickCompilers,
-                edgeCompiler
-            );
+            QuerySetupCompiler builder = CreateQuerySetupCompiler();
 
             // Act
-            QuerySetup querySetup = builder.Build(facetsConfig, facetCode, new List<string>(), new List<string>() { facetCode });
+            QuerySetup querySetup = builder.Build(facetsConfig, facet, new List<string>(), new List<string>() { facetCode });
 
             // Assert
-            var facet = mockRegistry.Facets.GetByCode(facetCode);
 
             Assert.NotNull(querySetup);
             Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
@@ -131,27 +136,20 @@ namespace SeadQueryTest.QueryBuilder
         [InlineData("ecocode")]
         public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode)
         {
-            using (var context = ScaffoldUtility.DefaultFacetContext())
-            using (var container = new TestDependencyService(context).Register())
-            using (var scope = container.BeginLifetimeScope()) {
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
+            // Arrange
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
+            var facet = fixture.Registry.Facets.GetByCode(facetCode);
+            var facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
 
-                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
-                // Arrange
-                IQuerySetupCompiler builder = scope.Resolve<IQuerySetupCompiler>();
+            QuerySetupCompiler builder = CreateQuerySetupCompiler();
 
-                // Act
+            // Act
+            QuerySetup querySetup = builder.Build(facetsConfig, facet, new List<string>(), new List<string>() { facetCode });
 
-                QuerySetup querySetup = builder.Build(facetsConfig, facetCode, new List<string>(), new List<string>() { facetCode });
-
-                // Assert
-
-                var facet = fixture.Registry.Facets.GetByCode(facetCode);
-
-                Assert.NotNull(querySetup);
-                Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
-                Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
-            }
+            // Assert
+            Assert.NotNull(querySetup);
+            Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
+            Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
         }
 
         public static List<object[]> RouteTestData = new List<object[]>() {
@@ -178,67 +176,44 @@ namespace SeadQueryTest.QueryBuilder
         [MemberData(nameof(RouteTestData))]
         public void CanBuildCategoryCountQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode, List<List<string>> expectedRoutes)
         {
-            using (var context = ScaffoldUtility.DefaultFacetContext())
-            using (var container = new TestDependencyService(context).Register())
-            using (var scope = container.BeginLifetimeScope()) {
 
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
+            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
 
-                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
+            FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
 
-                // Arrange
-                var registry = fixture.Registry;
-                var factory = new FacetGraphFactory();
+            // Arrange
+            var registry = fixture.Registry;
+            var factory = new FacetGraphFactory();
 
-                var graph = ScaffoldUtility.CreateFacetsGraphByFakeContext(context);
-                IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
+            QuerySetupCompiler builder = CreateQuerySetupCompiler();
 
-                var mockPickCompiler = new Mock<IPickFilterCompiler>();
-                mockPickCompiler.Setup(
-                    foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())
-                ).Returns("");
+            Facet facet = registry.Facets.GetByCode(facetCode);
+            Facet countFacet = registry.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
 
-                IIndex<int, IPickFilterCompiler> pickCompilers = new MockIndex<int, IPickFilterCompiler>
+            string targetCode = Utility.Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
+
+            Facet targetFacet = registry.Facets.GetByCode(targetCode);
+            List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
+
+            List<string> facetCodes = facetsConfig.GetFacetCodes();
+            facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, countFacet.FacetCode);
+
+            // Act
+            QuerySetup querySetup = builder.Build(facetsConfig, countFacet, tables, facetCodes);
+
+            // Assert
+            var expected = expectedRoutes;
+            Assert.NotNull(querySetup);
+            Assert.Equal(countFacet.FacetCode, querySetup.Facet.FacetCode);
+            for (var i = 0; i < expected.Count; i++)
+            {
+                Assert.Equal(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count);
+                for (var j = 0; j < expected[i].Count; j++)
                 {
-                    { 1, mockPickCompiler.Object /* new DiscreteFacetPickFilterCompiler() */},
-                    { 2, mockPickCompiler.Object /* new RangeFacetPickFilterCompiler() */ }
-                };
-
-                IQuerySetupCompiler builder = new QuerySetupCompiler(
-                    registry,
-                    graph,
-                    pickCompilers,
-                    edgeCompiler
-                );
-
-                Facet facet = registry.Facets.GetByCode(facetCode);
-                Facet countFacet = registry.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
-
-                string targetCode = Utility.Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
-
-                Facet targetFacet = registry.Facets.GetByCode(targetCode);
-                List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
-
-                List<string> facetCodes = facetsConfig.GetFacetCodes();
-                facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, countFacet.FacetCode);
-
-                // Act
-                QuerySetup querySetup = builder.Build(facetsConfig, countFacet.FacetCode, tables, facetCodes);
-
-                // Assert
-                var expected = expectedRoutes;
-                Assert.NotNull(querySetup);
-                Assert.Equal(countFacet.FacetCode, querySetup.Facet.FacetCode);
-                for (var i = 0; i < expected.Count; i++)
-                {
-                    Assert.Equal(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count);
-                    for (var j = 0; j < expected[i].Count; j++)
-                    {
-                        Assert.Equal(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
-                    }
+                    Assert.Equal(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
                 }
-                // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
             }
+            // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
         }
 
         private class TestRoute
@@ -320,7 +295,6 @@ namespace SeadQueryTest.QueryBuilder
                 IIndex<int, IPickFilterCompiler> pickCompilers = MockPickCompilers("");
 
                 IQuerySetupCompiler builder = new QuerySetupCompiler(
-                    fixture.Registry,
                     graph,
                     pickCompilers,
                     edgeCompiler
@@ -345,7 +319,7 @@ namespace SeadQueryTest.QueryBuilder
                 tables = tables.Distinct().ToList();
 
                 // Act
-                QuerySetup querySetup = builder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
+                QuerySetup querySetup = builder.Build(facetsConfig, computeFacet, tables, facetCodes);
 
                 // Assert
                 Assert.NotNull(querySetup);

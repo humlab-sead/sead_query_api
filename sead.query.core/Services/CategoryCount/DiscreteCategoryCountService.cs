@@ -31,7 +31,7 @@ namespace SeadQueryCore
 
             facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
 
-            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, computeFacet.FacetCode, tables, facetCodes);
+            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, computeFacet, tables, facetCodes);
             string sql = CountSqlCompiler.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }

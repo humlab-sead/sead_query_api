@@ -1,5 +1,6 @@
 using Autofac.Features.Indexed;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
@@ -8,37 +9,36 @@ namespace SeadQueryCore.QueryBuilder
     {
         IFacetsGraph Graph { get; set; }
 
-        QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null);
-        QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables, List<string> facetCodes);
+        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables = null);
+        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables, List<string> facetCodes);
     }
 
     public class QuerySetupCompiler : IQuerySetupCompiler {
-        public IRepositoryRegistry Context { get; set; }
         public IFacetsGraph Graph { get; set; }
         public IIndex<int, IPickFilterCompiler> PickCompilers { get; set; }
         public IEdgeSqlCompiler EdgeCompiler { get; }
 
         public QuerySetupCompiler(
-            IRepositoryRegistry _context,
             IFacetsGraph graph,
             IIndex<int, IPickFilterCompiler> pickCompilers,
             IEdgeSqlCompiler edgeCompiler
         ) {
-            Context = _context;
             Graph = graph;
             PickCompilers = pickCompilers;
             EdgeCompiler = edgeCompiler;
         }
 
-        public QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables = null)
+        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables = null)
         {
-            List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetCode);
-            return Build(facetsConfig, facetCode, extraTables ?? new List<string>(), facetCodes);
+            List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facet.FacetCode);
+            return Build(facetsConfig, facet, extraTables ?? new List<string>(), facetCodes);
         }
 
-        public QuerySetup Build(FacetsConfig2 facetsConfig, string facetCode, List<string> extraTables, List<string> facetCodes)
+        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet targetFacet, List<string> extraTables, List<string> facetCodes)
         {
-            Facet targetFacet = Context.Facets.GetByCode(facetCode);
+            // Noteworthy: TargetFacet differs from facetsConfig.TargetFacet when a result-facet is applied
+
+            Debug.Assert(facetsConfig.TargetFacet != null, "facetsConfig.TargetFacet is NULL ");
 
             if (facetsConfig == null)
                 facetCodes = new List<string>();
