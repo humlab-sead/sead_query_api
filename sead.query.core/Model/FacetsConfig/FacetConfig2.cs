@@ -10,24 +10,21 @@ namespace SeadQueryCore
         public int Position { get; set; } = 0;
         public string TextFilter { get; set; } = "";
 
-        // FIXM Refactor away dependency to Context
-        [JsonIgnore]
-        public IRepositoryRegistry Context { get; set; }    // FIXME Remove dependecy to Context
-
         public List<FacetConfigPick> Picks { get; set; }
 
         [JsonIgnore]
-        public Facet Facet { get => Context?.Facets?.GetByCode(FacetCode); }
+        public Facet Facet { get; set; }
 
         [JsonConstructor]
-        public FacetConfig2(IRepositoryRegistry context)
+        public FacetConfig2()
         {
-            Context = context;
         }
 
-        public FacetConfig2(string facetCode, int position, string filter, List<FacetConfigPick> picks)
+        public FacetConfig2(Facet facet, int position, string filter, List<FacetConfigPick> picks)
         {
-            FacetCode = facetCode;
+            // FacetCode = facetCode;
+            FacetCode = facet.FacetCode;
+            Facet = facet;
             Position = position;
             TextFilter = filter;
             Picks = picks ?? new List<FacetConfigPick>();

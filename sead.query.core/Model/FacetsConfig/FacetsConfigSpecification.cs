@@ -24,6 +24,9 @@ namespace SeadQueryCore
             {
                 throw new QuerySeadException("Trigger facet is undefined");
             }
+            if (facetsConfig.TargetCode != "" && facetsConfig.TargetFacet == null) {
+                throw new QuerySeadException("Target facet is undefined");
+            }
             foreach (var facetCode in new List<string>() { facetsConfig.TargetFacet.FacetCode, facetsConfig.TriggerFacet.FacetCode })
             {
                 if ( ! facetsConfig.FacetConfigs.Exists(z => z.FacetCode == facetCode))
@@ -47,6 +50,9 @@ namespace SeadQueryCore
             if (configs.Select(z => z.FacetCode).Distinct().Count() != configs.Count)
             {
                 throw new QuerySeadException("Facets' codes within facet chain are not unique");
+            }
+            if (configs.Any(z => z.Facet == null)) {
+                throw new QuerySeadException("FacetConfig with null Facet not allowed");
             }
             return true;
         }

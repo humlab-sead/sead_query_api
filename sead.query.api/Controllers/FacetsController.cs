@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
@@ -23,12 +24,18 @@ namespace SeadQueryAPI.Controllers
         /// <summary>
         /// Reference to facet contetnt load service
         /// </summary>
-        public Services.ILoadFacetService LoadService { get; private set; }
+        public Services.IFacetReconstituteService LoadService { get; private set; }
+        public IFacetConfigReconstituteService ReconstituteConfigService { get; }
 
-        public FacetsController(IRepositoryRegistry context, Services.ILoadFacetService loadService)
+        public FacetsController(
+            IRepositoryRegistry context,
+            IFacetConfigReconstituteService reconstituteConfigService,
+            Services.IFacetReconstituteService loadService
+        )
         {
             Context = context;
             LoadService = loadService;
+            ReconstituteConfigService = reconstituteConfigService;
         }
 
         /// <summary>
@@ -69,7 +76,7 @@ namespace SeadQueryAPI.Controllers
         [Consumes("application/json")]
         public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
         {
-            facetsConfig.SetContext(Context);
+            facetsConfig = ReconstituteConfigService.Reconstitute(facetsConfig);
             return LoadService.Load(facetsConfig);
         }
 
@@ -78,8 +85,7 @@ namespace SeadQueryAPI.Controllers
         [Consumes("application/json")]
         public FacetContent Load2([FromBody]JObject json)
         {
-            var facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(json.ToString());
-            facetsConfig.SetContext(Context);
+            var facetsConfig = ReconstituteConfigService.Reconstitute(json);
             var facetContent = LoadService.Load(facetsConfig);
             return facetContent;
         }
@@ -89,8 +95,7 @@ namespace SeadQueryAPI.Controllers
         [Consumes("application/json")]
         public string Load3([FromBody]JObject json)
         {
-            var facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(json.ToString());
-            facetsConfig.SetContext(Context);
+            var facetsConfig = ReconstituteConfigService.Reconstitute(json);
             FacetContent facetContent = LoadService.Load(facetsConfig);
             string data = JsonConvert.SerializeObject(facetContent);
             return data;

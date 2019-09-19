@@ -7,6 +7,7 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using SeadQueryAPI.Serializers;
 
 namespace SeadQueryAPI.Controllers
 {
@@ -15,11 +16,17 @@ namespace SeadQueryAPI.Controllers
     {
         public IRepositoryRegistry Context { get; private set; }
         private Services.ILoadResultService ResultService { get; set; }
+        public IFacetConfigReconstituteService ReconstituteConfigService { get; }
 
-        public ResultController(IRepositoryRegistry context, Services.ILoadResultService resultService)
+        public ResultController(
+            IRepositoryRegistry context,
+            IFacetConfigReconstituteService reconstituteConfigService,
+            Services.ILoadResultService resultService
+        )
         {
             Context = context;
             ResultService = resultService;
+            ReconstituteConfigService = reconstituteConfigService;
         }
 
         // GET api/values
@@ -42,8 +49,9 @@ namespace SeadQueryAPI.Controllers
         public ResultContentSet Load([FromBody]JObject data)
         {
             FacetsConfig2 facetsConfig = data["facetsConfig"].ToObject<FacetsConfig2>();
+            facetsConfig = ReconstituteConfigService.Reconstitute(facetsConfig);
+
             ResultConfig resultConfig = data["resultConfig"].ToObject<ResultConfig>();
-            facetsConfig.SetContext(Context);
             var result = ResultService.Load(facetsConfig, resultConfig);
 
             //var settings = new JsonSerializerSettings

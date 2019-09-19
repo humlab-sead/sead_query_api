@@ -20,15 +20,6 @@ namespace SeadQueryCore
             public string Title { get; set; }
         }
 
-        //public FacetsConfig2()
-        //{
-        //}
-        [JsonConstructor]
-        public FacetsConfig2(IRepositoryRegistry context)
-        {
-            Context = context;
-        }
-
         /// <summary>
         /// Client request identity. Defined by client and value is returned without change.
         /// </summary>
@@ -45,9 +36,6 @@ namespace SeadQueryCore
         public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
 
         [JsonIgnore]
-        public IRepositoryRegistry Context { get; set; }
-
-        [JsonIgnore]
         private List<FacetConfig2> facetConfigs;
         public List<FacetConfig2> FacetConfigs
         {                                                                               // Current client facet configurations
@@ -55,36 +43,18 @@ namespace SeadQueryCore
                 return facetConfigs;
             }
             set {
-                if (Context == null || new FacetsConfigSpecification().IsSatisfiedBy(value)) {
+                if (new FacetsConfigSpecification().IsSatisfiedBy(value)) {
                     facetConfigs = value.OrderBy(z => z.Position).ToList();
                 }
             }
         }
 
-        public FacetsConfig2 SetContext(IRepositoryRegistry context)
-        {
-            Context = context;
-            FacetConfigs.ForEach(z => z.Context = context);
-            return this;
-        }
-
         [JsonIgnore]
         public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
 
-        private Facet targetFacet = null;
-        private Facet triggerFacet = null;
+        public Facet TargetFacet { get; set; }
+        public Facet TriggerFacet { get; set; }
 
-        [JsonIgnore]
-        public Facet TargetFacet                                              // Target facet definition
-        {
-            get => empty(TargetCode) ? null : (targetFacet ?? (targetFacet = Context?.Facets?.GetByCode(TargetCode)));
-        }
-
-        [JsonIgnore]
-        public Facet TriggerFacet
-        {
-            get => empty(TriggerCode) ? null : (triggerFacet ?? (triggerFacet = Context?.Facets?.GetByCode(TriggerCode)));
-        }
 
         [JsonIgnore]
         public FacetConfig2 TargetConfig
