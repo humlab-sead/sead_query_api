@@ -25,10 +25,11 @@ namespace SeadQueryCore
 
         public string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode)
         {
+            Facet facet = Context.Facets.GetByCode(facetCode);
             ResultQuerySetup resultQuerySetup = CreateResultSetup(resultConfig);
             if (!resultQuerySetup.IsEmpty) {
-                QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facetCode, resultQuerySetup.DataTables);
-                return QueryCompilers[resultConfig.ViewTypeId].Compile(querySetup, Context.Facets.GetByCode(facetCode), resultQuerySetup);
+                QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facet, resultQuerySetup.DataTables);
+                return QueryCompilers[resultConfig.ViewTypeId].Compile(querySetup, facet, resultQuerySetup);
             }
             return "";
         }

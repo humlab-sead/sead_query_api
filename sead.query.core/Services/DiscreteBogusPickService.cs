@@ -41,7 +41,8 @@ namespace SeadQueryCore
 
         private List<FacetConfigPick> GetValidPicks(FacetsConfig2 facetsConfig, string facetCode, FacetConfig2 config)
         {
-            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facetCode);
+            Facet facet = Context.Facets.GetByCode(facetCode);
+            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facet);
 
             string sql = PicksCompiler.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
 
