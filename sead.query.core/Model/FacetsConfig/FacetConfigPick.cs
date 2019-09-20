@@ -5,9 +5,13 @@ namespace SeadQueryCore
 {
     public class FacetConfigPick {
 
-        public EPickType PickType;
-        public string PickValue;
-        public string Text;
+        public EPickType PickType { get; set; }
+        public string PickValue { get; set; }
+        public string Text { get; set; }
+
+        public FacetConfigPick()
+        {
+        }
 
         [JsonConstructor]
         public FacetConfigPick(EPickType type, string value, string text)
