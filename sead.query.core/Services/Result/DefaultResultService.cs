@@ -20,7 +20,7 @@ namespace SeadQueryCore.Services.Result {
             IRepositoryRegistry registry,
             IResultCompiler compiler,
             IIndex<EFacetType, ICategoryCountService> categoryCountServices
-        ) 
+        )
         {
             RepositoryRegistry = registry;
             FacetCode = "result_facet";
