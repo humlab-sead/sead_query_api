@@ -6,27 +6,27 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using SeadQueryCore.Model;
 
-namespace SeadQueryTest.fixtures
+namespace SeadQueryTest.Fixtures
 {
 
-    public class ResultConfigGenerator
+    public class ScaffoldResultConfig
     {
 
-        public ResultConfig GenerateConfig(string viewTypeId, List<string> resultKeys, string sessionId = "1")
+        public ResultConfig Scaffold(string viewTypeId, List<string> resultKeys, string sessionId = "1")
         {
             var resultConfig =  new ResultConfig()
             {
                 ViewTypeId = viewTypeId,
                 RequestId = "1",
                 SessionId = sessionId,
-                AggregateKeys = resultKeys
+                AggregateKeys = resultKeys  // "site_level"
             };
             return resultConfig;
         }
 
         public ResultConfig GenerateConfig(string viewTypeId, string resultKey, string sessionId = "1")
         {
-            return GenerateConfig(viewTypeId,  new List<string>() { resultKey }, sessionId);
+            return Scaffold(viewTypeId,  new List<string>() { resultKey }, sessionId);
         }
 
 

@@ -1,0 +1,147 @@
+var querySetup = new QuerySetup
+{
+	TargetConfig = new FacetConfig2
+	{
+		FacetCode = "sites",
+		Position = 1,
+		TextFilter = "",
+		Picks = new List<FacetConfigPick>
+		{
+		}
+	},
+	Routes = new List<GraphRoute>
+	{
+		new GraphRoute
+		{
+			Items = new List<GraphEdge>
+			{
+				new GraphEdge
+				{
+					EdgeId = -1140,
+					SourceNodeId = 119,
+					TargetNodeId = 113,
+					Weight = 20,
+					SourceKeyName = "site_id",
+					TargetKeyName = "site_id",
+					SourceNode = new GraphNode
+					{
+						NodeId = 119,
+						TableName = "tbl_sites"
+					},
+					TargetNode = new GraphNode
+					{
+						NodeId = 113,
+						TableName = "tbl_site_locations"
+					}
+				}
+			}
+		},
+		new GraphRoute
+		{
+			Items = new List<GraphEdge>
+			{
+				new GraphEdge
+				{
+					EdgeId = -1140,
+					SourceNodeId = 119,
+					TargetNodeId = 113,
+					Weight = 20,
+					SourceKeyName = "site_id",
+					TargetKeyName = "site_id",
+					SourceNode = new GraphNode
+					{
+						NodeId = 119,
+						TableName = "tbl_sites"
+					},
+					TargetNode = new GraphNode
+					{
+						NodeId = 113,
+						TableName = "tbl_site_locations"
+					}
+				},
+				new GraphEdge
+				{
+					EdgeId = 1151,
+					SourceNodeId = 113,
+					TargetNodeId = 46,
+					Weight = 5,
+					SourceKeyName = "location_id",
+					TargetKeyName = "location_id",
+					SourceNode = new GraphNode
+					{
+						NodeId = 113,
+						TableName = "tbl_site_locations"
+					},
+					TargetNode = new GraphNode
+					{
+						NodeId = 46,
+						TableName = "countries"
+					}
+				}
+			}
+		}
+	},
+	ReducedRoutes = new List<GraphRoute>
+	{
+		new GraphRoute
+		{
+			Items = new List<GraphEdge>
+			{
+				new GraphEdge
+				{
+					EdgeId = -1140,
+					SourceNodeId = 119,
+					TargetNodeId = 113,
+					Weight = 20,
+					SourceKeyName = "site_id",
+					TargetKeyName = "site_id",
+					SourceNode = new GraphNode
+					{
+						NodeId = 119,
+						TableName = "tbl_sites"
+					},
+					TargetNode = new GraphNode
+					{
+						NodeId = 113,
+						TableName = "tbl_site_locations"
+					}
+				}
+			}
+		},
+		new GraphRoute
+		{
+			Items = new List<GraphEdge>
+			{
+				new GraphEdge
+				{
+					EdgeId = 1151,
+					SourceNodeId = 113,
+					TargetNodeId = 46,
+					Weight = 5,
+					SourceKeyName = "location_id",
+					TargetKeyName = "location_id",
+					SourceNode = new GraphNode
+					{
+						NodeId = 113,
+						TableName = "tbl_site_locations"
+					},
+					TargetNode = new GraphNode
+					{
+						NodeId = 46,
+						TableName = "countries"
+					}
+				}
+			}
+		}
+	},
+	Joins = new List<String>
+	{
+		" left join tbl_site_locations  on tbl_site_locations.\"site_id\" = tbl_sites.\"site_id\" ",
+		" inner join tbl_locations countries on countries.\"location_id\" = tbl_site_locations.\"location_id\" "
+	},
+	Criterias = new List<String>
+	{
+		"(( (countries.location_id::int in (73)) ))"
+	},
+	CategoryTextFilter = ""
+};

@@ -1,0 +1,25 @@
+var querySetup = new QuerySetup
+{
+	TargetConfig = new FacetConfig2
+	{
+		FacetCode = "sites",
+		Position = 0,
+		TextFilter = "",
+		Picks = new List<FacetConfigPick>
+		{
+		}
+	},
+	Routes = new List<GraphRoute>
+	{
+	},
+	ReducedRoutes = new List<GraphRoute>
+	{
+	},
+	Joins = new List<String>
+	{
+	},
+	Criterias = new List<String>
+	{
+	},
+	CategoryTextFilter = ""
+};

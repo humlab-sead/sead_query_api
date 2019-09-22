@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SeadQueryTest.fixtures
+namespace SeadQueryTest.Fixtures
 {
     public class Data_RangeFacetCategoryCount
     {

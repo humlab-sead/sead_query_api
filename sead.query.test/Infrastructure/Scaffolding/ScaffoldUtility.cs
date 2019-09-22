@@ -19,6 +19,26 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             return root;
         }
 
+        public static void Dump(object instance, string filename, DumpOptions options = null)
+        {
+            options = options ?? new DumpOptions() {
+                DumpStyle = DumpStyle.CSharp,
+                IndentSize = 1,
+                IndentChar = '\t',
+                LineBreakChar = Environment.NewLine,
+                SetPropertiesOnly = false,
+                MaxLevel = 10, // int.MaxValue,
+                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "TargetFacet", "TriggerFacet" },
+                PropertyOrderBy = null,
+                IgnoreDefaultValues = false
+            };
+
+            var data = ObjectDumper.Dump(instance, options);
+            using (StreamWriter file = new StreamWriter(filename)) {
+                file.Write(data);
+            }
+        }
+
         public static ICollection<Type> GetModelTypes()
         {
             return new List<Type>() {
@@ -60,13 +80,15 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             return seeder.FacetContext;
         }
 
-        public static IFacetsGraph CreateFacetsGraphByFakeContext(FacetContext testContext)
+        public static IFacetsGraph DefaultFacetsGraph(IRepositoryRegistry registry)
         {
-            var registry = new RepositoryRegistry(testContext);
             var factory = new FacetGraphFactory();
+
             List<GraphNode> nodes = registry.Nodes.GetAll().ToList();
             List<GraphEdge> edges = registry.Edges.GetAll().ToList();
+
             List<Facet> facets = registry.Facets.FindThoseWithAlias().ToList();
+
             var g = factory.Build(
                 nodes,
                 edges,
@@ -74,5 +96,13 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             );
             return g;
         }
+
+        public static IFacetsGraph DefaultFacetsGraph(FacetContext testContext)
+        {
+            var registry = new RepositoryRegistry(testContext);
+            var g = DefaultFacetsGraph(registry);
+            return g;
+        }
+
     }
 }

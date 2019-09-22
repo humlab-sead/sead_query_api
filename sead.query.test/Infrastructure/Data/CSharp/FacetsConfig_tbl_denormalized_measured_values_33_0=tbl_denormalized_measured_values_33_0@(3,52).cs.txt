@@ -1,0 +1,54 @@
+var facetsConfig2 = new FacetsConfig2
+{
+	RequestId = "1",
+	Language = "",
+	RequestType = "populate",
+	TargetCode = "tbl_denormalized_measured_values_33_0",
+	TriggerCode = "tbl_denormalized_measured_values_33_0",
+	FacetConfigs = new List<FacetConfig2>
+	{
+		new FacetConfig2
+		{
+			FacetCode = "tbl_denormalized_measured_values_33_0",
+			Position = 0,
+			TextFilter = "",
+			Picks = new List<FacetConfigPick>
+			{
+				new FacetConfigPick
+				{
+					PickType = SeadQueryCore.EPickType.lower,
+					PickValue = "3",
+					Text = "3"
+				},
+				new FacetConfigPick
+				{
+					PickType = SeadQueryCore.EPickType.upper,
+					PickValue = "52",
+					Text = "52"
+				}
+			}
+		}
+	},
+	InactiveConfigs = null,
+	TargetConfig = new FacetConfig2
+	{
+		FacetCode = "tbl_denormalized_measured_values_33_0",
+		Position = 0,
+		TextFilter = "",
+		Picks = new List<FacetConfigPick>
+		{
+			new FacetConfigPick
+			{
+				PickType = SeadQueryCore.EPickType.lower,
+				PickValue = "3",
+				Text = "3"
+			},
+			new FacetConfigPick
+			{
+				PickType = SeadQueryCore.EPickType.upper,
+				PickValue = "52",
+				Text = "52"
+			}
+		}
+	}
+};

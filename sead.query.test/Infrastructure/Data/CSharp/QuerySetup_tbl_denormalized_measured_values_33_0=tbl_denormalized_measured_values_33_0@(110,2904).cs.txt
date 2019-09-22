@@ -1,0 +1,38 @@
+var querySetup = new QuerySetup
+{
+	TargetConfig = new FacetConfig2
+	{
+		FacetCode = "tbl_denormalized_measured_values_33_0",
+		Position = 0,
+		TextFilter = "",
+		Picks = new List<FacetConfigPick>
+		{
+			new FacetConfigPick
+			{
+				PickType = SeadQueryCore.EPickType.lower,
+				PickValue = "110",
+				Text = "110"
+			},
+			new FacetConfigPick
+			{
+				PickType = SeadQueryCore.EPickType.upper,
+				PickValue = "2904",
+				Text = "2904"
+			}
+		}
+	},
+	Routes = new List<GraphRoute>
+	{
+	},
+	ReducedRoutes = new List<GraphRoute>
+	{
+	},
+	Joins = new List<String>
+	{
+	},
+	Criterias = new List<String>
+	{
+		"(( (method_values.measured_value >= 110 and method_values.measured_value <= 2904)))"
+	},
+	CategoryTextFilter = ""
+};

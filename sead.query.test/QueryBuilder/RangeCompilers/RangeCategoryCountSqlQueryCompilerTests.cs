@@ -6,24 +6,8 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
-    public class RangeCategoryCountSqlQueryCompilerTests : IDisposable
+    public class RangeCategoryCountSqlQueryCompilerTests
     {
-        private MockRepository mockRepository;
-
-
-
-        public RangeCategoryCountSqlQueryCompilerTests()
-        {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
         private RangeCategoryCountSqlQueryCompiler CreateRangeCategoryCountSqlQueryCompiler()
         {
             return new RangeCategoryCountSqlQueryCompiler();
@@ -34,14 +18,14 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
         {
             // Arrange
             var rangeCategoryCountSqlQueryCompiler = this.CreateRangeCategoryCountSqlQueryCompiler();
-            QuerySetup query = null;
+            QuerySetup querySetup = null;
             Facet facet = null;
             string intervalQuery = null;
             string countColumn = null;
 
             // Act
             var result = rangeCategoryCountSqlQueryCompiler.Compile(
-                query,
+                querySetup,
                 facet,
                 intervalQuery,
                 countColumn);

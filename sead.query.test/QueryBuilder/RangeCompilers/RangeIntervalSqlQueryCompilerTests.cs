@@ -1,52 +1,44 @@
 using Moq;
 using SeadQueryCore;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
-    public class RangeIntervalSqlQueryCompilerTests : IDisposable
+    public class RangeIntervalSqlQueryCompilerTests
     {
-        private MockRepository mockRepository;
-
-
-
-        public RangeIntervalSqlQueryCompilerTests()
-        {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
         private RangeIntervalSqlQueryCompiler CreateRangeIntervalSqlQueryCompiler()
         {
             return new RangeIntervalSqlQueryCompiler();
         }
 
+        private string removeWhiteSpace(string str)
+        {
+            return new String((from c in str where !char.IsWhiteSpace(c) select c).ToArray()).ToLower();
+        }
+
         [Fact]
-        public void Compile_StateUnderTest_ExpectedBehavior()
+        public void Compile_Interval_ContainsGenerateSeries()
         {
             // Arrange
-            var rangeIntervalSqlQueryCompiler = this.CreateRangeIntervalSqlQueryCompiler();
-            int interval = 0;
+            var compiler = this.CreateRangeIntervalSqlQueryCompiler();
+            int interval = 10;
             int min = 0;
-            int max = 0;
+            int max = 120;
             int interval_count = 0;
 
             // Act
-            var result = rangeIntervalSqlQueryCompiler.Compile(
+            var result = compiler.Compile(
                 interval,
                 min,
                 max,
-                interval_count);
+                interval_count
+            );
 
             // Assert
-            Assert.True(false);
+            var expected = $"generate_series({min},{max},{interval})";
+            Assert.Contains(expected, removeWhiteSpace(result));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace SeadQueryTest.Model
 
         private IFacetsGraph CreateFacetsGraphByFakeContext(FacetContext testContext)
         {
-            return ScaffoldUtility.CreateFacetsGraphByFakeContext(testContext);
+            return ScaffoldUtility.DefaultFacetsGraph(testContext);
         }
 
         [Fact]

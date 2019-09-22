@@ -2,7 +2,7 @@
 using System.Linq;
 using SeadQueryTest.Infrastructure;
 
-namespace SeadQueryTest.fixtures
+namespace SeadQueryTest.Fixtures
 {
 
     public class RouteGenerator

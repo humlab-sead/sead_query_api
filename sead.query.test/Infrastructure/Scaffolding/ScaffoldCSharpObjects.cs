@@ -1,62 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Autofac;
-using Autofac.Features.Indexed;
-using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
-using SeadQueryTest.fixtures;
-using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Fixtures;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using Xunit;
 
-namespace SeadQueryTest.Infrastructure.Scaffolding
+namespace Scaffolding.Infrastructure
 {
     public class ScaffoldCSharpObjects
     {
         private QueryBuilderSetting mockQueryBuilderSetting;
         private RepositoryRegistry mockRegistry;
-        private FacetConfigGenerator facetConfigFixture;
-        private ResultConfigGenerator resultConfigFixture;
+        private ScaffoldResultConfig resultConfigFixture;
 
         public ScaffoldCSharpObjects()
         {
-            mockQueryBuilderSetting = new MockOptionBuilder().Build().Value;
+            mockQueryBuilderSetting = new SeadQueryTest.MockOptionBuilder().Build().Value;
             mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
-            facetConfigFixture = new fixtures.FacetConfigGenerator(mockRegistry);
-            resultConfigFixture = new fixtures.ResultConfigGenerator();
         }
 
         private string GetTargetFolder()
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory;
-            var parts = new List<string>(path.Split(Path.DirectorySeparatorChar));
-            var pos = parts.FindLastIndex(x => string.Equals("bin", x));
-            string root = String.Join(Path.DirectorySeparatorChar.ToString(), parts.GetRange(0, pos));
-            return Path.Combine(root, "Infrastructure", "Fixtures", "CSharp");
-        }
-
-        private void DumpToFile(object instance,  string filename, DumpOptions options=null)
-        {
-            options = options ?? new DumpOptions() {
-                DumpStyle = DumpStyle.CSharp,
-                IndentSize = 1,
-                IndentChar = '\t',
-                LineBreakChar = Environment.NewLine,
-                SetPropertiesOnly = false,
-                MaxLevel = 10, // int.MaxValue,
-                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "TargetFacet", "TriggerFacet" },
-                PropertyOrderBy = null,
-                IgnoreDefaultValues = false
-            };
-
-            var data = ObjectDumper.Dump(instance, options);
-            using (StreamWriter file = new StreamWriter(filename)) {
-                file.Write(data);
-            }
+            string root = ScaffoldUtility.GetRootFolder();
+            return Path.Combine(root, "Infrastructure", "Data", "CSharp");
         }
 
         private string UriName(string uri)
@@ -72,42 +40,102 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
         [Fact]
         public void GenerateFacets()
         {
+            var options = new DumpOptions() {
+                DumpStyle = DumpStyle.CSharp,
+                IndentSize = 1,
+                IndentChar = '\t',
+                LineBreakChar = Environment.NewLine,
+                SetPropertiesOnly = false,
+                MaxLevel = 10, // int.MaxValue,
+                ExcludeProperties = new HashSet<string>() {
+                    "Facets",
+                    "Facet",
+                    "TargetTable",
+                    "ExtraTables",
+                    "AliasName",
+                    "HasAliasName",
+                    "QueryCriteria",
+                    "FacetGroupKey",
+                    "FacetTypeKey",
+                    "FacetTypeKey",
+                },
+                PropertyOrderBy = null,
+                IgnoreDefaultValues = false
+            };
+
             using (var context = ScaffoldUtility.DefaultFacetContext()) {
 
                 var repository = new FacetRepository(context);
                 var facets = repository.GetAll();
-                var path = Path.Join(GetTargetFolder(), "facets.cs.txt");
+                var path = Path.Join(GetTargetFolder(), "Facet.cs.txt");
 
-                DumpToFile(facets, path);
+                ScaffoldUtility.Dump(facets, path, options);
             }
 
         }
-
+ 
         [Fact]
         public void GenerateFacetsConfigs()
         {
+            var scaffolder = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+
+            // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
+            var uris = new List<string>() {
+                // "sites@sites:sites:",
+                // "sites@sites:sites@1",
+                // "sites@sites:country@73/sites:",
+                "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)"
+            };
+
+
+            // using (var context = ScaffoldUtility.DefaultFacetContext())
+
+            foreach (var uri in uris) {
+                var facetsConfig = scaffolder.Create(uri);
+                var uriName = UriName(uri);
+                var path = Path.Join(GetTargetFolder(), $"FacetsConfig_{uriName}.cs.txt");
+
+                ScaffoldUtility.Dump(facetsConfig, path);
+            }
+        }
+
+        [Fact]
+        public void GenerateQuerySetups()
+        {
+            var scaffolder = new SeadQueryTest.Fixtures.ScaffoldQuerySetup(mockRegistry);
+
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {
                 "sites@sites:sites:",
                 "sites@sites:sites@1",
                 "sites@sites:country@73/sites:",
+                "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)"
+            };
+            var options = new DumpOptions() {
+                DumpStyle = DumpStyle.CSharp,
+                IndentSize = 1,
+                IndentChar = '\t',
+                LineBreakChar = Environment.NewLine,
+                SetPropertiesOnly = false,
+                MaxLevel = 10, // int.MaxValue,
+                ExcludeProperties = new HashSet<string>() {
+                    "Facet",
+                    "SourceName",
+                    "TargetName",
+                    "Key",
+                    "CategoryTextFilter"
+                },
+                PropertyOrderBy = null,
+                IgnoreDefaultValues = false
             };
 
+            foreach (var uri in uris) {
 
-            // using (var context = ScaffoldUtility.DefaultFacetContext())
-            using (var container = new TestDependencyService().Register())
-            using (var scope = container.BeginLifetimeScope()) {
+                var querySetup = scaffolder.Scaffold(uri);
 
-                foreach (var uri in uris) {
-                    var facetsConfig = facetConfigFixture.GenerateByUri(uri);
-                    var uriName = UriName(uri);
-                    var path = Path.Join(GetTargetFolder(), $"FacetsConfig_{uriName}.cs.txt");
-
-                    DumpToFile(facetsConfig, path);
-                }
-
+                var path = Path.Join(GetTargetFolder(), $"QuerySetup_{UriName(uri)}.cs.txt");
+                ScaffoldUtility.Dump(querySetup, path, options);
             }
-
         }
 
         [Theory]
@@ -117,18 +145,12 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
         [InlineData("map", "map_result")]
         public void GenerateResultsConfigs(string viewTypeId, string resultKey)
         {
-            // using (var context = ScaffoldUtility.DefaultFacetContext())
-            using (var container = new TestDependencyService().Register())
-            using (var scope = container.BeginLifetimeScope()) {
+            var scaffolder = new SeadQueryTest.Fixtures.ScaffoldResultConfig();
+            var resultConfig = scaffolder.GenerateConfig(viewTypeId, resultKey);
 
-                var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
+            var path = Path.Join(GetTargetFolder(), $"ResultConfig_{viewTypeId}_{resultKey}.cs.txt");
 
-                var path = Path.Join(GetTargetFolder(), $"ResultConfig_{viewTypeId}_{resultKey}.cs.txt");
-
-                DumpToFile(resultConfig, path);
-
-            }
-
+            ScaffoldUtility.Dump(resultConfig, path);
         }
     }
 }

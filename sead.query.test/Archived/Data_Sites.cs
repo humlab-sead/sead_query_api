@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SeadQueryTest.fixtures
+namespace SeadQueryTest.Fixtures
 {
     public class Data_Sites
     {

@@ -6,7 +6,7 @@ using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
-using SeadQueryTest.fixtures;
+using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Infrastructure.Scaffolding;
 using Xunit;
@@ -17,15 +17,15 @@ namespace SeadQueryTest
     {
         private QueryBuilderSetting mockQueryBuilderSetting;
         private RepositoryRegistry mockRegistry;
-        private FacetConfigGenerator facetConfigFixture;
-        private ResultConfigGenerator resultConfigFixture;
+        private ScaffoldFacetsConfig facetConfigFixture;
+        private ScaffoldResultConfig resultConfigFixture;
 
         public ResultContentServiceTests()
         {
             mockQueryBuilderSetting = new MockOptionBuilder().Build().Value;
             mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
-            facetConfigFixture = new fixtures.FacetConfigGenerator(mockRegistry);
-            resultConfigFixture = new fixtures.ResultConfigGenerator();
+            facetConfigFixture = new Fixtures.ScaffoldFacetsConfig(mockRegistry);
+            resultConfigFixture = new Fixtures.ScaffoldResultConfig();
         }
 
         [Theory]
@@ -40,7 +40,7 @@ namespace SeadQueryTest
             using (var scope = container.BeginLifetimeScope()) {
 
                 // Arrange
-                var facetsConfig = facetConfigFixture.GenerateByUri(uri);
+                var facetsConfig = facetConfigFixture.Create(uri);
                 var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
 
                 var dumpsFacetConfig = ObjectDumper.Dump(facetsConfig);
@@ -66,7 +66,7 @@ namespace SeadQueryTest
         {
 
             // Arrange
-            var facetsConfig = facetConfigFixture.GenerateByUri(uri);
+            var facetsConfig = facetConfigFixture.Create(uri);
             var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
 
             var aggregate = mockRegistry.Results.GetByKey(resultConfig.AggregateKeys[0]);
@@ -74,7 +74,7 @@ namespace SeadQueryTest
             var mockResultCompiler = new Mock<IResultCompiler>();
             mockResultCompiler.Setup(
                 c => c.Compile(facetsConfig, resultConfig, "result_facet")
-            ).Returns("");   
+            ).Returns("");
             var mockCountService = new Mock<ICategoryCountService>();
             IIndex<EFacetType, ICategoryCountService> mockCountServices = new MockIndex<EFacetType, ICategoryCountService>
             {

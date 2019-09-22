@@ -21,6 +21,7 @@ using SeadQueryTest.Infrastructure;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure.Scaffolding;
 using Xunit;
+using SeadQueryTest.Fixtures;
 
 namespace SeadQueryTest
 {
@@ -53,12 +54,12 @@ namespace SeadQueryTest
     
     public class ControllerTests
     {
-        private fixtures.FacetConfigGenerator fixture;
+        private Fixtures.ScaffoldFacetsConfig fixture;
 
         public ControllerTests()
         {
             var registry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
-            fixture = new fixtures.FacetConfigGenerator(null);
+            fixture = new Fixtures.ScaffoldFacetsConfig(null);
         }
 
         public IWebHostBuilder CreateTestWebHostBuilder2<T>() where T: class
@@ -108,14 +109,17 @@ namespace SeadQueryTest
         [Fact]
         public async Task CanLoadSimpleDiscreteFacetWithoutPicks()
         {
+            var data = new Fixtures.FacetConfigFixtureData();
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
             using (var server = new TestServer(builder))
             {
                 using (var client = server.CreateClient())
                 {
-                    foreach (var config in fixture.Data.DiscreteTestConfigsWithPicks)
+                    foreach (var item in data.DiscreteTestConfigsWithPicks)
                     {
-                        FacetsConfig2 facetsConfig = fixture.GenerateByConfig(config);
+                        var uri = item[0].ToString();
+                        var expectedCount = item[2];
+                        FacetsConfig2 facetsConfig = fixture.Create(uri);
 
                         var json = JsonConvert.SerializeObject(facetsConfig);
                         var request_content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -124,7 +128,7 @@ namespace SeadQueryTest
                         var response_content = await response.Content.ReadAsStringAsync();
                         var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
                         var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
-                        Assert.Equal(config.ExpectedCount, facetContent.Items.Count);
+                        Assert.Equal(expectedCount, facetContent.Items.Count);
                     }
                 }
             }
@@ -133,14 +137,17 @@ namespace SeadQueryTest
         [Fact]
         public async Task CanLoadDiscreteFacetConfigsWithPicks()
         {
+            var data = new Fixtures.FacetConfigFixtureData();
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
             using (var server = new TestServer(builder))
             {
                 using (var client = server.CreateClient())
                 {
-                    foreach (var config in fixture.Data.DiscreteTestConfigsWithPicks)
+                    foreach (var item in data.DiscreteTestConfigsWithPicks)
                     {
-                        FacetsConfig2 facetsConfig = fixture.GenerateByConfig(config);
+                        var uri = item[0].ToString();
+                        var expectedCount = item[2];
+                        FacetsConfig2 facetsConfig = fixture.Create(uri);
 
                         var json = JsonConvert.SerializeObject(facetsConfig);
                         var request_content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -149,7 +156,7 @@ namespace SeadQueryTest
                         var response_content = await response.Content.ReadAsStringAsync();
                         var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
                         var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
-                        Assert.Equal(config.ExpectedCount, facetContent.Items.Count);
+                        Assert.Equal(expectedCount, facetContent.Items.Count);
                     }
                 }
             }
@@ -164,7 +171,8 @@ namespace SeadQueryTest
                 using (var client = server.CreateClient())
                 {
                     // Arrange
-                    FacetsConfig2 facetsConfig = fixture.GenerateByUri("sites@sites:country@73/sites:");
+                    var data = new Fixtures.FacetConfigFixtureData();
+                    FacetsConfig2 facetsConfig = fixture.Create("sites@sites:country@73/sites:");
                     var json = JsonConvert.SerializeObject(facetsConfig);
                     var request_content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -177,7 +185,7 @@ namespace SeadQueryTest
 
                     // Assert
                     Dictionary<string,int> items = facetContent.Items.ToDictionary(z => z.Category, z => z.Count ?? 0);
-                    Dictionary<string,int> expected = fixture.Data.FinishSiteCount;
+                    Dictionary<string,int> expected = data.FinishSiteCount;
                     var isEqual = (expected == items) || (expected.Count == items.Count && !expected.Except(items).Any());
                     Assert.True(isEqual);
                 }

@@ -34,9 +34,9 @@ namespace SeadQueryTest.Model.FacetsConfig
             using (var context = ScaffoldUtility.DefaultFacetContext())
             using (var container = new TestDependencyService(context).Register()) {
 
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
+                var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
 
-                FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
+                FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks("sites");
 
                 Assert.Equal("sites", facetsConfig.TargetCode);
                 Assert.Equal(facetsConfig.TargetCode, facetsConfig.TargetFacet.FacetCode);
@@ -49,8 +49,8 @@ namespace SeadQueryTest.Model.FacetsConfig
             // Arrange
             var context = ScaffoldUtility.DefaultFacetContext();
             var reconstituter = new FacetConfigReconstituteService(mockRegistry);
-            var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
-            FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks("sites");
+            var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+            FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks("sites");
             string json1 = JsonConvert.SerializeObject(facetsConfig);
             FacetsConfig2 facetsConfig2 = reconstituter.Reconstitute(json1);
             string json2 = JsonConvert.SerializeObject(facetsConfig2);
@@ -60,11 +60,12 @@ namespace SeadQueryTest.Model.FacetsConfig
         [Fact]
         public void CanGenerateSingleFacetsConfigWithoutPicks()
         {
+            var data = new Fixtures.FacetConfigFixtureData();
             using (var context = ScaffoldUtility.DefaultFacetContext())
             using (var container = new TestDependencyService(context).Register()) {
-                var fixture = new SeadQueryTest.fixtures.FacetConfigGenerator(mockRegistry);
-                foreach (var facetCode in fixture.Data.DiscreteFacetComputeCount.Keys) {
-                    FacetsConfig2 facetsConfig = fixture.GenerateSingleFacetsConfigWithoutPicks(facetCode);
+                var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+                foreach (var facetCode in data.DiscreteFacetComputeCount.Keys) {
+                    FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
                     Assert.Equal(facetCode, facetsConfig.TargetFacet.FacetCode);
                 }
             }

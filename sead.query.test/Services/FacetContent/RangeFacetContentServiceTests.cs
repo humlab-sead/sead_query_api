@@ -1,59 +1,120 @@
 using Autofac.Features.Indexed;
 using Moq;
 using SeadQueryCore;
+using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryInfra;
+using SeadQueryTest.Infrastructure.Scaffolds;
+using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
+using System.Collections.Generic;
 using Xunit;
+using SeadQueryTest.Infrastructure;
+using Autofac;
+using SeadQueryTest.Fixtures;
 
 namespace SeadQueryTest.Services.FacetContent
 {
-    public class RangeFacetContentServiceTests : IDisposable
+    public class RangeFacetContentServiceTests
     {
-        private MockRepository mockRepository;
-
         private IFacetSetting  mockSettings;
-        private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
-        private Mock<IIndex<EFacetType, ICategoryCountService>> mockIndex;
-        private Mock<IRangeIntervalSqlQueryCompiler> mockRangeIntervalSqlQueryCompiler;
+        private IRepositoryRegistry mockRegistry;
 
         public RangeFacetContentServiceTests()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
+            mockSettings = new MockOptionBuilder().Build().Value.Facet;
+            var mockContext = ScaffoldUtility.DefaultFacetContext();
+            mockRegistry = new RepositoryRegistry(mockContext);
 
-            this.mockSettings = new MockOptionBuilder().Build().Value.Facet;
-            this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
-            this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryCountService>>();
-            this.mockRangeIntervalSqlQueryCompiler = this.mockRepository.Create<IRangeIntervalSqlQueryCompiler>();
         }
 
-        public void Dispose()
+        private RangeFacetContentService CreateService(QuerySetup querySetup)
         {
-            this.mockRepository.VerifyAll();
-        }
+            Mock<IQuerySetupCompiler> mockQuerySetupCompiler = MockQuerySetupCompiler(querySetup);
 
-        private RangeFacetContentService CreateService()
-        {
+            MockIndex<EFacetType, ICategoryCountService> mockCountServices = MockCategoryCountServices();
+
+            var concreteRangeIntervalSqlQueryCompiler = new RangeIntervalSqlQueryCompiler();
+
             return new RangeFacetContentService(
-                this.mockSettings,
-                this.mockRepositoryRegistry.Object,
-                this.mockQuerySetupBuilder.Object,
-                this.mockIndex.Object,
-                this.mockRangeIntervalSqlQueryCompiler.Object);
+                mockSettings,
+                mockRegistry,
+                mockQuerySetupCompiler.Object,
+                mockCountServices,
+                concreteRangeIntervalSqlQueryCompiler
+            );
+        }
+
+        private static MockIndex<EFacetType, ICategoryCountService> MockCategoryCountServices()
+        {
+            var mockRangeCategoryCountService = new Mock<ICategoryCountService>();
+            mockRangeCategoryCountService.Setup(
+                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
+            ).Returns(
+                new Dictionary<string, CategoryCountItem>() {
+
+                }
+            );
+            MockIndex<EFacetType, ICategoryCountService> mockServices = new MockIndex<EFacetType, ICategoryCountService> {
+                { EFacetType.Discrete, new Mock<ICategoryCountService>().Object },
+                { EFacetType.Range, mockRangeCategoryCountService.Object }
+            };
+            return mockServices;
+        }
+
+        private static Mock<IQuerySetupCompiler> MockQuerySetupCompiler(QuerySetup querySetup)
+        {
+            var mockQuerySetupCompiler = new Mock<IQuerySetupCompiler>();
+
+            mockQuerySetupCompiler.Setup(
+                x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>())
+            ).Returns(querySetup);
+
+            mockQuerySetupCompiler.Setup(
+                x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>())
+            ).Returns(querySetup);
+            return mockQuerySetupCompiler;
         }
 
         [Fact]
-        public void TestMethod1()
+        public void Load_RangeFacetWithRangePick_IsLoaded()
         {
             // Arrange
-            var service = this.CreateService();
+            var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
+            var querySetup = QuerySetupInstances.Store[uri];
+            var facetsConfig = FacetsConfigInstances.Store[uri];
+            var service = this.CreateService(querySetup);
 
             // Act
-
-
+            var result = service.Load(facetsConfig);
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Load_WhenOnline_IsTrue()
+        {
+            using (var container = new TestDependencyService().Register())
+            using (var scope = container.BeginLifetimeScope()) {
+
+                // Arrange
+                //var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
+                var uri = "tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82@(110,2904)";
+                var registry = scope.Resolve<IRepositoryRegistry>();
+                var scaffolder = new ScaffoldFacetsConfig(registry);
+
+                var facetsConfig = scaffolder.Create(uri);
+                // var resultKeys = new List<string>() { "site_level" };
+                // var resultConfig = new ScaffoldResultConfig().Scaffold("tabular", resultKeys);
+
+                // var dumpsFacetConfig = ObjectDumper.Dump(facetsConfig);
+
+                var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
+
+                var resultSet = service.Load(facetsConfig);
+                // Act
+
+            }
         }
     }
 }
