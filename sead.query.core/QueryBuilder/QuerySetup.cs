@@ -6,15 +6,19 @@ using System.Linq;
 namespace SeadQueryCore.QueryBuilder
 {
     public class QuerySetup {
-        public FacetConfig2 TargetConfig;
-        public Facet Facet;
-        public List<GraphRoute> Routes;
-        public List<GraphRoute> ReducedRoutes;
+        public FacetConfig2 TargetConfig { get; set; }
+        public Facet Facet { get; set; }
+        public List<GraphRoute> Routes { get; set; }
+        public List<GraphRoute> ReducedRoutes { get; set; }
 
-        public List<string> Joins;
-        public List<string> Criterias;
+        public List<string> Joins { get; set; }
+        public List<string> Criterias { get; set; }
 
         public string CategoryTextFilter { get { return TargetConfig?.TextFilter ?? "";  } }
+
+        public QuerySetup()
+        {
+        }
 
         public QuerySetup(FacetConfig2 targetConfig, Facet facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
         {
