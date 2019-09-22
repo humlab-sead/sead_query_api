@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SeadQueryCore
 {
@@ -42,7 +43,11 @@ namespace SeadQueryCore
         {
             return int.Parse(PickValue);
         }
-
+        public static List<FacetConfigPick> CreateDiscrete(List<int> ids)
+        {
+            return ids.Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
+        }
+ 
         public static List<FacetConfigPick> CreateLowerUpper(decimal lower, decimal upper)
         {
             return new List<FacetConfigPick>() {
