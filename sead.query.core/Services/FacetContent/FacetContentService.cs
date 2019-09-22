@@ -23,10 +23,10 @@ namespace SeadQueryCore
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
             (int interval, string intervalQuery) = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
-            Dictionary<string, CategoryCountItem> distribution = GetCategoryCounts(facetsConfig, intervalQuery);
-            List<FacetContent.ContentItem> items = CompileItems(intervalQuery, distribution).ToList();
-            Dictionary<string, FacetsConfig2.UserPickData> picks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
-            FacetContent facetContent = new FacetContent(facetsConfig, items, distribution, picks, interval, intervalQuery);
+            var distribution = GetCategoryCounts(facetsConfig, intervalQuery);
+            var items        = CompileItems(intervalQuery, distribution).ToList();
+            var picks        = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
+            var facetContent = new FacetContent(facetsConfig, items, distribution, picks, interval, intervalQuery);
             return facetContent;
         }
 
