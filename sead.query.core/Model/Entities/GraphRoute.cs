@@ -11,6 +11,10 @@ namespace SeadQueryCore
     {
         public List<GraphEdge> Items { get; set; } = new List<GraphEdge>();
 
+        public GraphRoute()
+        {
+        }
+
         public GraphRoute(List<GraphEdge> items)
         {
             Items = items;
