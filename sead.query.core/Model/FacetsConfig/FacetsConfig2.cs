@@ -96,8 +96,6 @@ namespace SeadQueryCore
                     FacetType = config.Facet.FacetTypeId,
                     Title = config.Facet.DisplayTitle
                 };
-                // FIXME: Is this used? Can be computed as GroupBy(FacetType).Sum(Selections.Count)
-                //matrix['counts'][config.facet.facet_type] += count(config.picks);
             }
             return values;
 
