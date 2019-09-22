@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SeadQueryCore
@@ -114,10 +113,8 @@ namespace SeadQueryCore
         public string AliasName {
             get {
                 // FIXME!!! Should ALWAYS be target table's alias, not ANY alias...
-                //Debug.Assert(false);
-           
-                return TargetTable.Alias ?? "";
-                // return Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "";
+                // return TargetTable.Alias ?? "";
+                return Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "";
             }
         }
 
