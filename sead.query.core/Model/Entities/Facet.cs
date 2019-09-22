@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SeadQueryCore
@@ -109,13 +110,14 @@ namespace SeadQueryCore
         }
 
         [JsonIgnore]
-        public string aliasName = null;
-
-        [JsonIgnore]
         [NotMapped]
         public string AliasName {
             get {
-                return aliasName ?? (aliasName = Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "");
+                // FIXME!!! Should ALWAYS be target table's alias, not ANY alias...
+                //Debug.Assert(false);
+           
+                return TargetTable.Alias ?? "";
+                // return Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "";
             }
         }
 
