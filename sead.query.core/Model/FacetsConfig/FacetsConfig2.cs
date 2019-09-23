@@ -75,7 +75,7 @@ namespace SeadQueryCore
                 .ToList();
         }
 
-        public FacetsConfig2 DeletePicks()
+        public FacetsConfig2 ClearPicks()
         {
             FacetConfigs.ForEach(z => z.ClearPicks());
             return this;
