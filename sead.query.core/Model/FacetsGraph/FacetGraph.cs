@@ -65,10 +65,15 @@ namespace SeadQueryCore
             return IsAlias(aliasOrTable) ? aliasOrTable : null;
         }
 
-        public List<GraphRoute> Find(string start_table, List<string> destination_tables)
+        public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true)
         {
-            // Add start_table to destination tables???
-            return destination_tables.Where(w => start_table != w).Select(z => Find(start_table, z)).ToList();
+            // FIXME Add start_table to destination tables???
+            var routes = destination_tables.Where(w => start_table != w).Select(z => Find(start_table, z)).ToList();
+            if (reduce) {
+                return GraphRoute.Utility.Reduce(routes);
+            }
+            return routes;
+
         }
 
         public GraphRoute Find(string startTable, string destinationTable)

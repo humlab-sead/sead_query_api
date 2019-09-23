@@ -15,7 +15,7 @@ namespace SeadQueryCore
         GraphEdge GetEdge(int sourceId, int targetId);
         GraphEdge GetEdge(string source, string target);
         GraphRoute Find(string start_table, string destination_table);
-        List<GraphRoute> Find(string start_table, List<string> destination_tables);
+        List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true);
         bool IsAlias(string tableName);
         string ResolveTargetName(string aliasOrTable);
         string ToCSV();
