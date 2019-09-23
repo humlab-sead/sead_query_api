@@ -70,10 +70,15 @@ namespace SeadQueryCore
             // FIXME Add start_table to destination tables???
             var routes = destination_tables.Where(w => start_table != w).Select(z => Find(start_table, z)).ToList();
             if (reduce) {
-                return GraphRoute.Utility.Reduce(routes);
+                return Reduce(routes);
             }
             return routes;
 
+        }
+
+        private static List<GraphRoute> Reduce(List<GraphRoute> routes)
+        {
+            return GraphRoute.Utility.Reduce(routes);
         }
 
         public GraphRoute Find(string startTable, string destinationTable)
