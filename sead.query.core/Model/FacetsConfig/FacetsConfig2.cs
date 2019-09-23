@@ -67,7 +67,7 @@ namespace SeadQueryCore
         public List<FacetConfig2> GetFacetConfigsWithPicks()    => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
         public List<string> GetFacetCodesWithPicks()            => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
 
-        public List<FacetConfig2> GetFacetConfigsAffectedByFacet(List<string> facetCodes, Facet targetFacet)
+        public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet targetFacet, List<string> facetCodes)
         {
             return facetCodes
                 .Select(z => GetConfig(z))
