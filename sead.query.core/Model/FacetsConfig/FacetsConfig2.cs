@@ -69,12 +69,9 @@ namespace SeadQueryCore
 
         public List<FacetConfig2> GetFacetConfigsAffectedByFacet(List<string> facetCodes, Facet targetFacet)
         {
-            var targetIndex = facetCodes.IndexOf(targetFacet.FacetCode);
             return facetCodes
-                .Select(z => ((FacetCode: z, Config: GetConfig(z))))
-                .Where(x => x.Config?.HasPicks() ?? false)
-                .Where(x => x.Config.Facet.IsAffectedBy(facetCodes, targetFacet))
-                .Select(x => x.Config)
+                .Select(z => GetConfig(z))
+                .Where(c => (c?.HasPicks() ?? false) && c.Facet.IsAffectedBy(facetCodes, targetFacet))
                 .ToList();
         }
 
