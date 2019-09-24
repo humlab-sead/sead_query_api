@@ -17,7 +17,7 @@ namespace SeadQueryCore
 
         public IFacetSetting Config { get; }
 
-        public Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
+        public virtual Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {
             Facet facet = Context.Facets.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
