@@ -21,7 +21,6 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         Picks = FacetConfigPick.CreateLowerUpper(110M, 2904M)
                     },
                     Routes = new List<GraphRoute> { },
-                    ReducedRoutes = new List<GraphRoute> { },
                     Joins = new List<String> { },
                     Criterias = new List<String>
                     {
@@ -43,78 +42,6 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         }
                     },
                     Routes = new List<GraphRoute>
-                    {
-                        new GraphRoute
-                        {
-                            Items = new List<GraphEdge>
-                            {
-                                new GraphEdge
-                                {
-                                    EdgeId = -1140,
-                                    SourceNodeId = 119,
-                                    TargetNodeId = 113,
-                                    Weight = 20,
-                                    SourceKeyName = "site_id",
-                                    TargetKeyName = "site_id",
-                                    SourceNode = new GraphNode
-                                    {
-                                        NodeId = 119,
-                                        TableName = "tbl_sites"
-                                    },
-                                    TargetNode = new GraphNode
-                                    {
-                                        NodeId = 113,
-                                        TableName = "tbl_site_locations"
-                                    }
-                                }
-                            }
-                        },
-                        new GraphRoute
-                        {
-                            Items = new List<GraphEdge>
-                            {
-                                new GraphEdge
-                                {
-                                    EdgeId = -1140,
-                                    SourceNodeId = 119,
-                                    TargetNodeId = 113,
-                                    Weight = 20,
-                                    SourceKeyName = "site_id",
-                                    TargetKeyName = "site_id",
-                                    SourceNode = new GraphNode
-                                    {
-                                        NodeId = 119,
-                                        TableName = "tbl_sites"
-                                    },
-                                    TargetNode = new GraphNode
-                                    {
-                                        NodeId = 113,
-                                        TableName = "tbl_site_locations"
-                                    }
-                                },
-                                new GraphEdge
-                                {
-                                    EdgeId = 1151,
-                                    SourceNodeId = 113,
-                                    TargetNodeId = 46,
-                                    Weight = 5,
-                                    SourceKeyName = "location_id",
-                                    TargetKeyName = "location_id",
-                                    SourceNode = new GraphNode
-                                    {
-                                        NodeId = 113,
-                                        TableName = "tbl_site_locations"
-                                    },
-                                    TargetNode = new GraphNode
-                                    {
-                                        NodeId = 46,
-                                        TableName = "countries"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    ReducedRoutes = new List<GraphRoute>
                     {
                         new GraphRoute
                         {

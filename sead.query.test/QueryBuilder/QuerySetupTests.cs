@@ -16,9 +16,8 @@ namespace SeadQueryTest.QueryBuilder
         private Mock<FacetConfig2> mockFacetConfig2;
         private Mock<Facet> mockFacet;
         private Mock<List<string>> mockSqlJoins;
-        private Mock<Dictionary<string, string>> mockCriterias;
+        private Mock<List<string>> mockCriterias;
         private Mock<List<GraphRoute>> mockRoutes;
-        private Mock<List<GraphRoute>> mockReducedRoutes;
 
         public QuerySetupTests()
         {
@@ -27,9 +26,8 @@ namespace SeadQueryTest.QueryBuilder
             this.mockFacetConfig2 = this.mockRepository.Create<FacetConfig2>();
             this.mockFacet = this.mockRepository.Create<Facet>();
             this.mockSqlJoins = this.mockRepository.Create<List<string>>();
-            this.mockCriterias = this.mockRepository.Create<Dictionary<string, string>>();
+            this.mockCriterias = this.mockRepository.Create<List<string>>();
             this.mockRoutes = this.mockRepository.Create<List<GraphRoute>>();
-            this.mockReducedRoutes = this.mockRepository.Create<List<GraphRoute>>();
         }
 
         public void Dispose()
@@ -39,13 +37,13 @@ namespace SeadQueryTest.QueryBuilder
 
         private QuerySetup CreateQuerySetup()
         {
-            return new QuerySetup(
-                this.mockFacetConfig2.Object,
-                this.mockFacet.Object,
-                this.mockSqlJoins.Object,
-                this.mockCriterias.Object,
-                this.mockRoutes.Object,
-                this.mockReducedRoutes.Object);
+            return new QuerySetup() {
+                TargetConfig = this.mockFacetConfig2.Object,
+                Facet = this.mockFacet.Object,
+                Joins = this.mockSqlJoins.Object,
+                Criterias = this.mockCriterias.Object,
+                Routes = this.mockRoutes.Object
+            };
         }
 
         [Fact]

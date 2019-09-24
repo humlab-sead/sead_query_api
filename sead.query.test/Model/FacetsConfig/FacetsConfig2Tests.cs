@@ -134,9 +134,9 @@ namespace SeadQueryTest.Model.FacetsConfig
             Facet targetFacet = null;
 
             // Act
-            var result = facetsConfig2.GetFacetConfigsAffectedByFacet(
-                facetCodes,
-                targetFacet);
+            var result = facetsConfig2.GetFacetConfigsAffectedBy(
+                targetFacet,
+                facetCodes);
 
             // Assert
             Assert.True(false);
@@ -149,7 +149,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             var facetsConfig2 = this.CreateFacetsConfig2();
 
             // Act
-            var result = facetsConfig2.DeletePicks();
+            var result = facetsConfig2.ClearPicks();
 
             // Assert
             Assert.True(false);

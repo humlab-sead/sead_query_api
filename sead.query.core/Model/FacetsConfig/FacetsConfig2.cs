@@ -95,7 +95,6 @@ namespace SeadQueryCore
                 };
             }
             return values;
-
         }
 
         public bool HasPicks(EFacetType facetType = EFacetType.Unknown)

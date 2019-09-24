@@ -92,28 +92,42 @@ namespace SeadQueryTest.Services.FacetContent
         }
 
         [Fact]
-        public void Load_WhenOnline_IsTrue()
+        public void Load_WhenOnlineMeasuredValues_33_00_IsTrue()
         {
             using (var container = new TestDependencyService().Register())
             using (var scope = container.BeginLifetimeScope()) {
 
                 // Arrange
-                //var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-                var uri = "tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82@(110,2904)";
+                var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
                 var registry = scope.Resolve<IRepositoryRegistry>();
                 var scaffolder = new ScaffoldFacetsConfig(registry);
-
                 var facetsConfig = scaffolder.Create(uri);
                 // var resultKeys = new List<string>() { "site_level" };
                 // var resultConfig = new ScaffoldResultConfig().Scaffold("tabular", resultKeys);
 
                 // var dumpsFacetConfig = ObjectDumper.Dump(facetsConfig);
-
                 var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
 
-                var resultSet = service.Load(facetsConfig);
                 // Act
+                var resultSet = service.Load(facetsConfig);
+            }
+        }
 
+        [Fact]
+        public void Load_WhenOnlineMeasuredValues_33_82_IsTrue()
+        {
+            using (var container = new TestDependencyService().Register())
+            using (var scope = container.BeginLifetimeScope()) {
+
+                // Arrange
+                var uri = "tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82@(110,2904)";
+                var registry = scope.Resolve<IRepositoryRegistry>();
+                var scaffolder = new ScaffoldFacetsConfig(registry);
+                var facetsConfig = scaffolder.Create(uri);
+                var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
+
+                // Act
+                var resultSet = service.Load(facetsConfig);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Scaffolding.Infrastructure
     {
         private QueryBuilderSetting mockQueryBuilderSetting;
         private RepositoryRegistry mockRegistry;
-        private ScaffoldResultConfig resultConfigFixture;
+        // private ScaffoldResultConfig resultConfigFixture;
 
         public ScaffoldCSharpObjects()
         {

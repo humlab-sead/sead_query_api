@@ -137,7 +137,6 @@ namespace SeadQueryTest.QueryBuilder
 
             Assert.NotNull(querySetup);
             Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
-            Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
         }
 
         [Theory]
@@ -159,7 +158,6 @@ namespace SeadQueryTest.QueryBuilder
             // Assert
             Assert.NotNull(querySetup);
             Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
-            Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.ReducedRoutes.Count);
         }
 
         public static List<object[]> RouteTestData = new List<object[]>() {
@@ -217,10 +215,10 @@ namespace SeadQueryTest.QueryBuilder
             Assert.Equal(countFacet.FacetCode, querySetup.Facet.FacetCode);
             for (var i = 0; i < expected.Count; i++)
             {
-                Assert.Equal(expected[i].Count, querySetup.ReducedRoutes[i].Items.Count);
+                Assert.Equal(expected[i].Count, querySetup.Routes[i].Items.Count);
                 for (var j = 0; j < expected[i].Count; j++)
                 {
-                    Assert.Equal(expected[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
+                    Assert.Equal(expected[i][j], querySetup.Routes[i].Items[j].ToStringPair());
                 }
             }
             // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
@@ -331,12 +329,12 @@ namespace SeadQueryTest.QueryBuilder
 
             Assert.NotNull(querySetup);
             Assert.Equal(computeFacet.FacetCode, querySetup.Facet.FacetCode);
-            Assert.Equal(expectedRoutes.Count, querySetup.ReducedRoutes.Count);
+            Assert.Equal(expectedRoutes.Count, querySetup.Routes.Count);
 
             for (var i = 0; i < expectedRoutes.Count; i++) {
-                Assert.Equal(expectedRoutes[i].Count, querySetup.ReducedRoutes[i].Items.Count);
+                Assert.Equal(expectedRoutes[i].Count, querySetup.Routes[i].Items.Count);
                 for (var j = 0; j < expectedRoutes[i].Count; j++) {
-                    Assert.Equal(expectedRoutes[i][j], querySetup.ReducedRoutes[i].Items[j].ToStringPair());
+                    Assert.Equal(expectedRoutes[i][j], querySetup.Routes[i].Items[j].ToStringPair());
                 }
             }
         }
@@ -356,7 +354,10 @@ namespace SeadQueryTest.QueryBuilder
 
         private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
         {
-            List<string> tables = targetFacet.ExtraTables.Select(x => x.ObjectName).ToList();
+            List<string> tables = targetFacet
+                .ExtraTables
+                .Select(x => x.ObjectName)
+                .ToList();
 
             if (facetsConfig.TargetCode != null)
                 tables.Add(targetFacet.ResolvedName);

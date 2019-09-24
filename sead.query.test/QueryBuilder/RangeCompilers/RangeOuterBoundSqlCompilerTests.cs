@@ -90,18 +90,16 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
             };
 
             var sqlJoins = new List<string>() { };
-            var criterias = new Dictionary<string, string>() { };
+            var criterias = new List<string>() { };
             var routes = new List<GraphRoute>() { };
-            var reducedRoutes = new List<GraphRoute>() { };
 
-            QuerySetup query = new QuerySetup(
-                targetFacetConfig,
-                facet,
-                sqlJoins,
-                criterias,
-                routes,
-                reducedRoutes
-            );
+            QuerySetup query = new QuerySetup() {
+                TargetConfig = targetFacetConfig,
+                Facet = facet,
+                Joins = sqlJoins,
+                Criterias = criterias,
+                Routes = routes
+            };
 
             // Act
             var result = rangeOuterBoundSqlCompiler.Compile(
