@@ -19,7 +19,7 @@ namespace SeadQueryCore
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
-            List<string> tables = new List<string>() { facet.TargetTable.ObjectName, Config.DirectCountTable };
+            List<string> tables = new List<string>() { /* facet.TargetTable.ObjectName, */ Config.DirectCountTable };
             QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facet, tables);
             string sql = RangeCountSqlCompiler.Compile(querySetup, facet, intervalQuery, Config.DirectCountColumn);
             return sql;

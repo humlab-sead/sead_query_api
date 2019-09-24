@@ -67,13 +67,15 @@ namespace SeadQueryCore
 
         public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true)
         {
-            // FIXME Add start_table to destination tables???
-            var routes = destination_tables.Where(w => start_table != w).Select(z => Find(start_table, z)).ToList();
+            // Make sure that start table doesn't exists in list of destination tables...
+            destination_tables = destination_tables.Where(z => z != start_table).ToList();
+
+            var routes = destination_tables.Select(z => Find(start_table, z)).ToList();
+
             if (reduce) {
                 return Reduce(routes);
             }
             return routes;
-
         }
 
         private static List<GraphRoute> Reduce(List<GraphRoute> routes)
