@@ -9,7 +9,6 @@ namespace SeadQueryCore.QueryBuilder
         public FacetConfig2 TargetConfig { get; set; }
         public Facet Facet { get; set; }
         public List<GraphRoute> Routes { get; set; }
-        public List<GraphRoute> ReducedRoutes { get; set; }
 
         public List<string> Joins { get; set; }
         public List<string> Criterias { get; set; }
@@ -20,14 +19,13 @@ namespace SeadQueryCore.QueryBuilder
         {
         }
 
-        public QuerySetup(FacetConfig2 targetConfig, Facet facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
-        {
-            TargetConfig = targetConfig;
-            Facet = facet;
-            Routes = routes;
-            ReducedRoutes = reducedRoutes;
-            Joins = sqlJoins;
-            Criterias = criterias.Select(x => "(" + x.Value + ")").AppendIf(Facet.QueryCriteria).ToList();
-        }
+        //public QuerySetup(FacetConfig2 targetConfig, Facet facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
+        //{
+        //    TargetConfig = targetConfig;
+        //    Facet = facet;
+        //    Routes = routes;
+        //    Joins = sqlJoins;
+        //    Criterias = criterias.Select(x => "(" + x.Value + ")").AppendIf(Facet.QueryCriteria).ToList();
+        //}
     }
 }
