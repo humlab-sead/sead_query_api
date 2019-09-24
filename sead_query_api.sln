@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.api", "sead.query.api\sead.query.api.csproj", "{97931AF2-4472-4579-B88C-42A742126231}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.core", "sead.query.core\sead.query.core.csproj", "{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.test", "sead.query.test\sead.query.test.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		deploy_query_sead = deploy_query_sead
+		deploy_query_sead.bash = deploy_query_sead.bash
+		setup\pg_grant_read_to_db.bash = setup\pg_grant_read_to_db.bash
+		publish_release.bat = publish_release.bat
+		README.md = README.md
+		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf
+		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf
+		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CC1D37CF-86B3-4B9F-875B-6E181984FA7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.infra", "sead.query.infra\sead.query.infra.csproj", "{CF171AFB-4E73-465E-8527-4CAA607A6BC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sead.query.test.data", "sead.query.test.data\sead.query.test.data.csproj", "{220EB055-EE1D-4D0B-B7FE-EEC127E796EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97931AF2-4472-4579-B88C-42A742126231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97931AF2-4472-4579-B88C-42A742126231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97931AF2-4472-4579-B88C-42A742126231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97931AF2-4472-4579-B88C-42A742126231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F3000DE-A4FA-4C75-9FF1-48D40E20ABF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4807405E-C9E2-457B-A4CD-BA0A43640935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF171AFB-4E73-465E-8527-4CAA607A6BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF171AFB-4E73-465E-8527-4CAA607A6BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF171AFB-4E73-465E-8527-4CAA607A6BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF171AFB-4E73-465E-8527-4CAA607A6BC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{220EB055-EE1D-4D0B-B7FE-EEC127E796EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{220EB055-EE1D-4D0B-B7FE-EEC127E796EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{220EB055-EE1D-4D0B-B7FE-EEC127E796EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{220EB055-EE1D-4D0B-B7FE-EEC127E796EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5283932E-66A7-41F3-9EEE-C02D5737EFC6}
+	EndGlobalSection
+EndGlobal

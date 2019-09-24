@@ -1,0 +1,11 @@
+var resultConfig = new ResultConfig
+{
+	RequestId = "1",
+	SessionId = "1",
+	ViewTypeId = "tabular",
+	AggregateKeys = new List<String>
+	{
+		"sample_group_level"
+	},
+	IsEmpty = false
+};

@@ -4,15 +4,16 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
+
         {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/query_sead_net/bin/Debug/netcoreapp1.1/QuerySeadAPI.dll",
+            "program": "${workspaceRoot}/sead.query.api/bin/Debug/netcoreapp2.2/sead.query.api.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/query_sead_net",
+            "cwd": "${workspaceRoot}/sead.query.api",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -20,7 +21,7 @@
                 "args": "${auto-detect-url}",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}"
+                    "args": "/C start ${auto-detect-url}/api/values"
                 },
                 "osx": {
                     "command": "open"
@@ -32,6 +33,7 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
+            "envFile": "${workspaceFolder}/conf/api/.env",
             "sourceFileMap": {
                 "/Views": "${workspaceRoot}/Views"
             }

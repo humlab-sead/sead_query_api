@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+
+  sead.query.api:
+    image: sead_query_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - redis.cache
+    networks:
+      - sead_query_net
+
+  redis.cache:
+    image: "${REDIS_DOCKER_TAG:-redis:5-alpine}"
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    restart: always
+    volumes:
+      - ${REDIS_DATA_DIR:-/tmp}:/data
+    networks:
+      - sead_query_net
+
+networks:
+  sead_query_net:
+
+  # nginx-proxy:
+  #   container_name: NGINX_PROXY
+  #   hostname: nginx-proxy
+  #   image: claritynlp/nginx-proxy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - certs:/etc/nginx/certs:ro
+  #     - vhost:/etc/nginx/vhost.d
+  #     - html:/usr/share/nginx/html
+  #     - dhparam:/etc/nginx/dhparam
+  #     - htpasswd:/etc/nginx/htpasswd
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #   environment:
+  #     - SOLR_USERNAME=${SOLR_USERNAME}
+  #     - SOLR_PASSWORD=${SOLR_PASSWORD}
+  #     - SOLR_SUBDOMAIN=${SOLR_SUBDOMAIN}
+  #     - SCHEDULER_USERNAME=${SCHEDULER_USERNAME}
+  #     - SCHEDULER_PASSWORD=${SCHEDULER_PASSWORD}
+  #     - SCHEDULER_SUBDOMAIN=${SCHEDULER_SUBDOMAIN}
+  #     - DOMAIN=${DOMAIN}
+  #   labels:
+  #     - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+  #   networks:
+  #     - cibmtr

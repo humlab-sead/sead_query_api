@@ -1,0 +1,22 @@
+[
+  {
+    "FacetTypeId": 0,
+    "FacetTypeName": "undefined",
+    "ReloadAsTarget": false
+  },
+  {
+    "FacetTypeId": 1,
+    "FacetTypeName": "discrete",
+    "ReloadAsTarget": false
+  },
+  {
+    "FacetTypeId": 2,
+    "FacetTypeName": "range",
+    "ReloadAsTarget": true
+  },
+  {
+    "FacetTypeId": 3,
+    "FacetTypeName": "geo",
+    "ReloadAsTarget": true
+  }
+]

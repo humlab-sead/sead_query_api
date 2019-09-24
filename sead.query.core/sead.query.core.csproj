@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>SeadQueryCore</RootNamespace>
+    <AssemblyName>sead.query.core</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.0\SeadQueryCore.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591;CS1591;NU1603;SQL80001;RCS1036;</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Archive\FacetContentExtraRowInfoSqlQueryBuilder.cs" />
+    <Compile Remove="Archive\SetupQueryService.cs" />
+    <Compile Remove="CategoryDistributionLoader.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="2.2.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Npgsql" Version="4.0.9" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
+    <!--<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="2.0.0-preview1" />-->
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.Net.NetworkInformation" Version="4.3.0" />
+    <PackageReference Include="System.Net.Security" Version="4.3.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Autofac.Extras.AggregateService" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Archive\FacetContentExtraRowInfoSqlQueryBuilder.cs" />
+    <None Include="Archive\SetupQueryService.cs" />
+    <None Include="Services\CategoryCount\CategoryCountService.cs" />
+    <None Include="Model\Result\ResultConfig.cs" />
+    <None Include="Services\FacetContent\FacetContentService.cs" />
+    <None Include="Services\Result\DefaultResultService.cs" />
+  </ItemGroup>
+
+
+</Project>

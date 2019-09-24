@@ -1,0 +1,42 @@
+var facetsConfig2 = new FacetsConfig2
+{
+	RequestId = "1",
+	Language = "",
+	RequestType = "populate",
+	TargetCode = "sites",
+	TriggerCode = "sites",
+	FacetConfigs = new List<FacetConfig2>
+	{
+		new FacetConfig2
+		{
+			FacetCode = "country",
+			Position = 0,
+			TextFilter = "",
+			Picks = new List<FacetConfigPick>
+			{
+				new FacetConfigPick
+				{
+				}
+			}
+		},
+		new FacetConfig2
+		{
+			FacetCode = "sites",
+			Position = 1,
+			TextFilter = "",
+			Picks = new List<FacetConfigPick>
+			{
+			}
+		}
+	},
+	InactiveConfigs = null,
+	TargetConfig = new FacetConfig2
+	{
+		FacetCode = "sites",
+		Position = 1,
+		TextFilter = "",
+		Picks = new List<FacetConfigPick>
+		{
+		}
+	}
+};

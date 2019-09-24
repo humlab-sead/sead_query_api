@@ -1,0 +1,142 @@
+[
+  {
+    "AggregateFieldId": 4,
+    "AggregateId": 1,
+    "ResultFieldId": 1,
+    "FieldTypeId": "single_item",
+    "SequenceId": 1
+  },
+  {
+    "AggregateFieldId": 5,
+    "AggregateId": 1,
+    "ResultFieldId": 2,
+    "FieldTypeId": "text_agg_item",
+    "SequenceId": 2
+  },
+  {
+    "AggregateFieldId": 8,
+    "AggregateId": 1,
+    "ResultFieldId": 3,
+    "FieldTypeId": "count_item",
+    "SequenceId": 3
+  },
+  {
+    "AggregateFieldId": 10,
+    "AggregateId": 1,
+    "ResultFieldId": 4,
+    "FieldTypeId": "link_item",
+    "SequenceId": 4
+  },
+  {
+    "AggregateFieldId": 16,
+    "AggregateId": 1,
+    "ResultFieldId": 5,
+    "FieldTypeId": "link_item_filtered",
+    "SequenceId": 5
+  },
+  {
+    "AggregateFieldId": 13,
+    "AggregateId": 1,
+    "ResultFieldId": 1,
+    "FieldTypeId": "sort_item",
+    "SequenceId": 99
+  },
+  {
+    "AggregateFieldId": 15,
+    "AggregateId": 2,
+    "ResultFieldId": 6,
+    "FieldTypeId": "link_item_filtered",
+    "SequenceId": 1
+  },
+  {
+    "AggregateFieldId": 7,
+    "AggregateId": 2,
+    "ResultFieldId": 3,
+    "FieldTypeId": "count_item",
+    "SequenceId": 2
+  },
+  {
+    "AggregateFieldId": 1,
+    "AggregateId": 3,
+    "ResultFieldId": 1,
+    "FieldTypeId": "single_item",
+    "SequenceId": 1
+  },
+  {
+    "AggregateFieldId": 2,
+    "AggregateId": 3,
+    "ResultFieldId": 14,
+    "FieldTypeId": "single_item",
+    "SequenceId": 2
+  },
+  {
+    "AggregateFieldId": 3,
+    "AggregateId": 3,
+    "ResultFieldId": 2,
+    "FieldTypeId": "single_item",
+    "SequenceId": 3
+  },
+  {
+    "AggregateFieldId": 6,
+    "AggregateId": 3,
+    "ResultFieldId": 3,
+    "FieldTypeId": "count_item",
+    "SequenceId": 4
+  },
+  {
+    "AggregateFieldId": 9,
+    "AggregateId": 3,
+    "ResultFieldId": 7,
+    "FieldTypeId": "link_item",
+    "SequenceId": 5
+  },
+  {
+    "AggregateFieldId": 14,
+    "AggregateId": 3,
+    "ResultFieldId": 8,
+    "FieldTypeId": "link_item_filtered",
+    "SequenceId": 6
+  },
+  {
+    "AggregateFieldId": 11,
+    "AggregateId": 3,
+    "ResultFieldId": 1,
+    "FieldTypeId": "sort_item",
+    "SequenceId": 99
+  },
+  {
+    "AggregateFieldId": 12,
+    "AggregateId": 3,
+    "ResultFieldId": 14,
+    "FieldTypeId": "sort_item",
+    "SequenceId": 99
+  },
+  {
+    "AggregateFieldId": 23,
+    "AggregateId": 4,
+    "ResultFieldId": 18,
+    "FieldTypeId": "single_item",
+    "SequenceId": 1
+  },
+  {
+    "AggregateFieldId": 24,
+    "AggregateId": 4,
+    "ResultFieldId": 19,
+    "FieldTypeId": "single_item",
+    "SequenceId": 2
+  },
+  {
+    "AggregateFieldId": 21,
+    "AggregateId": 4,
+    "ResultFieldId": 20,
+    "FieldTypeId": "single_item",
+    "SequenceId": 3
+  },
+  {
+    "AggregateFieldId": 22,
+    "AggregateId": 4,
+    "ResultFieldId": 21,
+    "FieldTypeId": "single_item",
+    "SequenceId": 4
+  }
+]

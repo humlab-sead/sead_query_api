@@ -1,0 +1,11 @@
+var resultConfig = new ResultConfig
+{
+	RequestId = "1",
+	SessionId = "1",
+	ViewTypeId = "map",
+	AggregateKeys = new List<String>
+	{
+		"map_result"
+	},
+	IsEmpty = false
+};
