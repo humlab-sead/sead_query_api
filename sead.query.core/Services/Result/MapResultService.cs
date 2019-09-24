@@ -38,7 +38,7 @@ namespace SeadQueryCore.Services.Result
         {
             CategoryCountItemMap data = GetCategoryCounts(facetsConfig);
             CategoryCountItemMap filtered = data ?? new Dictionary<string, CategoryCountItem>();
-            CategoryCountItemMap unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.DeletePicks()) : filtered;
+            CategoryCountItemMap unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.ClearPicks()) : filtered;
             return new {
                 FilteredCategoryCounts = filtered,
                 FullCategoryCounts = unfiltered
