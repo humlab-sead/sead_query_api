@@ -98,9 +98,6 @@ namespace SeadQueryCore
         [NotMapped]
         public FacetTable TargetTable => Tables?.Find(z => z.SequenceId == 1) ?? null;
 
-        //[JsonIgnore]
-        //public string TargetTableName => TargetTable?.ObjectName ?? "";
-
         [JsonIgnore]
         [NotMapped]
         public List<FacetTable> ExtraTables
@@ -113,8 +110,8 @@ namespace SeadQueryCore
         public string AliasName {
             get {
                 // FIXME!!! Should ALWAYS be target table's alias, not ANY alias...
-                // return TargetTable.Alias ?? "";
-                return Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "";
+                return TargetTable.Alias ?? "";
+                // return Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "";
             }
         }
 
