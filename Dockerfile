@@ -1,43 +1,38 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
-
-LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS repo
 
 RUN apt-get update && apt-get install -y \
   git
 
-WORKDIR /app
+WORKDIR /repo
 
-EXPOSE 8089
+RUN git clone https://github.com/humlab-sead/sead_query_api.git
+
+COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
+COPY hosting.json /repo/sead_query_api/conf/hosting.json
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 
 WORKDIR /src
 
-RUN git clone https://github.com/humlab-sead/sead_query_api.git
+COPY --from=repo ["/repo/sead_query_api/sead.query.api/sead.query.api.csproj", "sead.query.api/"]
+COPY --from=repo ["/repo/sead_query_api/sead.query.core/sead.query.core.csproj", "sead.query.core/"]
+COPY --from=repo ["/repo/sead_query_api/sead.query.infra/sead.query.infra.csproj", "sead.query.infra/"]
 
-WORKDIR /src/sead_query_api
+RUN dotnet restore "sead.query.api/sead.query.api.csproj"
 
-#COPY ["sead.query.api/sead.query.api.csproj", "sead.query.api/"]
-#COPY ["sead.query.core/sead.query.core.csproj", "sead.query.core/"]
-#COPY ["sead.query.infra/sead.query.infra.csproj", "sead.query.infra/"]
+COPY --from=repo /repo/sead_query_api .
 
-RUN ls -al \
-    && dotnet restore "sead.query.api/sead.query.api.csproj"
+RUN cd sead.query.api \
+    && dotnet build   sead.query.api.csproj -c Release \
+    && dotnet publish sead.query.api.csproj -c Release -o /src/app --no-restore
+    #dotnet test    "sead.query.api.csproj" -c Release -o /src/app --no-build --no-restore
 
-#COPY . .
-WORKDIR /src/sead_query_api/sead.query.api
-RUN dotnet build "sead.query.api.csproj" -c Release -o /src/app
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim
 
-FROM build AS publish
-RUN dotnet publish "sead.query.api.csproj" -c Release -o /src/app
+LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
-FROM base AS final
 WORKDIR /app
 
-ENV PGPASSFILE="/app/.pgpass"
-
-COPY --from=publish /src/app .
-COPY ./conf/api/appsettings.Release.json /app/appsettings.json
-COPY ./conf/api/hosting.json /app/hosting.json
+COPY --from=build /src/app .
 
 ENTRYPOINT ["dotnet", "sead.query.api.dll"]
