@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /repo
 
 ADD https://api.github.com/repos/humlab-sead/sead_query_api/git/refs/heads/$BRANCH version.json
-RUN git clone -b$BRANCH https://github.com/$USER/$REPO.git $GIT_HOME/
 RUN git clone -b$BRANCH https://github.com/humlab-sead/sead_query_api.git
 
 COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
