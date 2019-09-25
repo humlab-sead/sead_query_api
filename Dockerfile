@@ -1,11 +1,15 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS repo
 
+ARG BRANCH=master
+
 RUN apt-get update && apt-get install -y \
   git
 
 WORKDIR /repo
 
-RUN git clone https://github.com/humlab-sead/sead_query_api.git
+ADD https://api.github.com/repos/humlab-sead/sead_query_api/git/refs/heads/$BRANCH version.json
+RUN git clone -b$BRANCH https://github.com/$USER/$REPO.git $GIT_HOME/
+RUN git clone -b$BRANCH https://github.com/humlab-sead/sead_query_api.git
 
 COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
 COPY hosting.json /repo/sead_query_api/conf/hosting.json
