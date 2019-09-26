@@ -11,7 +11,7 @@ ADD https://api.github.com/repos/humlab-sead/sead_query_api/git/refs/heads/$BRAN
 RUN git clone -b$BRANCH https://github.com/humlab-sead/sead_query_api.git
 
 COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
-COPY hosting.json /repo/sead_query_api/conf/hosting.json
+#COPY hosting.json /repo/sead_query_api/conf/hosting.json
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 

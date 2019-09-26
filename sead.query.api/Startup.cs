@@ -29,6 +29,7 @@ namespace SeadQueryAPI {
             Configuration = new ConfigurationBuilder()
                 //.SetBasePath(env.ContentRootPath)  // Directory.GetCurrentDirectory()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("hosting.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -69,7 +70,7 @@ namespace SeadQueryAPI {
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Title = "Query SEAD API",
+                    Title = "SEAD Query API",
                     Version = "v1",
                     Description = "API used by the SEAD Query clientS",
                     TermsOfService = "None"
