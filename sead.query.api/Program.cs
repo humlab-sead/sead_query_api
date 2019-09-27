@@ -12,32 +12,23 @@ namespace SeadQueryAPI {
 
     public static class Program
     {
-
         public static void Main(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hosting.json", optional: true)
-                .AddCommandLine(args)
-                .Build();
+            CreateWebHost(args).Run();
+        }
 
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseConfiguration(config)
+        public static IWebHost CreateWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureLogging((hostingContext, logging) =>
+                .ConfigureLogging((hostingContext, builder) =>
                 {
-                    // Requires `using Microsoft.Extensions.Logging;`
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddConsole();
-                    logging.AddDebug();
-                    logging.AddEventSourceLogger();
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                    builder.AddDebug();
                 })
                 .UseStartup<Startup>()
                 .Build();
 
-            host.Run();
-        }
     }
 }
 
