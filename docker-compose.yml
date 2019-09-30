@@ -11,7 +11,8 @@ services:
     depends_on:
       - redis.cache
     networks:
-      - sead_query_net
+      sead_query_net:
+        ipv4_address: 172.21.128.1
 
   redis.cache:
     image: "${REDIS_DOCKER_TAG:-redis:5-alpine}"
@@ -21,7 +22,11 @@ services:
     volumes:
       - ${REDIS_DATA_DIR:-/tmp}:/data
     networks:
-      - sead_query_net
+      sead_query_net:
+        ipv4_address: 172.21.128.2
 
 networks:
   sead_query_net:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
