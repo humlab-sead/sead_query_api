@@ -11,6 +11,8 @@ services:
     depends_on:
       - redis.cache
     networks:
+#      sead_overlay:
+#        ipv4_address: 172.32.128.1
       sead_query_net:
         ipv4_address: 172.31.128.1
 
@@ -25,7 +27,20 @@ services:
       sead_query_net:
         ipv4_address: 172.31.128.2
 
+#  nginx-proxy:
+#    image: sead_nginx
+#    restart: always
+#    depends_on:
+#      - sead.query.api
+#    ports:
+#      - "8080:8080"
+
+
 networks:
+#  sead_overlay:
+#    ipam:
+#      config:
+#        - subnet: 172.32.0.0/16
   sead_query_net:
     ipam:
       config:
