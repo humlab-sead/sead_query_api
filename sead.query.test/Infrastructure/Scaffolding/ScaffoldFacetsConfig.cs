@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SeadQueryInfra;
+using Newtonsoft.Json.Linq;
+using SeadQueryAPI.Serializers;
 
 namespace SeadQueryTest.Fixtures
 {
@@ -58,6 +60,14 @@ namespace SeadQueryTest.Fixtures
                 config.TargetCode,
                 facetConfigs
             );
+        }
+
+        public FacetsConfig2 Load(string json)
+        {
+            FacetConfigReconstituteService service = new FacetConfigReconstituteService(Registry);
+            FacetsConfig2 facetsConfig = service.Reconstitute(json);
+
+            return facetsConfig;
         }
     }
 }

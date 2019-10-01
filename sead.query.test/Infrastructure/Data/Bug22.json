@@ -1,0 +1,22 @@
+﻿{
+  "facetsConfig": {
+    "requestId": 1,
+    "requestType": "populate",
+    "targetCode": "sites",
+    "triggerCode": "sites",
+    "facetConfigs": [
+      {
+        "facetCode": "sites",
+        "position": 1,
+        "picks": [],
+        "textFilter": ""
+      }
+    ]
+  },
+  "resultConfig": {
+    "requestId": 1,
+    "sessionId": "1",
+    "viewTypeId": "map",
+    "aggregateKeys": [ "site_level" ]
+  }
+} 

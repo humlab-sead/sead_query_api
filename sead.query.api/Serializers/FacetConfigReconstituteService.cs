@@ -30,6 +30,8 @@ namespace SeadQueryAPI.Serializers
             foreach (var config in facetsConfig.FacetConfigs) {
                 Reconstitute(config);
             }
+            new FacetsConfigSpecification().IsSatisfiedBy(facetsConfig);
+
             return facetsConfig;
         }
 

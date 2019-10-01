@@ -43,9 +43,7 @@ namespace SeadQueryCore
                 return facetConfigs;
             }
             set {
-                if (new FacetsConfigSpecification().IsSatisfiedBy(value)) {
-                    facetConfigs = value.OrderBy(z => z.Position).ToList();
-                }
+                facetConfigs = value?.OrderBy(z => z.Position).ToList();
             }
         }
 
