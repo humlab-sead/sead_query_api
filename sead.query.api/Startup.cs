@@ -25,6 +25,12 @@ namespace SeadQueryAPI {
 
             app.UseMvcWithDefaultRoute();
             app.UseResponseBuffering();
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
+            );
 
             if (env.IsDevelopment())
             {
@@ -36,15 +42,16 @@ namespace SeadQueryAPI {
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services
+            _ = services
                 .AddOptions()
                 .AddCors()
                 .AddMvc()
-                .AddJsonOptions(opts => {
+                .AddJsonOptions(opts =>
+                {
                     var settings = opts.SerializerSettings;
                     var resolver = new SeadQueryAPI.Serializers.SeadQueryResolver();
                     settings.ContractResolver = resolver as DefaultContractResolver;
-                 });
+                });
 
             services.AddLogging(builder => builder.AddConsole());
             //AddSwagger(services);
