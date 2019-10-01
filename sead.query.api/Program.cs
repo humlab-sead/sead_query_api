@@ -12,22 +12,39 @@ namespace SeadQueryAPI {
 
     public static class Program
     {
+
         public static void Main(string[] args)
         {
-            CreateWebHost(args).Run();
+            //var config = new ConfigurationBuilder()
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .AddJsonFile("hosting.json", optional: true)
+            //    .AddCommandLine(args)
+            //    .Build();
+
+            //var host = new WebHostBuilder()
+
+            //    .UseKestrel()
+            //    .UseConfiguration(config)
+            //    .UseContentRoot(Directory.GetCurrentDirectory())
+            //    .ConfigureLogging((hostingContext, logging) =>
+            //    {
+            //        // Requires `using Microsoft.Extensions.Logging;`
+            //        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+            //        logging.AddConsole();
+            //        logging.AddDebug();
+            //        logging.AddEventSourceLogger();
+            //    })
+            //    .UseStartup<Startup>();
+
+            CreateWebHostBuilder(args)
+                .ConfigureLogging((hostingContext, logging) => { })
+                .Build()
+                .Run();
         }
 
-        public static IWebHost CreateWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureLogging((hostingContext, builder) =>
-                {
-                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
-                    builder.AddDebug();
-                })
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
 
     }
 }
