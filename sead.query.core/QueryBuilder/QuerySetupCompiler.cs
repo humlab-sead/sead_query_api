@@ -13,6 +13,13 @@ namespace SeadQueryCore.QueryBuilder
         QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables, List<string> facetCodes);
     }
 
+    public interface IQuerySetupCompilerArgs
+    {
+        IFacetsGraph Graph { get; }
+        IIndex<int, IPickFilterCompiler> PickCompilers { get; }
+        IEdgeSqlCompiler EdgeCompiler { get; }
+
+    }
     public class QuerySetupCompiler : IQuerySetupCompiler {
         public IFacetsGraph Graph { get; set; }
         public IIndex<int, IPickFilterCompiler> PickCompilers { get; set; }
@@ -26,6 +33,9 @@ namespace SeadQueryCore.QueryBuilder
             Graph = graph;
             PickCompilers = pickCompilers;
             EdgeCompiler = edgeCompiler;
+        }
+        public QuerySetupCompiler(IQuerySetupCompilerArgs args) : this(args.Graph, args.PickCompilers, args.EdgeCompiler)
+        {
         }
 
         public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables = null)
