@@ -26,6 +26,25 @@ namespace SeadQueryTest
         {
             defaultOptions = GetSettings(memorySettings);
         }
+        public FacetSetting  DefaultFacetSettings()
+        {
+            return new FacetSetting() {
+                CategoryNameFilter = true,
+                DirectCountColumn = "tbl_analysis_entities.analysis_entity_id",
+                DirectCountTable = "tbl_analysis_entities",
+                IndirectCountColumn = "tbl_dating_periods.dating_period_id",
+                IndirectCountTable = "tbl_dating_periods",
+                ResultQueryLimit = 10000
+            };
+        }
+
+        public IQueryBuilderSetting DefaultQueryBuilderSettings()
+        {
+            return new QueryBuilderSetting() {
+                Facet = DefaultFacetSettings(),
+                Store = GetSettings().Store
+            };
+        }
 
         public QueryBuilderSetting GetSettings(Dictionary<string, string> memorySettings = null)
         {
