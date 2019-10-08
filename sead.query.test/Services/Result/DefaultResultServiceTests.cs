@@ -32,8 +32,7 @@ namespace SeadQueryTest.Services.Result
         {
             return new DefaultResultService(
                 this.mockRepositoryRegistry.Object,
-                this.mockResultCompiler.Object,
-                this.mockIndex.Object);
+                this.mockResultCompiler.Object);
         }
 
         [Fact]

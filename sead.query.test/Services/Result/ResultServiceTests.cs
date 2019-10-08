@@ -85,8 +85,7 @@ namespace SeadQueryTest
 
             var service = new DefaultResultService(
                 mockRegistry,
-                mockResultCompiler.Object,
-                mockCountServices
+                mockResultCompiler.Object
             );
 
             // Act
