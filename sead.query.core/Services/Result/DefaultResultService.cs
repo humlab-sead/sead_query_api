@@ -14,18 +14,15 @@ namespace SeadQueryCore.Services.Result {
         public string FacetCode { get; protected set; }
 
         public IResultCompiler QueryCompiler { get; set; }
-        public IIndex<EFacetType, ICategoryCountService> CategoryCountServices { get; set; }
 
         public DefaultResultService(
             IRepositoryRegistry registry,
-            IResultCompiler compiler,
-            IIndex<EFacetType, ICategoryCountService> categoryCountServices
+            IResultCompiler compiler
         )
         {
             RepositoryRegistry = registry;
             FacetCode = "result_facet";
             QueryCompiler = compiler;
-            CategoryCountServices = categoryCountServices;
         }
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
@@ -50,6 +47,7 @@ namespace SeadQueryCore.Services.Result {
 
         protected virtual dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
         {
+            // TODO Check if this really always should be null for tabular results
             return null;
         }
 
