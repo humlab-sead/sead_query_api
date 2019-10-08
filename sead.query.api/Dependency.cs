@@ -73,7 +73,8 @@ namespace SeadQueryAPI
             #region __Count Services__
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
             builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
-
+            builder.RegisterType<DiscreteCategoryCountService>().As<IDiscreteCategoryCountService>();
+            
             //builder.RegisterAggregateService<ICategoryCountServiceAggregate>();
             //builder.RegisterType<RangeCategoryCountService>();
             //builder.RegisterType<DiscreteCategoryCountService>();

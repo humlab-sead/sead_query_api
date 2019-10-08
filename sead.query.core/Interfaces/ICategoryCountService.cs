@@ -6,4 +6,5 @@ namespace SeadQueryCore
         Dictionary<string, CategoryCountItem> Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
     }
 
+    public interface IDiscreteCategoryCountService : ICategoryCountService { }
 }

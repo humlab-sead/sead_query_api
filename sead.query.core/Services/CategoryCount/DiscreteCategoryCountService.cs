@@ -6,7 +6,8 @@ using static SeadQueryCore.Utility;
 
 namespace SeadQueryCore
 {
-    public class DiscreteCategoryCountService : CategoryCountService {
+    public class DiscreteCategoryCountService : CategoryCountService, IDiscreteCategoryCountService
+    {
 
         public DiscreteCategoryCountService(
             IFacetSetting config,
