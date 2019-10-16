@@ -127,6 +127,22 @@ namespace SeadQueryTest.Serializers
             Assert.NotNull(facetsConfig);
         }
 
+        [Fact]
+        public void Reconstitute_WithoutTriggerCode_ReturnsExpectedResult()
+        {
+            // Arrange
+            var service = this.CreateService();
+            const string json = @"{ ""FacetsConfig"": { ""RequestId"": 1, ""RequestType"": ""populate"", ""TargetCode"": ""sites"", ""FacetConfigs"": [ { ""FacetCode"": ""sites"", ""Position"": 1, ""Picks"": [], ""TextFilter"": """" }]}, ""ResultConfig"": { ""RequestId"": 1, ""SessionId"": ""1"", ""ViewTypeId"": ""map"", ""AggregateKeys"": [""site_level""]}}";
+
+            // Act
+            var result = service.Reconstitute(json);
+
+            FacetsConfig2 facetsConfig = service.Reconstitute(json);
+
+            // Assert
+            Assert.NotNull(facetsConfig);
+        }
+
         //[Fact]
         //public void Reconstitute_StateUnderTest_ExpectedBehavior3()
         //{
