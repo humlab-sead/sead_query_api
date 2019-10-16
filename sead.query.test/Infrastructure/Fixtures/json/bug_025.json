@@ -1,0 +1,14 @@
+﻿{
+  
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "sites",
+  "facetConfigs": [
+    {
+      "facetCode": "sites",
+      "position": 1,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}
