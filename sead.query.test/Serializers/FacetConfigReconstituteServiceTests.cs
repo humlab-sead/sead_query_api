@@ -143,6 +143,114 @@ namespace SeadQueryTest.Serializers
             Assert.NotNull(facetsConfig);
         }
 
+        [Fact]
+        public void Reconstitute_OfSingleDiscreteFacetWithEnvelope_ReturnsExpectedResult()
+        {
+            // Arrange
+            var service = this.CreateService();
+            const string json = @"{
+                ""FacetsConfig"": {
+                    ""RequestId"": 1,
+                    ""RequestType"": ""populate"",
+                    ""TargetCode"": ""sites"",
+                    ""FacetConfigs"": [ {
+                        ""FacetCode"": ""sites"",
+                        ""Position"": 1,
+                        ""Picks"": [],
+                        ""TextFilter"": """" 
+                    } ]
+                }
+            }";
+
+            // Act
+            var result = service.Reconstitute(json);
+
+            FacetsConfig2 facetsConfig = service.Reconstitute(json);
+
+            // Assert
+            Assert.NotNull(facetsConfig);
+        }
+
+        [Fact]
+        public void Reconstitute_OfSingleDiscreteFacetWithoutEnvelope_ReturnsExpectedResult()
+        {
+            // Arrange
+            var service = this.CreateService();
+            const string json = @"{
+                ""RequestId"": 1,
+                ""RequestType"": ""populate"",
+                ""TargetCode"": ""sites"",
+                ""FacetConfigs"": [ {
+                    ""FacetCode"": ""sites"",
+                    ""Position"": 1,
+                    ""Picks"": [],
+                    ""TextFilter"": """" 
+                } ]
+            }";
+
+            // Act
+            var result = service.Reconstitute(json);
+
+            FacetsConfig2 facetsConfig = service.Reconstitute(json);
+
+            // Assert
+            Assert.NotNull(facetsConfig);
+        }
+
+        [Fact]
+        public void Reconstitute_OfSingleRangeFacetWithEnvelope_ReturnsExpectedResult()
+        {
+            // Arrange
+            var service = this.CreateService();
+            const string json = @"{
+                ""FacetsConfig"": {
+                    ""RequestId"": 1,
+                    ""RequestType"": ""populate"",
+                    ""TargetCode"": ""tbl_denormalized_measured_values_33_0"",
+                    ""FacetConfigs"": [ {
+                        ""FacetCode"": ""tbl_denormalized_measured_values_33_0"",
+                        ""Position"": 1,
+                        ""Picks"": [],
+                        ""TextFilter"": """" 
+                    } ]
+                }
+            }";
+
+            // Act
+            var result = service.Reconstitute(json);
+
+            FacetsConfig2 facetsConfig = service.Reconstitute(json);
+
+            // Assert
+            Assert.NotNull(facetsConfig);
+        }
+
+        [Fact]
+        public void Reconstitute_OfSingleRangeFacetWithoutEnvelope_ReturnsExpectedResult()
+        {
+            // Arrange
+            var service = this.CreateService();
+            const string json = @"{
+                ""RequestId"": 1,
+                ""RequestType"": ""populate"",
+                ""TargetCode"": ""tbl_denormalized_measured_values_33_0"",
+                ""FacetConfigs"": [ {
+                    ""FacetCode"": ""tbl_denormalized_measured_values_33_0"",
+                    ""Position"": 1,
+                    ""Picks"": [],
+                    ""TextFilter"": """" 
+                } ]
+            }";
+
+            // Act
+            var result = service.Reconstitute(json);
+
+            FacetsConfig2 facetsConfig = service.Reconstitute(json);
+
+            // Assert
+            Assert.NotNull(facetsConfig);
+        }
+
         //[Fact]
         //public void Reconstitute_StateUnderTest_ExpectedBehavior3()
         //{
