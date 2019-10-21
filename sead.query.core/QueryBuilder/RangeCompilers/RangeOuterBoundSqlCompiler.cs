@@ -7,7 +7,7 @@ namespace SeadQueryCore
         {
             string sql = $@"
           SELECT MIN({facet.CategoryIdExpr}) AS lower, MAX({facet.CategoryIdExpr}) AS upper
-          FROM {facet.TargetTable.ObjectName}{facet.TargetTable.ObjectArgs ?? ""}
+          FROM {facet.TargetTable.ObjectName}{facet.TargetTable.ObjectArgs ?? ""}  {"AS ".GlueTo(facet.AliasName)}
         ";
             return sql;
         }

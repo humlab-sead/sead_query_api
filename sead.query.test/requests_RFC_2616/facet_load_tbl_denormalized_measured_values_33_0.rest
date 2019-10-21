@@ -18,6 +18,26 @@ accept: application/json
     ]
 }
 
+### Single load/tbl_denormalized_measured_values_33_0
+POST http://localhost:53053/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"tbl_denormalized_measured_values_33_0",
+    "triggerCode":"tbl_denormalized_measured_values_33_0",
+    "facetConfigs":[ {
+        "facetCode":"tbl_denormalized_measured_values_33_0",
+        "position":1,
+        "picks":[],
+        "textFilter":""
+    }
+    ]
+}
+
 ### Single load/site
 POST https://seadserv.humlab.umu.se:8089/api/facets/load
 content-type: application/json
@@ -27,9 +47,9 @@ accept: application/json
 {
     "RequestId":1,
     "RequestType":"populate",
-    "TargetCode":"site",
+    "TargetCode":"sites",
     "FacetConfigs":[ {
-        "FacetCode":"site",
+        "FacetCode":"sites",
         "Position":1,
         "Picks":[],
         "TextFilter":""
