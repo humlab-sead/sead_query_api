@@ -11,7 +11,7 @@ namespace SeadQueryCore
             string clauses = String.Join("", facet.Clauses.Select(x => x.Clause));
             string sql = $@"
                SELECT '{facetCode}' AS facet_code, MIN({facet.CategoryIdExpr}::real) AS min, MAX({facet.CategoryIdExpr}::real) AS max
-               FROM {query.Facet.TargetTable.ObjectName}{query.Facet.TargetTable.ObjectArgs ?? ""}   {"AS ".GlueTo(query.Facet.AliasName)}
+               FROM {query.Facet.TargetTable.ObjectName}{query.Facet.TargetTable.ObjectArgs ?? ""} {"AS ".GlueTo(query.Facet.AliasName)}
                  {query.Joins.Combine("")}
              {"WHERE ".GlueTo(clauses)}";
             return sql;
