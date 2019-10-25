@@ -8,7 +8,7 @@ namespace SeadQueryCore
             SELECT DISTINCT id, name
             FROM (
                 SELECT {facet.CategoryIdExpr} AS id, COALESCE({facet.CategoryNameExpr},'No value') AS name, {facet.SortExpr} AS sort_column
-                FROM {query.Facet.TargetTableName} {"AS ".GlueTo(query.Facet.AliasName)}
+                FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}

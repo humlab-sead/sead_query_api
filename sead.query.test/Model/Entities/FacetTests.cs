@@ -182,10 +182,10 @@ namespace SeadQueryTest.Model.Entities
             facet.Tables = new List<FacetTable>() { mockTable.Object };
 
             // Act
-            var result = facet.AliasName;
+            var result = facet.TargetTable.Alias;
 
             Assert.Equal("alias", result);
-            Assert.True(facet.HasAliasName);
+            Assert.True(facet.TargetTable.HasAlias);
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace SeadQueryTest.Model.Entities
             facet.Tables = new List<FacetTable>() { mockTable.Object };
 
             // Act
-            var result = facet.ExtraTables;
+            var result = facet.Tables.Where(z => z.SequenceId > 1);
 
             Assert.Empty(result);
         }
@@ -217,7 +217,7 @@ namespace SeadQueryTest.Model.Entities
             };
 
             // Act
-            var result = facet.ExtraTables;
+            var result = facet.Tables.Where(z => z.SequenceId > 1);
 
             Assert.Single(result);
         }

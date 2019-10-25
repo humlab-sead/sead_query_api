@@ -66,7 +66,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<Facet>().Property(b => b.AggregateType).HasColumnName("aggregate_type").IsRequired();
             builder.Entity<Facet>().Property(b => b.AggregateTitle).HasColumnName("aggregate_title").IsRequired();
             builder.Entity<Facet>().Property(b => b.AggregateFacetId).HasColumnName("aggregate_facet_id").IsRequired();
-            builder.Entity<Facet>().Ignore(z => z.ExtraTables).Ignore(z => z.TargetTable);
+            // builder.Entity<Facet>().Ignore(z => z.ExtraTables).Ignore(z => z.TargetTable);
 
             builder.Entity<Facet>().HasOne<FacetType>(x => x.FacetType).WithMany().HasForeignKey(p => p.FacetTypeId);
             builder.Entity<Facet>().HasOne<FacetGroup>(x => x.FacetGroup).WithMany(x => x.Facets).HasForeignKey(p => p.FacetGroupId);

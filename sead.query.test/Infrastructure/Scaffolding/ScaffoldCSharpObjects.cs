@@ -51,9 +51,6 @@ namespace Scaffolding.Infrastructure
                     "Facets",
                     "Facet",
                     "TargetTable",
-                    "ExtraTables",
-                    "AliasName",
-                    "HasAliasName",
                     "QueryCriteria",
                     "FacetGroupKey",
                     "FacetTypeKey",
@@ -73,7 +70,7 @@ namespace Scaffolding.Infrastructure
             }
 
         }
- 
+
         [Fact]
         public void GenerateFacetsConfigs()
         {

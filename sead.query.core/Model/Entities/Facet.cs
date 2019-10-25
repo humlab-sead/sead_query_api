@@ -98,35 +98,12 @@ namespace SeadQueryCore
         [NotMapped]
         public FacetTable TargetTable => Tables?.Find(z => z.SequenceId == 1) ?? null;
 
-        [JsonIgnore]
-        [NotMapped]
-        public List<FacetTable> ExtraTables
-        {
-            get { return Tables?.Where(z => z.SequenceId != 1)?.ToList(); }
-        }
-
-        [JsonIgnore]
-        [NotMapped]
-        public string AliasName {
-            get {
-                // FIXME!!! Should ALWAYS be target table's alias, not ANY alias...
-                return TargetTable.Alias ?? "";
-                // return Tables?.FirstOrDefault(z => !z.Alias.Equals(""))?.Alias ?? "";
-            }
-        }
-
-        [JsonIgnore]
-        [NotMapped]
-        public bool HasAliasName
-        {
-            get {
-                return AliasName != "";
-            }
-        }
-
-        [JsonIgnore]
-        [NotMapped]
-        public string ResolvedName  => AliasName != "" ? AliasName : (TargetTable?.TableOrUdfName ?? "");
+        // [JsonIgnore]
+        // [NotMapped]
+        // public List<FacetTable> ExtraTables
+        // {
+        //     get { return Tables?.Where(z => z.SequenceId != 1)?.ToList(); }
+        // }
 
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));

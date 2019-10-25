@@ -136,7 +136,7 @@ namespace SeadQueryTest.QueryBuilder
             ScaffoldUtility.Dump(querySetup, "");
 
             Assert.NotNull(querySetup);
-            Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
+            Assert.Equal(facet.TargetTable.HasAlias ? 1 : 0, querySetup.Routes.Count);
         }
 
         [Theory]
@@ -157,7 +157,7 @@ namespace SeadQueryTest.QueryBuilder
 
             // Assert
             Assert.NotNull(querySetup);
-            Assert.Equal(facet.HasAliasName ? 1 : 0, querySetup.Routes.Count);
+            Assert.Equal(facet.TargetTable.HasAlias ? 1 : 0, querySetup.Routes.Count);
         }
 
         public static List<object[]> RouteTestData = new List<object[]>() {
@@ -341,12 +341,10 @@ namespace SeadQueryTest.QueryBuilder
 
         private static List<string> GetTargetTables(FacetsConfig2 facetsConfig, Facet computeFacet)
         {
-            List<string> tables = facetsConfig.TargetFacet.ExtraTables.Select(x => x.TableOrUdfName).ToList();
-
-            tables.Add(facetsConfig.TargetFacet.ResolvedName);
+            List<string> tables = facetsConfig.TargetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
 
             if (computeFacet.FacetCode != facetsConfig.TargetFacet.FacetCode)
-                tables.Add(computeFacet.TargetTable.TableOrUdfName);
+                tables.AddRange(computeFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList());
 
             tables = tables.Distinct().ToList();
             return tables;
@@ -355,15 +353,12 @@ namespace SeadQueryTest.QueryBuilder
         private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
         {
             List<string> tables = targetFacet
-                .ExtraTables
-                .Select(x => x.TableOrUdfName)
+                .Tables
+                .Select(x => x.ResolvedAliasOrTableOrUdfName)
                 .ToList();
 
-            if (facetsConfig.TargetCode != null)
-                tables.Add(targetFacet.ResolvedName);
-
             if (countFacet.FacetCode != targetFacet.FacetCode)
-                tables.Add(countFacet.TargetTable.TableOrUdfName);
+                tables.Add(countFacet.TargetTable.ResolvedAliasOrTableOrUdfName);
 
             return tables.Distinct().ToList();
         }
