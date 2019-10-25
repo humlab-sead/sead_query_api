@@ -39,12 +39,10 @@ namespace SeadQueryCore
 
         private List<string> GetTables(FacetsConfig2 facetsConfig, Facet targetFacet, Facet computeFacet)
         {
-            List<string> tables = targetFacet.ExtraTables.Select(x => x.TableOrUdfName).ToList();
-            if (facetsConfig.TargetCode != null) {
-                tables.Add(targetFacet.ResolvedName);
-            }
+            List<string> tables = targetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
             if (computeFacet.FacetCode != targetFacet.FacetCode) {
-                tables.Add(computeFacet?.TargetTable?.TableOrUdfName);
+                //FIXME: tables.Add(computeFacet.TargetTable?.TableOrUdfName);
+                tables.AddRange(computeFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName));
             }
             return tables.Distinct().ToList();
         }

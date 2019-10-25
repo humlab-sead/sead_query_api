@@ -24,7 +24,10 @@ namespace SeadQueryCore
         public virtual Facet Facet { get; set; }
 
         [JsonIgnore]
-        public string ResolvedAliasOrObjectName => Alias.IsEmpty() ? TableOrUdfName : Alias;
+        public bool HasAlias => !Alias.IsEmpty();
+
+        [JsonIgnore]
+        public string ResolvedAliasOrTableOrUdfName => Alias.IsEmpty() ? TableOrUdfName : Alias;
 
         [JsonIgnore]
         public string ResolvedTableOrUdfCall => UdfCallArguments.IsEmpty() ? TableOrUdfName : $"{TableOrUdfName}{UdfCallArguments}";

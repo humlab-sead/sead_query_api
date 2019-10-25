@@ -62,7 +62,7 @@ namespace SeadQueryCore.QueryBuilder
             var tableCriterias = CompilePickCriterias(targetFacet, affectedConfigs);
 
             // Find all routes from target facet's table to all tables collected in affected facets
-            List<GraphRoute> routes = Graph.Find(targetFacet.ResolvedName, tables, true);
+            List<GraphRoute> routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
 
             // Compile list of joins for the reduced route
             List<string> joins = CompileJoins(tableCriterias, routes);
@@ -95,9 +95,8 @@ namespace SeadQueryCore.QueryBuilder
             // Compute criteria clauses for user picks for each affected facet
             var criterias = affectedConfigs
                 .Select(config => (
-                    // FIXME: Add ObjectArgs to ResolvedName???
                     (
-                        Tablename: config.Facet.ResolvedName,
+                        Tablename: config.Facet.TargetTable.ResolvedAliasOrTableOrUdfName,
                         Criteria: PickCompiler(config).Compile(targetFacet, config.Facet, config))
                     )
                  )
@@ -127,13 +126,13 @@ namespace SeadQueryCore.QueryBuilder
 
                 // ...target facet's tables...
                 .Concat(
-                    targetFacet.Tables.Select(z => z.TableOrUdfName)
+                    targetFacet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName)
                 )
 
                 // ...tables from affected facets...
                 .Concat(
                     // FIXME: Shouldn't all tables be added???
-                    affectedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.TableOrUdfName).ToList())
+                    affectedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName).ToList())
                 );
 
             return tables.Distinct().ToList();

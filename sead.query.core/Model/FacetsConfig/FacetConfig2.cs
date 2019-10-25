@@ -43,9 +43,7 @@ namespace SeadQueryCore
 
         public List<string> GetJoinTables()
         {
-            // FIXME  Bugg? Alias should never be treated as table in joins??
-            var tables = Facet.ExtraTables.Select(z => z.TableOrUdfName).ToList();
-            tables.Add(Facet.ResolvedName);
+            var tables = Facet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName).ToList();
             return tables;
         }
 
