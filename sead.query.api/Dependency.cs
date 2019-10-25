@@ -57,7 +57,8 @@ namespace SeadQueryAPI
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>()));
+            builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>()))
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupCompiler>().As<IQuerySetupCompiler>();
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
