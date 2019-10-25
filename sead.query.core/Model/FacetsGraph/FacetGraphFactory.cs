@@ -10,8 +10,6 @@ namespace SeadQueryCore
 
         public IFacetsGraph Build(List<GraphNode> nodes, List<GraphEdge> edges, List<Facet> aliasFacets)
         {
-            // FIXME! Edges where source_table = target_table?? Key=(tbl_dataset,tbl_dataset)
-            // Could it be that key must be "table_name.column_name"
 
             var id = 10000;
             var aliasNodes = aliasFacets
@@ -24,10 +22,29 @@ namespace SeadQueryCore
             aliasEdges = aliasEdges.Where(x => !edges.Contains(x)).ToList();
             edges.AddRange(aliasEdges);
 
-            var aliases = aliasFacets?
-                .ToDictionary(x => x.AliasName, x => (x.TargetTable?.ObjectName ?? ""));
+            Dictionary<string, string> aliases = CreateAliasNameToObjectNameMapping(aliasFacets);
 
             return new FacetsGraph(nodes, edges, aliases);
+        }
+
+        private static Dictionary<string, string> CreateAliasNameToObjectNameMapping(List<Facet> aliasFacets)
+        {
+            //var aliases = aliasFacets?
+            //    .ToDictionary(
+            //        x => x.AliasName,
+            //        x => (x.TargetTable?.ObjectName ?? "")
+            //    );
+            return aliasFacets?
+                .Select(z => (
+                    AliasName: z.AliasName,
+                    ObjectName: z.TargetTable?.ObjectName ?? ""
+                ))
+                .ToList()
+                .Distinct()
+                .ToDictionary(
+                    x => x.AliasName,
+                    x => x.Item2
+                );
         }
 
         private List<GraphEdge> GetAliasEdges(
