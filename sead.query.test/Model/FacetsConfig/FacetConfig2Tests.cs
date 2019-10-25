@@ -128,8 +128,8 @@ namespace SeadQueryTest.Model.FacetsConfig
                         FacetTableId = 1,
                         FacetId = 1,
                         SequenceId = 1,
-                        ObjectName = "tbl_analysis_entities",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_analysis_entities",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -137,8 +137,8 @@ namespace SeadQueryTest.Model.FacetsConfig
                         FacetTableId = 38,
                         FacetId = 1,
                         SequenceId = 2,
-                        ObjectName = "tbl_physical_samples",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_physical_samples",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -146,8 +146,8 @@ namespace SeadQueryTest.Model.FacetsConfig
                         FacetTableId = 53,
                         FacetId = 1,
                         SequenceId = 3,
-                        ObjectName = "tbl_datasets",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_datasets",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },

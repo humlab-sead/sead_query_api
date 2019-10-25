@@ -42,8 +42,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 1,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_analysis_entities",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_analysis_entities",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -52,8 +52,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 1,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_physical_samples",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_physical_samples",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -62,8 +62,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 1,
                         SequenceId = 3,
                         SchemaName = "",
-                        ObjectName = "tbl_datasets",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_datasets",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -104,8 +104,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 2,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_datasets",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_datasets",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -147,8 +147,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 3,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "facet.method_measured_values",
-                        ObjectArgs = "(33, 0)",
+                        TableOrUdfName = "facet.method_measured_values",
+                        UdfCallArguments = "(33, 0)",
                         Alias = ""
                     }
                 },
@@ -190,8 +190,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 4,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.tbl_denormalized_measured_values",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.tbl_denormalized_measured_values",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -233,8 +233,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 5,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.tbl_denormalized_measured_values",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.tbl_denormalized_measured_values",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -276,8 +276,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 6,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.tbl_denormalized_measured_values",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.tbl_denormalized_measured_values",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -321,8 +321,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 7,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_measured_values",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_measured_values",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -366,8 +366,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 8,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_abundances",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_abundances",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -409,8 +409,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 9,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_sites",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_sites",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -452,8 +452,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 10,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_geochronology",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_geochronology",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -496,8 +496,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 11,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_relative_ages",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_relative_ages",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -541,8 +541,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 12,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_record_types",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_record_types",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -587,8 +587,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 13,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_sample_groups",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_sample_groups",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -632,8 +632,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 14,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_locations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_locations",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -642,8 +642,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 14,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_site_locations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_site_locations",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -688,8 +688,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 15,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "view_places_relations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "view_places_relations",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -698,8 +698,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 15,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_locations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_locations",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -708,8 +708,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 15,
                         SequenceId = 3,
                         SchemaName = "",
-                        ObjectName = "tbl_site_locations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_site_locations",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -754,8 +754,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 16,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_sample_groups",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_sample_groups",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -800,8 +800,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 17,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_physical_samples",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_physical_samples",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -846,8 +846,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 18,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_sites",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_sites",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -892,8 +892,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 19,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_sites",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_sites",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -938,8 +938,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 20,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_relative_dates",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_relative_dates",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -984,8 +984,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 21,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_locations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_locations",
+                        UdfCallArguments = null,
                         Alias = "countries"
                     },
                     new FacetTable
@@ -994,8 +994,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 21,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_site_locations",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_site_locations",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1046,8 +1046,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 22,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_ecocode_definitions",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_ecocode_definitions",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1056,8 +1056,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 22,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_ecocode_definitions",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_ecocode_definitions",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1102,8 +1102,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 23,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_families",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_families",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1112,8 +1112,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 23,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_families",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_families",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1158,8 +1158,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 24,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_genera",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_genera",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1168,8 +1168,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 24,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_genera",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_genera",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1214,8 +1214,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 25,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_master",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_master",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1224,8 +1224,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 25,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_genera",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_genera",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1234,8 +1234,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 25,
                         SequenceId = 4,
                         SchemaName = "",
-                        ObjectName = "tbl_sites",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_sites",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1244,8 +1244,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 25,
                         SequenceId = 3,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_authors",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_authors",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1296,8 +1296,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 26,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_master",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_master",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1306,8 +1306,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 26,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_genera",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_genera",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1316,8 +1316,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 26,
                         SequenceId = 3,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_authors",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_authors",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1362,8 +1362,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 27,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_abundances",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_abundances",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1408,8 +1408,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 28,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_authors",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_authors",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1418,8 +1418,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 28,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_taxa_tree_authors",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_taxa_tree_authors",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1464,8 +1464,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 29,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_feature_types",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_feature_types",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1474,8 +1474,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 29,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_physical_sample_features",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_physical_sample_features",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1520,8 +1520,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 30,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_ecocode_systems",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_ecocode_systems",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1530,8 +1530,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 30,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_ecocode_systems",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_ecocode_systems",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1576,8 +1576,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 31,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.view_abundance",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.view_abundance",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1622,8 +1622,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 32,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.view_abundance",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.view_abundance",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1674,8 +1674,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 33,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.view_abundance",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.view_abundance",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1726,8 +1726,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 34,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_seasons",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_seasons",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1772,8 +1772,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 35,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "metainformation.view_taxa_biblio",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.view_taxa_biblio",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1782,8 +1782,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 35,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_biblio",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_biblio",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1828,8 +1828,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 36,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_biblio",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_biblio",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1838,8 +1838,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 36,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "metainformation.view_sample_group_references",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.view_sample_group_references",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1890,8 +1890,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 37,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_biblio",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_biblio",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1900,8 +1900,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 37,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "metainformation.view_site_references",
-                        ObjectArgs = null,
+                        TableOrUdfName = "metainformation.view_site_references",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },
@@ -1955,8 +1955,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 1,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "tbl_dummy",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_dummy",
+                        UdfCallArguments = null,
                         Alias = ""
                     },
                     new FacetTable
@@ -1965,8 +1965,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                         FacetId = 1,
                         SequenceId = 2,
                         SchemaName = "",
-                        ObjectName = "tbl_dummy_details",
-                        ObjectArgs = null,
+                        TableOrUdfName = "tbl_dummy_details",
+                        UdfCallArguments = null,
                         Alias = ""
                     }
                 },

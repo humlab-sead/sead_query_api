@@ -341,12 +341,12 @@ namespace SeadQueryTest.QueryBuilder
 
         private static List<string> GetTargetTables(FacetsConfig2 facetsConfig, Facet computeFacet)
         {
-            List<string> tables = facetsConfig.TargetFacet.ExtraTables.Select(x => x.ObjectName).ToList();
+            List<string> tables = facetsConfig.TargetFacet.ExtraTables.Select(x => x.TableOrUdfName).ToList();
 
             tables.Add(facetsConfig.TargetFacet.ResolvedName);
 
             if (computeFacet.FacetCode != facetsConfig.TargetFacet.FacetCode)
-                tables.Add(computeFacet.TargetTable.ObjectName);
+                tables.Add(computeFacet.TargetTable.TableOrUdfName);
 
             tables = tables.Distinct().ToList();
             return tables;
@@ -356,14 +356,14 @@ namespace SeadQueryTest.QueryBuilder
         {
             List<string> tables = targetFacet
                 .ExtraTables
-                .Select(x => x.ObjectName)
+                .Select(x => x.TableOrUdfName)
                 .ToList();
 
             if (facetsConfig.TargetCode != null)
                 tables.Add(targetFacet.ResolvedName);
 
             if (countFacet.FacetCode != targetFacet.FacetCode)
-                tables.Add(countFacet.TargetTable.ObjectName);
+                tables.Add(countFacet.TargetTable.TableOrUdfName);
 
             return tables.Distinct().ToList();
         }

@@ -148,7 +148,8 @@ Content-Type: application/json; charset=UTF-8
 }
 
 ### To few records...?
-POST http://localhost:53053/api/result/load
+#POST https://seadserv.humlab.umu.se:8089/api/facets/load
+POST http://localhost:53053/api/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, */*; q=0.01
@@ -170,8 +171,8 @@ Content-Type: application/json; charset=UTF-8
 }
 
 ### Issue with sample groups
-#POST http://localhost:53053/api/result/load
-POST https://seadserv.humlab.umu.se:8089/api/result/load
+# POST https://seadserv.humlab.umu.se:8089/api/result/load
+POST http://localhost:53053/api/result/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, */*; q=0.01

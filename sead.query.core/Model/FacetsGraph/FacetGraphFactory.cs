@@ -32,18 +32,18 @@ namespace SeadQueryCore
             //var aliases = aliasFacets?
             //    .ToDictionary(
             //        x => x.AliasName,
-            //        x => (x.TargetTable?.ObjectName ?? "")
+            //        x => (x.TargetTable?.TableOrUdfName ?? "")
             //    );
             return aliasFacets?
                 .Select(z => (
                     AliasName: z.AliasName,
-                    ObjectName: z.TargetTable?.ObjectName ?? ""
+                    TableOrUdfName: z.TargetTable?.TableOrUdfName ?? ""
                 ))
                 .ToList()
                 .Distinct()
                 .ToDictionary(
                     x => x.AliasName,
-                    x => x.Item2
+                    x => x.TableOrUdfName
                 );
         }
 
@@ -61,11 +61,11 @@ namespace SeadQueryCore
             foreach (var facet in aliasFacets)
             {
                 // ...fetch all relations where target is a node...
-                var targetEdges = edges.Where(x => x.SourceName == facet.TargetTable?.ObjectName || x.TargetName == facet.TargetTable?.ObjectName);
+                var targetEdges = edges.Where(x => x.SourceName == facet.TargetTable?.TableOrUdfName || x.TargetName == facet.TargetTable?.TableOrUdfName);
 
                 // ...add a corresponding alias relation for each target relation, ...
                 aliasEdges.AddRange(
-                    targetEdges.Select(z => z.Alias(nodesDict[facet.TargetTable.ObjectName], nodesDict[facet.AliasName]))
+                    targetEdges.Select(z => z.Alias(nodesDict[facet.TargetTable.TableOrUdfName], nodesDict[facet.AliasName]))
                 );
 
             }

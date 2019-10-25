@@ -16,15 +16,21 @@ namespace SeadQueryCore
         public int FacetId { get; set; }
         public virtual int SequenceId { get; set; }
         public string SchemaName { get; set; }
-        public string ObjectName { get; set; }
-        public string ObjectArgs { get; set; }
+        public string TableOrUdfName { get; set; }
+        public string UdfCallArguments { get; set; }
         public virtual string Alias { get; set; }
 
         [JsonIgnore]
         public virtual Facet Facet { get; set; }
 
         [JsonIgnore]
-        public string AliasOrObjectName => Alias ?? ObjectName;
+        public string ResolvedAliasOrObjectName => Alias.IsEmpty() ? TableOrUdfName : Alias;
+
+        [JsonIgnore]
+        public string ResolvedTableOrUdfCall => UdfCallArguments.IsEmpty() ? TableOrUdfName : $"{TableOrUdfName}{UdfCallArguments}";
+
+        [JsonIgnore]
+        public string ResolvedSqlJoinName =>  Alias.IsEmpty() ? ResolvedTableOrUdfCall : $"{ResolvedTableOrUdfCall} AS {Alias}";
 
     }
 }

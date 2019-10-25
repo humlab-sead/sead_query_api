@@ -71,8 +71,8 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
                         FacetId = 3,
                         SequenceId = 1,
                         SchemaName = "",
-                        ObjectName = "facet.method_measured_values",
-                        ObjectArgs = "(33, 0)",
+                        TableOrUdfName = "facet.method_measured_values",
+                        UdfCallArguments = "(33, 0)",
                         Alias = "",
                     }
                 },

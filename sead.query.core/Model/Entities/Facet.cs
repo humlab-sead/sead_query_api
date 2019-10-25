@@ -126,7 +126,7 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         [NotMapped]
-        public string ResolvedName  => AliasName != "" ? AliasName : (TargetTable?.ObjectName ?? "");
+        public string ResolvedName  => AliasName != "" ? AliasName : (TargetTable?.TableOrUdfName ?? "");
 
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));

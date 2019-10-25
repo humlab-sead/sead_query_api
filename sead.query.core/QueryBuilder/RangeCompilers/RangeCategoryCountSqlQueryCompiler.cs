@@ -14,7 +14,7 @@ namespace SeadQueryCore
                 FROM categories c
                 LEFT JOIN (
                     SELECT category, COUNT(DISTINCT {countColumn}) AS count_column
-                    FROM {query.Facet.TargetTable.ObjectName}{query.Facet.TargetTable.ObjectArgs ?? ""}  {"AS ".GlueTo(query.Facet.AliasName)}
+                    FROM {query.Facet.TargetTable.TableOrUdfName}{query.Facet.TargetTable.UdfCallArguments ?? ""}  {"AS ".GlueTo(query.Facet.AliasName)}
                     JOIN categories
                       ON cast({facet.CategoryIdExpr} as decimal(15, 2)) between categories.lower and categories.upper
                     {query.Joins.Combine("\n\t\t\t\t")}
