@@ -24,11 +24,6 @@ namespace SeadQueryAPI.Serializers
                     "Clauses",
                     "TargetNode",
                     "TargetName",
-                    "ExtraTables",
-                    "aliasName",
-                    "AliasName",
-                    "HasAliasName",
-                    "ResolvedName",
                     "QueryCriteria"
                );
 
