@@ -13,8 +13,8 @@ namespace SeadQueryCore
 
             var id = 10000;
             var aliasNodes = aliasFacets
-                .Where(f => !nodes.Any(n => f.AliasName == n.TableName))
-                .Select(f => new GraphNode() { NodeId = id++, TableName = f.AliasName });
+                .Where(f => !nodes.Any(n => f.TargetTable.Alias == n.TableName))
+                .Select(f => new GraphNode() { NodeId = id++, TableName = f.TargetTable.Alias });
 
             nodes = nodes.Concat(aliasNodes).Distinct().ToList();
 
@@ -22,27 +22,22 @@ namespace SeadQueryCore
             aliasEdges = aliasEdges.Where(x => !edges.Contains(x)).ToList();
             edges.AddRange(aliasEdges);
 
-            Dictionary<string, string> aliases = CreateAliasNameToObjectNameMapping(aliasFacets);
+            Dictionary<string, string> aliases = CreateAliasToTableOrUdfNameMapping(aliasFacets);
 
             return new FacetsGraph(nodes, edges, aliases);
         }
 
-        private static Dictionary<string, string> CreateAliasNameToObjectNameMapping(List<Facet> aliasFacets)
+        private static Dictionary<string, string> CreateAliasToTableOrUdfNameMapping(List<Facet> aliasFacets)
         {
-            //var aliases = aliasFacets?
-            //    .ToDictionary(
-            //        x => x.AliasName,
-            //        x => (x.TargetTable?.TableOrUdfName ?? "")
-            //    );
             return aliasFacets?
                 .Select(z => (
-                    AliasName: z.AliasName,
-                    TableOrUdfName: z.TargetTable?.TableOrUdfName ?? ""
+                    Alias: z.TargetTable.Alias,
+                    TableOrUdfName: z.TargetTable.TableOrUdfName
                 ))
                 .ToList()
                 .Distinct()
                 .ToDictionary(
-                    x => x.AliasName,
+                    x => x.Alias,
                     x => x.TableOrUdfName
                 );
         }
@@ -65,7 +60,7 @@ namespace SeadQueryCore
 
                 // ...add a corresponding alias relation for each target relation, ...
                 aliasEdges.AddRange(
-                    targetEdges.Select(z => z.Alias(nodesDict[facet.TargetTable.TableOrUdfName], nodesDict[facet.AliasName]))
+                    targetEdges.Select(z => z.Alias(nodesDict[facet.TargetTable.TableOrUdfName], nodesDict[facet.TargetTable.Alias]))
                 );
 
             }
