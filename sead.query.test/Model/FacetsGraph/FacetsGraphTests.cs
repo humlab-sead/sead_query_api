@@ -13,9 +13,6 @@ using DataAccessPostgreSqlProvider;
 
 namespace SeadQueryTest.Model
 {
-
- 
-
     public class FacetsGraphTests : IDisposable
     {
         public void Dispose()

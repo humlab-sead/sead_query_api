@@ -52,6 +52,7 @@ namespace SeadQueryInfra {
 
         public IEnumerable<Facet> FindThoseWithAlias()
         {
+            // FIXME Only check first table?
             return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
         }
 

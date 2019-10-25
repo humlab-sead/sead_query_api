@@ -127,13 +127,13 @@ namespace SeadQueryCore.QueryBuilder
 
                 // ...target facet's tables...
                 .Concat(
-                    targetFacet.ExtraTables.Select(z => z.ObjectName)
+                    targetFacet.Tables.Select(z => z.ObjectName)
                 )
 
                 // ...tables from affected facets...
                 .Concat(
                     // FIXME: Shouldn't all tables be added???
-                    affectedConfigs.SelectMany(c => c.Facet.ExtraTables.Select(z => z.ObjectName).ToList())
+                    affectedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.ObjectName).ToList())
                 );
 
             return tables.Distinct().ToList();

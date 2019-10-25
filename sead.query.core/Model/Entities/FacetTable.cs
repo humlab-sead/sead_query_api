@@ -22,5 +22,9 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         public virtual Facet Facet { get; set; }
+
+        [JsonIgnore]
+        public string AliasOrObjectName => Alias ?? ObjectName;
+
     }
 }
