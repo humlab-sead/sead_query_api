@@ -10,7 +10,7 @@ namespace SeadQueryCore
             SELECT {config.DataFields.Combine(", ")}
             FROM (
                 SELECT {config.AliasPairs.Select(x => $"{x.Item1} AS {x.Item2}").ToList().Combine(", ")}
-                FROM {query.Facet.TargetTable.TableOrUdfName}{query.Facet.TargetTable.UdfCallArguments ?? ""} {"AS ".GlueTo(query.Facet.AliasName)}
+                FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}

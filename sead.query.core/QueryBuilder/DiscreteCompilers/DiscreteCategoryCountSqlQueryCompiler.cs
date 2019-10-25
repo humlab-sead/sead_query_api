@@ -9,7 +9,7 @@ namespace SeadQueryCore
             SELECT category, {aggType}(value) AS count
             FROM (
                 SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS value
-                FROM {query.Facet.TargetTable.TableOrUdfName}{query.Facet.TargetTable.UdfCallArguments ?? ""} {"AS ".GlueTo(query.Facet.AliasName)}
+                FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
