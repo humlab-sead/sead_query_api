@@ -1,0 +1,20 @@
+{
+	"editor.minimap.enabled": false,
+	"rest-client.environmentVariables": {
+		"$shared": {
+			"version": "v1",
+			"prodToken": "foo",
+			"nonProdToken": "bar"
+		},
+		"visual.studio.debug": {
+			"protocol" : "http",
+			"host": "localhost",
+			"port": "53053",
+		},
+		"seadserv.humlab.umu.se": {
+			"protocol" : "https",
+			"host": "seadserv.humlab.umu.se",
+			"port": "8089",
+		}
+	}
+}

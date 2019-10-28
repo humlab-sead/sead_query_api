@@ -1,0 +1,71 @@
+### Type:   discrete
+### Chain:  sites
+### Picks:  [64]
+POST {{protocol}}://{{host}}:{{port}}/api/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+    "facetsConfig": {
+        "requestId":2,
+        "requestType":"populate",
+        "targetCode":"country",
+        "triggerCode":"country",
+        "facetConfigs":[
+            {
+                "facetCode":"country",
+                "position":1,
+                "picks":[
+                    {
+                        "pickType":1,
+                        "pickValue":64,
+                        "text":64
+                    }
+                ],
+                "textFilter":""
+            }
+        ]
+    },
+    "resultConfig": {
+        "requestId":2,
+        "sessionId":"1",
+        "viewTypeId":"map",
+        "aggregateKeys":["site_level"]
+    }
+}
+
+### Type:   discrete
+### Chain:  sample_groups
+### Picks:  [510]
+POST {{protocol}}://{{host}}:{{port}}/api/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, */*; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+	"facetsConfig": {
+		"requestId":4,
+		"requestType":"populate",
+		"targetCode":"sample_groups",
+		"triggerCode":"sample_groups",
+		"facetConfigs":[{
+			"facetCode":"sample_groups",
+			"position":1,
+			"picks":[{
+				"pickType":1,
+				"pickValue":510,
+				"text":510}],
+				"textFilter":""
+			}
+	]},
+	"resultConfig":{
+		"requestId":4,
+		"sessionId":"1",
+		"viewTypeId":"map",
+		"aggregateKeys":["site_level"]
+	}
+}
+
