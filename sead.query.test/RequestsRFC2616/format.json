@@ -1,0 +1,30 @@
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "sites",
+  "facetConfigs": [
+    {
+      "facetCode": "tbl_denormalized_measured_values_33_0",
+      "position": 1,
+      "picks": [
+        {
+          "pickType": 2,
+          "pickValue": 100,
+          "text": 100
+        },
+        {
+          "pickType": 3,
+          "pickValue": 200,
+          "text": 200
+        }
+      ],
+      "textFilter": ""
+    },
+    {
+      "facetCode": "sites",
+      "position": 2,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}

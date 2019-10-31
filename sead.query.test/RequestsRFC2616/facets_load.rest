@@ -10,9 +10,29 @@ accept: application/json
 {
     "RequestId":1,
     "RequestType":"populate",
-    "TargetCode":"sites",
+    "TargetCode":"tbl_biblio_modern",
     "FacetConfigs":[ {
-        "FacetCode":"sites",
+        "FacetCode":"tbl_biblio_modern",
+        "Position":1,
+        "Picks":[],
+        "TextFilter":""
+    }]
+}
+
+### Type:   discrete
+### Chain:  tbl_biblio_sample_groups
+### Picks:  (none)
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"tbl_biblio_sample_groups",
+    "FacetConfigs":[ {
+        "FacetCode":"tbl_biblio_sample_groups",
         "Position":1,
         "Picks":[],
         "TextFilter":""
@@ -65,3 +85,53 @@ accept: application/json
     }
     ]
 }
+
+### Type:   range
+### Chain:  tbl_denormalized_measured_values_33_0
+### Picks: (50, 100)
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "sites",
+  "facetConfigs": [
+    {
+      "facetCode": "tbl_denormalized_measured_values_33_0",
+      "position": 1,
+      "picks": [
+        {
+          "pickType": 2,
+          "pickValue": 100,
+          "text": 100
+        },
+        {
+          "pickType": 3,
+          "pickValue": 200,
+          "text": 200
+        }
+      ],
+      "textFilter": ""
+    },
+    {
+      "facetCode": "sites",
+      "position": 2,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}
+
+
+### Type:   range
+### Chain:  tbl_denormalized_measured_values_33_0
+### Picks: (50, 100)
+GET {{protocol}}://{{host}}:{{port}}/api/facets
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
