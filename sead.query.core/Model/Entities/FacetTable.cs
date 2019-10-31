@@ -15,10 +15,15 @@ namespace SeadQueryCore
         public int FacetTableId { get; set; }
         public int FacetId { get; set; }
         public virtual int SequenceId { get; set; }
-        public string SchemaName { get; set; }
-        public string TableOrUdfName { get; set; }
+
+        public int TableId { get; set; }
         public string UdfCallArguments { get; set; }
         public virtual string Alias { get; set; }
+
+        public Table Table { get; set; }
+
+        [JsonIgnore]
+        public string TableOrUdfName { get { return Table.TableOrUdfName; } }
 
         [JsonIgnore]
         public virtual Facet Facet { get; set; }
@@ -30,10 +35,12 @@ namespace SeadQueryCore
         public string ResolvedAliasOrTableOrUdfName => Alias.IsEmpty() ? TableOrUdfName : Alias;
 
         [JsonIgnore]
-        public string ResolvedTableOrUdfCall => UdfCallArguments.IsEmpty() ? TableOrUdfName : $"{TableOrUdfName}{UdfCallArguments}";
+        public string ResolvedTableOrUdfCall =>
+            UdfCallArguments.IsEmpty() ? TableOrUdfName : $"{TableId}{UdfCallArguments}";
 
         [JsonIgnore]
-        public string ResolvedSqlJoinName =>  Alias.IsEmpty() ? ResolvedTableOrUdfCall : $"{ResolvedTableOrUdfCall} AS {Alias}";
+        public string ResolvedSqlJoinName =>
+            Alias.IsEmpty() ? ResolvedTableOrUdfCall : $"{ResolvedTableOrUdfCall} AS {Alias}";
 
     }
 }
