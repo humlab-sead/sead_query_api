@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-    using NodesDictS = Dictionary<string, GraphNode>;
-    using NodesDictI = Dictionary<int, GraphNode>;
+    using NodesDictS = Dictionary<string, Table>;
+    using NodesDictI = Dictionary<int, Table>;
 
     public interface IFacetsGraph {
-        //List<Facet> AliasFacets { get; }
-        Dictionary<Tuple<string, string>, GraphEdge> Edges { get; }
+        Dictionary<Tuple<string, string>, TableRelation> Edges { get; }
         NodesDictI NodesIds { get; }
         NodesDictS Nodes { get; }
         Dictionary<int, Dictionary<int, int>> Weights { get; }
-        GraphEdge GetEdge(int sourceId, int targetId);
-        GraphEdge GetEdge(string source, string target);
+        TableRelation GetEdge(int sourceId, int targetId);
+        TableRelation GetEdge(string source, string target);
         GraphRoute Find(string start_table, string destination_table);
         List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true);
-        bool IsAlias(string tableName);
-        string ResolveTargetName(string aliasOrTable);
+        Dictionary<string, FacetTable> AliasTables { get; }
+        //bool IsAlias(string tableName);
+        //string ResolveTargetName(string aliasOrTable);
+        //string ResolveAliasName(string targetTableName);
         string ToCSV();
-        string ResolveAliasName(string targetTableName);
     }
 }

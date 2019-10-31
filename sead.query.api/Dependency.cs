@@ -34,15 +34,6 @@ namespace SeadQueryAPI
             return new SimpleMemoryCacheProvider();
         }
 
-        public IFacetsGraph DefaultFacetsGraph(IFacetGraphFactory factory, IRepositoryRegistry registry)
-        {
-            List<GraphNode> nodes = registry.Nodes.GetAll().ToList();
-            List<GraphEdge> edges = registry.Edges.GetAll().ToList();
-            List<Facet> facets = registry.Facets.FindThoseWithAlias().ToList();
-            var graph = factory.Build(nodes, edges, facets);
-            return graph;
-        }
-
         public virtual IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
         {
             var builder = new Autofac.ContainerBuilder();
@@ -57,8 +48,7 @@ namespace SeadQueryAPI
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>()))
-                .InstancePerLifetimeScope();
+            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build()).InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupCompiler>().As<IQuerySetupCompiler>();
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();

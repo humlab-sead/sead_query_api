@@ -50,7 +50,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => DefaultFacetsGraph(c.Resolve<IFacetGraphFactory>(), c.Resolve<IRepositoryRegistry>())).SingleInstance();
+            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build()).SingleInstance();
 
             builder.RegisterType<QuerySetupCompiler>().As<IQuerySetupCompiler>();
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();

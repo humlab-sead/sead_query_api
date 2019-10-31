@@ -6,64 +6,64 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-    using NodesDictS = Dictionary<string, GraphNode>;
-    using NodesDictI = Dictionary<int, GraphNode>;
+    using NodesDictS = Dictionary<string, Table>;
+    using NodesDictI = Dictionary<int, Table>;
     using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
 
     public class FacetsGraph : IFacetsGraph {
 
         public NodesDictS Nodes { get; set; }
         public NodesDictI NodesIds { get; set; }
-        public Dictionary<Tuple<string, string>, GraphEdge> Edges { get; set; }
-        public Dictionary<string, string> AliasTables;
+        public Dictionary<Tuple<string, string>, TableRelation> Edges { get; set; }
+        public Dictionary<string, FacetTable> AliasTables { get; private set; }
         public WeightDictionary Weights { get; set; }
 
         public FacetsGraph(
-            List<GraphNode> nodes,
-            List<GraphEdge> edges,
-            Dictionary<string, string> aliases,
+            List<Table> nodes,
+            List<TableRelation> edges,
+            Dictionary<string, FacetTable> aliasDict,
             bool addReversed=true
         )
         {
-            Nodes = nodes.ToDictionary(x => x.TableName);
-            NodesIds = nodes.ToDictionary(x => x.NodeId);
+            Nodes = nodes.ToDictionary(x => x.TableOrUdfName);
+            NodesIds = nodes.ToDictionary(x => x.TableId);
 
             //edges = edges.Distinct();
 
             if (addReversed) {
-                IEnumerable<GraphEdge> reversed = ReversedEdges(edges);
+                IEnumerable<TableRelation> reversed = ReversedEdges(edges);
                 edges.AddRange(reversed);
             }
 
             Edges = edges.ToDictionary(z => z.Key);
-            AliasTables = aliases ?? new Dictionary<string, string>();
+            AliasTables = aliasDict ?? new Dictionary<string, FacetTable>();
 
-            Weights = edges.GroupBy(p => p.SourceNodeId, (key, g) => (key, g.ToDictionary(x => x.TargetNodeId, x => x.Weight)))
+            Weights = edges.GroupBy(p => p.SourceTableId, (key, g) => (key, g.ToDictionary(x => x.TargetTableId, x => x.Weight)))
                 .ToDictionary(x => x.Item1, y => y.Item2);
         }
 
-        private IEnumerable<GraphEdge> ReversedEdges(List<GraphEdge> edges)
+        private IEnumerable<TableRelation> ReversedEdges(List<TableRelation> edges)
         {
             return edges
-                .Where(z => z.SourceNodeId != z.TargetNodeId)
+                .Where(z => z.SourceTableId != z.TargetTableId)
                 .Select(x => x.Reverse())
                 .Where(z => !edges.Any(w => w.Equals(z)));
         }
 
-        public GraphEdge GetEdge(string source, string target) => Edges[Tuple.Create(source, target)];
-        public GraphEdge GetEdge(int sourceId, int targetId) => Edges[Tuple.Create(NodesIds[sourceId].TableName, NodesIds[targetId].TableName)];
+        public TableRelation GetEdge(string source, string target) => Edges[Tuple.Create(source, target)];
+        public TableRelation GetEdge(int sourceId, int targetId) => Edges[Tuple.Create(NodesIds[sourceId].TableOrUdfName, NodesIds[targetId].TableOrUdfName)];
 
-        public bool IsAlias(string name) => AliasTables.ContainsKey(name);
+        //public bool IsAlias(string name) => AliasTables.ContainsKey(name);
 
-        public string ResolveTargetName(string aliasOrTable)
-        {
-            return IsAlias(aliasOrTable) ? AliasTables[aliasOrTable] : aliasOrTable;
-        }
+        //public string ResolveTargetName(string aliasOrTable)
+        //{
+        //    return IsAlias(aliasOrTable) ? AliasTables[aliasOrTable] : aliasOrTable;
+        //}
 
-        public string ResolveAliasName(string aliasOrTable)
-        {
-            return IsAlias(aliasOrTable) ? aliasOrTable : null;
-        }
+        //public string ResolveAliasName(string aliasOrTable)
+        //{
+        //    return IsAlias(aliasOrTable) ? aliasOrTable : null;
+        //}
 
         public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true)
         {
@@ -85,16 +85,16 @@ namespace SeadQueryCore
 
         public GraphRoute Find(string startTable, string destinationTable)
         {
-            return Find(Nodes[startTable].NodeId, Nodes[destinationTable].NodeId);
+            return Find(Nodes[startTable].TableId, Nodes[destinationTable].TableId);
         }
 
         public GraphRoute Find(int startTableId, int destinationTableId)
         {
-            GraphRoute CreateRoute(List<GraphNode> nodes)
+            GraphRoute CreateRoute(List<Table> nodes)
             {
-                List<GraphEdge> items = new List<GraphEdge>();
+                List<TableRelation> items = new List<TableRelation>();
                 for (int i = 0; i < nodes.Count - 1; i++)
-                    items.Add(GetEdge(nodes[i].TableName, nodes[i + 1].TableName));
+                    items.Add(GetEdge(nodes[i].TableOrUdfName, nodes[i + 1].TableOrUdfName));
                 return new GraphRoute(items);
             }
             List<int> trail = new DijkstrasGraph<int>(Weights).shortest_path(startTableId, destinationTableId);
