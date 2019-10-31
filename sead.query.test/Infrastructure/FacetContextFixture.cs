@@ -59,8 +59,8 @@ namespace SeadQueryTest.Infrastructure
             FacetContext.AddRange(reader.Deserialize<FacetTable>(path));
             FacetContext.AddRange(reader.Deserialize<Facet>(path));
             FacetContext.AddRange(reader.Deserialize<ViewState>(path));
-            FacetContext.AddRange(reader.Deserialize<GraphNode>(path));
-            FacetContext.AddRange(reader.Deserialize<GraphEdge>(path));
+            FacetContext.AddRange(reader.Deserialize<Table>(path));
+            FacetContext.AddRange(reader.Deserialize<TableRelation>(path));
             FacetContext.AddRange(reader.Deserialize<ResultViewType>(path));
             FacetContext.AddRange(reader.Deserialize<ResultFieldType>(path));
             FacetContext.AddRange(reader.Deserialize<ResultAggregateField>(path));

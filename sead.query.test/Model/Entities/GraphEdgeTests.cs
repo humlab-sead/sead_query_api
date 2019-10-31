@@ -10,15 +10,15 @@ namespace SeadQueryTest.Model.Entities
 {
     public class GraphEdgeTests : FacetTestBase
     {
-        private GraphEdge CreateGraphEdge()
+        private TableRelation CreateGraphEdge()
         {
-            return new GraphEdge() {
-                EdgeId = 1,
-                SourceNode = new GraphNode() { NodeId = 1, TableName = "A" },
-                TargetNode = new GraphNode() { NodeId = 2, TableName = "B" },
+            return new TableRelation() {
+                TableRelationId = 1,
+                SourceTable = new Table() { TableId = 1, TableOrUdfName = "A" },
+                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B" },
                 Weight = 6,
-                SourceKeyName = "a_b",
-                TargetKeyName = "a_b"
+                SourceColumName = "a_b",
+                TargetColumnName = "a_b"
             };
         }
 
@@ -46,11 +46,11 @@ namespace SeadQueryTest.Model.Entities
 
             // Assert
             Assert.Equal(result.SourceName, graphEdge.TargetName);
-            Assert.Equal(result.SourceNode, graphEdge.TargetNode);
+            Assert.Equal(result.SourceTable, graphEdge.TargetTable);
             Assert.Equal(result.TargetName, graphEdge.SourceName);
-            Assert.Equal(result.TargetNode, graphEdge.SourceNode);
-            Assert.Equal(result.SourceKeyName, graphEdge.TargetKeyName);
-            Assert.Equal(result.TargetKeyName, graphEdge.SourceKeyName);
+            Assert.Equal(result.TargetTable, graphEdge.SourceTable);
+            Assert.Equal(result.SourceColumName, graphEdge.TargetColumnName);
+            Assert.Equal(result.TargetColumnName, graphEdge.SourceColumName);
             Assert.Equal(result.Weight, graphEdge.Weight);
         }
 
@@ -59,14 +59,14 @@ namespace SeadQueryTest.Model.Entities
         {
             // Arrange
             var graphEdge = this.CreateGraphEdge();
-            GraphNode node = graphEdge.TargetNode;
-            GraphNode alias = new GraphNode { NodeId = node.NodeId, TableName = "ALIAS" };
+            Table node = graphEdge.TargetTable;
+            Table alias = new Table { TableId = node.TableId, TableOrUdfName = "ALIAS" };
 
             // Act
             var result = graphEdge.Alias(node, alias);
 
             // Assert
-            Assert.Equal("ALIAS", result.TargetNode.TableName);
+            Assert.Equal("ALIAS", result.TargetTable.TableOrUdfName);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace SeadQueryTest.Model.Entities
 
         public static List<object[]> TestData = new List<object[]>() {
              new object[] {
-                typeof(GraphEdge),
+                typeof(TableRelation),
                 5,
                 new Dictionary<string, object>() {
                     { "EdgeId", 5 },

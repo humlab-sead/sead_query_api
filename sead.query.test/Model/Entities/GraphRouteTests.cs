@@ -20,7 +20,7 @@ namespace SeadQueryTest.Model.Entities
         private GraphRoute CreateGraphRoute()
         {
             GraphRoute testRoute = new GraphRoute(
-                new List<GraphEdge>() {
+                new List<TableRelation>() {
                     FacetsGraph.GetEdge("A", "B"),
                     FacetsGraph.GetEdge("B", "F"),
                     FacetsGraph.GetEdge("F", "H")
@@ -34,7 +34,7 @@ namespace SeadQueryTest.Model.Entities
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            GraphEdge item = FacetsGraph.GetEdge("A", "B");
+            TableRelation item = FacetsGraph.GetEdge("A", "B");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -47,7 +47,7 @@ namespace SeadQueryTest.Model.Entities
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            GraphEdge item = FacetsGraph.GetEdge("C", "F");
+            TableRelation item = FacetsGraph.GetEdge("C", "F");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -62,7 +62,7 @@ namespace SeadQueryTest.Model.Entities
             var graphRoute = this.CreateGraphRoute();
             List<GraphRoute> routes = new List<GraphRoute>() {
                 new GraphRoute(
-                    new List<GraphEdge>() {
+                    new List<TableRelation>() {
                         FacetsGraph.GetEdge("F", "H")
                     }
                 )

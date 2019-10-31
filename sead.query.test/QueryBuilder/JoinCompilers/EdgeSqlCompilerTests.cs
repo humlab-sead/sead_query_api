@@ -18,31 +18,67 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             // Arrange
             var edgeSqlCompiler = this.CreateEdgeSqlCompiler();
 
-            var graphMock = new Mock<IFacetsGraph>();
-            graphMock.Setup(g => g.ResolveTargetName(It.IsAny<string>())).Returns("tbl_site_locations");
-            graphMock.Setup(g => g.ResolveAliasName(It.IsAny<string>())).Returns(default(string));
-
-            GraphEdge edge = new GraphEdge() {
-                EdgeId = -2151,
-                SourceNodeId = 46,
-                TargetNodeId = 113,
+            TableRelation edge = new TableRelation() {
+                TableRelationId = -2151,
+                SourceTableId = 46,
+                TargetTableId = 113,
                 Weight = 5,
-                SourceKeyName = "location_id",
-                TargetKeyName = "location_id",
-                SourceNode = new GraphNode() { NodeId = 46, TableName = "countries"},
-                TargetNode = new GraphNode() { NodeId = 113, TableName = "tbl_site_locations"}
+                SourceColumName = "location_id",
+                TargetColumnName = "location_id",
+                SourceTable = new Table() { TableId = 46, TableOrUdfName = "countries"},
+                TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations"}
             };
 
-            bool innerJoin = false;
+            FacetTable facetTable = new FacetTable {
+                FacetTableId = 1,
+                FacetId = 1,
+                SequenceId = 1,
+                TableId = edge.TargetTableId,
+                Table = edge.TargetTable,
+                UdfCallArguments = null,
+                Alias = ""
+            };
 
             // Act
-            var result = edgeSqlCompiler.Compile(
-                graphMock.Object,
-                edge,
-                innerJoin);
+            var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
             var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
+            Assert.Equal(expected, result.ToLower().Trim());
+        }
+
+        [Fact]
+        public void Compile_WithSingleEdgeWithWithoutAliasAndNoUdf_ReturnSingleJoinWithNoAlias()
+        {
+            // Arrange
+            var edgeSqlCompiler = this.CreateEdgeSqlCompiler();
+
+            TableRelation edge = new TableRelation() {
+                TableRelationId = -2151,
+                SourceTableId = 1,
+                TargetTableId = 2,
+                Weight = 5,
+                SourceColumName = "site_id",
+                TargetColumnName = "site_id",
+                SourceTable = new Table() { TableId = 1, TableOrUdfName = "tbl_sites"},
+                TargetTable = new Table() { TableId = 2, TableOrUdfName = "tbl_site_locations"}
+            };
+
+            FacetTable facetTable = new FacetTable {
+                FacetTableId = 1,
+                FacetId = 1,
+                SequenceId = 1,
+                TableId = edge.TargetTableId,
+                Table = edge.TargetTable,
+                UdfCallArguments = null,
+                Alias = ""
+            };
+
+            // Act
+            var result = edgeSqlCompiler.Compile(edge, facetTable, false);
+
+            // Assert
+            var expected = "left join tbl_site_locations on tbl_site_locations.\"site_id\" = tbl_sites.\"site_id\"";
             Assert.Equal(expected, result.ToLower().Trim());
         }
     }

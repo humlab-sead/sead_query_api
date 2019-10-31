@@ -9,7 +9,7 @@ namespace SeadQueryTest.Model.FacetsConfig
 {
     public class FacetConfig2Tests
     {
- 
+
         [Fact]
         public void HasPicks_WhenRangeFacetHasPicks_IsTrue()
         {
@@ -105,54 +105,7 @@ namespace SeadQueryTest.Model.FacetsConfig
         public void GetJoinTables_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var facet = new Facet() {
-                FacetId = 1,
-                FacetCode = "result_facet",
-                DisplayTitle = "Analysis entities",
-                CategoryIdExpr = "tbl_analysis_entities.analysis_entity_id",
-                CategoryNameExpr = "tbl_physical_samples.sample_name||\' \'||tbl_datasets.dataset_name",
-                AggregateType = "count",
-                AggregateTitle = "Number of dummies",
-                AggregateFacetId = 0,
-                SortExpr = "tbl_dummy.dummy_name",
-                FacetType = new FacetType {
-                    FacetTypeId = SeadQueryCore.EFacetType.Discrete,
-                    FacetTypeName = "discrete",
-                    ReloadAsTarget = false
-                },
-                FacetGroup = new Mock<FacetGroup>().Object,
-                Tables = new List<FacetTable>
-                {
-                    new FacetTable
-                    {
-                        FacetTableId = 1,
-                        FacetId = 1,
-                        SequenceId = 1,
-                        TableOrUdfName = "tbl_analysis_entities",
-                        UdfCallArguments = null,
-                        Alias = ""
-                    },
-                    new FacetTable
-                    {
-                        FacetTableId = 38,
-                        FacetId = 1,
-                        SequenceId = 2,
-                        TableOrUdfName = "tbl_physical_samples",
-                        UdfCallArguments = null,
-                        Alias = ""
-                    },
-                    new FacetTable
-                    {
-                        FacetTableId = 53,
-                        FacetId = 1,
-                        SequenceId = 3,
-                        TableOrUdfName = "tbl_datasets",
-                        UdfCallArguments = null,
-                        Alias = ""
-                    }
-                },
-                Clauses = new List<FacetClause> { }
-            };
+            var facet = SeadQueryTest.Infrastructure.Scaffolds.FacetInstances.Store["result_facet"];
             var facetConfig2 = new FacetConfig2 {
                 FacetCode = "result_facet",
                 Facet = facet,

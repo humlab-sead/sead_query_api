@@ -20,9 +20,9 @@ namespace SeadQueryTest.Repository
         {
         }
 
-        private NodeRepository CreateRepository()
+        private TableRepository CreateRepository()
         {
-            return new NodeRepository(this.mockFacetContext);
+            return new TableRepository(this.mockFacetContext);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace SeadQueryTest.Repository
             var result = repository.Get(1);
 
             // Assert
-            Assert.Equal(1, result.NodeId);
+            Assert.Equal(1, result.TableId);
         }
     }
 }

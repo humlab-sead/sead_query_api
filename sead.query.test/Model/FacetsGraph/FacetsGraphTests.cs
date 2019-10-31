@@ -56,56 +56,56 @@ namespace SeadQueryTest.Model
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(4, result.SourceNodeId);
-            Assert.Equal(6, result.TargetNodeId);
+            Assert.Equal(4, result.SourceTableId);
+            Assert.Equal(6, result.TargetTableId);
             Assert.Equal(8, result.Weight);
         }
 
-        [Fact]
-        public void IsAlias_WhenGraphHasAlias_ShouldBeTrue()
-        {
-            // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+        //[Fact]
+        //public void IsAlias_WhenGraphHasAlias_ShouldBeTrue()
+        //{
+        //    // Arrange
+        //    var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
 
-            const string name = "X";
+        //    const string name = "X";
 
-            // Act
-            var result = facetsGraph.IsAlias(name);
+        //    // Act
+        //    var result = facetsGraph.IsAlias(name);
 
-            // Assert
-            Assert.True(result);
-        }
+        //    // Assert
+        //    Assert.True(result);
+        //}
 
-        [Fact]
-        public void ResolveTargetName_WhenGraphHasAlias_ShouldBeTargetName()
-        {
-            // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+        //[Fact]
+        //public void ResolveTargetName_WhenGraphHasAlias_ShouldBeTargetName()
+        //{
+        //    // Arrange
+        //    var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
 
-            const string aliasOrTable = "X";
+        //    const string aliasOrTable = "X";
 
-            // Act
-            var result = facetsGraph.ResolveTargetName(
-                aliasOrTable);
+        //    // Act
+        //    var result = facetsGraph.ResolveTargetName(
+        //        aliasOrTable);
 
-            // Assert
-            Assert.Equal("A", result);
-        }
+        //    // Assert
+        //    Assert.Equal("A", result);
+        //}
 
-        [Fact]
-        public void ResolveAliasName_WhenGraphHasAlias_ShouldBeAliasName()
-        {
-            // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+        //[Fact]
+        //public void ResolveAliasName_WhenGraphHasAlias_ShouldBeAliasName()
+        //{
+        //    // Arrange
+        //    var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
 
-            const string aliasOrTable = "X";
+        //    const string aliasOrTable = "X";
 
-            // Act
-            var result = facetsGraph.ResolveAliasName(aliasOrTable);
+        //    // Act
+        //    var result = facetsGraph.ResolveAliasName(aliasOrTable);
 
-            // Assert
-            Assert.Equal("X", result);
-        }
+        //    // Assert
+        //    Assert.Equal("X", result);
+        //}
 
         [Fact]
         public void Find_WhenStartHasPathToStop_ShouldBeShortestPath()

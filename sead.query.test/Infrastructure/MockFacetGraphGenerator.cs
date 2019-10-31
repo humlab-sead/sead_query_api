@@ -10,31 +10,31 @@ namespace SeadQueryTest.Infrastructure
     {
         public class GraphGenerator
         {
-            public List<GraphNode> Nodes { get; }
-            public Dictionary<string, GraphNode> NodeMap { get; }
-            public List<GraphEdge> Edges { get; } = new List<GraphEdge>();
+            public List<Table> Nodes { get; }
+            public Dictionary<string, Table> NodeMap { get; }
+            public List<TableRelation> Edges { get; } = new List<TableRelation>();
 
             public GraphGenerator(int n)
             {
                 Nodes = GenerateNodes(n).ToList();
-                NodeMap = Nodes.ToDictionary(z => z.TableName);
+                NodeMap = Nodes.ToDictionary(z => z.TableOrUdfName);
             }
 
-            public IEnumerable<GraphNode> GenerateNodes(int n)
+            public IEnumerable<Table> GenerateNodes(int n)
             {
                 for (var i = 1; i <= n; i++)
-                    yield return new GraphNode() { NodeId = i, TableName = Convert.ToChar('A' + i - 1).ToString() };
+                    yield return new Table() { TableId = i, TableOrUdfName = Convert.ToChar('A' + i - 1).ToString() };
             }
 
             public GraphGenerator Add(string x, string y, int w)
             {
-                var edge = new GraphEdge() {
-                    EdgeId = Edges.Count + 1,
-                    SourceNode = NodeMap[x],
-                    TargetNode = NodeMap[y],
+                var edge = new TableRelation() {
+                    TableRelationId = Edges.Count + 1,
+                    SourceTable = NodeMap[x],
+                    TargetTable = NodeMap[y],
                     Weight = w,
-                    SourceKeyName = $"{x.ToLower()}{y.ToLower()}_key",
-                    TargetKeyName = $"{x.ToLower()}{y.ToLower()}_key"
+                    SourceColumName = $"{x.ToLower()}{y.ToLower()}_key",
+                    TargetColumnName = $"{x.ToLower()}{y.ToLower()}_key"
                 };
                 Edges.Add(edge);
                 return this;
@@ -71,7 +71,7 @@ namespace SeadQueryTest.Infrastructure
             var facetsGraph = new FacetsGraph(
                 nodes: generator.Nodes,
                 edges: generator.Edges,
-                aliases: new Dictionary<string, string>() { { "X", "A" } }
+                aliasDict: new Dictionary<string, FacetTable>() { }
             );
             return facetsGraph;
         }

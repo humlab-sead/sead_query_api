@@ -47,8 +47,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
                     typeof(FacetGroup),
                     typeof(FacetTable),
                     typeof(FacetType),
-                    typeof(GraphNode),
-                    typeof(GraphEdge),
+                    typeof(Table),
+                    typeof(TableRelation),
                     typeof(ResultAggregate),
                     typeof(ResultAggregateField),
                     typeof(ResultField),
@@ -82,18 +82,14 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
 
         public static IFacetsGraph DefaultFacetsGraph(IRepositoryRegistry registry)
         {
-            var factory = new FacetGraphFactory();
+            var factory = new FacetGraphFactory(registry);
 
-            List<GraphNode> nodes = registry.Nodes.GetAll().ToList();
-            List<GraphEdge> edges = registry.Edges.GetAll().ToList();
+            List<Table> nodes = registry.Tables.GetAll().ToList();
+            List<TableRelation> edges = registry.TableRelations.GetAll().ToList();
 
             List<Facet> facets = registry.Facets.FindThoseWithAlias().ToList();
 
-            var g = factory.Build(
-                nodes,
-                edges,
-                facets
-            );
+            var g = factory.Build();
             return g;
         }
 

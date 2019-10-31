@@ -191,7 +191,7 @@ namespace SeadQueryTest.QueryBuilder
 
             // Arrange
             var registry = fixture.Registry;
-            var factory = new FacetGraphFactory();
+            var factory = new FacetGraphFactory(registry);
 
             QuerySetupCompiler builder = CreateQuerySetupCompiler();
 
