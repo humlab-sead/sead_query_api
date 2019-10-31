@@ -1,51 +1,464 @@
 [
   {
-    "FacetGroupId": 999,
     "FacetGroupKey": "ROOT",
     "DisplayTitle": "ROOT",
     "IsApplicable": false,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": [
+      {
+        "FacetId": 2,
+        "FacetCode": "dataset_helper",
+        "DisplayTitle": "dataset_helper",
+        "FacetGroupKey": "ROOT",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 1,
+        "FacetCode": "result_facet",
+        "DisplayTitle": "Analysis entities",
+        "FacetGroupKey": "ROOT",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 7,
+        "FacetCode": "measured_values_helper",
+        "DisplayTitle": "values",
+        "FacetGroupKey": "ROOT",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 8,
+        "FacetCode": "taxon_result",
+        "DisplayTitle": "taxon_id",
+        "FacetGroupKey": "ROOT",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 9,
+        "FacetCode": "map_result",
+        "DisplayTitle": "Site",
+        "FacetGroupKey": "ROOT",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      }
+    ]
   },
   {
-    "FacetGroupId": 1,
     "FacetGroupKey": "others",
     "DisplayTitle": "Others",
     "IsApplicable": true,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": [
+      {
+        "FacetId": 35,
+        "FacetCode": "tbl_biblio_modern",
+        "DisplayTitle": "Bibligraphy modern",
+        "FacetGroupKey": "others",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "count of species"
+      },
+      {
+        "FacetId": 12,
+        "FacetCode": "record_types",
+        "DisplayTitle": "Proxy types",
+        "FacetGroupKey": "others",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 29,
+        "FacetCode": "feature_type",
+        "DisplayTitle": "Feature type",
+        "FacetGroupKey": "others",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 37,
+        "FacetCode": "tbl_biblio_sites",
+        "DisplayTitle": "Bibligraphy sites",
+        "FacetGroupKey": "others",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 36,
+        "FacetCode": "tbl_biblio_sample_groups",
+        "DisplayTitle": "Bibligraphy sites/Samplegroups",
+        "FacetGroupKey": "others",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      }
+    ]
   },
   {
-    "FacetGroupId": 2,
     "FacetGroupKey": "space_time",
     "DisplayTitle": "Space/Time",
     "IsApplicable": true,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": [
+      {
+        "FacetId": 13,
+        "FacetCode": "sample_groups",
+        "DisplayTitle": "Sample group",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 14,
+        "FacetCode": "places",
+        "DisplayTitle": "Places",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 15,
+        "FacetCode": "places_all2",
+        "DisplayTitle": "view_places_relations",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 16,
+        "FacetCode": "sample_groups_helper",
+        "DisplayTitle": "Sample group",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 17,
+        "FacetCode": "physical_samples",
+        "DisplayTitle": "physical samples",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 18,
+        "FacetCode": "sites",
+        "DisplayTitle": "Site",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 19,
+        "FacetCode": "sites_helper",
+        "DisplayTitle": "Site",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": true,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 21,
+        "FacetCode": "country",
+        "DisplayTitle": "Country",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 10,
+        "FacetCode": "geochronology",
+        "DisplayTitle": "Geochronology",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 11,
+        "FacetCode": "relative_age_name",
+        "DisplayTitle": "Time periods",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 20,
+        "FacetCode": "tbl_relative_dates_helper",
+        "DisplayTitle": "tbl_relative_dates",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 34,
+        "FacetCode": "activeseason",
+        "DisplayTitle": "Seasons",
+        "FacetGroupKey": "space_time",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      }
+    ]
   },
   {
-    "FacetGroupId": 3,
     "FacetGroupKey": "time",
     "DisplayTitle": "Time",
     "IsApplicable": true,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": []
   },
   {
-    "FacetGroupId": 4,
     "FacetGroupKey": "ecology",
     "DisplayTitle": "Ecology",
     "IsApplicable": true,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": [
+      {
+        "FacetId": 22,
+        "FacetCode": "ecocode",
+        "DisplayTitle": "Eco code",
+        "FacetGroupKey": "ecology",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 30,
+        "FacetCode": "ecocode_system",
+        "DisplayTitle": "Eco code system",
+        "FacetGroupKey": "ecology",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 31,
+        "FacetCode": "abundance_classification",
+        "DisplayTitle": "abundance classification",
+        "FacetGroupKey": "ecology",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 32,
+        "FacetCode": "abundances_all_helper",
+        "DisplayTitle": "Abundances",
+        "FacetGroupKey": "ecology",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 33,
+        "FacetCode": "abundances_all",
+        "DisplayTitle": "Abundances",
+        "FacetGroupKey": "ecology",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      }
+    ]
   },
   {
-    "FacetGroupId": 5,
     "FacetGroupKey": "measured_values",
     "DisplayTitle": "Measured values",
     "IsApplicable": true,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": [
+      {
+        "FacetId": 3,
+        "FacetCode": "tbl_denormalized_measured_values_33_0",
+        "DisplayTitle": "MS ",
+        "FacetGroupKey": "measured_values",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 4,
+        "FacetCode": "tbl_denormalized_measured_values_33_82",
+        "DisplayTitle": "MS Heating 550",
+        "FacetGroupKey": "measured_values",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 5,
+        "FacetCode": "tbl_denormalized_measured_values_32",
+        "DisplayTitle": "LOI",
+        "FacetGroupKey": "measured_values",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 6,
+        "FacetCode": "tbl_denormalized_measured_values_37",
+        "DisplayTitle": " P┬░",
+        "FacetGroupKey": "measured_values",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "",
+        "AggregateTitle": "Number of samples"
+      }
+    ]
   },
   {
-    "FacetGroupId": 6,
     "FacetGroupKey": "taxonomy",
     "DisplayTitle": "Taxonomy",
     "IsApplicable": true,
-    "IsDefault": false
+    "IsDefault": false,
+    "Facets": [
+      {
+        "FacetId": 25,
+        "FacetCode": "species",
+        "DisplayTitle": "Taxa",
+        "FacetGroupKey": "taxonomy",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "sum",
+        "AggregateTitle": "sum of Abundance"
+      },
+      {
+        "FacetId": 23,
+        "FacetCode": "family",
+        "DisplayTitle": "Family",
+        "FacetGroupKey": "taxonomy",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 24,
+        "FacetCode": "genus",
+        "DisplayTitle": "Genus",
+        "FacetGroupKey": "taxonomy",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 26,
+        "FacetCode": "species_helper",
+        "DisplayTitle": "Species",
+        "FacetGroupKey": "taxonomy",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 27,
+        "FacetCode": "abundance_helper",
+        "DisplayTitle": "abundance_id",
+        "FacetGroupKey": "taxonomy",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": false,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      },
+      {
+        "FacetId": 28,
+        "FacetCode": "species_author",
+        "DisplayTitle": "Author",
+        "FacetGroupKey": "taxonomy",
+        "FacetTypeKey": "unknown",
+        "IsApplicable": true,
+        "IsDefault": false,
+        "AggregateType": "count",
+        "AggregateTitle": "Number of samples"
+      }
+    ]
   }
 ]

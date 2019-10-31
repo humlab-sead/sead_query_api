@@ -6,7 +6,8 @@
     "IsApplicable": false,
     "IsActivated": true,
     "InputType": "checkboxes",
-    "HasSelector": true
+    "HasSelector": true,
+    "Fields": []
   },
   {
     "AggregateId": 2,
@@ -15,7 +16,8 @@
     "IsApplicable": false,
     "IsActivated": true,
     "InputType": "checkboxes",
-    "HasSelector": true
+    "HasSelector": true,
+    "Fields": []
   },
   {
     "AggregateId": 3,
@@ -24,7 +26,8 @@
     "IsApplicable": false,
     "IsActivated": true,
     "InputType": "checkboxes",
-    "HasSelector": true
+    "HasSelector": true,
+    "Fields": []
   },
   {
     "AggregateId": 4,
@@ -33,6 +36,7 @@
     "IsApplicable": false,
     "IsActivated": false,
     "InputType": "checkboxes",
-    "HasSelector": false
+    "HasSelector": false,
+    "Fields": []
   }
 ]

@@ -2,73 +2,89 @@
   {
     "FieldTypeId": "sum_item",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": true,
     "IsSortField": false,
+    "IsAggregateField": true,
     "IsItemField": false,
-    "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}",
+    "IsGroupByField": false,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "count_item",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": true,
     "IsSortField": false,
+    "IsAggregateField": true,
     "IsItemField": false,
-    "SqlTemplate": "COUNT({0}) AS count_of_{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "COUNT({0}) AS count_of_{0}",
+    "IsGroupByField": false,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "avg_item",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": true,
     "IsSortField": false,
+    "IsAggregateField": true,
     "IsItemField": false,
-    "SqlTemplate": "AVG({0}) AS avg_of_{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "AVG({0}) AS avg_of_{0}",
+    "IsGroupByField": false,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "text_agg_item",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": true,
     "IsSortField": false,
+    "IsAggregateField": true,
     "IsItemField": false,
-    "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}",
+    "IsGroupByField": false,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "single_item",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": false,
     "IsSortField": false,
+    "IsAggregateField": false,
     "IsItemField": true,
-    "SqlTemplate": "{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "{0}",
+    "IsGroupByField": true,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "link_item",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": false,
     "IsSortField": false,
+    "IsAggregateField": false,
     "IsItemField": true,
-    "SqlTemplate": "{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "{0}",
+    "IsGroupByField": true,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "link_item_filtered",
     "IsResultValue": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": false,
     "IsSortField": false,
+    "IsAggregateField": false,
     "IsItemField": true,
-    "SqlTemplate": "{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "{0}",
+    "IsGroupByField": true,
+    "Compiler": {}
   },
   {
     "FieldTypeId": "sort_item",
     "IsResultValue": false,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "IsAggregateField": false,
     "IsSortField": true,
+    "IsAggregateField": false,
     "IsItemField": false,
-    "SqlTemplate": "{0}"
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "{0}",
+    "IsGroupByField": true,
+    "Compiler": {}
   }
 ]

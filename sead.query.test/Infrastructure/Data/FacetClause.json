@@ -1,32 +1,32 @@
 [
   {
-    "FacetSourceTableId": 1,
+    "FacetClauseId": 1,
     "FacetId": 21,
     "Clause": "countries.location_type_id=1"
   },
   {
-    "FacetSourceTableId": 2,
+    "FacetClauseId": 2,
     "FacetId": 25,
     "Clause": "tbl_sites.site_id is not null"
   },
   {
-    "FacetSourceTableId": 3,
+    "FacetClauseId": 3,
     "FacetId": 32,
-    "Clause": "metainformation.view_abundance.abundance is not null"
+    "Clause": "facet.view_abundance.abundance is not null"
   },
   {
-    "FacetSourceTableId": 4,
+    "FacetClauseId": 4,
     "FacetId": 33,
-    "Clause": "metainformation.view_abundance.abundance is not null"
+    "Clause": "facet.view_abundance.abundance is not null"
   },
   {
-    "FacetSourceTableId": 5,
+    "FacetClauseId": 5,
     "FacetId": 36,
-    "Clause": "metainformation.view_sample_group_references.biblio_id is not null"
+    "Clause": "facet.view_sample_group_references.biblio_id is not null"
   },
   {
-    "FacetSourceTableId": 6,
+    "FacetClauseId": 6,
     "FacetId": 37,
-    "Clause": "metainformation.view_site_references.biblio_id is not null"
+    "Clause": "facet.view_site_references.biblio_id is not null"
   }
 ]
