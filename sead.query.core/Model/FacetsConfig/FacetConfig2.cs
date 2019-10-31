@@ -47,5 +47,10 @@ namespace SeadQueryCore
             return tables;
         }
 
+        public FacetTable GetFacetTable(string name)
+        {
+            return Facet.Tables.FirstOrDefault(z => z.TableOrUdfName == name || z.ResolvedAliasOrTableOrUdfName == name);
+        }
+
     }
 }

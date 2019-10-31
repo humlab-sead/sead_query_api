@@ -121,5 +121,16 @@ namespace SeadQueryCore
         {
             return (TargetConfig?.TextFilter ?? "").Trim();
         }
+
+        public FacetTable GetFacetTable(string name)
+        {
+            foreach (var facetConfig in FacetConfigs) {
+                if (facetConfig.GetFacetTable(name) != default(FacetTable)) {
+                    return facetConfig.GetFacetTable(name);
+                }
+            }
+            return default;
+        }
+
     }
 }
