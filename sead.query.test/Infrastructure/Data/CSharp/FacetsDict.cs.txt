@@ -1,6 +1,6 @@
-var listFacet = new List<Facet>
+var dictionaryStringFacet = new Dictionary<String, Facet>
 {
-	new Facet
+	{ "result_facet", new Facet
 	{
 		FacetId = 1,
 		FacetCode = "result_facet",
@@ -42,15 +42,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 86,
-					TableOrUdfName = "tbl_datasets",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_datasets",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_datasets",
-				ResolvedTableOrUdfCall = "tbl_datasets",
-				ResolvedSqlJoinName = "tbl_datasets"
+				}
 			},
 			new FacetTable
 			{
@@ -63,15 +57,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 4,
-					TableOrUdfName = "tbl_analysis_entities",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_analysis_entities",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_analysis_entities",
-				ResolvedTableOrUdfCall = "tbl_analysis_entities",
-				ResolvedSqlJoinName = "tbl_analysis_entities"
+				}
 			},
 			new FacetTable
 			{
@@ -84,22 +72,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 102,
-					TableOrUdfName = "tbl_physical_samples",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_physical_samples",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_physical_samples",
-				ResolvedTableOrUdfCall = "tbl_physical_samples",
-				ResolvedSqlJoinName = "tbl_physical_samples"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "dataset_helper", new Facet
 	{
 		FacetId = 2,
 		FacetCode = "dataset_helper",
@@ -141,22 +123,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 86,
-					TableOrUdfName = "tbl_datasets",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_datasets",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_datasets",
-				ResolvedTableOrUdfCall = "tbl_datasets",
-				ResolvedSqlJoinName = "tbl_datasets"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_denormalized_measured_values_33_0", new Facet
 	{
 		FacetId = 3,
 		FacetCode = "tbl_denormalized_measured_values_33_0",
@@ -198,22 +174,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 149,
-					TableOrUdfName = "facet.method_measured_values",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.method_measured_values",
-				HasAlias = true,
-				ResolvedAliasOrTableOrUdfName = "method_values",
-				ResolvedTableOrUdfCall = "149(33, 0)",
-				ResolvedSqlJoinName = "149(33, 0) AS method_values"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_denormalized_measured_values_33_82", new Facet
 	{
 		FacetId = 4,
 		FacetCode = "tbl_denormalized_measured_values_33_82",
@@ -255,22 +225,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 149,
-					TableOrUdfName = "facet.method_measured_values",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.method_measured_values",
-				HasAlias = true,
-				ResolvedAliasOrTableOrUdfName = "method_values",
-				ResolvedTableOrUdfCall = "149(33, 82)",
-				ResolvedSqlJoinName = "149(33, 82) AS method_values"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_denormalized_measured_values_32", new Facet
 	{
 		FacetId = 5,
 		FacetCode = "tbl_denormalized_measured_values_32",
@@ -312,22 +276,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 149,
-					TableOrUdfName = "facet.method_measured_values",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.method_measured_values",
-				HasAlias = true,
-				ResolvedAliasOrTableOrUdfName = "method_values",
-				ResolvedTableOrUdfCall = "149(32, 0)",
-				ResolvedSqlJoinName = "149(32, 0) AS method_values"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_denormalized_measured_values_37", new Facet
 	{
 		FacetId = 6,
 		FacetCode = "tbl_denormalized_measured_values_37",
@@ -369,22 +327,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 149,
-					TableOrUdfName = "facet.method_measured_values",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.method_measured_values",
-				HasAlias = true,
-				ResolvedAliasOrTableOrUdfName = "method_values",
-				ResolvedTableOrUdfCall = "149(37, 0)",
-				ResolvedSqlJoinName = "149(37, 0) AS method_values"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "measured_values_helper", new Facet
 	{
 		FacetId = 7,
 		FacetCode = "measured_values_helper",
@@ -426,22 +378,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 121,
-					TableOrUdfName = "tbl_measured_values",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_measured_values",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_measured_values",
-				ResolvedTableOrUdfCall = "tbl_measured_values",
-				ResolvedSqlJoinName = "tbl_measured_values"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "taxon_result", new Facet
 	{
 		FacetId = 8,
 		FacetCode = "taxon_result",
@@ -483,22 +429,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 88,
-					TableOrUdfName = "tbl_abundances",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_abundances",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_abundances",
-				ResolvedTableOrUdfCall = "tbl_abundances",
-				ResolvedSqlJoinName = "tbl_abundances"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "map_result", new Facet
 	{
 		FacetId = 9,
 		FacetCode = "map_result",
@@ -540,22 +480,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 119,
-					TableOrUdfName = "tbl_sites",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_sites",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_sites",
-				ResolvedTableOrUdfCall = "tbl_sites",
-				ResolvedSqlJoinName = "tbl_sites"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "geochronology", new Facet
 	{
 		FacetId = 10,
 		FacetCode = "geochronology",
@@ -597,22 +531,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 60,
-					TableOrUdfName = "tbl_geochronology",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_geochronology",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_geochronology",
-				ResolvedTableOrUdfCall = "tbl_geochronology",
-				ResolvedSqlJoinName = "tbl_geochronology"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "relative_age_name", new Facet
 	{
 		FacetId = 11,
 		FacetCode = "relative_age_name",
@@ -654,22 +582,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 71,
-					TableOrUdfName = "tbl_relative_ages",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_relative_ages",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_relative_ages",
-				ResolvedTableOrUdfCall = "tbl_relative_ages",
-				ResolvedSqlJoinName = "tbl_relative_ages"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "record_types", new Facet
 	{
 		FacetId = 12,
 		FacetCode = "record_types",
@@ -711,22 +633,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 110,
-					TableOrUdfName = "tbl_record_types",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_record_types",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_record_types",
-				ResolvedTableOrUdfCall = "tbl_record_types",
-				ResolvedSqlJoinName = "tbl_record_types"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "sample_groups", new Facet
 	{
 		FacetId = 13,
 		FacetCode = "sample_groups",
@@ -768,22 +684,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 91,
-					TableOrUdfName = "tbl_sample_groups",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_sample_groups",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_sample_groups",
-				ResolvedTableOrUdfCall = "tbl_sample_groups",
-				ResolvedSqlJoinName = "tbl_sample_groups"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "places", new Facet
 	{
 		FacetId = 14,
 		FacetCode = "places",
@@ -825,15 +735,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 113,
-					TableOrUdfName = "tbl_site_locations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_site_locations",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_site_locations",
-				ResolvedTableOrUdfCall = "tbl_site_locations",
-				ResolvedSqlJoinName = "tbl_site_locations"
+				}
 			},
 			new FacetTable
 			{
@@ -846,22 +750,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 35,
-					TableOrUdfName = "tbl_locations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_locations",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_locations",
-				ResolvedTableOrUdfCall = "tbl_locations",
-				ResolvedSqlJoinName = "tbl_locations"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "places_all2", new Facet
 	{
 		FacetId = 15,
 		FacetCode = "places_all2",
@@ -903,15 +801,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 35,
-					TableOrUdfName = "tbl_locations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_locations",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_locations",
-				ResolvedTableOrUdfCall = "tbl_locations",
-				ResolvedSqlJoinName = "tbl_locations"
+				}
 			},
 			new FacetTable
 			{
@@ -924,15 +816,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 113,
-					TableOrUdfName = "tbl_site_locations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_site_locations",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_site_locations",
-				ResolvedTableOrUdfCall = "tbl_site_locations",
-				ResolvedSqlJoinName = "tbl_site_locations"
+				}
 			},
 			new FacetTable
 			{
@@ -945,22 +831,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 7,
-					TableOrUdfName = "view_places_relations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "view_places_relations",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "view_places_relations",
-				ResolvedTableOrUdfCall = "view_places_relations",
-				ResolvedSqlJoinName = "view_places_relations"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "sample_groups_helper", new Facet
 	{
 		FacetId = 16,
 		FacetCode = "sample_groups_helper",
@@ -1002,22 +882,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 91,
-					TableOrUdfName = "tbl_sample_groups",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_sample_groups",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_sample_groups",
-				ResolvedTableOrUdfCall = "tbl_sample_groups",
-				ResolvedSqlJoinName = "tbl_sample_groups"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "physical_samples", new Facet
 	{
 		FacetId = 17,
 		FacetCode = "physical_samples",
@@ -1059,22 +933,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 102,
-					TableOrUdfName = "tbl_physical_samples",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_physical_samples",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_physical_samples",
-				ResolvedTableOrUdfCall = "tbl_physical_samples",
-				ResolvedSqlJoinName = "tbl_physical_samples"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "sites", new Facet
 	{
 		FacetId = 18,
 		FacetCode = "sites",
@@ -1116,22 +984,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 119,
-					TableOrUdfName = "tbl_sites",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_sites",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_sites",
-				ResolvedTableOrUdfCall = "tbl_sites",
-				ResolvedSqlJoinName = "tbl_sites"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "sites_helper", new Facet
 	{
 		FacetId = 19,
 		FacetCode = "sites_helper",
@@ -1173,22 +1035,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 119,
-					TableOrUdfName = "tbl_sites",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_sites",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_sites",
-				ResolvedTableOrUdfCall = "tbl_sites",
-				ResolvedSqlJoinName = "tbl_sites"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_relative_dates_helper", new Facet
 	{
 		FacetId = 20,
 		FacetCode = "tbl_relative_dates_helper",
@@ -1230,22 +1086,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 55,
-					TableOrUdfName = "tbl_relative_dates",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_relative_dates",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_relative_dates",
-				ResolvedTableOrUdfCall = "tbl_relative_dates",
-				ResolvedSqlJoinName = "tbl_relative_dates"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "country", new Facet
 	{
 		FacetId = 21,
 		FacetCode = "country",
@@ -1287,15 +1137,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 35,
-					TableOrUdfName = "tbl_locations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_locations",
-				HasAlias = true,
-				ResolvedAliasOrTableOrUdfName = "countries",
-				ResolvedTableOrUdfCall = "tbl_locations",
-				ResolvedSqlJoinName = "tbl_locations AS countries"
+				}
 			},
 			new FacetTable
 			{
@@ -1308,15 +1152,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 113,
-					TableOrUdfName = "tbl_site_locations",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_site_locations",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_site_locations",
-				ResolvedTableOrUdfCall = "tbl_site_locations",
-				ResolvedSqlJoinName = "tbl_site_locations"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
@@ -1328,8 +1166,8 @@ var listFacet = new List<Facet>
 				Clause = "countries.location_type_id=1"
 			}
 		}
-	},
-	new Facet
+	} },
+	{ "ecocode", new Facet
 	{
 		FacetId = 22,
 		FacetCode = "ecocode",
@@ -1371,15 +1209,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 62,
-					TableOrUdfName = "tbl_ecocode_definitions",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_ecocode_definitions",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_ecocode_definitions",
-				ResolvedTableOrUdfCall = "tbl_ecocode_definitions",
-				ResolvedSqlJoinName = "tbl_ecocode_definitions"
+				}
 			},
 			new FacetTable
 			{
@@ -1392,22 +1224,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 62,
-					TableOrUdfName = "tbl_ecocode_definitions",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_ecocode_definitions",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_ecocode_definitions",
-				ResolvedTableOrUdfCall = "tbl_ecocode_definitions",
-				ResolvedSqlJoinName = "tbl_ecocode_definitions"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "family", new Facet
 	{
 		FacetId = 23,
 		FacetCode = "family",
@@ -1449,15 +1275,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 36,
-					TableOrUdfName = "tbl_taxa_tree_families",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_families",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_families",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_families",
-				ResolvedSqlJoinName = "tbl_taxa_tree_families"
+				}
 			},
 			new FacetTable
 			{
@@ -1470,22 +1290,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 36,
-					TableOrUdfName = "tbl_taxa_tree_families",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_families",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_families",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_families",
-				ResolvedSqlJoinName = "tbl_taxa_tree_families"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "genus", new Facet
 	{
 		FacetId = 24,
 		FacetCode = "genus",
@@ -1527,15 +1341,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 148,
-					TableOrUdfName = "tbl_taxa_tree_genera",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_genera",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_genera",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_genera",
-				ResolvedSqlJoinName = "tbl_taxa_tree_genera"
+				}
 			},
 			new FacetTable
 			{
@@ -1548,22 +1356,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 148,
-					TableOrUdfName = "tbl_taxa_tree_genera",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_genera",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_genera",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_genera",
-				ResolvedSqlJoinName = "tbl_taxa_tree_genera"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "species", new Facet
 	{
 		FacetId = 25,
 		FacetCode = "species",
@@ -1605,15 +1407,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 39,
-					TableOrUdfName = "tbl_taxa_tree_authors",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_authors",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_authors",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_authors",
-				ResolvedSqlJoinName = "tbl_taxa_tree_authors"
+				}
 			},
 			new FacetTable
 			{
@@ -1626,15 +1422,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 109,
-					TableOrUdfName = "tbl_taxa_tree_master",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_master",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_master",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_master",
-				ResolvedSqlJoinName = "tbl_taxa_tree_master"
+				}
 			},
 			new FacetTable
 			{
@@ -1647,15 +1437,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 119,
-					TableOrUdfName = "tbl_sites",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_sites",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_sites",
-				ResolvedTableOrUdfCall = "tbl_sites",
-				ResolvedSqlJoinName = "tbl_sites"
+				}
 			},
 			new FacetTable
 			{
@@ -1668,15 +1452,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 148,
-					TableOrUdfName = "tbl_taxa_tree_genera",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_genera",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_genera",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_genera",
-				ResolvedSqlJoinName = "tbl_taxa_tree_genera"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
@@ -1688,8 +1466,8 @@ var listFacet = new List<Facet>
 				Clause = "tbl_sites.site_id is not null"
 			}
 		}
-	},
-	new Facet
+	} },
+	{ "species_helper", new Facet
 	{
 		FacetId = 26,
 		FacetCode = "species_helper",
@@ -1731,15 +1509,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 148,
-					TableOrUdfName = "tbl_taxa_tree_genera",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_genera",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_genera",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_genera",
-				ResolvedSqlJoinName = "tbl_taxa_tree_genera"
+				}
 			},
 			new FacetTable
 			{
@@ -1752,15 +1524,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 39,
-					TableOrUdfName = "tbl_taxa_tree_authors",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_authors",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_authors",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_authors",
-				ResolvedSqlJoinName = "tbl_taxa_tree_authors"
+				}
 			},
 			new FacetTable
 			{
@@ -1773,22 +1539,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 109,
-					TableOrUdfName = "tbl_taxa_tree_master",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_master",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_master",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_master",
-				ResolvedSqlJoinName = "tbl_taxa_tree_master"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "abundance_helper", new Facet
 	{
 		FacetId = 27,
 		FacetCode = "abundance_helper",
@@ -1830,22 +1590,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 88,
-					TableOrUdfName = "tbl_abundances",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_abundances",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_abundances",
-				ResolvedTableOrUdfCall = "tbl_abundances",
-				ResolvedSqlJoinName = "tbl_abundances"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "species_author", new Facet
 	{
 		FacetId = 28,
 		FacetCode = "species_author",
@@ -1887,15 +1641,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 39,
-					TableOrUdfName = "tbl_taxa_tree_authors",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_authors",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_authors",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_authors",
-				ResolvedSqlJoinName = "tbl_taxa_tree_authors"
+				}
 			},
 			new FacetTable
 			{
@@ -1908,22 +1656,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 39,
-					TableOrUdfName = "tbl_taxa_tree_authors",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_taxa_tree_authors",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_taxa_tree_authors",
-				ResolvedTableOrUdfCall = "tbl_taxa_tree_authors",
-				ResolvedSqlJoinName = "tbl_taxa_tree_authors"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "feature_type", new Facet
 	{
 		FacetId = 29,
 		FacetCode = "feature_type",
@@ -1965,15 +1707,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 6,
-					TableOrUdfName = "tbl_feature_types",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_feature_types",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_feature_types",
-				ResolvedTableOrUdfCall = "tbl_feature_types",
-				ResolvedSqlJoinName = "tbl_feature_types"
+				}
 			},
 			new FacetTable
 			{
@@ -1986,22 +1722,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 132,
-					TableOrUdfName = "tbl_physical_sample_features",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_physical_sample_features",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_physical_sample_features",
-				ResolvedTableOrUdfCall = "tbl_physical_sample_features",
-				ResolvedSqlJoinName = "tbl_physical_sample_features"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "ecocode_system", new Facet
 	{
 		FacetId = 30,
 		FacetCode = "ecocode_system",
@@ -2043,15 +1773,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 128,
-					TableOrUdfName = "tbl_ecocode_systems",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_ecocode_systems",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_ecocode_systems",
-				ResolvedTableOrUdfCall = "tbl_ecocode_systems",
-				ResolvedSqlJoinName = "tbl_ecocode_systems"
+				}
 			},
 			new FacetTable
 			{
@@ -2064,22 +1788,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 128,
-					TableOrUdfName = "tbl_ecocode_systems",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_ecocode_systems",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_ecocode_systems",
-				ResolvedTableOrUdfCall = "tbl_ecocode_systems",
-				ResolvedSqlJoinName = "tbl_ecocode_systems"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "abundance_classification", new Facet
 	{
 		FacetId = 31,
 		FacetCode = "abundance_classification",
@@ -2121,22 +1839,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 57,
-					TableOrUdfName = "facet.view_abundance",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.view_abundance",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "facet.view_abundance",
-				ResolvedTableOrUdfCall = "facet.view_abundance",
-				ResolvedSqlJoinName = "facet.view_abundance"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "abundances_all_helper", new Facet
 	{
 		FacetId = 32,
 		FacetCode = "abundances_all_helper",
@@ -2178,15 +1890,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 57,
-					TableOrUdfName = "facet.view_abundance",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.view_abundance",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "facet.view_abundance",
-				ResolvedTableOrUdfCall = "facet.view_abundance",
-				ResolvedSqlJoinName = "facet.view_abundance"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
@@ -2198,8 +1904,8 @@ var listFacet = new List<Facet>
 				Clause = "facet.view_abundance.abundance is not null"
 			}
 		}
-	},
-	new Facet
+	} },
+	{ "abundances_all", new Facet
 	{
 		FacetId = 33,
 		FacetCode = "abundances_all",
@@ -2241,15 +1947,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 57,
-					TableOrUdfName = "facet.view_abundance",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.view_abundance",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "facet.view_abundance",
-				ResolvedTableOrUdfCall = "facet.view_abundance",
-				ResolvedSqlJoinName = "facet.view_abundance"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
@@ -2261,8 +1961,8 @@ var listFacet = new List<Facet>
 				Clause = "facet.view_abundance.abundance is not null"
 			}
 		}
-	},
-	new Facet
+	} },
+	{ "activeseason", new Facet
 	{
 		FacetId = 34,
 		FacetCode = "activeseason",
@@ -2304,22 +2004,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 82,
-					TableOrUdfName = "tbl_seasons",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_seasons",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_seasons",
-				ResolvedTableOrUdfCall = "tbl_seasons",
-				ResolvedSqlJoinName = "tbl_seasons"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_biblio_modern", new Facet
 	{
 		FacetId = 35,
 		FacetCode = "tbl_biblio_modern",
@@ -2361,15 +2055,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 99,
-					TableOrUdfName = "facet.view_taxa_biblio",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.view_taxa_biblio",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "facet.view_taxa_biblio",
-				ResolvedTableOrUdfCall = "facet.view_taxa_biblio",
-				ResolvedSqlJoinName = "facet.view_taxa_biblio"
+				}
 			},
 			new FacetTable
 			{
@@ -2382,22 +2070,16 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 84,
-					TableOrUdfName = "tbl_biblio",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_biblio",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_biblio",
-				ResolvedTableOrUdfCall = "tbl_biblio",
-				ResolvedSqlJoinName = "tbl_biblio"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
 		{
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_biblio_sample_groups", new Facet
 	{
 		FacetId = 36,
 		FacetCode = "tbl_biblio_sample_groups",
@@ -2439,15 +2121,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 84,
-					TableOrUdfName = "tbl_biblio",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_biblio",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_biblio",
-				ResolvedTableOrUdfCall = "tbl_biblio",
-				ResolvedSqlJoinName = "tbl_biblio"
+				}
 			},
 			new FacetTable
 			{
@@ -2460,15 +2136,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 114,
-					TableOrUdfName = "facet.view_sample_group_references",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.view_sample_group_references",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "facet.view_sample_group_references",
-				ResolvedTableOrUdfCall = "facet.view_sample_group_references",
-				ResolvedSqlJoinName = "facet.view_sample_group_references"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
@@ -2480,8 +2150,8 @@ var listFacet = new List<Facet>
 				Clause = "facet.view_sample_group_references.biblio_id is not null"
 			}
 		}
-	},
-	new Facet
+	} },
+	{ "tbl_biblio_sites", new Facet
 	{
 		FacetId = 37,
 		FacetCode = "tbl_biblio_sites",
@@ -2523,15 +2193,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 84,
-					TableOrUdfName = "tbl_biblio",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "tbl_biblio",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "tbl_biblio",
-				ResolvedTableOrUdfCall = "tbl_biblio",
-				ResolvedSqlJoinName = "tbl_biblio"
+				}
 			},
 			new FacetTable
 			{
@@ -2544,15 +2208,9 @@ var listFacet = new List<Facet>
 				Table = new Table
 				{
 					TableId = 26,
-					TableOrUdfName = "facet.view_site_references",
 					PrimaryKeyName = "",
 					IsUdf = false
-				},
-				TableOrUdfName = "facet.view_site_references",
-				HasAlias = false,
-				ResolvedAliasOrTableOrUdfName = "facet.view_site_references",
-				ResolvedTableOrUdfCall = "facet.view_site_references",
-				ResolvedSqlJoinName = "facet.view_site_references"
+				}
 			}
 		},
 		Clauses = new List<FacetClause>
@@ -2564,5 +2222,5 @@ var listFacet = new List<Facet>
 				Clause = "facet.view_site_references.biblio_id is not null"
 			}
 		}
-	}
+	} }
 };
