@@ -9,20 +9,20 @@ namespace SeadQueryCore
 
     public class GraphRoute
     {
-        public List<GraphEdge> Items { get; set; } = new List<GraphEdge>();
+        public List<TableRelation> Items { get; set; } = new List<TableRelation>();
 
         public GraphRoute()
         {
         }
 
-        public GraphRoute(List<GraphEdge> items)
+        public GraphRoute(List<TableRelation> items)
         {
             Items = items;
         }
 
-        public bool Contains(GraphEdge item)
+        public bool Contains(TableRelation item)
         {
-            return Items.Any(x => x.SourceNode.NodeId == item.SourceNode.NodeId && x.TargetNode.NodeId == item.TargetNode.NodeId);
+            return Items.Any(x => x.SourceTable.TableId == item.SourceTable.TableId && x.TargetTable.TableId == item.TargetTable.TableId);
         }
 
         public GraphRoute ReduceBy(List<GraphRoute> routes)
@@ -45,7 +45,7 @@ namespace SeadQueryCore
 
         public static class Utility
         {
-            public static bool ExistsAny(List<GraphRoute> routes, GraphEdge item)
+            public static bool ExistsAny(List<GraphRoute> routes, TableRelation item)
             {
                 return routes.Any(x => x.Contains(item));
             }

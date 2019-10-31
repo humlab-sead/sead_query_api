@@ -10,12 +10,13 @@ namespace SeadQueryCore
     public interface IRepositoryRegistry : IDisposable
     {
 
-        IEdgeRepository Edges { get; }
+        ITableRelationRepository TableRelations { get; }
         IFacetRepository Facets { get; }
-        INodeRepository Nodes { get; }
+        ITableRepository Tables { get; }
         IResultRepository Results { get; }
         IFacetGroupRepository FacetGroups { get; }
         IFacetTypeRepository FacetTypes { get; }
+        IFacetTableRepository FacetTables { get; }
         IViewStateRepository ViewStates { get; }
 
 

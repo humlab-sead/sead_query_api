@@ -7,11 +7,11 @@ namespace SeadQueryCore
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
-        DbSet<GraphEdge> Edges { get; set; }
+        DbSet<TableRelation> TableRelations { get; set; }
         DbSet<Facet> Facets { get; set; }
         DbSet<FacetGroup> FacetGroups { get; set; }
         DbSet<FacetType> FacetTypes { get; set; }
-        DbSet<GraphNode> Nodes { get; set; }
+        DbSet<Table> Tables { get; set; }
         DbSet<ResultAggregate> ResultDefinitions { get; set; }
         DbSet<ResultField> ResultFields { get; set; }
         DbSet<ResultFieldType> ResultFieldTypes { get; set; }

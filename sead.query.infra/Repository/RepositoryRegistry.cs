@@ -21,21 +21,24 @@ namespace SeadQueryInfra {
         {
             context = (FacetContext)_context;
             Facets = new FacetRepository(context);
-            Edges = new EdgeRepository(context);
-            Nodes = new NodeRepository(context);
+            TableRelations = new TableRelationRepository(context);
+            Tables = new TableRepository(context);
             Results = new ResultRepository(context);
             FacetGroups = new FacetGroupRepository(context);
             FacetTypes = new FacetTypeRepository(context);
+            FacetTables = new FacetTableRepository(context);
             ViewStates = new ViewStateRepository(context);
         }
 
         public IFacetRepository Facets { get; private set; }
-        public IEdgeRepository Edges { get; private set; }
-        public INodeRepository Nodes { get; private set; }
+        public ITableRelationRepository TableRelations { get; private set; }
+        public ITableRepository Tables { get; private set; }
         public IResultRepository Results { get; private set; }
         public IFacetGroupRepository FacetGroups { get; private set; }
         public IFacetTypeRepository FacetTypes { get; private set; }
         public IViewStateRepository ViewStates { get; private set; }
+
+        public IFacetTableRepository FacetTables { get; private set; }
 
         public int Commit() => context.SaveChanges();
         public void Dispose() => context.Dispose();

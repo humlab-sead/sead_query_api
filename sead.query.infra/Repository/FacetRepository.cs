@@ -23,6 +23,30 @@ namespace SeadQueryInfra {
         {
         }
     }
+    public class FacetTableRepository : Repository<FacetTable, int>, IFacetTableRepository
+    {
+        public FacetTableRepository(IFacetContext context) : base(context)
+        {
+        }
+
+        public IEnumerable<FacetTable> FindThoseWithAlias()
+        {
+            return GetAll().Where(p => p.HasAlias);
+        }
+        protected override IQueryable<FacetTable> GetInclude(IQueryable<FacetTable> set)
+        {
+            return set.Include(x => x.Table);
+        }
+
+        public Dictionary<string, FacetTable> AliasTablesDict()
+        {
+            return FindThoseWithAlias()
+                .ToDictionary(
+                    x => x.Alias,
+                    x => x
+                );
+        }
+    }
 
     public class FacetRepository : Repository<Facet, int>, IFacetRepository
     {
@@ -36,7 +60,7 @@ namespace SeadQueryInfra {
         {
             return set.Include(x => x.FacetGroup)
                       .Include(x => x.FacetType)
-                      .Include(x => x.Tables)
+                      .Include("Tables.Table")
                       .Include(x => x.Clauses);
         }
 
@@ -76,8 +100,16 @@ namespace SeadQueryInfra {
         {
             return query.Include(x => x.FacetGroup)
                         .Include(x => x.FacetType)
-                        .Include(x => x.Tables)
+                        .Include("Tables.Table")
                         .Include(x => x.Clauses);
+        }
+    }
+
+    public static class FacetTableEagerBuilder
+    {
+        public static IQueryable<FacetTable> BuildEntity(this IQueryable<FacetTable> query)
+        {
+            return query.Include(x => x.Table);
         }
     }
 }

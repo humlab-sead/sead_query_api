@@ -21,4 +21,9 @@ namespace SeadQueryCore
     {
     }
 
+    public interface IFacetTableRepository : IRepository<FacetTable, int>
+    {
+        IEnumerable<FacetTable> FindThoseWithAlias();
+        Dictionary<string, FacetTable> AliasTablesDict();
+    }
 }
