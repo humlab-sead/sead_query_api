@@ -37,48 +37,7 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
             var rangeOuterBoundSqlCompiler = this.CreateRangeOuterBoundSqlCompiler();
             var facetCode = "tbl_denormalized_measured_values_33_0";
 
-            var facet = new Facet {
-                FacetId = 3,
-                FacetCode = "tbl_denormalized_measured_values_33_0",
-                DisplayTitle = "MS ",
-                FacetGroupId = 5,
-                FacetTypeId = SeadQueryCore.EFacetType.Range,
-                CategoryIdExpr = "method_values.measured_value",
-                CategoryNameExpr = "method_values.measured_value",
-                IconIdExpr = "method_values.measured_value",
-                IsApplicable = true,
-                IsDefault = false,
-                AggregateType = "",
-                AggregateTitle = "Number of samples",
-                AggregateFacetId = 1,
-                SortExpr = "method_values.measured_value",
-                FacetType = new FacetType {
-                    FacetTypeId = SeadQueryCore.EFacetType.Range,
-                    FacetTypeName = "range",
-                    ReloadAsTarget = true
-                },
-                FacetGroup = new FacetGroup {
-                    FacetGroupId = 5,
-                    FacetGroupKey = "measured_values",
-                    DisplayTitle = "Measured values",
-                    IsApplicable = true,
-                    IsDefault = false
-                },
-                Tables = new List<FacetTable> {
-                    new FacetTable
-                    {
-                        FacetTableId = 3,
-                        FacetId = 3,
-                        SequenceId = 1,
-                        SchemaName = "",
-                        TableOrUdfName = "facet.method_measured_values",
-                        UdfCallArguments = "(33, 0)",
-                        Alias = "",
-                    }
-                },
-                Clauses = new List<FacetClause> {
-                }
-            };
+            var facet = SeadQueryTest.Infrastructure.Scaffolds.FacetInstances.Store["tbl_denormalized_measured_values_33_0"];
 
             var targetFacetConfig = new FacetConfig2 {
                 FacetCode = facetCode,
