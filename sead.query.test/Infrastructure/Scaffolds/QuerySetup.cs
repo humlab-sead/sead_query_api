@@ -45,50 +45,50 @@ namespace SeadQueryTest.Infrastructure.Scaffolds
                     {
                         new GraphRoute
                         {
-                            Items = new List<GraphEdge>
+                            Items = new List<TableRelation>
                             {
-                                new GraphEdge
+                                new TableRelation
                                 {
-                                    EdgeId = -1140,
-                                    SourceNodeId = 119,
-                                    TargetNodeId = 113,
+                                    TableRelationId = -1140,
+                                    SourceTableId = 119,
+                                    TargetTableId = 113,
                                     Weight = 20,
-                                    SourceKeyName = "site_id",
-                                    TargetKeyName = "site_id",
-                                    SourceNode = new GraphNode
+                                    SourceColumName = "site_id",
+                                    TargetColumnName = "site_id",
+                                    SourceTable = new Table
                                     {
-                                        NodeId = 119,
-                                        TableName = "tbl_sites"
+                                        TableId = 119,
+                                        TableOrUdfName = "tbl_sites"
                                     },
-                                    TargetNode = new GraphNode
+                                    TargetTable = new Table
                                     {
-                                        NodeId = 113,
-                                        TableName = "tbl_site_locations"
+                                        TableId = 113,
+                                        TableOrUdfName = "tbl_site_locations"
                                     }
                                 }
                             }
                         },
                         new GraphRoute
                         {
-                            Items = new List<GraphEdge>
+                            Items = new List<TableRelation>
                             {
-                                new GraphEdge
+                                new TableRelation
                                 {
-                                    EdgeId = 1151,
-                                    SourceNodeId = 113,
-                                    TargetNodeId = 46,
+                                    TableRelationId = 1151,
+                                    SourceTableId = 113,
+                                    TargetTableId = 46,
                                     Weight = 5,
-                                    SourceKeyName = "location_id",
-                                    TargetKeyName = "location_id",
-                                    SourceNode = new GraphNode
+                                    SourceColumName = "location_id",
+                                    TargetColumnName = "location_id",
+                                    SourceTable = new Table
                                     {
-                                        NodeId = 113,
-                                        TableName = "tbl_site_locations"
+                                        TableId = 113,
+                                        TableOrUdfName = "tbl_site_locations"
                                     },
-                                    TargetNode = new GraphNode
+                                    TargetTable = new Table
                                     {
-                                        NodeId = 46,
-                                        TableName = "countries"
+                                        TableId = 46,
+                                        TableOrUdfName = "countries"
                                     }
                                 }
                             }
