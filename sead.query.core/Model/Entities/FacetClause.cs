@@ -8,7 +8,7 @@ namespace SeadQueryCore
     /// </summary>
     public class FacetClause {
 
-        public int FacetSourceTableId { get; set; }
+        public int FacetClauseId { get; set; }
         public int FacetId { get; set; }
         public virtual string Clause { get; set; }
 
