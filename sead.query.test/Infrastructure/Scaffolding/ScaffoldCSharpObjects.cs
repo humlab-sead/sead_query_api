@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using DataAccessPostgreSqlProvider;
+using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
@@ -18,7 +20,6 @@ namespace Scaffolding.Infrastructure
         public ScaffoldCSharpObjects()
         {
             mockQueryBuilderSetting = new SeadQueryTest.MockOptionBuilder().Build().Value;
-            mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
         }
 
         private string GetTargetFolder()
@@ -55,18 +56,31 @@ namespace Scaffolding.Infrastructure
                     "FacetGroupKey",
                     "FacetTypeKey",
                     "FacetTypeKey",
+                    "TableOrUdfName",
+                    "HasAlias",
+                    "ResolvedAliasOrTableOrUdfName",
+                    "ResolvedTableOrUdfCall",
+                    "ResolvedSqlJoinName"
                 },
                 PropertyOrderBy = null,
                 IgnoreDefaultValues = false
             };
 
-            using (var context = ScaffoldUtility.DefaultFacetContext()) {
+            DbContextOptionsBuilder<FacetContext> optionsBuilder = ScaffoldConnectionUtility.GetDbContextOptionBuilder();
+
+            using (var context = new FacetContext(optionsBuilder.Options)) {
+            // using (var context = ScaffoldUtility.DefaultFacetContext()) {
 
                 var repository = new FacetRepository(context);
                 var facets = repository.GetAll();
-                var path = Path.Join(GetTargetFolder(), "Facet.cs.txt");
 
-                ScaffoldUtility.Dump(facets, path, options);
+                Dictionary<string, Facet> facetsDict = new Dictionary<string, Facet>();
+                foreach (var facet in facets) {
+                    facetsDict.Add(facet.FacetCode, facet);
+                }
+                var path = Path.Join(GetTargetFolder(), "FacetsDict.cs.txt");
+
+                ScaffoldUtility.Dump(facetsDict, path, options);
             }
 
         }
@@ -74,6 +88,8 @@ namespace Scaffolding.Infrastructure
         [Fact]
         public void GenerateFacetsConfigs()
         {
+            var mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
+
             var scaffolder = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
@@ -99,6 +115,7 @@ namespace Scaffolding.Infrastructure
         [Fact]
         public void GenerateQuerySetups()
         {
+            var mockRegistry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
             var scaffolder = new SeadQueryTest.Fixtures.ScaffoldQuerySetup(mockRegistry);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
