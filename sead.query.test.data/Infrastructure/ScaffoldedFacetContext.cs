@@ -87,11 +87,6 @@ namespace sead.query.test.data.Infrastructure
 
                 entity.Property(e => e.FacetTypeId).HasColumnName("facet_type_id");
 
-                entity.Property(e => e.IconIdExpr)
-                    .IsRequired()
-                    .HasColumnName("icon_id_expr")
-                    .HasMaxLength(256);
-
                 entity.Property(e => e.IsApplicable).HasColumnName("is_applicable");
 
                 entity.Property(e => e.IsDefault).HasColumnName("is_default");

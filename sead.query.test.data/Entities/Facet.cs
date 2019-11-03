@@ -19,7 +19,6 @@ namespace sead.query.test.data.Entities
         public int FacetTypeId { get; set; }
         public string CategoryIdExpr { get; set; }
         public string CategoryNameExpr { get; set; }
-        public string IconIdExpr { get; set; }
         public string SortExpr { get; set; }
         public bool IsApplicable { get; set; }
         public bool IsDefault { get; set; }

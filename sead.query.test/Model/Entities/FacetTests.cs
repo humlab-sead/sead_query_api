@@ -34,7 +34,6 @@ namespace SeadQueryTest.Model.Entities
                 FacetTypeId = (EFacetType)1,
                 CategoryIdExpr = "tbl_analysis_entities.analysis_entity_id",
                 CategoryNameExpr = "tbl_physical_samples.sample_name||' '||tbl_datasets.dataset_name",
-                IconIdExpr = "tbl_analysis_entities.analysis_entity_id",
                 SortExpr = "tbl_datasets.dataset_name",
                 IsApplicable = false,
                 IsDefault = false,

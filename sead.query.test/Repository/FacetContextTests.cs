@@ -78,7 +78,6 @@ namespace SeadQueryTest.Repository
                     { "FacetTypeId", EFacetType.Discrete },
                     { "CategoryIdExpr", "tbl_taxa_tree_master.taxon_id" },
                     { "CategoryNameExpr", "concat_ws(' ', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species, tbl_taxa_tree_authors.author_name)" },
-                    { "IconIdExpr", "tbl_taxa_tree_master.taxon_id" },
                     { "SortExpr", "tbl_taxa_tree_genera.genus_name||' '||tbl_taxa_tree_master.species" },
                     { "IsApplicable", true },
                     { "IsDefault", false },
