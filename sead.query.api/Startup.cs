@@ -19,7 +19,7 @@ namespace SeadQueryAPI {
     {
         public IContainer Container { get; private set; }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
 
@@ -53,7 +53,7 @@ namespace SeadQueryAPI {
                     settings.ContractResolver = resolver as DefaultContractResolver;
                 });
 
-            services.AddLogging(builder => builder.AddConsole());
+            //services.AddLogging(builder => builder.AddConsole());
             //AddSwagger(services);
 
             var options = GetOptions();

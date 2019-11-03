@@ -7,44 +7,47 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 
 namespace SeadQueryAPI {
 
     public static class Program
     {
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            //var config = new ConfigurationBuilder()
-            //    .SetBasePath(Directory.GetCurrentDirectory())
-            //    .AddJsonFile("hosting.json", optional: true)
-            //    .AddCommandLine(args)
-            //    .Build();
+            Log.Logger = CreateSerilogger();
 
-            //var host = new WebHostBuilder()
+            try {
+                Log.Information("Starting web host");
+                CreateWebHostBuilder(args).Build().Run();
+                return 0;
+            } catch (Exception ex) {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+                return 1;
+            } finally {
+                Log.CloseAndFlush();
+            }
+        }
 
-            //    .UseKestrel()
-            //    .UseConfiguration(config)
-            //    .UseContentRoot(Directory.GetCurrentDirectory())
-            //    .ConfigureLogging((hostingContext, logging) =>
-            //    {
-            //        // Requires `using Microsoft.Extensions.Logging;`
-            //        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-            //        logging.AddConsole();
-            //        logging.AddDebug();
-            //        logging.AddEventSourceLogger();
-            //    })
-            //    .UseStartup<Startup>();
-
-            CreateWebHostBuilder(args)
-                .ConfigureLogging((hostingContext, logging) => { })
-                .Build()
-                .Run();
+        private static Serilog.ILogger CreateSerilogger()
+        {
+            return new LoggerConfiguration()
+                .ReadFrom.Configuration(new ConfigurationBuilder()
+                    .AddJsonFile("logging.json", true)
+                    .Build())
+                //.Enrich.FromLogContext()
+                //.MinimumLevel.Debug()
+                //.MinimumLevel.Override("Microsoft", LogEventLevel.Information).WriteTo.Debug()
+                //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
+                .CreateLogger();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .UseSerilog();
 
     }
 }

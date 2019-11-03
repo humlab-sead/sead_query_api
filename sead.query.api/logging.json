@@ -1,0 +1,52 @@
+{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.RollingFile", "Serilog.Sinks.Console", "Serilog.Sinks.Async", "Serilog.Sinks.File" ],
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Microsoft": "Information",
+        "System": "Warning"
+      }
+    },
+    "Enrich": [
+      "FromLogContext",
+      // Add full exception details using Serilog.Exceptions https://github.com/RehanSaeed/Serilog.Exceptions.
+      "WithExceptionDetails",
+      // Add the username and machine name to the logs using Serilog.Enrichers.Environment https://github.com/serilog/serilog-enrichers-environment.
+      // "WithEnvironmentUserName",
+      // "WithMachineName",
+      // Add the process ID and name to the logs using Serilog.Enrichers.Process https://github.com/serilog/serilog-enrichers-process.
+      // "WithProcessId",
+      // "WithProcessName",
+      // Add the current thread ID to the logs using Serilog.Enrichers.Thread https://github.com/serilog/serilog-enrichers-thread.
+      // "WithThreadId",
+      "WithDemystifiedStackTraces"
+    ],
+    "WriteTo": [
+      {
+        "Name": "Async",
+        "Args": {
+          "configure": [
+            {
+              "Name": "Console",
+              "Args": {
+                "Theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console",
+                "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Level:u3}] [{SourceContext}] [{RequestId}] {Message:lj}{NewLine}{Exception}"
+              }
+            },
+            {
+              "Name": "RollingFile",
+              "Args": {
+                "pathFormat": "/var/log/sead-query-api-{Date}.log",
+                "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Properties:j}{NewLine}{Exception}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "Properties": {
+      "Application": "SEAD Query API"
+    }
+  }
+}

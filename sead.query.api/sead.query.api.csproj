@@ -43,6 +43,13 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.3.1" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
 
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
@@ -59,16 +66,21 @@
     <ProjectReference Include="..\sead.query.infra\sead.query.infra.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <ContentWithTargetPath Include="..\conf\appsettings.Development.json">
+    <ContentWithTargetPath Include="../conf/appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-      <ContentWithTargetPath Include="..\conf\appsettings.Production.json">
+      <ContentWithTargetPath Include="../conf/appsettings.Production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-
+  <ItemGroup>
+      <ContentWithTargetPath Include="./logging.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>logging.json</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
 </Project>
