@@ -10,7 +10,7 @@ namespace SeadQueryCore
             FROM (
                 SELECT {facet.CategoryIdExpr} AS category, {countFacet.CategoryIdExpr} AS value
                 FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
-                     {query.Joins.Combine("")}
+                     {query.Joins.Combine("\t\t\t\t\t\n")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
                 GROUP BY {facet.CategoryIdExpr}, {countFacet.CategoryIdExpr}
