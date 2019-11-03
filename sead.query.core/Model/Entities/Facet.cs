@@ -68,9 +68,6 @@ namespace SeadQueryCore
         [JsonIgnore]
         public string CategoryNameExpr { get; set; }
 
-        [JsonIgnore]
-        public string IconIdExpr { get; set; }
-
         public bool IsApplicable { get; set; }
         public bool IsDefault { get; set; }
         public string AggregateType { get; set; }

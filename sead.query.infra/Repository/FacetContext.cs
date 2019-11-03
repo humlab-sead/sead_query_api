@@ -75,7 +75,6 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<Facet>().Property(b => b.FacetTypeId).HasColumnName("facet_type_id").IsRequired();
             builder.Entity<Facet>().Property(b => b.CategoryIdExpr).HasColumnName("category_id_expr").IsRequired();
             builder.Entity<Facet>().Property(b => b.CategoryNameExpr).HasColumnName("category_name_expr").IsRequired();
-            builder.Entity<Facet>().Property(b => b.IconIdExpr).HasColumnName("icon_id_expr").IsRequired();
             builder.Entity<Facet>().Property(b => b.SortExpr).HasColumnName("sort_expr").IsRequired();
             builder.Entity<Facet>().Property(b => b.IsApplicable).HasColumnName("is_applicable").IsRequired();
             builder.Entity<Facet>().Property(b => b.IsDefault).HasColumnName("is_default").IsRequired();
@@ -106,7 +105,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetTable>().Property(b => b.SequenceId).HasColumnName("sequence_id").IsRequired();
             builder.Entity<FacetTable>().Property(b => b.TableId).HasColumnName("table_id").IsRequired();
             builder.Entity<FacetTable>().Property(b => b.UdfCallArguments).HasColumnName("udf_call_arguments");
-            builder.Entity<FacetTable>().Property(b => b.Alias).HasColumnName("alias").IsRequired();
+            builder.Entity<FacetTable>().Property(b => b.Alias).HasColumnName("alias");
             builder.Entity<FacetTable>().HasOne<Facet>(x => x.Facet).WithMany(x => x.Tables).HasForeignKey(x => x.FacetId);
             builder.Entity<FacetTable>().HasOne<Table>(x => x.Table).WithMany().HasForeignKey(p => p.TableId);
 
