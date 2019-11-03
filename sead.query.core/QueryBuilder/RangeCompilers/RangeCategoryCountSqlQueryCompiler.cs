@@ -9,15 +9,26 @@ namespace SeadQueryCore
 
             WITH categories(category, lower, upper) AS (
                 {intervalQuery}
+            ), outerbounds(lower, upper) AS (
+                SELECT MIN(lower), MAX(upper)
+                FROM categories
             )
                 SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column
                 FROM categories c
                 LEFT JOIN (
                     SELECT category, COUNT(DISTINCT {countColumn}) AS count_column
                     FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
+                    CROSS JOIN outerbounds
                     JOIN categories
-                      ON cast({facet.CategoryIdExpr} as decimal(15, 2)) between categories.lower and categories.upper
-                    {query.Joins.Combine("\n\t\t\t\t")}
+                      ON categories.lower <= cast({facet.CategoryIdExpr} as decimal(15, 6))
+                     AND (
+                         (categories.upper < outerbounds.upper
+                            AND cast({facet.CategoryIdExpr} as decimal(15, 6)) < categories.upper
+                          ) OR (
+                              cast({facet.CategoryIdExpr} as decimal(15, 6)) = outerbounds.upper
+                          )
+                     )
+                    {query.Joins.Combine("\n\t\t\t\t\t")}
                     WHERE TRUE
                       { "AND ".GlueTo(query.Criterias.Combine(" AND "))}
                     GROUP BY category

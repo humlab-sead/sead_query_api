@@ -1,0 +1,69 @@
+### When a request is made for data for the MS filter with picks set to 900 => 1200, one of the categories/spans returned is listed as 1034 => 1036 with a count of 5.
+### When requesting higher resolution data with the span 1030 => 1037, we get the categories 1034 => 1035 and 1035 => 1036 which each has a count of 5 observations.
+### Shouldn't the 1034 => 1036 category then have a total of 10 observations?
+### REST configs:
+
+### Gives count 5 for span 1034 => 1036
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "tbl_denormalized_measured_values_33_0",
+  "facetConfigs": [
+    {
+      "facetCode": "tbl_denormalized_measured_values_33_0",
+      "position": 1,
+      "picks": [
+        {
+          "pickType": 2,
+          "pickValue": 900,
+          "text": 900
+        },
+        {
+          "pickType": 3,
+          "pickValue": 1200,
+          "text": 1200
+        }
+      ],
+      "textFilter": ""
+    }
+  ]
+}
+
+
+### Gives count 5 for spans 1034 => 1035 and 1035 => 1036 (total count: 10)
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "tbl_denormalized_measured_values_33_0",
+  "facetConfigs": [
+    {
+      "facetCode": "tbl_denormalized_measured_values_33_0",
+      "position": 1,
+      "picks": [
+        {
+          "pickType": 2,
+          "pickValue": 1030,
+          "text": 1030
+        },
+        {
+          "pickType": 3,
+          "pickValue": 1037,
+          "text": 1037
+        }
+      ],
+      "textFilter": ""
+    }
+  ]
+}
