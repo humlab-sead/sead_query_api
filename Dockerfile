@@ -34,6 +34,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
+WORKDIR /data
 WORKDIR /app
 
 COPY --from=build /src/app .
