@@ -10,6 +10,25 @@ accept: application/json
 {
     "RequestId":1,
     "RequestType":"populate",
+    "TargetCode":"sites",
+    "FacetConfigs":[ {
+        "FacetCode":"sites",
+        "Position":1,
+        "Picks":[],
+        "TextFilter":""
+    }]
+}
+### Type:   discrete
+### Chain:  tbl_biblio_modern
+### Picks:  (none)
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
     "TargetCode":"tbl_biblio_modern",
     "FacetConfigs":[ {
         "FacetCode":"tbl_biblio_modern",
@@ -18,7 +37,6 @@ accept: application/json
         "TextFilter":""
     }]
 }
-
 ### Type:   discrete
 ### Chain:  tbl_biblio_sample_groups
 ### Picks:  (none)
