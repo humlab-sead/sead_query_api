@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Moq;
 using SeadQueryCore;
 using System;
@@ -11,12 +12,20 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
         {
             return new EdgeSqlCompiler();
         }
+        private static Mock<IFacetsGraph> CreateGraphMock()
+        {
+            var facetGraphMock = new Mock<IFacetsGraph>();
+            facetGraphMock.Setup(x => x.AliasTables).Returns(new Dictionary<string, FacetTable>());
+            return facetGraphMock;
+        }
 
         [Fact]
         public void Compile_WithSingleEdge_ReturnSingleJoin()
         {
             // Arrange
             var edgeSqlCompiler = this.CreateEdgeSqlCompiler();
+
+            Mock<IFacetsGraph> facetGraphMock = CreateGraphMock();
 
             TableRelation edge = new TableRelation() {
                 TableRelationId = -2151,
@@ -25,8 +34,8 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
                 Weight = 5,
                 SourceColumName = "location_id",
                 TargetColumnName = "location_id",
-                SourceTable = new Table() { TableId = 46, TableOrUdfName = "countries"},
-                TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations"}
+                SourceTable = new Table() { TableId = 46, TableOrUdfName = "countries" },
+                TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations" }
             };
 
             FacetTable facetTable = new FacetTable {
@@ -40,7 +49,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var result = edgeSqlCompiler.Compile(edge, facetTable, false);
+            var result = edgeSqlCompiler.Compile(facetGraphMock.Object, edge, facetTable, false);
 
             // Assert
             var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
@@ -52,6 +61,8 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
         {
             // Arrange
             var edgeSqlCompiler = this.CreateEdgeSqlCompiler();
+
+            Mock<IFacetsGraph> facetGraphMock = CreateGraphMock();
 
             TableRelation edge = new TableRelation() {
                 TableRelationId = -2151,
@@ -75,7 +86,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var result = edgeSqlCompiler.Compile(edge, facetTable, false);
+            var result = edgeSqlCompiler.Compile(facetGraphMock.Object, edge, facetTable, false);
 
             // Assert
             var expected = "left join tbl_site_locations on tbl_site_locations.\"site_id\" = tbl_sites.\"site_id\"";

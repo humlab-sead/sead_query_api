@@ -1,16 +1,41 @@
 ﻿
+using System.Collections.Generic;
+
 namespace SeadQueryCore
 {
     public class EdgeSqlCompiler : IEdgeSqlCompiler
     {
-        public string Compile(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false)
+
+        public Dictionary<bool, string> Join = new Dictionary<bool, string> {
+            { true, "INNER" },
+            { false, "LEFT" }
+        };
+
+
+        public string Compile(IFacetsGraph graph, TableRelation edge, FacetTable targetTable, bool innerJoin = false)
         {
-            var resolvedTableName = graph.ResolveTargetName(edge.TargetName);
-            var resolvedAliasName = graph.ResolveAliasName(edge.TargetName);
-            var joinType = innerJoin ? "inner" : "left";
-            var sql = $" {joinType} join {resolvedTableName} {resolvedAliasName ?? ""}" +
-                    $" on {resolvedAliasName ?? resolvedTableName}.\"{edge.TargetKeyName}\" = " +
-                            $"{edge.SourceName}.\"{edge.SourceKeyName}\" ";
+            /* 
+             * A table alias is _unique_ to a specific FacetTable i.e. the sam alias cannot occur in more than one facet
+             */
+
+            var aliases = graph.AliasTables;
+
+            if (targetTable == null) {
+                /* Fetch alias FacetTable if exists */
+                if (aliases.ContainsKey(edge.TargetName)) {
+                    targetTable = aliases[edge.TargetName];
+                }
+            }
+
+            /* 
+             * If "facetTable" exists, then the target table is found in FacetsConfig,
+             * otherwise it is a table found by the route finding service.
+             */
+
+            var sql = $" {Join[innerJoin]} JOIN {targetTable?.ResolvedSqlJoinName ?? edge.TargetName} " +
+                        $"ON {targetTable?.ResolvedAliasOrTableOrUdfName ?? edge.TargetName}.\"{edge.TargetColumnName}\" = " +
+                                $"{edge.SourceName}.\"{edge.SourceColumName}\" ";
+
             return sql;
         }
     }

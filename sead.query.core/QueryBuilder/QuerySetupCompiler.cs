@@ -65,7 +65,7 @@ namespace SeadQueryCore.QueryBuilder
             List<GraphRoute> routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
 
             // Compile list of joins for the reduced route
-            List<string> joins = CompileJoins(tableCriterias, routes);
+            List<string> joins = CompileJoins(tableCriterias, routes, facetsConfig);
 
             // Add TargetFacets Query Criteria (if exists)
             var criterias = tableCriterias.Values
@@ -82,11 +82,22 @@ namespace SeadQueryCore.QueryBuilder
             return querySetup;
         }
 
-        protected List<string> CompileJoins(Dictionary<string, string> pickCriterias, List<GraphRoute> reducedRoutes)
+        private FacetTable GetFacetTable(FacetsConfig2 facetsConfig, TableRelation edge)
         {
-            return reducedRoutes
+            return facetsConfig.GetFacetTable(edge.TargetName);
+        }
+
+        protected List<string> CompileJoins(Dictionary<string, string> pickCriterias, List<GraphRoute> routes, FacetsConfig2 facetsConfig)
+        {
+            var aliasTables = Graph.AliasTables;
+            return routes
                 .SelectMany(route => route.Items)
-                .Select(edge => EdgeCompiler.Compile(Graph, edge, HasUserPicks(edge, pickCriterias)))
+                .Select(edge => EdgeCompiler.Compile(
+                    Graph,
+                    edge,
+                    GetFacetTable(facetsConfig, edge),
+                    HasUserPicks(edge, pickCriterias)
+                ))
                 .ToList();
         }
 
@@ -131,16 +142,16 @@ namespace SeadQueryCore.QueryBuilder
 
                 // ...tables from affected facets...
                 .Concat(
-                    // FIXME: Shouldn't all tables be added???
                     affectedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName).ToList())
                 );
 
             return tables.Distinct().ToList();
         }
 
-        protected bool HasUserPicks(GraphEdge edge, Dictionary<string, string> tableCriterias)
+        protected bool HasUserPicks(TableRelation edge, Dictionary<string, string> tableCriterias)
         {
-            return tableCriterias.ContainsKey(edge.SourceName) || tableCriterias.ContainsKey(edge.TargetName);
+            // FIXME: SHould SourceName really be considered here...?
+            return /* tableCriterias.ContainsKey(edge.SourceName) || */ tableCriterias.ContainsKey(edge.TargetName);
         }
 
         protected IPickFilterCompiler PickCompiler(FacetConfig2 c)

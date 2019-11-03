@@ -1,7 +1,9 @@
-﻿namespace SeadQueryCore
+﻿using System.Collections.Generic;
+
+namespace SeadQueryCore
 {
     public interface IEdgeSqlCompiler
     {
-        string Compile(IFacetsGraph graph, GraphEdge edge, bool innerJoin = false);
+        string Compile(IFacetsGraph graph, TableRelation edge, FacetTable facetTable, bool innerJoin = false);
     }
 }
