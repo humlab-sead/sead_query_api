@@ -23,12 +23,15 @@ namespace SeadQueryCore
 
         public IDiscreteContentSqlQueryCompiler SqlCompiler { get; }
 
-        protected override (int, string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count=0)
+        protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count = 0)
         {
             QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, null, facetsConfig.GetFacetCodes());
             string sql = SqlCompiler.Compile(query, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
             Debug.Print($"{facetCode}: {sql}");
-            return ( 1, sql );
+            return new FacetContent.IntervalQueryInfo {
+                Count = 1,
+                Query = sql
+            };
         }
     }
 }

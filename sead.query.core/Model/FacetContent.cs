@@ -7,6 +7,15 @@ using static SeadQueryCore.Utility;
 namespace SeadQueryCore
 {
     public class FacetContent {
+
+        public class IntervalQueryInfo
+        {
+            [JsonIgnore]
+            public int Count { get; set; } = 0;
+            [JsonIgnore]
+            public string Query { get; set; } = "";
+        }
+
         public class ContentItem {
             public string Category { get; set; }
             public string DisplayName { get; set; }
@@ -47,11 +56,7 @@ namespace SeadQueryCore
         [JsonIgnore]
         public int ItemCount { get => Items.Count; }
 
-        [JsonIgnore]
-        public int Interval { get; set; }
-
-        [JsonIgnore]
-        public string IntervalQuery { get; set; }
+        public IntervalQueryInfo IntervalInfo { get; set; }
 
         public int CountOfSelections { get; set; } = 0;
 
@@ -60,13 +65,13 @@ namespace SeadQueryCore
             List<ContentItem> items,
             Dictionary<string, CategoryCountItem> filteredCounts,
             Dictionary<string, FacetsConfig2.UserPickData> picks,
-            int interval, string intervalQuery)
+            IntervalQueryInfo intervalInfo
+        )
         {
             FacetsConfig = facetsConfig;
             Items = items.Where(z => z.Count != null).ToList();
             Distribution = filteredCounts;
-            Interval = interval;
-            IntervalQuery = intervalQuery;
+            IntervalInfo = intervalInfo;
             Picks = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
         }
     }

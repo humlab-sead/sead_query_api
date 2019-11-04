@@ -5,13 +5,23 @@ using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {
-    public class RangeFacetContentService : FacetContentService {
+    public class RangeExtent
+    {
+        public decimal Lower { get; set; }
+        public decimal Upper { get; set; }
+        public int Count { get; set; }
+    }
+    public class RangeIntervalQueryInfo : FacetContent.IntervalQueryInfo
+    {
+        public RangeExtent FullExtent { get; set; }
+    };
+
+public class RangeFacetContentService : FacetContentService {
         public RangeFacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
-            IIndex<EFacetType,
-            ICategoryCountService> countServices,
+            IIndex<EFacetType, ICategoryCountService> countServices,
             IRangeIntervalSqlQueryCompiler rangeSqlCompiler) : base(config, context, builder)
         {
             CountService = countServices[EFacetType.Range];
@@ -20,25 +30,50 @@ namespace SeadQueryCore
 
         public IRangeIntervalSqlQueryCompiler RangeSqlCompiler { get; }
 
-        private (decimal, decimal, int) GetLowerUpperBound(FacetConfig2 config, int default_interval_count=120)
+        private RangeExtent GetFullExtent(FacetConfig2 config, int default_interval_count=120)
         {
-            var picks = config.GetPickValues(true);                    // Get client picked bound if exists...
-            if (picks.Count >= 2) {
-                return (picks[0], picks[1], (picks.Count > 2) && ((int)picks[2] > 0) ? (int)picks[2] : default_interval_count);
-            }
-            var bound = Context.Facets.GetUpperLowerBounds(config.Facet);     // ...else fetch from database
-            return (bound.Item1, bound.Item2, default_interval_count);
+            var (lower, upper) = Context.Facets.GetUpperLowerBounds(config.Facet);   // Fetch from database
+            return new RangeExtent {
+                Lower = lower,
+                Upper = upper,
+                Count = default_interval_count
+            };
         }
 
-        protected override (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count=120)
+        private RangeExtent GetPickExtent(FacetConfig2 config, int default_interval_count = 120)
         {
-            (decimal lower, decimal upper, int interval_count) = GetLowerUpperBound(facetsConfig.GetConfig(facetCode), default_interval_count);
-            // var width = upper - lower;
-            // if (width < interval_count)
-            //     interval_count = (int)width;
+            var picks = config.GetPickValues(true);                                  // get client picked bound if exists...
+
+            if (picks.Count >= 2)
+            {
+                return new RangeExtent
+                {
+                    Lower = picks[0],
+                    Upper = picks[1],
+                    Count = ((picks.Count > 2) && ((int)picks[2] > 0)) ? (int)picks[2] : default_interval_count
+                };
+            }
+            return null;
+        }
+
+        protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count=120)
+        {
+            var facetConfig = facetsConfig.GetConfig(facetCode);
+            var fullExtent = GetFullExtent(facetConfig, default_interval_count);
+            var pickExtent = GetPickExtent(facetConfig, default_interval_count) ?? fullExtent;
+
+            var (lower, upper, interval_count) = (pickExtent.Lower, pickExtent.Upper, pickExtent.Count);
+
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
+
             string sql = RangeSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
-            return ( interval, sql );
+
+            return new RangeIntervalQueryInfo
+            {
+                Count = interval,
+                Query = sql,
+                FullExtent = fullExtent
+            };
         }
 
         protected override string GetName(DbDataReader dr)

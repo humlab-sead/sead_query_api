@@ -1,11 +1,13 @@
+using Newtonsoft.Json;
 using SeadQueryCore.QueryBuilder;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using static SeadQueryCore.FacetContent;
 
 namespace SeadQueryCore
-{    
+{     
     public class FacetContentService : QueryServiceBase, IFacetContentService {
 
         public ICategoryCountService CountService { get; set; }
@@ -22,15 +24,15 @@ namespace SeadQueryCore
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            (int interval, string intervalQuery) = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
-            var distribution = GetCategoryCounts(facetsConfig, intervalQuery);
-            var items        = CompileItems(intervalQuery, distribution).ToList();
+            FacetContent.IntervalQueryInfo intervalInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
+            var distribution = GetCategoryCounts(facetsConfig, intervalInfo.Query);
+            var items        = CompileItems(intervalInfo.Query, distribution).ToList();
             var picks        = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
-            var facetContent = new FacetContent(facetsConfig, items, distribution, picks, interval, intervalQuery);
+            var facetContent = new FacetContent(facetsConfig, items, distribution, picks, intervalInfo);
             return facetContent;
         }
 
-        protected virtual (int,string) CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=120) => (0, "");
+        protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=120) => new IntervalQueryInfo();
 
         private Dictionary<string, CategoryCountItem> GetCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {
