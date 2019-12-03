@@ -92,12 +92,12 @@ namespace SeadQueryCore.QueryBuilder
             var aliasTables = Graph.AliasTables;
             return routes
                 .SelectMany(route => route.Items)
-                .OrderByDescending(w => w.TargetTable.IsUdf)
+                .OrderByDescending(z => z.TargetTable.IsUdf)
                 .Select(edge => EdgeCompiler.Compile(
                     Graph,
                     edge,
                     GetFacetTable(facetsConfig, edge),
-                    HasUserPicks(edge, pickCriterias)
+                    true /* HasUserPicks(edge, pickCriterias) */
                 ))
                 .ToList();
         }
