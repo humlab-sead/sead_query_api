@@ -96,7 +96,7 @@ namespace SeadQueryCore.QueryBuilder
                     Graph,
                     edge,
                     GetFacetTable(facetsConfig, edge),
-                    HasUserPicks(edge, pickCriterias)
+                    true /* HasUserPicks(edge, pickCriterias) */
                 ))
                 .ToList();
         }
