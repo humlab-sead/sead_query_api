@@ -20,17 +20,12 @@ namespace SeadQueryCore
                     FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                     CROSS JOIN outerbounds
                     JOIN categories
-                      ON categories.lower <= cast({facet.CategoryIdExpr} as decimal(15, 6))
-                     AND (
-                         (categories.upper < outerbounds.upper
-                            AND cast({facet.CategoryIdExpr} as decimal(15, 6)) < categories.upper
-                          ) OR (
-                              cast({facet.CategoryIdExpr} as decimal(15, 6)) = outerbounds.upper
-                          )
-                     )
+		              ON categories.lower <= cast({facet.CategoryIdExpr} as decimal(15, 6))
+		             AND categories.upper >= cast({facet.CategoryIdExpr} as decimal(15, 6))
+		             AND (NOT (categories.upper < outerbounds.upper AND cast({facet.CategoryIdExpr} as decimal(15, 6)) = categories.upper))
                     {query.Joins.Combine("\n\t\t\t\t\t")}
                     WHERE TRUE
-                      { "AND ".GlueTo(query.Criterias.Combine(" AND "))}
+                      { "AND ".GlueTo(query.Criterias.Combine(" AND ")) }
                     GROUP BY category
                 ) AS r
                   ON r.category = c.category
