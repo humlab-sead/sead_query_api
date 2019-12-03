@@ -92,7 +92,7 @@ namespace SeadQueryCore.QueryBuilder
             var aliasTables = Graph.AliasTables;
             return routes
                 .SelectMany(route => route.Items)
-                .OrderByDescending(z => z.TargetTable.IsUdf)
+                .OrderByDescending(w => w.TargetTable.IsUdf)
                 .Select(edge => EdgeCompiler.Compile(
                     Graph,
                     edge,
