@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SeadQueryCore
 {
@@ -13,7 +14,8 @@ namespace SeadQueryCore
 
         public static string InExpr(string expr, List<decimal> values)
         {
-            return InExpr(expr, values.ConvertAll(z => (int)z));
+            var c = CultureInfo.GetCultureInfo("en-US");
+            return InExpr(expr, values.ConvertAll(z => z.ToString(c)));
         }
 
         public static string InExpr(string expr, List<int> values)
@@ -28,7 +30,10 @@ namespace SeadQueryCore
 
         public static string BetweenExpr(string expr, decimal lower, decimal upper)
         {
-            return (lower == upper) ? $" (floor({expr}) = {lower})" : $" ({expr} >= {lower} and {expr} <= {upper})";
+            var c = CultureInfo.GetCultureInfo("en-US");
+            return (lower == upper) ? $" (floor({expr}) = {lower.ToString(c)})"
+                : $" ({expr} >= {lower.ToString(c)} and {expr} <= {upper.ToString(c)})";
         }
+
     }
 }

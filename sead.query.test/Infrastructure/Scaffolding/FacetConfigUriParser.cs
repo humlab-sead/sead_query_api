@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Autofac;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace SeadQueryTest.Fixtures
 {
@@ -47,10 +48,18 @@ namespace SeadQueryTest.Fixtures
 
         public List<FacetConfigPick> ParsePicks(string data)
         {
+            var cultureInfo = new CultureInfo("en-US");
+
             Match m  = tupleRegex.Match(data);
+
             if (m.Success && m.Groups.Count == 3) {
-                return FacetConfigPick.CreateLowerUpper(Decimal.Parse(m.Groups[1].Value), Decimal.Parse(m.Groups[2].Value));
+
+                var lower = Decimal.Parse(m.Groups[1].Value, NumberStyles.Any, cultureInfo);
+                var upper = Decimal.Parse(m.Groups[2].Value, NumberStyles.Any, cultureInfo);
+
+                return FacetConfigPick.CreateLowerUpper(lower, upper);
             }
+
             return data.Split(",").Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
         }
     }

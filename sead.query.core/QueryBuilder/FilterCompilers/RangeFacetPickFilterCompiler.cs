@@ -1,6 +1,10 @@
-﻿namespace SeadQueryCore.QueryBuilder
+﻿using System.Globalization;
+
+namespace SeadQueryCore.QueryBuilder
 {
     public class RangeFacetPickFilterCompiler : IPickFilterCompiler {
+
+
         public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             var picks = config.GetPickValues(true);
@@ -9,9 +13,5 @@
                     .GlueIf(currentFacet.QueryCriteria, " AND ");
         }
 
-        private string CompileSql(string expr, decimal lower, decimal upper)
-        {
-            return (lower == upper) ? $" (floor({expr}) = {lower})" : $" ({expr} >= {lower} and {expr} <= {upper})";
-        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace SeadQueryCore
 {
@@ -36,13 +37,15 @@ namespace SeadQueryCore
 
         public decimal ToDecimal()
         {
-            return decimal.Parse(PickValue);
+            var cultureInfo = new CultureInfo("en-US");
+            return decimal.Parse(PickValue, NumberStyles.Any, cultureInfo);
         }
 
         public int ToInt()
         {
             return int.Parse(PickValue);
         }
+
         public static List<FacetConfigPick> CreateDiscrete(List<int> ids)
         {
             return ids.Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
