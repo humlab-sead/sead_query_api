@@ -71,6 +71,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<Facet>().Property(b => b.FacetId).HasColumnName("facet_id").IsRequired();
             builder.Entity<Facet>().Property(b => b.FacetCode).HasColumnName("facet_code").IsRequired();
             builder.Entity<Facet>().Property(b => b.DisplayTitle).HasColumnName("display_title").IsRequired();
+            builder.Entity<Facet>().Property(b => b.Description).HasColumnName("description").IsRequired();
             builder.Entity<Facet>().Property(b => b.FacetGroupId).HasColumnName("facet_group_id").IsRequired();
             builder.Entity<Facet>().Property(b => b.FacetTypeId).HasColumnName("facet_type_id").IsRequired();
             builder.Entity<Facet>().Property(b => b.CategoryIdExpr).HasColumnName("category_id_expr").IsRequired();
@@ -90,6 +91,7 @@ namespace DataAccessPostgreSqlProvider {
             builder.Entity<FacetGroup>().Property(b => b.FacetGroupId).HasColumnName("facet_group_id").IsRequired();
             builder.Entity<FacetGroup>().Property(b => b.FacetGroupKey).HasColumnName("facet_group_key").IsRequired();
             builder.Entity<FacetGroup>().Property(b => b.DisplayTitle).HasColumnName("display_title").IsRequired();
+            builder.Entity<FacetGroup>().Property(b => b.Description).HasColumnName("description").IsRequired();
             builder.Entity<FacetGroup>().Property(b => b.IsApplicable).HasColumnName("is_applicable").IsRequired();
             builder.Entity<FacetGroup>().Property(b => b.IsDefault).HasColumnName("is_default").IsRequired();
 

@@ -21,9 +21,13 @@ namespace SeadQueryCore
 
         public string FacetGroupKey { get; set; }
         public string DisplayTitle { get; set; }
+        public string Description { get; set; }
+        [JsonIgnore]
         public bool IsApplicable { get; set; }
+        [JsonIgnore]
         public bool IsDefault { get; set; }
 
+        [JsonIgnore]
         public ICollection<Facet> Facets { get; set; }
     }
 }

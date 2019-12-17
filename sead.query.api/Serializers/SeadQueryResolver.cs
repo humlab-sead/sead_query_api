@@ -19,7 +19,7 @@ namespace SeadQueryAPI.Serializers
                     "AggregateFacetId",
                     "SortExpr",
                     "FacetType",
-                    "FacetGroup",
+                    //"FacetGroup",
                     "Tables",
                     "Clauses",
                     "TargetNode",

@@ -39,6 +39,7 @@ namespace SeadQueryCore
         /// Display text
         /// </summary>
         public string DisplayTitle { get; set; }
+        public string Description { get; set; } = "";
 
         /// <summary>
         /// Group facet belongs to
@@ -82,7 +83,7 @@ namespace SeadQueryCore
         [JsonIgnore]
         public virtual FacetType FacetType { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual FacetGroup FacetGroup { get; set; }
 
         [JsonIgnore]
