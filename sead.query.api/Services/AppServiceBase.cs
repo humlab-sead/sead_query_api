@@ -12,13 +12,11 @@ namespace SeadQueryAPI.Services
 
         public IFacetSetting Config { get; set; }
         public IRepositoryRegistry Context { get; set; }
-        public ISeadQueryCache Cache { get; set; }
 
-        public AppServiceBase(IQueryBuilderSetting config, IRepositoryRegistry context, ISeadQueryCache cache)
+        public AppServiceBase(IQueryBuilderSetting config, IRepositoryRegistry context)
         {
             Config = config.Facet;
             Context = context;
-            Cache = cache;
         }
 
     }

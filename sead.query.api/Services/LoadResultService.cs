@@ -25,7 +25,7 @@ namespace SeadQueryAPI.Services {
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,
-            IDiscreteBogusPickService bogusPickService) : base(config, context, cache) {
+            IDiscreteBogusPickService bogusPickService) : base(config, context) {
             ResultServices = services;
             BogusPickService = bogusPickService;
         }
@@ -48,7 +48,10 @@ namespace SeadQueryAPI.Services {
             IResultServiceIndex services,
             IDiscreteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
         {
+            Cache = cache;
         }
+
+        public ISeadQueryCache Cache { get; }
 
         public override ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {

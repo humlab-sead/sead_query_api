@@ -17,7 +17,7 @@ namespace SeadQueryAPI.Services
         public IIndex<EFacetType, IFacetContentService> ContentServices { get; private set; }
 
         public LoadFacetService(IQueryBuilderSetting config, IRepositoryRegistry context, ISeadQueryCache cache,
-            IDiscreteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache)
+            IDiscreteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context)
         {
             BogusPickService = bogusService;
             ContentServices = services;
@@ -34,10 +34,17 @@ namespace SeadQueryAPI.Services
     public class CachedLoadFacetService : LoadFacetService
     {
 
-        public CachedLoadFacetService(IQueryBuilderSetting config, IRepositoryRegistry context, ISeadQueryCache cache,
-            IDiscreteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache, bogusService, services)
+        public CachedLoadFacetService(
+            IQueryBuilderSetting config, 
+            IRepositoryRegistry context,
+            ISeadQueryCache cache,
+            IDiscreteBogusPickService bogusService,
+            IIndex<EFacetType, IFacetContentService> services) : base(config, context, cache, bogusService, services)
         {
+            Cache = cache;
         }
+
+        public ISeadQueryCache Cache { get; }
 
         public override FacetContent Load(FacetsConfig2 facetsConfig)
         {

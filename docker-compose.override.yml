@@ -15,6 +15,8 @@ services:
 
   redis.cache:
     container_name: redis_cache
+    # environment:
+    #   - REDIS_DATA_DIR=/tmp
     volumes:
       - ${REDIS_DATA_DIR:-/tmp}:/data
     expose:

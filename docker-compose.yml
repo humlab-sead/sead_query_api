@@ -20,8 +20,9 @@ services:
     hostname: redis
     restart: always
     volumes:
-      - ${REDIS_DATA_DIR:-/tmp}:/data
+      - ${REDIS_DATA_DIR:-/tmp}:/data:rw
       - /var/log:/var/log
+      #- ${REDIS_CONF_FILE}:/etc/redis.conf:ro
     networks:
       sead_query_net:
         ipv4_address: 172.31.128.2

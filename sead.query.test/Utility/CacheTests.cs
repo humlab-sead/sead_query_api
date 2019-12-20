@@ -16,7 +16,7 @@ namespace SeadQueryTest.Cache {
             //} catch (InvalidOperationException) {
             //    Console.WriteLine("Failed to connect to Redis!");
             //}
-            return new SimpleMemoryCacheProvider();
+            return new MemoryCacheFactory().Create();
         }
 
         [Fact]

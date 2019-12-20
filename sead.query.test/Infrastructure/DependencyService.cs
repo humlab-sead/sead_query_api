@@ -27,7 +27,7 @@ namespace SeadQueryTest.Infrastructure
 
         public override ISeadQueryCache GetCache(StoreSetting settings)
         {
-            return new NullCacheProvider();
+            return new NullCache();
         }
 
         public override IContainer Register(IServiceCollection services, IQueryBuilderSetting options)

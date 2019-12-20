@@ -25,6 +25,8 @@ namespace SeadQueryCore
         public string Username { get; set; }
         public string Password { get; set; }
         public bool UseRedisCache { get; set; } = false;
+        public string CacheHost { get; set; } = "";
+        public int CachePort { get; set; } = 0;
     }
 
     public class QueryBuilderSetting: IQueryBuilderSetting {

@@ -1,20 +1,21 @@
 ﻿using System;
 using CacheManager.Core;
 using Microsoft.Extensions.Caching.Memory;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
 
-    public class SimpleMemoryCacheProvider : CacheManagerProvider
+    public class MemoryCacheFactory
     {
-        protected override ICacheManager<object> InitCache()
+        public ISeadQueryCache Create()
         {
             var config = new CacheManager.Core.ConfigurationBuilder()
                 //.WithSystemRuntimeCacheHandle()
                 .WithDictionaryHandle()
                 .Build();
             var cache = new CacheManager.Core.BaseCacheManager<object>(config);
-            return cache;
+            return new SeadQueryCache(cache);
         }
     }
 }
