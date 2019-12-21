@@ -9,15 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.core", "sead.que
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.test", "sead.query.test\sead.query.test.csproj", "{4807405E-C9E2-457B-A4CD-BA0A43640935}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sead.solution.items", "sead.solution.items", "{01CB666F-601C-4279-B756-5C06A6BA6B7A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		deploy_query_sead = deploy_query_sead
-		deploy_query_sead.bash = deploy_query_sead.bash
 		docker-build.sh = docker-build.sh
-		logging.json = logging.json
 		setup\pg_grant_read_to_db.bash = setup\pg_grant_read_to_db.bash
-		publish_release.bat = publish_release.bat
 		README.md = README.md
 		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.conf
 		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows-service.conf
@@ -25,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CC1D37CF-86B3-4B9F-875B-6E181984FA7C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.infra", "sead.query.infra\sead.query.infra.csproj", "{CF171AFB-4E73-465E-8527-4CAA607A6BC2}"
 EndProject
