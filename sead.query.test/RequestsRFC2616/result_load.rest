@@ -69,3 +69,47 @@ Content-Type: application/json; charset=UTF-8
 	}
 }
 
+### Type:   discrete
+### Chain:  sample_groups
+### Picks:  [510]
+
+POST {{protocol}}://{{host}}:{{port}}/api/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "facetsConfig": {
+    "requestId": 3,
+    "requestType": "populate",
+    "targetCode": "tbl_denormalized_measured_values_32",
+    "triggerCode": "tbl_denormalized_measured_values_32",
+    "facetConfigs": [
+      {
+        "facetCode": "country",
+        "position": 1,
+        "picks": [
+          { "pickType": 1, "pickValue": 162, "text": 162 },
+          { "pickType": 1, "pickValue": 205, "text": 205 }
+        ],
+        "textFilter": ""
+      },
+      {
+        "facetCode": "tbl_denormalized_measured_values_32",
+        "position": 2,
+        "picks": [
+          { "pickType": 2, "pickValue": 0.2, "text": 0.2 },
+          { "pickType": 3, "pickValue": 8.2, "text": 8.2 }
+        ],
+        "textFilter": ""
+      }
+    ]
+  },
+  "resultConfig": {
+    "requestId": 3,
+    "sessionId": "1",
+    "viewTypeId": "tabular",
+    "aggregateKeys": ["site_level"]
+  }
+}

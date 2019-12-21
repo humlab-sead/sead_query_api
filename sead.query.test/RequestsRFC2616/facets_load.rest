@@ -153,3 +153,49 @@ Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
 Content-Type: application/json; charset=UTF-8
+
+### Type:   range
+### Chain:  tbl_denormalized_measured_values_33_0
+### Picks: (50, 100)
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "tbl_denormalized_measured_values_33_0",
+  "facetConfigs": [
+    {
+      "facetCode": "tbl_denormalized_measured_values_33_0",
+      "position": 1,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}
+
+### Type:  discrete
+### Chain: dataset_master
+### Picks: None
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "dataset_master",
+  "facetConfigs": [
+    {
+      "facetCode": "dataset_master",
+      "position": 1,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}
