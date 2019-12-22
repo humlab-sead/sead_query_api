@@ -29,12 +29,8 @@ namespace SeadQueryTest
         public FacetSetting  DefaultFacetSettings()
         {
             return new FacetSetting() {
-                CategoryNameFilter = true,
                 DirectCountColumn = "tbl_analysis_entities.analysis_entity_id",
-                DirectCountTable = "tbl_analysis_entities",
-                IndirectCountColumn = "tbl_dating_periods.dating_period_id",
-                IndirectCountTable = "tbl_dating_periods",
-                ResultQueryLimit = 10000
+                DirectCountTable = "tbl_analysis_entities"
             };
         }
 
@@ -63,12 +59,6 @@ namespace SeadQueryTest
             var options = new Mock<IOptions<QueryBuilderSetting>>();
             options.Setup(o => o.Value).Returns(defaultOptions);
             return options.Object;
-        }
-
-        public MockOptionBuilder WithQueryLimit(int queryLimit)
-        {
-            defaultOptions.Facet.ResultQueryLimit = queryLimit;
-            return this;
         }
 
         public MockOptionBuilder WithRedisCache()

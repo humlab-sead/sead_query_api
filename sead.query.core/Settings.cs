@@ -12,10 +12,6 @@ namespace SeadQueryCore
     public class FacetSetting : IFacetSetting {
         public string DirectCountTable { get; set; }
         public string DirectCountColumn { get; set; }
-        public string IndirectCountTable { get; set; }
-        public string IndirectCountColumn { get; set; }
-        public int ResultQueryLimit { get; set; } = 10000;
-        public bool CategoryNameFilter { get; set; } = true;
     }
 
     public class StoreSetting /*: IStoreSetting*/ {

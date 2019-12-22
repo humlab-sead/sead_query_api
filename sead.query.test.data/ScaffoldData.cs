@@ -18,10 +18,6 @@ namespace sead.query.test.data
             {
                 { "QueryBuilderSetting:Facet:DirectCountTable",     "tbl_analysis_entities"                     },
                 { "QueryBuilderSetting:Facet:DirectCountColumn",    "tbl_analysis_entities.analysis_entity_id"  },
-                { "QueryBuilderSetting:Facet:IndirectCountTable",   "tbl_dating_periods"                        },
-                { "QueryBuilderSetting:Facet:IndirectCountColumn",  "tbl_dating_periods.dating_period_id"       },
-                { "QueryBuilderSetting:Facet:ResultQueryLimit",     "10000"                                     },
-                { "QueryBuilderSetting:Facet:CategoryNameFilter",   "true"                                      },
                 { "QueryBuilderSetting:Store:Host",                 "seadserv.humlab.umu.se"                                      },
                 { "QueryBuilderSetting:Store:Port",                 "5432"                    },
                 { "QueryBuilderSetting:Store:Database",             "sead_staging_facet"                        },
