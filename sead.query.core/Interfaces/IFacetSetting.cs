@@ -2,7 +2,7 @@
 {
     public interface IFacetSetting
     {
-        string DirectCountTable { get; set; }
-        string DirectCountColumn { get; set; }
+        string CountTable { get; set; }
+        string CountColumn { get; set; }
     }
 }

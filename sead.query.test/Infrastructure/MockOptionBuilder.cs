@@ -29,8 +29,8 @@ namespace SeadQueryTest
         public FacetSetting  DefaultFacetSettings()
         {
             return new FacetSetting() {
-                DirectCountColumn = "tbl_analysis_entities.analysis_entity_id",
-                DirectCountTable = "tbl_analysis_entities"
+                CountColumn = "tbl_analysis_entities.analysis_entity_id",
+                CountTable = "tbl_analysis_entities"
             };
         }
 

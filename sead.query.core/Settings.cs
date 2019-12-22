@@ -10,8 +10,8 @@ namespace SeadQueryCore
     // }
 
     public class FacetSetting : IFacetSetting {
-        public string DirectCountTable { get; set; }
-        public string DirectCountColumn { get; set; }
+        public string CountTable { get; set; }
+        public string CountColumn { get; set; }
     }
 
     public class StoreSetting /*: IStoreSetting*/ {

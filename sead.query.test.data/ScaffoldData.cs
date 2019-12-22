@@ -16,10 +16,10 @@ namespace sead.query.test.data
         {
             var defaultSettings = new Dictionary<string, string>
             {
-                { "QueryBuilderSetting:Facet:DirectCountTable",     "tbl_analysis_entities"                     },
-                { "QueryBuilderSetting:Facet:DirectCountColumn",    "tbl_analysis_entities.analysis_entity_id"  },
-                { "QueryBuilderSetting:Store:Host",                 "seadserv.humlab.umu.se"                                      },
-                { "QueryBuilderSetting:Store:Port",                 "5432"                    },
+                { "QueryBuilderSetting:Facet:CountTable",           "tbl_analysis_entities"                     },
+                { "QueryBuilderSetting:Facet:CountColumn",          "tbl_analysis_entities.analysis_entity_id"  },
+                { "QueryBuilderSetting:Store:Host",                 "seadserv.humlab.umu.se"                    },
+                { "QueryBuilderSetting:Store:Port",                 "5432"                                      },
                 { "QueryBuilderSetting:Store:Database",             "sead_staging_facet"                        },
                 { "QueryBuilderSetting:Store:UseRedisCache",        "false"                                     }
             };
