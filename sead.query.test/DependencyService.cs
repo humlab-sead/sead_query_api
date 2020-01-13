@@ -14,37 +14,26 @@ namespace SeadQueryTest.Infrastructure
 {
     public class TestDependencyService : DependencyService
     {
-        public TestDependencyService()
-        {
-        }
-
-        public TestDependencyService(IFacetContext dbContext)
-        {
-            FacetDbContext = dbContext;
-        }
-
-        public IFacetContext FacetDbContext { get; } = null;
+        public IFacetContext FacetContext { get; set;  } = null;
 
         public override ISeadQueryCache GetCache(StoreSetting settings)
         {
             return new NullCache();
         }
 
-        public override IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
+        protected override void Load(ContainerBuilder builder)
         {
-            options = options ?? (IQueryBuilderSetting)new MockOptionBuilder().Build().Value;
+            Options ??= (IQueryBuilderSetting)new MockOptionBuilder().Build().Value;
 
-            var builder = new Autofac.ContainerBuilder();
+            builder.RegisterInstance(Options).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
+            builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
 
-            builder.RegisterInstance(options).SingleInstance().ExternallyOwned();
-            builder.RegisterInstance<IFacetSetting>(options.Facet).SingleInstance().ExternallyOwned();
-            builder.Register(_ => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
-
-            if (FacetDbContext is null) {
+            if (FacetContext is null) {
                 Debug.Print("Warning: Falling back to default online DB connection for test");
                 builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
             } else {
-                builder.RegisterInstance(FacetDbContext).SingleInstance().ExternallyOwned();
+                builder.RegisterInstance(FacetContext).SingleInstance().ExternallyOwned();
             }
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
@@ -87,29 +76,14 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("tabular");
             builder.RegisterType<MapResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("map");
 
-            if (options.Store.UseRedisCache) {
+            if (Options.Store.UseRedisCache) {
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             } else {
                 builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.LoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
-            if (services != null)
-                builder.Populate(services);
 
-            var container = builder.Build();
-
-            return container;
-        }
-
-        public IContainer Register()
-        {
-            return Register(null);
-        }
-
-        public IContainer Register(IServiceCollection services)
-        {
-            return Register(services, Startup.Options);
         }
     }
 }

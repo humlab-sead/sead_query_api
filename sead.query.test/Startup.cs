@@ -7,7 +7,6 @@ using System.Diagnostics;
 namespace SeadQueryTest
 {
 
-
     [TestClass]
     public static class Startup
     {
@@ -15,7 +14,7 @@ namespace SeadQueryTest
         public static QueryBuilderSetting Options;
 
         [AssemblyInitialize()]
-        public static void AssemblyInit(TestContext context)
+        public static void AssemblyInit()
         {
             //Configure();
             //ConfigureServices();
