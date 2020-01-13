@@ -13,8 +13,9 @@ using SeadQueryInfra;
 
 namespace SeadQueryAPI
 {
-    public class DependencyService
+    public class DependencyService : Module
     {
+        public IQueryBuilderSetting Options { get; set; }
         public virtual ISeadQueryCache GetCache(StoreSetting settings)
         {
             try {
@@ -27,14 +28,11 @@ namespace SeadQueryAPI
             return new MemoryCacheFactory().Create();
         }
 
-        public virtual IContainer Register(IServiceCollection services, IQueryBuilderSetting options)
+        protected override void Load(ContainerBuilder builder)
         {
-            var builder = new Autofac.ContainerBuilder();
 
-            // http://docs.autofac.org/en/latest/register/registration.html
-
-            builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
-            builder.RegisterInstance<IFacetSetting>(options.Facet).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<IQueryBuilderSetting>(Options).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
 
             builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
@@ -79,8 +77,8 @@ namespace SeadQueryAPI
 
             /* App Services */
 
-            builder.Register(_ => GetCache(options?.Store)).SingleInstance().ExternallyOwned();
-            if (options.Store.UseRedisCache) {
+            builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
+            if (Options.Store.UseRedisCache) {
                 builder.RegisterType<Services.CachedLoadFacetService>().As<Services.IFacetReconstituteService>();
                 builder.RegisterType<Services.CachedLoadResultService>().As<Services.ILoadResultService>();
             } else {
@@ -88,12 +86,9 @@ namespace SeadQueryAPI
                 builder.RegisterType<Services.LoadResultService>().As<Services.ILoadResultService>();
             }
 
-            if (services != null)
-                builder.Populate(services);
+            //if (services != null)
+            //    builder.Populate(services);
 
-            var container = builder.Build();
-
-            return container;
         }
     }
 }
