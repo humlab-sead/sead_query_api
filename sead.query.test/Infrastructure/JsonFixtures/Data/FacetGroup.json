@@ -1,0 +1,37 @@
+[
+  {
+    "FacetGroupKey": "ROOT",
+    "DisplayTitle": "ROOT",
+    "Description": "ROOT"
+  },
+  {
+    "FacetGroupKey": "others",
+    "DisplayTitle": "Others",
+    "Description": "Others"
+  },
+  {
+    "FacetGroupKey": "space_time",
+    "DisplayTitle": "Space/Time",
+    "Description": "Space/Time"
+  },
+  {
+    "FacetGroupKey": "time",
+    "DisplayTitle": "Time",
+    "Description": "Time"
+  },
+  {
+    "FacetGroupKey": "ecology",
+    "DisplayTitle": "Ecology",
+    "Description": "Ecology"
+  },
+  {
+    "FacetGroupKey": "measured_values",
+    "DisplayTitle": "Measured values",
+    "Description": "Measured values"
+  },
+  {
+    "FacetGroupKey": "taxonomy",
+    "DisplayTitle": "Taxonomy",
+    "Description": "Taxonomy"
+  }
+]

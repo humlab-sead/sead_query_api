@@ -1,0 +1,950 @@
+[
+  {
+    "TableId": 38,
+    "TableOrUdfName": "tbl_abundance_elements",
+    "PrimaryKeyName": "abundance_element_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 50,
+    "TableOrUdfName": "tbl_abundance_ident_levels",
+    "PrimaryKeyName": "abundance_ident_level_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 44,
+    "TableOrUdfName": "tbl_abundance_modifications",
+    "PrimaryKeyName": "abundance_modification_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 88,
+    "TableOrUdfName": "tbl_abundances",
+    "PrimaryKeyName": "abundance_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 11,
+    "TableOrUdfName": "tbl_activity_types",
+    "PrimaryKeyName": "activity_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 160,
+    "TableOrUdfName": "tbl_age_types",
+    "PrimaryKeyName": "age_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 145,
+    "TableOrUdfName": "tbl_aggregate_datasets",
+    "PrimaryKeyName": "aggregate_dataset_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 47,
+    "TableOrUdfName": "tbl_aggregate_order_types",
+    "PrimaryKeyName": "aggregate_order_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 115,
+    "TableOrUdfName": "tbl_aggregate_sample_ages",
+    "PrimaryKeyName": "aggregate_sample_age_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 2,
+    "TableOrUdfName": "tbl_aggregate_samples",
+    "PrimaryKeyName": "aggregate_sample_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 136,
+    "TableOrUdfName": "tbl_alt_ref_types",
+    "PrimaryKeyName": "alt_ref_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 4,
+    "TableOrUdfName": "tbl_analysis_entities",
+    "PrimaryKeyName": "analysis_entity_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 96,
+    "TableOrUdfName": "tbl_analysis_entity_ages",
+    "PrimaryKeyName": "analysis_entity_age_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 93,
+    "TableOrUdfName": "tbl_analysis_entity_dimensions",
+    "PrimaryKeyName": "analysis_entity_dimension_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 3,
+    "TableOrUdfName": "tbl_analysis_entity_prep_methods",
+    "PrimaryKeyName": "analysis_entity_prep_method_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 84,
+    "TableOrUdfName": "tbl_biblio",
+    "PrimaryKeyName": "biblio_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 139,
+    "TableOrUdfName": "tbl_ceramics",
+    "PrimaryKeyName": "ceramics_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 161,
+    "TableOrUdfName": "tbl_ceramics_lookup",
+    "PrimaryKeyName": "ceramics_lookup_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 97,
+    "TableOrUdfName": "tbl_ceramics_measurements",
+    "PrimaryKeyName": "ceramics_measurement_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 59,
+    "TableOrUdfName": "tbl_chron_controls",
+    "PrimaryKeyName": "chron_control_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 147,
+    "TableOrUdfName": "tbl_chron_control_types",
+    "PrimaryKeyName": "chron_control_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 117,
+    "TableOrUdfName": "tbl_chronologies",
+    "PrimaryKeyName": "chronology_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 14,
+    "TableOrUdfName": "tbl_colours",
+    "PrimaryKeyName": "colour_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 29,
+    "TableOrUdfName": "tbl_contacts",
+    "PrimaryKeyName": "contact_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 123,
+    "TableOrUdfName": "tbl_contact_types",
+    "PrimaryKeyName": "contact_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 106,
+    "TableOrUdfName": "tbl_coordinate_method_dimensions",
+    "PrimaryKeyName": "coordinate_method_dimension_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 83,
+    "TableOrUdfName": "tbl_dataset_contacts",
+    "PrimaryKeyName": "dataset_contact_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 76,
+    "TableOrUdfName": "tbl_dataset_masters",
+    "PrimaryKeyName": "master_set_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 162,
+    "TableOrUdfName": "tbl_dataset_methods",
+    "PrimaryKeyName": "dataset_method_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 86,
+    "TableOrUdfName": "tbl_datasets",
+    "PrimaryKeyName": "dataset_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 133,
+    "TableOrUdfName": "tbl_dataset_submissions",
+    "PrimaryKeyName": "dataset_submission_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 140,
+    "TableOrUdfName": "tbl_dataset_submission_types",
+    "PrimaryKeyName": "submission_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 104,
+    "TableOrUdfName": "tbl_data_type_groups",
+    "PrimaryKeyName": "data_type_group_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 135,
+    "TableOrUdfName": "tbl_data_types",
+    "PrimaryKeyName": "data_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 85,
+    "TableOrUdfName": "tbl_dating_labs",
+    "PrimaryKeyName": "dating_lab_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 134,
+    "TableOrUdfName": "tbl_dating_material",
+    "PrimaryKeyName": "dating_material_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 5,
+    "TableOrUdfName": "tbl_dating_uncertainty",
+    "PrimaryKeyName": "dating_uncertainty_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 69,
+    "TableOrUdfName": "tbl_dendro",
+    "PrimaryKeyName": "dendro_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 127,
+    "TableOrUdfName": "tbl_dendro_date_notes",
+    "PrimaryKeyName": "dendro_date_note_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 138,
+    "TableOrUdfName": "tbl_dendro_dates",
+    "PrimaryKeyName": "dendro_date_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 163,
+    "TableOrUdfName": "tbl_dendro_lookup",
+    "PrimaryKeyName": "dendro_lookup_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 100,
+    "TableOrUdfName": "tbl_dendro_measurements",
+    "PrimaryKeyName": "dendro_measurement_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 98,
+    "TableOrUdfName": "tbl_dimensions",
+    "PrimaryKeyName": "dimension_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 62,
+    "TableOrUdfName": "tbl_ecocode_definitions",
+    "PrimaryKeyName": "ecocode_definition_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 51,
+    "TableOrUdfName": "tbl_ecocode_groups",
+    "PrimaryKeyName": "ecocode_group_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 101,
+    "TableOrUdfName": "tbl_ecocodes",
+    "PrimaryKeyName": "ecocode_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 128,
+    "TableOrUdfName": "tbl_ecocode_systems",
+    "PrimaryKeyName": "ecocode_system_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 164,
+    "TableOrUdfName": "tbl_error_uncertainties",
+    "PrimaryKeyName": "error_uncertainty_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 75,
+    "TableOrUdfName": "tbl_features",
+    "PrimaryKeyName": "feature_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 6,
+    "TableOrUdfName": "tbl_feature_types",
+    "PrimaryKeyName": "feature_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 60,
+    "TableOrUdfName": "tbl_geochronology",
+    "PrimaryKeyName": "geochron_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 87,
+    "TableOrUdfName": "tbl_geochron_refs",
+    "PrimaryKeyName": "geochron_ref_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 1,
+    "TableOrUdfName": "tbl_horizons",
+    "PrimaryKeyName": "horizon_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 146,
+    "TableOrUdfName": "tbl_identification_levels",
+    "PrimaryKeyName": "identification_level_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 16,
+    "TableOrUdfName": "tbl_image_types",
+    "PrimaryKeyName": "image_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 22,
+    "TableOrUdfName": "tbl_imported_taxa_replacements",
+    "PrimaryKeyName": "imported_taxa_replacement_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 165,
+    "TableOrUdfName": "tbl_isotope_measurements",
+    "PrimaryKeyName": "isotope_measurement_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 166,
+    "TableOrUdfName": "tbl_isotopes",
+    "PrimaryKeyName": "isotope_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 167,
+    "TableOrUdfName": "tbl_isotope_standards",
+    "PrimaryKeyName": "isotope_standard_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 168,
+    "TableOrUdfName": "tbl_isotope_types",
+    "PrimaryKeyName": "isotope_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 79,
+    "TableOrUdfName": "tbl_languages",
+    "PrimaryKeyName": "language_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 80,
+    "TableOrUdfName": "tbl_lithology",
+    "PrimaryKeyName": "lithology_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 35,
+    "TableOrUdfName": "tbl_locations",
+    "PrimaryKeyName": "location_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 92,
+    "TableOrUdfName": "tbl_location_types",
+    "PrimaryKeyName": "location_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 70,
+    "TableOrUdfName": "tbl_mcrdata_birmbeetledat",
+    "PrimaryKeyName": "mcrdata_birmbeetledat_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 18,
+    "TableOrUdfName": "tbl_mcr_names",
+    "PrimaryKeyName": "taxon_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 19,
+    "TableOrUdfName": "tbl_mcr_summary_data",
+    "PrimaryKeyName": "mcr_summary_data_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 12,
+    "TableOrUdfName": "tbl_measured_value_dimensions",
+    "PrimaryKeyName": "measured_value_dimension_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 121,
+    "TableOrUdfName": "tbl_measured_values",
+    "PrimaryKeyName": "measured_value_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 33,
+    "TableOrUdfName": "tbl_method_groups",
+    "PrimaryKeyName": "method_group_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 89,
+    "TableOrUdfName": "tbl_methods",
+    "PrimaryKeyName": "method_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 142,
+    "TableOrUdfName": "tbl_modification_types",
+    "PrimaryKeyName": "modification_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 132,
+    "TableOrUdfName": "tbl_physical_sample_features",
+    "PrimaryKeyName": "physical_sample_feature_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 102,
+    "TableOrUdfName": "tbl_physical_samples",
+    "PrimaryKeyName": "physical_sample_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 58,
+    "TableOrUdfName": "tbl_projects",
+    "PrimaryKeyName": "project_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 9,
+    "TableOrUdfName": "tbl_project_stages",
+    "PrimaryKeyName": "project_stage_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 17,
+    "TableOrUdfName": "tbl_project_types",
+    "PrimaryKeyName": "project_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 48,
+    "TableOrUdfName": "tbl_rdb",
+    "PrimaryKeyName": "rdb_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 24,
+    "TableOrUdfName": "tbl_rdb_codes",
+    "PrimaryKeyName": "rdb_code_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 143,
+    "TableOrUdfName": "tbl_rdb_systems",
+    "PrimaryKeyName": "rdb_system_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 110,
+    "TableOrUdfName": "tbl_record_types",
+    "PrimaryKeyName": "record_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 68,
+    "TableOrUdfName": "tbl_relative_age_refs",
+    "PrimaryKeyName": "relative_age_ref_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 71,
+    "TableOrUdfName": "tbl_relative_ages",
+    "PrimaryKeyName": "relative_age_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 37,
+    "TableOrUdfName": "tbl_relative_age_types",
+    "PrimaryKeyName": "relative_age_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 55,
+    "TableOrUdfName": "tbl_relative_dates",
+    "PrimaryKeyName": "relative_date_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 10,
+    "TableOrUdfName": "tbl_sample_alt_refs",
+    "PrimaryKeyName": "sample_alt_ref_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 32,
+    "TableOrUdfName": "tbl_sample_colours",
+    "PrimaryKeyName": "sample_colour_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 8,
+    "TableOrUdfName": "tbl_sample_coordinates",
+    "PrimaryKeyName": "sample_coordinate_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 111,
+    "TableOrUdfName": "tbl_sample_descriptions",
+    "PrimaryKeyName": "sample_description_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 56,
+    "TableOrUdfName": "tbl_sample_description_sample_group_contexts",
+    "PrimaryKeyName": "sample_description_sample_group_context_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 73,
+    "TableOrUdfName": "tbl_sample_description_types",
+    "PrimaryKeyName": "sample_description_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 116,
+    "TableOrUdfName": "tbl_sample_dimensions",
+    "PrimaryKeyName": "sample_dimension_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 30,
+    "TableOrUdfName": "tbl_sample_group_coordinates",
+    "PrimaryKeyName": "sample_group_position_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 130,
+    "TableOrUdfName": "tbl_sample_group_descriptions",
+    "PrimaryKeyName": "sample_group_description_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 54,
+    "TableOrUdfName": "tbl_sample_group_description_types",
+    "PrimaryKeyName": "sample_group_description_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 28,
+    "TableOrUdfName": "tbl_sample_group_description_type_sampling_contexts",
+    "PrimaryKeyName": "sample_group_description_type_sampling_context_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 112,
+    "TableOrUdfName": "tbl_sample_group_dimensions",
+    "PrimaryKeyName": "sample_group_dimension_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 124,
+    "TableOrUdfName": "tbl_sample_group_images",
+    "PrimaryKeyName": "sample_group_image_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 52,
+    "TableOrUdfName": "tbl_sample_group_notes",
+    "PrimaryKeyName": "sample_group_note_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 42,
+    "TableOrUdfName": "tbl_sample_group_references",
+    "PrimaryKeyName": "sample_group_reference_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 91,
+    "TableOrUdfName": "tbl_sample_groups",
+    "PrimaryKeyName": "sample_group_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 40,
+    "TableOrUdfName": "tbl_sample_group_sampling_contexts",
+    "PrimaryKeyName": "sampling_context_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 41,
+    "TableOrUdfName": "tbl_sample_horizons",
+    "PrimaryKeyName": "sample_horizon_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 61,
+    "TableOrUdfName": "tbl_sample_images",
+    "PrimaryKeyName": "sample_image_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 49,
+    "TableOrUdfName": "tbl_sample_locations",
+    "PrimaryKeyName": "sample_location_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 144,
+    "TableOrUdfName": "tbl_sample_location_types",
+    "PrimaryKeyName": "sample_location_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 65,
+    "TableOrUdfName": "tbl_sample_location_type_sampling_contexts",
+    "PrimaryKeyName": "sample_location_type_sampling_context_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 94,
+    "TableOrUdfName": "tbl_sample_notes",
+    "PrimaryKeyName": "sample_note_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 105,
+    "TableOrUdfName": "tbl_sample_types",
+    "PrimaryKeyName": "sample_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 169,
+    "TableOrUdfName": "tbl_season_or_qualifier",
+    "PrimaryKeyName": "season_or_qualifier_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 82,
+    "TableOrUdfName": "tbl_seasons",
+    "PrimaryKeyName": "season_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 108,
+    "TableOrUdfName": "tbl_season_types",
+    "PrimaryKeyName": "season_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 64,
+    "TableOrUdfName": "tbl_site_images",
+    "PrimaryKeyName": "site_image_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 113,
+    "TableOrUdfName": "tbl_site_locations",
+    "PrimaryKeyName": "site_location_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 78,
+    "TableOrUdfName": "tbl_site_natgridrefs",
+    "PrimaryKeyName": "site_natgridref_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 77,
+    "TableOrUdfName": "tbl_site_other_records",
+    "PrimaryKeyName": "site_other_records_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 95,
+    "TableOrUdfName": "tbl_site_preservation_status",
+    "PrimaryKeyName": "site_preservation_status_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 15,
+    "TableOrUdfName": "tbl_site_references",
+    "PrimaryKeyName": "site_reference_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 119,
+    "TableOrUdfName": "tbl_sites",
+    "PrimaryKeyName": "site_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 131,
+    "TableOrUdfName": "tbl_species_associations",
+    "PrimaryKeyName": "species_association_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 118,
+    "TableOrUdfName": "tbl_species_association_types",
+    "PrimaryKeyName": "association_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 103,
+    "TableOrUdfName": "tbl_taxa_common_names",
+    "PrimaryKeyName": "taxon_common_name_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 20,
+    "TableOrUdfName": "tbl_taxa_images",
+    "PrimaryKeyName": "taxa_images_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 126,
+    "TableOrUdfName": "tbl_taxa_measured_attributes",
+    "PrimaryKeyName": "measured_attribute_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 141,
+    "TableOrUdfName": "tbl_taxa_reference_specimens",
+    "PrimaryKeyName": "taxa_reference_specimen_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 27,
+    "TableOrUdfName": "tbl_taxa_seasonality",
+    "PrimaryKeyName": "seasonality_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 13,
+    "TableOrUdfName": "tbl_taxa_synonyms",
+    "PrimaryKeyName": "synonym_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 39,
+    "TableOrUdfName": "tbl_taxa_tree_authors",
+    "PrimaryKeyName": "author_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 36,
+    "TableOrUdfName": "tbl_taxa_tree_families",
+    "PrimaryKeyName": "family_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 148,
+    "TableOrUdfName": "tbl_taxa_tree_genera",
+    "PrimaryKeyName": "genus_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 109,
+    "TableOrUdfName": "tbl_taxa_tree_master",
+    "PrimaryKeyName": "taxon_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 45,
+    "TableOrUdfName": "tbl_taxa_tree_orders",
+    "PrimaryKeyName": "order_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 21,
+    "TableOrUdfName": "tbl_taxonomic_order",
+    "PrimaryKeyName": "taxonomic_order_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 63,
+    "TableOrUdfName": "tbl_taxonomic_order_biblio",
+    "PrimaryKeyName": "taxonomic_order_biblio_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 43,
+    "TableOrUdfName": "tbl_taxonomic_order_systems",
+    "PrimaryKeyName": "taxonomic_order_system_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 53,
+    "TableOrUdfName": "tbl_taxonomy_notes",
+    "PrimaryKeyName": "taxonomy_notes_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 107,
+    "TableOrUdfName": "tbl_tephra_dates",
+    "PrimaryKeyName": "tephra_date_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 129,
+    "TableOrUdfName": "tbl_tephra_refs",
+    "PrimaryKeyName": "tephra_ref_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 31,
+    "TableOrUdfName": "tbl_tephras",
+    "PrimaryKeyName": "tephra_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 122,
+    "TableOrUdfName": "tbl_text_biology",
+    "PrimaryKeyName": "biology_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 90,
+    "TableOrUdfName": "tbl_text_distribution",
+    "PrimaryKeyName": "distribution_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 67,
+    "TableOrUdfName": "tbl_text_identification_keys",
+    "PrimaryKeyName": "key_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 72,
+    "TableOrUdfName": "tbl_units",
+    "PrimaryKeyName": "unit_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 170,
+    "TableOrUdfName": "tbl_updates_log",
+    "PrimaryKeyName": "updates_log_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 74,
+    "TableOrUdfName": "tbl_years_types",
+    "PrimaryKeyName": "years_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 150,
+    "TableOrUdfName": "facet.method_measured_values(33,0)",
+    "PrimaryKeyName": "analysis_entity_id",
+    "IsUdf": true
+  },
+  {
+    "TableId": 151,
+    "TableOrUdfName": "facet.method_measured_values(33,82)",
+    "PrimaryKeyName": "analysis_entity_id",
+    "IsUdf": true
+  },
+  {
+    "TableId": 152,
+    "TableOrUdfName": "facet.method_measured_values(32,0)",
+    "PrimaryKeyName": "analysis_entity_id",
+    "IsUdf": true
+  },
+  {
+    "TableId": 153,
+    "TableOrUdfName": "facet.method_measured_values(37,0)",
+    "PrimaryKeyName": "analysis_entity_id",
+    "IsUdf": true
+  },
+  {
+    "TableId": 25,
+    "TableOrUdfName": "facet.view_abundances_by_taxon_analysis_entity",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 26,
+    "TableOrUdfName": "facet.view_site_references",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 57,
+    "TableOrUdfName": "facet.view_abundance",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 99,
+    "TableOrUdfName": "facet.view_taxa_biblio",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 114,
+    "TableOrUdfName": "facet.view_sample_group_references",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 154,
+    "TableOrUdfName": "facet.method_abundance(3)",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": true
+  },
+  {
+    "TableId": 155,
+    "TableOrUdfName": "facet.method_abundance(8)",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": true
+  },
+  {
+    "TableId": 156,
+    "TableOrUdfName": "facet.method_abundance(111)",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": true
+  },
+  {
+    "TableId": 46,
+    "TableOrUdfName": "countries",
+    "PrimaryKeyName": "location_id",
+    "IsUdf": false
+  }
+]

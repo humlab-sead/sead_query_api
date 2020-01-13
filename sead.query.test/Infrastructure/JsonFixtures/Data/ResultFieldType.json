@@ -7,8 +7,7 @@
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}",
-    "IsGroupByField": false,
-    "Compiler": {}
+    "IsGroupByField": false
   },
   {
     "FieldTypeId": "count_item",
@@ -18,8 +17,7 @@
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "COUNT({0}) AS count_of_{0}",
-    "IsGroupByField": false,
-    "Compiler": {}
+    "IsGroupByField": false
   },
   {
     "FieldTypeId": "avg_item",
@@ -29,8 +27,7 @@
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "AVG({0}) AS avg_of_{0}",
-    "IsGroupByField": false,
-    "Compiler": {}
+    "IsGroupByField": false
   },
   {
     "FieldTypeId": "text_agg_item",
@@ -40,8 +37,7 @@
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}",
-    "IsGroupByField": false,
-    "Compiler": {}
+    "IsGroupByField": false
   },
   {
     "FieldTypeId": "single_item",
@@ -51,8 +47,7 @@
     "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "{0}",
-    "IsGroupByField": true,
-    "Compiler": {}
+    "IsGroupByField": true
   },
   {
     "FieldTypeId": "link_item",
@@ -62,8 +57,7 @@
     "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "{0}",
-    "IsGroupByField": true,
-    "Compiler": {}
+    "IsGroupByField": true
   },
   {
     "FieldTypeId": "link_item_filtered",
@@ -73,8 +67,7 @@
     "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "{0}",
-    "IsGroupByField": true,
-    "Compiler": {}
+    "IsGroupByField": true
   },
   {
     "FieldTypeId": "sort_item",
@@ -84,7 +77,6 @@
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
     "SqlTemplate": "{0}",
-    "IsGroupByField": true,
-    "Compiler": {}
+    "IsGroupByField": true
   }
 ]
