@@ -31,14 +31,15 @@ namespace SeadQueryCore
             //edges = edges.Distinct();
 
             if (addReversed) {
-                IEnumerable<TableRelation> reversed = ReversedEdges(edges);
+                IEnumerable<TableRelation> reversed = ReversedEdges(edges).ToList();
                 edges.AddRange(reversed);
             }
 
             Edges = edges.ToDictionary(z => z.Key);
             AliasTables = aliasDict ?? new Dictionary<string, FacetTable>();
 
-            Weights = edges.GroupBy(p => p.SourceTableId, (key, g) => (key, g.ToDictionary(x => x.TargetTableId, x => x.Weight)))
+            Weights = edges
+                .GroupBy(p => p.SourceTableId, (key, g) => (key, g.ToDictionary(x => x.TargetTableId, x => x.Weight)))
                 .ToDictionary(x => x.Item1, y => y.Item2);
         }
 

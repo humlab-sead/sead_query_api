@@ -16,9 +16,6 @@ namespace SeadQueryCore
         GraphRoute Find(string start_table, string destination_table);
         List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true);
         Dictionary<string, FacetTable> AliasTables { get; }
-        //bool IsAlias(string tableName);
-        //string ResolveTargetName(string aliasOrTable);
-        //string ResolveAliasName(string targetTableName);
         string ToCSV();
     }
 }
