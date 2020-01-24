@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using DataAccessPostgreSqlProvider;
+using SeadQueryInfra.DataAccessProvider;
 using Microsoft.Extensions.DependencyInjection;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
@@ -13,9 +13,17 @@ using SeadQueryInfra;
 
 namespace SeadQueryAPI
 {
+    //builder.RegisterType<MyContextFactory>()
+    //   .As<IContextFactory>()
+    //   .InstancePerRequest();
+    //builder.Register(c => c.Resolve<IContextFactory>().GetInstance())
+    //   .As<IContext>()
+    //   .InstancePerRequest();
+
     public class DependencyService : Module
     {
-        public IQueryBuilderSetting Options { get; set; }
+        public ISetting Options { get; set; }
+
         public virtual ISeadQueryCache GetCache(StoreSetting settings)
         {
             try {
@@ -31,10 +39,22 @@ namespace SeadQueryAPI
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.RegisterInstance<IQueryBuilderSetting>(Options).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<ISetting>(Options).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
 
-            builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
+            // builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
+
+            builder.RegisterType<FacetContextFactory>()
+                .As<IFacetContextFactory>()
+                .InstancePerLifetimeScope();
+            // .InstancePerRequest();
+
+            builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
+                .As<IFacetContext>()
+                .InstancePerLifetimeScope();
+            // .InstancePerRequest();
+
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();

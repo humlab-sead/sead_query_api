@@ -1,6 +1,4 @@
-﻿using DataAccessPostgreSqlProvider;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 using System;
 using System.Collections.Generic;
@@ -8,11 +6,12 @@ using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace SeadQueryInfra {
+namespace SeadQueryInfra
+{
 
     public class Repository<TEntity, K> : IRepository<TEntity, K> where TEntity : class
     {
-        protected readonly IFacetContext Context;
+        public readonly IFacetContext Context;
 
         public Repository(IFacetContext context)
         {

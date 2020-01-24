@@ -7,13 +7,13 @@ namespace SeadQueryAPI
 
     public interface ISettingFactory
     {
-        IQueryBuilderSetting Create(IConfigurationRoot env);
+        ISetting Create(IConfigurationRoot env);
     }
 
     public class SettingFactory : ISettingFactory
     {
 
-        public IQueryBuilderSetting Create(IConfigurationRoot configuration)
+        public ISetting Create(IConfigurationRoot configuration)
         {
             //var builder = new ConfigurationBuilder()
             //    .SetBasePath(env.ContentRootPath)
@@ -23,7 +23,7 @@ namespace SeadQueryAPI
 
             //IConfigurationRoot configuration = builder.Build();
 
-            IQueryBuilderSetting setting = configuration.GetSection("QueryBuilderSetting").Get<QueryBuilderSetting>();
+            ISetting setting = configuration.GetSection("QueryBuilderSetting").Get<Setting>();
 
             return setting;
 

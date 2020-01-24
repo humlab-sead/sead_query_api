@@ -13,7 +13,7 @@ namespace SeadQueryAPI.Services
         public IFacetSetting Config { get; set; }
         public IRepositoryRegistry Context { get; set; }
 
-        public AppServiceBase(IQueryBuilderSetting config, IRepositoryRegistry context)
+        public AppServiceBase(ISetting config, IRepositoryRegistry context)
         {
             Config = config.Facet;
             Context = context;

@@ -1,4 +1,4 @@
-﻿using DataAccessPostgreSqlProvider;
+﻿using SeadQueryInfra.DataAccessProvider;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

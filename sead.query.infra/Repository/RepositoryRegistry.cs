@@ -1,4 +1,4 @@
-﻿using DataAccessPostgreSqlProvider;
+﻿using SeadQueryInfra.DataAccessProvider;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -15,19 +15,19 @@ namespace SeadQueryInfra {
 
     public class RepositoryRegistry : IRepositoryRegistry {
 
-        private readonly FacetContext context;
+        public FacetContext Context { get; private set; }
 
         public RepositoryRegistry(IFacetContext _context)
         {
-            context = (FacetContext)_context;
-            Facets = new FacetRepository(context);
-            TableRelations = new TableRelationRepository(context);
-            Tables = new TableRepository(context);
-            Results = new ResultRepository(context);
-            FacetGroups = new FacetGroupRepository(context);
-            FacetTypes = new FacetTypeRepository(context);
-            FacetTables = new FacetTableRepository(context);
-            ViewStates = new ViewStateRepository(context);
+            Context = (FacetContext)_context;
+            Facets = new FacetRepository(Context);
+            TableRelations = new TableRelationRepository(Context);
+            Tables = new TableRepository(Context);
+            Results = new ResultRepository(Context);
+            FacetGroups = new FacetGroupRepository(Context);
+            FacetTypes = new FacetTypeRepository(Context);
+            FacetTables = new FacetTableRepository(Context);
+            ViewStates = new ViewStateRepository(Context);
         }
 
         public IFacetRepository Facets { get; private set; }
@@ -40,12 +40,12 @@ namespace SeadQueryInfra {
 
         public IFacetTableRepository FacetTables { get; private set; }
 
-        public int Commit() => context.SaveChanges();
-        public void Dispose() => context.Dispose();
+        public int Commit() => Context.SaveChanges();
+        public void Dispose() => Context.Dispose();
 
         public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
         {
-            using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
                 return reader.Select(selector).Take(1).FirstOrDefault();
             }
         }
@@ -53,19 +53,19 @@ namespace SeadQueryInfra {
         public DbDataReader Query(string sql)
         {
             // FIXME: call dispose?
-            return context.Database.ExecuteSqlQuery(sql).DbDataReader;
+            return Context.Database.ExecuteSqlQuery(sql).DbDataReader;
         }
 
         public List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
         {
-            using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader) {
+            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
                 return reader.Select(selector).ToList();
             }
         }
 
         public List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2)
         {
-            using (var reader = context.Database.ExecuteSqlQuery(sql).DbDataReader)
+            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
             {
                 try
                 {

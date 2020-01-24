@@ -16,7 +16,7 @@ namespace SeadQueryAPI.Services
         public IDiscreteBogusPickService BogusPickService { get; private set; }
         public IIndex<EFacetType, IFacetContentService> ContentServices { get; private set; }
 
-        public LoadFacetService(IQueryBuilderSetting config, IRepositoryRegistry context, ISeadQueryCache cache,
+        public LoadFacetService(ISetting config, IRepositoryRegistry context, ISeadQueryCache cache,
             IDiscreteBogusPickService bogusService, IIndex<EFacetType, IFacetContentService> services) : base(config, context)
         {
             BogusPickService = bogusService;
@@ -35,7 +35,7 @@ namespace SeadQueryAPI.Services
     {
 
         public CachedLoadFacetService(
-            IQueryBuilderSetting config, 
+            ISetting config, 
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IDiscreteBogusPickService bogusService,
