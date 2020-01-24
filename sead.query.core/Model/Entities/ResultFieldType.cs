@@ -20,6 +20,8 @@ namespace SeadQueryCore
         public bool IsGroupByField => IsItemField || IsSortField;
 
         private ISqlFieldCompiler __compiler = null;
+
+        [JsonIgnore]
         public ISqlFieldCompiler Compiler => __compiler ?? (__compiler = CreateCompiler());
 
         private ISqlFieldCompiler CreateCompiler()

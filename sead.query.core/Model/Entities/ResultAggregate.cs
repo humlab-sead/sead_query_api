@@ -22,6 +22,7 @@ namespace SeadQueryCore
         public string InputType { get; set; }
         public bool HasSelector { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ResultAggregateField> Fields { get; set; }
 
         public List<ResultAggregateField> GetResultFields()
