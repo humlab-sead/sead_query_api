@@ -27,9 +27,14 @@ namespace SeadQueryAPI.Serializers
             };
         }
 
+        private Facet GetFacetByCode(string facetCode)
+        {
+            return Registry.Facets.GetByCode(facetCode);
+        }
+
         public FacetConfig2 Reconstitute(FacetConfig2 facetConfig)
         {
-            facetConfig.Facet = Registry.Facets.GetByCode(facetConfig.FacetCode);
+            facetConfig.Facet = GetFacetByCode(facetConfig.FacetCode);
             return facetConfig;
         }
 
@@ -39,8 +44,8 @@ namespace SeadQueryAPI.Serializers
             if (Utility.empty(facetsConfig.TriggerCode)) {
                 facetsConfig.TriggerCode = facetsConfig.TargetCode;
             }
-            facetsConfig.TargetFacet = Registry.Facets.GetByCode(facetsConfig.TargetCode);
-            facetsConfig.TriggerFacet = Registry.Facets.GetByCode(facetsConfig.TriggerCode);
+            facetsConfig.TargetFacet = GetFacetByCode(facetsConfig.TargetCode);
+            facetsConfig.TriggerFacet = GetFacetByCode(facetsConfig.TriggerCode);
             foreach (var config in facetsConfig.FacetConfigs) {
                 Reconstitute(config);
             }
@@ -64,6 +69,7 @@ namespace SeadQueryAPI.Serializers
             facetsConfig = Reconstitute(facetsConfig);
             return facetsConfig;
         }
+
         public FacetsConfig2 Reconstitute(JObject json)
         {
             var facetsConfig = Reconstitute(json.ToString());
