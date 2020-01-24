@@ -1,11 +1,9 @@
-using Moq;
 using Newtonsoft.Json;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
-using System;
+using SeadQueryTest.Mocks;
 using System.Collections.Generic;
 using Xunit;
 
@@ -13,14 +11,7 @@ namespace SeadQueryTest.Model.FacetsConfig
 {
     public class FacetsConfig2Tests
     {
-        private RepositoryRegistry mockRegistry;
-
         public object ReconstituteFacetConfigService { get; private set; }
-
-        public FacetsConfig2Tests()
-        {
-            this.mockRegistry = new RepositoryRegistry(ScaffoldUtility.JsonSeededFacetContext());
-        }
 
         private FacetsConfig2 CreateFacetsConfig2()
         {
@@ -31,10 +22,12 @@ namespace SeadQueryTest.Model.FacetsConfig
         [Fact]
         public void CanCreateSimpleConfig()
         {
-            using (var context = ScaffoldUtility.JsonSeededFacetContext())
-            using (var container = new TestDependencyService(context).Register()) {
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, null))
+            using (var scope = container.BeginLifetimeScope()) {
 
-                var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+                var fixture = new FacetsConfigFactory(registry);
 
                 FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks("sites");
 
@@ -47,31 +40,35 @@ namespace SeadQueryTest.Model.FacetsConfig
         public void Reconstitute_SingleFacetsConfigWithoutPicks_IsEqual()
         {
             // Arrange
-            var context = ScaffoldUtility.JsonSeededFacetContext();
-            var reconstituter = new FacetConfigReconstituteService(mockRegistry);
-            var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
-            FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks("sites");
+            var registry = FakeFacetsGetByCodeRepositoryFactory.Create();
+            var reconstituter = new FacetConfigReconstituteService(registry);
+            FacetsConfig2 facetsConfig = new FacetsConfigFactory().CreateSingleFacetsConfigWithoutPicks("sites");
             string json1 = JsonConvert.SerializeObject(facetsConfig);
+            // Act
             FacetsConfig2 facetsConfig2 = reconstituter.Reconstitute(json1);
             string json2 = JsonConvert.SerializeObject(facetsConfig2);
+            // Assert
             Assert.Equal(json1, json2);
         }
 
-        [Fact]
+        [Fact(Skip = "To be removed since it only tests test code")]
         public void CanGenerateSingleFacetsConfigWithoutPicks()
         {
-            var data = new Fixtures.FacetConfigFixtureData();
-            using (var context = ScaffoldUtility.JsonSeededFacetContext())
-            using (var container = new TestDependencyService(context).Register()) {
-                var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
-                foreach (var facetCode in data.DiscreteFacetComputeCount.Keys) {
-                    FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
-                    Assert.Equal(facetCode, facetsConfig.TargetFacet.FacetCode);
-                }
+            var data = new Mocks.FacetConfigsByUriFixtures();
+
+            var fixture = new FacetsConfigFactory();
+
+            foreach (var facetCode in data.DiscreteFacetComputeCount.Keys) {
+
+                FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
+
+                Assert.Equal(facetCode, facetsConfig.TargetFacet.FacetCode);
+
             }
+
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetConfig_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -86,7 +83,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetFacetCodes_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -99,7 +96,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetFacetConfigsWithPicks_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -112,7 +109,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetFacetCodesWithPicks_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -125,7 +122,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetFacetConfigsAffectedByFacet_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -142,7 +139,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void DeletePicks_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -155,7 +152,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void CollectUserPicks_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -170,7 +167,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void HasPicks_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -185,7 +182,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetPicksCacheId_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -198,7 +195,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void GetTargetTextFilter_StateUnderTest_ExpectedBehavior()
         {
             // Arrange

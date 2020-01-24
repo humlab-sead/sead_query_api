@@ -7,64 +7,51 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
+using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Mocks;
 using Xunit;
 
 namespace SeadQueryTest.Services.Result
 {
-    public class DefaultResultServiceTests 
+    public class DefaultResultServiceTests
     {
-        private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
-        private Mock<IResultCompiler> mockResultCompiler;
-        private Mock<IIndex<EFacetType, ICategoryCountService>> mockIndex;
 
-        public DefaultResultServiceTests()
-        {
-            this.mockRepositoryRegistry = new Mock<IRepositoryRegistry>();
-            this.mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
-            this.mockResultCompiler = new Mock<IResultCompiler>();
-            this.mockIndex = new Mock<IIndex<EFacetType, ICategoryCountService>>();
-        }
-
-        private DefaultResultService CreateService()
-        {
-            return new DefaultResultService(
-                this.mockRepositoryRegistry.Object,
-                this.mockResultCompiler.Object);
-        }
-
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Load_StateUnderTest_ExpectedBehavior()
         {
-            // Arrange
-            var service = this.CreateService();
-            FacetsConfig2 facetsConfig = null;
-            ResultConfig resultConfig = null;
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context)) {
 
-            // Act
-            var result = service.Load(
-                facetsConfig,
-                resultConfig);
+                // Arrange
+                var compiler = new Mock<IResultCompiler>().Object;
+                var service = new DefaultResultService(registry, compiler);
 
-            // Assert
-            Assert.True(false);
+                FacetsConfig2 facetsConfig = null;
+                ResultConfig resultConfig = null;
+
+                // Act
+                var result = service.Load(facetsConfig, resultConfig);
+
+                // Assert
+                Assert.True(false);
+            }
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Load_WhenOnline_IsTrue()
         {
-            using (var container = new TestDependencyService().Register())
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, null))
             using (var scope = container.BeginLifetimeScope()) {
 
                 // Arrange
                 var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-                var registry = scope.Resolve<IRepositoryRegistry>();
-                var scaffolder = new ScaffoldFacetsConfig(registry);
-                var facetsConfig = scaffolder.Create(uri);
+                var facetsConfig = FakeFacetsConfigByUriFactory.Create(uri);
                 var resultKeys = new List<string>() { "site_level" };
-                var resultConfig = new ScaffoldResultConfig().Scaffold("tabular", resultKeys);
+                var resultConfig = ResultConfigFactory.Create("tabular", resultKeys);
                 var service = scope.ResolveKeyed<IResultService>(EFacetType.Range);
 
                 // Act

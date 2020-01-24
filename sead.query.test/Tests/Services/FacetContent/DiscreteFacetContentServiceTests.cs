@@ -21,7 +21,7 @@ namespace SeadQueryTest.Services.FacetContent
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockSettings = new MockOptionBuilder().Build().Value.Facet;
+            this.mockSettings = new SettingFactory().Create().Value.Facet;
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
             this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
             this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryCountService>>();

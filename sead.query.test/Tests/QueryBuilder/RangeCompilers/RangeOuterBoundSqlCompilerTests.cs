@@ -1,28 +1,21 @@
-using DataAccessPostgreSqlProvider;
-using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
-using System;
+using SeadQueryTest.Mocks;
 using System.Collections.Generic;
 using Xunit;
+using SeadQueryTest.Fixtures;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
     public class RangeOuterBoundSqlCompilerTests
     {
-        private IFacetSetting mockSettings;
-        private RepositoryRegistry mockRegistry;
-        private FacetContext mockContext;
+        private IFacetContext mockContext;
 
         public object ReconstituteFacetConfigService { get; private set; }
 
         public RangeOuterBoundSqlCompilerTests()
         {
-            mockSettings = new MockOptionBuilder().Build().Value.Facet;
-            mockContext = ScaffoldUtility.JsonSeededFacetContext();
-            mockRegistry = new RepositoryRegistry(mockContext);
+            mockContext = JsonSeededFacetContextFactory.Create();
         }
 
         private RangeOuterBoundSqlCompiler CreateRangeOuterBoundSqlCompiler()
@@ -37,7 +30,7 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
             var rangeOuterBoundSqlCompiler = this.CreateRangeOuterBoundSqlCompiler();
             var facetCode = "tbl_denormalized_measured_values_33_0";
 
-            var facet = SeadQueryTest.Infrastructure.Scaffolds.FacetInstances.Store["tbl_denormalized_measured_values_33_0"];
+            var facet = FacetFixtures.Store["tbl_denormalized_measured_values_33_0"];
 
             var targetFacetConfig = new FacetConfig2 {
                 FacetCode = facetCode,

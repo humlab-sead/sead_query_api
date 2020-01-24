@@ -1,28 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System.IO;
-using Npgsql.Logging;
-using Autofac;
-using SeadQueryCore;
-using SeadQueryAPI;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Npgsql.Logging;
+using SeadQueryAPI;
+using SeadQueryCore;
+using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Mocks;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
-using SeadQueryTest.Infrastructure;
-using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using System.Threading.Tasks;
 using Xunit;
-using SeadQueryTest.Fixtures;
-using Microsoft.Extensions.Hosting;
 
 namespace SeadQueryTest
 {
@@ -31,11 +27,11 @@ namespace SeadQueryTest
     {
         public IConfigurationRoot Configuration { get; }
         public IContainer Container { get; private set; }
-        public IQueryBuilderSetting Options { get; private set; }
+        public ISetting Options { get; private set; }
 
         public ControllerTestStartup()
         {
-            Options = new MockOptionBuilder().Build().Value;
+            Options = new SettingFactory().Create().Value;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -55,15 +51,14 @@ namespace SeadQueryTest
         }
 
     }
-    
+
     public class ControllerTests
     {
-        private readonly Fixtures.ScaffoldFacetsConfig fixture;
+        private readonly FacetsConfigFactory facetsConfigMockFactory;
 
         public ControllerTests()
         {
-            //var registry = new RepositoryRegistry(ScaffoldUtility.DefaultFacetContext());
-            fixture = new Fixtures.ScaffoldFacetsConfig(null);
+            facetsConfigMockFactory = new FacetsConfigFactory(null);
         }
 
         public IHostBuilder CreateTestWebHostBuilder2<T>() where T: class
@@ -109,14 +104,14 @@ namespace SeadQueryTest
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
-                Assert.Equal(22, facets.Count());
+                Assert.Equal(22, facets.Count);
             }
         }
 
         [Fact]
         public async Task CanLoadSimpleDiscreteFacetWithoutPicks()
         {
-            var data = new Fixtures.FacetConfigFixtureData();
+            var data = new FacetConfigsByUriFixtures();
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
             using (var host = await builder.StartAsync()) {
             using (var client = host.GetTestClient()) {
@@ -124,7 +119,7 @@ namespace SeadQueryTest
                 {
                     var uri = item[0].ToString();
                     var expectedCount = item[2];
-                    FacetsConfig2 facetsConfig = fixture.Create(uri);
+                    FacetsConfig2 facetsConfig = facetsConfigMockFactory.Create(uri);
 
                     var json = JsonConvert.SerializeObject(facetsConfig);
                     var request_content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -140,7 +135,7 @@ namespace SeadQueryTest
         [Fact]
         public async Task CanLoadDiscreteFacetConfigsWithPicks()
         {
-            var data = new Fixtures.FacetConfigFixtureData();
+            var data = new FacetConfigsByUriFixtures();
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
             using (var host = await builder.StartAsync()) {
             using (var client = host.GetTestClient()) {
@@ -148,7 +143,7 @@ namespace SeadQueryTest
                 {
                     var uri = item[0].ToString();
                     var expectedCount = item[2];
-                    FacetsConfig2 facetsConfig = fixture.Create(uri);
+                    FacetsConfig2 facetsConfig = facetsConfigMockFactory.Create(uri);
 
                     var json = JsonConvert.SerializeObject(facetsConfig);
                     var request_content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -169,8 +164,8 @@ namespace SeadQueryTest
             using (var client = host.GetTestClient()) {
                     {
                         // Arrange
-                        var data = new Fixtures.FacetConfigFixtureData();
-                        FacetsConfig2 facetsConfig = fixture.Create("sites@sites:country@73/sites:");
+                        var data = new Mocks.FacetConfigsByUriFixtures();
+                        FacetsConfig2 facetsConfig = facetsConfigMockFactory.Create("sites@sites:country@73/sites:");
                         var json = JsonConvert.SerializeObject(facetsConfig);
                         var request_content = new StringContent(json, Encoding.UTF8, "application/json");
 

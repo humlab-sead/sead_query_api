@@ -1,6 +1,6 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryTest.Infrastructure.Scaffolds;
+using SeadQueryTest.Fixtures;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -105,7 +105,7 @@ namespace SeadQueryTest.Model.FacetsConfig
         public void GetJoinTables_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var facet = SeadQueryTest.Infrastructure.Scaffolds.FacetInstances.Store["result_facet"];
+            var facet = FacetFixtures.Store["result_facet"];
             var facetConfig2 = new FacetConfig2 {
                 FacetCode = "result_facet",
                 Facet = facet,

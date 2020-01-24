@@ -2,7 +2,7 @@ using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,11 @@ using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class FacetTests : FacetTestBase
+    public class FacetTests
     {
         private Facet CreateFacet(string facetCode)
         {
-            using (var context = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var context = JsonSeededFacetContextFactory.Create()) {
                 var facetRepository = new FacetRepository(context);
                 return facetRepository.GetByCode(facetCode);
             }

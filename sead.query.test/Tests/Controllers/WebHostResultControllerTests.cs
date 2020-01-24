@@ -12,21 +12,19 @@ using SeadQueryCore.Model;
 using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using Xunit;
 
 namespace SeadQueryTest
 {
     public class ResultControllerTests
     {
-        private ScaffoldFacetsConfig facetConfigFixture;
-        private ScaffoldResultConfig resultConfigFixture;
+        private FacetsConfigFactory facetConfigFixture;
 
         public ResultControllerTests()
         {
-            var registry = new RepositoryRegistry(ScaffoldUtility.JsonSeededFacetContext());
-            facetConfigFixture = new Fixtures.ScaffoldFacetsConfig(registry);
-            resultConfigFixture = new Fixtures.ScaffoldResultConfig();
+            var registry = new RepositoryRegistry(JsonSeededFacetContextFactory.Create());
+            facetConfigFixture = new FacetsConfigFactory(registry);
         }
 
         public IWebHostBuilder CreateTestWebHostBuilder2<T>() where T: class
@@ -66,7 +64,7 @@ namespace SeadQueryTest
             // FIXME! Mock
             // Arrange
             FacetsConfig2 facetsConfig = facetConfigFixture.Create(uri);
-            var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
+            var resultConfig = ResultConfigFactory.Create(viewTypeId, resultKey);
             var jObject = new { facetsConfig = facetsConfig, resultConfig = resultConfig };
             var json = JsonConvert.SerializeObject(jObject);
             var requestContent = new StringContent(json, Encoding.UTF8, "application/json");

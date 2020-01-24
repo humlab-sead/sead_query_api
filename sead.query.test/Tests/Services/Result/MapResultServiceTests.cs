@@ -1,57 +1,25 @@
-using System;
-using System.Collections.Generic;
-using Autofac;
 using Autofac.Features.Indexed;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
-using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Services.Result
 {
     public class MapResultServiceTests
     {
-        //private Mock<IRepositoryRegistry> mockRepositoryRegistry;
-        //private Mock<IResultCompiler> mockResultCompiler;
-        //private Mock<IIndex<EFacetType, ICategoryCountService>> mockIndex;
 
-        //public MapResultServiceTests()
-        //{
-        //    this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
-        //    this.mockResultCompiler = this.mockRepository.Create<IResultCompiler>();
-        //    this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryCountService>>();
-        //}
-
-        //private MapResultService CreateService()
-        //{
-        //    return new MapResultService(
-        //        this.mockRepositoryRegistry.Object,
-        //        this.mockResultCompiler.Object,
-        //        this.mockIndex.Object);
-        //}
-        private IIndex<int, IPickFilterCompiler> ConcretePickCompilers(string returnValue = "")
+        private IIndex<int, IPickFilterCompiler> ConcretePickCompilers()
         {
             return new MockIndex<int, IPickFilterCompiler>
             {
                     { 1, new DiscreteFacetPickFilterCompiler() },
                     { 2, new RangeFacetPickFilterCompiler() }
-            };
-        }
-
-        private IIndex<int, IPickFilterCompiler> MockPickCompilers(string returnValue = "")
-        {
-            var mockPickCompiler = new Mock<IPickFilterCompiler>();
-            mockPickCompiler.Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())).Returns(returnValue);
-
-            return new MockIndex<int, IPickFilterCompiler>
-            {
-                    { 1, mockPickCompiler.Object },
-                    { 2, mockPickCompiler.Object }
             };
         }
 
@@ -62,21 +30,17 @@ namespace SeadQueryTest.Services.Result
             IQuerySetupCompiler querySetupCompiler = new QuerySetupCompiler(facetsGraph, pickCompilers, new EdgeSqlCompiler());
             return querySetupCompiler;
         }
+
         [Fact]
         public void Load_StateUnderTest_ExpectedBehavior()
         {
-            using (var container = new TestDependencyService().Register())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var registry = FakeFacetsGetByCodeRepositoryFactory.Create()) {
 
                 // Arrange
                 var uri = "sites:sites";
-                var registry = scope.Resolve<IRepositoryRegistry>();
-                var facetsConfig = new ScaffoldFacetsConfig(registry).Create(uri);
+                var facetsConfig = new FacetsConfigFactory(registry).Create(uri);
                 var resultKeys = new List<string>() { "site_level" };
-                var resultConfig = new ScaffoldResultConfig().Scaffold("map", resultKeys);
-
-                // var categoryCountServices = ConcreteDiscreteCategoryCountService(registry);
-                // IResultCompiler resultCompiler = ConcreteResultCompiler(registry);
+                var resultConfig = ResultConfigFactory.Create("map", resultKeys);
 
                 var mockCategoryCountServices = new Mock<IDiscreteCategoryCountService>();
                 mockCategoryCountServices
@@ -90,6 +54,7 @@ namespace SeadQueryTest.Services.Result
                     );
 
                 var mockResultCompiler = new Mock<IResultCompiler>();
+
                 mockResultCompiler
                     .Setup(x => x.Compile(It.IsAny<FacetsConfig2>(), It.IsAny<ResultConfig>(), It.IsAny<string>()))
                     .Returns(
@@ -117,7 +82,7 @@ namespace SeadQueryTest.Services.Result
 
         private IDiscreteCategoryCountService ConcreteDiscreteCategoryCountService(IRepositoryRegistry registry)
         {
-            IFacetSetting facetSettings = new MockOptionBuilder().DefaultFacetSettings();
+            IFacetSetting facetSettings = new SettingFactory().DefaultFacetSettings();
             IQuerySetupCompiler querySetupCompiler = CreateQuerySetupCompiler(registry);
             IDiscreteCategoryCountSqlQueryCompiler categoryCountSqlCompiler = new DiscreteCategoryCountSqlQueryCompiler();
             return new DiscreteCategoryCountService(facetSettings, registry, querySetupCompiler, categoryCountSqlCompiler);

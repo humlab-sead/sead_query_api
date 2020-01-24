@@ -3,21 +3,29 @@ using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Controllers;
 using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
-using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryInfra.DataAccessProvider;
+using SeadQueryTest.Mocks;
 using System;
 using Xunit;
 
 namespace SeadQueryTest.Controllers
 {
-    public class ResultControllerTests
+    public class ResultControllerTests : IDisposable
     {
+        private FacetContext mockContext;
         private RepositoryRegistry mockRepositoryRegistry;
+
+        public void Dispose()
+        {
+            mockContext.Dispose();
+            mockRepositoryRegistry.Dispose();
+        }
 
         public ResultControllerTests()
         {
-            mockRepositoryRegistry = new RepositoryRegistry(ScaffoldUtility.JsonSeededFacetContext());
+            mockContext = JsonSeededFacetContextFactory.Create();
+            mockRepositoryRegistry = new RepositoryRegistry(mockContext);
         }
 
         private ResultController CreateResultController()
@@ -31,47 +39,52 @@ namespace SeadQueryTest.Controllers
             );
         }
 
-        [Fact]
+        [Fact(Skip="Not implemented")]
         public void Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultController = this.CreateResultController();
+            using (var resultController = this.CreateResultController()) {
 
-            // Act
-            var result = resultController.Get();
+                // Act
+                var result = resultController.Get();
 
-            // Assert
-            Assert.True(false);
+                // Assert
+                Assert.True(false);
+            }
+
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Get_StateUnderTest_ExpectedBehavior1()
         {
             // Arrange
-            var resultController = this.CreateResultController();
-            int id = 0;
+            using (var resultController = this.CreateResultController()) {
 
-            // Act
-            var result = resultController.Get(
-                id);
+                int id = 0;
 
-            // Assert
-            Assert.True(false);
+                // Act
+                var result = resultController.Get(id);
+
+                // Assert
+                Assert.True(false);
+            }
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Load_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var resultController = this.CreateResultController();
-            JObject data = null;
+            // Arrange
+            using (var resultController = this.CreateResultController()) {
+                JObject data = null;
 
-            // Act
-            var result = resultController.Load(
-                data);
+                // Act
+                var result = resultController.Load(data);
 
-            // Assert
-            Assert.True(false);
+                // Assert
+                Assert.True(false);
+            }
         }
+
     }
 }

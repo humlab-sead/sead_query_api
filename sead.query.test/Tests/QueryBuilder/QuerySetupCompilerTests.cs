@@ -1,34 +1,38 @@
 ﻿using Autofac;
 using Autofac.Features.Indexed;
-using DataAccessPostgreSqlProvider;
+using SeadQueryInfra.DataAccessProvider;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
 using SeadQueryTest;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolds;
-using SeadQueryTest.Infrastructure.Scaffolding;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using SeadQueryTest.Fixtures;
+using System;
+using SeadQueryTest.Mocks;
 
 namespace SeadQueryTest.QueryBuilder
 {
 
-    public class QuerySetupCompilerTests
+    public class QuerySetupCompilerTests : IDisposable
     {
-        private IFacetSetting mockSettings;
-        private RepositoryRegistry mockRegistry;
-        private DataAccessPostgreSqlProvider.FacetContext mockContext;
+        private RepositoryRegistry fakeRegistry;
+        private IFacetContext fakeContext;
         public object ReconstituteFacetConfigService { get; private set; }
 
         public QuerySetupCompilerTests()
         {
-            mockSettings = new MockOptionBuilder().Build().Value.Facet;
-            mockContext = ScaffoldUtility.JsonSeededFacetContext();
-            mockRegistry = new RepositoryRegistry(mockContext);
+            fakeContext = JsonSeededFacetContextFactory.Create();
+            fakeRegistry = new RepositoryRegistry(fakeContext);
+        }
+
+        public void Dispose()
+        {
+            fakeRegistry.Dispose();
+            fakeContext.Dispose();
         }
 
         private FacetsConfig2 CreateSingleFacetsConfig(string facetCode)
@@ -59,11 +63,10 @@ namespace SeadQueryTest.QueryBuilder
 
         private Facet GetFacet(string facetCode)
         {
-            return FacetInstances.Store[facetCode];
-            // return mockRegistry.Facets.GetByCode(facetCode);
+            return FacetFixtures.Store[facetCode];
         }
 
-        private IIndex<int, IPickFilterCompiler> ConcretePickCompilers(string returnValue = "")
+        private IIndex<int, IPickFilterCompiler> ConcretePickCompilers()
         {
             return new MockIndex<int, IPickFilterCompiler>
             {
@@ -86,7 +89,7 @@ namespace SeadQueryTest.QueryBuilder
 
         private QuerySetupCompiler CreateQuerySetupCompiler()
         {
-            var mockFacetGraph = ScaffoldUtility.DefaultFacetsGraph(mockContext);
+            var mockFacetGraph = ScaffoldUtility.DefaultFacetsGraph(fakeContext);
             var pickCompilers = ConcretePickCompilers();
             var edgeCompiler = new EdgeSqlCompiler();
 
@@ -103,7 +106,7 @@ namespace SeadQueryTest.QueryBuilder
         {
             // Arrange
             var facetCode = "sites";
-            var facet = FacetInstances.Store[facetCode];
+            var facet = FacetFixtures.Store[facetCode];
 
             var facetsConfig = new FacetsConfig2 {
                 RequestId = "1",
@@ -146,7 +149,7 @@ namespace SeadQueryTest.QueryBuilder
         public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode)
         {
             // Arrange
-            var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+            var fixture = new FacetsConfigFactory(fakeRegistry);
             var facet = fixture.Registry.Facets.GetByCode(facetCode);
             var facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
 
@@ -185,7 +188,7 @@ namespace SeadQueryTest.QueryBuilder
         public void CanBuildCategoryCountQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode, List<List<string>> expectedRoutes)
         {
 
-            var fixture = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+            var fixture = new FacetsConfigFactory(fakeRegistry);
 
             FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
 
@@ -224,14 +227,14 @@ namespace SeadQueryTest.QueryBuilder
             // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
         }
 
-        private class TestRoute
+        private static class TestRoute
         {
-            public List<string> Trail { get; set; }
-            public List<string> Pairs { get { return ToPairs(Trail); } }
+            //public List<string> Trail { get; set; }
+            //public List<string> Pairs { get { return ToPairs(Trail); } }
 
-            public TestRoute(List<string> trail) {
-                Trail = trail;
-            }
+            //public TestRoute(List<string> trail) {
+            //    Trail = trail;
+            //}
 
             public static List<string>  ToPairs(List<string> trail) {
                 return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
@@ -291,17 +294,17 @@ namespace SeadQueryTest.QueryBuilder
             var targetCode = parts[0];
 
             // Arrange
-            var facetsConfigScaffolder = new SeadQueryTest.Fixtures.ScaffoldFacetsConfig(mockRegistry);
+            var facetsConfigScaffolder = new FacetsConfigFactory(fakeRegistry);
 
             FacetsConfig2 facetsConfig = facetsConfigScaffolder.CreateFacetsConfig(
                 targetCode,
                 targetCode,
                 testCodes.Select(
-                    z => ScaffoldFacetConfig.Create(mockRegistry.Facets.GetByCode(z), testCodes.IndexOf(z)
+                    z => FacetConfigFactory.Create(fakeRegistry.Facets.GetByCode(z), testCodes.IndexOf(z)
                 )
             ).ToList());
 
-            var graph = ScaffoldUtility.DefaultFacetsGraph(mockContext);
+            var graph = ScaffoldUtility.DefaultFacetsGraph(fakeContext);
 
             IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
 
@@ -313,8 +316,8 @@ namespace SeadQueryTest.QueryBuilder
                 edgeCompiler
             );
 
-            Facet targetFacet = mockRegistry.Facets.GetByCode(targetCode);
-            Facet computeFacet = mockRegistry.Facets.Get(targetFacet.AggregateFacetId);
+            Facet targetFacet = fakeRegistry.Facets.GetByCode(targetCode);
+            Facet computeFacet = fakeRegistry.Facets.Get(targetFacet.AggregateFacetId);
 
             List<string> facetCodes = facetsConfig.GetFacetCodes();
 

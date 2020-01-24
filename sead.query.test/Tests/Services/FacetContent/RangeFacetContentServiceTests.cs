@@ -4,46 +4,28 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolds;
-using SeadQueryTest.Infrastructure.Scaffolding;
 using System;
 using System.Collections.Generic;
 using Xunit;
 using SeadQueryTest.Infrastructure;
 using Autofac;
 using SeadQueryTest.Fixtures;
+using SeadQueryTest.Mocks;
 
 namespace SeadQueryTest.Services.FacetContent
 {
     public class RangeFacetContentServiceTests
     {
-        private IFacetSetting  mockSettings;
-        private IRepositoryRegistry mockRegistry;
+        //private IFacetSetting  mockSettings;
+        //private IRepositoryRegistry mockRegistry;
 
-        public RangeFacetContentServiceTests()
-        {
-            mockSettings = new MockOptionBuilder().Build().Value.Facet;
-            var mockContext = ScaffoldUtility.JsonSeededFacetContext();
-            mockRegistry = new RepositoryRegistry(mockContext);
+        //public RangeFacetContentServiceTests()
+        //{
+        //    mockSettings = new MockOptionBuilder().Build().Value.Facet;
+        //    var mockContext = JsonSeededFacetContextFactory.Create();
+        //    mockRegistry = new RepositoryRegistry(mockContext);
 
-        }
-
-        private RangeFacetContentService CreateService(QuerySetup querySetup)
-        {
-            Mock<IQuerySetupCompiler> mockQuerySetupCompiler = MockQuerySetupCompiler(querySetup);
-
-            MockIndex<EFacetType, ICategoryCountService> mockCountServices = MockCategoryCountServices();
-
-            var concreteRangeIntervalSqlQueryCompiler = new RangeIntervalSqlQueryCompiler();
-
-            return new RangeFacetContentService(
-                mockSettings,
-                mockRegistry,
-                mockQuerySetupCompiler.Object,
-                mockCountServices,
-                concreteRangeIntervalSqlQueryCompiler
-            );
-        }
+        //}
 
         private static MockIndex<EFacetType, ICategoryCountService> MockCategoryCountServices()
         {
@@ -81,26 +63,49 @@ namespace SeadQueryTest.Services.FacetContent
         {
             // Arrange
             var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-            var querySetup = QuerySetupInstances.Store[uri];
-            var facetsConfig = FacetsConfigInstances.Store[uri];
-            var service = this.CreateService(querySetup);
+            var querySetup = QuerySetupFixtures.Store[uri];
+            var facetsConfig = FacetsConfigFixtures.Store[uri];
 
-            // Act
-            var result = service.Load(facetsConfig);
-            // Assert
-            Assert.NotNull(result);
+            Mock<IQuerySetupCompiler> mockQuerySetupCompiler = MockQuerySetupCompiler(querySetup);
+
+            MockIndex<EFacetType, ICategoryCountService> mockCountServices = MockCategoryCountServices();
+
+            var settings = new SettingFactory().Create().Value.Facet;
+            var concreteRangeIntervalSqlQueryCompiler = new RangeIntervalSqlQueryCompiler();
+
+            using (var context = JsonSeededFacetContextFactory.Create()) {
+
+                var registry = new RepositoryRegistry(context);
+
+                // Act
+
+                var service = new RangeFacetContentService(
+                    settings,
+                    registry,
+                    mockQuerySetupCompiler.Object,
+                    mockCountServices,
+                    concreteRangeIntervalSqlQueryCompiler
+                );
+
+                var result = service.Load(facetsConfig);
+
+                // Assert
+                Assert.NotNull(result);
+
+            }
+
         }
 
         [Fact]
         public void Load_WhenOnlineMeasuredValues_33_00_IsTrue()
         {
-            using (var container = new TestDependencyService().Register())
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, null))
             using (var scope = container.BeginLifetimeScope()) {
-
                 // Arrange
                 var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-                var registry = scope.Resolve<IRepositoryRegistry>();
-                var scaffolder = new ScaffoldFacetsConfig(registry);
+                var scaffolder = new FacetsConfigFactory(registry);
                 var facetsConfig = scaffolder.Create(uri);
                 // var resultKeys = new List<string>() { "site_level" };
                 // var resultConfig = new ScaffoldResultConfig().Scaffold("tabular", resultKeys);
@@ -116,13 +121,14 @@ namespace SeadQueryTest.Services.FacetContent
         [Fact]
         public void Load_WhenOnlineMeasuredValues_33_82_IsTrue()
         {
-            using (var container = new TestDependencyService().Register())
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, null))
             using (var scope = container.BeginLifetimeScope()) {
 
                 // Arrange
                 var uri = "tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82@(110,2904)";
-                var registry = scope.Resolve<IRepositoryRegistry>();
-                var scaffolder = new ScaffoldFacetsConfig(registry);
+                var scaffolder = new FacetsConfigFactory(registry);
                 var facetsConfig = scaffolder.Create(uri);
                 var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
 

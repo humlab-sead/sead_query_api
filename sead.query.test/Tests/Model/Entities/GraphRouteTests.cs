@@ -7,13 +7,13 @@ using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class GraphRouteTests : FacetTestBase
+    public class GraphRouteTests
     {
         public IFacetsGraph FacetsGraph { get; private set; }
 
         public GraphRouteTests()
         {
-            FacetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+            FacetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
 
         }
 

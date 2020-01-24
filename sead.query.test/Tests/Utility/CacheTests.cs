@@ -3,6 +3,7 @@ using Xunit;
 using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Mocks;
 
 namespace SeadQueryTest.Cache {
 
@@ -47,7 +48,9 @@ namespace SeadQueryTest.Cache {
         public void Resolve_CanResolveCacheService()
         {
             var options = Startup.Options;
-            var container = new TestDependencyService().Register(null, options);
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, options))
             using (var scope = container.BeginLifetimeScope()) {
                 // Assert.IsNotNull(scope.Resolve<ICacheManager<object>>());
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());

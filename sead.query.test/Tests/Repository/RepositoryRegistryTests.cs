@@ -1,32 +1,20 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
-using System;
+using SeadQueryTest.Mocks;
 using Xunit;
 
 namespace SeadQueryTest.Repository
 {
-    public class RepositoryRegistryTests : IDisposable
+    public class RepositoryRegistryTests
     {
-        private IFacetContext mockFacetContext;
-
-        public RepositoryRegistryTests()
-        {
-            this.mockFacetContext = ScaffoldUtility.JsonSeededFacetContext();
-        }
-
-        public void Dispose()
-        {
-        }
-
         private RepositoryRegistry CreateRepositoryRegistry()
         {
-            return new RepositoryRegistry(
-                this.mockFacetContext);
+            var mockContext = JsonSeededFacetContextFactory.Create();
+            return new RepositoryRegistry(mockContext);
         }
 
-        [Fact]
+        [Fact(Skip="Not implemented")]
         public void Commit_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -39,7 +27,7 @@ namespace SeadQueryTest.Repository
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void QueryRow_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -55,7 +43,7 @@ namespace SeadQueryTest.Repository
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Query_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -70,7 +58,7 @@ namespace SeadQueryTest.Repository
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void QueryRows_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -86,7 +74,7 @@ namespace SeadQueryTest.Repository
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void QueryKeyValues2_StateUnderTest_ExpectedBehavior()
         {
             // Arrange

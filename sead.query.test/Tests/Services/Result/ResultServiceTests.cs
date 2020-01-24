@@ -8,55 +8,27 @@ using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using Xunit;
 
 namespace SeadQueryTest
 {
     public class ResultContentServiceTests
     {
-        //private QueryBuilderSetting mockQueryBuilderSetting;
-        private RepositoryRegistry mockRegistry;
-        private ScaffoldFacetsConfig facetConfigFixture;
-        private ScaffoldResultConfig resultConfigFixture;
-
-        public ResultContentServiceTests()
+        [Fact]
+        public void Scaffolding_CanCreateContextByJsonSeededFacetContext()
         {
-            //mockQueryBuilderSetting = new MockOptionBuilder().Build().Value;
-            mockRegistry = new RepositoryRegistry(ScaffoldUtility.JsonSeededFacetContext());
-            facetConfigFixture = new Fixtures.ScaffoldFacetsConfig(mockRegistry);
-            resultConfigFixture = new Fixtures.ScaffoldResultConfig();
-        }
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context)) {
 
-        [Theory]
-        [InlineData("tabular", "site_level", "sites@sites:country@73/sites:", 30)]
-        [InlineData("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1)]
-        [InlineData("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30)]
-        //[InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
-        public void Load_WhenUsingDefaultContext(string viewTypeId, string resultKey, string uri, int expectedCount)
-        {
-            // using (var context = ScaffoldUtility.DefaultFacetContext())
-            using (var container = new TestDependencyService().Register())
-            using (var scope = container.BeginLifetimeScope()) {
+                Assert.NotNull(registry);
+                Assert.NotNull(registry.Facets);
 
-                // Arrange
-                var facetsConfig = facetConfigFixture.Create(uri);
-                var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
+                Assert.True(registry.Facets.GetAll().Any());
 
-                var dumpsFacetConfig = ObjectDumper.Dump(facetsConfig);
-
-                var service = scope.ResolveKeyed<IResultService>(viewTypeId);
-
-                IQuerySetupCompiler builder = scope.Resolve<IQuerySetupCompiler>();
-
-                var resultSet = service.Load(facetsConfig, resultConfig);
-                // Act
-                Assert.Equal(expectedCount, resultSet.Data.DataCollection.Count);
             }
-
         }
-        /*
-         */
+
         [Theory]
         [InlineData("tabular", "site_level", "sites@sites:country@73/sites:", 30)]
         [InlineData("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1)]
@@ -64,17 +36,19 @@ namespace SeadQueryTest
         //[InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
         public void Load_ExecuteLoadContent(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
+            var registry = JsonSeededRepositoryRegistryFactory.Create();
 
             // Arrange
-            var facetsConfig = facetConfigFixture.Create(uri);
-            var resultConfig = resultConfigFixture.GenerateConfig(viewTypeId, resultKey);
+            var facetsConfig = new FacetsConfigFactory(registry).Create(uri);
+            var resultConfig = ResultConfigFactory.Create(viewTypeId, resultKey);
 
-            var aggregate = mockRegistry.Results.GetByKey(resultConfig.AggregateKeys[0]);
+            var aggregate = registry.Results.GetByKey(resultConfig.AggregateKeys[0]);
 
             var mockResultCompiler = new Mock<IResultCompiler>();
             mockResultCompiler.Setup(
                 c => c.Compile(facetsConfig, resultConfig, "result_facet")
             ).Returns("");
+
             var mockCountService = new Mock<ICategoryCountService>();
             IIndex<EFacetType, ICategoryCountService> mockCountServices = new MockIndex<EFacetType, ICategoryCountService>
             {
@@ -83,10 +57,7 @@ namespace SeadQueryTest
             };
             var tabularSqlCompiler = new TabularResultSqlQueryCompiler();
 
-            var service = new DefaultResultService(
-                mockRegistry,
-                mockResultCompiler.Object
-            );
+            var service = new DefaultResultService(registry, mockResultCompiler.Object);
 
             // Act
             var resultSet = service.Load(facetsConfig, resultConfig);
@@ -101,6 +72,7 @@ namespace SeadQueryTest
             var columns = resultSet.Meta.Columns;
 
             Assert.Equal(expectedFields.Count, columns.Count);
+
         }
     }
 }

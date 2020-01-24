@@ -1,7 +1,6 @@
-using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using System;
 using Xunit;
 
@@ -13,7 +12,7 @@ namespace SeadQueryTest.Repository
 
         public ViewStateRepositoryTests()
         {
-            this.mockFacetContext = ScaffoldUtility.JsonSeededFacetContext();
+            this.mockFacetContext = JsonSeededFacetContextFactory.Create();
         }
 
         public void Dispose()

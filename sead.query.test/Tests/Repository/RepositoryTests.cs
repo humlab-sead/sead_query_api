@@ -1,42 +1,22 @@
-using Moq;
-using SeadQueryCore;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryInfra.DataAccessProvider;
+using SeadQueryTest.Mocks;
 using System;
-using System.Linq.Expressions;
-using Xunit;
 
 namespace SeadQueryTest.Repository
 {
     public class RepositoryTests : IDisposable
     {
-        private Moq.MockRepository mockRepository;
-
-        private Mock<IFacetContext> mockFacetContext;
+        private FacetContext mockContext;
 
         public RepositoryTests()
         {
-            this.mockRepository = new Moq.MockRepository(MockBehavior.Strict);
-
-            this.mockFacetContext =
-
-            mockFacetContext = MockFacetContext();
+            mockContext = JsonSeededFacetContextFactory.Create();
         }
 
-        private Mock<IFacetContext> MockFacetContext()
-        {
-            Mock<IFacetContext> mockFacetContext = mockRepository.Create<IFacetContext>();
-            IFacetContext testContext = ScaffoldUtility.JsonSeededFacetContext();
-            mockFacetContext.Setup(
-                z => z.Facets
-            ).Returns(
-                testContext.Facets
-            );
-            return mockFacetContext;
-        }
 
         public void Dispose()
         {
-            this.mockRepository.VerifyAll();
+            mockContext.Dispose();
         }
 
         //private SeadQueryInfra.Repository<T, K> CreateRepository<T, K>() where T: class

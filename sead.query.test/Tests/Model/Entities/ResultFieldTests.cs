@@ -1,14 +1,15 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class ResultFieldTests : FacetTestBase
+    public class ResultFieldTests
     {
         // Has no logic
 
@@ -36,7 +37,7 @@ namespace SeadQueryTest.Model.Entities
         public void Find_FromRepository_IsComplete(Type type, object id, Dictionary<string, object> expected)
         {
             // Arrange
-            using (var context = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var context = JsonSeededFacetContextFactory.Create()) {
                 var mockRegistry = new Mock<IRepositoryRegistry>();
                 mockRegistry.Setup(x => x.Results.GetAllFields())
                     .Returns(JsonService.LoadJSON<ResultField>());

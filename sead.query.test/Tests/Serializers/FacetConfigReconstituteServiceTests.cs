@@ -1,25 +1,30 @@
-using Moq;
-using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryInfra.DataAccessProvider;
+using SeadQueryTest.Mocks;
 using System;
 using Xunit;
 
 namespace SeadQueryTest.Serializers
 {
-    public class FacetConfigReconstituteServiceTests
+    public class FacetConfigReconstituteServiceTests : IDisposable
     {
         private IRepositoryRegistry Registry;
+        private FacetContext mockContext;
 
         public FacetConfigReconstituteServiceTests()
         {
-            var mockSettings = new MockOptionBuilder().Build().Value.Facet;
-            var mockContext = ScaffoldUtility.JsonSeededFacetContext();
+            mockContext = JsonSeededFacetContextFactory.Create();
             Registry = new RepositoryRegistry(mockContext);
         }
 
+
+        public void Dispose()
+        {
+            Registry.Dispose();
+            mockContext.Dispose();
+        }
 
         private IFacetConfigReconstituteService CreateService()
         {

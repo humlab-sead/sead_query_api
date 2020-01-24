@@ -11,7 +11,7 @@ namespace SeadQueryTest
     public static class Startup
     {
         public static IConfigurationRoot Configuration;
-        public static QueryBuilderSetting Options;
+        public static Setting Options;
 
         [AssemblyInitialize()]
         public static void AssemblyInit()

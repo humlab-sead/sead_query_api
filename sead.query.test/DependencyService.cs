@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using DataAccessPostgreSqlProvider;
+using SeadQueryInfra.DataAccessProvider;
 using Microsoft.Extensions.DependencyInjection;
 using SeadQueryAPI;
 using SeadQueryAPI.Serializers;
@@ -14,6 +14,7 @@ namespace SeadQueryTest.Infrastructure
 {
     public class TestDependencyService : DependencyService
     {
+
         public IFacetContext FacetContext { get; set;  } = null;
 
         public override ISeadQueryCache GetCache(StoreSetting settings)
@@ -23,7 +24,7 @@ namespace SeadQueryTest.Infrastructure
 
         protected override void Load(ContainerBuilder builder)
         {
-            Options ??= (IQueryBuilderSetting)new MockOptionBuilder().Build().Value;
+            Options ??= (ISetting)new SettingFactory().Create().Value;
 
             builder.RegisterInstance(Options).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
@@ -84,6 +85,14 @@ namespace SeadQueryTest.Infrastructure
                 builder.RegisterType<SeadQueryAPI.Services.LoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
 
+        }
+
+        public static IContainer CreateContainer(IFacetContext facetContext, ISetting options)
+        {
+            var builder = new Autofac.ContainerBuilder();
+            var dependencyService = new TestDependencyService() { FacetContext = facetContext, Options = options };
+            dependencyService.Load(builder);
+            return builder.Build();
         }
     }
 }

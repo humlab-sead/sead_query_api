@@ -11,7 +11,7 @@ namespace SeadQueryTest.Services
     {
         private MockRepository mockRepository;
 
-        private Mock<IQueryBuilderSetting> mockQueryBuilderSetting;
+        private Mock<ISetting> mockQueryBuilderSetting;
         private Mock<IRepositoryRegistry> mockRepositoryRegistry;
         private Mock<IQuerySetupCompiler> mockQuerySetupBuilder;
         private Mock<IIndex<EFacetType, ICategoryBoundSqlQueryCompiler>> mockIndex;
@@ -20,7 +20,7 @@ namespace SeadQueryTest.Services
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockQueryBuilderSetting = this.mockRepository.Create<IQueryBuilderSetting>();
+            this.mockQueryBuilderSetting = this.mockRepository.Create<ISetting>();
             this.mockRepositoryRegistry = this.mockRepository.Create<IRepositoryRegistry>();
             this.mockQuerySetupBuilder = this.mockRepository.Create<IQuerySetupCompiler>();
             this.mockIndex = this.mockRepository.Create<IIndex<EFacetType, ICategoryBoundSqlQueryCompiler>>();

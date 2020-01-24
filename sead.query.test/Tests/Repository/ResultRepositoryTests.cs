@@ -1,7 +1,7 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace SeadQueryTest.Repository
 
         public ResultRepositoryTests()
         {
-            this.mockFacetContext = ScaffoldUtility.JsonSeededFacetContext();
+            this.mockFacetContext = JsonSeededFacetContextFactory.Create();
         }
 
         public void Dispose()
@@ -156,7 +156,7 @@ namespace SeadQueryTest.Repository
         public void ShouldBeAbleToFetchAllResultFields()
         {
             // Arrange
-            using (var context = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var context = JsonSeededFacetContextFactory.Create()) {
 
                 var sut = new ResultRepository(context);
 
@@ -169,7 +169,7 @@ namespace SeadQueryTest.Repository
         [Fact]
         public void ShouldBeAbleToFetchAllResultAggregates()
         {
-            using (var context = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var context = JsonSeededFacetContextFactory.Create()) {
 
                 var sut = new ResultRepository(context);
                 List<ResultAggregate> items = sut.GetAll().ToList();
@@ -187,7 +187,7 @@ namespace SeadQueryTest.Repository
         [Fact]
         public void ShouldBeAbleToFetchAllResultTypes()
         {
-            using (var context = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var context = JsonSeededFacetContextFactory.Create()) {
 
                 var repository = new ResultRepository(context);
 

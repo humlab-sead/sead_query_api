@@ -14,7 +14,7 @@ namespace SeadQueryTest.Services.CategoryCount
 
         public CategoryCountServiceTests()
         {
-            this.mockSettings = new MockOptionBuilder().Build().Value.Facet;
+            this.mockSettings = new SettingFactory().Create().Value.Facet;
             this.mockRepositoryRegistry = new Mock<IRepositoryRegistry>();
             this.mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
         }

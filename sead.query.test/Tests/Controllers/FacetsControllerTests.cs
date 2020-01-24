@@ -5,21 +5,30 @@ using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryInfra.DataAccessProvider;
+using SeadQueryTest.Mocks;
 using System;
 using Xunit;
+using FluentAssertions;
+using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest.Controllers
 {
-    public class FacetsControllerTests
+    public class FacetsControllerTests : IDisposable
     {
+        private FacetContext mockContext;
         private RepositoryRegistry mockRegistry;
-        private QueryBuilderSetting mockQueryBuilderSetting;
 
         public FacetsControllerTests()
         {
-            mockQueryBuilderSetting = new MockOptionBuilder().Build().Value;
-            mockRegistry = new RepositoryRegistry(ScaffoldUtility.JsonSeededFacetContext());
+            mockContext = JsonSeededFacetContextFactory.Create();
+            mockRegistry = new RepositoryRegistry(mockContext);
+        }
+
+        public void Dispose()
+        {
+            mockContext.Dispose();
+            mockRegistry.Dispose();
         }
 
         private FacetsController CreateFacetsController()
@@ -32,13 +41,14 @@ namespace SeadQueryTest.Controllers
                 mockReconstituteService.Object,
                 mockLoadFacetService.Object
             );
+
         }
 
         [Fact]
         public void Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var facetsController = this.CreateFacetsController();
+            var facetsController = CreateFacetsController();
 
             // Act
             var result = facetsController.Get();
@@ -51,7 +61,7 @@ namespace SeadQueryTest.Controllers
         public void Get_StateUnderTest_ExpectedBehavior1()
         {
             // Arrange
-            var facetsController = this.CreateFacetsController();
+            var facetsController = CreateFacetsController();
             int id = 0;
 
             // Act
@@ -59,7 +69,7 @@ namespace SeadQueryTest.Controllers
                 id);
 
             // Assert
-            Assert.True(false);
+            result.Should().Be(true);
         }
 
         [Fact]
@@ -74,7 +84,8 @@ namespace SeadQueryTest.Controllers
                 facetsConfig);
 
             // Assert
-            Assert.True(false);
+            result.Should().Be(true);
+
         }
 
         [Fact]
@@ -115,11 +126,11 @@ namespace SeadQueryTest.Controllers
             JObject json = null;
 
             // Act
-            var result = facetsController.Mirror(
-                json);
+            var result = facetsController.Mirror(json);
 
             // Assert
             Assert.True(false);
         }
+
     }
 }

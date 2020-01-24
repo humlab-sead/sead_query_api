@@ -7,9 +7,9 @@ using Autofac;
 using System.Linq;
 using SeadQueryTest.Infrastructure;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using System.Diagnostics;
-using DataAccessPostgreSqlProvider;
+using SeadQueryInfra.DataAccessProvider;
 
 namespace SeadQueryTest.Model
 {
@@ -19,7 +19,7 @@ namespace SeadQueryTest.Model
         {
         }
 
-        private IFacetsGraph CreateFacetsGraphByFakeContext(FacetContext testContext)
+        private IFacetsGraph CreateFacetsGraphByFakeContext(IFacetContext testContext)
         {
             return ScaffoldUtility.DefaultFacetsGraph(testContext);
         }
@@ -28,7 +28,7 @@ namespace SeadQueryTest.Model
         public void GetEdge_ByNodeNames_WhenEdgeExists_ReturnsEdge()
         {
             // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
 
             const string source = "D";
             const string target = "F";
@@ -46,7 +46,7 @@ namespace SeadQueryTest.Model
         public void GetEdge_ByNodeId_WhenEdgeExists_ReturnsEdge()
         {
             // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
 
             const int sourceId = 4;
             const int targetId = 6;
@@ -111,7 +111,7 @@ namespace SeadQueryTest.Model
         public void Find_WhenStartHasPathToStop_ShouldBeShortestPath()
         {
             // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
 
             const string start_table = "A";
             List<string> destination_tables = new List<string>() { "H" };
@@ -131,7 +131,7 @@ namespace SeadQueryTest.Model
         public void Find_WhenStartAndStopAreSwitched_ShouldBeReversedPath()
         {
             // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
 
             const string startTable = "H";
             const string destinationTable = "A";
@@ -152,7 +152,7 @@ namespace SeadQueryTest.Model
         public void ToCSV_AnyState_ShouldBeStringOfDelimitedLines()
         {
             // Arrange
-            var facetsGraph = MockFacetGraphGenerator.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
 
             // Act
             var result = facetsGraph.ToCSV();
@@ -613,39 +613,40 @@ namespace SeadQueryTest.Model
         [Fact]
         public void Build_WhenResolvedByIoC_HasExpectedEdges()
         {
-            using (var testContext = ScaffoldUtility.JsonSeededFacetContext()) {
-                var container = new TestDependencyService(testContext).Register();
-                using (var scope = container.BeginLifetimeScope()) {
-                    var service = scope.Resolve<IFacetsGraph>();
-                    Assert.Equal(expectedEdges.Length, service.Edges.ToList().Count);
-                    foreach (var expected in expectedEdges) {
-                        var edge = service.GetEdge(expected.SourceName, expected.TargetName);
-                        Assert.NotNull(edge);
-                        Assert.Equal(expected.Weight, edge.Weight);
-                    }
+            using (var testContext = JsonSeededFacetContextFactory.Create())
+            using (var container = TestDependencyService.CreateContainer(testContext, null)) {
+            using (var scope = container.BeginLifetimeScope()) {
+                var service = scope.Resolve<IFacetsGraph>();
+                Assert.Equal(expectedEdges.Length, service.Edges.ToList().Count);
+                foreach (var expected in expectedEdges) {
+                    var edge = service.GetEdge(expected.SourceName, expected.TargetName);
+                    Assert.NotNull(edge);
+                    Assert.Equal(expected.Weight, edge.Weight);
                 }
+            }
             }
         }
 
         [Fact]
         public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
         {
-            var container = new TestDependencyService().Register();
-            var scope = container.BeginLifetimeScope();
-            var graph = scope.Resolve<IFacetsGraph>();
-
-            GraphRoute route = graph.Find("tbl_locations", "tbl_site_locations");
-
-            Assert.NotNull(route);
-            Assert.Single(route.Items);
-            Assert.Equal("tbl_locations", route.Items[0].SourceName);
-            Assert.Equal("tbl_site_locations", route.Items[0].TargetName);
+            using (var testContext = JsonSeededFacetContextFactory.Create())
+            using (var container = TestDependencyService.CreateContainer(testContext, null)) {
+                using (var scope = container.BeginLifetimeScope()) {
+                    var graph = scope.Resolve<IFacetsGraph>();
+                    GraphRoute route = graph.Find("tbl_locations", "tbl_site_locations");
+                    Assert.NotNull(route);
+                    Assert.Single(route.Items);
+                    Assert.Equal("tbl_locations", route.Items[0].SourceName);
+                    Assert.Equal("tbl_site_locations", route.Items[0].TargetName);
+                }
+            }
         }
 
         [Fact]
         public void Find_WhenStartEqualsStop_ReturnsEmptyRoute()
         {
-            using (var testContext = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var testContext = JsonSeededFacetContextFactory.Create()) {
 
                 var graph = CreateFacetsGraphByFakeContext(testContext);
 

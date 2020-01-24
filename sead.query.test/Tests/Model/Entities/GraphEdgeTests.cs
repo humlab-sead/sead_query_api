@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using KellermanSoftware.CompareNetObjects;
 using SeadQueryCore;
 using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Infrastructure.Scaffolding;
+using SeadQueryTest.Mocks;
 using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
-    public class GraphEdgeTests : FacetTestBase
+    public class GraphEdgeTests
     {
         private TableRelation CreateGraphEdge()
         {
@@ -116,7 +116,7 @@ namespace SeadQueryTest.Model.Entities
         public void Find_FromRepository_IsComplete(Type type, object id, Dictionary<string, object> expected)
         {
             // Arrange
-            using (var context = ScaffoldUtility.JsonSeededFacetContext()) {
+            using (var context = JsonSeededFacetContextFactory.Create()) {
                 // Act
                 var entity = context.Find(type, new object[] { id });
                 // Assert

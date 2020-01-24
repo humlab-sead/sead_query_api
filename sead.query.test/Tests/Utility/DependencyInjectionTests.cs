@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Autofac;
-using DataAccessPostgreSqlProvider;
+using SeadQueryInfra.DataAccessProvider;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
@@ -10,6 +10,7 @@ using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
 using SeadQueryTest;
 using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Mocks;
 using Xunit;
 
 namespace SeadQueryTest2.IoC
@@ -52,7 +53,6 @@ namespace SeadQueryTest2.IoC
 
     public class DependencyInjectionTests
     {
-        #region Basic tests
         [Fact]
         public void TestResolveService()
         {
@@ -93,23 +93,14 @@ namespace SeadQueryTest2.IoC
             }
         }
 
-        //[Fact]
-        //public void DependenciesWithNullOptionCannotBeRegistered()
-        //{
-        //    var container = new DependencyService().Register(null,null);
-        //    using (var scope = container.BeginLifetimeScope()) {
-        //        Assert.Throws<ArgumentNullException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
-        //    }
-        //}
-        #endregion
-
         [Fact]
         public void CanResolveRegisteredDependencies()
         {
-            var container = new TestDependencyService().Register();
-            using (var scope = container.BeginLifetimeScope())
-            {
-                Assert.NotNull(scope.Resolve<IQueryBuilderSetting>());
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, null))
+            using (var scope = container.BeginLifetimeScope()) {
+                Assert.NotNull(scope.Resolve<ISetting>());
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
                 Assert.NotNull(scope.Resolve<IFacetContext>());
                 Assert.NotNull(scope.Resolve<IRepositoryRegistry>());
@@ -139,9 +130,13 @@ namespace SeadQueryTest2.IoC
         [Fact]
         public void CannotResolveGeoDependency()
         {
-            var container = new TestDependencyService().Register();
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var registry = new RepositoryRegistry(context))
+            using (var container = TestDependencyService.CreateContainer(context, null))
             using (var scope = container.BeginLifetimeScope()) {
+
                 Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
+
             }
         }
 
@@ -150,16 +145,17 @@ namespace SeadQueryTest2.IoC
         {
             var builder = new ContainerBuilder();
 
-            // http://docs.autofac.org/en/latest/register/registration.html
-            IQueryBuilderSetting options = new MockOptionBuilder().Build().Value;
-            builder.RegisterInstance<IQueryBuilderSetting>(options).SingleInstance().ExternallyOwned();
+            var options = new SettingFactory().Create().Value;
+
+            builder.RegisterInstance<ISetting>(options).SingleInstance().ExternallyOwned();
             builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>();
 
-            var container = builder.Build();
+            using (var context = JsonSeededFacetContextFactory.Create())
+            using (var container = builder.Build())
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IRepositoryRegistry>();
-                Assert.True(service.Facets.GetAll().Count() > 0);
+                Assert.True(service.Facets.GetAll().Any());
             }
         }
     }
