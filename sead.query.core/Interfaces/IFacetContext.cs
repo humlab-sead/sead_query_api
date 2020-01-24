@@ -5,6 +5,7 @@ namespace SeadQueryCore
 {
     public interface IFacetContext : IDisposable
     {
+        // StoreSetting Settings { get; set; }
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         DbSet<TableRelation> TableRelations { get; set; }
@@ -15,7 +16,6 @@ namespace SeadQueryCore
         DbSet<ResultAggregate> ResultDefinitions { get; set; }
         DbSet<ResultField> ResultFields { get; set; }
         DbSet<ResultFieldType> ResultFieldTypes { get; set; }
-        StoreSetting Settings { get; set; }
         DbSet<ViewState> ViewStates { get; set; }
         DbSet<ResultViewType> ViewTypes { get; set; }
 
