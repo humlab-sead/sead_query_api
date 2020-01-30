@@ -1,5 +1,4 @@
-﻿//using Newtonsoft.Json;
-using SeadQueryCore.QueryBuilder;
+﻿using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {

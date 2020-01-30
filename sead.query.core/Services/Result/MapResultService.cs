@@ -5,8 +5,6 @@ using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore.Services.Result
 {
-    using CategoryCountItemMap = Dictionary<string, CategoryCountItem>;
-
     public class MapResultService : DefaultResultService
     {
 
@@ -31,16 +29,15 @@ namespace SeadQueryCore.Services.Result
             return base.Load(facetsConfig, resultConfig);
         }
 
-        private Dictionary<string, CategoryCountItem> GetCategoryCounts(FacetsConfig2 facetsConfig)
+        private CategoryCountService.CategoryCountResult GetCategoryCounts(FacetsConfig2 facetsConfig)
         {
             return CategoryCountService.Load(FacetCode, facetsConfig, null);
         }
 
         protected override dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
         {
-            CategoryCountItemMap data = GetCategoryCounts(facetsConfig);
-            CategoryCountItemMap filtered = data ?? new Dictionary<string, CategoryCountItem>();
-            CategoryCountItemMap unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.ClearPicks()) : filtered;
+            var filtered = GetCategoryCounts(facetsConfig)?.Data ?? new Dictionary<string, CategoryCountItem>();
+            var unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.ClearPicks())?.Data : filtered;
             return new {
                 FilteredCategoryCounts = filtered,
                 FullCategoryCounts = unfiltered

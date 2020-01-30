@@ -57,7 +57,7 @@ namespace SeadQueryTest.Repository
         //[Fact]
         //public void Context_Should_Have_Values_For_All_Entity_Types()
         //{
-        //    using (var context = FakeFacetContextFactory.JsonSeededFacetContext()) {
+        //    using (var context = JsonSeededFacetContextFactory.Create()) {
 
         //        foreach (Type type in ScaffoldUtility.GetModelTypes()) {
         //            var g = GetGenericMethodForType<FacetContext>("Set", type);
