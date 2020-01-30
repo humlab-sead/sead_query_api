@@ -18,14 +18,9 @@ namespace SeadQueryCore.QueryBuilder
         public QuerySetup()
         {
         }
+    }
 
-        //public QuerySetup(FacetConfig2 targetConfig, Facet facet, List<string> sqlJoins, Dictionary<string, string> criterias, List<GraphRoute> routes, List<GraphRoute> reducedRoutes)
-        //{
-        //    TargetConfig = targetConfig;
-        //    Facet = facet;
-        //    Routes = routes;
-        //    Joins = sqlJoins;
-        //    Criterias = criterias.Select(x => "(" + x.Value + ")").AppendIf(Facet.QueryCriteria).ToList();
-        //}
+    public class QueryJoin {
+
     }
 }
