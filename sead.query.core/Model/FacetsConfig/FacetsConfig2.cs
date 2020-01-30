@@ -47,9 +47,6 @@ namespace SeadQueryCore
             }
         }
 
-        [JsonIgnore]
-        public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
-
         public Facet TargetFacet { get; set; }
         public Facet TriggerFacet { get; set; }
 

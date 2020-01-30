@@ -33,7 +33,6 @@ namespace SeadQueryAPI.Serializers
                     "Language",
                     "Context",
                     "facetConfigs",
-                    "InactiveConfigs",
                     "TargetFacet",
                     "TriggerFacet",
                     "TargetConfig"
