@@ -7,7 +7,7 @@ using System.Linq;
 using static SeadQueryCore.FacetContent;
 
 namespace SeadQueryCore
-{     
+{
     public class FacetContentService : QueryServiceBase, IFacetContentService {
 
         public ICategoryCountService CountService { get; set; }
@@ -25,19 +25,19 @@ namespace SeadQueryCore
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
             FacetContent.IntervalQueryInfo intervalInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
-            var distribution = GetCategoryCounts(facetsConfig, intervalInfo.Query);
-            var items        = CompileItems(intervalInfo.Query, distribution).ToList();
+            var countResult  = GetCategoryCounts(facetsConfig, intervalInfo.Query);
+            var items        = CompileItems(intervalInfo.Query, countResult.Data).ToList();
             var picks        = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
-            var facetContent = new FacetContent(facetsConfig, items, distribution, picks, intervalInfo);
+            var facetContent = new FacetContent(facetsConfig, items, countResult.Data, picks, intervalInfo);
             return facetContent;
         }
 
         protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=120) => new IntervalQueryInfo();
 
-        private Dictionary<string, CategoryCountItem> GetCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
+        private CategoryCountService.CategoryCountResult GetCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {
-            Dictionary<string, CategoryCountItem> categoryCounts = CountService.Load(facetsConfig.TargetCode, facetsConfig, intervalQuery);
-            return categoryCounts;
+            var countResult = CountService.Load(facetsConfig.TargetCode, facetsConfig, intervalQuery);
+            return countResult;
         }
 
         protected List<FacetContent.ContentItem> CompileItems(string intervalQuery, Dictionary<string, CategoryCountItem> distribution)
