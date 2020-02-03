@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SeadQueryInfra.DataAccessProvider;
 using Npgsql;
 using SeadQueryCore;
 using SeadQueryInfra;

@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using SeadQueryInfra.DataAccessProvider;
 using Microsoft.Extensions.DependencyInjection;
 using SeadQueryAPI;
 using SeadQueryAPI.Serializers;

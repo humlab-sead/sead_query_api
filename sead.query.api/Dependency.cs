@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using SeadQueryInfra.DataAccessProvider;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
+using System;
 
 namespace SeadQueryAPI
 {

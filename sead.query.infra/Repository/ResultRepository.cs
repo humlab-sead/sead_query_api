@@ -1,13 +1,10 @@
-﻿using SeadQueryInfra.DataAccessProvider;
+﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace SeadQueryInfra {
+namespace SeadQueryInfra
+{
 
     public class ResultRepository : Repository<ResultAggregate, int>, IResultRepository
     {

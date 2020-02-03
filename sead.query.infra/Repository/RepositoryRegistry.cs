@@ -1,16 +1,14 @@
-﻿using SeadQueryInfra.DataAccessProvider;
+﻿using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Dynamic;
 using System.Data;
-using System.Reflection;
-using SeadQueryCore;
+using System.Data.Common;
+using System.Dynamic;
+using System.Linq;
 
-namespace SeadQueryInfra {
+namespace SeadQueryInfra
+{
 
 
     public class RepositoryRegistry : IRepositoryRegistry {

@@ -1,4 +1,3 @@
-using SeadQueryInfra.DataAccessProvider;
 using SeadQueryCore;
 
 namespace SeadQueryInfra

@@ -6,23 +6,23 @@ using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryTest.Fixtures;
 using SeadQueryTest.Mocks;
-using SeadQueryInfra.DataAccessProvider;
+using SeadQueryInfra;
 
 namespace SeadQueryTest.Infrastructure.Scaffolding
 {
     public class ScaffoldJsonFixtures
     {
-        private class FixtureContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
-        {
-            public FixtureContractResolver() : base()
-            {
-                IgnoreProperty(typeof(TableRelation),
-                    "SourceTable",
-                    "TargetTable",
-                    "Key"
-                );
-            }
-        }
+        //private class FixtureContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
+        //{
+        //    public FixtureContractResolver() : base()
+        //    {
+        //        IgnoreProperty(typeof(TableRelation),
+        //            "SourceTable",
+        //            "TargetTable",
+        //            "Key"
+        //        );
+        //    }
+        //}
 
         private static DefaultContractResolver DefaultResolver()
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using SeadQueryInfra.DataAccessProvider;
 using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 using SeadQueryInfra;
