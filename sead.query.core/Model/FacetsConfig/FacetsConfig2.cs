@@ -25,8 +25,7 @@ namespace SeadQueryCore
         /// </summary>
         public string RequestId { get; set; } = "";
 
-        [JsonIgnore]
-        public string Language { get; set; } = "";
+        public string DomainCode { get; set; } = "";
         /// <summary>
         /// Specifies request language. Only english supported in new version
         /// </summary>
@@ -66,7 +65,7 @@ namespace SeadQueryCore
         {
             return facetCodes
                 .Select(z => GetConfig(z))
-                .Where(c => (c?.HasPicks() ?? false) && c.Facet.IsAffectedBy(facetCodes, targetFacet))
+                .Where(c => (c?.HasConstraints() ?? false) && c.Facet.IsAffectedBy(facetCodes, targetFacet))
                 .ToList();
         }
 
@@ -111,7 +110,7 @@ namespace SeadQueryCore
             //filter = ConfigRegistry::getFilterByText() ? this.targetFacet.textFilter : "no_text_filter";
             return TargetCode + "_" + string.Join("", GetFacetCodes()) +
                     "_" + GetPicksCacheId() +
-                    "_" + Language + "_" + GetTargetTextFilter();
+                    "_" + DomainCode + "_" + GetTargetTextFilter();
         }
 
         public string GetTargetTextFilter()

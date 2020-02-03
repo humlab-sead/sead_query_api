@@ -23,6 +23,7 @@ namespace SeadQueryCore
         {
             Clauses = new List<FacetClause>();
             Tables = new List<FacetTable>();
+            Children = new List<FacetChild>();
         }
 
         /// <summary>
@@ -93,15 +94,11 @@ namespace SeadQueryCore
         public virtual List<FacetClause> Clauses { get; set; }
 
         [JsonIgnore]
+        public virtual IEnumerable<FacetChild> Children { get; set; }
+
+        [JsonIgnore]
         [NotMapped]
         public FacetTable TargetTable => Tables?.Find(z => z.SequenceId == 1) ?? null;
-
-        // [JsonIgnore]
-        // [NotMapped]
-        // public List<FacetTable> ExtraTables
-        // {
-        //     get { return Tables?.Where(z => z.SequenceId != 1)?.ToList(); }
-        // }
 
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));

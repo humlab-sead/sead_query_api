@@ -9,7 +9,8 @@ namespace SeadQueryCore
         Facet GetByCode(string facetCode);
         IEnumerable<Facet> GetOfType(EFacetType type);
         (decimal, decimal) GetUpperLowerBounds(Facet facet);
-        Dictionary<string, Facet> ToDictionary();
+        IEnumerable<Facet> Parents();
+        IEnumerable<Facet> Children(string facetCode);
     }
 
 

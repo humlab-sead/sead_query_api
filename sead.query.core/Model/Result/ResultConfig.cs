@@ -22,7 +22,7 @@ namespace SeadQueryCore.Model {
 
         public string GetCacheId(FacetsConfig2 facetsConfig)
         {
-            return  $"{ViewTypeId}_{facetsConfig.GetPicksCacheId()}_{String.Join("", AggregateKeys)}_{facetsConfig.Language}";
+            return  $"{ViewTypeId}_{facetsConfig.GetPicksCacheId()}_{String.Join("", AggregateKeys)}_{facetsConfig.DomainCode}";
         }
 
         [JsonIgnore] public bool IsEmpty => (AggregateKeys?.Count ?? 0) == 0;

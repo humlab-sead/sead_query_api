@@ -49,11 +49,20 @@ namespace SeadQueryAPI.Serializers
             foreach (var config in facetsConfig.FacetConfigs) {
                 Reconstitute(config);
             }
+
+            if (!String.IsNullOrEmpty(facetsConfig.DomainCode)) {
+                facetsConfig.FacetConfigs.Insert(0, CreateConfigByCode(facetsConfig.DomainCode));
+            }
+
             new FacetsConfigSpecification().IsSatisfiedBy(facetsConfig);
 
             return facetsConfig;
         }
 
+        private FacetConfig2 CreateConfigByCode(string facetCode)
+        {
+            return FacetConfigFactory.CreateSimple(GetFacetByCode(facetCode), 0);
+        }
 
         public FacetsConfig2 Reconstitute(string json)
         {

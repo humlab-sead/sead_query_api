@@ -1,13 +1,10 @@
-﻿using SeadQueryInfra.DataAccessProvider;
+﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace SeadQueryInfra {
+namespace SeadQueryInfra
+{
 
 
     public class FacetTypeRepository : Repository<FacetType, int>, IFacetTypeRepository
@@ -50,7 +47,7 @@ namespace SeadQueryInfra {
 
     public class FacetRepository : Repository<Facet, int>, IFacetRepository
     {
-        private Dictionary<string, Facet> dictionary = null;
+        private Dictionary<string, Facet> hash = null;
 
         public FacetRepository(IFacetContext context) : base(context)
         {
@@ -64,20 +61,31 @@ namespace SeadQueryInfra {
                       .Include(x => x.Clauses);
         }
 
-        public Dictionary<string, Facet> ToDictionary()
+        private Dictionary<string, Facet> Hash()
         {
-            return dictionary ?? (dictionary = GetAll().ToDictionary(x => x.FacetCode));
+            return hash ?? (hash = GetAll().ToDictionary(x => x.FacetCode));
         }
 
         public Facet GetByCode(string facetCode)
         {
-            return ToDictionary()?[facetCode];
+            return Hash()?[facetCode];
         }
 
         public IEnumerable<Facet> FindThoseWithAlias()
         {
-            // FIXME Only check first table?
             return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
+        }
+
+        public IEnumerable<Facet> Parents()
+        {
+            // FIXME: Get all with children instead of magic group id
+            return GetAll().Where(p => p.FacetGroupId == 0);
+        }
+
+        public IEnumerable<Facet> Children(string facetCode)
+        {
+            // FÍXME Mapping Children directly without explicit FacetChild relation
+            return GetByCode(facetCode).Children.Select(z => z.Child).ToList();
         }
 
         public IEnumerable<Facet> GetOfType(EFacetType type)

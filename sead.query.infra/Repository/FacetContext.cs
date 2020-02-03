@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 
-namespace SeadQueryInfra.DataAccessProvider
+namespace SeadQueryInfra
 {
 
     public class FacetContext : DbContext, IFacetContext
@@ -22,6 +22,7 @@ namespace SeadQueryInfra.DataAccessProvider
         public virtual DbSet<ResultAggregateField> ResultAggregateFields { get; set; }
         public virtual DbSet<FacetClause> FacetClauses { get; set; }
         public virtual DbSet<FacetTable> FacetTables { get; set; }
+        public virtual DbSet<FacetChild> FacetChildren { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,9 +56,38 @@ namespace SeadQueryInfra.DataAccessProvider
                 entity.Property(b => b.ReloadAsTarget).HasColumnName("reload_as_target").IsRequired();
             });
 
+            builder.Entity<FacetChild>(entity =>
+            {
+                entity.HasKey(e => new { e.FacetCode, e.ChildFacetCode })
+                    .HasName("child_facet_pkey");
+
+                entity.ToTable("facet_children", "facet");
+
+                entity.Property(e => e.FacetCode)
+                    .HasColumnName("facet_code")
+                    .HasColumnType("character varying");
+
+                entity.Property(e => e.ChildFacetCode)
+                    .HasColumnName("child_facet_code")
+                    .HasColumnType("character varying");
+
+                entity.Property(e => e.Position).HasColumnName("position");
+
+                entity.HasOne(d => d.Child).WithMany()
+                    .HasPrincipalKey(d => d.FacetCode)
+                    .HasForeignKey(d => d.ChildFacetCode);
+
+                entity.HasOne(d => d.Facet)
+                    .WithMany(p => p.Children)
+                    .HasPrincipalKey(p => p.FacetCode)
+                    .HasForeignKey(d => d.FacetCode);
+
+            });
+
             builder.Entity<Facet>(entity =>
             {
                 entity.ToTable("facet", "facet").HasKey(b => b.FacetId);
+                entity.HasAlternateKey(b => b.FacetCode);
                 entity.Property(b => b.FacetId).HasColumnName("facet_id").IsRequired();
                 entity.Property(b => b.FacetCode).HasColumnName("facet_code").IsRequired();
                 entity.Property(b => b.DisplayTitle).HasColumnName("display_title").IsRequired();
@@ -184,6 +214,11 @@ namespace SeadQueryInfra.DataAccessProvider
         {
             ChangeTracker.DetectChanges();
             return base.SaveChanges();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
         }
     }
 }

@@ -22,7 +22,6 @@ namespace SeadQueryCore
 
         public FacetConfig2(Facet facet, int position, string filter, List<FacetConfigPick> picks)
         {
-            // FacetCode = facetCode;
             FacetCode = facet.FacetCode;
             Facet = facet;
             Position = position;
@@ -31,6 +30,9 @@ namespace SeadQueryCore
         }
 
         public bool HasPicks() => (Picks?.Count ?? 0) > 0;
+        public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
+        public bool HasConstraints() => (HasPicks() || HasCriterias());
+
         public void ClearPicks() => Picks.Clear();
 
         public List<decimal> GetPickValues(bool sort = false)
