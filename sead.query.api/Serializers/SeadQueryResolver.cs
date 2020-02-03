@@ -30,7 +30,6 @@ namespace SeadQueryAPI.Serializers
             IgnoreProperty(typeof(FacetClause), "Facet");
 
             IgnoreProperty(typeof(FacetsConfig2),
-                    "Language",
                     "Context",
                     "facetConfigs",
                     "TargetFacet",
