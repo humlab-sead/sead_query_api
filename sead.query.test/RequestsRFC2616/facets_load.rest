@@ -199,3 +199,27 @@ Content-Type: application/json; charset=UTF-8
     }
   ]
 }
+
+### Type:  discrete
+### Chain: palaeoentomology
+### Picks: None
+POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "sites",
+  "domainCode": "palaeoentomology",
+  "facetConfigs": [
+    {
+      "facetCode": "sites",
+      "position": 1,
+      "picks": [],
+      "textFilter": ""
+    }
+  ]
+}
