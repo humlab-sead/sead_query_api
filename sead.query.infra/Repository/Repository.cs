@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 namespace SeadQueryInfra
 {
 
+    // FIXME DbSet implements Repository pattern - so why invent it again...?
     public class Repository<TEntity, K> : IRepository<TEntity, K> where TEntity : class
     {
         public readonly IFacetContext Context;
@@ -18,10 +19,16 @@ namespace SeadQueryInfra
             this.Context = context;
         }
 
+        public virtual FacetContext FacetContext
+        {
+            get { return (FacetContext)Context; }
+        }
+
         protected virtual IFacetContext GetContext()
         {
             return Context;
         }
+
         protected virtual DbContext GetDbContext()
         {
             return (DbContext)Context;
