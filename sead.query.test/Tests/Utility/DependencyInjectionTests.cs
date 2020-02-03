@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Autofac;
-using SeadQueryInfra.DataAccessProvider;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;

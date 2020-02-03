@@ -1,16 +1,12 @@
-using System.Collections.Generic;
-using SeadQueryInfra.DataAccessProvider;
-using System.Linq;
-using SeadQueryCore;
 using Autofac;
+using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
 using SeadQueryTest;
+using System.Linq;
 using Xunit;
-using SeadQueryTest.Mocks;
-using Microsoft.Extensions.Configuration;
 
-namespace SeadQueryTest2.Repository {
+namespace SeadQueryTest2.Repository
+{
 
     public class RepositoryTests {
 
@@ -19,7 +15,8 @@ namespace SeadQueryTest2.Repository {
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterInstance<ISetting>(ScaffoldUtility.LoadSettings()).SingleInstance().ExternallyOwned();
+            ISetting setting = (ISetting)new SettingFactory().Create();
+            builder.RegisterInstance<ISetting>(setting).SingleInstance().ExternallyOwned();
             builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance();
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>();
 

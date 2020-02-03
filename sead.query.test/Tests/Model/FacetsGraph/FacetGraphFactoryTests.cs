@@ -1,7 +1,6 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryInfra.DataAccessProvider;
 using SeadQueryTest.Mocks;
 using System;
 using System.Collections.Generic;

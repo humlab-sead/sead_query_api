@@ -1,7 +1,7 @@
-﻿using SeadQueryInfra.DataAccessProvider;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
+using SeadQueryInfra;
 
 namespace SeadQueryTest.Mocks
 {

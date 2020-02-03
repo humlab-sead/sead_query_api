@@ -1,4 +1,4 @@
-using SeadQueryInfra.DataAccessProvider;
+using SeadQueryInfra;
 using SeadQueryTest.Mocks;
 using System;
 

@@ -77,7 +77,7 @@ namespace SeadQueryTest.Services.FacetContent
         public void Load_SingleDiscreteConfigWithoutPicks_IsLoaded()
         {
             var fixture = new FacetsConfigFactory(mockRegistry);
-            var data = new Fixtures.FacetConfigsByUriFactory();
+            var data = new Mocks.FacetConfigsByUriFixtures();
 
             foreach (var facetCode in data.DiscreteFacetComputeCount.Keys) {
                 using (IContainer container = TestDependencyService.CreateContainer(mockContext, null)) {
@@ -159,7 +159,7 @@ namespace SeadQueryTest.Services.FacetContent
             FacetsConfig2 facetsConfig = fixture.CreateFacetsConfig(
                 "sites", "sites",
                 new List<FacetConfig2>() {
-                    FacetConfigFactory.Create(
+                    Mocks.FacetConfigFactory.Create(
                         GetFacet("sites"),
                         0,
                         FacetConfigPick.CreateDiscrete(new List<int>() { 1470, 447, 951, 445 })

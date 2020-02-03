@@ -4,7 +4,7 @@ using Npgsql;
 
 namespace SeadQueryTest
 {
-    public class ConnectionStringFactory
+    public static class ConnectionStringFactory
     {
         public static Dictionary<string, string> DefaultSettings()
         {

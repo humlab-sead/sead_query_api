@@ -9,7 +9,6 @@ using SeadQueryTest.Infrastructure;
 using SeadQueryInfra;
 using SeadQueryTest.Mocks;
 using System.Diagnostics;
-using SeadQueryInfra.DataAccessProvider;
 
 namespace SeadQueryTest.Model
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
-using SeadQueryInfra.DataAccessProvider;
+using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
 using System.IO;
