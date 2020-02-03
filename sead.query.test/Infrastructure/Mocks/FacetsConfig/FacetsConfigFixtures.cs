@@ -15,7 +15,6 @@ namespace SeadQueryTest.Fixtures
                 "sites@sites:sites:",
                 new FacetsConfig2 {
                     RequestId = "1",
-                    Language = "",
                     RequestType = "populate",
                     TargetCode = "sites",
                     TargetFacet = FacetFixtures.Store["sites"],
@@ -57,8 +56,7 @@ namespace SeadQueryTest.Fixtures
                             Position = 1,
                             Picks = new List<FacetConfigPick>() { }
                         }
-                    },
-                    InactiveConfigs = null
+                    }
                 }
             },
             {
@@ -115,8 +113,7 @@ namespace SeadQueryTest.Fixtures
                                 }
                             }
                         }
-                    },
-                    InactiveConfigs = null
+                    }
                 }
             },
 

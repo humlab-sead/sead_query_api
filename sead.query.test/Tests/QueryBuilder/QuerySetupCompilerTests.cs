@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Features.Indexed;
-using SeadQueryInfra.DataAccessProvider;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
@@ -38,8 +37,8 @@ namespace SeadQueryTest.QueryBuilder
         private FacetsConfig2 CreateSingleFacetsConfig(string facetCode)
         {
             var facetsConfig = new FacetsConfig2 {
+                DomainCode = "",
                 RequestId = "1",
-                Language = "",
                 RequestType = "populate",
                 TargetCode = facetCode,
                 TriggerCode = facetCode,
@@ -54,7 +53,6 @@ namespace SeadQueryTest.QueryBuilder
                         Facet = GetFacet(facetCode)
                     }
                 },
-                InactiveConfigs = null,
                 TargetFacet = GetFacet(facetCode),
                 TriggerFacet = GetFacet(facetCode)
             };
@@ -109,8 +107,8 @@ namespace SeadQueryTest.QueryBuilder
             var facet = FacetFixtures.Store[facetCode];
 
             var facetsConfig = new FacetsConfig2 {
+                DomainCode = "",
                 RequestId = "1",
-                Language = "",
                 RequestType = "populate",
                 TargetCode = facetCode,
                 TriggerCode = facetCode,
@@ -124,7 +122,6 @@ namespace SeadQueryTest.QueryBuilder
                         Facet = facet
                     }
                 },
-                InactiveConfigs = null,
                 TargetFacet = facet,
                 TriggerFacet = facet
             };
@@ -300,7 +297,7 @@ namespace SeadQueryTest.QueryBuilder
                 targetCode,
                 targetCode,
                 testCodes.Select(
-                    z => FacetConfigFactory.Create(fakeRegistry.Facets.GetByCode(z), testCodes.IndexOf(z)
+                    z => Mocks.FacetConfigFactory.Create(fakeRegistry.Facets.GetByCode(z), testCodes.IndexOf(z)
                 )
             ).ToList());
 
