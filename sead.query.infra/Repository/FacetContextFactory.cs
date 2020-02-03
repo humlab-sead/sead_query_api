@@ -1,5 +1,4 @@
 ﻿using System;
-using SeadQueryInfra.DataAccessProvider;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using SeadQueryCore;
