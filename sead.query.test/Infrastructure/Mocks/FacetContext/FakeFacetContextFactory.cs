@@ -1,5 +1,4 @@
-﻿using SeadQueryInfra.DataAccessProvider;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 using SeadQueryTest.Mocks;
 using System;
@@ -25,6 +24,13 @@ namespace SeadQueryTest.Mocks
             if (seeder != null)
                 seeder.Seed(context);
 
+            return context;
+        }
+
+        public static FacetContext Empty(DbConnection connection)
+        {
+            var options = SqliteInMemoryContextOptionsFactory.Create(connection);
+            var context = new FacetContext(options);
             return context;
         }
     }

@@ -33,8 +33,12 @@ namespace SeadQueryTest.Services.FacetContent
             mockRangeCategoryCountService.Setup(
                 x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
             ).Returns(
-                new Dictionary<string, CategoryCountItem>() {
+                new CategoryCountService.CategoryCountResult
+                {
+                    Data = new Dictionary<string, CategoryCountItem>() {
 
+                    },
+                    SqlQuery = ""
                 }
             );
             MockIndex<EFacetType, ICategoryCountService> mockServices = new MockIndex<EFacetType, ICategoryCountService> {

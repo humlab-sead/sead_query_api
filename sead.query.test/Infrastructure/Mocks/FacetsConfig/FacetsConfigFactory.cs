@@ -75,12 +75,12 @@ namespace SeadQueryTest.Mocks
         {
             return new FacetsConfig2()
             {
+                DomainCode = "",
                 TargetCode = targetCode,
                 TargetFacet = GetFacet(targetCode),
                 TriggerCode = triggerCode,
                 TriggerFacet = GetFacet(triggerCode),
                 RequestId = "1",
-                Language = "",
                 RequestType = "populate",
                 FacetConfigs = facetConfigs
             };

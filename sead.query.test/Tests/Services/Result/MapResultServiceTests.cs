@@ -46,10 +46,14 @@ namespace SeadQueryTest.Services.Result
                 mockCategoryCountServices
                     .Setup(x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>()))
                     .Returns(
-                        new Dictionary<string, CategoryCountItem> {
-                            { "A", new CategoryCountItem { Category = "A", Count = 10, Extent = new List<decimal>() } },
-                            { "B", new CategoryCountItem { Category = "B", Count = 11, Extent = new List<decimal>() } },
-                            { "C", new CategoryCountItem { Category = "C", Count = 12, Extent = new List<decimal>() } }
+                        new CategoryCountService.CategoryCountResult
+                        {
+                            Data = new Dictionary<string, CategoryCountItem> {
+                                { "A", new CategoryCountItem { Category = "A", Count = 10, Extent = new List<decimal>() } },
+                                { "B", new CategoryCountItem { Category = "B", Count = 11, Extent = new List<decimal>() } },
+                                { "C", new CategoryCountItem { Category = "C", Count = 12, Extent = new List<decimal>() } }
+                            },
+                            SqlQuery = ""
                         }
                     );
 
