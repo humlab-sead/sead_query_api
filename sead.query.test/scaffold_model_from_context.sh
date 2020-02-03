@@ -45,4 +45,4 @@ sc_schema=facet
 
 sc_connection="Host=${sc_host};Database=${sc_db};Username=${sc_user};Password=${sc_pwd}"
 
-print dotnet ef dbcontext scaffold "${sc_connection}" ${sc_provider} --schema facet --context TestFacetDbContext --output-dir Models --json
+echo dotnet ef dbcontext scaffold "${sc_connection}" ${sc_provider} --schema facet --context TestFacetDbContext --output-dir Models --json
