@@ -109,18 +109,18 @@ namespace SeadQueryTest.Model.FacetsConfig
             Assert.True(false);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetFacetCodesWithPicks_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var facetsConfig2 = this.CreateFacetsConfig2();
+        //[Fact(Skip = "Not implemented")]
+        //public void GetFacetCodesWithPicks_StateUnderTest_ExpectedBehavior()
+        //{
+        //    // Arrange
+        //    var facetsConfig2 = this.CreateFacetsConfig2();
 
-            // Act
-            var result = facetsConfig2.GetFacetCodesWithPicks();
+        //    // Act
+        //    var result = facetsConfig2.GetFacetCodesWithPicks();
 
-            // Assert
-            Assert.True(false);
-        }
+        //    // Assert
+        //    Assert.True(false);
+        //}
 
         [Fact(Skip = "Not implemented")]
         public void GetFacetConfigsAffectedByFacet_StateUnderTest_ExpectedBehavior()
