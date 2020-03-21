@@ -50,16 +50,15 @@ namespace SeadQueryCore.QueryBuilder
 
             Debug.Assert(facetsConfig.TargetFacet != null, "facetsConfig.TargetFacet is NULL ");
 
-            if (facetsConfig == null)
-                facetCodes = new List<string>();
+            facetCodes ??= new List<string>();
 
-            var affectedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
+            var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
 
             // Find all tables that are involved in the final query
-            List<string> tables = GetInvolvedTables(targetFacet, extraTables, affectedConfigs);
+            List<string> tables = GetInvolvedTables(targetFacet, extraTables, involvedConfigs);
 
             // Compute criteria clauses for user picks and store in Dictionary keyed by tablename
-            var tableCriterias = CompilePickCriterias(targetFacet, affectedConfigs);
+            var tableCriterias = CompilePickCriterias(targetFacet, involvedConfigs);
 
             // Find all routes from target facet's table to all tables collected in affected facets
             List<GraphRoute> routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
@@ -68,6 +67,9 @@ namespace SeadQueryCore.QueryBuilder
             List<string> joins = CompileJoins(tableCriterias, routes, facetsConfig);
 
             // Add TargetFacets Query Criteria (if exists)
+            //Debug.Assert(false,"False all affected facets' critera must be added!!!!");
+
+            // TODO change QueryCriteria to return List<string>, rename to Clauses
             var criterias = tableCriterias.Values
                 .AppendIf(targetFacet.QueryCriteria).ToList();
 
@@ -102,10 +104,10 @@ namespace SeadQueryCore.QueryBuilder
                 .ToList();
         }
 
-        protected Dictionary<string, string> CompilePickCriterias(Facet targetFacet, List<FacetConfig2> affectedConfigs)
+        protected Dictionary<string, string> CompilePickCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
         {
             // Compute criteria clauses for user picks for each affected facet
-            var criterias = affectedConfigs
+            var criterias = involvedConfigs
                 .Select(config => (
                     (
                         Tablename: config.Facet.TargetTable.ResolvedAliasOrTableOrUdfName,
@@ -116,8 +118,8 @@ namespace SeadQueryCore.QueryBuilder
 
             // Group and concatenate the criterias for each table
             var pickCriterias = criterias
-                .GroupBy(p => p.Tablename, p => p.Criteria, (key, g) => new { TableName = key, Clauses = g.ToList() })
-                .ToDictionary(z => z.TableName, z => $"({z.Clauses.Combine(" AND ")})");
+                .GroupBy(p => p.Tablename, p => p.Criteria, (key, g) => new { TableName = key, Criterias = g.ToList() })
+                .ToDictionary(z => z.TableName, z => $"({z.Criterias.Combine(" AND ")})");
 
             return pickCriterias;
         }
@@ -127,9 +129,9 @@ namespace SeadQueryCore.QueryBuilder
         /// </summary>
         /// <param name="targetFacet"></param>
         /// <param name="extraTables"></param>
-        /// <param name="affectedConfigs"></param>
+        /// <param name="involvedConfigs"></param>
         /// <returns></returns>
-        protected List<string> GetInvolvedTables(Facet targetFacet, List<string> extraTables, List<FacetConfig2> affectedConfigs)
+        protected List<string> GetInvolvedTables(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
         {
             var tables =
 
@@ -143,7 +145,7 @@ namespace SeadQueryCore.QueryBuilder
 
                 // ...tables from affected facets...
                 .Concat(
-                    affectedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName).ToList())
+                    involvedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName).ToList())
                 );
 
             return tables.Distinct().ToList();
