@@ -54,5 +54,19 @@ namespace SeadQueryCore
             return Facet.Tables.FirstOrDefault(z => z.TableOrUdfName == name || z.ResolvedAliasOrTableOrUdfName == name);
         }
 
+        public bool IsPriorTo(List<string> facetCodes, Facet targetFacet)
+        {
+            if (!HasConstraints()) {
+                // FIXME Is this a relevant condition?
+                return false;
+            }
+
+            if (targetFacet.FacetCode == FacetCode)
+                return targetFacet.FacetType.ReloadAsTarget;
+
+            return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(FacetCode);
+
+        }
+
     }
 }
