@@ -204,7 +204,7 @@ namespace SeadQueryTest.QueryBuilder
             List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
 
             List<string> facetCodes = facetsConfig.GetFacetCodes();
-            facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, countFacet.FacetCode);
+            facetCodes.InsertAt(targetFacet.FacetCode, countFacet.FacetCode);
 
             // Act
             QuerySetup querySetup = builder.Build(facetsConfig, countFacet, tables, facetCodes);
@@ -318,7 +318,7 @@ namespace SeadQueryTest.QueryBuilder
 
             List<string> facetCodes = facetsConfig.GetFacetCodes();
 
-            facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
+            facetCodes.InsertAt(targetFacet.FacetCode, computeFacet.FacetCode);
 
             List<string> tables = GetTargetTables(facetsConfig, computeFacet);
 
