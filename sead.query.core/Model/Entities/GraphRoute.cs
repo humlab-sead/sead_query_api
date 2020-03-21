@@ -27,7 +27,7 @@ namespace SeadQueryCore
 
         public GraphRoute ReduceBy(List<GraphRoute> routes)
         {
-            return new GraphRoute(Items.Where(z => !Utility.ExistsAny(routes, z)).ToList());
+            return new GraphRoute(Items.Where(z => !GraphRouteUtility.ExistsAny(routes, z)).ToList());
         }
 
         public override string ToString()
@@ -43,31 +43,31 @@ namespace SeadQueryCore
             return new List<string>();
         }
 
-        public static class Utility
+    }
+    public static class GraphRouteUtility
+    {
+        public static bool ExistsAny(List<GraphRoute> routes, TableRelation item)
         {
-            public static bool ExistsAny(List<GraphRoute> routes, TableRelation item)
-            {
-                return routes.Any(x => x.Contains(item));
-            }
+            return routes.Any(x => x.Contains(item));
+        }
 
-            public static List<GraphRoute> Reduce(List<GraphRoute> routes)
+        public static List<GraphRoute> Reduce(List<GraphRoute> routes)
+        {
+            List<GraphRoute> reduced_routes = new List<GraphRoute>();
+            foreach (var route in routes)
             {
-                List<GraphRoute> reduced_routes = new List<GraphRoute>();
-                foreach (var route in routes)
+                GraphRoute reduced_route = route.ReduceBy(reduced_routes);
+                if (reduced_route.Items.Count > 0)
                 {
-                    GraphRoute reduced_route = route.ReduceBy(reduced_routes);
-                    if (reduced_route.Items.Count > 0)
-                    {
-                        reduced_routes.Add(reduced_route);
-                    }
+                    reduced_routes.Add(reduced_route);
                 }
-                return reduced_routes;
             }
+            return reduced_routes;
+        }
 
-            public static string ToString(List<GraphRoute> routes)
-            {
-                return String.Join("\n", routes.Select(z => $"{routes.IndexOf(z)};{z.ToString()}"));
-            }
+        public static string ToString(List<GraphRoute> routes)
+        {
+            return String.Join("\n", routes.Select(z => $"{routes.IndexOf(z)};{z.ToString()}"));
         }
     }
 }

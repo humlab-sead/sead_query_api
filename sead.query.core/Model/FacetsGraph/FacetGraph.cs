@@ -81,7 +81,7 @@ namespace SeadQueryCore
 
         private static List<GraphRoute> Reduce(List<GraphRoute> routes)
         {
-            return GraphRoute.Utility.Reduce(routes);
+            return GraphRouteUtility.Reduce(routes);
         }
 
         public GraphRoute Find(string startTable, string destinationTable)
