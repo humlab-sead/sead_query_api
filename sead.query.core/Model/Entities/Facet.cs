@@ -103,17 +103,5 @@ namespace SeadQueryCore
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));
 
-        /// <summary>
-        /// Checks if facet is affected by target "facet" given facet sequence defined by list of facet codes
-        /// </summary>
-        /// <param name="targetFacet"></param>
-        /// <param name="facetCodes">Facet chain</param>
-        /// <returns></returns>
-        public bool IsAffectedBy(List<string> facetCodes, Facet targetFacet)
-        {
-            if (targetFacet.FacetCode == FacetCode)
-                return targetFacet.FacetType.ReloadAsTarget;
-            return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(FacetCode);
-        }
     }
 }
