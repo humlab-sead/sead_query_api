@@ -11,9 +11,9 @@ namespace SeadQueryCore
 
         public DiscreteCategoryCountService(
             IFacetSetting config,
-            IRepositoryRegistry context,
+            IRepositoryRegistry registry,
             IQuerySetupCompiler builder,
-            IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler) : base(config, context, builder) {
+            IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler) : base(config, registry, builder) {
             CountSqlCompiler = countSqlCompiler;
         }
 
@@ -21,16 +21,13 @@ namespace SeadQueryCore
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
-            Facet computeFacet = Context.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
+            Facet computeFacet = Repository.Get(facet.AggregateFacetId);
+            Facet targetFacet  = Repository.GetByCode(facetsConfig.TargetCode);
 
-            string targetCode = Coalesce(facetsConfig?.TargetCode, computeFacet.FacetCode);
-
-            Facet targetFacet = Context.Facets.GetByCode(targetCode);
-
-            List<string> tables = GetTables(facetsConfig, targetFacet, computeFacet);
+            List<string> tables     = GetTables(facetsConfig, targetFacet, computeFacet);
             List<string> facetCodes = facetsConfig.GetFacetCodes();
 
-            facetCodes.MyInsertBeforeItem(targetFacet.FacetCode, computeFacet.FacetCode);
+            facetCodes.InsertAt(targetFacet.FacetCode, computeFacet.FacetCode);
 
             QuerySetup query = QuerySetupBuilder.Build(facetsConfig, computeFacet, tables, facetCodes);
             string sql = CountSqlCompiler.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
@@ -41,7 +38,6 @@ namespace SeadQueryCore
         {
             List<string> tables = targetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
             if (computeFacet.FacetCode != targetFacet.FacetCode) {
-                //FIXME: tables.Add(computeFacet.TargetTable?.TableOrUdfName);
                 tables.AddRange(computeFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName));
             }
             return tables.Distinct().ToList();
@@ -56,7 +52,7 @@ namespace SeadQueryCore
 
         protected override List<CategoryCountItem> Query(string sql)
         {
-            return Context.QueryRows<CategoryCountItem>(sql,
+            return Registry.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
                     Category =  x.IsDBNull(0) ? null : Category2String(x, 0),
                     Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
