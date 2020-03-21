@@ -9,20 +9,23 @@ namespace SeadQueryCore
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
 
+        protected IFacetRepository Repository { get; set; }
+
         public class CategoryCountResult {
             public string SqlQuery { get; set; }
             public Dictionary<string, CategoryCountItem> Data { get; set; }
         }
-        public CategoryCountService(IFacetSetting config, IRepositoryRegistry context, IQuerySetupCompiler builder) : base(context, builder)
+        public CategoryCountService(IFacetSetting config, IRepositoryRegistry registry, IQuerySetupCompiler builder) : base(registry, builder)
         {
             Config = config;
+            Repository = Registry.Facets;
         }
 
         public IFacetSetting Config { get; }
 
         public virtual CategoryCountResult Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {
-            Facet facet = Context.Facets.GetByCode(facetCode);
+            Facet facet = Repository.GetByCode(facetCode);
             string sql = Compile(facet, facetsConfig, intervalQuery);
             var values =  Query(sql).ToList();
             var data = values.ToDictionary(z => Coalesce(z.Category, "(null)"));

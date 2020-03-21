@@ -25,7 +25,7 @@ namespace SeadQueryCore
 
         public string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode)
         {
-            Facet facet = Context.Facets.GetByCode(facetCode);
+            Facet facet = Registry.Facets.GetByCode(facetCode);
             ResultQuerySetup resultQuerySetup = CreateResultSetup(resultConfig);
             if (!resultQuerySetup.IsEmpty) {
                 QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facet, resultQuerySetup.DataTables);
@@ -36,7 +36,7 @@ namespace SeadQueryCore
 
         private ResultQuerySetup CreateResultSetup(ResultConfig resultConfig)
         {
-            var resultFields = Context.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
+            var resultFields = Registry.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
             ResultQuerySetup resultQuerySetup = new ResultQuerySetup(resultFields);
             return resultQuerySetup;
         }

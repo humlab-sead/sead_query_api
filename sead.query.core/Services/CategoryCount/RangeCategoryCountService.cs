@@ -27,7 +27,7 @@ namespace SeadQueryCore
 
         protected override List<CategoryCountItem> Query(string sql)
         {
-            return Context.QueryRows<CategoryCountItem>(sql,
+            return Registry.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
                     Category = x.IsDBNull(0) ? "(null)" : x.GetString(0),
                     Count = x.IsDBNull(3) ? 0 : x.GetInt32(3),

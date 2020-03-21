@@ -23,12 +23,12 @@ namespace SeadQueryCore
         public List<Key2Value<int, float>> Load()
         {
             List<string> sqls = new List<string>();
-            foreach (Facet facet in Context.Facets.GetOfType(EFacetType.Range)) {
+            foreach (Facet facet in Registry.Facets.GetOfType(EFacetType.Range)) {
                 QuerySetup query = QuerySetupBuilder.Build(null, facet, ToList(facet.TargetTable.TableOrUdfName), ToList(facet.FacetCode));
                 sqls.Add(Compilers[EFacetType.Range].Compile(query, facet, facet.FacetCode));
             }
             string sql = String.Join("\nUNION\n", sqls);
-            List<Key2Value<int, float>> values = Context.QueryKeyValues2<int, float>(sql).ToList();
+            List<Key2Value<int, float>> values = Registry.QueryKeyValues2<int, float>(sql).ToList();
             return values;
         }
     }

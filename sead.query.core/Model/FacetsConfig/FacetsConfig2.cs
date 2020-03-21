@@ -56,17 +56,16 @@ namespace SeadQueryCore
             get => GetConfig(TargetCode);
         }
 
-        public FacetConfig2 GetConfig(string facetCode)         => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
-        public List<string> GetFacetCodes()                     => FacetConfigs.Select(x => x.FacetCode).ToList();
-        public List<FacetConfig2> GetFacetConfigsWithPicks()    => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
-        public List<string> GetFacetCodesWithPicks()            => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
+        public FacetConfig2 GetConfig(string facetCode)                 => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
+        public List<FacetConfig2> GetConfigs(List<string> facetCodes)   => FacetConfigs.Where(c => facetCodes.Contains(c.FacetCode)).ToList();
+
+        public List<string> GetFacetCodes()                             => FacetConfigs.Select(x => x.FacetCode).ToList();
+        public List<FacetConfig2> GetFacetConfigsWithPicks()            => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
+        // public List<string> GetFacetCodesWithPicks()                 => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
 
         public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet targetFacet, List<string> facetCodes)
         {
-            return facetCodes
-                .Select(z => GetConfig(z))
-                .Where(c => (c?.HasConstraints() ?? false) && c.Facet.IsAffectedBy(facetCodes, targetFacet))
-                .ToList();
+            return GetConfigs(facetCodes).Where(c => c.IsPriorTo(facetCodes, targetFacet)).ToList();
         }
 
         public FacetsConfig2 ClearPicks()

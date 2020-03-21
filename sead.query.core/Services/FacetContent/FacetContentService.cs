@@ -24,7 +24,7 @@ namespace SeadQueryCore
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            FacetContent.IntervalQueryInfo intervalInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
+            var intervalInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
             var countResult  = GetCategoryCounts(facetsConfig, intervalInfo.Query);
             var items        = CompileItems(intervalInfo.Query, countResult.Data).ToList();
             var picks        = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
@@ -42,7 +42,7 @@ namespace SeadQueryCore
 
         protected List<FacetContent.ContentItem> CompileItems(string intervalQuery, Dictionary<string, CategoryCountItem> distribution)
         {
-            var rows = Context.QueryRows(intervalQuery, dr => CreateItem(dr, distribution)).ToList();
+            var rows = Registry.QueryRows(intervalQuery, dr => CreateItem(dr, distribution)).ToList();
             return rows;
         }
 

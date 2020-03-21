@@ -32,7 +32,7 @@ public class RangeFacetContentService : FacetContentService {
 
         private RangeExtent GetFullExtent(FacetConfig2 config, int default_interval_count=120)
         {
-            var (lower, upper) = Context.Facets.GetUpperLowerBounds(config.Facet);   // Fetch from database
+            var (lower, upper) = Registry.Facets.GetUpperLowerBounds(config.Facet);   // Fetch from database
             return new RangeExtent {
                 Lower = lower,
                 Upper = upper,
