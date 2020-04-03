@@ -9,7 +9,7 @@ networks:
 services:
 
   # dotnet:
-  #   build:
+  #   image:
   #     context: ./dotnet
   #   ports:
   #     - "${DOTNET_PORT}:80"
@@ -32,12 +32,16 @@ services:
   #     - backend
 
   postgres:
-    image: postgres:alpine
+    build:
+      context: .
+      dockerfile: ./postgresql/Dockerfile
+    image: sead_query_api_postgres_dev
+    container_name: sead_query_api_postgres_dev
+    restart: on-failure
     volumes:
       - pgdata:/var/lib/postgresql/data
       - pgconf:/etc/postgresql
       - pglog:/var/log/postgresql
-      #- ${POSTGRES_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     ports:
       - "${POSTGRES_PORT}:5432"
     env_file: .env
