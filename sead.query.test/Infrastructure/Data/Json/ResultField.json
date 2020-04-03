@@ -1,23 +1,35 @@
 [
   {
+    "ResultFieldId": 1,
+    "TableName": "tbl_sites",
+    "ColumnName": "tbl_sites.site_name",
     "ResultFieldKey": "sitename",
     "DisplayText": "Site name",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 2,
+    "TableName": "tbl_record_types",
+    "ColumnName": "tbl_record_types.record_type_name",
     "ResultFieldKey": "record_type",
     "DisplayText": "Record type(s)",
     "FieldTypeId": "text_agg_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 3,
+    "TableName": "tbl_analysis_entities",
+    "ColumnName": "tbl_analysis_entities.analysis_entity_id",
     "ResultFieldKey": "analysis_entities",
     "DisplayText": "Filtered records",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 4,
+    "TableName": "tbl_sites",
+    "ColumnName": "tbl_sites.site_id",
     "ResultFieldKey": "site_link",
     "DisplayText": "Full report",
     "FieldTypeId": "link_item",
@@ -26,6 +38,9 @@
     "LinkLabel": "Show site report"
   },
   {
+    "ResultFieldId": 5,
+    "TableName": "tbl_sites",
+    "ColumnName": "tbl_sites.site_id",
     "ResultFieldKey": "site_link_filtered",
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item",
@@ -34,6 +49,9 @@
     "LinkLabel": "Show filtered report"
   },
   {
+    "ResultFieldId": 6,
+    "TableName": "tbl_aggregate_samples",
+    "ColumnName": "'Aggregated'::text",
     "ResultFieldKey": "aggregate_all_filtered",
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item_filtered",
@@ -41,6 +59,9 @@
     "LinkUrl": "api/report/show_details_all_levels.php?level"
   },
   {
+    "ResultFieldId": 7,
+    "TableName": "tbl_sample_groups",
+    "ColumnName": "tbl_sample_groups.sample_group_id",
     "ResultFieldKey": "sample_group_link",
     "DisplayText": "Full report",
     "FieldTypeId": "link_item",
@@ -48,6 +69,9 @@
     "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id"
   },
   {
+    "ResultFieldId": 8,
+    "TableName": "tbl_sample_groups",
+    "ColumnName": "tbl_sample_groups.sample_group_id",
     "ResultFieldKey": "sample_group_link_filtered",
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item",
@@ -55,24 +79,36 @@
     "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id"
   },
   {
+    "ResultFieldId": 9,
+    "TableName": "tbl_abundances",
+    "ColumnName": "tbl_abundances.abundance",
     "ResultFieldKey": "abundance",
     "DisplayText": "number of taxon_id",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 10,
+    "TableName": "tbl_abundances",
+    "ColumnName": "tbl_abundances.taxon_id",
     "ResultFieldKey": "taxon_id",
     "DisplayText": "Taxon id  (specie)",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 11,
+    "TableName": "tbl_datasets",
+    "ColumnName": "tbl_datasets.dataset_name",
     "ResultFieldKey": "dataset",
     "DisplayText": "Dataset",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 12,
+    "TableName": "tbl_datasets",
+    "ColumnName": "tbl_datasets.dataset_id",
     "ResultFieldKey": "dataset_link",
     "DisplayText": "Dataset details",
     "FieldTypeId": "single_item",
@@ -80,6 +116,9 @@
     "LinkUrl": "client/show_dataset_details.php?dataset_id"
   },
   {
+    "ResultFieldId": 13,
+    "TableName": "tbl_datasets",
+    "ColumnName": "tbl_datasets.dataset_id",
     "ResultFieldKey": "dataset_link_filtered",
     "DisplayText": "Filtered report",
     "FieldTypeId": "single_item",
@@ -87,36 +126,50 @@
     "LinkUrl": "client/show_dataset_details.php?dataset_id"
   },
   {
+    "ResultFieldId": 14,
+    "TableName": "tbl_sample_groups",
+    "ColumnName": "tbl_sample_groups.sample_group_name",
     "ResultFieldKey": "sample_group",
     "DisplayText": "Sample group",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 15,
+    "TableName": "tbl_methods",
+    "ColumnName": "tbl_methods.method_name",
     "ResultFieldKey": "methods",
     "DisplayText": "Method",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 18,
+    "ColumnName": "category_id",
     "ResultFieldKey": "category_id",
     "DisplayText": "Site ID",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 19,
+    "ColumnName": "category_name",
     "ResultFieldKey": "category_name",
     "DisplayText": "Site Name",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 20,
+    "ColumnName": "latitude_dd",
     "ResultFieldKey": "latitude_dd",
     "DisplayText": "Latitude (dd)",
     "FieldTypeId": "single_item",
     "Activated": true
   },
   {
+    "ResultFieldId": 21,
+    "ColumnName": "longitude_dd",
     "ResultFieldKey": "longitude_dd",
     "DisplayText": "Longitude (dd)",
     "FieldTypeId": "single_item",

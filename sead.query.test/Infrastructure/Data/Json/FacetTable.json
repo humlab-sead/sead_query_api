@@ -298,5 +298,89 @@
     "FacetId": 41,
     "SequenceId": 3,
     "TableId": 119
+  },
+  {
+    "FacetTableId": 50,
+    "FacetId": 1001,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 51,
+    "FacetId": 1001,
+    "SequenceId": 2,
+    "TableId": 89
+  },
+  {
+    "FacetTableId": 52,
+    "FacetId": 1002,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 53,
+    "FacetId": 1002,
+    "SequenceId": 2,
+    "TableId": 89
+  },
+  {
+    "FacetTableId": 54,
+    "FacetId": 1003,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 55,
+    "FacetId": 1003,
+    "SequenceId": 2,
+    "TableId": 89
+  },
+  {
+    "FacetTableId": 56,
+    "FacetId": 1004,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 57,
+    "FacetId": 1004,
+    "SequenceId": 2,
+    "TableId": 89
+  },
+  {
+    "FacetTableId": 58,
+    "FacetId": 1005,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 59,
+    "FacetId": 1005,
+    "SequenceId": 2,
+    "TableId": 89
+  },
+  {
+    "FacetTableId": 60,
+    "FacetId": 1006,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 61,
+    "FacetId": 1006,
+    "SequenceId": 2,
+    "TableId": 89
+  },
+  {
+    "FacetTableId": 62,
+    "FacetId": 1007,
+    "SequenceId": 1,
+    "TableId": 86
+  },
+  {
+    "FacetTableId": 63,
+    "FacetId": 1007,
+    "SequenceId": 2,
+    "TableId": 89
   }
 ]

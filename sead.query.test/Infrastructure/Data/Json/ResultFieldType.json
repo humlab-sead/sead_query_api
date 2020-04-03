@@ -6,8 +6,7 @@
     "IsAggregateField": true,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}",
-    "IsGroupByField": false
+    "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}"
   },
   {
     "FieldTypeId": "count_item",
@@ -16,8 +15,7 @@
     "IsAggregateField": true,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "COUNT({0}) AS count_of_{0}",
-    "IsGroupByField": false
+    "SqlTemplate": "COUNT({0}) AS count_of_{0}"
   },
   {
     "FieldTypeId": "avg_item",
@@ -26,8 +24,7 @@
     "IsAggregateField": true,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "AVG({0}) AS avg_of_{0}",
-    "IsGroupByField": false
+    "SqlTemplate": "AVG({0}) AS avg_of_{0}"
   },
   {
     "FieldTypeId": "text_agg_item",
@@ -36,8 +33,7 @@
     "IsAggregateField": true,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}",
-    "IsGroupByField": false
+    "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}"
   },
   {
     "FieldTypeId": "single_item",
@@ -46,8 +42,7 @@
     "IsAggregateField": false,
     "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "{0}",
-    "IsGroupByField": true
+    "SqlTemplate": "{0}"
   },
   {
     "FieldTypeId": "link_item",
@@ -56,8 +51,7 @@
     "IsAggregateField": false,
     "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "{0}",
-    "IsGroupByField": true
+    "SqlTemplate": "{0}"
   },
   {
     "FieldTypeId": "link_item_filtered",
@@ -66,8 +60,7 @@
     "IsAggregateField": false,
     "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "{0}",
-    "IsGroupByField": true
+    "SqlTemplate": "{0}"
   },
   {
     "FieldTypeId": "sort_item",
@@ -76,7 +69,6 @@
     "IsAggregateField": false,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "{0}",
-    "IsGroupByField": true
+    "SqlTemplate": "{0}"
   }
 ]

@@ -5,23 +5,7 @@
     "TargetTableId": 110,
     "Weight": 20,
     "SourceColumName": "record_type_id",
-    "TargetColumnName": "record_type_id",
-    "SourceTable": {
-      "TableId": 38,
-      "TableOrUdfName": "tbl_abundance_elements",
-      "PrimaryKeyName": "abundance_element_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 110,
-      "TableOrUdfName": "tbl_record_types",
-      "PrimaryKeyName": "record_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundance_elements",
-      "Item2": "tbl_record_types"
-    }
+    "TargetColumnName": "record_type_id"
   },
   {
     "TableRelationId": 2,
@@ -29,23 +13,7 @@
     "TargetTableId": 88,
     "Weight": 20,
     "SourceColumName": "abundance_id",
-    "TargetColumnName": "abundance_id",
-    "SourceTable": {
-      "TableId": 50,
-      "TableOrUdfName": "tbl_abundance_ident_levels",
-      "PrimaryKeyName": "abundance_ident_level_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 88,
-      "TableOrUdfName": "tbl_abundances",
-      "PrimaryKeyName": "abundance_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundance_ident_levels",
-      "Item2": "tbl_abundances"
-    }
+    "TargetColumnName": "abundance_id"
   },
   {
     "TableRelationId": 3,
@@ -53,23 +21,7 @@
     "TargetTableId": 146,
     "Weight": 20,
     "SourceColumName": "identification_level_id",
-    "TargetColumnName": "identification_level_id",
-    "SourceTable": {
-      "TableId": 50,
-      "TableOrUdfName": "tbl_abundance_ident_levels",
-      "PrimaryKeyName": "abundance_ident_level_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 146,
-      "TableOrUdfName": "tbl_identification_levels",
-      "PrimaryKeyName": "identification_level_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundance_ident_levels",
-      "Item2": "tbl_identification_levels"
-    }
+    "TargetColumnName": "identification_level_id"
   },
   {
     "TableRelationId": 4,
@@ -77,23 +29,7 @@
     "TargetTableId": 88,
     "Weight": 20,
     "SourceColumName": "abundance_id",
-    "TargetColumnName": "abundance_id",
-    "SourceTable": {
-      "TableId": 44,
-      "TableOrUdfName": "tbl_abundance_modifications",
-      "PrimaryKeyName": "abundance_modification_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 88,
-      "TableOrUdfName": "tbl_abundances",
-      "PrimaryKeyName": "abundance_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundance_modifications",
-      "Item2": "tbl_abundances"
-    }
+    "TargetColumnName": "abundance_id"
   },
   {
     "TableRelationId": 5,
@@ -101,23 +37,7 @@
     "TargetTableId": 142,
     "Weight": 20,
     "SourceColumName": "modification_type_id",
-    "TargetColumnName": "modification_type_id",
-    "SourceTable": {
-      "TableId": 44,
-      "TableOrUdfName": "tbl_abundance_modifications",
-      "PrimaryKeyName": "abundance_modification_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 142,
-      "TableOrUdfName": "tbl_modification_types",
-      "PrimaryKeyName": "modification_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundance_modifications",
-      "Item2": "tbl_modification_types"
-    }
+    "TargetColumnName": "modification_type_id"
   },
   {
     "TableRelationId": 6,
@@ -125,23 +45,7 @@
     "TargetTableId": 38,
     "Weight": 20,
     "SourceColumName": "abundance_element_id",
-    "TargetColumnName": "abundance_element_id",
-    "SourceTable": {
-      "TableId": 88,
-      "TableOrUdfName": "tbl_abundances",
-      "PrimaryKeyName": "abundance_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 38,
-      "TableOrUdfName": "tbl_abundance_elements",
-      "PrimaryKeyName": "abundance_element_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundances",
-      "Item2": "tbl_abundance_elements"
-    }
+    "TargetColumnName": "abundance_element_id"
   },
   {
     "TableRelationId": 7,
@@ -149,23 +53,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 88,
-      "TableOrUdfName": "tbl_abundances",
-      "PrimaryKeyName": "abundance_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundances",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 8,
@@ -173,23 +61,7 @@
     "TargetTableId": 47,
     "Weight": 20,
     "SourceColumName": "aggregate_order_type_id",
-    "TargetColumnName": "aggregate_order_type_id",
-    "SourceTable": {
-      "TableId": 145,
-      "TableOrUdfName": "tbl_aggregate_datasets",
-      "PrimaryKeyName": "aggregate_dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 47,
-      "TableOrUdfName": "tbl_aggregate_order_types",
-      "PrimaryKeyName": "aggregate_order_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_aggregate_datasets",
-      "Item2": "tbl_aggregate_order_types"
-    }
+    "TargetColumnName": "aggregate_order_type_id"
   },
   {
     "TableRelationId": 9,
@@ -197,23 +69,7 @@
     "TargetTableId": 145,
     "Weight": 20,
     "SourceColumName": "aggregate_dataset_id",
-    "TargetColumnName": "aggregate_dataset_id",
-    "SourceTable": {
-      "TableId": 115,
-      "TableOrUdfName": "tbl_aggregate_sample_ages",
-      "PrimaryKeyName": "aggregate_sample_age_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 145,
-      "TableOrUdfName": "tbl_aggregate_datasets",
-      "PrimaryKeyName": "aggregate_dataset_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_aggregate_sample_ages",
-      "Item2": "tbl_aggregate_datasets"
-    }
+    "TargetColumnName": "aggregate_dataset_id"
   },
   {
     "TableRelationId": 10,
@@ -221,23 +77,7 @@
     "TargetTableId": 96,
     "Weight": 20,
     "SourceColumName": "analysis_entity_age_id",
-    "TargetColumnName": "analysis_entity_age_id",
-    "SourceTable": {
-      "TableId": 115,
-      "TableOrUdfName": "tbl_aggregate_sample_ages",
-      "PrimaryKeyName": "aggregate_sample_age_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 96,
-      "TableOrUdfName": "tbl_analysis_entity_ages",
-      "PrimaryKeyName": "analysis_entity_age_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_aggregate_sample_ages",
-      "Item2": "tbl_analysis_entity_ages"
-    }
+    "TargetColumnName": "analysis_entity_age_id"
   },
   {
     "TableRelationId": 11,
@@ -245,23 +85,7 @@
     "TargetTableId": 145,
     "Weight": 20,
     "SourceColumName": "aggregate_dataset_id",
-    "TargetColumnName": "aggregate_dataset_id",
-    "SourceTable": {
-      "TableId": 2,
-      "TableOrUdfName": "tbl_aggregate_samples",
-      "PrimaryKeyName": "aggregate_sample_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 145,
-      "TableOrUdfName": "tbl_aggregate_datasets",
-      "PrimaryKeyName": "aggregate_dataset_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_aggregate_samples",
-      "Item2": "tbl_aggregate_datasets"
-    }
+    "TargetColumnName": "aggregate_dataset_id"
   },
   {
     "TableRelationId": 12,
@@ -269,23 +93,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 2,
-      "TableOrUdfName": "tbl_aggregate_samples",
-      "PrimaryKeyName": "aggregate_sample_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_aggregate_samples",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 13,
@@ -293,23 +101,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 96,
-      "TableOrUdfName": "tbl_analysis_entity_ages",
-      "PrimaryKeyName": "analysis_entity_age_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entity_ages",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 14,
@@ -317,23 +109,7 @@
     "TargetTableId": 117,
     "Weight": 20,
     "SourceColumName": "chronology_id",
-    "TargetColumnName": "chronology_id",
-    "SourceTable": {
-      "TableId": 96,
-      "TableOrUdfName": "tbl_analysis_entity_ages",
-      "PrimaryKeyName": "analysis_entity_age_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 117,
-      "TableOrUdfName": "tbl_chronologies",
-      "PrimaryKeyName": "chronology_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entity_ages",
-      "Item2": "tbl_chronologies"
-    }
+    "TargetColumnName": "chronology_id"
   },
   {
     "TableRelationId": 15,
@@ -341,23 +117,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 93,
-      "TableOrUdfName": "tbl_analysis_entity_dimensions",
-      "PrimaryKeyName": "analysis_entity_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entity_dimensions",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 16,
@@ -365,23 +125,7 @@
     "TargetTableId": 98,
     "Weight": 20,
     "SourceColumName": "dimension_id",
-    "TargetColumnName": "dimension_id",
-    "SourceTable": {
-      "TableId": 93,
-      "TableOrUdfName": "tbl_analysis_entity_dimensions",
-      "PrimaryKeyName": "analysis_entity_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entity_dimensions",
-      "Item2": "tbl_dimensions"
-    }
+    "TargetColumnName": "dimension_id"
   },
   {
     "TableRelationId": 17,
@@ -389,23 +133,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 3,
-      "TableOrUdfName": "tbl_analysis_entity_prep_methods",
-      "PrimaryKeyName": "analysis_entity_prep_method_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entity_prep_methods",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 18,
@@ -413,23 +141,7 @@
     "TargetTableId": 89,
     "Weight": 20,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 3,
-      "TableOrUdfName": "tbl_analysis_entity_prep_methods",
-      "PrimaryKeyName": "analysis_entity_prep_method_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entity_prep_methods",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 19,
@@ -437,23 +149,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 139,
-      "TableOrUdfName": "tbl_ceramics",
-      "PrimaryKeyName": "ceramics_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ceramics",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 20,
@@ -461,23 +157,7 @@
     "TargetTableId": 97,
     "Weight": 20,
     "SourceColumName": "ceramics_measurement_id",
-    "TargetColumnName": "ceramics_measurement_id",
-    "SourceTable": {
-      "TableId": 139,
-      "TableOrUdfName": "tbl_ceramics",
-      "PrimaryKeyName": "ceramics_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 97,
-      "TableOrUdfName": "tbl_ceramics_measurements",
-      "PrimaryKeyName": "ceramics_measurement_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ceramics",
-      "Item2": "tbl_ceramics_measurements"
-    }
+    "TargetColumnName": "ceramics_measurement_id"
   },
   {
     "TableRelationId": 21,
@@ -485,23 +165,7 @@
     "TargetTableId": 89,
     "Weight": 20,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 97,
-      "TableOrUdfName": "tbl_ceramics_measurements",
-      "PrimaryKeyName": "ceramics_measurement_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ceramics_measurements",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 22,
@@ -509,23 +173,7 @@
     "TargetTableId": 147,
     "Weight": 20,
     "SourceColumName": "chron_control_type_id",
-    "TargetColumnName": "chron_control_type_id",
-    "SourceTable": {
-      "TableId": 59,
-      "TableOrUdfName": "tbl_chron_controls",
-      "PrimaryKeyName": "chron_control_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 147,
-      "TableOrUdfName": "tbl_chron_control_types",
-      "PrimaryKeyName": "chron_control_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_chron_controls",
-      "Item2": "tbl_chron_control_types"
-    }
+    "TargetColumnName": "chron_control_type_id"
   },
   {
     "TableRelationId": 23,
@@ -533,23 +181,7 @@
     "TargetTableId": 117,
     "Weight": 20,
     "SourceColumName": "chronology_id",
-    "TargetColumnName": "chronology_id",
-    "SourceTable": {
-      "TableId": 59,
-      "TableOrUdfName": "tbl_chron_controls",
-      "PrimaryKeyName": "chron_control_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 117,
-      "TableOrUdfName": "tbl_chronologies",
-      "PrimaryKeyName": "chronology_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_chron_controls",
-      "Item2": "tbl_chronologies"
-    }
+    "TargetColumnName": "chronology_id"
   },
   {
     "TableRelationId": 24,
@@ -557,23 +189,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 117,
-      "TableOrUdfName": "tbl_chronologies",
-      "PrimaryKeyName": "chronology_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_chronologies",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 25,
@@ -581,23 +197,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 117,
-      "TableOrUdfName": "tbl_chronologies",
-      "PrimaryKeyName": "chronology_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_chronologies",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 26,
@@ -605,23 +205,7 @@
     "TargetTableId": 89,
     "Weight": 20,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 14,
-      "TableOrUdfName": "tbl_colours",
-      "PrimaryKeyName": "colour_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_colours",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 27,
@@ -629,23 +213,7 @@
     "TargetTableId": 98,
     "Weight": 20,
     "SourceColumName": "dimension_id",
-    "TargetColumnName": "dimension_id",
-    "SourceTable": {
-      "TableId": 106,
-      "TableOrUdfName": "tbl_coordinate_method_dimensions",
-      "PrimaryKeyName": "coordinate_method_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_coordinate_method_dimensions",
-      "Item2": "tbl_dimensions"
-    }
+    "TargetColumnName": "dimension_id"
   },
   {
     "TableRelationId": 28,
@@ -653,23 +221,7 @@
     "TargetTableId": 89,
     "Weight": 20,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 106,
-      "TableOrUdfName": "tbl_coordinate_method_dimensions",
-      "PrimaryKeyName": "coordinate_method_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_coordinate_method_dimensions",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 29,
@@ -677,23 +229,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 83,
-      "TableOrUdfName": "tbl_dataset_contacts",
-      "PrimaryKeyName": "dataset_contact_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_contacts",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 30,
@@ -701,23 +237,7 @@
     "TargetTableId": 123,
     "Weight": 20,
     "SourceColumName": "contact_type_id",
-    "TargetColumnName": "contact_type_id",
-    "SourceTable": {
-      "TableId": 83,
-      "TableOrUdfName": "tbl_dataset_contacts",
-      "PrimaryKeyName": "dataset_contact_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 123,
-      "TableOrUdfName": "tbl_contact_types",
-      "PrimaryKeyName": "contact_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_contacts",
-      "Item2": "tbl_contact_types"
-    }
+    "TargetColumnName": "contact_type_id"
   },
   {
     "TableRelationId": 31,
@@ -725,23 +245,7 @@
     "TargetTableId": 86,
     "Weight": 20,
     "SourceColumName": "dataset_id",
-    "TargetColumnName": "dataset_id",
-    "SourceTable": {
-      "TableId": 83,
-      "TableOrUdfName": "tbl_dataset_contacts",
-      "PrimaryKeyName": "dataset_contact_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_contacts",
-      "Item2": "tbl_datasets"
-    }
+    "TargetColumnName": "dataset_id"
   },
   {
     "TableRelationId": 32,
@@ -749,23 +253,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 76,
-      "TableOrUdfName": "tbl_dataset_masters",
-      "PrimaryKeyName": "master_set_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_masters",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 33,
@@ -773,23 +261,7 @@
     "TargetTableId": 135,
     "Weight": 20,
     "SourceColumName": "data_type_id",
-    "TargetColumnName": "data_type_id",
-    "SourceTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 135,
-      "TableOrUdfName": "tbl_data_types",
-      "PrimaryKeyName": "data_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_datasets",
-      "Item2": "tbl_data_types"
-    }
+    "TargetColumnName": "data_type_id"
   },
   {
     "TableRelationId": 34,
@@ -797,23 +269,7 @@
     "TargetTableId": 76,
     "Weight": 20,
     "SourceColumName": "master_set_id",
-    "TargetColumnName": "master_set_id",
-    "SourceTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 76,
-      "TableOrUdfName": "tbl_dataset_masters",
-      "PrimaryKeyName": "master_set_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_datasets",
-      "Item2": "tbl_dataset_masters"
-    }
+    "TargetColumnName": "master_set_id"
   },
   {
     "TableRelationId": 35,
@@ -821,23 +277,7 @@
     "TargetTableId": 58,
     "Weight": 20,
     "SourceColumName": "project_id",
-    "TargetColumnName": "project_id",
-    "SourceTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 58,
-      "TableOrUdfName": "tbl_projects",
-      "PrimaryKeyName": "project_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_datasets",
-      "Item2": "tbl_projects"
-    }
+    "TargetColumnName": "project_id"
   },
   {
     "TableRelationId": 36,
@@ -845,23 +285,7 @@
     "TargetTableId": 86,
     "Weight": 20,
     "SourceColumName": "updated_dataset_id",
-    "TargetColumnName": "dataset_id",
-    "SourceTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_datasets",
-      "Item2": "tbl_datasets"
-    }
+    "TargetColumnName": "dataset_id"
   },
   {
     "TableRelationId": 37,
@@ -869,23 +293,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 133,
-      "TableOrUdfName": "tbl_dataset_submissions",
-      "PrimaryKeyName": "dataset_submission_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_submissions",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 38,
@@ -893,23 +301,7 @@
     "TargetTableId": 86,
     "Weight": 20,
     "SourceColumName": "dataset_id",
-    "TargetColumnName": "dataset_id",
-    "SourceTable": {
-      "TableId": 133,
-      "TableOrUdfName": "tbl_dataset_submissions",
-      "PrimaryKeyName": "dataset_submission_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_submissions",
-      "Item2": "tbl_datasets"
-    }
+    "TargetColumnName": "dataset_id"
   },
   {
     "TableRelationId": 39,
@@ -917,23 +309,7 @@
     "TargetTableId": 140,
     "Weight": 20,
     "SourceColumName": "submission_type_id",
-    "TargetColumnName": "submission_type_id",
-    "SourceTable": {
-      "TableId": 133,
-      "TableOrUdfName": "tbl_dataset_submissions",
-      "PrimaryKeyName": "dataset_submission_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 140,
-      "TableOrUdfName": "tbl_dataset_submission_types",
-      "PrimaryKeyName": "submission_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_submissions",
-      "Item2": "tbl_dataset_submission_types"
-    }
+    "TargetColumnName": "submission_type_id"
   },
   {
     "TableRelationId": 40,
@@ -941,23 +317,7 @@
     "TargetTableId": 104,
     "Weight": 20,
     "SourceColumName": "data_type_group_id",
-    "TargetColumnName": "data_type_group_id",
-    "SourceTable": {
-      "TableId": 135,
-      "TableOrUdfName": "tbl_data_types",
-      "PrimaryKeyName": "data_type_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 104,
-      "TableOrUdfName": "tbl_data_type_groups",
-      "PrimaryKeyName": "data_type_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_data_types",
-      "Item2": "tbl_data_type_groups"
-    }
+    "TargetColumnName": "data_type_group_id"
   },
   {
     "TableRelationId": 41,
@@ -965,23 +325,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 85,
-      "TableOrUdfName": "tbl_dating_labs",
-      "PrimaryKeyName": "dating_lab_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dating_labs",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 42,
@@ -989,23 +333,7 @@
     "TargetTableId": 38,
     "Weight": 20,
     "SourceColumName": "abundance_element_id",
-    "TargetColumnName": "abundance_element_id",
-    "SourceTable": {
-      "TableId": 134,
-      "TableOrUdfName": "tbl_dating_material",
-      "PrimaryKeyName": "dating_material_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 38,
-      "TableOrUdfName": "tbl_abundance_elements",
-      "PrimaryKeyName": "abundance_element_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dating_material",
-      "Item2": "tbl_abundance_elements"
-    }
+    "TargetColumnName": "abundance_element_id"
   },
   {
     "TableRelationId": 43,
@@ -1013,23 +341,7 @@
     "TargetTableId": 60,
     "Weight": 20,
     "SourceColumName": "geochron_id",
-    "TargetColumnName": "geochron_id",
-    "SourceTable": {
-      "TableId": 134,
-      "TableOrUdfName": "tbl_dating_material",
-      "PrimaryKeyName": "dating_material_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 60,
-      "TableOrUdfName": "tbl_geochronology",
-      "PrimaryKeyName": "geochron_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dating_material",
-      "Item2": "tbl_geochronology"
-    }
+    "TargetColumnName": "geochron_id"
   },
   {
     "TableRelationId": 44,
@@ -1037,23 +349,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 134,
-      "TableOrUdfName": "tbl_dating_material",
-      "PrimaryKeyName": "dating_material_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dating_material",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 45,
@@ -1061,23 +357,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 69,
-      "TableOrUdfName": "tbl_dendro",
-      "PrimaryKeyName": "dendro_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 46,
@@ -1085,23 +365,7 @@
     "TargetTableId": 100,
     "Weight": 20,
     "SourceColumName": "dendro_measurement_id",
-    "TargetColumnName": "dendro_measurement_id",
-    "SourceTable": {
-      "TableId": 69,
-      "TableOrUdfName": "tbl_dendro",
-      "PrimaryKeyName": "dendro_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 100,
-      "TableOrUdfName": "tbl_dendro_measurements",
-      "PrimaryKeyName": "dendro_measurement_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro",
-      "Item2": "tbl_dendro_measurements"
-    }
+    "TargetColumnName": "dendro_measurement_id"
   },
   {
     "TableRelationId": 47,
@@ -1109,23 +373,7 @@
     "TargetTableId": 138,
     "Weight": 20,
     "SourceColumName": "dendro_date_id",
-    "TargetColumnName": "dendro_date_id",
-    "SourceTable": {
-      "TableId": 127,
-      "TableOrUdfName": "tbl_dendro_date_notes",
-      "PrimaryKeyName": "dendro_date_note_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 138,
-      "TableOrUdfName": "tbl_dendro_dates",
-      "PrimaryKeyName": "dendro_date_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro_date_notes",
-      "Item2": "tbl_dendro_dates"
-    }
+    "TargetColumnName": "dendro_date_id"
   },
   {
     "TableRelationId": 48,
@@ -1133,23 +381,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 138,
-      "TableOrUdfName": "tbl_dendro_dates",
-      "PrimaryKeyName": "dendro_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro_dates",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 49,
@@ -1157,23 +389,7 @@
     "TargetTableId": 5,
     "Weight": 20,
     "SourceColumName": "dating_uncertainty_id",
-    "TargetColumnName": "dating_uncertainty_id",
-    "SourceTable": {
-      "TableId": 138,
-      "TableOrUdfName": "tbl_dendro_dates",
-      "PrimaryKeyName": "dendro_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 5,
-      "TableOrUdfName": "tbl_dating_uncertainty",
-      "PrimaryKeyName": "dating_uncertainty_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro_dates",
-      "Item2": "tbl_dating_uncertainty"
-    }
+    "TargetColumnName": "dating_uncertainty_id"
   },
   {
     "TableRelationId": 50,
@@ -1181,23 +397,7 @@
     "TargetTableId": 74,
     "Weight": 20,
     "SourceColumName": "years_type_id",
-    "TargetColumnName": "years_type_id",
-    "SourceTable": {
-      "TableId": 138,
-      "TableOrUdfName": "tbl_dendro_dates",
-      "PrimaryKeyName": "dendro_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 74,
-      "TableOrUdfName": "tbl_years_types",
-      "PrimaryKeyName": "years_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro_dates",
-      "Item2": "tbl_years_types"
-    }
+    "TargetColumnName": "years_type_id"
   },
   {
     "TableRelationId": 51,
@@ -1205,23 +405,7 @@
     "TargetTableId": 89,
     "Weight": 20,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 100,
-      "TableOrUdfName": "tbl_dendro_measurements",
-      "PrimaryKeyName": "dendro_measurement_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dendro_measurements",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 52,
@@ -1229,23 +413,7 @@
     "TargetTableId": 33,
     "Weight": 20,
     "SourceColumName": "method_group_id",
-    "TargetColumnName": "method_group_id",
-    "SourceTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 33,
-      "TableOrUdfName": "tbl_method_groups",
-      "PrimaryKeyName": "method_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dimensions",
-      "Item2": "tbl_method_groups"
-    }
+    "TargetColumnName": "method_group_id"
   },
   {
     "TableRelationId": 53,
@@ -1253,23 +421,7 @@
     "TargetTableId": 72,
     "Weight": 20,
     "SourceColumName": "unit_id",
-    "TargetColumnName": "unit_id",
-    "SourceTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 72,
-      "TableOrUdfName": "tbl_units",
-      "PrimaryKeyName": "unit_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dimensions",
-      "Item2": "tbl_units"
-    }
+    "TargetColumnName": "unit_id"
   },
   {
     "TableRelationId": 54,
@@ -1277,23 +429,7 @@
     "TargetTableId": 51,
     "Weight": 20,
     "SourceColumName": "ecocode_group_id",
-    "TargetColumnName": "ecocode_group_id",
-    "SourceTable": {
-      "TableId": 62,
-      "TableOrUdfName": "tbl_ecocode_definitions",
-      "PrimaryKeyName": "ecocode_definition_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 51,
-      "TableOrUdfName": "tbl_ecocode_groups",
-      "PrimaryKeyName": "ecocode_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ecocode_definitions",
-      "Item2": "tbl_ecocode_groups"
-    }
+    "TargetColumnName": "ecocode_group_id"
   },
   {
     "TableRelationId": 55,
@@ -1301,23 +437,7 @@
     "TargetTableId": 128,
     "Weight": 20,
     "SourceColumName": "ecocode_system_id",
-    "TargetColumnName": "ecocode_system_id",
-    "SourceTable": {
-      "TableId": 51,
-      "TableOrUdfName": "tbl_ecocode_groups",
-      "PrimaryKeyName": "ecocode_group_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 128,
-      "TableOrUdfName": "tbl_ecocode_systems",
-      "PrimaryKeyName": "ecocode_system_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ecocode_groups",
-      "Item2": "tbl_ecocode_systems"
-    }
+    "TargetColumnName": "ecocode_system_id"
   },
   {
     "TableRelationId": 56,
@@ -1325,23 +445,7 @@
     "TargetTableId": 62,
     "Weight": 20,
     "SourceColumName": "ecocode_definition_id",
-    "TargetColumnName": "ecocode_definition_id",
-    "SourceTable": {
-      "TableId": 101,
-      "TableOrUdfName": "tbl_ecocodes",
-      "PrimaryKeyName": "ecocode_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 62,
-      "TableOrUdfName": "tbl_ecocode_definitions",
-      "PrimaryKeyName": "ecocode_definition_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ecocodes",
-      "Item2": "tbl_ecocode_definitions"
-    }
+    "TargetColumnName": "ecocode_definition_id"
   },
   {
     "TableRelationId": 57,
@@ -1349,23 +453,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 101,
-      "TableOrUdfName": "tbl_ecocodes",
-      "PrimaryKeyName": "ecocode_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ecocodes",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 58,
@@ -1373,23 +461,7 @@
     "TargetTableId": 6,
     "Weight": 20,
     "SourceColumName": "feature_type_id",
-    "TargetColumnName": "feature_type_id",
-    "SourceTable": {
-      "TableId": 75,
-      "TableOrUdfName": "tbl_features",
-      "PrimaryKeyName": "feature_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 6,
-      "TableOrUdfName": "tbl_feature_types",
-      "PrimaryKeyName": "feature_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_features",
-      "Item2": "tbl_feature_types"
-    }
+    "TargetColumnName": "feature_type_id"
   },
   {
     "TableRelationId": 59,
@@ -1397,23 +469,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 60,
-      "TableOrUdfName": "tbl_geochronology",
-      "PrimaryKeyName": "geochron_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_geochronology",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 60,
@@ -1421,23 +477,7 @@
     "TargetTableId": 85,
     "Weight": 20,
     "SourceColumName": "dating_lab_id",
-    "TargetColumnName": "dating_lab_id",
-    "SourceTable": {
-      "TableId": 60,
-      "TableOrUdfName": "tbl_geochronology",
-      "PrimaryKeyName": "geochron_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 85,
-      "TableOrUdfName": "tbl_dating_labs",
-      "PrimaryKeyName": "dating_lab_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_geochronology",
-      "Item2": "tbl_dating_labs"
-    }
+    "TargetColumnName": "dating_lab_id"
   },
   {
     "TableRelationId": 61,
@@ -1445,23 +485,7 @@
     "TargetTableId": 5,
     "Weight": 20,
     "SourceColumName": "dating_uncertainty_id",
-    "TargetColumnName": "dating_uncertainty_id",
-    "SourceTable": {
-      "TableId": 60,
-      "TableOrUdfName": "tbl_geochronology",
-      "PrimaryKeyName": "geochron_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 5,
-      "TableOrUdfName": "tbl_dating_uncertainty",
-      "PrimaryKeyName": "dating_uncertainty_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_geochronology",
-      "Item2": "tbl_dating_uncertainty"
-    }
+    "TargetColumnName": "dating_uncertainty_id"
   },
   {
     "TableRelationId": 62,
@@ -1469,23 +493,7 @@
     "TargetTableId": 60,
     "Weight": 20,
     "SourceColumName": "geochron_id",
-    "TargetColumnName": "geochron_id",
-    "SourceTable": {
-      "TableId": 87,
-      "TableOrUdfName": "tbl_geochron_refs",
-      "PrimaryKeyName": "geochron_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 60,
-      "TableOrUdfName": "tbl_geochronology",
-      "PrimaryKeyName": "geochron_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_geochron_refs",
-      "Item2": "tbl_geochronology"
-    }
+    "TargetColumnName": "geochron_id"
   },
   {
     "TableRelationId": 63,
@@ -1493,23 +501,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 22,
-      "TableOrUdfName": "tbl_imported_taxa_replacements",
-      "PrimaryKeyName": "imported_taxa_replacement_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_imported_taxa_replacements",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 64,
@@ -1517,23 +509,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 80,
-      "TableOrUdfName": "tbl_lithology",
-      "PrimaryKeyName": "lithology_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_lithology",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 65,
@@ -1541,23 +517,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 145,
-      "TableOrUdfName": "tbl_aggregate_datasets",
-      "PrimaryKeyName": "aggregate_dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_aggregate_datasets",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 66,
@@ -1565,23 +525,7 @@
     "TargetTableId": 86,
     "Weight": 1,
     "SourceColumName": "dataset_id",
-    "TargetColumnName": "dataset_id",
-    "SourceTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entities",
-      "Item2": "tbl_datasets"
-    }
+    "TargetColumnName": "dataset_id"
   },
   {
     "TableRelationId": 67,
@@ -1589,23 +533,7 @@
     "TargetTableId": 102,
     "Weight": 1,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_analysis_entities",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 68,
@@ -1613,23 +541,7 @@
     "TargetTableId": 89,
     "Weight": 1,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_datasets",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 69,
@@ -1637,23 +549,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 86,
-      "TableOrUdfName": "tbl_datasets",
-      "PrimaryKeyName": "dataset_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_datasets",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 70,
@@ -1661,23 +557,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 128,
-      "TableOrUdfName": "tbl_ecocode_systems",
-      "PrimaryKeyName": "ecocode_system_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_ecocode_systems",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 71,
@@ -1685,23 +565,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 87,
-      "TableOrUdfName": "tbl_geochron_refs",
-      "PrimaryKeyName": "geochron_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_geochron_refs",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 72,
@@ -1709,23 +573,7 @@
     "TargetTableId": 89,
     "Weight": 70,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 1,
-      "TableOrUdfName": "tbl_horizons",
-      "PrimaryKeyName": "horizon_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_horizons",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 73,
@@ -1733,23 +581,7 @@
     "TargetTableId": 84,
     "Weight": 200,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 76,
-      "TableOrUdfName": "tbl_dataset_masters",
-      "PrimaryKeyName": "master_set_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_dataset_masters",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 74,
@@ -1757,23 +589,7 @@
     "TargetTableId": 92,
     "Weight": 20,
     "SourceColumName": "location_type_id",
-    "TargetColumnName": "location_type_id",
-    "SourceTable": {
-      "TableId": 35,
-      "TableOrUdfName": "tbl_locations",
-      "PrimaryKeyName": "location_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 92,
-      "TableOrUdfName": "tbl_location_types",
-      "PrimaryKeyName": "location_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_locations",
-      "Item2": "tbl_location_types"
-    }
+    "TargetColumnName": "location_type_id"
   },
   {
     "TableRelationId": 75,
@@ -1781,23 +597,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 70,
-      "TableOrUdfName": "tbl_mcrdata_birmbeetledat",
-      "PrimaryKeyName": "mcrdata_birmbeetledat_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_mcrdata_birmbeetledat",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 76,
@@ -1805,23 +605,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 18,
-      "TableOrUdfName": "tbl_mcr_names",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_mcr_names",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 77,
@@ -1829,23 +613,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 19,
-      "TableOrUdfName": "tbl_mcr_summary_data",
-      "PrimaryKeyName": "mcr_summary_data_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_mcr_summary_data",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 78,
@@ -1853,23 +621,7 @@
     "TargetTableId": 98,
     "Weight": 20,
     "SourceColumName": "dimension_id",
-    "TargetColumnName": "dimension_id",
-    "SourceTable": {
-      "TableId": 12,
-      "TableOrUdfName": "tbl_measured_value_dimensions",
-      "PrimaryKeyName": "measured_value_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_measured_value_dimensions",
-      "Item2": "tbl_dimensions"
-    }
+    "TargetColumnName": "dimension_id"
   },
   {
     "TableRelationId": 79,
@@ -1877,23 +629,7 @@
     "TargetTableId": 121,
     "Weight": 20,
     "SourceColumName": "measured_value_id",
-    "TargetColumnName": "measured_value_id",
-    "SourceTable": {
-      "TableId": 12,
-      "TableOrUdfName": "tbl_measured_value_dimensions",
-      "PrimaryKeyName": "measured_value_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 121,
-      "TableOrUdfName": "tbl_measured_values",
-      "PrimaryKeyName": "measured_value_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_measured_value_dimensions",
-      "Item2": "tbl_measured_values"
-    }
+    "TargetColumnName": "measured_value_id"
   },
   {
     "TableRelationId": 80,
@@ -1901,23 +637,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 121,
-      "TableOrUdfName": "tbl_measured_values",
-      "PrimaryKeyName": "measured_value_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_measured_values",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 81,
@@ -1925,23 +645,7 @@
     "TargetTableId": 33,
     "Weight": 20,
     "SourceColumName": "method_group_id",
-    "TargetColumnName": "method_group_id",
-    "SourceTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 33,
-      "TableOrUdfName": "tbl_method_groups",
-      "PrimaryKeyName": "method_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_methods",
-      "Item2": "tbl_method_groups"
-    }
+    "TargetColumnName": "method_group_id"
   },
   {
     "TableRelationId": 82,
@@ -1949,23 +653,7 @@
     "TargetTableId": 110,
     "Weight": 20,
     "SourceColumName": "record_type_id",
-    "TargetColumnName": "record_type_id",
-    "SourceTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 110,
-      "TableOrUdfName": "tbl_record_types",
-      "PrimaryKeyName": "record_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_methods",
-      "Item2": "tbl_record_types"
-    }
+    "TargetColumnName": "record_type_id"
   },
   {
     "TableRelationId": 83,
@@ -1973,23 +661,7 @@
     "TargetTableId": 75,
     "Weight": 20,
     "SourceColumName": "feature_id",
-    "TargetColumnName": "feature_id",
-    "SourceTable": {
-      "TableId": 132,
-      "TableOrUdfName": "tbl_physical_sample_features",
-      "PrimaryKeyName": "physical_sample_feature_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 75,
-      "TableOrUdfName": "tbl_features",
-      "PrimaryKeyName": "feature_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_physical_sample_features",
-      "Item2": "tbl_features"
-    }
+    "TargetColumnName": "feature_id"
   },
   {
     "TableRelationId": 84,
@@ -1997,23 +669,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 132,
-      "TableOrUdfName": "tbl_physical_sample_features",
-      "PrimaryKeyName": "physical_sample_feature_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_physical_sample_features",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 85,
@@ -2021,23 +677,7 @@
     "TargetTableId": 136,
     "Weight": 20,
     "SourceColumName": "alt_ref_type_id",
-    "TargetColumnName": "alt_ref_type_id",
-    "SourceTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 136,
-      "TableOrUdfName": "tbl_alt_ref_types",
-      "PrimaryKeyName": "alt_ref_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_physical_samples",
-      "Item2": "tbl_alt_ref_types"
-    }
+    "TargetColumnName": "alt_ref_type_id"
   },
   {
     "TableRelationId": 86,
@@ -2045,23 +685,7 @@
     "TargetTableId": 105,
     "Weight": 20,
     "SourceColumName": "sample_type_id",
-    "TargetColumnName": "sample_type_id",
-    "SourceTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 105,
-      "TableOrUdfName": "tbl_sample_types",
-      "PrimaryKeyName": "sample_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_physical_samples",
-      "Item2": "tbl_sample_types"
-    }
+    "TargetColumnName": "sample_type_id"
   },
   {
     "TableRelationId": 87,
@@ -2069,23 +693,7 @@
     "TargetTableId": 9,
     "Weight": 20,
     "SourceColumName": "project_stage_id",
-    "TargetColumnName": "project_stage_id",
-    "SourceTable": {
-      "TableId": 58,
-      "TableOrUdfName": "tbl_projects",
-      "PrimaryKeyName": "project_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 9,
-      "TableOrUdfName": "tbl_project_stages",
-      "PrimaryKeyName": "project_stage_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_projects",
-      "Item2": "tbl_project_stages"
-    }
+    "TargetColumnName": "project_stage_id"
   },
   {
     "TableRelationId": 88,
@@ -2093,23 +701,7 @@
     "TargetTableId": 17,
     "Weight": 20,
     "SourceColumName": "project_type_id",
-    "TargetColumnName": "project_type_id",
-    "SourceTable": {
-      "TableId": 58,
-      "TableOrUdfName": "tbl_projects",
-      "PrimaryKeyName": "project_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 17,
-      "TableOrUdfName": "tbl_project_types",
-      "PrimaryKeyName": "project_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_projects",
-      "Item2": "tbl_project_types"
-    }
+    "TargetColumnName": "project_type_id"
   },
   {
     "TableRelationId": 89,
@@ -2117,23 +709,7 @@
     "TargetTableId": 24,
     "Weight": 20,
     "SourceColumName": "rdb_code_id",
-    "TargetColumnName": "rdb_code_id",
-    "SourceTable": {
-      "TableId": 48,
-      "TableOrUdfName": "tbl_rdb",
-      "PrimaryKeyName": "rdb_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 24,
-      "TableOrUdfName": "tbl_rdb_codes",
-      "PrimaryKeyName": "rdb_code_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_rdb",
-      "Item2": "tbl_rdb_codes"
-    }
+    "TargetColumnName": "rdb_code_id"
   },
   {
     "TableRelationId": 90,
@@ -2141,23 +717,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 48,
-      "TableOrUdfName": "tbl_rdb",
-      "PrimaryKeyName": "rdb_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_rdb",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 91,
@@ -2165,23 +725,7 @@
     "TargetTableId": 143,
     "Weight": 20,
     "SourceColumName": "rdb_system_id",
-    "TargetColumnName": "rdb_system_id",
-    "SourceTable": {
-      "TableId": 24,
-      "TableOrUdfName": "tbl_rdb_codes",
-      "PrimaryKeyName": "rdb_code_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 143,
-      "TableOrUdfName": "tbl_rdb_systems",
-      "PrimaryKeyName": "rdb_system_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_rdb_codes",
-      "Item2": "tbl_rdb_systems"
-    }
+    "TargetColumnName": "rdb_system_id"
   },
   {
     "TableRelationId": 92,
@@ -2189,23 +733,7 @@
     "TargetTableId": 71,
     "Weight": 20,
     "SourceColumName": "relative_age_id",
-    "TargetColumnName": "relative_age_id",
-    "SourceTable": {
-      "TableId": 68,
-      "TableOrUdfName": "tbl_relative_age_refs",
-      "PrimaryKeyName": "relative_age_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 71,
-      "TableOrUdfName": "tbl_relative_ages",
-      "PrimaryKeyName": "relative_age_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_age_refs",
-      "Item2": "tbl_relative_ages"
-    }
+    "TargetColumnName": "relative_age_id"
   },
   {
     "TableRelationId": 93,
@@ -2213,23 +741,7 @@
     "TargetTableId": 37,
     "Weight": 20,
     "SourceColumName": "relative_age_type_id",
-    "TargetColumnName": "relative_age_type_id",
-    "SourceTable": {
-      "TableId": 71,
-      "TableOrUdfName": "tbl_relative_ages",
-      "PrimaryKeyName": "relative_age_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 37,
-      "TableOrUdfName": "tbl_relative_age_types",
-      "PrimaryKeyName": "relative_age_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_ages",
-      "Item2": "tbl_relative_age_types"
-    }
+    "TargetColumnName": "relative_age_type_id"
   },
   {
     "TableRelationId": 94,
@@ -2237,23 +749,7 @@
     "TargetTableId": 5,
     "Weight": 20,
     "SourceColumName": "dating_uncertainty_id",
-    "TargetColumnName": "dating_uncertainty_id",
-    "SourceTable": {
-      "TableId": 55,
-      "TableOrUdfName": "tbl_relative_dates",
-      "PrimaryKeyName": "relative_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 5,
-      "TableOrUdfName": "tbl_dating_uncertainty",
-      "PrimaryKeyName": "dating_uncertainty_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_dates",
-      "Item2": "tbl_dating_uncertainty"
-    }
+    "TargetColumnName": "dating_uncertainty_id"
   },
   {
     "TableRelationId": 95,
@@ -2261,23 +757,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 55,
-      "TableOrUdfName": "tbl_relative_dates",
-      "PrimaryKeyName": "relative_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_dates",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 96,
@@ -2285,23 +765,7 @@
     "TargetTableId": 71,
     "Weight": 20,
     "SourceColumName": "relative_age_id",
-    "TargetColumnName": "relative_age_id",
-    "SourceTable": {
-      "TableId": 55,
-      "TableOrUdfName": "tbl_relative_dates",
-      "PrimaryKeyName": "relative_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 71,
-      "TableOrUdfName": "tbl_relative_ages",
-      "PrimaryKeyName": "relative_age_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_dates",
-      "Item2": "tbl_relative_ages"
-    }
+    "TargetColumnName": "relative_age_id"
   },
   {
     "TableRelationId": 97,
@@ -2309,23 +773,7 @@
     "TargetTableId": 136,
     "Weight": 20,
     "SourceColumName": "alt_ref_type_id",
-    "TargetColumnName": "alt_ref_type_id",
-    "SourceTable": {
-      "TableId": 10,
-      "TableOrUdfName": "tbl_sample_alt_refs",
-      "PrimaryKeyName": "sample_alt_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 136,
-      "TableOrUdfName": "tbl_alt_ref_types",
-      "PrimaryKeyName": "alt_ref_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_alt_refs",
-      "Item2": "tbl_alt_ref_types"
-    }
+    "TargetColumnName": "alt_ref_type_id"
   },
   {
     "TableRelationId": 98,
@@ -2333,23 +781,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 10,
-      "TableOrUdfName": "tbl_sample_alt_refs",
-      "PrimaryKeyName": "sample_alt_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_alt_refs",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 99,
@@ -2357,23 +789,7 @@
     "TargetTableId": 14,
     "Weight": 20,
     "SourceColumName": "colour_id",
-    "TargetColumnName": "colour_id",
-    "SourceTable": {
-      "TableId": 32,
-      "TableOrUdfName": "tbl_sample_colours",
-      "PrimaryKeyName": "sample_colour_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 14,
-      "TableOrUdfName": "tbl_colours",
-      "PrimaryKeyName": "colour_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_colours",
-      "Item2": "tbl_colours"
-    }
+    "TargetColumnName": "colour_id"
   },
   {
     "TableRelationId": 100,
@@ -2381,23 +797,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 32,
-      "TableOrUdfName": "tbl_sample_colours",
-      "PrimaryKeyName": "sample_colour_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_colours",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 101,
@@ -2405,23 +805,7 @@
     "TargetTableId": 106,
     "Weight": 20,
     "SourceColumName": "coordinate_method_dimension_id",
-    "TargetColumnName": "coordinate_method_dimension_id",
-    "SourceTable": {
-      "TableId": 8,
-      "TableOrUdfName": "tbl_sample_coordinates",
-      "PrimaryKeyName": "sample_coordinate_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 106,
-      "TableOrUdfName": "tbl_coordinate_method_dimensions",
-      "PrimaryKeyName": "coordinate_method_dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_coordinates",
-      "Item2": "tbl_coordinate_method_dimensions"
-    }
+    "TargetColumnName": "coordinate_method_dimension_id"
   },
   {
     "TableRelationId": 102,
@@ -2429,23 +813,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 8,
-      "TableOrUdfName": "tbl_sample_coordinates",
-      "PrimaryKeyName": "sample_coordinate_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_coordinates",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 103,
@@ -2453,23 +821,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 111,
-      "TableOrUdfName": "tbl_sample_descriptions",
-      "PrimaryKeyName": "sample_description_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_descriptions",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 104,
@@ -2477,23 +829,7 @@
     "TargetTableId": 73,
     "Weight": 20,
     "SourceColumName": "sample_description_type_id",
-    "TargetColumnName": "sample_description_type_id",
-    "SourceTable": {
-      "TableId": 111,
-      "TableOrUdfName": "tbl_sample_descriptions",
-      "PrimaryKeyName": "sample_description_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 73,
-      "TableOrUdfName": "tbl_sample_description_types",
-      "PrimaryKeyName": "sample_description_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_descriptions",
-      "Item2": "tbl_sample_description_types"
-    }
+    "TargetColumnName": "sample_description_type_id"
   },
   {
     "TableRelationId": 105,
@@ -2501,23 +837,7 @@
     "TargetTableId": 73,
     "Weight": 20,
     "SourceColumName": "sample_description_type_id",
-    "TargetColumnName": "sample_description_type_id",
-    "SourceTable": {
-      "TableId": 56,
-      "TableOrUdfName": "tbl_sample_description_sample_group_contexts",
-      "PrimaryKeyName": "sample_description_sample_group_context_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 73,
-      "TableOrUdfName": "tbl_sample_description_types",
-      "PrimaryKeyName": "sample_description_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_description_sample_group_contexts",
-      "Item2": "tbl_sample_description_types"
-    }
+    "TargetColumnName": "sample_description_type_id"
   },
   {
     "TableRelationId": 106,
@@ -2525,23 +845,7 @@
     "TargetTableId": 40,
     "Weight": 20,
     "SourceColumName": "sampling_context_id",
-    "TargetColumnName": "sampling_context_id",
-    "SourceTable": {
-      "TableId": 56,
-      "TableOrUdfName": "tbl_sample_description_sample_group_contexts",
-      "PrimaryKeyName": "sample_description_sample_group_context_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 40,
-      "TableOrUdfName": "tbl_sample_group_sampling_contexts",
-      "PrimaryKeyName": "sampling_context_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_description_sample_group_contexts",
-      "Item2": "tbl_sample_group_sampling_contexts"
-    }
+    "TargetColumnName": "sampling_context_id"
   },
   {
     "TableRelationId": 107,
@@ -2549,23 +853,7 @@
     "TargetTableId": 98,
     "Weight": 20,
     "SourceColumName": "dimension_id",
-    "TargetColumnName": "dimension_id",
-    "SourceTable": {
-      "TableId": 116,
-      "TableOrUdfName": "tbl_sample_dimensions",
-      "PrimaryKeyName": "sample_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_dimensions",
-      "Item2": "tbl_dimensions"
-    }
+    "TargetColumnName": "dimension_id"
   },
   {
     "TableRelationId": 108,
@@ -2573,23 +861,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 116,
-      "TableOrUdfName": "tbl_sample_dimensions",
-      "PrimaryKeyName": "sample_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_dimensions",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 109,
@@ -2597,23 +869,7 @@
     "TargetTableId": 106,
     "Weight": 20,
     "SourceColumName": "coordinate_method_dimension_id",
-    "TargetColumnName": "coordinate_method_dimension_id",
-    "SourceTable": {
-      "TableId": 30,
-      "TableOrUdfName": "tbl_sample_group_coordinates",
-      "PrimaryKeyName": "sample_group_position_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 106,
-      "TableOrUdfName": "tbl_coordinate_method_dimensions",
-      "PrimaryKeyName": "coordinate_method_dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_coordinates",
-      "Item2": "tbl_coordinate_method_dimensions"
-    }
+    "TargetColumnName": "coordinate_method_dimension_id"
   },
   {
     "TableRelationId": 110,
@@ -2621,23 +877,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 30,
-      "TableOrUdfName": "tbl_sample_group_coordinates",
-      "PrimaryKeyName": "sample_group_position_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_coordinates",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 111,
@@ -2645,23 +885,7 @@
     "TargetTableId": 54,
     "Weight": 20,
     "SourceColumName": "sample_group_description_type_id",
-    "TargetColumnName": "sample_group_description_type_id",
-    "SourceTable": {
-      "TableId": 130,
-      "TableOrUdfName": "tbl_sample_group_descriptions",
-      "PrimaryKeyName": "sample_group_description_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 54,
-      "TableOrUdfName": "tbl_sample_group_description_types",
-      "PrimaryKeyName": "sample_group_description_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_descriptions",
-      "Item2": "tbl_sample_group_description_types"
-    }
+    "TargetColumnName": "sample_group_description_type_id"
   },
   {
     "TableRelationId": 112,
@@ -2669,23 +893,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 130,
-      "TableOrUdfName": "tbl_sample_group_descriptions",
-      "PrimaryKeyName": "sample_group_description_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_descriptions",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 113,
@@ -2693,23 +901,7 @@
     "TargetTableId": 54,
     "Weight": 20,
     "SourceColumName": "sample_group_description_type_id",
-    "TargetColumnName": "sample_group_description_type_id",
-    "SourceTable": {
-      "TableId": 28,
-      "TableOrUdfName": "tbl_sample_group_description_type_sampling_contexts",
-      "PrimaryKeyName": "sample_group_description_type_sampling_context_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 54,
-      "TableOrUdfName": "tbl_sample_group_description_types",
-      "PrimaryKeyName": "sample_group_description_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_description_type_sampling_contexts",
-      "Item2": "tbl_sample_group_description_types"
-    }
+    "TargetColumnName": "sample_group_description_type_id"
   },
   {
     "TableRelationId": 114,
@@ -2717,23 +909,7 @@
     "TargetTableId": 40,
     "Weight": 20,
     "SourceColumName": "sampling_context_id",
-    "TargetColumnName": "sampling_context_id",
-    "SourceTable": {
-      "TableId": 28,
-      "TableOrUdfName": "tbl_sample_group_description_type_sampling_contexts",
-      "PrimaryKeyName": "sample_group_description_type_sampling_context_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 40,
-      "TableOrUdfName": "tbl_sample_group_sampling_contexts",
-      "PrimaryKeyName": "sampling_context_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_description_type_sampling_contexts",
-      "Item2": "tbl_sample_group_sampling_contexts"
-    }
+    "TargetColumnName": "sampling_context_id"
   },
   {
     "TableRelationId": 115,
@@ -2741,23 +917,7 @@
     "TargetTableId": 98,
     "Weight": 20,
     "SourceColumName": "dimension_id",
-    "TargetColumnName": "dimension_id",
-    "SourceTable": {
-      "TableId": 112,
-      "TableOrUdfName": "tbl_sample_group_dimensions",
-      "PrimaryKeyName": "sample_group_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 98,
-      "TableOrUdfName": "tbl_dimensions",
-      "PrimaryKeyName": "dimension_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_dimensions",
-      "Item2": "tbl_dimensions"
-    }
+    "TargetColumnName": "dimension_id"
   },
   {
     "TableRelationId": 116,
@@ -2765,23 +925,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 112,
-      "TableOrUdfName": "tbl_sample_group_dimensions",
-      "PrimaryKeyName": "sample_group_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_dimensions",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 117,
@@ -2789,23 +933,7 @@
     "TargetTableId": 16,
     "Weight": 20,
     "SourceColumName": "image_type_id",
-    "TargetColumnName": "image_type_id",
-    "SourceTable": {
-      "TableId": 124,
-      "TableOrUdfName": "tbl_sample_group_images",
-      "PrimaryKeyName": "sample_group_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 16,
-      "TableOrUdfName": "tbl_image_types",
-      "PrimaryKeyName": "image_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_images",
-      "Item2": "tbl_image_types"
-    }
+    "TargetColumnName": "image_type_id"
   },
   {
     "TableRelationId": 118,
@@ -2813,23 +941,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 124,
-      "TableOrUdfName": "tbl_sample_group_images",
-      "PrimaryKeyName": "sample_group_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_images",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 119,
@@ -2837,23 +949,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 52,
-      "TableOrUdfName": "tbl_sample_group_notes",
-      "PrimaryKeyName": "sample_group_note_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_notes",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 120,
@@ -2861,23 +957,7 @@
     "TargetTableId": 91,
     "Weight": 20,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 42,
-      "TableOrUdfName": "tbl_sample_group_references",
-      "PrimaryKeyName": "sample_group_reference_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_references",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 121,
@@ -2885,23 +965,7 @@
     "TargetTableId": 40,
     "Weight": 20,
     "SourceColumName": "sampling_context_id",
-    "TargetColumnName": "sampling_context_id",
-    "SourceTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 40,
-      "TableOrUdfName": "tbl_sample_group_sampling_contexts",
-      "PrimaryKeyName": "sampling_context_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_groups",
-      "Item2": "tbl_sample_group_sampling_contexts"
-    }
+    "TargetColumnName": "sampling_context_id"
   },
   {
     "TableRelationId": 122,
@@ -2909,23 +973,7 @@
     "TargetTableId": 1,
     "Weight": 20,
     "SourceColumName": "horizon_id",
-    "TargetColumnName": "horizon_id",
-    "SourceTable": {
-      "TableId": 41,
-      "TableOrUdfName": "tbl_sample_horizons",
-      "PrimaryKeyName": "sample_horizon_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 1,
-      "TableOrUdfName": "tbl_horizons",
-      "PrimaryKeyName": "horizon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_horizons",
-      "Item2": "tbl_horizons"
-    }
+    "TargetColumnName": "horizon_id"
   },
   {
     "TableRelationId": 123,
@@ -2933,23 +981,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 41,
-      "TableOrUdfName": "tbl_sample_horizons",
-      "PrimaryKeyName": "sample_horizon_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_horizons",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 124,
@@ -2957,23 +989,7 @@
     "TargetTableId": 16,
     "Weight": 20,
     "SourceColumName": "image_type_id",
-    "TargetColumnName": "image_type_id",
-    "SourceTable": {
-      "TableId": 61,
-      "TableOrUdfName": "tbl_sample_images",
-      "PrimaryKeyName": "sample_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 16,
-      "TableOrUdfName": "tbl_image_types",
-      "PrimaryKeyName": "image_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_images",
-      "Item2": "tbl_image_types"
-    }
+    "TargetColumnName": "image_type_id"
   },
   {
     "TableRelationId": 125,
@@ -2981,23 +997,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 61,
-      "TableOrUdfName": "tbl_sample_images",
-      "PrimaryKeyName": "sample_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_images",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 126,
@@ -3005,23 +1005,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 49,
-      "TableOrUdfName": "tbl_sample_locations",
-      "PrimaryKeyName": "sample_location_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_locations",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 127,
@@ -3029,23 +1013,7 @@
     "TargetTableId": 144,
     "Weight": 20,
     "SourceColumName": "sample_location_type_id",
-    "TargetColumnName": "sample_location_type_id",
-    "SourceTable": {
-      "TableId": 49,
-      "TableOrUdfName": "tbl_sample_locations",
-      "PrimaryKeyName": "sample_location_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 144,
-      "TableOrUdfName": "tbl_sample_location_types",
-      "PrimaryKeyName": "sample_location_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_locations",
-      "Item2": "tbl_sample_location_types"
-    }
+    "TargetColumnName": "sample_location_type_id"
   },
   {
     "TableRelationId": 128,
@@ -3053,23 +1021,7 @@
     "TargetTableId": 144,
     "Weight": 20,
     "SourceColumName": "sample_location_type_id",
-    "TargetColumnName": "sample_location_type_id",
-    "SourceTable": {
-      "TableId": 65,
-      "TableOrUdfName": "tbl_sample_location_type_sampling_contexts",
-      "PrimaryKeyName": "sample_location_type_sampling_context_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 144,
-      "TableOrUdfName": "tbl_sample_location_types",
-      "PrimaryKeyName": "sample_location_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_location_type_sampling_contexts",
-      "Item2": "tbl_sample_location_types"
-    }
+    "TargetColumnName": "sample_location_type_id"
   },
   {
     "TableRelationId": 129,
@@ -3077,23 +1029,7 @@
     "TargetTableId": 40,
     "Weight": 20,
     "SourceColumName": "sampling_context_id",
-    "TargetColumnName": "sampling_context_id",
-    "SourceTable": {
-      "TableId": 65,
-      "TableOrUdfName": "tbl_sample_location_type_sampling_contexts",
-      "PrimaryKeyName": "sample_location_type_sampling_context_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 40,
-      "TableOrUdfName": "tbl_sample_group_sampling_contexts",
-      "PrimaryKeyName": "sampling_context_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_location_type_sampling_contexts",
-      "Item2": "tbl_sample_group_sampling_contexts"
-    }
+    "TargetColumnName": "sampling_context_id"
   },
   {
     "TableRelationId": 130,
@@ -3101,23 +1037,7 @@
     "TargetTableId": 102,
     "Weight": 20,
     "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id",
-    "SourceTable": {
-      "TableId": 94,
-      "TableOrUdfName": "tbl_sample_notes",
-      "PrimaryKeyName": "sample_note_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_notes",
-      "Item2": "tbl_physical_samples"
-    }
+    "TargetColumnName": "physical_sample_id"
   },
   {
     "TableRelationId": 131,
@@ -3125,23 +1045,7 @@
     "TargetTableId": 108,
     "Weight": 20,
     "SourceColumName": "season_type_id",
-    "TargetColumnName": "season_type_id",
-    "SourceTable": {
-      "TableId": 82,
-      "TableOrUdfName": "tbl_seasons",
-      "PrimaryKeyName": "season_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 108,
-      "TableOrUdfName": "tbl_season_types",
-      "PrimaryKeyName": "season_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_seasons",
-      "Item2": "tbl_season_types"
-    }
+    "TargetColumnName": "season_type_id"
   },
   {
     "TableRelationId": 132,
@@ -3149,23 +1053,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 64,
-      "TableOrUdfName": "tbl_site_images",
-      "PrimaryKeyName": "site_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_images",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 133,
@@ -3173,23 +1061,7 @@
     "TargetTableId": 16,
     "Weight": 20,
     "SourceColumName": "image_type_id",
-    "TargetColumnName": "image_type_id",
-    "SourceTable": {
-      "TableId": 64,
-      "TableOrUdfName": "tbl_site_images",
-      "PrimaryKeyName": "site_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 16,
-      "TableOrUdfName": "tbl_image_types",
-      "PrimaryKeyName": "image_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_images",
-      "Item2": "tbl_image_types"
-    }
+    "TargetColumnName": "image_type_id"
   },
   {
     "TableRelationId": 134,
@@ -3197,23 +1069,7 @@
     "TargetTableId": 119,
     "Weight": 20,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 64,
-      "TableOrUdfName": "tbl_site_images",
-      "PrimaryKeyName": "site_image_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_images",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 135,
@@ -3221,23 +1077,7 @@
     "TargetTableId": 119,
     "Weight": 20,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 113,
-      "TableOrUdfName": "tbl_site_locations",
-      "PrimaryKeyName": "site_location_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_locations",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 136,
@@ -3245,23 +1085,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_methods",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 137,
@@ -3269,23 +1093,7 @@
     "TargetTableId": 91,
     "Weight": 1,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 102,
-      "TableOrUdfName": "tbl_physical_samples",
-      "PrimaryKeyName": "physical_sample_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_physical_samples",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 138,
@@ -3293,23 +1101,7 @@
     "TargetTableId": 35,
     "Weight": 150,
     "SourceColumName": "location_id",
-    "TargetColumnName": "location_id",
-    "SourceTable": {
-      "TableId": 48,
-      "TableOrUdfName": "tbl_rdb",
-      "PrimaryKeyName": "rdb_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 35,
-      "TableOrUdfName": "tbl_locations",
-      "PrimaryKeyName": "location_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_rdb",
-      "Item2": "tbl_locations"
-    }
+    "TargetColumnName": "location_id"
   },
   {
     "TableRelationId": 139,
@@ -3317,23 +1109,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 143,
-      "TableOrUdfName": "tbl_rdb_systems",
-      "PrimaryKeyName": "rdb_system_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_rdb_systems",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 140,
@@ -3341,23 +1117,7 @@
     "TargetTableId": 35,
     "Weight": 150,
     "SourceColumName": "location_id",
-    "TargetColumnName": "location_id",
-    "SourceTable": {
-      "TableId": 143,
-      "TableOrUdfName": "tbl_rdb_systems",
-      "PrimaryKeyName": "rdb_system_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 35,
-      "TableOrUdfName": "tbl_locations",
-      "PrimaryKeyName": "location_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_rdb_systems",
-      "Item2": "tbl_locations"
-    }
+    "TargetColumnName": "location_id"
   },
   {
     "TableRelationId": 141,
@@ -3365,23 +1125,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 68,
-      "TableOrUdfName": "tbl_relative_age_refs",
-      "PrimaryKeyName": "relative_age_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_age_refs",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 142,
@@ -3389,23 +1133,7 @@
     "TargetTableId": 89,
     "Weight": 70,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 55,
-      "TableOrUdfName": "tbl_relative_dates",
-      "PrimaryKeyName": "relative_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_dates",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 143,
@@ -3413,23 +1141,7 @@
     "TargetTableId": 89,
     "Weight": 150,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 116,
-      "TableOrUdfName": "tbl_sample_dimensions",
-      "PrimaryKeyName": "sample_dimension_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_dimensions",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 144,
@@ -3437,23 +1149,7 @@
     "TargetTableId": 89,
     "Weight": 150,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_groups",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 145,
@@ -3461,23 +1157,7 @@
     "TargetTableId": 119,
     "Weight": 1,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_groups",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 146,
@@ -3485,23 +1165,7 @@
     "TargetTableId": 35,
     "Weight": 5,
     "SourceColumName": "location_id",
-    "TargetColumnName": "location_id",
-    "SourceTable": {
-      "TableId": 113,
-      "TableOrUdfName": "tbl_site_locations",
-      "PrimaryKeyName": "site_location_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 35,
-      "TableOrUdfName": "tbl_locations",
-      "PrimaryKeyName": "location_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_locations",
-      "Item2": "tbl_locations"
-    }
+    "TargetColumnName": "location_id"
   },
   {
     "TableRelationId": 147,
@@ -3509,23 +1173,7 @@
     "TargetTableId": 84,
     "Weight": 90,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 42,
-      "TableOrUdfName": "tbl_sample_group_references",
-      "PrimaryKeyName": "sample_group_reference_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_sample_group_references",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 148,
@@ -3533,23 +1181,7 @@
     "TargetTableId": 89,
     "Weight": 20,
     "SourceColumName": "method_id",
-    "TargetColumnName": "method_id",
-    "SourceTable": {
-      "TableId": 78,
-      "TableOrUdfName": "tbl_site_natgridrefs",
-      "PrimaryKeyName": "site_natgridref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_natgridrefs",
-      "Item2": "tbl_methods"
-    }
+    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 149,
@@ -3557,23 +1189,7 @@
     "TargetTableId": 119,
     "Weight": 20,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 78,
-      "TableOrUdfName": "tbl_site_natgridrefs",
-      "PrimaryKeyName": "site_natgridref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_natgridrefs",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 150,
@@ -3581,23 +1197,7 @@
     "TargetTableId": 119,
     "Weight": 20,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 95,
-      "TableOrUdfName": "tbl_site_preservation_status",
-      "PrimaryKeyName": "site_preservation_status_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_preservation_status",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 151,
@@ -3605,23 +1205,7 @@
     "TargetTableId": 119,
     "Weight": 20,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 15,
-      "TableOrUdfName": "tbl_site_references",
-      "PrimaryKeyName": "site_reference_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_references",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 152,
@@ -3629,23 +1213,7 @@
     "TargetTableId": 118,
     "Weight": 20,
     "SourceColumName": "association_type_id",
-    "TargetColumnName": "association_type_id",
-    "SourceTable": {
-      "TableId": 131,
-      "TableOrUdfName": "tbl_species_associations",
-      "PrimaryKeyName": "species_association_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 118,
-      "TableOrUdfName": "tbl_species_association_types",
-      "PrimaryKeyName": "association_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_species_associations",
-      "Item2": "tbl_species_association_types"
-    }
+    "TargetColumnName": "association_type_id"
   },
   {
     "TableRelationId": 153,
@@ -3653,23 +1221,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 131,
-      "TableOrUdfName": "tbl_species_associations",
-      "PrimaryKeyName": "species_association_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_species_associations",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 154,
@@ -3677,23 +1229,7 @@
     "TargetTableId": 79,
     "Weight": 20,
     "SourceColumName": "language_id",
-    "TargetColumnName": "language_id",
-    "SourceTable": {
-      "TableId": 103,
-      "TableOrUdfName": "tbl_taxa_common_names",
-      "PrimaryKeyName": "taxon_common_name_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 79,
-      "TableOrUdfName": "tbl_languages",
-      "PrimaryKeyName": "language_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_common_names",
-      "Item2": "tbl_languages"
-    }
+    "TargetColumnName": "language_id"
   },
   {
     "TableRelationId": 155,
@@ -3701,23 +1237,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 103,
-      "TableOrUdfName": "tbl_taxa_common_names",
-      "PrimaryKeyName": "taxon_common_name_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_common_names",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 156,
@@ -3725,23 +1245,7 @@
     "TargetTableId": 16,
     "Weight": 20,
     "SourceColumName": "image_type_id",
-    "TargetColumnName": "image_type_id",
-    "SourceTable": {
-      "TableId": 20,
-      "TableOrUdfName": "tbl_taxa_images",
-      "PrimaryKeyName": "taxa_images_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 16,
-      "TableOrUdfName": "tbl_image_types",
-      "PrimaryKeyName": "image_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_images",
-      "Item2": "tbl_image_types"
-    }
+    "TargetColumnName": "image_type_id"
   },
   {
     "TableRelationId": 157,
@@ -3749,23 +1253,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 20,
-      "TableOrUdfName": "tbl_taxa_images",
-      "PrimaryKeyName": "taxa_images_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_images",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 158,
@@ -3773,23 +1261,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 126,
-      "TableOrUdfName": "tbl_taxa_measured_attributes",
-      "PrimaryKeyName": "measured_attribute_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_measured_attributes",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 159,
@@ -3797,23 +1269,7 @@
     "TargetTableId": 29,
     "Weight": 20,
     "SourceColumName": "contact_id",
-    "TargetColumnName": "contact_id",
-    "SourceTable": {
-      "TableId": 141,
-      "TableOrUdfName": "tbl_taxa_reference_specimens",
-      "PrimaryKeyName": "taxa_reference_specimen_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 29,
-      "TableOrUdfName": "tbl_contacts",
-      "PrimaryKeyName": "contact_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_reference_specimens",
-      "Item2": "tbl_contacts"
-    }
+    "TargetColumnName": "contact_id"
   },
   {
     "TableRelationId": 160,
@@ -3821,23 +1277,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 141,
-      "TableOrUdfName": "tbl_taxa_reference_specimens",
-      "PrimaryKeyName": "taxa_reference_specimen_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_reference_specimens",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 161,
@@ -3845,23 +1285,7 @@
     "TargetTableId": 11,
     "Weight": 20,
     "SourceColumName": "activity_type_id",
-    "TargetColumnName": "activity_type_id",
-    "SourceTable": {
-      "TableId": 27,
-      "TableOrUdfName": "tbl_taxa_seasonality",
-      "PrimaryKeyName": "seasonality_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 11,
-      "TableOrUdfName": "tbl_activity_types",
-      "PrimaryKeyName": "activity_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_seasonality",
-      "Item2": "tbl_activity_types"
-    }
+    "TargetColumnName": "activity_type_id"
   },
   {
     "TableRelationId": 162,
@@ -3869,23 +1293,7 @@
     "TargetTableId": 82,
     "Weight": 20,
     "SourceColumName": "season_id",
-    "TargetColumnName": "season_id",
-    "SourceTable": {
-      "TableId": 27,
-      "TableOrUdfName": "tbl_taxa_seasonality",
-      "PrimaryKeyName": "seasonality_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 82,
-      "TableOrUdfName": "tbl_seasons",
-      "PrimaryKeyName": "season_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_seasonality",
-      "Item2": "tbl_seasons"
-    }
+    "TargetColumnName": "season_id"
   },
   {
     "TableRelationId": 163,
@@ -3893,23 +1301,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 27,
-      "TableOrUdfName": "tbl_taxa_seasonality",
-      "PrimaryKeyName": "seasonality_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_seasonality",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 164,
@@ -3917,23 +1309,7 @@
     "TargetTableId": 39,
     "Weight": 20,
     "SourceColumName": "author_id",
-    "TargetColumnName": "author_id",
-    "SourceTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 39,
-      "TableOrUdfName": "tbl_taxa_tree_authors",
-      "PrimaryKeyName": "author_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_tree_master",
-      "Item2": "tbl_taxa_tree_authors"
-    }
+    "TargetColumnName": "author_id"
   },
   {
     "TableRelationId": 165,
@@ -3941,23 +1317,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 21,
-      "TableOrUdfName": "tbl_taxonomic_order",
-      "PrimaryKeyName": "taxonomic_order_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxonomic_order",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 166,
@@ -3965,23 +1325,7 @@
     "TargetTableId": 43,
     "Weight": 20,
     "SourceColumName": "taxonomic_order_system_id",
-    "TargetColumnName": "taxonomic_order_system_id",
-    "SourceTable": {
-      "TableId": 21,
-      "TableOrUdfName": "tbl_taxonomic_order",
-      "PrimaryKeyName": "taxonomic_order_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 43,
-      "TableOrUdfName": "tbl_taxonomic_order_systems",
-      "PrimaryKeyName": "taxonomic_order_system_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxonomic_order",
-      "Item2": "tbl_taxonomic_order_systems"
-    }
+    "TargetColumnName": "taxonomic_order_system_id"
   },
   {
     "TableRelationId": 167,
@@ -3989,23 +1333,7 @@
     "TargetTableId": 43,
     "Weight": 20,
     "SourceColumName": "taxonomic_order_system_id",
-    "TargetColumnName": "taxonomic_order_system_id",
-    "SourceTable": {
-      "TableId": 63,
-      "TableOrUdfName": "tbl_taxonomic_order_biblio",
-      "PrimaryKeyName": "taxonomic_order_biblio_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 43,
-      "TableOrUdfName": "tbl_taxonomic_order_systems",
-      "PrimaryKeyName": "taxonomic_order_system_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxonomic_order_biblio",
-      "Item2": "tbl_taxonomic_order_systems"
-    }
+    "TargetColumnName": "taxonomic_order_system_id"
   },
   {
     "TableRelationId": 168,
@@ -4013,23 +1341,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 53,
-      "TableOrUdfName": "tbl_taxonomy_notes",
-      "PrimaryKeyName": "taxonomy_notes_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxonomy_notes",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 169,
@@ -4037,23 +1349,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 107,
-      "TableOrUdfName": "tbl_tephra_dates",
-      "PrimaryKeyName": "tephra_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_tephra_dates",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 170,
@@ -4061,23 +1357,7 @@
     "TargetTableId": 5,
     "Weight": 20,
     "SourceColumName": "dating_uncertainty_id",
-    "TargetColumnName": "dating_uncertainty_id",
-    "SourceTable": {
-      "TableId": 107,
-      "TableOrUdfName": "tbl_tephra_dates",
-      "PrimaryKeyName": "tephra_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 5,
-      "TableOrUdfName": "tbl_dating_uncertainty",
-      "PrimaryKeyName": "dating_uncertainty_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_tephra_dates",
-      "Item2": "tbl_dating_uncertainty"
-    }
+    "TargetColumnName": "dating_uncertainty_id"
   },
   {
     "TableRelationId": 171,
@@ -4085,23 +1365,7 @@
     "TargetTableId": 31,
     "Weight": 20,
     "SourceColumName": "tephra_id",
-    "TargetColumnName": "tephra_id",
-    "SourceTable": {
-      "TableId": 107,
-      "TableOrUdfName": "tbl_tephra_dates",
-      "PrimaryKeyName": "tephra_date_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 31,
-      "TableOrUdfName": "tbl_tephras",
-      "PrimaryKeyName": "tephra_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_tephra_dates",
-      "Item2": "tbl_tephras"
-    }
+    "TargetColumnName": "tephra_id"
   },
   {
     "TableRelationId": 172,
@@ -4109,23 +1373,7 @@
     "TargetTableId": 31,
     "Weight": 20,
     "SourceColumName": "tephra_id",
-    "TargetColumnName": "tephra_id",
-    "SourceTable": {
-      "TableId": 129,
-      "TableOrUdfName": "tbl_tephra_refs",
-      "PrimaryKeyName": "tephra_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 31,
-      "TableOrUdfName": "tbl_tephras",
-      "PrimaryKeyName": "tephra_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_tephra_refs",
-      "Item2": "tbl_tephras"
-    }
+    "TargetColumnName": "tephra_id"
   },
   {
     "TableRelationId": 173,
@@ -4133,23 +1381,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 122,
-      "TableOrUdfName": "tbl_text_biology",
-      "PrimaryKeyName": "biology_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_text_biology",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 174,
@@ -4157,23 +1389,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 90,
-      "TableOrUdfName": "tbl_text_distribution",
-      "PrimaryKeyName": "distribution_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_text_distribution",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 175,
@@ -4181,23 +1397,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 67,
-      "TableOrUdfName": "tbl_text_identification_keys",
-      "PrimaryKeyName": "key_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_text_identification_keys",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 176,
@@ -4205,23 +1405,7 @@
     "TargetTableId": 4,
     "Weight": 1,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 88,
-      "TableOrUdfName": "tbl_abundances",
-      "PrimaryKeyName": "abundance_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_abundances",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 177,
@@ -4229,23 +1413,7 @@
     "TargetTableId": 72,
     "Weight": 150,
     "SourceColumName": "unit_id",
-    "TargetColumnName": "unit_id",
-    "SourceTable": {
-      "TableId": 89,
-      "TableOrUdfName": "tbl_methods",
-      "PrimaryKeyName": "method_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 72,
-      "TableOrUdfName": "tbl_units",
-      "PrimaryKeyName": "unit_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_methods",
-      "Item2": "tbl_units"
-    }
+    "TargetColumnName": "unit_id"
   },
   {
     "TableRelationId": 178,
@@ -4253,23 +1421,7 @@
     "TargetTableId": 35,
     "Weight": 70,
     "SourceColumName": "location_id",
-    "TargetColumnName": "location_id",
-    "SourceTable": {
-      "TableId": 71,
-      "TableOrUdfName": "tbl_relative_ages",
-      "PrimaryKeyName": "relative_age_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 35,
-      "TableOrUdfName": "tbl_locations",
-      "PrimaryKeyName": "location_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_relative_ages",
-      "Item2": "tbl_locations"
-    }
+    "TargetColumnName": "location_id"
   },
   {
     "TableRelationId": 179,
@@ -4277,23 +1429,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 77,
-      "TableOrUdfName": "tbl_site_other_records",
-      "PrimaryKeyName": "site_other_records_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_other_records",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 180,
@@ -4301,23 +1437,7 @@
     "TargetTableId": 119,
     "Weight": 150,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 77,
-      "TableOrUdfName": "tbl_site_other_records",
-      "PrimaryKeyName": "site_other_records_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_other_records",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 181,
@@ -4325,23 +1445,7 @@
     "TargetTableId": 110,
     "Weight": 150,
     "SourceColumName": "record_type_id",
-    "TargetColumnName": "record_type_id",
-    "SourceTable": {
-      "TableId": 77,
-      "TableOrUdfName": "tbl_site_other_records",
-      "PrimaryKeyName": "site_other_records_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 110,
-      "TableOrUdfName": "tbl_record_types",
-      "PrimaryKeyName": "record_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_other_records",
-      "Item2": "tbl_record_types"
-    }
+    "TargetColumnName": "record_type_id"
   },
   {
     "TableRelationId": 182,
@@ -4349,23 +1453,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 131,
-      "TableOrUdfName": "tbl_species_associations",
-      "PrimaryKeyName": "species_association_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_species_associations",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 183,
@@ -4373,23 +1461,7 @@
     "TargetTableId": 35,
     "Weight": 60,
     "SourceColumName": "location_id",
-    "TargetColumnName": "location_id",
-    "SourceTable": {
-      "TableId": 27,
-      "TableOrUdfName": "tbl_taxa_seasonality",
-      "PrimaryKeyName": "seasonality_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 35,
-      "TableOrUdfName": "tbl_locations",
-      "PrimaryKeyName": "location_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_seasonality",
-      "Item2": "tbl_locations"
-    }
+    "TargetColumnName": "location_id"
   },
   {
     "TableRelationId": 184,
@@ -4397,23 +1469,7 @@
     "TargetTableId": 39,
     "Weight": 150,
     "SourceColumName": "author_id",
-    "TargetColumnName": "author_id",
-    "SourceTable": {
-      "TableId": 13,
-      "TableOrUdfName": "tbl_taxa_synonyms",
-      "PrimaryKeyName": "synonym_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 39,
-      "TableOrUdfName": "tbl_taxa_tree_authors",
-      "PrimaryKeyName": "author_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_synonyms",
-      "Item2": "tbl_taxa_tree_authors"
-    }
+    "TargetColumnName": "author_id"
   },
   {
     "TableRelationId": 185,
@@ -4421,23 +1477,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 13,
-      "TableOrUdfName": "tbl_taxa_synonyms",
-      "PrimaryKeyName": "synonym_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_synonyms",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 186,
@@ -4445,23 +1485,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 122,
-      "TableOrUdfName": "tbl_text_biology",
-      "PrimaryKeyName": "biology_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_text_biology",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 187,
@@ -4469,23 +1493,7 @@
     "TargetTableId": 36,
     "Weight": 150,
     "SourceColumName": "family_id",
-    "TargetColumnName": "family_id",
-    "SourceTable": {
-      "TableId": 13,
-      "TableOrUdfName": "tbl_taxa_synonyms",
-      "PrimaryKeyName": "synonym_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 36,
-      "TableOrUdfName": "tbl_taxa_tree_families",
-      "PrimaryKeyName": "family_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_synonyms",
-      "Item2": "tbl_taxa_tree_families"
-    }
+    "TargetColumnName": "family_id"
   },
   {
     "TableRelationId": 188,
@@ -4493,23 +1501,7 @@
     "TargetTableId": 148,
     "Weight": 150,
     "SourceColumName": "genus_id",
-    "TargetColumnName": "genus_id",
-    "SourceTable": {
-      "TableId": 13,
-      "TableOrUdfName": "tbl_taxa_synonyms",
-      "PrimaryKeyName": "synonym_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 148,
-      "TableOrUdfName": "tbl_taxa_tree_genera",
-      "PrimaryKeyName": "genus_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_synonyms",
-      "Item2": "tbl_taxa_tree_genera"
-    }
+    "TargetColumnName": "genus_id"
   },
   {
     "TableRelationId": 189,
@@ -4517,23 +1509,7 @@
     "TargetTableId": 109,
     "Weight": 150,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 13,
-      "TableOrUdfName": "tbl_taxa_synonyms",
-      "PrimaryKeyName": "synonym_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_synonyms",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 190,
@@ -4541,23 +1517,7 @@
     "TargetTableId": 45,
     "Weight": 1,
     "SourceColumName": "order_id",
-    "TargetColumnName": "order_id",
-    "SourceTable": {
-      "TableId": 36,
-      "TableOrUdfName": "tbl_taxa_tree_families",
-      "PrimaryKeyName": "family_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 45,
-      "TableOrUdfName": "tbl_taxa_tree_orders",
-      "PrimaryKeyName": "order_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_tree_families",
-      "Item2": "tbl_taxa_tree_orders"
-    }
+    "TargetColumnName": "order_id"
   },
   {
     "TableRelationId": 191,
@@ -4565,23 +1525,7 @@
     "TargetTableId": 36,
     "Weight": 1,
     "SourceColumName": "family_id",
-    "TargetColumnName": "family_id",
-    "SourceTable": {
-      "TableId": 148,
-      "TableOrUdfName": "tbl_taxa_tree_genera",
-      "PrimaryKeyName": "genus_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 36,
-      "TableOrUdfName": "tbl_taxa_tree_families",
-      "PrimaryKeyName": "family_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_tree_genera",
-      "Item2": "tbl_taxa_tree_families"
-    }
+    "TargetColumnName": "family_id"
   },
   {
     "TableRelationId": 192,
@@ -4589,23 +1533,7 @@
     "TargetTableId": 148,
     "Weight": 1,
     "SourceColumName": "genus_id",
-    "TargetColumnName": "genus_id",
-    "SourceTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 148,
-      "TableOrUdfName": "tbl_taxa_tree_genera",
-      "PrimaryKeyName": "genus_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_tree_master",
-      "Item2": "tbl_taxa_tree_genera"
-    }
+    "TargetColumnName": "genus_id"
   },
   {
     "TableRelationId": 193,
@@ -4613,23 +1541,7 @@
     "TargetTableId": 110,
     "Weight": 1,
     "SourceColumName": "record_type_id",
-    "TargetColumnName": "record_type_id",
-    "SourceTable": {
-      "TableId": 45,
-      "TableOrUdfName": "tbl_taxa_tree_orders",
-      "PrimaryKeyName": "order_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 110,
-      "TableOrUdfName": "tbl_record_types",
-      "PrimaryKeyName": "record_type_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxa_tree_orders",
-      "Item2": "tbl_record_types"
-    }
+    "TargetColumnName": "record_type_id"
   },
   {
     "TableRelationId": 194,
@@ -4637,23 +1549,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 63,
-      "TableOrUdfName": "tbl_taxonomic_order_biblio",
-      "PrimaryKeyName": "taxonomic_order_biblio_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxonomic_order_biblio",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 195,
@@ -4661,23 +1557,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 53,
-      "TableOrUdfName": "tbl_taxonomy_notes",
-      "PrimaryKeyName": "taxonomy_notes_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_taxonomy_notes",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 196,
@@ -4685,23 +1565,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 90,
-      "TableOrUdfName": "tbl_text_distribution",
-      "PrimaryKeyName": "distribution_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_text_distribution",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 197,
@@ -4709,23 +1573,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 67,
-      "TableOrUdfName": "tbl_text_identification_keys",
-      "PrimaryKeyName": "key_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_text_identification_keys",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 198,
@@ -4733,23 +1581,7 @@
     "TargetTableId": 84,
     "Weight": 150,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 129,
-      "TableOrUdfName": "tbl_tephra_refs",
-      "PrimaryKeyName": "tephra_ref_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_tephra_refs",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 199,
@@ -4757,23 +1589,7 @@
     "TargetTableId": 84,
     "Weight": 90,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 15,
-      "TableOrUdfName": "tbl_site_references",
-      "PrimaryKeyName": "site_reference_id",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "tbl_site_references",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 200,
@@ -4781,23 +1597,7 @@
     "TargetTableId": 4,
     "Weight": 2,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 57,
-      "TableOrUdfName": "facet.view_abundance",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_abundance",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 201,
@@ -4805,23 +1605,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 57,
-      "TableOrUdfName": "facet.view_abundance",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_abundance",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 202,
@@ -4829,23 +1613,7 @@
     "TargetTableId": 84,
     "Weight": 80,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 114,
-      "TableOrUdfName": "facet.view_sample_group_references",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_sample_group_references",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 203,
@@ -4853,23 +1621,7 @@
     "TargetTableId": 91,
     "Weight": 15,
     "SourceColumName": "sample_group_id",
-    "TargetColumnName": "sample_group_id",
-    "SourceTable": {
-      "TableId": 114,
-      "TableOrUdfName": "facet.view_sample_group_references",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 91,
-      "TableOrUdfName": "tbl_sample_groups",
-      "PrimaryKeyName": "sample_group_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_sample_group_references",
-      "Item2": "tbl_sample_groups"
-    }
+    "TargetColumnName": "sample_group_id"
   },
   {
     "TableRelationId": 204,
@@ -4877,23 +1629,7 @@
     "TargetTableId": 84,
     "Weight": 80,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 26,
-      "TableOrUdfName": "facet.view_site_references",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_site_references",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 205,
@@ -4901,23 +1637,7 @@
     "TargetTableId": 119,
     "Weight": 15,
     "SourceColumName": "site_id",
-    "TargetColumnName": "site_id",
-    "SourceTable": {
-      "TableId": 26,
-      "TableOrUdfName": "facet.view_site_references",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 119,
-      "TableOrUdfName": "tbl_sites",
-      "PrimaryKeyName": "site_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_site_references",
-      "Item2": "tbl_sites"
-    }
+    "TargetColumnName": "site_id"
   },
   {
     "TableRelationId": 206,
@@ -4925,23 +1645,7 @@
     "TargetTableId": 84,
     "Weight": 10,
     "SourceColumName": "biblio_id",
-    "TargetColumnName": "biblio_id",
-    "SourceTable": {
-      "TableId": 99,
-      "TableOrUdfName": "facet.view_taxa_biblio",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 84,
-      "TableOrUdfName": "tbl_biblio",
-      "PrimaryKeyName": "biblio_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_taxa_biblio",
-      "Item2": "tbl_biblio"
-    }
+    "TargetColumnName": "biblio_id"
   },
   {
     "TableRelationId": 207,
@@ -4949,23 +1653,7 @@
     "TargetTableId": 109,
     "Weight": 2,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 99,
-      "TableOrUdfName": "facet.view_taxa_biblio",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_taxa_biblio",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 208,
@@ -4973,23 +1661,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 150,
-      "TableOrUdfName": "facet.method_measured_values(33,0)",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_measured_values(33,0)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 209,
@@ -4997,23 +1669,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 151,
-      "TableOrUdfName": "facet.method_measured_values(33,82)",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_measured_values(33,82)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 210,
@@ -5021,23 +1677,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 152,
-      "TableOrUdfName": "facet.method_measured_values(32,0)",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_measured_values(32,0)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 211,
@@ -5045,23 +1685,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 153,
-      "TableOrUdfName": "facet.method_measured_values(37,0)",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_measured_values(37,0)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 212,
@@ -5069,23 +1693,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 25,
-      "TableOrUdfName": "facet.view_abundances_by_taxon_analysis_entity",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_abundances_by_taxon_analysis_entity",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 213,
@@ -5093,23 +1701,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 25,
-      "TableOrUdfName": "facet.view_abundances_by_taxon_analysis_entity",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": false
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.view_abundances_by_taxon_analysis_entity",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 214,
@@ -5117,23 +1709,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 154,
-      "TableOrUdfName": "facet.method_abundance(3)",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_abundance(3)",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 215,
@@ -5141,23 +1717,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 154,
-      "TableOrUdfName": "facet.method_abundance(3)",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_abundance(3)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 216,
@@ -5165,23 +1725,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 155,
-      "TableOrUdfName": "facet.method_abundance(8)",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_abundance(8)",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 217,
@@ -5189,23 +1733,7 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 155,
-      "TableOrUdfName": "facet.method_abundance(8)",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_abundance(8)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   },
   {
     "TableRelationId": 218,
@@ -5213,23 +1741,7 @@
     "TargetTableId": 109,
     "Weight": 20,
     "SourceColumName": "taxon_id",
-    "TargetColumnName": "taxon_id",
-    "SourceTable": {
-      "TableId": 156,
-      "TableOrUdfName": "facet.method_abundance(111)",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 109,
-      "TableOrUdfName": "tbl_taxa_tree_master",
-      "PrimaryKeyName": "taxon_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_abundance(111)",
-      "Item2": "tbl_taxa_tree_master"
-    }
+    "TargetColumnName": "taxon_id"
   },
   {
     "TableRelationId": 219,
@@ -5237,22 +1749,6 @@
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
-    "TargetColumnName": "analysis_entity_id",
-    "SourceTable": {
-      "TableId": 156,
-      "TableOrUdfName": "facet.method_abundance(111)",
-      "PrimaryKeyName": "xxxx",
-      "IsUdf": true
-    },
-    "TargetTable": {
-      "TableId": 4,
-      "TableOrUdfName": "tbl_analysis_entities",
-      "PrimaryKeyName": "analysis_entity_id",
-      "IsUdf": false
-    },
-    "Key": {
-      "Item1": "facet.method_abundance(111)",
-      "Item2": "tbl_analysis_entities"
-    }
+    "TargetColumnName": "analysis_entity_id"
   }
 ]

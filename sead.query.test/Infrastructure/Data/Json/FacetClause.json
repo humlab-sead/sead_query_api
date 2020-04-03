@@ -33,5 +33,40 @@
     "FacetClauseId": 7,
     "FacetId": 41,
     "Clause": "tbl_locations.location_type_id in (2, 7, 14, 16, 18)"
+  },
+  {
+    "FacetClauseId": 8,
+    "FacetId": 1001,
+    "Clause": "tbl_methods.method_id in (3, 6)"
+  },
+  {
+    "FacetClauseId": 9,
+    "FacetId": 1002,
+    "Clause": "tbl_methods.method_id in (4, 8)"
+  },
+  {
+    "FacetClauseId": 10,
+    "FacetId": 1003,
+    "Clause": "tbl_methods.method_id in (14, 15, 21)"
+  },
+  {
+    "FacetClauseId": 11,
+    "FacetId": 1004,
+    "Clause": "tbl_methods.method_id in (32, 33, 35, 36, 37, 94, 106)"
+  },
+  {
+    "FacetClauseId": 12,
+    "FacetId": 1005,
+    "Clause": "tbl_methods.method_id in (10)"
+  },
+  {
+    "FacetClauseId": 13,
+    "FacetId": 1006,
+    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'The Laboratory for Ceramic Research (Lund/KFL)')"
+  },
+  {
+    "FacetClauseId": 14,
+    "FacetId": 1007,
+    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'Sample data Isotopes')"
   }
 ]
