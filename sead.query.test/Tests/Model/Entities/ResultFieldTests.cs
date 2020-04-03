@@ -39,8 +39,11 @@ namespace SeadQueryTest.Model.Entities
             // Arrange
             using (var context = JsonSeededFacetContextFactory.Create()) {
                 var mockRegistry = new Mock<IRepositoryRegistry>();
-                mockRegistry.Setup(x => x.Results.GetAllFields())
-                    .Returns(JsonService.LoadJSON<ResultField>());
+                var reader = new JsonReaderService(new IgnoreJsonAttributesResolver());
+                var folder = ScaffoldUtility.JsonDataFolder();
+                mockRegistry
+                    .Setup(x => x.Results.GetAllFields())
+                    .Returns(reader.Deserialize<ResultField>(folder));
                 // Act
                 var entity = context.Find(type, new object[] { id });
                 // Assert
