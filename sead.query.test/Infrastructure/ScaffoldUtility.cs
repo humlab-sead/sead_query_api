@@ -30,6 +30,11 @@ namespace SeadQueryTest.Infrastructure
             return root;
         }
 
+        public static string JsonDataFolder()
+        {
+            return Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
+        }
+
         public static void Dump(object instance, string filename, DumpOptions options = null)
         {
             options ??= new DumpOptions() {
@@ -53,18 +58,19 @@ namespace SeadQueryTest.Infrastructure
         public static ICollection<Type> GetModelTypes()
         {
             return new List<Type>() {
-                    typeof(Facet),
-                    typeof(FacetClause),
-                    typeof(FacetGroup),
-                    typeof(FacetTable),
-                    typeof(FacetType),
-                    typeof(Table),
-                    typeof(TableRelation),
-                    typeof(ResultAggregate),
-                    typeof(ResultAggregateField),
-                    typeof(ResultField),
                     typeof(ResultFieldType),
+                    typeof(ResultField),
                     typeof(ResultViewType),
+                    typeof(FacetType),
+                    typeof(FacetGroup),
+                    typeof(Table),
+                    typeof(FacetClause),
+                    typeof(FacetChild),
+                    typeof(FacetTable),
+                    typeof(Facet),
+                    typeof(TableRelation),
+                    typeof(ResultAggregateField),
+                    typeof(ResultAggregate),
                     typeof(ViewState)
                 };
         }
