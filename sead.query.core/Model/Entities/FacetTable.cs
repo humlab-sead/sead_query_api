@@ -23,7 +23,7 @@ namespace SeadQueryCore
         public Table Table { get; set; }
 
         [JsonIgnore]
-        public string TableOrUdfName { get { return Table.TableOrUdfName; } }
+        public string TableOrUdfName { get { return Table?.TableOrUdfName; } }
 
         [JsonIgnore]
         public virtual Facet Facet { get; set; }
