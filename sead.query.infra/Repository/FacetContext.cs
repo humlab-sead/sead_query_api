@@ -103,7 +103,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.AggregateTitle).HasColumnName("aggregate_title").IsRequired();
                 entity.Property(b => b.AggregateFacetId).HasColumnName("aggregate_facet_id").IsRequired();
                 entity.HasOne<FacetType>(x => x.FacetType).WithMany().HasForeignKey(p => p.FacetTypeId);
-                entity.HasOne<FacetGroup>(x => x.FacetGroup).WithMany(x => x.Facets).HasForeignKey(p => p.FacetGroupId);
+                entity.HasOne<FacetGroup>(x => x.FacetGroup).WithMany().HasForeignKey(p => p.FacetGroupId);
             });
 
             builder.Entity<FacetGroup>(entity =>
@@ -210,11 +210,11 @@ namespace SeadQueryInfra
 
         }
 
-        public override int SaveChanges()
-        {
-            ChangeTracker.DetectChanges();
-            return base.SaveChanges();
-        }
+        //public override int SaveChanges()
+        //{
+        //    ChangeTracker.DetectChanges();
+        //    return base.SaveChanges();
+        //}
 
         public override void Dispose()
         {
