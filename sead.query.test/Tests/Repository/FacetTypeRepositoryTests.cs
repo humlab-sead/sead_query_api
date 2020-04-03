@@ -18,6 +18,7 @@ namespace SeadQueryTest.Repository
 
         public void Dispose()
         {
+            mockFacetContext.Dispose();
         }
 
         private FacetTypeRepository CreateFacetTypeRepository()

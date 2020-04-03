@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -70,7 +71,7 @@ namespace SeadQueryTest
             var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await client.PostAsync("/api/result/load", requestContent);
+            var response = await client.PostAsync(new Uri("/api/result/load"), requestContent);
             response.EnsureSuccessStatusCode();
             var responseJson = await response.Content.ReadAsStringAsync();
             var resultContent = JsonConvert.DeserializeObject<ResultContentSet>(responseJson);

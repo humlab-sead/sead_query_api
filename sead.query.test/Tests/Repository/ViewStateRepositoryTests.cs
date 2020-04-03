@@ -17,6 +17,7 @@ namespace SeadQueryTest.Repository
 
         public void Dispose()
         {
+            mockFacetContext.Dispose();
         }
 
         private ViewStateRepository CreateRepository()

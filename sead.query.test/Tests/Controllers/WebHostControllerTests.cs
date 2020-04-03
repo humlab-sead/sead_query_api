@@ -12,6 +12,7 @@ using SeadQueryAPI;
 using SeadQueryCore;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Mocks;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace SeadQueryTest
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
             using (var host = await builder.StartAsync())
             {
-                var response = await host.GetTestClient().GetAsync("/api/values");
+                var response = await host.GetTestClient().GetAsync(new Uri("/api/values"));
                 response.EnsureSuccessStatusCode();
                 Assert.Equal("[\"value1\",\"value2\"]", await response.Content.ReadAsStringAsync());
             }
@@ -100,7 +101,7 @@ namespace SeadQueryTest
         {
             var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
             using (var host = await builder.StartAsync()) {
-                var response = await host.GetTestClient().GetAsync("/api/facets");
+                var response = await host.GetTestClient().GetAsync(new Uri("/api/facets"));
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
@@ -123,7 +124,7 @@ namespace SeadQueryTest
 
                     var json = JsonConvert.SerializeObject(facetsConfig);
                     var request_content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("/api/facets/load", request_content);
+                    var response = await client.PostAsync(new Uri("/api/facets/load"), request_content);
                     response.EnsureSuccessStatusCode();
                     var response_content = await response.Content.ReadAsStringAsync();
                     var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
@@ -147,7 +148,7 @@ namespace SeadQueryTest
 
                     var json = JsonConvert.SerializeObject(facetsConfig);
                     var request_content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("/api/facets/load", request_content);
+                    var response = await client.PostAsync(new Uri("/api/facets/load"), request_content);
                     response.EnsureSuccessStatusCode();
                     var response_content = await response.Content.ReadAsStringAsync();
                     var facetContent = JsonConvert.DeserializeObject<FacetContent>(response_content);
@@ -170,7 +171,7 @@ namespace SeadQueryTest
                         var request_content = new StringContent(json, Encoding.UTF8, "application/json");
 
                         // Act
-                        var response = await client.PostAsync("/api/facets/load", request_content);
+                        var response = await client.PostAsync(new Uri("/api/facets/load"), request_content);
                         response.EnsureSuccessStatusCode();
                         var response_content = await response.Content.ReadAsStringAsync();
                         var jsonObject = JsonConvert.DeserializeObject<JObject>(response_content);
