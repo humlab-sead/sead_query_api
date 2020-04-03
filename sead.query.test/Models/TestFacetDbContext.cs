@@ -41,8 +41,8 @@ namespace SeadQueryTest.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=seadserv.humlab.umu.se;Database=sead_staging;Username=querysead_worker;Password=Vua9VagZ");
+                throw new NotImplementedException("OptionsBuilder Is Not Configured");
+                //optionsBuilder.UseNpgsql("Host=host;Database=database;Username=user;Password=password");
             }
         }
 
