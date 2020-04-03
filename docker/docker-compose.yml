@@ -5,7 +5,7 @@ services:
   sead.query.api:
     image: sead_query_api
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
     restart: always
     depends_on:
