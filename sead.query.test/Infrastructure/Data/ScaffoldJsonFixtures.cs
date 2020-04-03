@@ -2,8 +2,6 @@ using Newtonsoft.Json;
 using Xunit;
 using System.IO;
 using Newtonsoft.Json.Serialization;
-using SeadQueryAPI.Serializers;
-using SeadQueryCore;
 using SeadQueryTest.Fixtures;
 using SeadQueryTest.Mocks;
 using SeadQueryInfra;
@@ -12,21 +10,10 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
 {
     public class ScaffoldJsonFixtures
     {
-        //private class FixtureContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
-        //{
-        //    public FixtureContractResolver() : base()
-        //    {
-        //        IgnoreProperty(typeof(TableRelation),
-        //            "SourceTable",
-        //            "TargetTable",
-        //            "Key"
-        //        );
-        //    }
-        //}
 
         private static DefaultContractResolver DefaultResolver()
         {
-            var resolver = new SeadQueryAPI.Serializers.SeadQueryResolver();
+            var resolver = new IgnoreJsonAttributesResolver();
             return resolver;
         }
 
@@ -48,11 +35,11 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             return new FacetContext(builder.Options);
         }
 
-        [Fact(Skip = "Not a test. Scaffolds JSON data from online facet model")]
+        [Fact] //(Skip = "Not a test. Scaffolds JSON data from online facet model")]
         public void ScaffoldFacetDatabaseModelToJsonFileUsingOnlineDatabase()
         {
             var serializer = CreateSerializer();
-            var path = JsonService.DataFolder();
+            var path = ScaffoldUtility.JsonDataFolder();
             using (var context = CreateContext()) {
                 new JsonWriterService(serializer).SerializeTypesToPath(context, ScaffoldUtility.GetModelTypes(), path);
             }
@@ -67,8 +54,8 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
                 NullValueHandling = NullValueHandling.Ignore
             };
 
-            var reader = new JsonReaderService();
-            var path = JsonService.DataFolder();
+            var reader = new JsonReaderService(DefaultResolver());
+            var path = ScaffoldUtility.JsonDataFolder();
             using (var context = CreateContext()) {
                 var types = ScaffoldUtility.GetModelTypes();
                 var facets = reader.Deserialize<SeadQueryCore.Facet>(path);
