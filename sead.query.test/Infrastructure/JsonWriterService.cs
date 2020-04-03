@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Text;
 namespace SeadQueryTest.Infrastructure
 {
 
-    public class JsonWriterService : JsonService
+    public class JsonWriterService
     {
         public JsonWriterService(JsonSerializer serializer)
         {
@@ -22,7 +23,7 @@ namespace SeadQueryTest.Infrastructure
         public void SerializeTypesToPath(DbContext context, ICollection<Type> types, string path)
         {
             foreach (var type in types) {
-                object entities = GetEntititesForType(context, type);
+                object entities = context.SetEx(type);
                 SerializeToFile(type, entities, path);
             }
         }
@@ -39,11 +40,6 @@ namespace SeadQueryTest.Infrastructure
         public void SerializeToFile<T>(object entities, string path)
         {
             SerializeToFile(typeof(T), entities, path);
-        }
-
-        private object GetEntititesForType(DbContext context, Type type)
-        {
-            return GetGenericMethodForType<DbContext>("Set", type).Invoke(context, Array.Empty<object>());
         }
     }
 }
