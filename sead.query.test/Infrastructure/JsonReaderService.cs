@@ -1,26 +1,53 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
+using SeadQueryInfra;
 using SeadQueryTest.Fixtures;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SeadQueryTest.Infrastructure
 {
-    public class JsonReaderService : JsonService
+    //public class JsonFileContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
+    //{
+    //    public JsonFileContractResolver() : base()
+    //    {
+    //        IgnoreProperty(typeof(TableRelation),
+    //            "SourceTable",
+    //            "TargetTable"
+    //        );
+    //        IgnoreProperty(typeof(ResultAggregateField),
+    //            "Aggregate"
+    //        );
+    //    }
+    //}
+
+    //public class FacetConverter : CustomCreationConverter<Facet>
+    //{
+    //    public FacetConverter(FacetContext context)
+    //    {
+    //        Context = context;
+    //    }
+
+    //    public FacetContext Context { get; }
+
+    //    public override Facet Create(Type objectType)
+    //    {
+    //        return Context.Set<Facet>().;
+    //    }
+    //}
+
+    public class JsonReaderService
     {
-        private class JsonFileContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
+        public IContractResolver ContractResolver { get; }
+
+        public JsonReaderService(IContractResolver contractResolver)
         {
-            public JsonFileContractResolver() : base()
-            {
-                IgnoreProperty(typeof(TableRelation),
-                    "SourceTable",
-                    "TargetTable"
-                );
-                IgnoreProperty(typeof(ResultAggregateField),
-                    "Aggregate"
-                );
-            }
+            ContractResolver = contractResolver; // ?? new JsonFileContractResolver();
         }
 
         public IEnumerable<T> Deserialize<T>(string folder) where T : class, new()
@@ -32,7 +59,7 @@ namespace SeadQueryTest.Infrastructure
             }
             var settings = new JsonSerializerSettings()
             {
-                ContractResolver = new JsonFileContractResolver()
+                ContractResolver = ContractResolver
             };
             using (StreamReader stream = new StreamReader(filename)) {
                 var json = stream.ReadToEnd();
@@ -41,46 +68,13 @@ namespace SeadQueryTest.Infrastructure
             }
         }
 
-        //private static List<T> DeserializeItems<T>(string json) where T : class, new()
-        //{
-        //    dynamic d_data = JsonConvert.DeserializeObject<dynamic>(json);
-        //    dynamic d_items = d_data.data;
-        //    List<T> items = new List<T>();
-        //    Type targetType = typeof(T);
-        //    foreach (dynamic d_item in d_items) {
-        //        T item = new T();
-        //        foreach (JProperty sourceProperty in d_item.Properties()) {
-        //            PropertyInfo targetProperty = targetType.GetProperty(sourceProperty.Name, BindingFlags.Public | BindingFlags.Instance);
-        //            if (targetProperty != null && targetProperty.CanWrite) {
-        //                var value = Convert.ChangeType(sourceProperty.Value, targetProperty.PropertyType);
-        //                targetProperty.SetValue(item, value, null);
-        //            }
-        //        }
-        //        items.Add(item);
-        //    }
-
-        //    return items;
-        //}
-
-        //public ICollection<T> Deserialize2<T>(string folder) where T : class, new()
-        //{
-        //    var filename = Path.Combine(folder, $"{typeof(T).Name}.json");
-        //    if (!File.Exists(filename)) {
-        //        return new List<T>();
-        //    }
-        //    using (StreamReader stream = new StreamReader(filename)) {
-        //        var json = stream.ReadToEnd();
-        //        var items = JsonConvert.DeserializeObject<List<T>>(json);
-        //        return items;
-        //    }
-        //}
-
-        //public IEnumerable<object> CreateList(Type type)
-        //{
-        //    Type genericListType = typeof(List<>).MakeGenericType(type);
-        //    return (IEnumerable<object>)Activator.CreateInstance(genericListType);
-        //}
+        public IEnumerable<object> Deserialize(Type type, string folder)
+        {
+            return (IEnumerable<object>)typeof(JsonReaderService)
+                .GetMethod("Deserialize")
+                .MakeGenericMethod(type)
+                .Invoke(this, new object[] { folder });
+        }
 
     }
-
 }
