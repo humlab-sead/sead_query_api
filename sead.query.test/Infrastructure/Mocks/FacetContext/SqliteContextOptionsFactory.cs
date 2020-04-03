@@ -6,15 +6,13 @@ using SeadQueryInfra;
 namespace SeadQueryTest.Mocks
 {
 
-    internal static class SqliteInMemoryContextOptionsFactory
+    internal static class SqliteContextOptionsFactory
     {
-        public static DbContextOptions Create(DbConnection connection=null)
+        public static DbContextOptions Create(DbConnection connection)
         {
-            if (connection == null)
-                connection = FakeConnectionFactory.Create();
-
             var builder = new DbContextOptionsBuilder<FacetContext>()
-                .UseSqlite(connection);
+                .UseSqlite(connection)
+                .EnableSensitiveDataLogging(true);
 
             return builder.Options;
         }
