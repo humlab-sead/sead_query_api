@@ -61,14 +61,14 @@ namespace SeadQueryInfra
                       .Include(x => x.Clauses);
         }
 
-        private Dictionary<string, Facet> Hash()
+        public Dictionary<string, Facet> ToDictionary()
         {
             return hash ?? (hash = GetAll().ToDictionary(x => x.FacetCode));
         }
 
         public Facet GetByCode(string facetCode)
         {
-            return Hash()?[facetCode];
+            return ToDictionary()?[facetCode];
         }
 
         public IEnumerable<Facet> FindThoseWithAlias()
