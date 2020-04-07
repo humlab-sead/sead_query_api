@@ -13,30 +13,42 @@
 
   <ItemGroup>
     <Compile Remove="Infrastructure\FacetContext\**" />
+    <Compile Remove="Infrastructure\Services\**" />
+    <Compile Remove="Models\**" />
     <EmbeddedResource Remove="Infrastructure\FacetContext\**" />
+    <EmbeddedResource Remove="Infrastructure\Services\**" />
+    <EmbeddedResource Remove="Models\**" />
     <None Remove="Infrastructure\FacetContext\**" />
+    <None Remove="Infrastructure\Services\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Archived\Data_RangeFacetCategoryCount.cs" />
     <Compile Remove="Archived\Data_Sites.cs" />
     <Compile Remove="Archived\FacetRepository.cs" />
+    <Compile Remove="Archived\FacetsConfigFixtures.cs" />
     <Compile Remove="Archived\FacetTypeRepository.cs" />
     <Compile Remove="Archived\FakeFacetContext.cs" />
+    <Compile Remove="Archived\FakeFacetContextSeeder.cs" />
     <Compile Remove="Archived\FakeRepository.cs" />
     <Compile Remove="Archived\RepositoryMocks\FacetRepository.cs" />
     <Compile Remove="Archived\RepositoryMocks\FacetTypeRepository.cs" />
     <Compile Remove="Archived\RepositoryMocks\FakeFacetContext.cs" />
     <Compile Remove="Archived\RepositoryMocks\FakeRepository.cs" />
+    <Compile Remove="Archived\ResetRelations.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Archived\Data_RangeFacetCategoryCount.cs" />
     <None Include="Archived\Data_Sites.cs" />
+    <None Include="Archived\FacetsConfigFixtures.cs" />
+    <None Include="Archived\FakeFacetContextSeeder.cs" />
     <None Include="Archived\RepositoryMocks\FacetRepository.cs" />
     <None Include="Archived\RepositoryMocks\FacetTypeRepository.cs" />
     <None Include="Archived\RepositoryMocks\FakeFacetContext.cs" />
     <None Include="Archived\RepositoryMocks\FakeRepository.cs" />
+    <None Include="Archived\ResetRelations.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +56,11 @@
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="5.0.0" />
+    <PackageReference Include="AutoFixture" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.AutoMoq" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.Idioms" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.SeedExtensions" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.11.0" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Bogus" Version="29.0.1" />
     <PackageReference Include="CacheManager.Core" Version="1.2.0" />
@@ -122,8 +139,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.test.json</TargetPath>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Infrastructure\Services\" />
   </ItemGroup>
 </Project>

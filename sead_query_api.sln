@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sead.solution.items", "sead
 		..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf = ..\..\..\..\.nuget\packages\redis-64\3.0.503\tools\redis.windows.conf
 	EndProjectSection
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FFDFD35B-1A98-438C-A64A-62184E6A0CCF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sead.query.infra", "sead.query.infra\sead.query.infra.csproj", "{CF171AFB-4E73-465E-8527-4CAA607A6BC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A33F564C-14AA-4036-B920-7E17DFE98771}"
