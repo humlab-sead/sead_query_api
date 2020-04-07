@@ -6,23 +6,19 @@ using System;
 using Moq;
 using SeadQueryInfra;
 using System.Data.Common;
+using SeadQueryTest.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeadQueryTest.Mocks
 {
-    internal static class FakeFacetsConfigByUriFactory
+    internal static class JsonSeededFacetsConfigByUriFactory
     {
 
-        public static FacetsConfig2 Create(string uri)
+        public static FacetsConfig2 Create(FacetContext context, string uri)
         {
-            return CreateFactory().Create(uri);
-        }
-
-        private static FacetsConfigFactory CreateFactory(DbConnection connection=null)
-        {
-            var context = JsonSeededFacetContextFactory.Create(connection);
             var registry = new RepositoryRegistry(context);
-            var factory = new FacetsConfigFactory(registry);
-            return factory;
+            var factory = new MockFacetsConfigFactory(registry);
+            return factory.Create(uri);
         }
 
     }
@@ -55,51 +51,53 @@ namespace SeadQueryTest.Mocks
 
     }
 
-    public class FacetsConfigFactory
+    public class MockFacetsConfigFactory
     {
         public IRepositoryRegistry Registry { get; private set; }
+        private readonly MockFacetConfigUriParser UriParser = new MockFacetConfigUriParser();
 
-        public FacetsConfigFactory(IRepositoryRegistry registry)
+        public MockFacetsConfigFactory(IRepositoryRegistry registry)
         {
             Registry = registry;
         }
 
-        public FacetsConfigFactory()
+        private Facet GetFacet(string facetCode)
         {
-            Registry = FakeFacetsGetByCodeRepositoryFactory.Create();
+            if (String.IsNullOrEmpty(facetCode))
+                throw new ArgumentNullException(nameof(facetCode), "not allowed");
+
+            return Registry.Facets.GetByCode(facetCode);
         }
 
-        private Facet GetFacet(string facetCode) => String.IsNullOrEmpty(facetCode) ? Registry.Facets.GetByCode(facetCode) : null;
-
-        public FacetsConfig2 CreateFacetsConfig(string targetCode, string triggerCode, List<FacetConfig2> facetConfigs)
+        public FacetsConfig2 Create(string targetCode, string triggerCode, List<FacetConfig2> facetConfigs, string requestType = "populate", string domainCode = "")
         {
             return new FacetsConfig2()
             {
-                DomainCode = "",
+                DomainCode = domainCode,
                 TargetCode = targetCode,
                 TargetFacet = GetFacet(targetCode),
                 TriggerCode = triggerCode,
                 TriggerFacet = GetFacet(triggerCode),
                 RequestId = "1",
-                RequestType = "populate",
+                RequestType = requestType,
                 FacetConfigs = facetConfigs
             };
         }
 
         public FacetsConfig2 CreateSingleFacetsConfigWithoutPicks(string facetCode)
         {
-            return CreateFacetsConfig(
+            return Create(
                 facetCode,
                 facetCode,
                 new List<FacetConfig2>() {
-                    FacetConfigFactory.Create(GetFacet(facetCode), 0, new List<FacetConfigPick>())
+                    FacetConfigFactory.Create(Registry.Facets.GetByCode(facetCode), 0, new List<FacetConfigPick>())
                 }
             );
         }
 
         public FacetsConfig2 Create(string uri)
         {
-            var config = FacetConfigUriParser.Parse(uri);
+            var config = UriParser.Parse(uri);
             var position = 0;
 
             var facetConfigs = config
@@ -107,7 +105,7 @@ namespace SeadQueryTest.Mocks
                 .Select(z => FacetConfigFactory.Create(GetFacet(z.Key), position++, z.Value))
                 .ToList();
 
-            return CreateFacetsConfig(
+            return Create(
                 config.TargetCode,
                 config.TargetCode,
                 facetConfigs

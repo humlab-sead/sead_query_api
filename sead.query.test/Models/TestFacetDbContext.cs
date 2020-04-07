@@ -440,6 +440,10 @@ namespace SeadQueryTest.Models
                     .HasColumnName("table_name")
                     .HasMaxLength(80);
 
+                entity.Property(e => e.DataType)
+                    .HasColumnName("datatype")
+                    .HasMaxLength(40);
+
                 entity.HasOne(d => d.FieldType)
                     .WithMany(p => p.ResultField)
                     .HasForeignKey(d => d.FieldTypeId)

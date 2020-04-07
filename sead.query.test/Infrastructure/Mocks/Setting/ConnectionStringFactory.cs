@@ -13,14 +13,16 @@ namespace SeadQueryTest
                 { "QueryBuilderSetting:Store:Host",                 "seadserv.humlab.umu.se"                    },
                 { "QueryBuilderSetting:Store:Port",                 "5432"                                      },
                 { "QueryBuilderSetting:Store:Database",             "sead_staging"                              },
+                { "QueryBuilderSetting:Store:Username",             "humlab_admin"                              },
                 { "QueryBuilderSetting:Store:UseRedisCache",        "false"                                     }
             };
             return defaultSettings;
         }
 
-        public static string Create()
+        public static string Create(Dictionary<string, string> defaultSettings = null)
         {
-            var settings = SettingFactory.GetSettings(DefaultSettings()).Store;
+            defaultSettings ??= DefaultSettings();
+            var settings = SettingFactory.GetSettings(defaultSettings).Store;
             return new NpgsqlConnectionStringBuilder
             {
                 Host = settings.Host,

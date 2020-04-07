@@ -7,40 +7,41 @@ namespace SeadQueryTest.Mocks
 {
     internal static class SimpleFacetGraphRepositoryRegistryFactory
     {
+        public static List<Table> Nodes = new List<Table>() {
+            new Table { TableId = 1, TableOrUdfName = "A" },
+            new Table { TableId = 2, TableOrUdfName = "B" },
+            new Table { TableId = 3, TableOrUdfName = "C" },
+            new Table { TableId = 4, TableOrUdfName = "D" },
+            new Table { TableId = 5, TableOrUdfName = "E" },
+            new Table { TableId = 6, TableOrUdfName = "F" },
+            new Table { TableId = 7, TableOrUdfName = "G" },
+            new Table { TableId = 8, TableOrUdfName = "H" }
+        };
+
+        public static Dictionary<string, Table> NodesDict = Nodes.ToDictionary(z => z.TableOrUdfName);
+
+        public static List<TableRelation> Edges = new List<TableRelation>() {
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["A"], TargetTable = NodesDict["B"], Weight = 7 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["A"], TargetTable = NodesDict["C"], Weight = 8 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["B"], TargetTable = NodesDict["F"], Weight = 2 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["C"], TargetTable = NodesDict["F"], Weight = 6 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["C"], TargetTable = NodesDict["G"], Weight = 4 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["D"], TargetTable = NodesDict["F"], Weight = 8 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["E"], TargetTable = NodesDict["H"], Weight = 1 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["F"], TargetTable = NodesDict["G"], Weight = 9 },
+            new TableRelation() { TableRelationId = 0, SourceTable = NodesDict["F"], TargetTable = NodesDict["H"], Weight = 3 }
+        };
+
         public static IRepositoryRegistry CreateMockRegistry()
         {
-            var nodes = new List<Table>() {
-                new Table { TableId = 0, TableOrUdfName = "A" },
-                new Table { TableId = 0, TableOrUdfName = "B" },
-                new Table { TableId = 0, TableOrUdfName = "C" },
-                new Table { TableId = 0, TableOrUdfName = "D" },
-                new Table { TableId = 0, TableOrUdfName = "E" },
-                new Table { TableId = 0, TableOrUdfName = "F" },
-                new Table { TableId = 0, TableOrUdfName = "G" },
-                new Table { TableId = 0, TableOrUdfName = "H" }
-            };
-
-            var nodesDict = nodes.ToDictionary(z => z.TableOrUdfName);
-
-            var edges = new List<TableRelation>() {
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["A"], TargetTable = nodesDict["B"], Weight = 7 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["A"], TargetTable = nodesDict["C"], Weight = 8 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["B"], TargetTable = nodesDict["F"], Weight = 2 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["C"], TargetTable = nodesDict["F"], Weight = 6 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["C"], TargetTable = nodesDict["G"], Weight = 4 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["D"], TargetTable = nodesDict["F"], Weight = 8 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["E"], TargetTable = nodesDict["H"], Weight = 1 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["F"], TargetTable = nodesDict["G"], Weight = 9 },
-                new TableRelation() { TableRelationId = 0, SourceTable = nodesDict["F"], TargetTable = nodesDict["H"], Weight = 3 }
-            };
 
             var mockRegistry = new Mock<IRepositoryRegistry>();
 
             mockRegistry.Setup(x => x.Tables.GetAll())
-                .Returns(nodes);
+                .Returns(Nodes);
 
             mockRegistry.Setup(x => x.TableRelations.GetAll())
-                .Returns(edges);
+                .Returns(Edges);
 
             mockRegistry.Setup(x => x.FacetTables.AliasTablesDict())
                 .Returns(new Dictionary<string, FacetTable>());

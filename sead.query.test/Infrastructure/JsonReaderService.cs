@@ -12,32 +12,25 @@ using System.Linq;
 
 namespace SeadQueryTest.Infrastructure
 {
-    //public class JsonFileContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
+    //public static class JsonTextLoader
     //{
-    //    public JsonFileContractResolver() : base()
-    //    {
-    //        IgnoreProperty(typeof(TableRelation),
-    //            "SourceTable",
-    //            "TargetTable"
-    //        );
-    //        IgnoreProperty(typeof(ResultAggregateField),
-    //            "Aggregate"
-    //        );
-    //    }
-    //}
 
-    //public class FacetConverter : CustomCreationConverter<Facet>
-    //{
-    //    public FacetConverter(FacetContext context)
-    //    {
-    //        Context = context;
-    //    }
+    //    public static object lockObject = new object();
+    //    public static Dictionary<string, string> __Cache = new Dictionary<string, string>();
 
-    //    public FacetContext Context { get; }
-
-    //    public override Facet Create(Type objectType)
+    //    public static string Get(string filename)
     //    {
-    //        return Context.Set<Facet>().;
+    //        if (!__Cache.ContainsKey(filename)) {
+    //            lock (lockObject) {
+    //                if (!__Cache.ContainsKey(filename)) {
+    //                    using (StreamReader stream = new StreamReader(filename)) {
+    //                        var json = stream.ReadToEnd();
+    //                        __Cache.Add(filename, json);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        return __Cache[filename];
     //    }
     //}
 
@@ -61,6 +54,7 @@ namespace SeadQueryTest.Infrastructure
             {
                 ContractResolver = ContractResolver
             };
+            // var json = JsonTextLoader.Get(filename);
             using (StreamReader stream = new StreamReader(filename)) {
                 var json = stream.ReadToEnd();
                 IEnumerable<T> items = JsonConvert.DeserializeObject<IEnumerable<T>>(json, settings);
@@ -71,7 +65,7 @@ namespace SeadQueryTest.Infrastructure
         public IEnumerable<object> Deserialize(Type type, string folder)
         {
             return (IEnumerable<object>)typeof(JsonReaderService)
-                .GetMethod("Deserialize")
+                .GetMethods().Single(x => x.Name == "Deserialize" && x.IsGenericMethodDefinition)
                 .MakeGenericMethod(type)
                 .Invoke(this, new object[] { folder });
         }

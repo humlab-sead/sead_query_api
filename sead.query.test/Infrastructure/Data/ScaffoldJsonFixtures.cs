@@ -35,7 +35,20 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             return new FacetContext(builder.Options);
         }
 
-        [Fact] //(Skip = "Not a test. Scaffolds JSON data from online facet model")]
+        [Fact]
+        public void ScaffoldFacetConfigsToJsonFile()
+        {
+            var serializer = CreateSerializer();
+            var path = ScaffoldUtility.JsonDataFolder();
+            using (var fixture = new JsonSeededFacetContextFixture())
+            using (var container = new DisposableFacetContextContainer(fixture)) {
+                var context = container.Context;
+
+                new JsonWriterService(serializer).SerializeTypesToPath(container.Context, ScaffoldUtility.GetModelTypes(), path);
+            }
+        }
+
+        [Fact(Skip = "Not a test. Scaffolds JSON data from online facet model")]
         public void ScaffoldFacetDatabaseModelToJsonFileUsingOnlineDatabase()
         {
             var serializer = CreateSerializer();
@@ -45,7 +58,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Not a test.")]
         public void CanLoadScaffoldedJsonModelAsDbContext()
         {
             JsonSerializer serializer = new JsonSerializer

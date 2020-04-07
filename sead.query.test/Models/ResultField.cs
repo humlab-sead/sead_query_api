@@ -19,6 +19,7 @@ namespace SeadQueryTest.Models
         public bool Activated { get; set; }
         public string LinkUrl { get; set; }
         public string LinkLabel { get; set; }
+        public string DataType { get; set; }
 
         public virtual ResultFieldType FieldType { get; set; }
         public virtual Table TableNameNavigation { get; set; }

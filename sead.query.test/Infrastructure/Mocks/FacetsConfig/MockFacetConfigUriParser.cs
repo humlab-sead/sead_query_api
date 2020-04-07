@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace SeadQueryTest.Mocks
 {
-    internal static class FacetConfigUriParser
+    internal class MockFacetConfigUriParser
     {
         private static Regex tupleRegex = new Regex(@"^[\(](\d+)[\,](\d+)[\)]$");
 
@@ -24,7 +24,7 @@ namespace SeadQueryTest.Mocks
             public Dictionary<string, List<FacetConfigPick>> FacetCodes { get; set; }
         }
 
-        public static UriData Parse(string uri)
+        public UriData Parse(string uri)
         {
             var parts = uri.Split(':').ToList();
             var codes = parts[0].Split("@");
@@ -46,7 +46,7 @@ namespace SeadQueryTest.Mocks
             };
         }
 
-        private static List<FacetConfigPick> ParsePicks(string data)
+        private List<FacetConfigPick> ParsePicks(string data)
         {
             var cultureInfo = new CultureInfo("en-US");
 
