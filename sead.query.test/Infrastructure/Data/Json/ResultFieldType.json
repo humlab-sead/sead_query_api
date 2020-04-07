@@ -1,39 +1,21 @@
 [
   {
-    "FieldTypeId": "sum_item",
-    "IsResultValue": true,
-    "IsSortField": false,
-    "IsAggregateField": true,
+    "FieldTypeId": "sort_item",
+    "IsResultValue": false,
+    "IsSortField": true,
+    "IsAggregateField": false,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}"
+    "SqlTemplate": "{0}"
   },
   {
-    "FieldTypeId": "count_item",
+    "FieldTypeId": "link_item_filtered",
     "IsResultValue": true,
     "IsSortField": false,
-    "IsAggregateField": true,
-    "IsItemField": false,
+    "IsAggregateField": false,
+    "IsItemField": true,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "COUNT({0}) AS count_of_{0}"
-  },
-  {
-    "FieldTypeId": "avg_item",
-    "IsResultValue": true,
-    "IsSortField": false,
-    "IsAggregateField": true,
-    "IsItemField": false,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "AVG({0}) AS avg_of_{0}"
-  },
-  {
-    "FieldTypeId": "text_agg_item",
-    "IsResultValue": true,
-    "IsSortField": false,
-    "IsAggregateField": true,
-    "IsItemField": false,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}"
+    "SqlTemplate": "{0}"
   },
   {
     "FieldTypeId": "single_item",
@@ -54,21 +36,39 @@
     "SqlTemplate": "{0}"
   },
   {
-    "FieldTypeId": "link_item_filtered",
+    "FieldTypeId": "avg_item",
     "IsResultValue": true,
     "IsSortField": false,
-    "IsAggregateField": false,
-    "IsItemField": true,
-    "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "{0}"
-  },
-  {
-    "FieldTypeId": "sort_item",
-    "IsResultValue": false,
-    "IsSortField": true,
-    "IsAggregateField": false,
+    "IsAggregateField": true,
     "IsItemField": false,
     "SqlFieldCompiler": "TemplateFieldCompiler",
-    "SqlTemplate": "{0}"
+    "SqlTemplate": "AVG({0}) AS avg_of_{0}"
+  },
+  {
+    "FieldTypeId": "count_item",
+    "IsResultValue": true,
+    "IsSortField": false,
+    "IsAggregateField": true,
+    "IsItemField": false,
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "COUNT({0}) AS count_of_{0}"
+  },
+  {
+    "FieldTypeId": "sum_item",
+    "IsResultValue": true,
+    "IsSortField": false,
+    "IsAggregateField": true,
+    "IsItemField": false,
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "SUM({0}::double precision) AS sum_of_{0}"
+  },
+  {
+    "FieldTypeId": "text_agg_item",
+    "IsResultValue": true,
+    "IsSortField": false,
+    "IsAggregateField": true,
+    "IsItemField": false,
+    "SqlFieldCompiler": "TemplateFieldCompiler",
+    "SqlTemplate": "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}"
   }
 ]

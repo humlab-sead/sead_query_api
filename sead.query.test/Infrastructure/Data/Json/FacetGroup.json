@@ -1,13 +1,5 @@
 [
   {
-    "FacetGroupId": 99,
-    "FacetGroupKey": "ROOT",
-    "DisplayTitle": "ROOT",
-    "Description": "ROOT",
-    "IsApplicable": false,
-    "IsDefault": false
-  },
-  {
     "FacetGroupId": 1,
     "FacetGroupKey": "others",
     "DisplayTitle": "Others",
@@ -53,6 +45,14 @@
     "DisplayTitle": "Taxonomy",
     "Description": "Taxonomy",
     "IsApplicable": true,
+    "IsDefault": false
+  },
+  {
+    "FacetGroupId": 99,
+    "FacetGroupKey": "ROOT",
+    "DisplayTitle": "ROOT",
+    "Description": "ROOT",
+    "IsApplicable": false,
     "IsDefault": false
   },
   {

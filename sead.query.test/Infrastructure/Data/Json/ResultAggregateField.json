@@ -1,61 +1,5 @@
 [
   {
-    "AggregateFieldId": 4,
-    "AggregateId": 1,
-    "FieldTypeId": "single_item",
-    "ResultFieldId": 1,
-    "SequenceId": 1
-  },
-  {
-    "AggregateFieldId": 5,
-    "AggregateId": 1,
-    "FieldTypeId": "text_agg_item",
-    "ResultFieldId": 2,
-    "SequenceId": 2
-  },
-  {
-    "AggregateFieldId": 8,
-    "AggregateId": 1,
-    "FieldTypeId": "count_item",
-    "ResultFieldId": 3,
-    "SequenceId": 3
-  },
-  {
-    "AggregateFieldId": 10,
-    "AggregateId": 1,
-    "FieldTypeId": "link_item",
-    "ResultFieldId": 4,
-    "SequenceId": 4
-  },
-  {
-    "AggregateFieldId": 16,
-    "AggregateId": 1,
-    "FieldTypeId": "link_item_filtered",
-    "ResultFieldId": 5,
-    "SequenceId": 5
-  },
-  {
-    "AggregateFieldId": 13,
-    "AggregateId": 1,
-    "FieldTypeId": "sort_item",
-    "ResultFieldId": 1,
-    "SequenceId": 99
-  },
-  {
-    "AggregateFieldId": 15,
-    "AggregateId": 2,
-    "FieldTypeId": "link_item_filtered",
-    "ResultFieldId": 6,
-    "SequenceId": 1
-  },
-  {
-    "AggregateFieldId": 7,
-    "AggregateId": 2,
-    "FieldTypeId": "count_item",
-    "ResultFieldId": 3,
-    "SequenceId": 2
-  },
-  {
     "AggregateFieldId": 1,
     "AggregateId": 3,
     "FieldTypeId": "single_item",
@@ -77,11 +21,39 @@
     "SequenceId": 3
   },
   {
+    "AggregateFieldId": 4,
+    "AggregateId": 1,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 1,
+    "SequenceId": 1
+  },
+  {
+    "AggregateFieldId": 5,
+    "AggregateId": 1,
+    "FieldTypeId": "text_agg_item",
+    "ResultFieldId": 2,
+    "SequenceId": 2
+  },
+  {
     "AggregateFieldId": 6,
     "AggregateId": 3,
     "FieldTypeId": "count_item",
     "ResultFieldId": 3,
     "SequenceId": 4
+  },
+  {
+    "AggregateFieldId": 7,
+    "AggregateId": 2,
+    "FieldTypeId": "count_item",
+    "ResultFieldId": 3,
+    "SequenceId": 2
+  },
+  {
+    "AggregateFieldId": 8,
+    "AggregateId": 1,
+    "FieldTypeId": "count_item",
+    "ResultFieldId": 3,
+    "SequenceId": 3
   },
   {
     "AggregateFieldId": 9,
@@ -91,11 +63,11 @@
     "SequenceId": 5
   },
   {
-    "AggregateFieldId": 14,
-    "AggregateId": 3,
-    "FieldTypeId": "link_item_filtered",
-    "ResultFieldId": 8,
-    "SequenceId": 6
+    "AggregateFieldId": 10,
+    "AggregateId": 1,
+    "FieldTypeId": "link_item",
+    "ResultFieldId": 4,
+    "SequenceId": 4
   },
   {
     "AggregateFieldId": 11,
@@ -112,18 +84,32 @@
     "SequenceId": 99
   },
   {
-    "AggregateFieldId": 23,
-    "AggregateId": 4,
-    "FieldTypeId": "single_item",
-    "ResultFieldId": 18,
+    "AggregateFieldId": 13,
+    "AggregateId": 1,
+    "FieldTypeId": "sort_item",
+    "ResultFieldId": 1,
+    "SequenceId": 99
+  },
+  {
+    "AggregateFieldId": 14,
+    "AggregateId": 3,
+    "FieldTypeId": "link_item_filtered",
+    "ResultFieldId": 8,
+    "SequenceId": 6
+  },
+  {
+    "AggregateFieldId": 15,
+    "AggregateId": 2,
+    "FieldTypeId": "link_item_filtered",
+    "ResultFieldId": 6,
     "SequenceId": 1
   },
   {
-    "AggregateFieldId": 24,
-    "AggregateId": 4,
-    "FieldTypeId": "single_item",
-    "ResultFieldId": 19,
-    "SequenceId": 2
+    "AggregateFieldId": 16,
+    "AggregateId": 1,
+    "FieldTypeId": "link_item_filtered",
+    "ResultFieldId": 5,
+    "SequenceId": 5
   },
   {
     "AggregateFieldId": 21,
@@ -138,5 +124,19 @@
     "FieldTypeId": "single_item",
     "ResultFieldId": 21,
     "SequenceId": 4
+  },
+  {
+    "AggregateFieldId": 23,
+    "AggregateId": 4,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 18,
+    "SequenceId": 1
+  },
+  {
+    "AggregateFieldId": 24,
+    "AggregateId": 4,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 19,
+    "SequenceId": 2
   }
 ]
