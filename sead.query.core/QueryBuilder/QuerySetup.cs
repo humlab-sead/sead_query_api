@@ -13,7 +13,7 @@ namespace SeadQueryCore.QueryBuilder
         public List<string> Joins { get; set; }
         public List<string> Criterias { get; set; }
 
-        public string CategoryTextFilter { get { return TargetConfig?.TextFilter ?? "";  } }
+        // public string CategoryTextFilter { get { return TargetConfig?.TextFilter ?? "";  } }
 
         public QuerySetup()
         {
