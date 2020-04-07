@@ -1,33 +1,20 @@
+using FluentAssertions;
 using Moq;
 using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Controllers;
 using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
-using SeadQueryInfra;
-using SeadQueryTest.Mocks;
-using System;
-using Xunit;
-using FluentAssertions;
+using SeadQueryTest;
 using SeadQueryTest.Infrastructure;
+using Xunit;
 
-namespace SeadQueryTest.Controllers
+namespace IntegrationTests
 {
-    public class FacetsControllerTests : IDisposable
+    public class FacetsControllerTests : DisposableFacetContextContainer
     {
-        private FacetContext mockContext;
-        private RepositoryRegistry mockRegistry;
-
-        public FacetsControllerTests()
+        public FacetsControllerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            mockContext = JsonSeededFacetContextFactory.Create();
-            mockRegistry = new RepositoryRegistry(mockContext);
-        }
-
-        public void Dispose()
-        {
-            mockContext.Dispose();
-            mockRegistry.Dispose();
         }
 
         private FacetsController CreateFacetsController()
@@ -36,14 +23,14 @@ namespace SeadQueryTest.Controllers
             var mockReconstituteService = new Mock<IFacetConfigReconstituteService>();
 
             return new FacetsController(
-                mockRegistry,
+                Registry,
                 mockReconstituteService.Object,
                 mockLoadFacetService.Object
             );
 
         }
 
-        [Fact]
+        [Fact(Skip ="Not implemented")]
         public void Get_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -56,7 +43,7 @@ namespace SeadQueryTest.Controllers
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Get_StateUnderTest_ExpectedBehavior1()
         {
             // Arrange
@@ -71,7 +58,7 @@ namespace SeadQueryTest.Controllers
             result.Should().Be(true);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Load_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -87,7 +74,7 @@ namespace SeadQueryTest.Controllers
 
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Load2_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -102,7 +89,7 @@ namespace SeadQueryTest.Controllers
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Load3_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
@@ -117,7 +104,7 @@ namespace SeadQueryTest.Controllers
             Assert.True(false);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented")]
         public void Mirror_StateUnderTest_ExpectedBehavior()
         {
             // Arrange

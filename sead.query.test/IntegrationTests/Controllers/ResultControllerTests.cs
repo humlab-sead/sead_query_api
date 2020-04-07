@@ -3,28 +3,16 @@ using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Controllers;
 using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
-using SeadQueryInfra;
-using SeadQueryTest.Mocks;
-using System;
+using SeadQueryTest;
+using SeadQueryTest.Infrastructure;
 using Xunit;
 
-namespace SeadQueryTest.Controllers
+namespace IntegrationTests
 {
-    public class ResultControllerTests : IDisposable
+    public class ResultControllerTests : DisposableFacetContextContainer
     {
-        private FacetContext mockContext;
-        private RepositoryRegistry mockRepositoryRegistry;
-
-        public void Dispose()
+        public ResultControllerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            mockContext.Dispose();
-            mockRepositoryRegistry.Dispose();
-        }
-
-        public ResultControllerTests()
-        {
-            mockContext = JsonSeededFacetContextFactory.Create();
-            mockRepositoryRegistry = new RepositoryRegistry(mockContext);
         }
 
         private ResultController CreateResultController()
@@ -32,7 +20,7 @@ namespace SeadQueryTest.Controllers
             var mockResultService = new Mock<ILoadResultService>();
             var mockReconstituteService = new Mock<IFacetConfigReconstituteService>();
             return new ResultController(
-                mockRepositoryRegistry,
+                Registry,
                 mockReconstituteService.Object,
                 mockResultService.Object
             );
