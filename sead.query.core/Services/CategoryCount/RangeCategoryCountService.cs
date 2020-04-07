@@ -10,12 +10,15 @@ namespace SeadQueryCore
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
-            IRangeCategoryCountSqlQueryCompiler rangeCountSqlCompiler
+            IRangeCategoryCountSqlQueryCompiler rangeCountSqlCompiler,
+            IDatabaseQueryProxy queryProxy
         ) : base(config, context, builder) {
             RangeCountSqlCompiler = rangeCountSqlCompiler;
+            QueryProxy = queryProxy;
         }
 
         private IRangeCategoryCountSqlQueryCompiler RangeCountSqlCompiler { get; }
+        public IDatabaseQueryProxy QueryProxy { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {
@@ -27,7 +30,7 @@ namespace SeadQueryCore
 
         protected override List<CategoryCountItem> Query(string sql)
         {
-            return Registry.QueryRows<CategoryCountItem>(sql,
+            return QueryProxy.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
                     Category = x.IsDBNull(0) ? "(null)" : x.GetString(0),
                     Count = x.IsDBNull(3) ? 0 : x.GetInt32(3),

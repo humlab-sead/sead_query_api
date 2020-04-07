@@ -6,7 +6,10 @@ namespace SeadQueryInfra
 
     public class FacetContext : DbContext, IFacetContext
     {
+        public IDatabaseQueryProxy QueryProxy { get; set; }
+
         public FacetContext(DbContextOptions options) : base(options) {
+            QueryProxy = new DatabaseQueryProxy(this);
         }
 
         public virtual DbSet<ResultAggregate> ResultDefinitions { get; set; }
@@ -159,6 +162,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.Activated).HasColumnName("activated").IsRequired();
                 entity.Property(b => b.LinkUrl).HasColumnName("link_url");
                 entity.Property(b => b.LinkLabel).HasColumnName("link_label");
+                entity.Property(b => b.DataType).HasColumnName("datatype");
                 entity.HasOne(x => x.FieldType).WithMany().HasForeignKey(p => p.FieldTypeId);
             });
 
@@ -210,15 +214,10 @@ namespace SeadQueryInfra
 
         }
 
-        //public override int SaveChanges()
-        //{
-        //    ChangeTracker.DetectChanges();
-        //    return base.SaveChanges();
-        //}
-
         public override void Dispose()
         {
             base.Dispose();
         }
+
     }
 }

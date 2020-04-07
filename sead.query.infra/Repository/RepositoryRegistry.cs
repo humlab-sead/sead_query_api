@@ -9,8 +9,6 @@ using System.Linq;
 
 namespace SeadQueryInfra
 {
-
-
     public class RepositoryRegistry : IRepositoryRegistry {
 
         public FacetContext Context { get; private set; }
@@ -41,44 +39,6 @@ namespace SeadQueryInfra
         public int Commit() => Context.SaveChanges();
         public void Dispose() => Context.Dispose();
 
-        public T QueryRow<T>(string sql, Func<DbDataReader, T> selector = null)
-        {
-            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
-                return reader.Select(selector).Take(1).FirstOrDefault();
-            }
-        }
-
-        public DbDataReader Query(string sql)
-        {
-            // FIXME: call dispose?
-            return Context.Database.ExecuteSqlQuery(sql).DbDataReader;
-        }
-
-        public List<T> QueryRows<T>(string sql, Func<DbDataReader, T> selector)
-        {
-            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader) {
-                return reader.Select(selector).ToList();
-            }
-        }
-
-        public List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2)
-        {
-            using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
-            {
-                try
-                {
-                    return reader.Select(x => new Key2Value<K, V>(
-                        x.GetFieldValue<K>(keyIndex),
-                        x.GetFieldValue<V>(valueIndex1),
-                        x.GetFieldValue<V>(valueIndex2))
-                    ).ToList();
-                }
-                catch
-                {
-                    throw;
-                }
-            }
-        }
     }
 
     public static class QueryDynamicExt {

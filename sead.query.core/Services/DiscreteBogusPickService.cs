@@ -10,13 +10,16 @@ namespace SeadQueryCore
         public DiscreteBogusPickService(
             IRepositoryRegistry registry,
             IQuerySetupCompiler builder,
-            IValidPicksSqlQueryCompiler picksCompiler
+            IValidPicksSqlQueryCompiler picksCompiler,
+            IDatabaseQueryProxy queryProxy
         ) : base(registry, builder)
         {
             PicksCompiler = picksCompiler;
+            QueryProxy = queryProxy;
         }
 
         public IValidPicksSqlQueryCompiler PicksCompiler { get; }
+        public IDatabaseQueryProxy QueryProxy { get; }
 
         /*
         public:  Delete
@@ -46,7 +49,7 @@ namespace SeadQueryCore
 
             string sql = PicksCompiler.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
 
-            List<FacetConfigPick> rows = Registry.QueryRows(sql, x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
+            List<FacetConfigPick> rows = QueryProxy.QueryRows(sql, x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
             return rows;
         }
     }

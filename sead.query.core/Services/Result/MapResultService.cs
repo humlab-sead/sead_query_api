@@ -15,9 +15,10 @@ namespace SeadQueryCore.Services.Result
         public MapResultService(
             IRepositoryRegistry context,
             IResultCompiler resultQueryCompiler,
-            IDiscreteCategoryCountService categoryCountService
+            IDiscreteCategoryCountService categoryCountService,
+            IDatabaseQueryProxy queryProxy
         )
-            : base(context, resultQueryCompiler)
+            : base(context, resultQueryCompiler, queryProxy)
         {
             FacetCode = "map_result";
             CategoryCountService = categoryCountService;

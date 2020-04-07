@@ -50,6 +50,10 @@ namespace SeadQueryAPI
                 .InstancePerLifetimeScope();
             // .InstancePerRequest();
 
+            builder.Register(c => c.Resolve<IFacetContext>().QueryProxy)
+                .As<IDatabaseQueryProxy>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();

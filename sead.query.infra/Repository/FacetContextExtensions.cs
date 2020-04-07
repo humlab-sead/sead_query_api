@@ -9,6 +9,5 @@ namespace SeadQueryInfra
         {
             return typeof(DbContext).GetMethod("Set").MakeGenericMethod(new[] { type }).Invoke(context, Array.Empty<object>());;
         }
-
     }
 }

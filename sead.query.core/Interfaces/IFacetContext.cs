@@ -20,5 +20,8 @@ namespace SeadQueryCore
         DbSet<ResultViewType> ViewTypes { get; set; }
 
         int SaveChanges();
+
+        IDatabaseQueryProxy QueryProxy { get; set; }
+
     }
 }

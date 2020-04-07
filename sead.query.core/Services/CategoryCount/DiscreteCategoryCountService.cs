@@ -1,6 +1,7 @@
 ﻿using SeadQueryCore.QueryBuilder;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using static SeadQueryCore.Utility;
 
@@ -13,11 +14,14 @@ namespace SeadQueryCore
             IFacetSetting config,
             IRepositoryRegistry registry,
             IQuerySetupCompiler builder,
-            IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler) : base(config, registry, builder) {
+            IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler,
+            IDatabaseQueryProxy queryProxy) : base(config, registry, builder) {
             CountSqlCompiler = countSqlCompiler;
+            QueryProxy = queryProxy;
         }
 
         public IDiscreteCategoryCountSqlQueryCompiler CountSqlCompiler { get; }
+        public IDatabaseQueryProxy QueryProxy { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
@@ -43,7 +47,7 @@ namespace SeadQueryCore
             return tables.Distinct().ToList();
         }
 
-        private string Category2String(System.Data.Common.DbDataReader x, int ordinal)
+        private string Category2String(IDataReader x, int ordinal)
         {
             if (x.GetDataTypeName(ordinal) == "numeric")
                 return String.Format("{0:0.####}", x.GetDecimal(ordinal));
@@ -52,7 +56,7 @@ namespace SeadQueryCore
 
         protected override List<CategoryCountItem> Query(string sql)
         {
-            return Registry.QueryRows<CategoryCountItem>(sql,
+            return QueryProxy.QueryRows<CategoryCountItem>(sql,
                 x => new CategoryCountItem() {
                     Category =  x.IsDBNull(0) ? null : Category2String(x, 0),
                     Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),

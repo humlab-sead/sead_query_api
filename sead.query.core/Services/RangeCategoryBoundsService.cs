@@ -15,10 +15,14 @@ namespace SeadQueryCore
         public RangeCategoryBoundsService(
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
-            IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> compilers) : base(context, builder)
+            IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> compilers,
+            IDatabaseQueryProxy queryProxy) : base(context, builder)
         {
             Compilers = compilers;
+            QueryProxy = queryProxy;
         }
+
+        public IDatabaseQueryProxy QueryProxy { get; }
 
         public List<Key2Value<int, float>> Load()
         {
@@ -28,7 +32,7 @@ namespace SeadQueryCore
                 sqls.Add(Compilers[EFacetType.Range].Compile(query, facet, facet.FacetCode));
             }
             string sql = String.Join("\nUNION\n", sqls);
-            List<Key2Value<int, float>> values = Registry.QueryKeyValues2<int, float>(sql).ToList();
+            List<Key2Value<int, float>> values = QueryProxy.QueryKeyValues2<int, float>(sql).ToList();
             return values;
         }
     }

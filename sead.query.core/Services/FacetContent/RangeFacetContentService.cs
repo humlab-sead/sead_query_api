@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Common;
 using Autofac.Features.Indexed;
 using SeadQueryCore.QueryBuilder;
@@ -22,7 +23,8 @@ public class RangeFacetContentService : FacetContentService {
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
-            IRangeIntervalSqlQueryCompiler rangeSqlCompiler) : base(config, context, builder)
+            IRangeIntervalSqlQueryCompiler rangeSqlCompiler,
+            IDatabaseQueryProxy queryProxy) : base(config, context, builder, queryProxy)
         {
             CountService = countServices[EFacetType.Range];
             RangeSqlCompiler = rangeSqlCompiler;
@@ -76,7 +78,7 @@ public class RangeFacetContentService : FacetContentService {
             };
         }
 
-        protected override string GetName(DbDataReader dr)
+        protected override string GetName(IDataReader dr)
         {
             return $"{dr.GetInt32(1)} to {dr.GetInt32(2)}";
         }

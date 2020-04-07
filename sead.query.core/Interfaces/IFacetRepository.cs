@@ -11,6 +11,7 @@ namespace SeadQueryCore
         (decimal, decimal) GetUpperLowerBounds(Facet facet);
         IEnumerable<Facet> Parents();
         IEnumerable<Facet> Children(string facetCode);
+        Dictionary<string, Facet> ToDictionary();
     }
 
 
