@@ -50,3 +50,14 @@ dotnet_diagnostic.CA1056.severity = none
 
 # CA2000: Dispose objects before losing scope
 dotnet_diagnostic.CA2000.severity = silent
+
+# IDE0022: Use block body for methods
+csharp_style_expression_bodied_methods = true:silent
+
+# CA2227: Collection properties should be read only
+dotnet_diagnostic.CA2227.severity = silent
+
+dotnet_code_quality.ca1801.api_surface = private, internal
+
+# IDE0060: Remove unused parameter
+dotnet_code_quality_unused_parameters = all:silent
