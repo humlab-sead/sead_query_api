@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Mocks;
@@ -18,6 +19,8 @@ namespace SeadQueryTest
         public readonly FacetContext Context;
         public readonly RepositoryRegistry Registry;
 
+        public ISetting Settings { get; }
+
         public DisposableFacetContextContainer(JsonSeededFacetContextFixture fixture)
         {
             Fixture = fixture;
@@ -25,6 +28,7 @@ namespace SeadQueryTest
             Options = SqliteContextOptionsFactory.Create(Connection);
             Context = JsonSeededFacetContextFactory.Create(Options, fixture);
             Registry = new RepositoryRegistry(Context);
+            Settings = (ISetting)new SettingFactory().Create().Value;
         }
 
         public void Dispose()
