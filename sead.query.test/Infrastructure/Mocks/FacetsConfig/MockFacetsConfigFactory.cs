@@ -1,55 +1,14 @@
 ﻿using SeadQueryCore;
 using System.Collections.Generic;
 using System.Linq;
-using SeadQueryAPI.Serializers;
 using System;
 using Moq;
-using SeadQueryInfra;
 using System.Data.Common;
 using SeadQueryTest.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace SeadQueryTest.Mocks
 {
-    internal static class JsonSeededFacetsConfigByUriFactory
-    {
-
-        public static FacetsConfig2 Create(FacetContext context, string uri)
-        {
-            var registry = new RepositoryRegistry(context);
-            var factory = new MockFacetsConfigFactory(registry);
-            return factory.Create(uri);
-        }
-
-    }
-
-    internal static class FakeFacetsConfigByJsonFactory
-    {
-
-        public static FacetsConfig2 Create(string json)
-        {
-            var registry = FakeFacetsGetByCodeRepositoryFactory.Create();
-            var service = new FacetConfigReconstituteService(registry);
-            FacetsConfig2 facetsConfig = service.Reconstitute(json);
-
-            return facetsConfig;
-        }
-
-    }
-
-    internal static class FakeSingleFacetsConfigFactory
-    {
-
-        public static FacetsConfig2 Create(string json)
-        {
-            var registry = FakeFacetsGetByCodeRepositoryFactory.Create();
-            var service = new FacetConfigReconstituteService(registry);
-            FacetsConfig2 facetsConfig = service.Reconstitute(json);
-
-            return facetsConfig;
-        }
-
-    }
 
     public class MockFacetsConfigFactory
     {
