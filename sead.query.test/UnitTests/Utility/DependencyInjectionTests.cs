@@ -136,22 +136,6 @@ namespace SeadQueryTest2.IoC
             }
         }
 
-        [Fact]
-        public void TestResolveUnitOfWork()
-        {
-            var builder = new ContainerBuilder();
-
-            var options = new SettingFactory().Create().Value;
-
-            builder.RegisterInstance<ISetting>(options).SingleInstance().ExternallyOwned();
-            builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance();
-            builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>();
-
-            using (var container = builder.Build())
-            using (var scope = container.BeginLifetimeScope()) {
-                var service = scope.Resolve<IRepositoryRegistry>();
-                Assert.True(service.Facets.GetAll().Any());
-            }
-        }
+  
     }
 }
