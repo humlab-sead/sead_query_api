@@ -27,14 +27,29 @@ namespace SeadQueryTest.Infrastructure
 
             builder.RegisterInstance(Options).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
-            builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
 
             if (FacetContext is null) {
+
                 Debug.Print("Warning: Falling back to default online DB connection for test");
-                builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
+
+                // builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
+
+                builder.RegisterType<FacetContextFactory>()
+                    .As<IFacetContextFactory>()
+                    .InstancePerLifetimeScope();
+
+                builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
+                    .As<IFacetContext>()
+                    .InstancePerLifetimeScope();
+
             } else {
                 builder.RegisterInstance(FacetContext).SingleInstance().ExternallyOwned();
             }
+
+            builder.Register(c => c.Resolve<IFacetContext>().QueryProxy)
+                .As<IDatabaseQueryProxy>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
 
@@ -47,14 +62,6 @@ namespace SeadQueryTest.Infrastructure
 
             builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
 
-            builder.RegisterType<ValidPicksSqlQueryCompiler>().As<IValidPicksSqlQueryCompiler>();
-            builder.RegisterType<EdgeSqlCompiler>().As<IEdgeSqlCompiler>();
-            builder.RegisterType<DiscreteContentSqlQueryBuilder>().As<IDiscreteContentSqlQueryCompiler>();
-            builder.RegisterType<DiscreteCategoryCountSqlQueryCompiler>().As<IDiscreteCategoryCountSqlQueryCompiler>();
-            builder.RegisterType<RangeCategoryCountSqlQueryCompiler>().As<IRangeCategoryCountSqlQueryCompiler>();
-            builder.RegisterType<RangeIntervalSqlQueryCompiler>().As<IRangeIntervalSqlQueryCompiler>();
-            builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
-
             builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
             builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(1);
             builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(2);
@@ -62,7 +69,15 @@ namespace SeadQueryTest.Infrastructure
 
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
             builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
+            builder.RegisterType<DiscreteCategoryCountService>().As<IDiscreteCategoryCountService>();
 
+            builder.RegisterType<ValidPicksSqlQueryCompiler>().As<IValidPicksSqlQueryCompiler>();
+            builder.RegisterType<EdgeSqlCompiler>().As<IEdgeSqlCompiler>();
+            builder.RegisterType<DiscreteContentSqlQueryBuilder>().As<IDiscreteContentSqlQueryCompiler>();
+            builder.RegisterType<DiscreteCategoryCountSqlQueryCompiler>().As<IDiscreteCategoryCountSqlQueryCompiler>();
+            builder.RegisterType<RangeCategoryCountSqlQueryCompiler>().As<IRangeCategoryCountSqlQueryCompiler>();
+            builder.RegisterType<RangeIntervalSqlQueryCompiler>().As<IRangeIntervalSqlQueryCompiler>();
+            builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
@@ -76,6 +91,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("tabular");
             builder.RegisterType<MapResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("map");
 
+            builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache) {
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
@@ -83,7 +99,6 @@ namespace SeadQueryTest.Infrastructure
                 builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.LoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
-
         }
 
         public static IContainer CreateContainer(IFacetContext facetContext, ISetting options)
