@@ -5,7 +5,7 @@ using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryTest.Mocks
 {
-    internal static class PickCompilersFactory
+    internal static class MockPickCompilersFactory
     {
         public static IIndex<int, IPickFilterCompiler> Create(string returnValue = "")
         {
