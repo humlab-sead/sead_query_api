@@ -12,6 +12,18 @@ namespace SeadQueryTest.Infrastructure
 {
     public static class ScaffoldUtility
     {
+        public static DumpOptions GetDefaultDumpOptions() => new DumpOptions()
+            {
+                DumpStyle = DumpStyle.CSharp,
+                IndentSize = 1,
+                IndentChar = '\t',
+                LineBreakChar = Environment.NewLine,
+                SetPropertiesOnly = false,
+                MaxLevel = 10, // int.MaxValue,
+                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "TargetFacet", "TriggerFacet" },
+                PropertyOrderBy = null,
+                IgnoreDefaultValues = false
+            };
 
         public static DbContextOptionsBuilder<FacetContext> GetDbContextOptionBuilder()
         {
@@ -35,20 +47,16 @@ namespace SeadQueryTest.Infrastructure
             return Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
         }
 
+        public static string Dump(object instance, DumpOptions options = null)
+        {
+            options ??= GetDefaultDumpOptions();
+            var data = ObjectDumper.Dump(instance, options);
+            return data;
+        }
+
         public static void Dump(object instance, string filename, DumpOptions options = null)
         {
-            options ??= new DumpOptions() {
-                DumpStyle = DumpStyle.CSharp,
-                IndentSize = 1,
-                IndentChar = '\t',
-                LineBreakChar = Environment.NewLine,
-                SetPropertiesOnly = false,
-                MaxLevel = 10, // int.MaxValue,
-                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "TargetFacet", "TriggerFacet" },
-                PropertyOrderBy = null,
-                IgnoreDefaultValues = false
-            };
-
+            options ??= GetDefaultDumpOptions();
             var data = ObjectDumper.Dump(instance, options);
             using (StreamWriter file = new StreamWriter(filename)) {
                 file.Write(data);
