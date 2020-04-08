@@ -8,13 +8,6 @@ using System;
 
 namespace SeadQueryAPI
 {
-    //builder.RegisterType<MyContextFactory>()
-    //   .As<IContextFactory>()
-    //   .InstancePerRequest();
-    //builder.Register(c => c.Resolve<IContextFactory>().GetInstance())
-    //   .As<IContext>()
-    //   .InstancePerRequest();
-
     public class DependencyService : Module
     {
         public ISetting Options { get; set; }
@@ -38,17 +31,14 @@ namespace SeadQueryAPI
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
 
-            // builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().InstancePerLifetimeScope();
 
             builder.RegisterType<FacetContextFactory>()
                 .As<IFacetContextFactory>()
                 .InstancePerLifetimeScope();
-            // .InstancePerRequest();
 
             builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
                 .As<IFacetContext>()
                 .InstancePerLifetimeScope();
-            // .InstancePerRequest();
 
             builder.Register(c => c.Resolve<IFacetContext>().QueryProxy)
                 .As<IDatabaseQueryProxy>()
@@ -94,8 +84,6 @@ namespace SeadQueryAPI
             builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("tabular");
             builder.RegisterType<MapResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("map");
 
-            /* App Services */
-
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache) {
                 builder.RegisterType<Services.CachedLoadFacetService>().As<Services.IFacetReconstituteService>();
@@ -104,10 +92,6 @@ namespace SeadQueryAPI
                 builder.RegisterType<Services.LoadFacetService>().As<Services.IFacetReconstituteService>();
                 builder.RegisterType<Services.LoadResultService>().As<Services.ILoadResultService>();
             }
-
-            //if (services != null)
-            //    builder.Populate(services);
-
         }
     }
 }
