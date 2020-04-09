@@ -27,17 +27,17 @@ namespace SeadQueryCore
             return data;
         }
 
-        public static void Dump(string filename, DumpOptions options = null, params object[] instances)
-        {
-            options ??= GetDefaultDumpOptions();
-            using (StreamWriter file = new StreamWriter(filename)) {
-                foreach (var instance in instances) {
-                    var data = ObjectDumper.Dump(instance, options);
-                    file.Write($@"\n\n// {instance.GetType().Name}\n\n");
-                    file.Write(data);
-                }
-            }
-        }
+        //public static void Dump(string filename, DumpOptions options = null, params object[] instances)
+        //{
+        //    options ??= GetDefaultDumpOptions();
+        //    using (StreamWriter file = new StreamWriter(filename)) {
+        //        foreach (var instance in instances) {
+        //            var data = ObjectDumper.Dump(instance, options);
+        //            file.Write($@"\n\n// {instance.GetType().Name}\n\n");
+        //            file.Write(data);
+        //        }
+        //    }
+        //}
 
         public static void Dump(
             string filename,
@@ -55,10 +55,15 @@ namespace SeadQueryCore
             using (StreamWriter file = new StreamWriter(filename)) {
                 foreach (var instance in instances) {
                     var data = ObjectDumper.Dump(instance, options);
-                    file.Write($@"\n\n// {instance.GetType().Name}\n\n");
+                    file.Write($"\n\n// {instance.GetType().Name}\n\n");
                     file.Write(data);
                 }
             }
+        }
+
+        public static void Dump(string filename,int maxLevel, params object[] instances)
+        {
+            Dump(filename, false,  maxLevel, null, false, instances);
         }
     }
 }

@@ -21,7 +21,8 @@ namespace SeadQueryCore
 
         int SaveChanges();
 
-        IDatabaseQueryProxy QueryProxy { get; set; }
+        ITypedQueryProxy TypedQueryProxy { get; set; }
+        IDynamicQueryProxy DynamicQueryProxy { get; set; }
 
     }
 }
