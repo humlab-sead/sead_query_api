@@ -12,12 +12,12 @@ namespace SeadQueryTest.Mocks
 
     public class MockFacetsConfigFactory
     {
-        public IRepositoryRegistry Registry { get; private set; }
+        public IFacetRepository Repository { get; private set; }
         private readonly MockFacetConfigUriParser UriParser = new MockFacetConfigUriParser();
 
-        public MockFacetsConfigFactory(IRepositoryRegistry registry)
+        public MockFacetsConfigFactory(IFacetRepository repository)
         {
-            Registry = registry;
+            Repository = repository;
         }
 
         private Facet GetFacet(string facetCode)
@@ -25,7 +25,7 @@ namespace SeadQueryTest.Mocks
             if (String.IsNullOrEmpty(facetCode))
                 throw new ArgumentNullException(nameof(facetCode), "not allowed");
 
-            return Registry.Facets.GetByCode(facetCode);
+            return Repository.GetByCode(facetCode);
         }
 
         public FacetsConfig2 Create(string targetCode, string triggerCode, List<FacetConfig2> facetConfigs, string requestType = "populate", string domainCode = "")
@@ -49,7 +49,7 @@ namespace SeadQueryTest.Mocks
                 facetCode,
                 facetCode,
                 new List<FacetConfig2>() {
-                    FacetConfigFactory.Create(Registry.Facets.GetByCode(facetCode), 0, new List<FacetConfigPick>())
+                    MockFacetConfigFactory.Create(Repository.GetByCode(facetCode), 0, new List<FacetConfigPick>())
                 }
             );
         }
@@ -61,7 +61,7 @@ namespace SeadQueryTest.Mocks
 
             var facetConfigs = config
                 .FacetCodes
-                .Select(z => FacetConfigFactory.Create(GetFacet(z.Key), position++, z.Value))
+                .Select(z => MockFacetConfigFactory.Create(GetFacet(z.Key), position++, z.Value))
                 .ToList();
 
             return Create(

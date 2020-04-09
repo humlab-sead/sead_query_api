@@ -27,7 +27,7 @@ namespace SeadQueryTest.Services.Result
         {
             // Arrange
             var compiler = new Mock<IResultCompiler>().Object;
-            var queryProxy = new Mock<IDatabaseQueryProxy>().Object;
+            var queryProxy = new Mock<IDynamicQueryProxy>().Object;
 
             var service = new DefaultResultService(Registry, compiler, queryProxy);
 

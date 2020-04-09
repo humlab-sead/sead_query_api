@@ -27,7 +27,7 @@ namespace SeadQueryTest.Services.FacetContent
             var categoryCountServices = new Mock<IIndex<EFacetType, ICategoryCountService>>();
             var discreteContentSqlQueryCompiler = new Mock<IDiscreteContentSqlQueryCompiler>();
 
-            var queryProxy = new MockQueryProxyFactory().Create<DiscreteContentDataReaderBuilder, CategoryCountItem>(3);
+            var queryProxy = new MockTypedQueryProxyFactory().Create<DiscreteContentDataReaderBuilder, CategoryCountItem>(3);
 
             //var expectedValues = new DiscreteCountDataReaderBuilder()
             //    .GenerateBogusRows(3)
@@ -48,7 +48,7 @@ namespace SeadQueryTest.Services.FacetContent
                 queryProxy.Object
              );
 
-            var facetsConfig = new MockFacetsConfigFactory(Registry).Create("sites:sites");
+            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create("sites:sites");
 
             var result = service.Load(facetsConfig);
 

@@ -20,14 +20,15 @@ namespace SeadQueryTest.Cache {
             return new MemoryCacheFactory().Create();
         }
 
-        [Fact]
-        public void Set_WhenSimple_IsCached()
+        [Theory]
+        [InlineData("a test key", 1234)]
+        [InlineData("a test key", "a test value")]
+        [InlineData("a test key", true)]
+        public void Set_WhenSimple_IsCached(string testKey, object expectedValue)
         {
-            const int expectedValue = 1234;
-            var testKey = "a test key";
             var cache = GetCache();
             cache.Set(testKey, expectedValue);
-            var retrievedValue = cache.Get<int>(testKey);
+            var retrievedValue = cache.Get<object>(testKey);
             Assert.Equal(expectedValue, retrievedValue);
         }
 

@@ -38,7 +38,7 @@ namespace SeadQueryTest.Services.Result
 
         //        // Arrange
         //        var uri = "sites:sites";
-        //        var facetsConfig = new MockFacetsConfigFactory(registry).Create(uri);
+        //        var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
         //        var resultKeys = new List<string>() { "site_level" };
         //        var resultConfig = ResultConfigFactory.Create("map", resultKeys);
 

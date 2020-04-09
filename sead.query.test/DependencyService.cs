@@ -47,8 +47,12 @@ namespace SeadQueryTest.Infrastructure
                 builder.RegisterInstance(FacetContext).SingleInstance().ExternallyOwned();
             }
 
-            builder.Register(c => c.Resolve<IFacetContext>().QueryProxy)
-                .As<IDatabaseQueryProxy>()
+            builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy)
+                .As<ITypedQueryProxy>()
+                .InstancePerLifetimeScope();
+             
+            builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy)
+                .As<IDynamicQueryProxy>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();

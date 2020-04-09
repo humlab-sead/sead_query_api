@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SeadQueryTest.Mocks
 {
-    public static class FacetConfigFactory
+    public static class MockFacetConfigFactory
     {
         public static FacetConfig2 Create(Facet facet, int position, List<FacetConfigPick> picks = null, string filter = "")
         {

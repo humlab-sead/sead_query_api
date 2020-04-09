@@ -89,32 +89,12 @@ namespace SeadQueryTest.QueryBuilder
             return builder;
         }
 
-        [Fact]
-        public void Build_WhenFacetsConfigIsSingleDiscreteWithoutPicks_ReturnsValidQuerySetup()
+        [Theory]
+        [InlineData("sites:sites", "sites")]
+        public void Build_WhenFacetsConfigIsSingleDiscreteWithoutPicks_ReturnsValidQuerySetup(string uri, string facetCode)
         {
             // Arrange
-            var facetCode = "sites";
             var facet = Registry.Facets.GetByCode(facetCode);
-
-            var facetsConfig = new FacetsConfig2 {
-                DomainCode = "",
-                RequestId = "1",
-                RequestType = "populate",
-                TargetCode = facetCode,
-                TriggerCode = facetCode,
-                FacetConfigs = new List<FacetConfig2>() {
-                    new FacetConfig2
-                    {
-                        FacetCode = facetCode,
-                        Position = 1,
-                        TextFilter = "",
-                        Picks = new List<FacetConfigPick> { },
-                        Facet = facet
-                    }
-                },
-                TargetFacet = facet,
-                TriggerFacet = facet
-            };
 
             QuerySetupCompiler builder = CreateQuerySetupCompiler();
 
@@ -136,8 +116,8 @@ namespace SeadQueryTest.QueryBuilder
         public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode)
         {
             // Arrange
-            var fixture = new MockFacetsConfigFactory(Registry);
-            var facet = fixture.Registry.Facets.GetByCode(facetCode);
+            var fixture = new MockFacetsConfigFactory(Registry.Facets);
+            var facet = fixture.Repository.GetByCode(facetCode);
             var facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
 
             QuerySetupCompiler builder = CreateQuerySetupCompiler();
@@ -175,22 +155,22 @@ namespace SeadQueryTest.QueryBuilder
         public void CanBuildCategoryCountQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode, List<List<string>> expectedRoutes)
         {
 
-            var fixture = new MockFacetsConfigFactory(Registry);
+            var fixture = new MockFacetsConfigFactory(Registry.Facets);
 
             FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
 
             // Arrange
-            var registry = fixture.Registry;
-            var factory = new FacetGraphFactory(registry);
+            var facetRepository = fixture.Repository;
+            var factory = new FacetGraphFactory(Registry);
 
             QuerySetupCompiler builder = CreateQuerySetupCompiler();
 
-            Facet facet = registry.Facets.GetByCode(facetCode);
-            Facet countFacet = registry.Facets.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
+            Facet facet = facetRepository.GetByCode(facetCode);
+            Facet countFacet = facetRepository.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
 
             string targetCode = Utility.Coalesce(facetsConfig?.TargetCode, countFacet.FacetCode);
 
-            Facet targetFacet = registry.Facets.GetByCode(targetCode);
+            Facet targetFacet = facetRepository.GetByCode(targetCode);
             List<string> tables = GetDiscreteTables(facetsConfig, countFacet, targetFacet);
 
             List<string> facetCodes = facetsConfig.GetFacetCodes();
@@ -281,13 +261,13 @@ namespace SeadQueryTest.QueryBuilder
             var targetCode = parts[0];
 
             // Arrange
-            var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry);
+            var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry.Facets);
 
             FacetsConfig2 facetsConfig = facetsConfigScaffolder.Create(
                 targetCode,
                 targetCode,
                 testCodes.Select(
-                    z => Mocks.FacetConfigFactory.Create(Registry.Facets.GetByCode(z), testCodes.IndexOf(z)
+                    z => Mocks.MockFacetConfigFactory.Create(Registry.Facets.GetByCode(z), testCodes.IndexOf(z)
                 )
             ).ToList());
 

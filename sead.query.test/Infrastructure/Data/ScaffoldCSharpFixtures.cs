@@ -77,7 +77,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
         //[Fact(Skip = "Not a test. Scaffolds FacetsConfigs from JSON seeded context")]
         public void ScaffoldCSharpFacetsConfigsToFileUsingJsonSeededFacetContext()
         {
-            var scaffolder = new MockFacetsConfigFactory(Registry);
+            var scaffolder = new MockFacetsConfigFactory(Registry.Facets);
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {
                 // "sites@sites:sites:",

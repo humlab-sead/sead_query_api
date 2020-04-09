@@ -85,7 +85,7 @@ namespace SeadQueryTest.Infrastructure
 
         public IEnumerable<T> ToItems<T>() where T : class, new()
         {
-            return dataTable.CreateDataReader().ToItems<T>();
+            return dataTable.CreateDataReader().AsItems<T>();
         }
 
         public void Dispose()

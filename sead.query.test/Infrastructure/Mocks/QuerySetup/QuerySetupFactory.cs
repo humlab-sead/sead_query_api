@@ -37,7 +37,7 @@ namespace SeadQueryTest.Fixtures
 
         public QuerySetup Scaffold(string uri)
         {
-            var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry);
+            var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry.Facets);
             var facetsConfig = facetsConfigScaffolder.Create(uri);
             var edgeCompiler = new EdgeSqlCompiler();
             var pickCompilers = ConcretePickCompilers();

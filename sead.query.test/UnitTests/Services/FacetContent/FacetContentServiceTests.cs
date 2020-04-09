@@ -99,7 +99,7 @@ namespace SeadQueryTest.Services.FacetContent
         [InlineData("tbl_biblio_sample_groups", 2344)]
         public void Load_SingleDiscreteConfigWithoutPicks_IsLoaded(string facetCode, int count)
         {
-            var fixture = new MockFacetsConfigFactory(Registry);
+            var fixture = new MockFacetsConfigFactory(Registry.Facets);
 
             using (IContainer container = TestDependencyService.CreateContainer(Context, null)) {
 
@@ -175,25 +175,37 @@ namespace SeadQueryTest.Services.FacetContent
         [Fact]
         public void CanLoadSingleDiscreteConfigWithPicks()
         {
-            var fixture = new MockFacetsConfigFactory(Registry);
-            FacetsConfig2 facetsConfig = fixture.Create(
-                "sites", "sites",
-                new List<FacetConfig2>() {
-                    Mocks.FacetConfigFactory.Create(
-                        GetFacet("sites"),
-                        0,
-                        FacetConfigPick.CreateDiscrete(new List<int>() { 1470, 447, 951, 445 })
-                    )
-                }
-            );
 
-            IContainer container = TestDependencyService.CreateContainer(Context, null);
+            //var graph = new FacetGraphFactory(Registry).Build();
+            //var edgeCompiler = new Mock<EdgeSqlCompiler>();
+            //var pickCompiler = new Mock<IPickFilterCompiler>();
+            //var querySetupCompiler = new QuerySetupCompiler(gra);
+            //var service = new FacetContentService();
 
+            using (IContainer container = TestDependencyService.CreateContainer(null, null))
             using (var scope = container.BeginLifetimeScope()) {
+                var registry = container.Resolve<IRepositoryRegistry>();
+                var fixture = new MockFacetsConfigFactory(Registry.Facets);
+                FacetsConfig2 facetsConfig = fixture.Create(
+                    "sites", "sites",
+                    new List<FacetConfig2>() {
+                        Mocks.MockFacetConfigFactory.Create(
+                            GetFacet("sites"),
+                            0,
+                            FacetConfigPick.CreateDiscrete(new List<int>() {
+                                1470,
+                                447,
+                                951,
+                                445
+                            })
+                        )
+                    }
+                );
                 var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
                 var facetContent = service.Load(facetsConfig);
                 string output = JsonConvert.SerializeObject(facetContent);
                 Assert.True(facetContent.Items.Count > 0);
+
             }
         }
 
@@ -276,7 +288,7 @@ namespace SeadQueryTest.Services.FacetContent
         [Fact(Skip = "Not implemented")]
         public void RangeFacetBugTest_PD20181107()
         {
-            var fixture = new MockFacetsConfigFactory(Registry);
+            var fixture = new MockFacetsConfigFactory(Registry.Facets);
 
             var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)";
             using (var container = TestDependencyService.CreateContainer(Context, null))

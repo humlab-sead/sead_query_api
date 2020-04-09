@@ -24,7 +24,7 @@ namespace IntegrationTests
 
         public HostResultControllerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            facetConfigFixture = new MockFacetsConfigFactory(Registry);
+            facetConfigFixture = new MockFacetsConfigFactory(Registry.Facets);
         }
 
         public IWebHostBuilder CreateTestWebHostBuilder2<T>() where T: class

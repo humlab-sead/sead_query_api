@@ -54,7 +54,7 @@ namespace SeadQueryTest
         public void Load_WhenTabularData_Success(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry).Create(uri);
+            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
             var resultConfig = ResultConfigFactory.Create(viewTypeId, resultKey);
 
 
@@ -76,7 +76,7 @@ namespace SeadQueryTest
                 .GetResultFields()
                 .Select((field, i) => new { Field = field, Alias = $"alias_{i + 1}" });
 
-            var queryProxy = new MockQueryProxyFactory().Create<ExpandoObject>(
+            var queryProxy = new MockDynamicQueryProxyFactory().Create<ExpandoObject>(
                 FakeResultItems(aggregate, new List<object[]>  {
                     new object[] { 1 }
                 })

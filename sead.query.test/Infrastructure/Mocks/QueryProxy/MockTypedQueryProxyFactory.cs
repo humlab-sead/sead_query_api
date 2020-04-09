@@ -9,37 +9,30 @@ using System.Text;
 namespace SeadQueryTest.Infrastructure
 {
 
-    public class MockQueryProxyFactory
+    public class MockTypedQueryProxyFactory
     {
-        public Mock<IDatabaseQueryProxy> Create<B, T>(int numberOfRows)
-            where B: DataReaderBuilder, new()
-            where T: class, new()
+        public Mock<ITypedQueryProxy> Create<B, T>(int numberOfRows)
+            where B : DataReaderBuilder, new()
+            where T : class, new()
         {
-            var queryProxy = new Mock<IDatabaseQueryProxy>();
+            var queryProxy = new Mock<ITypedQueryProxy>();
 
             var dataReaderBuilder = new B().GenerateBogusRows(numberOfRows);
 
             queryProxy.Setup(foo => foo.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, T>>())).Returns(
                 dataReaderBuilder.ToItems<T>().ToList()
             );
-            queryProxy.Setup(foo => foo.Query(It.IsAny<string>())).Returns(
-                dataReaderBuilder.ToDataReader()
-            );
 
             return queryProxy;
         }
 
-        public Mock<IDatabaseQueryProxy> Create<T>(IEnumerable<T> items)
-            where T: class, new()
+        public Mock<ITypedQueryProxy> Create<T>(IEnumerable<T> items)
+            where T : class, new()
         {
-            var queryProxy = new Mock<IDatabaseQueryProxy>();
+            var queryProxy = new Mock<ITypedQueryProxy>();
 
             queryProxy.Setup(foo => foo.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, T>>())).Returns(
                 items.ToList()
-            );
-
-            queryProxy.Setup(foo => foo.Query(It.IsAny<string>())).Returns(
-                items.ToDataReader<T>()
             );
 
             return queryProxy;

@@ -21,7 +21,7 @@ namespace SeadQueryTest.Services.FacetContent
 
         public RangeFacetContentServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            FacetsConfigFactory = new MockFacetsConfigFactory(Registry);
+            FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
 
         private static MockIndex<EFacetType, ICategoryCountService> MockCategoryCountServices()
@@ -73,7 +73,7 @@ namespace SeadQueryTest.Services.FacetContent
 
             var settings = new SettingFactory().Create().Value.Facet;
             var concreteRangeIntervalSqlQueryCompiler = new RangeIntervalSqlQueryCompiler();
-            var queryProxy = new Mock<IDatabaseQueryProxy>();
+            var queryProxy = new Mock<ITypedQueryProxy>();
 
             queryProxy.Setup(foo => foo.QueryRows<CategoryCountItem>(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryCountItem >>())).Returns(
                 new List<CategoryCountItem>
@@ -107,7 +107,7 @@ namespace SeadQueryTest.Services.FacetContent
             using (var scope = container.BeginLifetimeScope()) {
                 // Arrange
                 var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-                var scaffolder = new MockFacetsConfigFactory(Registry);
+                var scaffolder = new MockFacetsConfigFactory(Registry.Facets);
                 var facetsConfig = scaffolder.Create(uri);
                 // var resultKeys = new List<string>() { "site_level" };
                 // var resultConfig = new ScaffoldResultConfig().Scaffold("tabular", resultKeys);
@@ -128,7 +128,7 @@ namespace SeadQueryTest.Services.FacetContent
 
                 // Arrange
                 var uri = "tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82@(110,2904)";
-                var scaffolder = new MockFacetsConfigFactory(Registry);
+                var scaffolder = new MockFacetsConfigFactory(Registry.Facets);
                 var facetsConfig = scaffolder.Create(uri);
                 var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
 
