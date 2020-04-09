@@ -1,4 +1,3 @@
-using Autofac.Features.Indexed;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,18 +15,18 @@ namespace SeadQueryCore.QueryBuilder
     public interface IQuerySetupCompilerArgs
     {
         IFacetsGraph Graph { get; }
-        IIndex<int, IPickFilterCompiler> PickCompilers { get; }
+        IPickFilterCompilerLocator PickCompilers { get; }
         IEdgeSqlCompiler EdgeCompiler { get; }
 
     }
     public class QuerySetupCompiler : IQuerySetupCompiler {
         public IFacetsGraph Graph { get; set; }
-        public IIndex<int, IPickFilterCompiler> PickCompilers { get; set; }
+        public IPickFilterCompilerLocator PickCompilers { get; set; }
         public IEdgeSqlCompiler EdgeCompiler { get; }
 
         public QuerySetupCompiler(
             IFacetsGraph graph,
-            IIndex<int, IPickFilterCompiler> pickCompilers,
+            IPickFilterCompilerLocator pickCompilers,
             IEdgeSqlCompiler edgeCompiler
         ) {
             Graph = graph;
@@ -96,9 +95,9 @@ namespace SeadQueryCore.QueryBuilder
                 .SelectMany(route => route.Items)
                 .OrderByDescending(z => z.TargetTable.IsUdf)
                 .Select(edge => EdgeCompiler.Compile(
-                    Graph,
                     edge,
                     GetFacetTable(facetsConfig, edge),
+                    aliasTables,
                     true /* HasUserPicks(edge, pickCriterias) */
                 ))
                 .ToList();
@@ -159,7 +158,7 @@ namespace SeadQueryCore.QueryBuilder
 
         protected IPickFilterCompiler PickCompiler(FacetConfig2 c)
         {
-            return PickCompilers[(int)c.Facet.FacetTypeId];
+            return PickCompilers.Locate(c.Facet.FacetTypeId);
         }
     }
 }
