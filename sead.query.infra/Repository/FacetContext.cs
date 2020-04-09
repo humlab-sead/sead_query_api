@@ -6,10 +6,12 @@ namespace SeadQueryInfra
 
     public class FacetContext : DbContext, IFacetContext
     {
-        public IDatabaseQueryProxy QueryProxy { get; set; }
+        public ITypedQueryProxy TypedQueryProxy { get; set; }
+        public IDynamicQueryProxy DynamicQueryProxy { get; set; }
 
         public FacetContext(DbContextOptions options) : base(options) {
-            QueryProxy = new DatabaseQueryProxy(this);
+            TypedQueryProxy = new DatabaseQueryProxy(this);
+            DynamicQueryProxy = new DatabaseQueryProxy(this);
         }
 
         public virtual DbSet<ResultAggregate> ResultDefinitions { get; set; }

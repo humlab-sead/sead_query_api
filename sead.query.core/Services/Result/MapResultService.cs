@@ -16,7 +16,7 @@ namespace SeadQueryCore.Services.Result
             IRepositoryRegistry context,
             IResultCompiler resultQueryCompiler,
             IDiscreteCategoryCountService categoryCountService,
-            IDatabaseQueryProxy queryProxy
+            IDynamicQueryProxy queryProxy
         )
             : base(context, resultQueryCompiler, queryProxy)
         {

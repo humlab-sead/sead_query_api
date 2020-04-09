@@ -31,7 +31,6 @@ namespace SeadQueryAPI
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
 
-
             builder.RegisterType<FacetContextFactory>()
                 .As<IFacetContextFactory>()
                 .InstancePerLifetimeScope();
@@ -40,8 +39,12 @@ namespace SeadQueryAPI
                 .As<IFacetContext>()
                 .InstancePerLifetimeScope();
 
-            builder.Register(c => c.Resolve<IFacetContext>().QueryProxy)
-                .As<IDatabaseQueryProxy>()
+            builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy)
+                .As<ITypedQueryProxy>()
+                .InstancePerLifetimeScope();
+
+            builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy)
+                .As<IDynamicQueryProxy>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();

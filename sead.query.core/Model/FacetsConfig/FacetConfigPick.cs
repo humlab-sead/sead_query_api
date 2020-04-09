@@ -7,6 +7,8 @@ namespace SeadQueryCore
 {
     public class FacetConfigPick {
 
+        private static CultureInfo cultureInfo = new CultureInfo("en-US");
+
         public EPickType PickType { get; set; }
         public string PickValue { get; set; }
         public string Text { get; set; }
@@ -31,7 +33,8 @@ namespace SeadQueryCore
         {
         }
 
-        public FacetConfigPick(EPickType type, decimal value) : this(type, value.ToString(), value.ToString())
+        public FacetConfigPick(EPickType type, decimal value)
+            : this(type, value.ToString(cultureInfo), value.ToString(cultureInfo))
         {
         }
 

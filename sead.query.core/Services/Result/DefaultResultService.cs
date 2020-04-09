@@ -13,12 +13,12 @@ namespace SeadQueryCore.Services.Result
         public string FacetCode { get; protected set; }
 
         public IResultCompiler QueryCompiler { get; set; }
-        public IDatabaseQueryProxy QueryProxy { get; }
+        public IDynamicQueryProxy QueryProxy { get; }
 
         public DefaultResultService(
             IRepositoryRegistry registry,
             IResultCompiler compiler,
-            IDatabaseQueryProxy queryProxy
+            IDynamicQueryProxy queryProxy
         )
         {
             RepositoryRegistry = registry;
@@ -34,6 +34,7 @@ namespace SeadQueryCore.Services.Result
             if (Utility.empty(sql))
                 return null;
 
+            // This is (for now) only call to QueryProxy.Query
             var reader = QueryProxy.Query(sql);
             var fields = GetResultFields(resultConfig);
             var resultSet = new TabularResultContentSet(resultConfig, fields, reader) {

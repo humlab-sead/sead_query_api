@@ -15,13 +15,13 @@ namespace SeadQueryCore
             IRepositoryRegistry registry,
             IQuerySetupCompiler builder,
             IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler,
-            IDatabaseQueryProxy queryProxy) : base(config, registry, builder) {
+            ITypedQueryProxy queryProxy) : base(config, registry, builder) {
             CountSqlCompiler = countSqlCompiler;
             QueryProxy = queryProxy;
         }
 
         public IDiscreteCategoryCountSqlQueryCompiler CountSqlCompiler { get; }
-        public IDatabaseQueryProxy QueryProxy { get; }
+        public ITypedQueryProxy QueryProxy { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
@@ -67,5 +67,4 @@ namespace SeadQueryCore
                 }).ToList();
         }
     }
-
 }

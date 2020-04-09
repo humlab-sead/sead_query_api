@@ -16,13 +16,13 @@ namespace SeadQueryCore
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
             IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> compilers,
-            IDatabaseQueryProxy queryProxy) : base(context, builder)
+            ITypedQueryProxy queryProxy) : base(context, builder)
         {
             Compilers = compilers;
             QueryProxy = queryProxy;
         }
 
-        public IDatabaseQueryProxy QueryProxy { get; }
+        public ITypedQueryProxy QueryProxy { get; }
 
         public List<Key2Value<int, float>> Load()
         {

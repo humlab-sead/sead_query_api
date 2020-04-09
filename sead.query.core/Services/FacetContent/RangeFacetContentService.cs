@@ -24,7 +24,7 @@ public class RangeFacetContentService : FacetContentService {
             IQuerySetupCompiler builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
             IRangeIntervalSqlQueryCompiler rangeSqlCompiler,
-            IDatabaseQueryProxy queryProxy) : base(config, context, builder, queryProxy)
+            ITypedQueryProxy queryProxy) : base(config, context, builder, queryProxy)
         {
             CountService = countServices[EFacetType.Range];
             RangeSqlCompiler = rangeSqlCompiler;

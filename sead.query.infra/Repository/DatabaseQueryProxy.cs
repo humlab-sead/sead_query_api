@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SeadQueryInfra
 {
-    public class DatabaseQueryProxy : IDatabaseQueryProxy
+    public class DatabaseQueryProxy : ITypedQueryProxy, IDynamicQueryProxy
     {
         public DbContext Context { get; }
 
@@ -23,6 +23,12 @@ namespace SeadQueryInfra
             }
         }
 
+        /// <summary>
+        /// Exceutes a generic query. built from 
+        /// Only used in ResultContentService.
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns>IDataReader</returns>
         public IDataReader Query(string sql)
         {
             return Context.Database.ExecuteSqlQuery(sql).DbDataReader;

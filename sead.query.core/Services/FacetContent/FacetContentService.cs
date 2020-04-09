@@ -13,13 +13,13 @@ namespace SeadQueryCore
 
         public ICategoryCountService CountService { get; set; }
         public IFacetSetting Config { get; }
-        public IDatabaseQueryProxy QueryProxy { get; }
+        public ITypedQueryProxy QueryProxy { get; }
 
         public FacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
-            IDatabaseQueryProxy queryProxy
+            ITypedQueryProxy queryProxy
         ) : base(context, builder)
         {
             Config = config;

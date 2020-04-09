@@ -11,7 +11,7 @@ namespace SeadQueryCore
             IRepositoryRegistry registry,
             IQuerySetupCompiler builder,
             IValidPicksSqlQueryCompiler picksCompiler,
-            IDatabaseQueryProxy queryProxy
+            ITypedQueryProxy queryProxy
         ) : base(registry, builder)
         {
             PicksCompiler = picksCompiler;
@@ -19,7 +19,7 @@ namespace SeadQueryCore
         }
 
         public IValidPicksSqlQueryCompiler PicksCompiler { get; }
-        public IDatabaseQueryProxy QueryProxy { get; }
+        public ITypedQueryProxy QueryProxy { get; }
 
         /*
         public:  Delete

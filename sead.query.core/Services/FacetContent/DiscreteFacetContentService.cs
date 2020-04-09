@@ -15,7 +15,7 @@ namespace SeadQueryCore
             IQuerySetupCompiler builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
             IDiscreteContentSqlQueryCompiler sqlCompiler,
-            IDatabaseQueryProxy queryProxy
+            ITypedQueryProxy queryProxy
             ) : base(config, context, builder, queryProxy)
         {
             CountService = countServices[EFacetType.Discrete];
