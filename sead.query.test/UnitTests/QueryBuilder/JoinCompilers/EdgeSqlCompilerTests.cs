@@ -49,7 +49,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var result = edgeSqlCompiler.Compile(facetGraphMock.Object, edge, facetTable, false);
+            var result = edgeSqlCompiler.Compile(edge, facetTable, facetGraphMock.Object.AliasTables, false);
 
             // Assert
             var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
@@ -86,7 +86,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var result = edgeSqlCompiler.Compile(facetGraphMock.Object, edge, facetTable, false);
+            var result = edgeSqlCompiler.Compile(edge, facetTable, facetGraphMock.Object, false);
 
             // Assert
             var expected = "left join tbl_site_locations on tbl_site_locations.\"site_id\" = tbl_sites.\"site_id\"";

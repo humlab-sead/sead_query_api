@@ -12,13 +12,11 @@ namespace SeadQueryCore
         };
 
 
-        public string Compile(IFacetsGraph graph, TableRelation edge, FacetTable targetTable, bool innerJoin = false)
+        public string Compile(TableRelation edge, FacetTable targetTable, Dictionary<string, FacetTable> aliases, bool innerJoin = false)
         {
             /* 
              * A table alias is _unique_ to a specific FacetTable i.e. the sam alias cannot occur in more than one facet
              */
-
-            var aliases = graph.AliasTables;
 
             if (targetTable == null) {
                 /* Fetch alias FacetTable if exists */
