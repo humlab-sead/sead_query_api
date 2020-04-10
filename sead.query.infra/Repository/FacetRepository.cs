@@ -35,14 +35,6 @@ namespace SeadQueryInfra
             return set.Include(x => x.Table);
         }
 
-        public Dictionary<string, FacetTable> AliasTablesDict()
-        {
-            return FindThoseWithAlias()
-                .ToDictionary(
-                    x => x.Alias,
-                    x => x
-                );
-        }
     }
 
     public class FacetRepository : Repository<Facet, int>, IFacetRepository
