@@ -12,18 +12,8 @@ namespace SeadQueryCore
         };
 
 
-        public string Compile(TableRelation edge, FacetTable targetTable, Dictionary<string, FacetTable> aliases, bool innerJoin = false)
+        public string Compile(TableRelation edge, FacetTable targetTable, bool innerJoin = false)
         {
-            /* 
-             * A table alias is _unique_ to a specific FacetTable i.e. the sam alias cannot occur in more than one facet
-             */
-
-            if (targetTable == null) {
-                /* Fetch alias FacetTable if exists */
-                if (aliases.ContainsKey(edge.TargetName)) {
-                    targetTable = aliases[edge.TargetName];
-                }
-            }
 
             /* 
              * If "facetTable" exists, then the target table is found in FacetsConfig,
