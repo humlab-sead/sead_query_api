@@ -19,34 +19,11 @@ namespace SeadQueryTest.QueryBuilder
     public class QuerySetupCompilerTests : DisposableFacetContextContainer
     {
         public object ReconstituteFacetConfigService { get; private set; }
+        public MockFacetsConfigFactory FacetsConfigFactory { get; }
 
         public QuerySetupCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-        }
-
-        private FacetsConfig2 CreateSingleFacetsConfig(string facetCode)
-        {
-            var facetsConfig = new FacetsConfig2 {
-                DomainCode = "",
-                RequestId = "1",
-                RequestType = "populate",
-                TargetCode = facetCode,
-                TriggerCode = facetCode,
-                FacetConfigs = new List<FacetConfig2>()
-                {
-                    new FacetConfig2
-                    {
-                        FacetCode = facetCode,
-                        Position = 1,
-                        TextFilter = "",
-                        Picks = new List<FacetConfigPick> { },
-                        Facet = GetFacet(facetCode)
-                    }
-                },
-                TargetFacet = GetFacet(facetCode),
-                TriggerFacet = GetFacet(facetCode)
-            };
-            return facetsConfig;
+            FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
 
         private Facet GetFacet(string facetCode)
@@ -54,40 +31,68 @@ namespace SeadQueryTest.QueryBuilder
             return Registry.Facets.GetByCode(facetCode);
         }
 
-        private IIndex<int, IPickFilterCompiler> ConcretePickCompilers()
+        private IPickFilterCompilerLocator ConcretePickCompilers()
         {
-            return new MockIndex<int, IPickFilterCompiler>
-            {
+            return new PickFilterCompilerLocator(
+                new MockIndex<int, IPickFilterCompiler> {
                     { 1, new DiscreteFacetPickFilterCompiler() },
                     { 2, new RangeFacetPickFilterCompiler() }
-            };
+                }
+            );
         }
 
-        private IIndex<int, IPickFilterCompiler> MockPickCompilers(string returnValue = "")
+        private Mock<IPickFilterCompilerLocator> MockPickCompilers(string returnValue = "")
         {
             var mockPickCompiler = new Mock<IPickFilterCompiler>();
-            mockPickCompiler.Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>())).Returns(returnValue);
 
-            return new MockIndex<int, IPickFilterCompiler>
-            {
-                    { 1, mockPickCompiler.Object },
-                    { 2, mockPickCompiler.Object }
-            };
+            mockPickCompiler
+                .Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
+                .Returns(returnValue);
+
+            var mockLocator = new Mock<IPickFilterCompilerLocator>();
+
+            mockLocator
+                .Setup(x => x.Locate(It.IsAny<EFacetType>()))
+                .Returns(mockPickCompiler.Object);
+
+            return mockLocator;
         }
 
-        private QuerySetupCompiler CreateQuerySetupCompiler()
+        private Mock<IEdgeSqlCompiler> MockEdgeCompiler(string returnValue)
         {
-            var mockFacetGraph = ScaffoldUtility.DefaultFacetsGraph(Context);
-            var pickCompilers = ConcretePickCompilers();
-            var edgeCompiler = new EdgeSqlCompiler();
-
-            var builder = new QuerySetupCompiler(
-                mockFacetGraph,
-                pickCompilers,
-                edgeCompiler
-            );
-            return builder;
+            var mockEdgeCompiler = new Mock<IEdgeSqlCompiler>();
+            mockEdgeCompiler
+                .Setup(x => x.Compile(
+                    It.IsAny<TableRelation>(),
+                    It.IsAny<FacetTable>(),
+                    It.IsAny<bool>()
+                ))
+                .Returns(returnValue);
+            return mockEdgeCompiler;
         }
+
+        private Mock<IFacetsGraph> MockFacetsGraph()
+        {
+            var mockFacetsGraph = new Mock<IFacetsGraph>();
+
+            //mockFacetsGraph
+            //    .Setup(x => x.Find());
+            return mockFacetsGraph;
+        }
+
+        //private QuerySetupCompiler CreateQuerySetupCompiler()
+        //{
+        //    var mockFacetGraph = ScaffoldUtility.DefaultFacetsGraph(Context);
+        //    var mockPickCompilers = ConcretePickCompilers();
+        //    var edgeCompile = new EdgeSqlCompiler();
+
+        //    var builder = new QuerySetupCompiler(
+        //        mockFacetGraph,
+        //        mockPickCompilers.Obj,
+        //        edgeCompiler
+        //    );
+        //    return builder;
+        //}
 
         [Theory]
         [InlineData("sites:sites", "sites")]
@@ -95,12 +100,22 @@ namespace SeadQueryTest.QueryBuilder
         {
             // Arrange
             var facet = Registry.Facets.GetByCode(facetCode);
-
-            QuerySetupCompiler builder = CreateQuerySetupCompiler();
+            var facetsConfig = FacetsConfigFactory.Create(uri);
+            var mockPickCompilers = MockPickCompilers("");
+            var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
+            var mockFacetsGraph = MockFacetsGraph();
+            var facetCodes = new List<string>() { facetCode };
+            var aliases = new List<FacetTable>();
+            var extraTables = new List<string>();
 
             // Act
-            QuerySetup querySetup = builder.Build(
-                facetsConfig, facet, new List<string>(), new List<string>() { facetCode });
+            var compiler = new QuerySetupCompiler(
+                mockFacetsGraph.Object,
+                mockPickCompilers.Object,
+                mockEdgeCompiler.Object
+            );
+
+            QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes, aliases);
 
             // Assert
             ScaffoldUtility.Dump(querySetup, "");
@@ -110,20 +125,28 @@ namespace SeadQueryTest.QueryBuilder
         }
 
         [Theory]
-        [InlineData("sites")]
-        [InlineData("country")]
-        [InlineData("ecocode")]
-        public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode)
+        [InlineData("sites:sites", "sites")]
+        [InlineData("country:country", "country")]
+        [InlineData("ecocode:ecocode", "ecocode")]
+        public void CanBuildCategoryQuerySetupForSingleDiscreteFacetWithoutPicks(string uri, string facetCode)
         {
             // Arrange
-            var fixture = new MockFacetsConfigFactory(Registry.Facets);
-            var facet = fixture.Repository.GetByCode(facetCode);
-            var facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
+            var facet = Registry.Facets.GetByCode(facetCode);
+            var facetsConfig = FacetsConfigFactory.Create(uri);
+            var mockPickCompilers = MockPickCompilers("");
+            var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
+            var mockFacetsGraph = MockFacetsGraph();
+            var facetCodes = new List<string>() { facetCode };
+            var aliases = new List<FacetTable>();
+            var extraTables = new List<string>();
 
-            QuerySetupCompiler builder = CreateQuerySetupCompiler();
-
+            var compiler = new QuerySetupCompiler(
+                mockFacetsGraph.Object,
+                mockPickCompilers.Object,
+                mockEdgeCompiler.Object
+            );
             // Act
-            QuerySetup querySetup = builder.Build(facetsConfig, facet, new List<string>(), new List<string>() { facetCode });
+            QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes, aliases);
 
             // Assert
             Assert.NotNull(querySetup);
@@ -161,9 +184,16 @@ namespace SeadQueryTest.QueryBuilder
 
             // Arrange
             var facetRepository = fixture.Repository;
-            var factory = new FacetGraphFactory(Registry);
+            var mockPickCompilers = MockPickCompilers("");
+            var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
+            var mockFacetsGraph = MockFacetsGraph();
+            var aliases = new List<FacetTable>();
 
-            QuerySetupCompiler builder = CreateQuerySetupCompiler();
+            var compiler = new QuerySetupCompiler(
+                mockFacetsGraph.Object,
+                mockPickCompilers.Object,
+                mockEdgeCompiler.Object
+            );
 
             Facet facet = facetRepository.GetByCode(facetCode);
             Facet countFacet = facetRepository.Get(facet.AggregateFacetId); // default to ID 1 = "result_facet"
@@ -177,7 +207,7 @@ namespace SeadQueryTest.QueryBuilder
             facetCodes.InsertAt(targetFacet.FacetCode, countFacet.FacetCode);
 
             // Act
-            QuerySetup querySetup = builder.Build(facetsConfig, countFacet, tables, facetCodes);
+            QuerySetup querySetup = compiler.Build(facetsConfig, countFacet, tables, facetCodes, aliases);
 
             // Assert
             var expected = expectedRoutes;
@@ -275,11 +305,11 @@ namespace SeadQueryTest.QueryBuilder
 
             IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
 
-            IIndex<int, IPickFilterCompiler> pickCompilers = MockPickCompilers("");
+            var pickCompilers = MockPickCompilers("");
 
             IQuerySetupCompiler builder = new QuerySetupCompiler(
                 graph,
-                pickCompilers,
+                pickCompilers.Object,
                 edgeCompiler
             );
 
@@ -292,8 +322,10 @@ namespace SeadQueryTest.QueryBuilder
 
             List<string> tables = GetTargetTables(facetsConfig, computeFacet);
 
+            var aliases = new List<FacetTable>();
+
             // Act
-            QuerySetup querySetup = builder.Build(facetsConfig, computeFacet, tables, facetCodes);
+            QuerySetup querySetup = builder.Build(facetsConfig, computeFacet, tables, facetCodes, aliases);
 
             // Assert
 
