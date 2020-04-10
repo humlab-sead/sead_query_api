@@ -6,7 +6,14 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-    public class Table {
+    public interface IGraphNode
+    {
+        public int GetId();
+        public string GetName();
+    }
+
+    public class Table : IGraphNode
+    {
         public int TableId { get; set; }
         public string TableOrUdfName { get; set; }
         public string PrimaryKeyName { get; set; }
@@ -21,10 +28,19 @@ namespace SeadQueryCore
         {
             return obj != null && TableOrUdfName == obj.TableOrUdfName;
         }
-
         public override int GetHashCode()
         {
             return TableOrUdfName.GetHashCode();
+        }
+
+        public int GetId()
+        {
+            return TableId;
+        }
+
+        public string GetName()
+        {
+            return TableOrUdfName;
         }
     }
 }
