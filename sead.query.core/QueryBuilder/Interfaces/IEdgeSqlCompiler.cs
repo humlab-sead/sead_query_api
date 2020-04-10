@@ -4,6 +4,6 @@ namespace SeadQueryCore
 {
     public interface IEdgeSqlCompiler
     {
-        string Compile(TableRelation edge, FacetTable facetTable, Dictionary<string, FacetTable> aliases, bool innerJoin = false);
+        string Compile(TableRelation edge, FacetTable facetTable, bool innerJoin = false);
     }
 }
