@@ -1,103 +1,96 @@
-﻿using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using Autofac;
-using Autofac.Features.Indexed;
-using Moq;
+﻿using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Model;
 using SeadQueryCore.Services.Result;
-using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Mocks;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Xunit;
 
 namespace SeadQueryTest
 {
+    [Collection("JsonSeededFacetContext")]
     public class ResultContentServiceTests : DisposableFacetContextContainer
     {
         public ResultContentServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
 
-        public ExpandoObject FakeResultItem(ResultAggregate aggregate, object[] data) {
-            var value = new ExpandoObject() as IDictionary<string, object>;
-            var fields = aggregate.GetResultFields();
-            var i = 0;
-            foreach (var field in fields) {
-                value.Add(field.ResultField.ResultFieldKey, data[i++]);
-                //switch (field.ResultField.DataType) {
-                //    case "int":
-                //        break;
-                //    case "text":
-                //        break;
-                //    case "decimal":
-                //        break;
-                //}
-            }
-            return (ExpandoObject)value;
-        }
-        public List<ExpandoObject> FakeResultItems(ResultAggregate aggregate, List<object[]> items)
+        [Fact]
+        public void Example_HowToSetup_DynamicQueryProxyMock()
         {
-            var values = new List<ExpandoObject>();
-            foreach (var item in items)
-                values.Add(FakeResultItem(aggregate, item));
-            return values;
+            var fields = Registry.Results.GetByKey("site_level").GetResultFieldTypes().ToList();
+            object[,] values = new object[,] {
+                { "ipsum", "lorum", 1, 2, 3 },
+                { "ipsus", "lorus", 4, 5, 6 }
+            };
+            var queryProxy = new MockDynamicQueryProxyFactory().CreateWithData(fields, values);
+
+            Assert.NotNull(queryProxy);
+     
+            queryProxy = new MockDynamicQueryProxyFactory().CreateWithFakeData(fields, 10);
+
+            Assert.NotNull(queryProxy);
         }
 
         [Theory]
         [InlineData("tabular", "site_level", "sites@sites:country@73/sites:", 30)]
         [InlineData("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1)]
         [InlineData("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30)]
-        //[InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
-        public void Load_WhenTabularData_Success(string viewTypeId, string resultKey, string uri, int expectedCount)
+        [InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
+        public void Load_WithVariousSetups_Success(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
             // Arrange
             var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
-            var resultConfig = ResultConfigFactory.Create(viewTypeId, resultKey);
-
-
-            var mockResultCompiler = new Mock<IResultCompiler>();
-            mockResultCompiler.Setup(
-                c => c.Compile(facetsConfig, resultConfig, "result_facet")
-            ).Returns("");
-
-            var mockCountService = new Mock<ICategoryCountService>();
-            IIndex<EFacetType, ICategoryCountService> mockCountServices = new MockIndex<EFacetType, ICategoryCountService>
+            var resultConfig = new ResultConfig()
             {
-                { EFacetType.Discrete, mockCountService.Object },
-                { EFacetType.Range, mockCountService.Object }
+                ViewTypeId = viewTypeId,
+                RequestId = "1",
+                SessionId = "1",
+                AggregateKeys = new List<string> { resultKey }
             };
-            var tabularSqlCompiler = new TabularResultSqlQueryCompiler();
-
-            var aggregate = Registry.Results.GetByKey(resultConfig.AggregateKeys[0]);
-            var resultFields = aggregate
-                .GetResultFields()
-                .Select((field, i) => new { Field = field, Alias = $"alias_{i + 1}" });
-
-            var queryProxy = new MockDynamicQueryProxyFactory().Create<ExpandoObject>(
-                FakeResultItems(aggregate, new List<object[]>  {
-                    new object[] { 1 }
-                })
-            ); ;
-
-            var service = new DefaultResultService(Registry, mockResultCompiler.Object, queryProxy.Object);
+            var mockResultQueryCompiler = MockResultQueryCompiler("SELECT * FROM dummy");
+            var aggregate = Registry.Results.GetByKey(resultKey);
+            var fields = aggregate.GetResultFieldTypes().ToList();
+            var queryProxy = new MockDynamicQueryProxyFactory().CreateWithFakeData(fields, expectedCount);
 
             // Act
-            var resultSet = service.Load(facetsConfig, resultConfig);
+            var service = new DefaultResultService(Registry, mockResultQueryCompiler.Object, queryProxy.Object);
+            var result = service.Load(facetsConfig, resultConfig);
 
             // Assert
-            Assert.NotNull(resultSet);
-            var expectedFields = aggregate.GetResultFields();
-            var items = resultSet.Data.DataCollection.ToList();
-            Assert.True(items.All(x => x.Length == expectedFields.Count));
-            Assert.Equal(expectedCount, items.Count);
+            Assert.NotNull(result);
+            Assert.True(result.Data.DataCollection.All(x => x.Length == fields.Count));
+            Assert.Equal(expectedCount, result.Data.DataCollection.Count);
+            Assert.Equal(fields.Count, result.Meta.Columns.Count);
 
-            var columns = resultSet.Meta.Columns;
+        }
 
-            Assert.Equal(expectedFields.Count, columns.Count);
+        //private static IIndex<EFacetType, ICategoryCountService> MockCategoryCountService()
+        //{
+        //    var mockCountService = new Mock<ICategoryCountService>();
+        //    var mockCountServices = new MockIndex<EFacetType, ICategoryCountService>
+        //    {
+        //        { EFacetType.Discrete, mockCountService.Object },
+        //        { EFacetType.Range, mockCountService.Object }
+        //    };
+        //    return mockCountServices;
+        //}
 
+        private static Mock<IResultQueryCompiler> MockResultQueryCompiler(string returnSql)
+        {
+            var mockResultQueryCompiler = new Mock<IResultQueryCompiler>();
+            mockResultQueryCompiler.Setup(
+                c => c.Compile(
+                    It.IsAny<FacetsConfig2>(),
+                    It.IsAny<ResultConfig>(),
+                    "result_facet"
+                )
+            ).Returns(returnSql);
+            return mockResultQueryCompiler;
         }
     }
 }

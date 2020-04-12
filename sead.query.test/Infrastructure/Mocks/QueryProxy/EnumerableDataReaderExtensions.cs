@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 
 namespace SeadQueryTest.Infrastructure
@@ -30,6 +31,27 @@ namespace SeadQueryTest.Infrastructure
                 table.Rows.Add(row);
             }
 
+            return table.CreateDataReader();
+        }
+
+        public static IDataReader ToDataReader(this IEnumerable<ExpandoObject> items)
+        {
+            DataTable table = new DataTable();
+
+            foreach (IDictionary<string, object> item in items) {
+
+                if (table.Columns.Count == 0) {
+                    foreach (var key in item.Keys)
+                        table.Columns.Add(key, item[key].GetType());
+                }
+
+                var row = table.NewRow();
+
+                foreach (var key in item.Keys)
+                    row[key] = item?[key] ?? DBNull.Value;
+
+                table.Rows.Add(row);
+            }
             return table.CreateDataReader();
         }
     }
