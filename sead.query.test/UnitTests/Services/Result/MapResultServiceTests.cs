@@ -11,23 +11,25 @@ using Xunit;
 
 namespace SeadQueryTest.Services.Result
 {
-    public class MapResultServiceTests
+    public class MapResultServiceTests : DisposableFacetContextContainer
     {
-
-        private IIndex<int, IPickFilterCompiler> ConcretePickCompilers()
+        public MapResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            return new MockIndex<int, IPickFilterCompiler>
-            {
-                    { 1, new DiscreteFacetPickFilterCompiler() },
-                    { 2, new RangeFacetPickFilterCompiler() }
-            };
         }
 
-        private IQuerySetupCompiler CreateQuerySetupCompiler(IRepositoryRegistry registry)
+        private IQuerySetupCompiler MockQuerySetupCompiler()
         {
-            IFacetsGraph facetsGraph = ScaffoldUtility.DefaultFacetsGraph(registry);
-            var pickCompilers = ConcretePickCompilers();
-            IQuerySetupCompiler querySetupCompiler = new QuerySetupCompiler(facetsGraph, pickCompilers, new EdgeSqlCompiler());
+            IFacetsGraph facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+
+            var mockPickCompiler = new Mock<IPickFilterCompiler>();
+            mockPickCompiler
+                .Setup(x => x.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
+                .Returns("");
+
+            var pickCompilers = new Mock<IPickFilterCompilerLocator>();
+            pickCompilers.Setup(x => x.Locate(It.IsAny<EFacetType>())).Returns(mockPickCompiler.Object);
+
+            IQuerySetupCompiler querySetupCompiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, new EdgeSqlCompiler());
             return querySetupCompiler;
         }
 
@@ -74,13 +76,13 @@ namespace SeadQueryTest.Services.Result
         //    }
         //}
 
-        private IResultCompiler ConcreteResultCompiler(IRepositoryRegistry registry)
+        private IResultQueryCompiler ConcreteResultCompiler(IRepositoryRegistry registry)
         {
             var resultSqlQueryCompilers = new MockIndex<string, IResultSqlQueryCompiler> {
                 {  "map", new MapResultSqlQueryCompiler() }
             };
-            IQuerySetupCompiler querySetupCompiler = CreateQuerySetupCompiler(registry);
-            var resultQueryCompiler = new ResultCompiler(registry, querySetupCompiler, resultSqlQueryCompilers);
+            IQuerySetupCompiler querySetupCompiler = MockQuerySetupCompiler();
+            var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupCompiler, resultSqlQueryCompilers);
             return resultQueryCompiler;
         }
 

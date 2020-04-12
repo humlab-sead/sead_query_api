@@ -103,7 +103,7 @@ namespace SeadQueryTest.Services.FacetContent
         [Fact]
         public void Load_WhenOnlineMeasuredValues_33_00_IsTrue()
         {
-            using (var container = TestDependencyService.CreateContainer(Context, null))
+            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
             using (var scope = container.BeginLifetimeScope()) {
                 // Arrange
                 var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
@@ -123,7 +123,7 @@ namespace SeadQueryTest.Services.FacetContent
         [Fact]
         public void Load_WhenOnlineMeasuredValues_33_82_IsTrue()
         {
-            using (var container = TestDependencyService.CreateContainer(Context, null))
+            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
             using (var scope = container.BeginLifetimeScope()) {
 
                 // Arrange
