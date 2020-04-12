@@ -6,35 +6,77 @@ using System.Data;
 using System.Data.Common;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 
 namespace SeadQueryInfra
 {
-    public class RepositoryRegistry : IRepositoryRegistry {
-
+    public class RepositoryRegistry : IRepositoryRegistry
+    {
         public FacetContext Context { get; private set; }
+        protected Dictionary<Type, IRepository2> Repositories { get; private set; }
 
         public RepositoryRegistry(IFacetContext _context)
         {
             Context = (FacetContext)_context;
-            Facets = new FacetRepository(Context);
-            TableRelations = new TableRelationRepository(Context);
-            Tables = new TableRepository(Context);
-            Results = new ResultRepository(Context);
-            FacetGroups = new FacetGroupRepository(Context);
-            FacetTypes = new FacetTypeRepository(Context);
-            FacetTables = new FacetTableRepository(Context);
-            ViewStates = new ViewStateRepository(Context);
+            Repositories = CreateRepositories();
         }
 
-        public IFacetRepository Facets { get; private set; }
-        public ITableRelationRepository TableRelations { get; private set; }
-        public ITableRepository Tables { get; private set; }
-        public IResultRepository Results { get; private set; }
-        public IFacetGroupRepository FacetGroups { get; private set; }
-        public IFacetTypeRepository FacetTypes { get; private set; }
-        public IViewStateRepository ViewStates { get; private set; }
+        protected Dictionary<Type, IRepository2> CreateRepositories()
+        {
+            var repositories = new Dictionary<Type, IRepository2>()
+            {
+                { typeof(IFacetRepository),         new FacetRepository(Context) },
+                { typeof(ITableRelationRepository), new TableRelationRepository(Context) },
+                { typeof(ITableRepository),         new TableRepository(Context) },
+                { typeof(IResultRepository),        new ResultRepository(Context) },
+                { typeof(IFacetGroupRepository),    new FacetGroupRepository(Context) },
+                { typeof(IFacetTypeRepository),     new FacetTypeRepository(Context) },
+                { typeof(IFacetTableRepository),    new FacetTableRepository(Context) },
+                { typeof(IViewStateRepository),     new ViewStateRepository(Context) }
+            };
+            return repositories;
+        }
 
-        public IFacetTableRepository FacetTables { get; private set; }
+        //public IEnumerable<Type> GetRepositoryTypes()
+        //{
+        //    return InfraUtility.GetTypesThatIsAssignableFrom<IRepository2>("sead.query.infra");
+        //}
+
+        //protected Dictionary<Type, IRepository2> CreateRepositories2()
+        //{
+        //    return GetRepositoryTypes()
+        //        .Select(type => (IRepository2)Activator.CreateInstance(type, Context))
+        //        .ToDictionary(z => GetInterface(z));
+        //}
+
+        //private static Type GetInterface(IRepository2 instance)
+        //{
+        //    return instance.GetType()
+        //        .GetInterfaces()
+        //        .Where(t => t.IsInterface && t != typeof(IRepository2) && typeof(IRepository2).IsAssignableFrom(t))
+        //        .FirstOrDefault();
+        //}
+
+        public T GetRepository<T>() where T: IRepository2
+        {
+            return (T)GetRepository(typeof(T));
+        }
+
+        public IRepository2 GetRepository(Type type)
+        {
+            if (!Repositories.ContainsKey(type))
+                throw new KeyNotFoundException(type.Name);
+            return (IRepository2)Repositories[type];
+        }
+
+        public virtual IFacetRepository Facets                      => GetRepository<IFacetRepository>();
+        public virtual ITableRelationRepository TableRelations      => GetRepository<ITableRelationRepository>();
+        public virtual ITableRepository Tables                      => GetRepository<ITableRepository>();
+        public virtual IResultRepository Results                    => GetRepository<IResultRepository>();
+        public virtual IFacetGroupRepository FacetGroups            => GetRepository<IFacetGroupRepository>();
+        public virtual IFacetTypeRepository FacetTypes              => GetRepository<IFacetTypeRepository>();
+        public virtual IViewStateRepository ViewStates              => GetRepository<IViewStateRepository>();
+        public virtual IFacetTableRepository FacetTables            => GetRepository<IFacetTableRepository>();
 
         public int Commit() => Context.SaveChanges();
         public void Dispose() => Context.Dispose();
