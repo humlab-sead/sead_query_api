@@ -10,11 +10,11 @@ using SeadQueryCore.Model;
 namespace SeadQueryCore
 {
 
-    public class ResultCompiler : QueryServiceBase, IResultCompiler
+    public class ResultQueryCompiler : QueryServiceBase, IResultQueryCompiler
     {
         protected IIndex<string, IResultSqlQueryCompiler> QueryCompilers;
 
-        public ResultCompiler(
+        public ResultQueryCompiler(
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
             IIndex<string, IResultSqlQueryCompiler> queryCompilers
