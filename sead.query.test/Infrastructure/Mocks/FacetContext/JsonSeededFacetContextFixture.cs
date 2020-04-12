@@ -6,22 +6,43 @@ using Xunit;
 
 namespace SeadQueryTest.Infrastructure
 {
+    using ItemsDictionary = Dictionary<Type, IEnumerable<object>>;
+
     public class JsonSeededFacetContextFixture : IDisposable
     {
         /// <summary>
         /// Reads Json Facet Schema entities and stores them in a dictionary
         /// </summary>
+
+        private Lazy<ItemsDictionary> LazyItems;
+        public ItemsDictionary Items => LazyItems.Value;
+        public string Folder { get; }
+        public ICollection<Type> Types { get; }
+
         public JsonSeededFacetContextFixture()
         {
+            Folder = ScaffoldUtility.JsonDataFolder();
+            Types = ScaffoldUtility.GetModelTypes();
+            LazyItems = new Lazy<ItemsDictionary>(Load);
+        }
+
+        //public JsonSeededFacetContextFixture(string folder, ICollection<Type> types) : this()
+        //{
+        //    Folder = folder;
+        //    Types = types;
+        //}
+
+        protected ItemsDictionary Load()
+        {
             // ... initialize data in the test database ...
-            var folder = ScaffoldUtility.JsonDataFolder();
+            Console.WriteLine("INFO: JsonSeededFacetContextFixture");
             var reader = new JsonReaderService(new IgnoreJsonAttributesResolver());
-            var items = new Dictionary<Type, IEnumerable<object>>();
-            foreach (var type in ScaffoldUtility.GetModelTypes()) {
-                var entities = reader.Deserialize(type, folder).ToArray();
+            var items = new ItemsDictionary();
+            foreach (var type in Types) {
+                var entities = reader.Deserialize(type, Folder).ToArray();
                 items.Add(type, entities);
             }
-            Items = items;
+            return items;
         }
 
         public void Dispose()
@@ -29,15 +50,14 @@ namespace SeadQueryTest.Infrastructure
             // ... clean up test data...
         }
 
-        public Dictionary<Type, IEnumerable<object>> Items { get; private set; }
     }
 
-    [CollectionDefinition("Json seeded context")]
+    [CollectionDefinition("JsonSeededFacetContext")]
     public class JsonCollectionFixture : ICollectionFixture<JsonSeededFacetContextFixture>
     {
         // This class has no code, and is never created. Its purpose is simply
         // to be the place to apply [CollectionDefinition] and all the
         // ICollectionFixture<> interfaces.
     }
-  
+
 }
