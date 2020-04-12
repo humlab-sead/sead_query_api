@@ -22,9 +22,9 @@ namespace SeadQueryTest.Model.Entities
         {
             GraphRoute testRoute = new GraphRoute(
                 new List<TableRelation>() {
-                    FacetsGraph.GetEdge("A", "B"),
-                    FacetsGraph.GetEdge("B", "F"),
-                    FacetsGraph.GetEdge("F", "H")
+                    FacetsGraph.EdgeContaniner.GetEdge("A", "B"),
+                    FacetsGraph.EdgeContaniner.GetEdge("B", "F"),
+                    FacetsGraph.EdgeContaniner.GetEdge("F", "H")
                 }
             );
             return testRoute;
@@ -35,7 +35,7 @@ namespace SeadQueryTest.Model.Entities
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = FacetsGraph.GetEdge("A", "B");
+            TableRelation item = FacetsGraph.EdgeContaniner.GetEdge("A", "B");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -48,7 +48,7 @@ namespace SeadQueryTest.Model.Entities
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = FacetsGraph.GetEdge("C", "F");
+            TableRelation item = FacetsGraph.EdgeContaniner.GetEdge("C", "F");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -64,7 +64,7 @@ namespace SeadQueryTest.Model.Entities
             List<GraphRoute> routes = new List<GraphRoute>() {
                 new GraphRoute(
                     new List<TableRelation>() {
-                        FacetsGraph.GetEdge("F", "H")
+                        FacetsGraph.EdgeContaniner.GetEdge("F", "H")
                     }
                 )
             };
@@ -75,8 +75,8 @@ namespace SeadQueryTest.Model.Entities
 
             // Assert
             Assert.Equal(2, result.Items.Count);
-            Assert.True(graphRoute.Contains(FacetsGraph.GetEdge("A", "B")));
-            Assert.True(graphRoute.Contains(FacetsGraph.GetEdge("B", "F")));
+            Assert.True(graphRoute.Contains(FacetsGraph.EdgeContaniner.GetEdge("A", "B")));
+            Assert.True(graphRoute.Contains(FacetsGraph.EdgeContaniner.GetEdge("B", "F")));
         }
 
         [Fact]

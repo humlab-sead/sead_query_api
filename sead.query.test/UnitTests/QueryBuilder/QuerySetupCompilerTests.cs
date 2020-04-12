@@ -105,7 +105,6 @@ namespace SeadQueryTest.QueryBuilder
             var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
             var facetCodes = new List<string>() { facetCode };
-            var aliases = new List<FacetTable>();
             var extraTables = new List<string>();
 
             // Act
@@ -115,7 +114,7 @@ namespace SeadQueryTest.QueryBuilder
                 mockEdgeCompiler.Object
             );
 
-            QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes, aliases);
+            QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes);
 
             // Assert
             ScaffoldUtility.Dump(querySetup, "");
@@ -137,7 +136,6 @@ namespace SeadQueryTest.QueryBuilder
             var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
             var facetCodes = new List<string>() { facetCode };
-            var aliases = new List<FacetTable>();
             var extraTables = new List<string>();
 
             var compiler = new QuerySetupCompiler(
@@ -145,8 +143,9 @@ namespace SeadQueryTest.QueryBuilder
                 mockPickCompilers.Object,
                 mockEdgeCompiler.Object
             );
+
             // Act
-            QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes, aliases);
+            QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes);
 
             // Assert
             Assert.NotNull(querySetup);
@@ -187,7 +186,6 @@ namespace SeadQueryTest.QueryBuilder
             var mockPickCompilers = MockPickCompilers("");
             var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
-            var aliases = new List<FacetTable>();
 
             var compiler = new QuerySetupCompiler(
                 mockFacetsGraph.Object,
@@ -207,7 +205,7 @@ namespace SeadQueryTest.QueryBuilder
             facetCodes.InsertAt(targetFacet.FacetCode, countFacet.FacetCode);
 
             // Act
-            QuerySetup querySetup = compiler.Build(facetsConfig, countFacet, tables, facetCodes, aliases);
+            QuerySetup querySetup = compiler.Build(facetsConfig, countFacet, tables, facetCodes);
 
             // Assert
             var expected = expectedRoutes;
@@ -301,7 +299,7 @@ namespace SeadQueryTest.QueryBuilder
                 )
             ).ToList());
 
-            var graph = ScaffoldUtility.DefaultFacetsGraph(Context);
+            var graph = ScaffoldUtility.DefaultFacetsGraph(FacetContext);
 
             IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
 
@@ -322,10 +320,8 @@ namespace SeadQueryTest.QueryBuilder
 
             List<string> tables = GetTargetTables(facetsConfig, computeFacet);
 
-            var aliases = new List<FacetTable>();
-
             // Act
-            QuerySetup querySetup = builder.Build(facetsConfig, computeFacet, tables, facetCodes, aliases);
+            QuerySetup querySetup = builder.Build(facetsConfig, computeFacet, tables, facetCodes);
 
             // Assert
 

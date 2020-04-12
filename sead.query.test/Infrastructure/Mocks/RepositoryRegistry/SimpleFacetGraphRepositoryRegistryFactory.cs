@@ -43,8 +43,8 @@ namespace SeadQueryTest.Mocks
             mockRegistry.Setup(x => x.TableRelations.GetAll())
                 .Returns(Edges);
 
-            mockRegistry.Setup(x => x.FacetTables.AliasTablesDict())
-                .Returns(new Dictionary<string, FacetTable>());
+            mockRegistry.Setup(x => x.FacetTables.FindThoseWithAlias())
+                .Returns(new List<FacetTable>());
 
             return mockRegistry.Object;
         }

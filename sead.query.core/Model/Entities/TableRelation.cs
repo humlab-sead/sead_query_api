@@ -58,7 +58,11 @@ namespace SeadQueryCore
             return x;
         }
 
-        public Tuple<string, string> Key { get { return new Tuple<string, string>(SourceName, TargetName); } }
+        public Tuple<string, string> Key
+            => new Tuple<string, string>(SourceName, TargetName);
+
+        public Tuple<int, int> IdKey
+            => new Tuple<int, int>(SourceTableId, TargetTableId);
 
         public override bool Equals(object x)
         {

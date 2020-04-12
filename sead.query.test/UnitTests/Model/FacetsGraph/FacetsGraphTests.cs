@@ -36,7 +36,7 @@ namespace SeadQueryTest.Model
             const string target = "F";
 
             // Act
-            var result = facetsGraph.GetEdge(source, target);
+            var result = facetsGraph.EdgeContaniner.GetEdge(source, target);
 
             // Assert
             Assert.Equal(source, result.SourceName);
@@ -54,7 +54,7 @@ namespace SeadQueryTest.Model
             const int targetId = 6;
 
             // Act
-            var result = facetsGraph.GetEdge(sourceId, targetId);
+            var result = facetsGraph.EdgeContaniner.GetEdge(sourceId, targetId);
 
             // Assert
             Assert.NotNull(result);
@@ -167,10 +167,10 @@ namespace SeadQueryTest.Model
         [Fact]
         public void Build_WhenResolvedByIoC_HasExpectedEdges()
         {
-            using (var container = TestDependencyService.CreateContainer(Context, null))
+            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IFacetsGraph>();
-                Assert.True(service.Edges.ToList().Count > 0);
+                Assert.True(service.EdgeContaniner.Edges.Any());
             }
         }
 
@@ -209,7 +209,7 @@ namespace SeadQueryTest.Model
         [Fact]
         public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
         {
-            using (var container = TestDependencyService.CreateContainer(Context, null))
+            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
             using (var scope = container.BeginLifetimeScope()) {
                 // Arrange
                 var graph = scope.Resolve<IFacetsGraph>();
@@ -226,7 +226,7 @@ namespace SeadQueryTest.Model
         [Fact]
         public void Find_WhenStartEqualsStop_ReturnsEmptyRoute()
         {
-            var graph = CreateFacetsGraphByFakeContext(Context);
+            var graph = CreateFacetsGraphByFakeContext(FacetContext);
 
             GraphRoute route = graph.Find("tbl_locations", "tbl_locations");
 
@@ -258,7 +258,7 @@ namespace SeadQueryTest.Model
                 var options = new DbContextOptionsBuilder<FacetContext>()
                     .UseSqlite(connection) // Set the connection explicitly, so it won't be closed automatically by EF
                     .Options;
- 
+
                 using (var context = JsonSeededFacetContextFactory.Create(options, Fixture)) {
                     var count = await context.FacetGroups.CountAsync();
                     Assert.True(count > 0);

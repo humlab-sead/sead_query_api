@@ -13,120 +13,50 @@ namespace SeadQueryCore
 
         public IRepositoryRegistry Registry { get; }
 
-        // FIXME Refactor to use FacetTableRepository.AliasMap
         public IFacetsGraph Build()
         {
-            List<Table> nodes = Registry.Tables.GetAll().ToList();
-            List<TableRelation> edges = Registry.TableRelations.GetAll().ToList();
-            Dictionary<string, FacetTable> aliasTables = Registry.FacetTables.AliasTablesDict();
+            var nodes = Registry.Tables.GetAll();
+            var edges = Registry.TableRelations.GetAll();
+            var aliases = Registry.FacetTables.FindThoseWithAlias();
 
-            IEnumerable<Table> aliasNodes = CreateAliasNodes(aliasTables);
+            nodes = nodes.Concat(GetAliasTables(aliases)).Distinct();
+            edges = edges.Concat(GetAliasTableRelations(aliases, edges, nodes));
 
-            nodes = nodes.Concat(aliasNodes).Distinct().ToList();
-
-            var aliasEdges = GetAliasEdges(edges, nodes, aliasTables).ToList<TableRelation>();
-            aliasEdges = aliasEdges.Where(x => !edges.Contains(x)).ToList();
-            edges.AddRange(aliasEdges);
-
-            return new FacetsGraph(nodes, edges, aliasTables);
+            return new FacetsGraph(nodes, edges, aliases);
         }
 
-        private static IEnumerable<Table> CreateAliasNodes(Dictionary<string, FacetTable> aliasDict)
+        private IEnumerable<Table> GetAliasTables(IEnumerable<FacetTable> aliases)
         {
-            var id = 10000;
-            var aliasNodes = aliasDict.Select(x => new Table() { TableId = id++, TableOrUdfName = x.Key });
+            // ...project all FacetTable items that has an alias to a new Table item
+            var aliasNodes = aliases
+                .Select((x, id) => new Table {
+                    TableId = 10000 + id,
+                    TableOrUdfName = x.Alias
+                });
             return aliasNodes;
         }
 
-        private List<TableRelation> GetAliasEdges(
-            List<TableRelation> edges,
-            List<Table> nodes,
-            Dictionary<string, FacetTable> aliasDict
-        )
+        private IEnumerable<TableRelation> GetAliasTableRelations(IEnumerable<FacetTable> aliases, IEnumerable<TableRelation> edges, IEnumerable<Table> tables)
         {
             List<TableRelation> aliasEdges = new List<TableRelation>();
 
-            var nodesDict = nodes.ToDictionary(x => x.TableOrUdfName);
+            var tableLookup = tables.ToDictionary(x => x.TableOrUdfName);
 
             // Copy target tables relations for each alias...
-            foreach (var facetTable in aliasDict.Values) {
+            foreach (var facetTable in aliases) {
 
                 // ...fetch all relations where target is a node...
                 var targetEdges = edges.Where(x => x.SourceName == facetTable.TableOrUdfName || x.TargetName == facetTable.TableOrUdfName);
 
                 // ...add a corresponding alias relation for each target relation, ...
                 aliasEdges.AddRange(
-                    targetEdges.Select(z => z.Alias(nodesDict[facetTable.TableOrUdfName], nodesDict[facetTable.Alias]))
+                    targetEdges.Select(z => z.Alias(tableLookup[facetTable.TableOrUdfName], tableLookup[facetTable.Alias]))
                 );
 
             }
-            return aliasEdges.Distinct().ToList();
+            return aliasEdges
+                .Where(x => !edges.Contains(x))
+                .Distinct();
         }
     }
-
-    //public class FacetGraphFactory : IFacetGraphFactory
-    //{
-    //    // FIXME Refactor to use FacetTableRepository.AliasMap
-    //    public IFacetsGraph Build(List<Table> nodes, List<TableRelation> edges, List<Facet> aliasFacets)
-    //    {
-
-    //        var id = 10000;
-    //        var aliasNodes = aliasFacets
-    //            .Where(f => !nodes.Any(n => f.TargetTable.Alias == n.TableOrUdfName))
-    //            .Select(f => new Table() {
-				//	TableId = id++,
-				//	TableOrUdfName = f.TargetTable.Alias
-				//});
-
-    //        nodes = nodes.Concat(aliasNodes).Distinct().ToList();
-
-    //        var aliasEdges = GetAliasEdges(edges, nodes, aliasFacets).ToList<TableRelation>();
-    //        aliasEdges = aliasEdges.Where(x => !edges.Contains(x)).ToList();
-    //        edges.AddRange(aliasEdges);
-
-    //        Dictionary<string, string> aliases = CreateAliasToTableOrUdfNameMapping(aliasFacets);
-
-    //        return new FacetsGraph(nodes, edges, aliases);
-    //    }
-
-    //    private static Dictionary<string, string> CreateAliasToTableOrUdfNameMapping(List<Facet> aliasFacets)
-    //    {
-    //        return aliasFacets?
-    //            .Select(z => (
-    //                Alias: z.TargetTable.Alias,
-    //                TableOrUdfName: z.TargetTable.TableOrUdfName
-    //            ))
-    //            .ToList()
-    //            .Distinct()
-    //            .ToDictionary(
-    //                x => x.Alias,
-    //                x => x.TableOrUdfName
-    //            );
-    //    }
-
-    //    private List<TableRelation> GetAliasEdges(
-    //        List<TableRelation> edges,
-    //        List<Table> nodes,
-    //        List<Facet> aliasFacets
-    //    )
-    //    {
-    //        List<TableRelation> aliasEdges = new List<TableRelation>();
-
-    //        var nodesDict = nodes.ToDictionary(x => x.TableOrUdfName);
-
-    //        // Copy target tables relations for all alias facets...
-    //        foreach (var facet in aliasFacets)
-    //        {
-    //            // ...fetch all relations where target is a node...
-    //            var targetEdges = edges.Where(x => x.SourceName == facet.TargetTable?.TableOrUdfName || x.TargetName == facet.TargetTable?.TableOrUdfName);
-
-    //            // ...add a corresponding alias relation for each target relation, ...
-    //            aliasEdges.AddRange(
-    //                targetEdges.Select(z => z.Alias(nodesDict[facet.TargetTable.TableOrUdfName], nodesDict[facet.TargetTable.Alias]))
-    //            );
-
-    //        }
-    //        return aliasEdges.Distinct().ToList();
-    //    }
-    //}
 }

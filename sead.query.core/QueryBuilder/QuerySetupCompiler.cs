@@ -8,7 +8,8 @@ namespace SeadQueryCore.QueryBuilder
     {
         IFacetsGraph Graph { get; set; }
 
-        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables = null);
+        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet);
+        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables);
         QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables, List<string> facetCodes);
     }
 
@@ -37,19 +38,23 @@ namespace SeadQueryCore.QueryBuilder
         {
         }
 
-        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables = null)
+        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet)
         {
-            List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facet.FacetCode);
-            return Build(facetsConfig, facet, extraTables ?? new List<string>(), facetCodes);
+            return Build(facetsConfig, facet, null);
+        }
+
+        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables)
+        {
+            return Build(facetsConfig, facet, extraTables, null);
         }
 
         public QuerySetup Build(FacetsConfig2 facetsConfig, Facet targetFacet, List<string> extraTables, List<string> facetCodes)
         {
             // Noteworthy: TargetFacet differs from facetsConfig.TargetFacet when a result-facet is applied
 
-            Debug.Assert(facetsConfig.TargetFacet != null, "facetsConfig.TargetFacet is NULL ");
-
-            facetCodes ??= new List<string>();
+            facetCodes  ??= facetsConfig.GetFacetCodes();
+            facetCodes    = facetCodes.AddIfMissing(targetFacet.FacetCode);
+            extraTables ??= new List<string>();
 
             var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
 
@@ -83,21 +88,22 @@ namespace SeadQueryCore.QueryBuilder
             return querySetup;
         }
 
-        private FacetTable GetFacetTable(FacetsConfig2 facetsConfig, TableRelation edge)
+        private FacetTable GetFacetTable(FacetsConfig2 facetsConfig, TableRelation edge, IEnumerable<FacetTable> aliases)
         {
-            return facetsConfig.GetFacetTable(edge.TargetName);
+            var targetTable = facetsConfig.GetFacetTable(edge.TargetName);
+                targetTable ??= aliases.Where(x => x.Alias == edge.TargetName).FirstOrDefault();
+            return targetTable;
         }
 
         protected List<string> CompileJoins(Dictionary<string, string> pickCriterias, List<GraphRoute> routes, FacetsConfig2 facetsConfig)
         {
-            var aliasTables = Graph.AliasTables;
+
             return routes
                 .SelectMany(route => route.Items)
                 .OrderByDescending(z => z.TargetTable.IsUdf)
                 .Select(edge => EdgeCompiler.Compile(
                     edge,
-                    GetFacetTable(facetsConfig, edge),
-                    aliasTables,
+                    GetFacetTable(facetsConfig, edge, Graph.Aliases),
                     true /* HasUserPicks(edge, pickCriterias) */
                 ))
                 .ToList();
