@@ -119,7 +119,7 @@ namespace SeadQueryTest2.IoC
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("tabular"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("map"));
 
-                Assert.NotNull(scope.Resolve<IResultCompiler>());
+                Assert.NotNull(scope.Resolve<IResultQueryCompiler>());
                 Assert.NotNull(scope.Resolve<IFacetReconstituteService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
             }

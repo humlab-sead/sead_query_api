@@ -16,7 +16,7 @@ namespace SeadQueryTest.Repository
 
         private FacetTypeRepository CreateFacetTypeRepository()
         {
-            return new FacetTypeRepository(Context);
+            return new FacetTypeRepository(FacetContext);
         }
 
         [Fact]

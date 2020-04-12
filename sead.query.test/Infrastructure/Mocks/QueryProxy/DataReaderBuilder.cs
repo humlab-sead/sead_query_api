@@ -44,12 +44,13 @@ namespace SeadQueryTest.Infrastructure
         {
             var row = new object[dataTable.Columns.Count];
             var i = 0;
-            foreach (DataColumn  column in dataTable.Columns) {
+            foreach (DataColumn column in dataTable.Columns) {
                 var value = new SpecimenContext(fixture).Resolve(column.DataType);
                 row[i++] = value;
             }
             return row;
         }
+
         public virtual DataReaderBuilder GenerateBogusRows(int numberOfRows = 3)
         {
             foreach (var i in Enumerable.Range(1, numberOfRows + 1)) {

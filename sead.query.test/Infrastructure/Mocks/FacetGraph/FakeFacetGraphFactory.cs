@@ -8,13 +8,13 @@ namespace SeadQueryTest.Mocks
 {
     public static class FakeFacetGraphFactory
     {
-        public class GraphGenerator
+        public class FakeGraphGenerator
         {
             public List<Table> Nodes { get; }
             public Dictionary<string, Table> NodeMap { get; }
             public List<TableRelation> Edges { get; } = new List<TableRelation>();
 
-            public GraphGenerator(int n)
+            public FakeGraphGenerator(int n)
             {
                 Nodes = GenerateNodes(n).ToList();
                 NodeMap = Nodes.ToDictionary(z => z.TableOrUdfName);
@@ -26,7 +26,7 @@ namespace SeadQueryTest.Mocks
                     yield return new Table() { TableId = i, TableOrUdfName = Convert.ToChar('A' + i - 1).ToString() };
             }
 
-            public GraphGenerator Add(string x, string y, int w)
+            public FakeGraphGenerator Add(string x, string y, int w)
             {
                 var edge = new TableRelation() {
                     TableRelationId = Edges.Count + 1,
@@ -40,7 +40,7 @@ namespace SeadQueryTest.Mocks
                 return this;
             }
 
-            public GraphGenerator Add(List<(string x, string y, int w)> xyws)
+            public FakeGraphGenerator Add(List<(string x, string y, int w)> xyws)
             {
                 foreach (var (x, y, w) in xyws) {
                     Add(x, y, w);
@@ -48,7 +48,7 @@ namespace SeadQueryTest.Mocks
                 return this;
             }
 
-            public GraphGenerator Add(string x, Dictionary<string, int> yw)
+            public FakeGraphGenerator Add(string x, Dictionary<string, int> yw)
             {
                 foreach (var y in yw.Keys) {
                     Add(x, y, yw[y]);
@@ -59,7 +59,7 @@ namespace SeadQueryTest.Mocks
 
         public static IFacetsGraph CreateSimpleGraph()
         {
-            var generator = new GraphGenerator(8);
+            var generator = new FakeGraphGenerator(8);
             generator.Add("A", new Dictionary<string, int> { { "B", 7 }, { "C", 8 } });
             generator.Add("B", new Dictionary<string, int> { { "A", 7 }, { "F", 2 } });
             generator.Add("C", new Dictionary<string, int> { { "A", 8 }, { "F", 6 }, { "G", 4 } });
@@ -71,7 +71,7 @@ namespace SeadQueryTest.Mocks
             var facetsGraph = new FacetsGraph(
                 nodes: generator.Nodes,
                 edges: generator.Edges,
-                aliasDict: new Dictionary<string, FacetTable>() { }
+                aliases: new List<FacetTable> { }
             );
             return facetsGraph;
         }

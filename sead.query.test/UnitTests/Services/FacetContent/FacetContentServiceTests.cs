@@ -101,7 +101,7 @@ namespace SeadQueryTest.Services.FacetContent
         {
             var fixture = new MockFacetsConfigFactory(Registry.Facets);
 
-            using (IContainer container = TestDependencyService.CreateContainer(Context, null)) {
+            using (IContainer container = TestDependencyService.CreateContainer(FacetContext, null)) {
 
                 FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
                 //Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
@@ -291,7 +291,7 @@ namespace SeadQueryTest.Services.FacetContent
             var fixture = new MockFacetsConfigFactory(Registry.Facets);
 
             var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)";
-            using (var container = TestDependencyService.CreateContainer(Context, null))
+            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
             using (var scope = container.BeginLifetimeScope()) {
                 // Arrange
                 FacetsConfig2 facetsConfig = fixture.Create(uri);

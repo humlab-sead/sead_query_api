@@ -22,7 +22,5 @@ namespace SeadQueryTest.Mocks
         {
             return Create(viewTypeId,  new List<string>() { resultKey }, sessionId);
         }
-
-
     }
 }

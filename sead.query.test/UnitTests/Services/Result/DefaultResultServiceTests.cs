@@ -26,7 +26,7 @@ namespace SeadQueryTest.Services.Result
         public void Load_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var compiler = new Mock<IResultCompiler>().Object;
+            var compiler = new Mock<IResultQueryCompiler>().Object;
             var queryProxy = new Mock<IDynamicQueryProxy>().Object;
 
             var service = new DefaultResultService(Registry, compiler, queryProxy);

@@ -10,6 +10,7 @@ using Xunit;
 
 namespace SeadQueryTest.Repository
 {
+    [Collection("JsonSeededFacetContext")]
     public class ResultRepositoryTests : DisposableFacetContextContainer
     {
         public ResultRepositoryTests(JsonSeededFacetContextFixture fixture) : base(fixture)
@@ -18,7 +19,7 @@ namespace SeadQueryTest.Repository
 
         private ResultRepository CreateRepository()
         {
-            return new ResultRepository(Context);
+            return new ResultRepository(FacetContext);
         }
 
         [Fact(Skip = "Not implemented")]
@@ -151,9 +152,9 @@ namespace SeadQueryTest.Repository
         {
             // Arrange
 
-            var sut = new ResultRepository(Context);
+            var sut = new ResultRepository(FacetContext);
 
-            var expected = Context.Set<ResultField>().ToList().Count;
+            var expected = FacetContext.Set<ResultField>().ToList().Count;
 
             Assert.Equal(expected, sut.GetAllFields().ToList().Count);
         }
@@ -161,7 +162,7 @@ namespace SeadQueryTest.Repository
         [Fact]
         public void ShouldBeAbleToFetchAllResultAggregates()
         {
-            var sut = new ResultRepository(Context);
+            var sut = new ResultRepository(FacetContext);
             List<ResultAggregate> items = sut.GetAll().ToList();
 
             Assert.Equal(4, items.Count);
@@ -176,7 +177,7 @@ namespace SeadQueryTest.Repository
         [Fact]
         public void ShouldBeAbleToFetchAllResultTypes()
         {
-            var repository = new ResultRepository(Context);
+            var repository = new ResultRepository(FacetContext);
 
             List<ResultFieldType> fieldTypes = repository.GetAllFieldTypes().ToList();
 

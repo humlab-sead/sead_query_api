@@ -24,12 +24,8 @@ namespace SeadQueryTest.Mocks
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //var reader = new JsonReaderService(new IgnoreJsonAttributesResolver());
             foreach (var type in ScaffoldUtility.GetModelTypes()) {
-                builder.Entity(type).HasData(
-                    Fixture.Items[type]
-                    // reader.Deserialize(type, Fixture).ToArray()
-                );
+                builder.Entity(type).HasData(Fixture.Items[type]);
             }
         }
     }

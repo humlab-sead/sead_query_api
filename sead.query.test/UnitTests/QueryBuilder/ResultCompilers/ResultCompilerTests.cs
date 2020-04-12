@@ -32,9 +32,9 @@ namespace SeadQueryTest.QueryBuilder.ResultCompilers
             this.mockRepository.VerifyAll();
         }
 
-        private ResultCompiler CreateResultCompiler()
+        private ResultQueryCompiler CreateResultCompiler()
         {
-            return new ResultCompiler(
+            return new ResultQueryCompiler(
                 this.mockRepositoryRegistry.Object,
                 this.mockQuerySetupBuilder.Object,
                 this.mockIndex.Object);

@@ -117,7 +117,7 @@ namespace SeadQueryTest.Repository
         public void FacetChildren_FacetHasASingleChild_ReturnsThatChild()
         {
             using (var connection = SqliteConnectionFactory.CreateAndOpen()) {
-                var options = SqliteContextOptionsFactory.Create(Connection);
+                var options = SqliteContextOptionsFactory.Create(DbConnection);
                 using (var context = JsonSeededFacetContextFactory.Create(options, Fixture))
                 using (var registry = new RepositoryRegistry(context))
                 using (var container = TestDependencyService.CreateContainer(context, null))

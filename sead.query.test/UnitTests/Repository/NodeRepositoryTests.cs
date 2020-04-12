@@ -16,7 +16,7 @@ namespace SeadQueryTest.Repository
 
         private TableRepository CreateRepository()
         {
-            return new TableRepository(Context);
+            return new TableRepository(FacetContext);
         }
 
         [Fact]

@@ -33,7 +33,7 @@ namespace SeadQueryTest.Model.Entities
         public void Find_FromRepository_IsComplete(Type type, object id, Dictionary<string, object> expected)
         {
             // Act
-            var entity = Context.Find(type, new object[] { id });
+            var entity = FacetContext.Find(type, new object[] { id });
             // Assert
             Assert.NotNull(entity);
             Asserter.EqualByDictionary(type, expected, entity);

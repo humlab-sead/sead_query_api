@@ -15,7 +15,7 @@ namespace SeadQueryTest.Repository
 
         private ViewStateRepository CreateRepository()
         {
-            return new ViewStateRepository(Context);
+            return new ViewStateRepository(FacetContext);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace SeadQueryTest.Repository
 
             repository.Add(new ViewState() { Key = key, Data = data });
 
-            Context.SaveChanges();
+            FacetContext.SaveChanges();
 
             // Act
             var result = repository.Get(key);
