@@ -3,6 +3,7 @@ using Moq;
 using SeadQueryCore;
 using System;
 using Xunit;
+using System.Text.RegularExpressions;
 
 namespace SeadQueryTest.QueryBuilder.JoinCompilers
 {
@@ -12,10 +13,10 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
         {
             return new EdgeSqlCompiler();
         }
-        private static Mock<IFacetsGraph> CreateGraphMock()
+        private static Mock<IFacetsGraph> MockFacetGraph()
         {
             var facetGraphMock = new Mock<IFacetsGraph>();
-            facetGraphMock.Setup(x => x.AliasTables).Returns(new Dictionary<string, FacetTable>());
+            facetGraphMock.Setup(x => x.Aliases).Returns(new List<FacetTable>());
             return facetGraphMock;
         }
 
@@ -23,9 +24,6 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
         public void Compile_WithSingleEdge_ReturnSingleJoin()
         {
             // Arrange
-            var edgeSqlCompiler = this.CreateEdgeSqlCompiler();
-
-            Mock<IFacetsGraph> facetGraphMock = CreateGraphMock();
 
             TableRelation edge = new TableRelation() {
                 TableRelationId = -2151,
@@ -49,7 +47,8 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var result = edgeSqlCompiler.Compile(edge, facetTable, facetGraphMock.Object.AliasTables, false);
+            var edgeSqlCompiler = new EdgeSqlCompiler();
+            var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
             var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
@@ -60,19 +59,14 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
         public void Compile_WithSingleEdgeWithWithoutAliasAndNoUdf_ReturnSingleJoinWithNoAlias()
         {
             // Arrange
-            var edgeSqlCompiler = this.CreateEdgeSqlCompiler();
-
-            Mock<IFacetsGraph> facetGraphMock = CreateGraphMock();
 
             TableRelation edge = new TableRelation() {
                 TableRelationId = -2151,
-                SourceTableId = 1,
-                TargetTableId = 2,
                 Weight = 5,
-                SourceColumName = "site_id",
-                TargetColumnName = "site_id",
-                SourceTable = new Table() { TableId = 1, TableOrUdfName = "tbl_sites"},
-                TargetTable = new Table() { TableId = 2, TableOrUdfName = "tbl_site_locations"}
+                SourceColumName = "a",
+                TargetColumnName = "a",
+                SourceTable = new Table() { TableId = 1, TableOrUdfName = "A"},
+                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B"}
             };
 
             FacetTable facetTable = new FacetTable {
@@ -86,11 +80,12 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var result = edgeSqlCompiler.Compile(edge, facetTable, facetGraphMock.Object, false);
+            var edgeSqlCompiler = new EdgeSqlCompiler();
+            var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
-            var expected = "left join tbl_site_locations on tbl_site_locations.\"site_id\" = tbl_sites.\"site_id\"";
-            Assert.Equal(expected, result.ToLower().Trim());
+            var expected = @"\s*left\s+join\s+b\s+on\s+b\.""a""\s+=\s+a\.""a""\s*";
+            Assert.Matches(expected, result.ToLower());
         }
     }
 }
