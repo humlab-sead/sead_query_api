@@ -78,7 +78,7 @@ namespace SeadQueryAPI
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
-            builder.RegisterType<ResultCompiler>().As<IResultCompiler>();
+            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
 
             builder.RegisterType<RangeCategoryBoundSqlQueryCompiler>().Keyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range);
 

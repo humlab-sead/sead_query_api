@@ -14,7 +14,7 @@ namespace SeadQueryCore.Services.Result
 
         public MapResultService(
             IRepositoryRegistry context,
-            IResultCompiler resultQueryCompiler,
+            IResultQueryCompiler resultQueryCompiler,
             IDiscreteCategoryCountService categoryCountService,
             IDynamicQueryProxy queryProxy
         )
