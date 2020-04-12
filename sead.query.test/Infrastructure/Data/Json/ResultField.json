@@ -6,7 +6,8 @@
     "ResultFieldKey": "sitename",
     "DisplayText": "Site name",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 2,
@@ -15,7 +16,8 @@
     "ResultFieldKey": "record_type",
     "DisplayText": "Record type(s)",
     "FieldTypeId": "text_agg_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 3,
@@ -24,7 +26,8 @@
     "ResultFieldKey": "analysis_entities",
     "DisplayText": "Filtered records",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "int"
   },
   {
     "ResultFieldId": 4,
@@ -35,7 +38,8 @@
     "FieldTypeId": "link_item",
     "Activated": true,
     "LinkUrl": "api/report/show_site_details.php?site_id",
-    "LinkLabel": "Show site report"
+    "LinkLabel": "Show site report",
+    "DataType": "int"
   },
   {
     "ResultFieldId": 5,
@@ -46,7 +50,8 @@
     "FieldTypeId": "link_item",
     "Activated": true,
     "LinkUrl": "api/report/show_site_details.php?site_id",
-    "LinkLabel": "Show filtered report"
+    "LinkLabel": "Show filtered report",
+    "DataType": "int"
   },
   {
     "ResultFieldId": 6,
@@ -56,7 +61,8 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item_filtered",
     "Activated": true,
-    "LinkUrl": "api/report/show_details_all_levels.php?level"
+    "LinkUrl": "api/report/show_details_all_levels.php?level",
+    "DataType": "text"
   },
   {
     "ResultFieldId": 7,
@@ -66,7 +72,8 @@
     "DisplayText": "Full report",
     "FieldTypeId": "link_item",
     "Activated": true,
-    "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id"
+    "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id",
+    "DataType": "int"
   },
   {
     "ResultFieldId": 8,
@@ -76,7 +83,8 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item",
     "Activated": true,
-    "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id"
+    "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id",
+    "DataType": "int"
   },
   {
     "ResultFieldId": 9,
@@ -85,7 +93,8 @@
     "ResultFieldKey": "abundance",
     "DisplayText": "number of taxon_id",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 10,
@@ -94,7 +103,8 @@
     "ResultFieldKey": "taxon_id",
     "DisplayText": "Taxon id  (specie)",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "int"
   },
   {
     "ResultFieldId": 11,
@@ -103,7 +113,8 @@
     "ResultFieldKey": "dataset",
     "DisplayText": "Dataset",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 12,
@@ -113,7 +124,8 @@
     "DisplayText": "Dataset details",
     "FieldTypeId": "single_item",
     "Activated": true,
-    "LinkUrl": "client/show_dataset_details.php?dataset_id"
+    "LinkUrl": "client/show_dataset_details.php?dataset_id",
+    "DataType": "int"
   },
   {
     "ResultFieldId": 13,
@@ -123,7 +135,8 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "single_item",
     "Activated": true,
-    "LinkUrl": "client/show_dataset_details.php?dataset_id"
+    "LinkUrl": "client/show_dataset_details.php?dataset_id",
+    "DataType": "int"
   },
   {
     "ResultFieldId": 14,
@@ -132,7 +145,8 @@
     "ResultFieldKey": "sample_group",
     "DisplayText": "Sample group",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 15,
@@ -141,7 +155,8 @@
     "ResultFieldKey": "methods",
     "DisplayText": "Method",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 18,
@@ -149,7 +164,8 @@
     "ResultFieldKey": "category_id",
     "DisplayText": "Site ID",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "int"
   },
   {
     "ResultFieldId": 19,
@@ -157,7 +173,8 @@
     "ResultFieldKey": "category_name",
     "DisplayText": "Site Name",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "text"
   },
   {
     "ResultFieldId": 20,
@@ -165,7 +182,8 @@
     "ResultFieldKey": "latitude_dd",
     "DisplayText": "Latitude (dd)",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "decimal"
   },
   {
     "ResultFieldId": 21,
@@ -173,6 +191,7 @@
     "ResultFieldKey": "longitude_dd",
     "DisplayText": "Longitude (dd)",
     "FieldTypeId": "single_item",
-    "Activated": true
+    "Activated": true,
+    "DataType": "decimal"
   }
 ]
