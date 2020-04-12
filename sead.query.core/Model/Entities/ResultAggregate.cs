@@ -34,5 +34,11 @@ namespace SeadQueryCore
 
         // TODO: Consider merging logic in ResultQuerySetup to this class 
         //   if and only if exactly one AggregateKey is allowed per query
+
+        public IEnumerable<(string Name, Type Type)> GetResultFieldTypes()
+        {
+            return GetResultFields().Select((field, i) => ($"alias_{i + 1}", field.ResultField.GetDataType()));
+        }
+
     }
 }
