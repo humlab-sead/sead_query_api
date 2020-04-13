@@ -7,11 +7,11 @@ using System.Text.RegularExpressions;
 
 namespace SeadQueryTest.QueryBuilder.JoinCompilers
 {
-    public class EdgeSqlCompilerTests
+    public class JoinSqlCompilerTests
     {
-        private EdgeSqlCompiler CreateEdgeSqlCompiler()
+        private JoinSqlCompiler CreateEdgeSqlCompiler()
         {
-            return new EdgeSqlCompiler();
+            return new JoinSqlCompiler();
         }
         private static Mock<IFacetsGraph> MockFacetGraph()
         {
@@ -47,7 +47,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var edgeSqlCompiler = new EdgeSqlCompiler();
+            var edgeSqlCompiler = new JoinSqlCompiler();
             var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
@@ -80,7 +80,7 @@ namespace SeadQueryTest.QueryBuilder.JoinCompilers
             };
 
             // Act
-            var edgeSqlCompiler = new EdgeSqlCompiler();
+            var edgeSqlCompiler = new JoinSqlCompiler();
             var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert

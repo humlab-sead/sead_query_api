@@ -77,7 +77,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<DiscreteCategoryCountService>().As<IDiscreteCategoryCountService>();
 
             builder.RegisterType<ValidPicksSqlQueryCompiler>().As<IValidPicksSqlQueryCompiler>();
-            builder.RegisterType<EdgeSqlCompiler>().As<IEdgeSqlCompiler>();
+            builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
             builder.RegisterType<DiscreteContentSqlQueryBuilder>().As<IDiscreteContentSqlQueryCompiler>();
             builder.RegisterType<DiscreteCategoryCountSqlQueryCompiler>().As<IDiscreteCategoryCountSqlQueryCompiler>();
             builder.RegisterType<RangeCategoryCountSqlQueryCompiler>().As<IRangeCategoryCountSqlQueryCompiler>();

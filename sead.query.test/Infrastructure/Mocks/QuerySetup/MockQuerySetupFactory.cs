@@ -40,13 +40,13 @@ namespace SeadQueryTest.Fixtures
         {
             var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry.Facets);
             var facetsConfig = facetsConfigScaffolder.Create(uri);
-            var edgeCompiler = new EdgeSqlCompiler();
+            var joinCompiler = new JoinSqlCompiler();
             var pickCompilers = ConcretePickCompilers();
             var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
             var facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetsConfig.TargetFacet.FacetCode);
             var extraTables = new List<string>();
 
-            QuerySetupCompiler compiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, edgeCompiler);
+            QuerySetupCompiler compiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, joinCompiler);
 
             var querySetup = compiler.Build(
                 facetsConfig,

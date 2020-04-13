@@ -178,7 +178,7 @@ namespace SeadQueryTest.Services.FacetContent
         {
 
             //var graph = new FacetGraphFactory(Registry).Build();
-            //var edgeCompiler = new Mock<EdgeSqlCompiler>();
+            //var joinCompiler = new Mock<EdgeSqlCompiler>();
             //var pickCompiler = new Mock<IPickFilterCompiler>();
             //var querySetupCompiler = new QuerySetupCompiler(gra);
             //var service = new FacetContentService();

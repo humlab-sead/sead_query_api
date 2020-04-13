@@ -17,24 +17,24 @@ namespace SeadQueryCore.QueryBuilder
     {
         IFacetsGraph Graph { get; }
         IPickFilterCompilerLocator PickCompilers { get; }
-        IEdgeSqlCompiler EdgeCompiler { get; }
+        IJoinSqlCompiler JoinCompiler { get; }
 
     }
     public class QuerySetupCompiler : IQuerySetupCompiler {
         public IFacetsGraph Graph { get; set; }
         public IPickFilterCompilerLocator PickCompilers { get; set; }
-        public IEdgeSqlCompiler EdgeCompiler { get; }
+        public IJoinSqlCompiler JoinCompiler { get; }
 
         public QuerySetupCompiler(
             IFacetsGraph graph,
             IPickFilterCompilerLocator pickCompilers,
-            IEdgeSqlCompiler edgeCompiler
+            IJoinSqlCompiler joinCompiler
         ) {
             Graph = graph;
             PickCompilers = pickCompilers;
-            EdgeCompiler = edgeCompiler;
+            JoinCompiler = joinCompiler;
         }
-        public QuerySetupCompiler(IQuerySetupCompilerArgs args) : this(args.Graph, args.PickCompilers, args.EdgeCompiler)
+        public QuerySetupCompiler(IQuerySetupCompilerArgs args) : this(args.Graph, args.PickCompilers, args.JoinCompiler)
         {
         }
 
@@ -101,7 +101,7 @@ namespace SeadQueryCore.QueryBuilder
             return routes
                 .SelectMany(route => route.Items)
                 .OrderByDescending(z => z.TargetTable.IsUdf)
-                .Select(edge => EdgeCompiler.Compile(
+                .Select(edge => JoinCompiler.Compile(
                     edge,
                     GetFacetTable(facetsConfig, edge, Graph.Aliases),
                     true /* HasUserPicks(edge, pickCriterias) */

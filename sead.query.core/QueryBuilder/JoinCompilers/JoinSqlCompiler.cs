@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-    public class EdgeSqlCompiler : IEdgeSqlCompiler
+    public class JoinSqlCompiler : IJoinSqlCompiler
     {
 
         public Dictionary<bool, string> Join = new Dictionary<bool, string> {

@@ -132,17 +132,17 @@ namespace SeadQueryTest.QueryBuilder
             return mockLocator;
         }
 
-        private Mock<IEdgeSqlCompiler> MockEdgeCompiler(string returnValue)
+        private Mock<IJoinSqlCompiler> MockJoinCompiler(string returnValue)
         {
-            var mockEdgeCompiler = new Mock<IEdgeSqlCompiler>();
-            mockEdgeCompiler
+            var mockJoinCompiler = new Mock<IJoinSqlCompiler>();
+            mockJoinCompiler
                 .Setup(x => x.Compile(
                     It.IsAny<TableRelation>(),
                     It.IsAny<FacetTable>(),
                     It.IsAny<bool>()
                 ))
                 .Returns(returnValue);
-            return mockEdgeCompiler;
+            return mockJoinCompiler;
         }
 
         private Mock<IFacetsGraph> MockFacetsGraph()
@@ -189,7 +189,7 @@ namespace SeadQueryTest.QueryBuilder
         //    var builder = new QuerySetupCompiler(
         //        mockFacetGraph,
         //        mockPickCompilers.Obj,
-        //        edgeCompiler
+        //        joinCompiler
         //    );
         //    return builder;
         //}
@@ -202,7 +202,7 @@ namespace SeadQueryTest.QueryBuilder
             var facet = Registry.Facets.GetByCode(facetCode);
             var facetsConfig = FacetsConfigFactory.Create(uri);
             var mockPickCompilers = MockPickCompilers("");
-            var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
+            var mockJoinCompiler = MockJoinCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
             var facetCodes = new List<string>() { facetCode };
             var extraTables = new List<string>();
@@ -211,7 +211,7 @@ namespace SeadQueryTest.QueryBuilder
             var compiler = new QuerySetupCompiler(
                 mockFacetsGraph.Object,
                 mockPickCompilers.Object,
-                mockEdgeCompiler.Object
+                mockJoinCompiler.Object
             );
 
             QuerySetup querySetup = compiler.Build(facetsConfig, facet, extraTables, facetCodes);
@@ -233,7 +233,7 @@ namespace SeadQueryTest.QueryBuilder
             var facet = Registry.Facets.GetByCode(facetCode);
             var facetsConfig = FacetsConfigFactory.Create(uri);
             var mockPickCompilers = MockPickCompilers("");
-            var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
+            var mockJoinCompiler = MockJoinCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
             var facetCodes = new List<string>() { facetCode };
             var extraTables = new List<string>();
@@ -241,7 +241,7 @@ namespace SeadQueryTest.QueryBuilder
             var compiler = new QuerySetupCompiler(
                 mockFacetsGraph.Object,
                 mockPickCompilers.Object,
-                mockEdgeCompiler.Object
+                mockJoinCompiler.Object
             );
 
             // Act
@@ -264,13 +264,13 @@ namespace SeadQueryTest.QueryBuilder
             // Arrange
             var facetRepository = fixture.Repository;
             var mockPickCompilers = MockPickCompilers("");
-            var mockEdgeCompiler = MockEdgeCompiler("A JOIN B ON A.X = B.Y");
+            var mockJoinCompiler = MockJoinCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
 
             var compiler = new QuerySetupCompiler(
                 mockFacetsGraph.Object,
                 mockPickCompilers.Object,
-                mockEdgeCompiler.Object
+                mockJoinCompiler.Object
             );
 
             Facet facet = facetRepository.GetByCode(facetCode);
@@ -323,14 +323,14 @@ namespace SeadQueryTest.QueryBuilder
 
             var graph = ScaffoldUtility.DefaultFacetsGraph(FacetContext);
 
-            IEdgeSqlCompiler edgeCompiler = new EdgeSqlCompiler();
+            IJoinSqlCompiler joinCompiler = new JoinSqlCompiler();
 
             var pickCompilers = MockPickCompilers("");
 
             IQuerySetupCompiler builder = new QuerySetupCompiler(
                 graph,
                 pickCompilers.Object,
-                edgeCompiler
+                joinCompiler
             );
 
             Facet targetFacet = Registry.Facets.GetByCode(targetCode);

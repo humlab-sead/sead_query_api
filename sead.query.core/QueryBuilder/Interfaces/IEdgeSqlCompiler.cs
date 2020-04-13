@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IEdgeSqlCompiler
+    public interface IJoinSqlCompiler
     {
         string Compile(TableRelation edge, FacetTable facetTable, bool innerJoin = false);
     }

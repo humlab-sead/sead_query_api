@@ -30,7 +30,7 @@ namespace SeadQueryTest.Services.Result
             var pickCompilers = new Mock<IPickFilterCompilerLocator>();
             pickCompilers.Setup(x => x.Locate(It.IsAny<EFacetType>())).Returns(mockPickCompiler.Object);
 
-            IQuerySetupCompiler querySetupCompiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, new EdgeSqlCompiler());
+            IQuerySetupCompiler querySetupCompiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, new JoinSqlCompiler());
             return querySetupCompiler;
         }
 
