@@ -9,6 +9,7 @@ using Xunit;
 
 namespace SeadQueryTest.Infrastructure.Scaffolding
 {
+    [Collection("JsonSeededFacetContext")]
     public class GenerateCSharpFixures : DisposableFacetContextContainer
     {
         private Setting mockQueryBuilderSetting;

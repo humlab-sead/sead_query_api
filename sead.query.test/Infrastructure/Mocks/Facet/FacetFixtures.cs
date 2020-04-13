@@ -4,10 +4,12 @@ using System.Text;
 using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
+using Xunit;
 
 namespace SeadQueryTest.Fixtures
 {
 
+    [Collection("JsonSeededFacetContext")]
     public class StoreBuilder : DisposableFacetContextContainer
     {
         public StoreBuilder(JsonSeededFacetContextFixture fixture) : base(fixture)
