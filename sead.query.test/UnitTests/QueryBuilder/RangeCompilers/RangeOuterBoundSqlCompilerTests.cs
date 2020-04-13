@@ -8,6 +8,7 @@ using SeadQueryTest.Infrastructure;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
+    [Collection("JsonSeededFacetContext")]
     public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer
     {
         public RangeOuterBoundSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)

@@ -15,6 +15,7 @@ using System.Data;
 
 namespace SeadQueryTest.Services.FacetContent
 {
+    [Collection("JsonSeededFacetContext")]
     public class RangeFacetContentServiceTests : DisposableFacetContextContainer
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;

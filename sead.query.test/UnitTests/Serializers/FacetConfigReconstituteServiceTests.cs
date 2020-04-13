@@ -8,6 +8,7 @@ using Xunit;
 
 namespace SeadQueryTest.Serializers
 {
+    [Collection("JsonSeededFacetContext")]
     public class FacetConfigReconstituteServiceTests : DisposableFacetContextContainer
     {
         public FacetConfigReconstituteServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)

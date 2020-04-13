@@ -13,6 +13,7 @@ using Xunit;
 
 namespace SeadQueryTest.Services.FacetContent
 {
+    [Collection("JsonSeededFacetContext")]
     public class FacetContentServiceTests : DisposableFacetContextContainer
     {
         public FacetContentServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)

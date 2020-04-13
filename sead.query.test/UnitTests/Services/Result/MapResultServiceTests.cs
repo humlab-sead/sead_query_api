@@ -11,6 +11,7 @@ using Xunit;
 
 namespace SeadQueryTest.Services.Result
 {
+    [Collection("JsonSeededFacetContext")]
     public class MapResultServiceTests : DisposableFacetContextContainer
     {
         public MapResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)

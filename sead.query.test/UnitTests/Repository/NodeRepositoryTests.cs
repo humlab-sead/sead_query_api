@@ -8,6 +8,7 @@ using Xunit;
 
 namespace SeadQueryTest.Repository
 {
+    [Collection("JsonSeededFacetContext")]
     public class NodeRepositoryTests : DisposableFacetContextContainer
     {
          public NodeRepositoryTests(JsonSeededFacetContextFixture fixture) : base(fixture)

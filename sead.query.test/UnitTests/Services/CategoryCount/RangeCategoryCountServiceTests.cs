@@ -13,6 +13,7 @@ using KellermanSoftware.CompareNetObjects;
 
 namespace SeadQueryTest.Services.CategoryCount
 {
+    [Collection("JsonSeededFacetContext")]
     public class RangeCategoryCountServiceTests : DisposableFacetContextContainer
     {
 

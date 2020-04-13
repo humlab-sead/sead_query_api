@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace SeadQueryTest.Model
 {
+    [Collection("JsonSeededFacetContext")]
     public class FacetsGraphTests : DisposableFacetContextContainer
     {
         public FacetsGraphTests(JsonSeededFacetContextFixture fixture) : base(fixture)

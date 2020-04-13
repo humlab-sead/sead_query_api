@@ -15,6 +15,7 @@ using Xunit;
 
 namespace SeadQueryTest.Services.Result
 {
+    [Collection("JsonSeededFacetContext")]
     public class DefaultResultServiceTests : DisposableFacetContextContainer
     {
 

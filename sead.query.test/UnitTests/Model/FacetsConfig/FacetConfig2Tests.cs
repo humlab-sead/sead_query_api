@@ -8,6 +8,7 @@ using Xunit;
 namespace SeadQueryTest.Model.FacetsConfig
 {
 
+    [Collection("JsonSeededFacetContext")]
     public class FacetConfig2Tests : DisposableFacetContextContainer
     {
         public FacetConfig2Tests(JsonSeededFacetContextFixture fixture) : base(fixture)
@@ -120,7 +121,7 @@ namespace SeadQueryTest.Model.FacetsConfig
             var result = facetConfig2.GetJoinTables();
 
             // Assert
-            var expected = new List<string>() { "tbl_physical_samples", "tbl_datasets" };
+            var expected = new List<string>() { "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples" };
             Assert.Equal(expected, result);
         }
     }

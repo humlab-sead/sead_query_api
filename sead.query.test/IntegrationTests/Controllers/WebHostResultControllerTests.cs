@@ -18,6 +18,7 @@ using Xunit;
 
 namespace IntegrationTests
 {
+    [Collection("JsonSeededFacetContext")]
     public class HostResultControllerTests : DisposableFacetContextContainer
     {
         private MockFacetsConfigFactory facetConfigFixture;

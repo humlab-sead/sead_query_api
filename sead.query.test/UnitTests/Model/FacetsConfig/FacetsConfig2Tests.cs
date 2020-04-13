@@ -13,6 +13,7 @@ using static SeadQueryCore.FacetsConfig2;
 
 namespace SeadQueryTest.Model.FacetsConfig
 {
+    [Collection("JsonSeededFacetContext")]
     public class FacetsConfig2Tests : DisposableFacetContextContainer
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;

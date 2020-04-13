@@ -11,6 +11,7 @@ using SeadQueryTest.Mocks;
 
 namespace SeadQueryTest.Services.FacetContent
 {
+    [Collection("JsonSeededFacetContext")]
     public class DiscreteFacetContentServiceTests : DisposableFacetContextContainer
     {
         public DiscreteFacetContentServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)

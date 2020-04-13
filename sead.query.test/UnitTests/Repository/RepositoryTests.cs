@@ -2,9 +2,11 @@ using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Mocks;
 using System;
+using Xunit;
 
 namespace SeadQueryTest.Repository
 {
+    [Collection("JsonSeededFacetContext")]
     public class RepositoryTests : DisposableFacetContextContainer
     {
         public RepositoryTests(JsonSeededFacetContextFixture fixture) : base(fixture)

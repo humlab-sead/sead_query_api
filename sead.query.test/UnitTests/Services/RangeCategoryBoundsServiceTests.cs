@@ -8,6 +8,7 @@ using Xunit;
 
 namespace SeadQueryTest.Services
 {
+    [Collection("JsonSeededFacetContext")]
     public class RangeCategoryBoundsServiceTests : DisposableFacetContextContainer
     {
         public RangeCategoryBoundsServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)

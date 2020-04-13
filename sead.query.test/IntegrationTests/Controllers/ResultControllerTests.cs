@@ -9,6 +9,7 @@ using Xunit;
 
 namespace IntegrationTests
 {
+    [Collection("JsonSeededFacetContext")]
     public class ResultControllerTests : DisposableFacetContextContainer
     {
         public ResultControllerTests(JsonSeededFacetContextFixture fixture) : base(fixture)

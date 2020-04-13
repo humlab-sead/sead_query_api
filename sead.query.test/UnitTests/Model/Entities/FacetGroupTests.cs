@@ -8,6 +8,7 @@ using Xunit;
 
 namespace SeadQueryTest.Model.Entities
 {
+    [Collection("JsonSeededFacetContext")]
     public class FacetGroupTests : DisposableFacetContextContainer
     {
         public static List<object[]> TestData = new List<object[]>() {

@@ -10,6 +10,7 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.FilterCompilers
 {
+    [Collection("JsonSeededFacetContext")]
     public class DiscreteFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
 
