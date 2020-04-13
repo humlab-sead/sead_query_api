@@ -5,43 +5,16 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.FieldCompilers
 {
-    public class SqlFieldCompilerTests : IDisposable
+    public class SqlFieldCompilerTests
     {
-        private MockRepository mockRepository;
-
-        private Mock<ResultFieldType> mockResultFieldType;
-
-        public SqlFieldCompilerTests()
+        [Theory]
+        [InlineData("EXPR")]
+        public void Compile_Expression_Success(string expr)
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-            this.mockResultFieldType = this.mockRepository.Create<ResultFieldType>();
-        }
-
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private SqlFieldCompiler CreateSqlFieldCompiler()
-        {
-            return new SqlFieldCompiler(
-                this.mockResultFieldType.Object);
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Compile_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var sqlFieldCompiler = this.CreateSqlFieldCompiler();
-            string expr = null;
-
-            // Act
-            var result = sqlFieldCompiler.Compile(
-                expr);
-
-            // Assert
-            Assert.True(false);
+            var fieldType = new Mock<ResultFieldType>();
+            var fieldCompiler = new SqlFieldCompiler(fieldType.Object);
+            var result = fieldCompiler.Compile(expr);
+            Assert.Contains("EXPR", result);
         }
     }
 }
