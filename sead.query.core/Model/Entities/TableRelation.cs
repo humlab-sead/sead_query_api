@@ -6,8 +6,17 @@ using System.Text;
 
 namespace SeadQueryCore
 {
+    public interface IGraphEdge
+    {
+        int GetSourceId();
+        int GetTargetId();
+        int GetWeight();
+        Tuple<string, string> GetKey();
+        Tuple<int, int> GetIdKey();
+        IGraphEdge Reverse();
+    }
 
-    public class TableRelation {
+    public class TableRelation : IGraphEdge {
         public int TableRelationId { get; set; }
         public int SourceTableId { get; set; }
         public int TargetTableId { get; set; }
@@ -38,7 +47,7 @@ namespace SeadQueryCore
             };
         }
 
-        public TableRelation Reverse()
+        public IGraphEdge Reverse()
         {
             var x = Clone();
             x.TableRelationId = -x.TableRelationId;
@@ -83,5 +92,11 @@ namespace SeadQueryCore
         {
             return $"{SourceName}/{TargetName}";
         }
+
+        public int GetSourceId() => SourceTableId;
+        public int GetTargetId() => TargetTableId;
+        public int GetWeight() => Weight;
+        public Tuple<string, string> GetKey() => Key;
+        public Tuple<int, int> GetIdKey() => IdKey;
     }
 }

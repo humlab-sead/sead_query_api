@@ -42,7 +42,7 @@ namespace SeadQueryTest.Model.Entities
             var graphEdge = this.CreateGraphEdge();
 
             // Act
-            var result = graphEdge.Reverse();
+            var result = (TableRelation)graphEdge.Reverse();
 
             // Assert
             Assert.Equal(result.SourceName, graphEdge.TargetName);

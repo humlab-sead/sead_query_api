@@ -43,7 +43,7 @@ namespace SeadQueryCore
         }
     }
 
-    public class GraphEdges<T> : IEnumerable where T: TableRelation
+    public class GraphEdges<T> : IEnumerable where T: IGraphEdge
     {
         public Dictionary<EdgeKey, T> KeyLookup { get; private set; }
         public Dictionary<EdgeIdKey, T> IdKeyLookup { get; private set; }
@@ -52,11 +52,11 @@ namespace SeadQueryCore
         public GraphEdges(IEnumerable<T> edges, bool bidirectional=true)
         {
             if (bidirectional) {
-                edges.Concat(edges.ReverseEdges());
+                edges = edges.Concat(ReversedEdges(edges));
             }
             Edges = edges;
-            KeyLookup = edges.ToDictionary(z => z.Key);
-            IdKeyLookup = edges.ToDictionary(z => z.IdKey);
+            KeyLookup = edges.ToDictionary(z => z.GetKey());
+            IdKeyLookup = edges.ToDictionary(z => z.GetIdKey());
         }
 
         public T GetEdge(string source, string target)
@@ -70,7 +70,18 @@ namespace SeadQueryCore
             return Edges.GetEnumerator();
         }
 
-        public WeightDictionary ToWeightGraph() => Edges.ToWeights();
+        public IEnumerable<T> ReversedEdges(IEnumerable<T> edges)
+        {
+            return edges
+                .Where(z => z.GetSourceId() != z.GetTargetId())
+                .Select(x => (T)x.Reverse())
+                .Where(z => !edges.Any(w => w.Equals(z)));
+        }
+
+        public WeightDictionary ToWeightGraph() => Edges
+         .GroupBy(p => p.GetSourceId(), (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.GetTargetId(), x => x.GetWeight())))
+         .ToDictionary(x => x.SourceId, y => y.TargetWeights);
+
 
     }
 
