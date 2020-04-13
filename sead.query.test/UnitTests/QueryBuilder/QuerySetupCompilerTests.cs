@@ -1,25 +1,99 @@
-﻿using Autofac;
-using Autofac.Features.Indexed;
-using Moq;
+﻿using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryInfra;
-using SeadQueryTest;
 using SeadQueryTest.Infrastructure;
+using SeadQueryTest.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using SeadQueryTest.Fixtures;
-using System;
-using SeadQueryTest.Mocks;
 
 namespace SeadQueryTest.QueryBuilder
 {
 
+    [Collection("JsonSeededFacetContext")]
     public class QuerySetupCompilerTests : DisposableFacetContextContainer
     {
         public object ReconstituteFacetConfigService { get; private set; }
         public MockFacetsConfigFactory FacetsConfigFactory { get; }
+
+        public static List<object[]> RouteTestData = new List<object[]>() {
+            new object[] { "sites", new List<List<string>> {
+                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites" },
+                    new List<string> { "tbl_analysis_entities/tbl_datasets" }
+                }
+            },
+
+            new object[] { "country", new List<List<string>> {
+                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites", "tbl_sites/tbl_site_locations" },
+                    new List<string> { "tbl_site_locations/countries" },
+                    new List<string> { "tbl_analysis_entities/tbl_datasets" }
+                }
+            },
+
+            new object[] { "tbl_denormalized_measured_values_33_0", new List<List<string>> {
+                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/metainformation.tbl_denormalized_measured_values" }
+                }
+            }
+        };
+
+        private static class TestRoute
+        {
+            //public List<string> Trail { get; set; }
+            //public List<string> Pairs { get { return ToPairs(Trail); } }
+
+            //public TestRoute(List<string> trail) {
+            //    Trail = trail;
+            //}
+
+            public static List<string> ToPairs(List<string> trail)
+            {
+                return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
+            }
+
+            public static List<string> ToPairs(params string[] trail)
+            {
+                return ToPairs(trail.ToList());
+            }
+        }
+
+        public static List<object[]> DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks = new List<object[]>() {
+                new object[] {
+                    "sites:sites", new List<List<string>> {
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
+                    }
+                },
+                new object[] { "country:country", new List<List<string>> {
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
+                        TestRoute.ToPairs("tbl_site_locations", "countries"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
+                    }
+                },
+                new object[] { "ecocode:sites/ecocode", new List<List<string>> {
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
+                    }
+                },
+                new object[] { "country:sites/country", new List<List<string>> {
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
+                        TestRoute.ToPairs("tbl_site_locations", "countries"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
+                    }
+                },
+                new object[] { "ecocode:country/sites/ecocode", new List<List<string>> {
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
+                    }
+                },
+                new object[] { "sites:country/sites/ecocode", new List<List<string>> {
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
+                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
+                    }
+                }
+            };
 
         public QuerySetupCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
@@ -73,11 +147,37 @@ namespace SeadQueryTest.QueryBuilder
 
         private Mock<IFacetsGraph> MockFacetsGraph()
         {
+            throw new NotImplementedException("FacetGraph.Find must be configured!");
+
             var mockFacetsGraph = new Mock<IFacetsGraph>();
 
             //mockFacetsGraph
             //    .Setup(x => x.Find());
             return mockFacetsGraph;
+        }
+
+        private List<string> GetTargetTables(FacetsConfig2 facetsConfig, Facet computeFacet)
+        {
+            List<string> tables = facetsConfig.TargetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
+
+            if (computeFacet.FacetCode != facetsConfig.TargetFacet.FacetCode)
+                tables.AddRange(computeFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList());
+
+            tables = tables.Distinct().ToList();
+            return tables;
+        }
+
+        private List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
+        {
+            List<string> tables = targetFacet
+                .Tables
+                .Select(x => x.ResolvedAliasOrTableOrUdfName)
+                .ToList();
+
+            if (countFacet.FacetCode != targetFacet.FacetCode)
+                tables.Add(countFacet.TargetTable.ResolvedAliasOrTableOrUdfName);
+
+            return tables.Distinct().ToList();
         }
 
         //private QuerySetupCompiler CreateQuerySetupCompiler()
@@ -152,26 +252,6 @@ namespace SeadQueryTest.QueryBuilder
             Assert.Equal(facet.TargetTable.HasAlias ? 1 : 0, querySetup.Routes.Count);
         }
 
-        public static List<object[]> RouteTestData = new List<object[]>() {
-            new object[] { "sites", new List<List<string>> {
-                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites" },
-                    new List<string> { "tbl_analysis_entities/tbl_datasets" }
-                }
-            },
-
-            new object[] { "country", new List<List<string>> {
-                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/tbl_sample_groups", "tbl_sample_groups/tbl_sites", "tbl_sites/tbl_site_locations" },
-                    new List<string> { "tbl_site_locations/countries" },
-                    new List<string> { "tbl_analysis_entities/tbl_datasets" }
-                }
-            },
-
-            new object[] { "tbl_denormalized_measured_values_33_0", new List<List<string>> {
-                    new List<string> { "tbl_analysis_entities/tbl_physical_samples", "tbl_physical_samples/metainformation.tbl_denormalized_measured_values" }
-                }
-            }
-        };
-
         [Theory]
         [MemberData(nameof(RouteTestData))]
         public void CanBuildCategoryCountQuerySetupForSingleDiscreteFacetWithoutPicks(string facetCode, List<List<string>> expectedRoutes)
@@ -221,64 +301,6 @@ namespace SeadQueryTest.QueryBuilder
             }
             // for (var route in querySetup.reduced_route) TestContext.WriteLine(querySetup.reduced_routes.IndexOf(route) + ": " + route.ToString());
         }
-
-        private static class TestRoute
-        {
-            //public List<string> Trail { get; set; }
-            //public List<string> Pairs { get { return ToPairs(Trail); } }
-
-            //public TestRoute(List<string> trail) {
-            //    Trail = trail;
-            //}
-
-            public static List<string>  ToPairs(List<string> trail) {
-                return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
-            }
-
-            public static List<string> ToPairs(params string[] trail)
-            {
-                return ToPairs(trail.ToList());
-            }
-        }
-
-        public static List<object[]> DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks = new List<object[]>() {
-                new object[] {
-                    "sites:sites", new List<List<string>> {
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
-                    }
-                },
-                new object[] { "country:country", new List<List<string>> {
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
-                        TestRoute.ToPairs("tbl_site_locations", "countries"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
-                    }
-                },
-                new object[] { "ecocode:sites/ecocode", new List<List<string>> {
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
-                    }
-                },
-                new object[] { "country:sites/country", new List<List<string>> {
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "tbl_site_locations"),
-                        TestRoute.ToPairs("tbl_site_locations", "countries"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
-                    }
-                },
-                new object[] { "ecocode:country/sites/ecocode", new List<List<string>> {
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
-                    }
-                },
-                new object[] { "sites:country/sites/ecocode", new List<List<string>> {
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
-                        TestRoute.ToPairs("tbl_analysis_entities", "tbl_datasets")
-                    }
-                }
-            };
-
 
         [Theory]
         [MemberData(nameof(DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks))]
@@ -335,30 +357,6 @@ namespace SeadQueryTest.QueryBuilder
                     Assert.Equal(expectedRoutes[i][j], querySetup.Routes[i].Items[j].ToStringPair());
                 }
             }
-        }
-
-        private static List<string> GetTargetTables(FacetsConfig2 facetsConfig, Facet computeFacet)
-        {
-            List<string> tables = facetsConfig.TargetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
-
-            if (computeFacet.FacetCode != facetsConfig.TargetFacet.FacetCode)
-                tables.AddRange(computeFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList());
-
-            tables = tables.Distinct().ToList();
-            return tables;
-        }
-
-        private static List<string> GetDiscreteTables(FacetsConfig2 facetsConfig, Facet countFacet, Facet targetFacet)
-        {
-            List<string> tables = targetFacet
-                .Tables
-                .Select(x => x.ResolvedAliasOrTableOrUdfName)
-                .ToList();
-
-            if (countFacet.FacetCode != targetFacet.FacetCode)
-                tables.Add(countFacet.TargetTable.ResolvedAliasOrTableOrUdfName);
-
-            return tables.Distinct().ToList();
         }
     }
 }
