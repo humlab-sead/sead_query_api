@@ -28,7 +28,7 @@ namespace SeadQueryTest.Fixtures
 
         private Mock<PickFilterCompilerLocator> ConcretePickCompilers()
         {
-            var mock = new Mock<PickFilterCompilerLocator>();
+            var mock = new Mock<PickFilterCompilerLocator>(It.IsAny<IIndex<int, IPickFilterCompiler>>());
             mock.Setup(x => x.Locate(It.Is<EFacetType>(x => x == EFacetType.Discrete)))
                 .Returns(new DiscreteFacetPickFilterCompiler());
             mock.Setup(x => x.Locate(It.Is<EFacetType>(x => x == EFacetType.Range)))
