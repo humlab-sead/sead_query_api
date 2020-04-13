@@ -19,7 +19,7 @@ namespace SeadQueryCore.QueryBuilder
 
         public IIndex<int, IPickFilterCompiler> PickCompilers { get; }
 
-        public IPickFilterCompiler Locate(EFacetType facetType)
+        public virtual IPickFilterCompiler Locate(EFacetType facetType)
         {
             return PickCompilers[(int)facetType];
         }
