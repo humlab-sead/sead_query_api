@@ -1,4 +1,6 @@
-﻿namespace SeadQueryCore
+﻿using System.Text.RegularExpressions;
+
+namespace SeadQueryCore
 {
     public static class StringUtilityExtension
     {
@@ -32,6 +34,16 @@
         public static string GlueIf(this string text, string suffix, string glue = "")
         {
             return (suffix ?? "").IsEmpty() ? text : $"{text}{glue}{suffix}";
+        }
+
+        /// <summary>
+        /// Returnes a compressed string where all whitespace sequences are replaced with single spaces.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string Squeeze(this string text)
+        {
+            return Regex.Replace(text ?? "", @"\s+", " ").Trim();
         }
     }
 }
