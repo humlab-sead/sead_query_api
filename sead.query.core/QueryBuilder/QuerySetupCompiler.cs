@@ -83,9 +83,9 @@ namespace SeadQueryCore.QueryBuilder
         {
             var joins = routes
                 .SelectMany(route => route.Items)
-                .OrderByDescending(z => z.TargetTable.IsUdf)
-                .Select(edge => CompileJoin(facetsConfig, edge))
-                .ToList();
+                    .OrderByDescending(z => z.TargetTable.IsUdf)
+                        .Select(edge => CompileJoin(facetsConfig, edge))
+                            .ToList();
             return joins;
         }
 
@@ -99,9 +99,9 @@ namespace SeadQueryCore.QueryBuilder
         {
             var criterias = involvedConfigs
                 .Select(c => c.Facet)
-                .Union(new List<Facet> { targetFacet })    // target facet is not always in affected list (ReloadIfTarget)
-                .Where(z => !z.QueryCriteria.IsEmpty())
-                .Select(z => z.QueryCriteria);
+                    .Union(new List<Facet> { targetFacet })    // target facet is not always in affected list (ReloadIfTarget)
+                        .Where(z => !z.QueryCriteria.IsEmpty())
+                            .Select(z => z.QueryCriteria);
             return criterias;
         }
 
