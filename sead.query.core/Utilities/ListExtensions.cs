@@ -33,6 +33,13 @@ namespace SeadQueryCore
             return String.Join(glue, array.Select(x => $"{prefix}{x.ToString() ?? default_value}{suffix}").ToList());
         }
 
+        /// <summary>
+        /// Inserts item itemToInsert at itemToFind's position i.e before itemToFind
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="itemToFind"></param>
+        /// <param name="itemToInsert"></param>
         public static void InsertAt<T>(this List<T> array, T itemToFind, T itemToInsert)
         {
             var idx = array.IndexOf(itemToFind);
