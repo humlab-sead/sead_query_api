@@ -115,47 +115,6 @@ namespace SeadQueryTest.QueryBuilder
             );
         }
 
-        private Mock<IPickFilterCompilerLocator> MockPickCompilers(string returnValue = "")
-        {
-            var mockPickCompiler = new Mock<IPickFilterCompiler>();
-
-            mockPickCompiler
-                .Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
-                .Returns(returnValue);
-
-            var mockLocator = new Mock<IPickFilterCompilerLocator>();
-
-            mockLocator
-                .Setup(x => x.Locate(It.IsAny<EFacetType>()))
-                .Returns(mockPickCompiler.Object);
-
-            return mockLocator;
-        }
-
-        private Mock<IJoinSqlCompiler> MockJoinCompiler(string returnValue)
-        {
-            var mockJoinCompiler = new Mock<IJoinSqlCompiler>();
-            mockJoinCompiler
-                .Setup(x => x.Compile(
-                    It.IsAny<TableRelation>(),
-                    It.IsAny<FacetTable>(),
-                    It.IsAny<bool>()
-                ))
-                .Returns(returnValue);
-            return mockJoinCompiler;
-        }
-
-        private Mock<IFacetsGraph> MockFacetsGraph()
-        {
-            throw new NotImplementedException("FacetGraph.Find must be configured!");
-
-            var mockFacetsGraph = new Mock<IFacetsGraph>();
-
-            //mockFacetsGraph
-            //    .Setup(x => x.Find());
-            return mockFacetsGraph;
-        }
-
         private List<string> GetTargetTables(FacetsConfig2 facetsConfig, Facet computeFacet)
         {
             List<string> tables = facetsConfig.TargetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
@@ -180,20 +139,6 @@ namespace SeadQueryTest.QueryBuilder
             return tables.Distinct().ToList();
         }
 
-        //private QuerySetupCompiler CreateQuerySetupCompiler()
-        //{
-        //    var mockFacetGraph = ScaffoldUtility.DefaultFacetsGraph(Context);
-        //    var mockPickCompilers = ConcretePickCompilers();
-        //    var edgeCompile = new EdgeSqlCompiler();
-
-        //    var builder = new QuerySetupCompiler(
-        //        mockFacetGraph,
-        //        mockPickCompilers.Obj,
-        //        joinCompiler
-        //    );
-        //    return builder;
-        //}
-
         [Theory]
         [InlineData("sites:sites", "sites")]
         public void Build_WhenFacetsConfigIsSingleDiscreteWithoutPicks_ReturnsValidQuerySetup(string uri, string facetCode)
@@ -201,8 +146,8 @@ namespace SeadQueryTest.QueryBuilder
             // Arrange
             var facet = Registry.Facets.GetByCode(facetCode);
             var facetsConfig = FacetsConfigFactory.Create(uri);
-            var mockPickCompilers = MockPickCompilers("");
-            var mockJoinCompiler = MockJoinCompiler("A JOIN B ON A.X = B.Y");
+            var mockPickCompilers = MockPickCompilerLocator("SELECT * FROM fot.bar");
+            var mockJoinCompiler = MockJoinSqlCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
             var facetCodes = new List<string>() { facetCode };
             var extraTables = new List<string>();
@@ -232,8 +177,8 @@ namespace SeadQueryTest.QueryBuilder
             // Arrange
             var facet = Registry.Facets.GetByCode(facetCode);
             var facetsConfig = FacetsConfigFactory.Create(uri);
-            var mockPickCompilers = MockPickCompilers("");
-            var mockJoinCompiler = MockJoinCompiler("A JOIN B ON A.X = B.Y");
+            var mockPickCompilers = MockPickCompilerLocator("");
+            var mockJoinCompiler = MockJoinSqlCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
             var facetCodes = new List<string>() { facetCode };
             var extraTables = new List<string>();
@@ -263,8 +208,8 @@ namespace SeadQueryTest.QueryBuilder
 
             // Arrange
             var facetRepository = fixture.Repository;
-            var mockPickCompilers = MockPickCompilers("");
-            var mockJoinCompiler = MockJoinCompiler("A JOIN B ON A.X = B.Y");
+            var mockPickCompilers = MockPickCompilerLocator("");
+            var mockJoinCompiler = MockJoinSqlCompiler("A JOIN B ON A.X = B.Y");
             var mockFacetsGraph = MockFacetsGraph();
 
             var compiler = new QuerySetupCompiler(
@@ -306,34 +251,18 @@ namespace SeadQueryTest.QueryBuilder
         [MemberData(nameof(DataCategoryCountQuerySetupForDiscreteFacetWithoutPicks))]
         public void CanBuildCategoryCountQuerySetupForDiscreteFacetWithoutPicks(string uri, List<List<string>> expectedRoutes)
         {
-            var parts = uri.Split(':').ToList();
-            var testCodes = parts[1].Split('/').ToList();
-            var targetCode = parts[0];
-
             // Arrange
-            var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry.Facets);
-
-            FacetsConfig2 facetsConfig = facetsConfigScaffolder.Create(
-                targetCode,
-                targetCode,
-                testCodes.Select(
-                    z => Mocks.MockFacetConfigFactory.Create(Registry.Facets.GetByCode(z), testCodes.IndexOf(z)
-                )
-            ).ToList());
+            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var targetFacet = facetsConfig.TargetFacet;
 
             var graph = ScaffoldUtility.DefaultFacetsGraph(FacetContext);
 
             IJoinSqlCompiler joinCompiler = new JoinSqlCompiler();
 
-            var pickCompilers = MockPickCompilers("");
+            var pickCompilers = MockPickCompilerLocator("");
 
-            IQuerySetupCompiler builder = new QuerySetupCompiler(
-                graph,
-                pickCompilers.Object,
-                joinCompiler
-            );
+            IQuerySetupCompiler builder = new QuerySetupCompiler(graph, pickCompilers.Object, joinCompiler);
 
-            Facet targetFacet = Registry.Facets.GetByCode(targetCode);
             Facet computeFacet = Registry.Facets.Get(targetFacet.AggregateFacetId);
 
             List<string> facetCodes = facetsConfig.GetFacetCodes();
