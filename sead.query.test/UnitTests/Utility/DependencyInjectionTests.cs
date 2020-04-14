@@ -114,8 +114,8 @@ namespace SeadQueryTest2.IoC
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));
                 Assert.NotNull(scope.ResolveKeyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range));
-                Assert.NotNull(scope.ResolveKeyed<IResultSqlQueryCompiler>("tabular"));
-                Assert.NotNull(scope.ResolveKeyed<IResultSqlQueryCompiler>("map"));
+                Assert.NotNull(scope.ResolveKeyed<IResultQuerySetupSqlCompiler>("tabular"));
+                Assert.NotNull(scope.ResolveKeyed<IResultQuerySetupSqlCompiler>("map"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("tabular"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("map"));
 
@@ -136,6 +136,6 @@ namespace SeadQueryTest2.IoC
             }
         }
 
-  
+
     }
 }
