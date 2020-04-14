@@ -82,44 +82,45 @@ namespace SeadQueryTest.Services.FacetContent
         public Dictionary<string, int> DiscreteFacetComputeCount { get { return __DiscreteFacetComputeCount; } }
 
 
-        [Theory]
-        [InlineData("species", 4904)]
-        [InlineData("tbl_biblio_modern", 3460)]
-        [InlineData("relative_age_name", 388)]
-        [InlineData("record_types", 19)]
-        [InlineData("sample_groups", 2195)]
-        [InlineData("sites", 1544)]
-        [InlineData("country", 260)]
-        [InlineData("ecocode", 158)]
-        [InlineData("family", 529)]
-        [InlineData("genus", 3951)]
-        [InlineData("species_author", 3101)]
-        [InlineData("feature_type", 41)]
-        [InlineData("ecocode_system", 3)]
-        [InlineData("activeseason", 18)]
-        [InlineData("tbl_biblio_sample_groups", 2344)]
-        public void Load_SingleDiscreteConfigWithoutPicks_IsLoaded(string facetCode, int count)
-        {
-            var fixture = new MockFacetsConfigFactory(Registry.Facets);
+        //[Theory]
+        //[InlineData("species", 4904)]
+        //[InlineData("tbl_biblio_modern", 3460)]
+        //[InlineData("relative_age_name", 388)]
+        //[InlineData("record_types", 19)]
+        //[InlineData("sample_groups", 2195)]
+        //[InlineData("sites", 1544)]
+        //[InlineData("country", 260)]
+        //[InlineData("ecocode", 158)]
+        //[InlineData("family", 529)]
+        //[InlineData("genus", 3951)]
+        //[InlineData("species_author", 3101)]
+        //[InlineData("feature_type", 41)]
+        //[InlineData("ecocode_system", 3)]
+        //[InlineData("activeseason", 18)]
+        //[InlineData("tbl_biblio_sample_groups", 2344)]
+        //[Fact(Skip = "Needs rework")]
+        //public void Load_SingleDiscreteConfigWithoutPicks_IsLoaded(string facetCode, int count)
+        //{
+        //    var fixture = new MockFacetsConfigFactory(Registry.Facets);
 
-            using (IContainer container = TestDependencyService.CreateContainer(FacetContext, null)) {
+        //    using (IContainer container = TestDependencyService.CreateContainer(FacetContext, null)) {
 
-                FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
-                //Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
+        //        FacetsConfig2 facetsConfig = fixture.CreateSingleFacetsConfigWithoutPicks(facetCode);
+        //        //Utility.SaveAsJson(facetsConfig, "facet_load_config", logDir);
 
-                var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
+        //        var service = container.ResolveKeyed<IFacetContentService>(facetsConfig.TargetFacet.FacetTypeId);
 
-                // Act
-                var facetContent = service.Load(facetsConfig);
+        //        // Act
+        //        var facetContent = service.Load(facetsConfig);
 
-                // Assert
-                // TestContext.WriteLine($"{facetCode}: {facetContent.Items.Count}");
-                Assert.Equal(count, facetContent.Items.Count);
-                Assert.Equal(facetsConfig, facetContent.FacetsConfig);
-                //Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
+        //        // Assert
+        //        // TestContext.WriteLine($"{facetCode}: {facetContent.Items.Count}");
+        //        Assert.Equal(count, facetContent.Items.Count);
+        //        Assert.Equal(facetsConfig, facetContent.FacetsConfig);
+        //        //Utility.SaveAsJson(facetContent, "facet_load_content", logDir);
 
-            }
-        }
+        //    }
+        //}
 
         //[TestMethod, Ignore]
         //public void CanLoadAbundanceClassificationDiscreteConfigWithoutPicks()
@@ -173,7 +174,7 @@ namespace SeadQueryTest.Services.FacetContent
         //    }
         //}
 
-        [Fact]
+        [Fact(Skip="Needs rework")]
         public void CanLoadSingleDiscreteConfigWithPicks()
         {
 
