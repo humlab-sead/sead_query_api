@@ -20,17 +20,19 @@ namespace SeadQueryTest.Repository
             return new FacetTypeRepository(FacetContext);
         }
 
-        [Fact]
-        public void Find_WhenCalleWithExistingId_ReturnsType()
+        [Theory]
+        [InlineData(EFacetType.Discrete)]
+        [InlineData(EFacetType.Range)]
+        public void Find_WhenCalleWithExistingId_ReturnsType(EFacetType facetType)
         {
             // Arrange
-            var facetTypeRepository = this.CreateFacetTypeRepository();
+            var repository = new Repository<FacetType, EFacetType>(FacetContext);
 
             // Act
-            var result = facetTypeRepository.Get(1);
+            var result = repository.Get(facetType);
 
             // Assert
-            Assert.Equal(EFacetType.Discrete, result.FacetTypeId);
+            Assert.Equal(facetType, result.FacetTypeId);
         }
     }
 }
