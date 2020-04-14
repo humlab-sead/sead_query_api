@@ -101,7 +101,7 @@ namespace SeadQueryTest.Services.FacetContent
 
         }
 
-        [Fact]
+        [Fact(Skip = "Needs rework")]
         public void Load_WhenOnlineMeasuredValues_33_00_IsTrue()
         {
             using (var container = TestDependencyService.CreateContainer(FacetContext, null))
@@ -121,7 +121,7 @@ namespace SeadQueryTest.Services.FacetContent
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Needs rework")]
         public void Load_WhenOnlineMeasuredValues_33_82_IsTrue()
         {
             using (var container = TestDependencyService.CreateContainer(FacetContext, null))
