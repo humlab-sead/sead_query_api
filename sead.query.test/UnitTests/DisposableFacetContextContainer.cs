@@ -1,10 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using SeadQueryCore;
+using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Mocks;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using Xunit;
 
@@ -68,5 +73,87 @@ namespace SeadQueryTest
             if (__DbConnection.IsValueCreated)
                 DbConnection.Dispose();
         }
+
+
+        // Common mock helpers
+
+        protected virtual IRepositoryRegistry FakeRegistry() => Registry;
+
+        protected virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
+
+        protected virtual Mock<IRepositoryRegistry> MockFacetRepository()
+        {
+            // Default: a JSON-seeded FacetContext with Sqlite backend
+            var mockRegistry = new Mock<IRepositoryRegistry>();
+            mockRegistry.Setup(r => r.Facets).Returns(Registry.Facets);
+            return mockRegistry;
+        }
+
+        /// <summary>
+        /// Mocks IQuerySetupCompiler.Setup. Returns passed argument.
+        /// </summary>
+        /// <param name="querySetup"></param>
+        /// <returns></returns>
+        protected virtual Mock<IQuerySetupCompiler> MockQuerySetupCompiler(QuerySetup querySetup)
+        {
+            var mockQuerySetupCompiler = new Mock<IQuerySetupCompiler>();
+            mockQuerySetupCompiler.Setup(x => x.Build(
+                        It.IsAny<FacetsConfig2>(),
+                        It.IsAny<Facet>(),
+                        It.IsAny<List<string>>()
+                    )).Returns(querySetup ?? new QuerySetup { });
+            return mockQuerySetupCompiler;
+        }
+
+        /// <summary>
+        /// Mocks ITypedQueryProxy.QueryRows. Returns passed fake items.
+        /// </summary>
+        /// <param name="fakeResult"></param>
+        /// <returns></returns>
+        protected virtual Mock<ITypedQueryProxy> MockTypedQueryProxy(List<CategoryCountItem> fakeResult)
+        {
+            var mockQueryProxy = new Mock<ITypedQueryProxy>();
+            mockQueryProxy.Setup(foo => foo.QueryRows<CategoryCountItem>(
+                        It.IsAny<string>(),
+                        It.IsAny<Func<IDataReader, CategoryCountItem>>()
+                )).Returns(
+                    fakeResult
+                );
+            return mockQueryProxy;
+        }
+
+        /// <summary>
+        /// Returns a list of generated CategoryCountItems for range results
+        /// </summary>
+        /// <param name="returnSql"></param>
+        /// <returns></returns>
+        protected virtual List<CategoryCountItem> MockRangeCategoryCountItems(int start, int step, int count)
+        {
+            var fakeResult = new RangeCountDataReaderBuilder(start, step)
+                .CreateNewTable()
+                .GenerateBogusRows(count)
+                .ToItems<CategoryCountItem>().ToList();
+            return fakeResult;
+        }
+
+        /// <summary>
+        /// Mocks Compile method. Return passed SQL. No other calls avaliable.
+        /// </summary>
+        /// <param name="returnSql"></param>
+        /// <returns></returns>
+        protected virtual Mock<IRangeCategoryCountSqlQueryCompiler> MockRangeCategoryCountSqlQueryCompiler(string returnSql)
+        {
+            var MockRangeCountSqlCompiler = new Mock<IRangeCategoryCountSqlQueryCompiler>();
+            MockRangeCountSqlCompiler.Setup(c => c.Compile(
+                It.IsAny<QuerySetup>(),
+                It.IsAny<Facet>(),
+                It.IsAny<string>(),
+                It.IsAny<string>()
+            )).Returns(
+                returnSql
+            );
+            return MockRangeCountSqlCompiler;
+        }
+
     }
 }
