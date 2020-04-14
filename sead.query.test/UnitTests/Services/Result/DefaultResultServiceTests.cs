@@ -42,25 +42,5 @@ namespace SeadQueryTest.Services.Result
             Assert.True(false);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void Load_WhenOnline_IsTrue()
-        {
-            //using (var connection = SqliteConnectionFactory.CreateAndOpen())
-            //using (var context = JsonSeededFacetContextFactory.Create(connection))
-            //using (var container = TestDependencyService.CreateContainer(context, null))
-            //using (var scope = container.BeginLifetimeScope()) {
-
-            //    // Arrange
-            //    var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-            //    var facetsConfig = JsonSeededFacetsConfigByUriFactory.Create(context, uri);
-            //    var resultKeys = new List<string>() { "site_level" };
-            //    var resultConfig = ResultConfigFactory.Create("tabular", resultKeys);
-            //    var service = scope.ResolveKeyed<IResultService>(EFacetType.Range);
-
-            //    // Act
-            //    var resultSet = service.Load(facetsConfig, resultConfig);
-
-            //}
-        }
     }
 }
