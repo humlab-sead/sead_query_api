@@ -127,6 +127,20 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
+        protected virtual List<CategoryCountItem> MockDiscreteCategoryCountItems(int start, int step, int count)
+        {
+            var fakeResult = new RangeCountDataReaderBuilder(start, step)
+                .CreateNewTable()
+                .GenerateBogusRows(count)
+                .ToItems<CategoryCountItem>().ToList();
+            return fakeResult;
+        }
+
+        /// <summary>
+        /// Returns a list of generated CategoryCountItems for range results
+        /// </summary>
+        /// <param name="returnSql"></param>
+        /// <returns></returns>
         protected virtual List<CategoryCountItem> MockRangeCategoryCountItems(int start, int step, int count)
         {
             var fakeResult = new RangeCountDataReaderBuilder(start, step)
@@ -143,8 +157,8 @@ namespace SeadQueryTest
         /// <returns></returns>
         protected virtual Mock<IRangeCategoryCountSqlQueryCompiler> MockRangeCategoryCountSqlQueryCompiler(string returnSql)
         {
-            var MockRangeCountSqlCompiler = new Mock<IRangeCategoryCountSqlQueryCompiler>();
-            MockRangeCountSqlCompiler.Setup(c => c.Compile(
+            var mockCategoryCountSqlQueryCompiler = new Mock<IRangeCategoryCountSqlQueryCompiler>();
+            mockCategoryCountSqlQueryCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),
                 It.IsAny<string>(),
@@ -152,7 +166,66 @@ namespace SeadQueryTest
             )).Returns(
                 returnSql
             );
-            return MockRangeCountSqlCompiler;
+            return mockCategoryCountSqlQueryCompiler;
+        }
+
+        /// <summary>
+        /// Mocks Compile method. Return passed SQL. No other calls avaliable.
+        /// </summary>
+        /// <param name="returnSql"></param>
+        /// <returns></returns>
+        protected virtual Mock<IDiscreteCategoryCountSqlQueryCompiler> MockDiscreteCategoryCountSqlQueryCompiler(string returnSql)
+        {
+            var mockCategoryCountSqlQueryCompiler = new Mock<IDiscreteCategoryCountSqlQueryCompiler>();
+            mockCategoryCountSqlQueryCompiler.Setup(c => c.Compile(
+                It.IsAny<QuerySetup>(),
+                It.IsAny<Facet>(),
+                It.IsAny<Facet>(),
+                It.IsAny<string>()
+            )).Returns(
+                returnSql
+            );
+            return mockCategoryCountSqlQueryCompiler;
+        }
+        protected virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
+        {
+            var mockPickCompiler = new Mock<IPickFilterCompiler>();
+
+            mockPickCompiler
+                .Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
+                .Returns(returnValue);
+
+            var mockLocator = new Mock<IPickFilterCompilerLocator>();
+
+            mockLocator
+                .Setup(x => x.Locate(It.IsAny<EFacetType>()))
+                .Returns(mockPickCompiler.Object);
+
+            return mockLocator;
+        }
+
+        protected virtual Mock<IJoinSqlCompiler> MockJoinSqlCompiler(string returnValue)
+        {
+            var mockJoinCompiler = new Mock<IJoinSqlCompiler>();
+            mockJoinCompiler
+                .Setup(x => x.Compile(
+                    It.IsAny<TableRelation>(),
+                    It.IsAny<FacetTable>(),
+                    It.IsAny<bool>()
+                ))
+                .Returns(returnValue);
+            return mockJoinCompiler;
+        }
+
+        protected virtual Mock<IFacetsGraph> MockFacetsGraph(List<GraphRoute> returnRoutes)
+        {
+            var mockFacetsGraph = new Mock<IFacetsGraph>();
+
+            mockFacetsGraph
+                .Setup(x => x.Find(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<bool>()))
+                    .Returns(returnRoutes);
+
+            return mockFacetsGraph;
         }
 
     }
