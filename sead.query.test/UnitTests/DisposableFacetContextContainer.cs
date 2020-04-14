@@ -228,5 +228,34 @@ namespace SeadQueryTest
             return mockFacetsGraph;
         }
 
+        protected GraphRoute MockGraphRoute(string[] nodePairs)
+        {
+            var graphRoute = new GraphRoute(nodePairs.Select(z => Registry.TableRelations.FindByName(z.Split("/")[0], z.Split("/")[1])));
+            return graphRoute;
+        }
+        protected GraphRoute MockGraphRoute2(params string[] trail)
+        {
+            return MockGraphRoute(RouteHelper.ToPairs(trail));
+        }
+
+        protected List<GraphRoute> MockGraphRoutes(List<string[]> nodePairs)
+        {
+            var graphRoutes = nodePairs.Select(z => MockGraphRoute(z)).ToList();
+            return graphRoutes;
+        }
+
+        protected static class RouteHelper
+        {
+            public static string[] ToPairs(params string[] trail)
+            {
+                return trail.Take(trail.Length - 1).Select((e, i) => e + "/" + trail[i + 1]).ToArray();
+            }
+
+            public static string[] ToPairs(List<string> trail)
+            {
+                return ToPairs(trail.ToArray());
+            }
+        }
+
     }
 }
