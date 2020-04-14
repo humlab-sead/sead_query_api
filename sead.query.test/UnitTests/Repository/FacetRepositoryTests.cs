@@ -17,54 +17,12 @@ namespace SeadQueryTest.Repository
         {
         }
 
-        private FacetContext CreateFacetContext()
-        {
-            var options = new DbContextOptionsBuilder<FacetContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .EnableSensitiveDataLogging()
-                .Options;
-            var facetContext = new FacetContext(options);
-            return facetContext;
-        }
-
-        [Fact(Skip ="Not implemented")]
-        public void SaveChanges_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            using (var facetContext = CreateFacetContext()) {
-
-                // Act
-                var result = facetContext.SaveChanges();
-
-                // Assert
-                Assert.True(true);
-            }
-        }
-
-        //[Fact]
-        //public void Context_Should_Have_Values_For_All_Entity_Types()
-        //{
-        //    using (var context = JsonSeededFacetContextFactory.Create()) {
-
-        //        foreach (Type type in ScaffoldUtility.GetModelTypes()) {
-        //            var g = GetGenericMethodForType<FacetContext>("Set", type);
-        //            var entities = (IEnumerable<object>)(g.Invoke(context, Array.Empty<object>()));
-        //            Assert.True(entities.ToList().Count > 0);
-        //        }
-        //    }
-        //}
-
-        //private object GetGenericMethodForType<T>(string v, Type type)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         [Fact]
-        public void ShouldBeAbleToFetchFacetAndReferenceObjects()
+        public void Get_ByFacetCode_Success()
         {
             var repository = Registry.Facets;
 
-            Facet facet = repository.Get(25);
+            Facet facet = repository.GetByCode("species");
 
             Dictionary<string, object> expectedProperties = new Dictionary<string, object>() {
                 { "FacetId", 25 },
@@ -94,76 +52,62 @@ namespace SeadQueryTest.Repository
         }
 
         [Fact]
-        public void CanGetAliasFacets()
+        public void FindThoseWithAlias_Success()
         {
             var repository = Registry.Facets;
 
-            Facet facet = repository.Get(21);
-
-            Assert.Equal("country", facet.FacetCode);
-            Assert.Equal("Country", facet.DisplayTitle);
-            Assert.NotNull(facet.FacetGroup);
-            Assert.NotNull(facet.TargetTable);
-            Assert.NotNull(facet.FacetType);
-            Assert.True(facet.Tables.Count > 0);
-
             List<Facet> aliasFacets = repository.FindThoseWithAlias().ToList();
-            Assert.Single(aliasFacets);
-            Assert.Same(facet, aliasFacets[0]);
+            Assert.True(aliasFacets.Count > 0);
+
+            var facet = aliasFacets.First();
+
+            Assert.NotNull(facet);
+            Assert.True(facet.Tables.Exists(z => z.HasAlias));
 
         }
 
         [Fact]
-        public void FacetChildren_FacetHasASingleChild_ReturnsThatChild()
+        public void Children_FacetHasASingleChild_ReturnsThatChild()
         {
-            using (var connection = SqliteConnectionFactory.CreateAndOpen()) {
-                var options = SqliteContextOptionsFactory.Create(DbConnection);
-                using (var context = JsonSeededFacetContextFactory.Create(options, Fixture))
-                using (var registry = new RepositoryRegistry(context))
-                using (var container = TestDependencyService.CreateContainer(context, null))
-                using (var scope = container.BeginLifetimeScope()) {
+            var context = FacetContext;
+            var facetTypeRepository = new Repository<FacetType, EFacetType>(context);
+            var parentGroup = FacetGroupFactory.Fake();
+            var childGroup = FacetGroupFactory.Fake();
 
-                    var parentGroup = FacetGroupFactory.Fake();
-                    var childGroup = FacetGroupFactory.Fake();
+            var discreteType = facetTypeRepository.Get(EFacetType.Discrete);
 
-                    var discreteType = FacetTypeFactory.Fake();
+            var facets = new List<Facet>()
+            {
+                FacetFactory.Fake("parent", discreteType, parentGroup, is_applicable: false),
+                FacetFactory.Fake("child 1", discreteType, childGroup),
+                FacetFactory.Fake("child 2", discreteType, childGroup)
+            };
 
-                    var facets = new List<Facet>()
-                    {
-                        FacetFactory.Fake("parent", discreteType, parentGroup, is_applicable: false),
-                        FacetFactory.Fake("child 1", discreteType, childGroup),
-                        FacetFactory.Fake("child 2", discreteType, childGroup)
-                    };
-
-                    var relations = new List<FacetChild>()
-                    {
-                        new FacetChild {
-                            FacetCode = facets[0].FacetCode,
-                            ChildFacetCode = facets[1].FacetCode,
-                        }
-                    };
-
-                    context.FacetTypes.Add(discreteType);
-                    context.FacetGroups.Add(parentGroup);
-                    context.FacetGroups.Add(childGroup);
-                    context.Facets.AddRange(facets);
-                    context.FacetChildren.AddRange(relations);
-
-                    context.SaveChanges();
-
-                    var repository = new FacetRepository(context);
-
-                    var parent = repository.GetByCode("parent");
-                    Assert.NotNull(parent);
-
-                    var children = repository.Children(parent.FacetCode);
-
-                    Assert.NotNull(children);
-                    Assert.Single(children);
-                    Assert.Same(facets[1], children.FirstOrDefault());
-
+            var relations = new List<FacetChild>()
+            {
+                new FacetChild {
+                    FacetCode = facets[0].FacetCode,
+                    ChildFacetCode = facets[1].FacetCode,
                 }
-            }
+            };
+
+            context.FacetGroups.Add(parentGroup);
+            context.FacetGroups.Add(childGroup);
+            context.Facets.AddRange(facets);
+            context.FacetChildren.AddRange(relations);
+
+            context.SaveChanges();
+
+            var repository = new FacetRepository(context);
+
+            var parent = repository.GetByCode("parent");
+            Assert.NotNull(parent);
+
+            var children = repository.Children(parent.FacetCode);
+
+            Assert.NotNull(children);
+            Assert.Single(children);
+            Assert.Same(facets[1], children.FirstOrDefault());
         }
     }
 }
