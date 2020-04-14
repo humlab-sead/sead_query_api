@@ -21,6 +21,7 @@ namespace SeadQueryCore
         public int SourceTableId { get; set; }
         public int TargetTableId { get; set; }
         public int Weight { get; set; }
+        //public string ExtraConstraint { get; set; }
 
         public string SourceColumName { get; set; }
         public string TargetColumnName { get; set; }
