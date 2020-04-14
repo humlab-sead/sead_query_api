@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public class MapResultSqlQueryCompiler : IResultSqlQueryCompiler {
+    public class MapResultQuerySetupSqlCompiler : IResultQuerySetupSqlCompiler {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
         {
             string sql = $@"

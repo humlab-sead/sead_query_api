@@ -9,15 +9,14 @@ using SeadQueryCore.Model;
 
 namespace SeadQueryCore
 {
-
     public class ResultQueryCompiler : QueryServiceBase, IResultQueryCompiler
     {
-        protected IIndex<string, IResultSqlQueryCompiler> QueryCompilers;
+        protected IIndex<string, IResultQuerySetupSqlCompiler> QueryCompilers;
 
         public ResultQueryCompiler(
             IRepositoryRegistry context,
             IQuerySetupCompiler builder,
-            IIndex<string, IResultSqlQueryCompiler> queryCompilers
+            IIndex<string, IResultQuerySetupSqlCompiler> queryCompilers
         ) : base(context, builder)
         {
             QueryCompilers = queryCompilers;
@@ -28,7 +27,7 @@ namespace SeadQueryCore
             Facet facet = Registry.Facets.GetByCode(facetCode);
             ResultQuerySetup resultQuerySetup = CreateResultSetup(resultConfig);
             if (!resultQuerySetup.IsEmpty) {
-                QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facet, resultQuerySetup.DataTables);
+                QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facet, resultQuerySetup.TableNames);
                 return QueryCompilers[resultConfig.ViewTypeId].Compile(querySetup, facet, resultQuerySetup);
             }
             return "";

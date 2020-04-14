@@ -79,8 +79,8 @@ namespace SeadQueryTest.Services.Result
 
         private IResultQueryCompiler ConcreteResultCompiler(IRepositoryRegistry registry)
         {
-            var resultSqlQueryCompilers = new MockIndex<string, IResultSqlQueryCompiler> {
-                {  "map", new MapResultSqlQueryCompiler() }
+            var resultSqlQueryCompilers = new MockIndex<string, IResultQuerySetupSqlCompiler> {
+                {  "map", new MapResultQuerySetupSqlCompiler() }
             };
             IQuerySetupCompiler querySetupCompiler = MockQuerySetupCompiler();
             var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupCompiler, resultSqlQueryCompilers);

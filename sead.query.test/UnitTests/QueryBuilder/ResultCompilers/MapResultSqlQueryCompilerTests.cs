@@ -40,7 +40,7 @@ namespace SeadQueryTest.QueryBuilder.ResultCompilers
 
             // Act
 
-            var mapResultSqlQueryCompiler = new MapResultSqlQueryCompiler();
+            var mapResultSqlQueryCompiler = new MapResultQuerySetupSqlCompiler();
             var result = mapResultSqlQueryCompiler.Compile(querySetup, facet, resultConfig);
 
             // Assert

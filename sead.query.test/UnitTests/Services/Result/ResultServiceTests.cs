@@ -30,7 +30,7 @@ namespace SeadQueryTest
             var queryProxy = new MockDynamicQueryProxyFactory().CreateWithData(fields, values);
 
             Assert.NotNull(queryProxy);
-     
+
             queryProxy = new MockDynamicQueryProxyFactory().CreateWithFakeData(fields, 10);
 
             Assert.NotNull(queryProxy);

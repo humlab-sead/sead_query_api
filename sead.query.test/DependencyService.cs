@@ -86,15 +86,15 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
-            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
+            builder.RegisterType<ResultQueryCompiler>().As<IResultQuerySqlCompiler>();
 
             builder.RegisterType<RangeCategoryBoundSqlQueryCompiler>().Keyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range);
 
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("tabular");
-            builder.RegisterType<MapResultSqlQueryCompiler>().Keyed<IResultSqlQueryCompiler>("map");
+            builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultQuerySetupSqlCompiler>("tabular");
+            builder.RegisterType<MapResultQuerySetupSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("map");
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache) {
