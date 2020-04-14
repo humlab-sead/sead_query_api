@@ -36,17 +36,5 @@ namespace SeadQueryTest.Services
                 this.mockQuerySetupBuilder.Object);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void TestMethod1()
-        {
-            // Arrange
-            var service = this.CreateService();
-
-            // Act
-
-
-            // Assert
-            Assert.True(false);
-        }
     }
 }
