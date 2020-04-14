@@ -1,7 +1,12 @@
+using Autofac;
+using SeadQueryCore;
 using SeadQueryInfra;
 using SeadQueryTest.Infrastructure;
 using SeadQueryTest.Mocks;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SeadQueryTest.Repository
@@ -13,19 +18,58 @@ namespace SeadQueryTest.Repository
         {
         }
 
-        //[Fact]
-        //public void Get_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var repository = this.CreateRepository<Facet, int>();
-        //    int id = 1;
 
-        //    // Act
-        //    var result = repository.Get(id);
+        [Fact]
+        public void TestResolveUnitOfWork()
+        {
+            var builder = new ContainerBuilder();
+            var setting = (ISetting)new SettingFactory().Create().Value;
 
-        //    // Assert
-        //    Assert.True(false);
-        //}
+            builder.RegisterInstance(setting).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<IFacetSetting>(setting.Facet).SingleInstance().ExternallyOwned();
+            builder.RegisterInstance<StoreSetting>(setting.Store).SingleInstance().ExternallyOwned();
+
+            builder.RegisterInstance(FacetContext).As<IFacetContext>().SingleInstance();
+            builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>();
+
+            using (var container = builder.Build())
+            using (var scope = container.BeginLifetimeScope()) {
+                var service = scope.Resolve<IRepositoryRegistry>();
+                Assert.True(service.Facets.GetAll().Any());
+            }
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(5)]
+        public void Get_ExpectedBehavior(int id)
+        {
+            // Arrange
+            var repository = new Repository<Facet, int>(FacetContext);
+
+            // Act
+            var result = repository.Get(id);
+
+            // Assert
+            Assert.Equal(id, result.FacetId);
+        }
+
+        [Theory]
+        [InlineData(typeof(Facet))]
+        [InlineData(typeof(Table))]
+        public void GetAll_OnVariousRepositories_Success(Type type)
+        {
+            // Arrange
+            Type[] typeArgs = { type, typeof(int) };
+            Type repoType = typeof(Repository<,>).MakeGenericType(typeArgs);
+            var repository = Activator.CreateInstance(repoType, FacetContext);
+            var methodInfo = repoType.GetMethod("GetAll");
+            // Act
+            IEnumerable<object> result = (IEnumerable<object>)methodInfo.Invoke(repository, null);
+
+            // Assert
+            Assert.True(result.Any());
+        }
 
         //[Fact]
         //public void GetAll_StateUnderTest_ExpectedBehavior()
