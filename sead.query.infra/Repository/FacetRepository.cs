@@ -65,7 +65,7 @@ namespace SeadQueryInfra
 
         public IEnumerable<Facet> FindThoseWithAlias()
         {
-            return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
+            return GetAll().Where(p => p.Tables.Any(c => !c.Alias.IsEmpty()));
         }
 
         public IEnumerable<Facet> Parents()
