@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,18 +19,14 @@ namespace SeadQueryCore.QueryBuilder
         IFacetsGraph Graph { get; }
         IPickFilterCompilerLocator PickCompilers { get; }
         IJoinSqlCompiler JoinCompiler { get; }
-
     }
+
     public class QuerySetupCompiler : IQuerySetupCompiler {
         public IFacetsGraph Graph { get; set; }
         public IPickFilterCompilerLocator PickCompilers { get; set; }
         public IJoinSqlCompiler JoinCompiler { get; }
 
-        public QuerySetupCompiler(
-            IFacetsGraph graph,
-            IPickFilterCompilerLocator pickCompilers,
-            IJoinSqlCompiler joinCompiler
-        ) {
+        public QuerySetupCompiler(IFacetsGraph graph, IPickFilterCompilerLocator pickCompilers, IJoinSqlCompiler joinCompiler) {
             Graph = graph;
             PickCompilers = pickCompilers;
             JoinCompiler = joinCompiler;
@@ -52,85 +49,94 @@ namespace SeadQueryCore.QueryBuilder
         {
             // Noteworthy: TargetFacet differs from facetsConfig.TargetFacet when a result-facet is applied
 
-            facetCodes  ??= facetsConfig.GetFacetCodes();
-            facetCodes    = facetCodes.AddIfMissing(targetFacet.FacetCode);
-            extraTables ??= new List<string>();
+            facetCodes ??= facetsConfig.GetFacetCodes();
+            facetCodes = facetCodes.AddIfMissing(targetFacet.FacetCode);
 
             var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
 
-            // Find all tables that are involved in the final query
-            List<string> tables = GetInvolvedTables(targetFacet, extraTables, involvedConfigs);
+            var pickCriterias = CompilePickCriterias(targetFacet, involvedConfigs);
+            var facetCriterias = CompileFacetCriterias(targetFacet, involvedConfigs);
 
-            // Compute criteria clauses for user picks and store in Dictionary keyed by tablename
-            var tableCriterias = CompilePickCriterias(targetFacet, involvedConfigs);
+            var routes = CompileRoutes(targetFacet, extraTables, involvedConfigs);
+            var joins = CompileJoins(routes, facetsConfig);
 
-            // Find all routes from target facet's table to all tables collected in affected facets
-            List<GraphRoute> routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
-
-            // Compile list of joins for the reduced route
-            List<string> joins = CompileJoins(tableCriterias, routes, facetsConfig);
-
-            // Add TargetFacets Query Criteria (if exists)
-            //Debug.Assert(false,"False all affected facets' critera must be added!!!!");
-
-            // TODO change QueryCriteria to return List<string>, rename to Clauses
-            var criterias = tableCriterias.Values
-                .AppendIf(targetFacet.QueryCriteria).ToList();
-
-            QuerySetup querySetup = new QuerySetup() {
+            QuerySetup querySetup = new QuerySetup()
+            {
                 TargetConfig = facetsConfig?.TargetConfig,
                 Facet = targetFacet,
                 Routes = routes,
                 Joins = joins,
-                Criterias = criterias
+                Criterias = pickCriterias.Concat(facetCriterias).ToList()
             };
 
             return querySetup;
         }
 
-        private FacetTable GetFacetTable(FacetsConfig2 facetsConfig, TableRelation edge, IEnumerable<FacetTable> aliases)
+        private List<GraphRoute> CompileRoutes(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
         {
-            var targetTable = facetsConfig.GetFacetTable(edge.TargetName);
-                targetTable ??= aliases.Where(x => x.Alias == edge.TargetName).FirstOrDefault();
-            return targetTable;
+            var tables = GetInvolvedTables(targetFacet, extraTables, involvedConfigs);
+            var routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
+            return routes;
         }
 
-        protected List<string> CompileJoins(Dictionary<string, string> pickCriterias, List<GraphRoute> routes, FacetsConfig2 facetsConfig)
+        protected List<string> CompileJoins(List<GraphRoute> routes, FacetsConfig2 facetsConfig)
         {
-
-            return routes
+            var joins = routes
                 .SelectMany(route => route.Items)
                 .OrderByDescending(z => z.TargetTable.IsUdf)
-                .Select(edge => JoinCompiler.Compile(
-                    edge,
-                    GetFacetTable(facetsConfig, edge, Graph.Aliases),
-                    true /* HasUserPicks(edge, pickCriterias) */
-                ))
+                .Select(edge => CompileJoin(facetsConfig, edge))
                 .ToList();
-        }
-
-        protected Dictionary<string, string> CompilePickCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
-        {
-            // Compute criteria clauses for user picks for each affected facet
-            var criterias = involvedConfigs
-                .Select(config => (
-                    (
-                        Tablename: config.Facet.TargetTable.ResolvedAliasOrTableOrUdfName,
-                        Criteria: PickCompiler(config).Compile(targetFacet, config.Facet, config))
-                    )
-                 )
-                .ToList();
-
-            // Group and concatenate the criterias for each table
-            var pickCriterias = criterias
-                .GroupBy(p => p.Tablename, p => p.Criteria, (key, g) => new { TableName = key, Criterias = g.ToList() })
-                .ToDictionary(z => z.TableName, z => $"({z.Criterias.Combine(" AND ")})");
-
-            return pickCriterias;
+            return joins;
         }
 
         /// <summary>
-        /// Collect all affected tables (those defined in affected facets)
+        /// Returns Facet.QueryCriteria for all involved facets, target facet included
+        /// </summary>
+        /// <param name="targetFacet"></param>
+        /// <param name="involvedConfigs"></param>
+        /// <returns></returns>
+        private IEnumerable<string> CompileFacetCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
+        {
+            var criterias = involvedConfigs
+                .Select(c => c.Facet)
+                .Union(new List<Facet> { targetFacet })    // target facet is not always in affected list (ReloadIfTarget)
+                .Where(z => !z.QueryCriteria.IsEmpty())
+                .Select(z => z.QueryCriteria);
+            return criterias;
+        }
+
+        /// <summary>
+        /// Returns FacetTable instance for given relation
+        /// Note: previoulsy, HasUserPicks(edge, pickCriterias) was used as join type argument
+        /// </summary>
+        /// <param name="facetsConfig"></param>
+        /// <param name="edge"></param>
+        /// <returns></returns>
+        private string CompileJoin(FacetsConfig2 facetsConfig, TableRelation edge)
+        {
+            var facetTable = facetsConfig.GetFacetTable(edge.TargetName)
+                 ?? Graph.Aliases.FindByAlias(edge.TargetName);
+            var join = JoinCompiler.Compile(edge, facetTable, true);
+            return join;
+        }
+
+        /// <summary>
+        /// Returns where-clauses based on user picks for all involved facets
+        /// </summary>
+        /// <param name="targetFacet"></param>
+        /// <param name="involvedConfigs"></param>
+        /// <returns></returns>
+        protected IEnumerable<string> CompilePickCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
+        {
+            var criterias = involvedConfigs
+                .Select(
+                    config => PickCompiler(config).Compile(targetFacet, config.Facet, config)
+                 );
+            return criterias;
+        }
+
+        /// <summary>
+        /// Collect all tables specified ib affected facets and target facet
         /// </summary>
         /// <param name="targetFacet"></param>
         /// <param name="extraTables"></param>
@@ -138,28 +144,15 @@ namespace SeadQueryCore.QueryBuilder
         /// <returns></returns>
         protected List<string> GetInvolvedTables(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
         {
-            var tables =
-
-                // ...extra tables (if any)...
-                (extraTables ?? new List<string>())
-
-                // ...target facet's tables...
+            var facets = involvedConfigs.Select(c => c.Facet).Append(targetFacet);
+            var tables = facets
+                .SelectMany(
+                    f => f.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName)
+                 )
                 .Concat(
-                    targetFacet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName)
-                )
-
-                // ...tables from affected facets...
-                .Concat(
-                    involvedConfigs.SelectMany(c => c.Facet.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName).ToList())
-                );
-
-            return tables.Distinct().ToList();
-        }
-
-        protected bool HasUserPicks(TableRelation edge, Dictionary<string, string> tableCriterias)
-        {
-            // FIXME: SHould SourceName really be considered here...?
-            return /* tableCriterias.ContainsKey(edge.SourceName) || */ tableCriterias.ContainsKey(edge.TargetName);
+                    extraTables ?? new List<string>()
+                ).Distinct().ToList();
+            return tables;
         }
 
         protected IPickFilterCompiler PickCompiler(FacetConfig2 c)

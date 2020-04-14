@@ -4,6 +4,19 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
+    public static class FacetConfig2Extensions
+    {
+        public static bool ContainsFacetConfig(this IEnumerable<FacetConfig2> facetConfigs, FacetConfig2 facetConfig)
+        {
+            return facetConfigs.Contains(facetConfig);
+        }
+        public static bool ContainsFacet(this IEnumerable<FacetConfig2> facetConfigs, Facet facet)
+        {
+            return facetConfigs.FirstOrDefault(z => z.FacetCode == facet.FacetCode) != default(FacetConfig2);
+        }
+
+    }
+
     public class FacetConfig2 {
 
         public string FacetCode { get; set; } = "";
