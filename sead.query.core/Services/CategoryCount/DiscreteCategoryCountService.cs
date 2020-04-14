@@ -15,13 +15,11 @@ namespace SeadQueryCore
             IRepositoryRegistry registry,
             IQuerySetupCompiler builder,
             IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler,
-            ITypedQueryProxy queryProxy) : base(config, registry, builder) {
+            ITypedQueryProxy queryProxy) : base(config, registry, builder, queryProxy) {
             CountSqlCompiler = countSqlCompiler;
-            QueryProxy = queryProxy;
         }
 
         public IDiscreteCategoryCountSqlQueryCompiler CountSqlCompiler { get; }
-        public ITypedQueryProxy QueryProxy { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
@@ -54,17 +52,13 @@ namespace SeadQueryCore
             return x.GetInt32(ordinal).ToString();
         }
 
-        protected override List<CategoryCountItem> Query(string sql)
-        {
-            return QueryProxy.QueryRows<CategoryCountItem>(sql,
-                x => new CategoryCountItem() {
-                    Category =  x.IsDBNull(0) ? null : Category2String(x, 0),
-                    Count = x.IsDBNull(1) ? 0 : x.GetInt32(1),
-                    Extent = new List<decimal>() { x.IsDBNull(1) ? 0 : x.GetInt32(1) }
-                    //CategoryValues = new Dictionary<EFacetPickType, decimal>() {
-                    //    { EFacetPickType.discrete, x.IsDBNull(1) ? 0 : x.GetInt32(1) }
-                    //}
-                }).ToList();
-        }
+        protected override string GetCategory(IDataReader x)
+            => x.IsDBNull(0) ? null : Category2String(x, 0);
+
+        protected override int GetCount(IDataReader x)
+            => x.IsDBNull(1) ? 0 : x.GetInt32(1);
+
+        protected override List<decimal> GetExtent(IDataReader x)
+            => new List<decimal>() { x.IsDBNull(1) ? 0 : x.GetInt32(1) };
     }
 }
