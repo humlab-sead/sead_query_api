@@ -7,13 +7,13 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
 {
-    public class ValidPicksSqlQueryCompilerTests : IDisposable
+    public class ValidPicksSqlCompilerTests : IDisposable
     {
         private MockRepository mockRepository;
 
 
 
-        public ValidPicksSqlQueryCompilerTests()
+        public ValidPicksSqlCompilerTests()
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
@@ -25,7 +25,7 @@ namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
             this.mockRepository.VerifyAll();
         }
 
-        private ValidPicksSqCompiler CreateValidPicksSqlQueryCompiler()
+        private ValidPicksSqCompiler CreateValidPicksSqlCompiler()
         {
             return new ValidPicksSqCompiler();
         }
@@ -34,13 +34,13 @@ namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
         public void Compile_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var validPicksSqlQueryCompiler = this.CreateValidPicksSqlQueryCompiler();
+            var validPicksSqlCompiler = this.CreateValidPicksSqlCompiler();
             QuerySetup query = null;
             Facet facet = null;
             List<int> picks = null;
 
             // Act
-            var result = validPicksSqlQueryCompiler.Compile(
+            var result = validPicksSqlCompiler.Compile(
                 query,
                 facet,
                 picks);

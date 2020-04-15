@@ -155,10 +155,10 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual Mock<IRangeCategoryCountSqlCompiler> MockRangeCategoryCountSqlQueryCompiler(string returnSql)
+        protected virtual Mock<IRangeCategoryCountSqlCompiler> MockRangeCategoryCountSqlCompiler(string returnSql)
         {
-            var mockCategoryCountSqlQueryCompiler = new Mock<IRangeCategoryCountSqlCompiler>();
-            mockCategoryCountSqlQueryCompiler.Setup(c => c.Compile(
+            var mockCategoryCountSqlCompiler = new Mock<IRangeCategoryCountSqlCompiler>();
+            mockCategoryCountSqlCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),
                 It.IsAny<string>(),
@@ -166,7 +166,7 @@ namespace SeadQueryTest
             )).Returns(
                 returnSql
             );
-            return mockCategoryCountSqlQueryCompiler;
+            return mockCategoryCountSqlCompiler;
         }
 
         /// <summary>
@@ -174,10 +174,10 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual Mock<IDiscreteCategoryCountQueryCompiler> MockDiscreteCategoryCountSqlQueryCompiler(string returnSql)
+        protected virtual Mock<IDiscreteCategoryCountQueryCompiler> MockDiscreteCategoryCountSqlCompiler(string returnSql)
         {
-            var mockCategoryCountSqlQueryCompiler = new Mock<IDiscreteCategoryCountQueryCompiler>();
-            mockCategoryCountSqlQueryCompiler.Setup(c => c.Compile(
+            var mockCategoryCountSqlCompiler = new Mock<IDiscreteCategoryCountQueryCompiler>();
+            mockCategoryCountSqlCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),
                 It.IsAny<Facet>(),
@@ -185,7 +185,7 @@ namespace SeadQueryTest
             )).Returns(
                 returnSql
             );
-            return mockCategoryCountSqlQueryCompiler;
+            return mockCategoryCountSqlCompiler;
         }
         protected virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
         {

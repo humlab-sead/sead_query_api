@@ -10,9 +10,9 @@ using Xunit;
 namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
 {
     [Collection("JsonSeededFacetContext")]
-    public class DiscreteCategoryCountSqlQueryCompilerTests : DisposableFacetContextContainer
+    public class DiscreteCategoryCountSqlCompilerTests : DisposableFacetContextContainer
     {
-        public DiscreteCategoryCountSqlQueryCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public DiscreteCategoryCountSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -30,8 +30,8 @@ namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
 
             // Act
 
-            var discreteCategoryCountSqlQueryCompiler = new DiscreteCategoryCountSqlCompiler();
-            var result = discreteCategoryCountSqlQueryCompiler.Compile(querySetup, facet, countFacet, aggType);
+            var discreteCategoryCountSqlCompiler = new DiscreteCategoryCountSqlCompiler();
+            var result = discreteCategoryCountSqlCompiler.Compile(querySetup, facet, countFacet, aggType);
 
             result = result.Squeeze();
 

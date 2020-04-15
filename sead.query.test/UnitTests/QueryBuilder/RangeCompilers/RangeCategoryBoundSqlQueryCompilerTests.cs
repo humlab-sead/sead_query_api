@@ -6,13 +6,13 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
-    public class RangeCategoryBoundSqlQueryCompilerTests
+    public class RangeCategoryBoundSqlCompilerTests
     {
-        public RangeCategoryBoundSqlQueryCompilerTests()
+        public RangeCategoryBoundSqlCompilerTests()
         {
         }
 
-        private RangeCategoryBoundSqlCompiler CreateRangeCategoryBoundSqlQueryCompiler()
+        private RangeCategoryBoundSqlCompiler CreateRangeCategoryBoundSqlCompiler()
         {
             return new RangeCategoryBoundSqlCompiler();
         }
@@ -21,13 +21,13 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
         public void Compile_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var rangeCategoryBoundSqlQueryCompiler = this.CreateRangeCategoryBoundSqlQueryCompiler();
+            var rangeCategoryBoundSqlCompiler = this.CreateRangeCategoryBoundSqlCompiler();
             QuerySetup query = null;
             Facet facet = null;
             string facetCode = null;
 
             // Act
-            var result = rangeCategoryBoundSqlQueryCompiler.Compile(
+            var result = rangeCategoryBoundSqlCompiler.Compile(
                 query,
                 facet,
                 facetCode);

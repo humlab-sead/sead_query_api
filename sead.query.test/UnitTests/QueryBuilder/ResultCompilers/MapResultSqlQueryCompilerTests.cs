@@ -13,9 +13,9 @@ using Xunit;
 namespace SeadQueryTest.QueryBuilder.ResultCompilers
 {
     [Collection("JsonSeededFacetContext")]
-    public class MapResultSqlQueryCompilerTests : DisposableFacetContextContainer
+    public class MapResultSqlCompilerTests : DisposableFacetContextContainer
     {
-        public MapResultSqlQueryCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public MapResultSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -40,8 +40,8 @@ namespace SeadQueryTest.QueryBuilder.ResultCompilers
 
             // Act
 
-            var mapResultSqlQueryCompiler = new MapResultQuerySetupSqlCompiler();
-            var result = mapResultSqlQueryCompiler.Compile(querySetup, facet, resultConfig);
+            var mapResultSqlCompiler = new MapResultQuerySetupSqlCompiler();
+            var result = mapResultSqlCompiler.Compile(querySetup, facet, resultConfig);
 
             // Assert
             expectedSql = expectedSql.Squeeze();

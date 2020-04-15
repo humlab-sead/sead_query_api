@@ -85,7 +85,7 @@ namespace SeadQueryAPI
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultQuerySetupSqlCompiler>("tabular");
+            builder.RegisterType<TabularResultSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("tabular");
             builder.RegisterType<MapResultQuerySetupSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("map");
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();

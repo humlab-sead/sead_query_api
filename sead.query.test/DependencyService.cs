@@ -50,7 +50,7 @@ namespace SeadQueryTest.Infrastructure
             builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy)
                 .As<ITypedQueryProxy>()
                 .InstancePerLifetimeScope();
-             
+
             builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy)
                 .As<IDynamicQueryProxy>()
                 .InstancePerLifetimeScope();
@@ -93,7 +93,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            builder.RegisterType<TabularResultSqlQueryCompiler>().Keyed<IResultQuerySetupSqlCompiler>("tabular");
+            builder.RegisterType<TabularResultSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("tabular");
             builder.RegisterType<MapResultQuerySetupSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("map");
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();

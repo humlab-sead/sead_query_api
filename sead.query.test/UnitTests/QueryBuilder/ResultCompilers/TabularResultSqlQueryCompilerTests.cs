@@ -6,13 +6,13 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.ResultCompilers
 {
-    public class TabularResultSqlQueryCompilerTests : IDisposable
+    public class TabularResultSqlCompilerTests : IDisposable
     {
         private MockRepository mockRepository;
 
 
 
-        public TabularResultSqlQueryCompilerTests()
+        public TabularResultSqlCompilerTests()
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
@@ -24,22 +24,22 @@ namespace SeadQueryTest.QueryBuilder.ResultCompilers
             this.mockRepository.VerifyAll();
         }
 
-        private TabularResultSqlQueryCompiler CreateTabularResultSqlQueryCompiler()
+        private TabularResultSqlCompiler CreateTabularResultSqlCompiler()
         {
-            return new TabularResultSqlQueryCompiler();
+            return new TabularResultSqlCompiler();
         }
 
         [Fact(Skip = "Not implemented")]
         public void Compile_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var tabularResultSqlQueryCompiler = this.CreateTabularResultSqlQueryCompiler();
+            var tabularResultSqlCompiler = this.CreateTabularResultSqlCompiler();
             QuerySetup query = null;
             Facet facet = null;
             ResultQuerySetup config = null;
 
             // Act
-            var result = tabularResultSqlQueryCompiler.Compile(
+            var result = tabularResultSqlCompiler.Compile(
                 query,
                 facet,
                 config);

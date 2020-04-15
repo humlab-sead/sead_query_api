@@ -79,11 +79,11 @@ namespace SeadQueryTest.Services.Result
 
         private IResultQueryCompiler ConcreteResultCompiler(IRepositoryRegistry registry)
         {
-            var resultSqlQueryCompilers = new MockIndex<string, IResultQuerySetupSqlCompiler> {
+            var resultSqlCompilers = new MockIndex<string, IResultQuerySetupSqlCompiler> {
                 {  "map", new MapResultQuerySetupSqlCompiler() }
             };
             IQuerySetupBuilder querySetupBuilder = MockQuerySetupBuilder();
-            var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupBuilder, resultSqlQueryCompilers);
+            var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupBuilder, resultSqlCompilers);
             return resultQueryCompiler;
         }
 
@@ -91,7 +91,7 @@ namespace SeadQueryTest.Services.Result
         //{
         //    IFacetSetting facetSettings = new SettingFactory().DefaultFacetSettings();
         //    IQuerySetupBuilder querySetupBuilder = CreateQuerySetupBuilder(registry);
-        //    IDiscreteCategoryCountSqlQueryCompiler categoryCountSqlCompiler = new DiscreteCategoryCountSqlQueryCompiler();
+        //    IDiscreteCategoryCountSqlCompiler categoryCountSqlCompiler = new DiscreteCategoryCountSqlCompiler();
         //    return new DiscreteCategoryCountService(
         //        facetSettings,
         //        registry,

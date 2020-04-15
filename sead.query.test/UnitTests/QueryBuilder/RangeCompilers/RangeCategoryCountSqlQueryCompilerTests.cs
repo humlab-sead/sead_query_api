@@ -6,9 +6,9 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
-    public class RangeCategoryCountSqlQueryCompilerTests
+    public class RangeCategoryCountSqlCompilerTests
     {
-        private RangeCategoryCountSqlCompiler CreateRangeCategoryCountSqlQueryCompiler()
+        private RangeCategoryCountSqlCompiler CreateRangeCategoryCountSqlCompiler()
         {
             return new RangeCategoryCountSqlCompiler();
         }
@@ -17,14 +17,14 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
         public void Compile_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var rangeCategoryCountSqlQueryCompiler = this.CreateRangeCategoryCountSqlQueryCompiler();
+            var rangeCategoryCountSqlCompiler = this.CreateRangeCategoryCountSqlCompiler();
             QuerySetup querySetup = null;
             Facet facet = null;
             string intervalQuery = null;
             string countColumn = null;
 
             // Act
-            var result = rangeCategoryCountSqlQueryCompiler.Compile(
+            var result = rangeCategoryCountSqlCompiler.Compile(
                 querySetup,
                 facet,
                 intervalQuery,

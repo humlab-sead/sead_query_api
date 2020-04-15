@@ -6,9 +6,9 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
-    public class RangeIntervalSqlQueryCompilerTests
+    public class RangeIntervalSqlCompilerTests
     {
-        private RangeIntervalSqlCompiler CreateRangeIntervalSqlQueryCompiler()
+        private RangeIntervalSqlCompiler CreateRangeIntervalSqlCompiler()
         {
             return new RangeIntervalSqlCompiler();
         }
@@ -22,7 +22,7 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
         public void Compile_Interval_ContainsGenerateSeries()
         {
             // Arrange
-            var compiler = this.CreateRangeIntervalSqlQueryCompiler();
+            var compiler = this.CreateRangeIntervalSqlCompiler();
             int interval = 10;
             int min = 0;
             int max = 120;
