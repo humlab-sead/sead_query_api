@@ -90,19 +90,19 @@ namespace SeadQueryTest
         }
 
         /// <summary>
-        /// Mocks IQuerySetupCompiler.Setup. Returns passed argument.
+        /// Mocks IQuerySetupBuilder.Setup. Returns passed argument.
         /// </summary>
         /// <param name="querySetup"></param>
         /// <returns></returns>
-        protected virtual Mock<IQuerySetupCompiler> MockQuerySetupCompiler(QuerySetup querySetup)
+        protected virtual Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
         {
-            var mockQuerySetupCompiler = new Mock<IQuerySetupCompiler>();
-            mockQuerySetupCompiler.Setup(x => x.Build(
+            var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
+            mockQuerySetupBuilder.Setup(x => x.Build(
                         It.IsAny<FacetsConfig2>(),
                         It.IsAny<Facet>(),
                         It.IsAny<List<string>>()
                     )).Returns(querySetup ?? new QuerySetup { });
-            return mockQuerySetupCompiler;
+            return mockQuerySetupBuilder;
         }
 
         /// <summary>

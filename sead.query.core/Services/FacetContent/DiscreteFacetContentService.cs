@@ -12,7 +12,7 @@ namespace SeadQueryCore
         public DiscreteFacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
             IDiscreteContentSqlQueryCompiler sqlCompiler,
             ITypedQueryProxy queryProxy

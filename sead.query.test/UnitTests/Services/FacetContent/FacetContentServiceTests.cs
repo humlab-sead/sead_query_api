@@ -28,7 +28,7 @@ namespace SeadQueryTest.Services.FacetContent
         //private FacetContentService CreateService(QuerySetup querySetup)
         //{
         //    var mockSettings = new SettingFactory().Create().Value.Facet;
-        //    var mockQuerySetupBuilder = new Mock<IQuerySetupCompiler>();
+        //    var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
         //    mockQuerySetupBuilder.Setup(
         //        x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>())
         //    ).Returns(querySetup);
@@ -181,7 +181,7 @@ namespace SeadQueryTest.Services.FacetContent
             //var graph = new FacetGraphFactory(Registry).Build();
             //var joinCompiler = new Mock<EdgeSqlCompiler>();
             //var pickCompiler = new Mock<IPickFilterCompiler>();
-            //var querySetupCompiler = new QuerySetupCompiler(gra);
+            //var querySetupBuilder = new QuerySetupBuilder(gra);
             //var service = new FacetContentService();
 
             using (IContainer container = TestDependencyService.CreateContainer(null, null))

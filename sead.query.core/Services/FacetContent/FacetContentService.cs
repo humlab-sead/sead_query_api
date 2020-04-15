@@ -18,7 +18,7 @@ namespace SeadQueryCore
         public FacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             ITypedQueryProxy queryProxy
         ) : base(context, builder)
         {

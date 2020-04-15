@@ -46,18 +46,18 @@ namespace SeadQueryTest.Services.FacetContent
             return mockServices;
         }
 
-        private static Mock<IQuerySetupCompiler> MockQuerySetupCompiler(QuerySetup querySetup)
+        private static Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
         {
-            var mockQuerySetupCompiler = new Mock<IQuerySetupCompiler>();
+            var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
 
-            mockQuerySetupCompiler.Setup(
+            mockQuerySetupBuilder.Setup(
                 x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>())
             ).Returns(querySetup);
 
-            mockQuerySetupCompiler.Setup(
+            mockQuerySetupBuilder.Setup(
                 x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>())
             ).Returns(querySetup);
-            return mockQuerySetupCompiler;
+            return mockQuerySetupBuilder;
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace SeadQueryTest.Services.FacetContent
             var querySetup = QuerySetupFixtures.Store[uri];
             var facetsConfig = FacetsConfigFactory.Create(uri);
 
-            Mock<IQuerySetupCompiler> mockQuerySetupCompiler = MockQuerySetupCompiler(querySetup);
+            Mock<IQuerySetupBuilder> mockQuerySetupBuilder = MockQuerySetupBuilder(querySetup);
 
             MockIndex<EFacetType, ICategoryCountService> mockCountServices = MockCategoryCountServices();
 
@@ -88,7 +88,7 @@ namespace SeadQueryTest.Services.FacetContent
             var service = new RangeFacetContentService(
                 settings,
                 Registry,
-                mockQuerySetupCompiler.Object,
+                mockQuerySetupBuilder.Object,
                 mockCountServices,
                 concreteRangeIntervalSqlQueryCompiler,
                 queryProxy.Object

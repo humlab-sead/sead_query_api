@@ -18,7 +18,7 @@ namespace SeadQueryTest.Services.Result
         {
         }
 
-        private IQuerySetupCompiler MockQuerySetupCompiler()
+        private IQuerySetupBuilder MockQuerySetupBuilder()
         {
             IFacetsGraph facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
 
@@ -30,8 +30,8 @@ namespace SeadQueryTest.Services.Result
             var pickCompilers = new Mock<IPickFilterCompilerLocator>();
             pickCompilers.Setup(x => x.Locate(It.IsAny<EFacetType>())).Returns(mockPickCompiler.Object);
 
-            IQuerySetupCompiler querySetupCompiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, new JoinSqlCompiler());
-            return querySetupCompiler;
+            IQuerySetupBuilder querySetupBuilder = new QuerySetupBuilder(facetsGraph, pickCompilers.Object, new JoinSqlCompiler());
+            return querySetupBuilder;
         }
 
         //[Fact]
@@ -82,20 +82,20 @@ namespace SeadQueryTest.Services.Result
             var resultSqlQueryCompilers = new MockIndex<string, IResultQuerySetupSqlCompiler> {
                 {  "map", new MapResultQuerySetupSqlCompiler() }
             };
-            IQuerySetupCompiler querySetupCompiler = MockQuerySetupCompiler();
-            var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupCompiler, resultSqlQueryCompilers);
+            IQuerySetupBuilder querySetupBuilder = MockQuerySetupBuilder();
+            var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupBuilder, resultSqlQueryCompilers);
             return resultQueryCompiler;
         }
 
         //private IDiscreteCategoryCountService ConcreteDiscreteCategoryCountService(IRepositoryRegistry registry)
         //{
         //    IFacetSetting facetSettings = new SettingFactory().DefaultFacetSettings();
-        //    IQuerySetupCompiler querySetupCompiler = CreateQuerySetupCompiler(registry);
+        //    IQuerySetupBuilder querySetupBuilder = CreateQuerySetupBuilder(registry);
         //    IDiscreteCategoryCountSqlQueryCompiler categoryCountSqlCompiler = new DiscreteCategoryCountSqlQueryCompiler();
         //    return new DiscreteCategoryCountService(
         //        facetSettings,
         //        registry,
-        //        querySetupCompiler,
+        //        querySetupBuilder,
         //        categoryCountSqlCompiler
         //    );
         //}

@@ -15,7 +15,7 @@ namespace SeadQueryCore
 
         public ResultQueryCompiler(
             IRepositoryRegistry context,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             IIndex<string, IResultQuerySetupSqlCompiler> queryCompilers
         ) : base(context, builder)
         {

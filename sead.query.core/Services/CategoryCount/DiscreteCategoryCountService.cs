@@ -13,7 +13,7 @@ namespace SeadQueryCore
         public DiscreteCategoryCountService(
             IFacetSetting config,
             IRepositoryRegistry registry,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler,
             ITypedQueryProxy queryProxy) : base(config, registry, builder, queryProxy) {
             CountSqlCompiler = countSqlCompiler;

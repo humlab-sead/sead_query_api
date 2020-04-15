@@ -10,7 +10,7 @@ namespace SeadQueryCore
         public RangeCategoryCountService(
             IFacetSetting config,
             IRepositoryRegistry context,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             IRangeCategoryCountSqlQueryCompiler rangeCountSqlCompiler,
             ITypedQueryProxy queryProxy
         ) : base(config, context, builder, queryProxy) {

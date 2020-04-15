@@ -46,7 +46,7 @@ namespace SeadQueryTest.Fixtures
             var facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetsConfig.TargetFacet.FacetCode);
             var extraTables = new List<string>();
 
-            QuerySetupCompiler compiler = new QuerySetupCompiler(facetsGraph, pickCompilers.Object, joinCompiler);
+            QuerySetupBuilder compiler = new QuerySetupBuilder(facetsGraph, pickCompilers.Object, joinCompiler);
 
             var querySetup = compiler.Build(
                 facetsConfig,

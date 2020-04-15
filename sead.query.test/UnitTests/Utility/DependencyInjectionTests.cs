@@ -104,7 +104,7 @@ namespace SeadQueryTest2.IoC
                 Assert.NotNull(scope.Resolve<IRepositoryRegistry>());
                 Assert.NotNull(scope.Resolve<IFacetGraphFactory>());
                 Assert.NotNull(scope.Resolve<IFacetsGraph>());
-                Assert.NotNull(scope.Resolve<IQuerySetupCompiler>());
+                Assert.NotNull(scope.Resolve<IQuerySetupBuilder>());
                 Assert.NotNull(scope.Resolve<IDiscreteBogusPickService>());
                 Assert.NotNull(scope.Resolve<ICategoryBoundsService>());
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));

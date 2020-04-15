@@ -24,7 +24,7 @@ namespace SeadQueryCore.QueryBuilder
         /// <summary>
         /// Compiles where-clauses based on user picks.
         /// FIXME: Dictionary no longer used, so this function will be removed
-        /// The function is moved from QuerySetupCompiler (where PickCompiler resides)
+        /// The function is moved from QuerySetupBuilder (where PickCompiler resides)
         /// </summary>
         /// <param name="targetFacet"></param>
         /// <param name="involvedConfigs"></param>

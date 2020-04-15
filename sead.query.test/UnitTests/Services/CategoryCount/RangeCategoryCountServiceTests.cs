@@ -31,7 +31,7 @@ namespace SeadQueryTest.Services.CategoryCount
             var config = new SettingFactory().Create().Value.Facet;
             var mockRegistry = MockFacetRepository();
             var mockFacetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
-            var mockQuerySetupCompiler = MockQuerySetupCompiler(new QuerySetup { /* not used */ });
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
             var mockRangeCountSqlCompiler = MockRangeCategoryCountSqlQueryCompiler(returnSql: "SELECT * FROM foot.bar");
             var fakeResult = MockRangeCategoryCountItems(start: 0, step: 10, count: 3);
             var mockQueryProxy = new MockTypedQueryProxyFactory()
@@ -41,7 +41,7 @@ namespace SeadQueryTest.Services.CategoryCount
             var service = new RangeCategoryCountService(
                  config,
                  mockRegistry.Object,
-                 mockQuerySetupCompiler.Object,
+                 mockQuerySetupBuilder.Object,
                  mockRangeCountSqlCompiler.Object,
                  mockQueryProxy.Object
              );

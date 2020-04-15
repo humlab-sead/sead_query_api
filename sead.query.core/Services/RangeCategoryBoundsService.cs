@@ -14,7 +14,7 @@ namespace SeadQueryCore
 
         public RangeCategoryBoundsService(
             IRepositoryRegistry context,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> compilers,
             ITypedQueryProxy queryProxy) : base(context, builder)
         {

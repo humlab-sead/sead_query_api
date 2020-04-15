@@ -9,7 +9,7 @@ namespace SeadQueryCore
 
         public DiscreteBogusPickService(
             IRepositoryRegistry registry,
-            IQuerySetupCompiler builder,
+            IQuerySetupBuilder builder,
             IValidPicksSqlQueryCompiler picksCompiler,
             ITypedQueryProxy queryProxy
         ) : base(registry, builder)

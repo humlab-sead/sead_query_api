@@ -60,7 +60,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
             builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build()).SingleInstance();
 
-            builder.RegisterType<QuerySetupCompiler>().As<IQuerySetupCompiler>();
+            builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
 
@@ -86,7 +86,7 @@ namespace SeadQueryTest.Infrastructure
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
 
-            builder.RegisterType<ResultQueryCompiler>().As<IResultQuerySqlCompiler>();
+            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
 
             builder.RegisterType<RangeCategoryBoundSqlQueryCompiler>().Keyed<ICategoryBoundSqlQueryCompiler>(EFacetType.Range);
 

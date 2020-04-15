@@ -17,7 +17,7 @@ namespace SeadQueryCore
             public string SqlQuery { get; set; }
             public Dictionary<string, CategoryCountItem> Data { get; set; }
         }
-        public CategoryCountService(IFacetSetting config, IRepositoryRegistry registry, IQuerySetupCompiler builder, ITypedQueryProxy queryProxy) : base(registry, builder)
+        public CategoryCountService(IFacetSetting config, IRepositoryRegistry registry, IQuerySetupBuilder builder, ITypedQueryProxy queryProxy) : base(registry, builder)
         {
             Config = config;
             Repository = Registry.Facets;

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public interface IQuerySetupCompiler
+    public interface IQuerySetupBuilder
     {
         IFacetsGraph Graph { get; set; }
 
@@ -14,24 +14,24 @@ namespace SeadQueryCore.QueryBuilder
         QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables, List<string> facetCodes);
     }
 
-    public interface IQuerySetupCompilerArgs
+    public interface IQuerySetupBuilderArgs
     {
         IFacetsGraph Graph { get; }
         IPickFilterCompilerLocator PickCompilers { get; }
         IJoinSqlCompiler JoinCompiler { get; }
     }
 
-    public class QuerySetupCompiler : IQuerySetupCompiler {
+    public class QuerySetupBuilder : IQuerySetupBuilder {
         public IFacetsGraph Graph { get; set; }
         public IPickFilterCompilerLocator PickCompilers { get; set; }
         public IJoinSqlCompiler JoinCompiler { get; }
 
-        public QuerySetupCompiler(IFacetsGraph graph, IPickFilterCompilerLocator pickCompilers, IJoinSqlCompiler joinCompiler) {
+        public QuerySetupBuilder(IFacetsGraph graph, IPickFilterCompilerLocator pickCompilers, IJoinSqlCompiler joinCompiler) {
             Graph = graph;
             PickCompilers = pickCompilers;
             JoinCompiler = joinCompiler;
         }
-        public QuerySetupCompiler(IQuerySetupCompilerArgs args) : this(args.Graph, args.PickCompilers, args.JoinCompiler)
+        public QuerySetupBuilder(IQuerySetupBuilderArgs args) : this(args.Graph, args.PickCompilers, args.JoinCompiler)
         {
         }
 
