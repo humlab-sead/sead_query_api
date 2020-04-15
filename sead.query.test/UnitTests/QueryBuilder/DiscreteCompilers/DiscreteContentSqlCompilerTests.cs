@@ -9,9 +9,9 @@ using Xunit;
 namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
 {
     [Collection("JsonSeededFacetContext")]
-    public class DiscreteContentSqlQueryBuilderTests : DisposableFacetContextContainer
+    public class DiscreteContentSqlCompilerTests : DisposableFacetContextContainer
     {
-        public DiscreteContentSqlQueryBuilderTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public DiscreteContentSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
 
