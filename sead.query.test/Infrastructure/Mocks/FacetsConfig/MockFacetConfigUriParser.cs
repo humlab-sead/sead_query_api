@@ -8,12 +8,21 @@ using System.Globalization;
 
 namespace SeadQueryTest.Mocks
 {
+    /// <summary>
+    /// Parses a URI that specifies a facetsConfig setup.
+    /// 
+    /// The URI must be of format:
+    /// 
+    ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
+    ///     
+    /// </summary>
     internal class MockFacetConfigUriParser
     {
         private static Regex tupleRegex = new Regex(@"^[\(](\d+)[\,](\d+)[\)]$");
 
         /// <summary>
-        /// Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
+        /// Placeholder for parsed URI of format:
+        ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
         /// </summary>
 
         public class UriData
@@ -24,18 +33,28 @@ namespace SeadQueryTest.Mocks
             public Dictionary<string, List<FacetConfigPick>> FacetCodes { get; set; }
         }
 
+        /// <summary>
+        /// Parsed URI of format:
+        ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns>@UriData instance with parsed data</returns>
         public UriData Parse(string uri)
         {
-            var parts = uri.Split(':').ToList();
-            var codes = parts[0].Split("@");
-            var targetCode = codes[0];
-            var triggerCode = codes.Length > 1 ? codes[1] : targetCode;
-            var facetConfigCodes =  parts.Count > 1 ? parts[1] : targetCode;
+            var parts            = uri.Split(':').ToList();
+            var codes            = parts[0].Split("@");
+            var targetCode       = codes[0];
+            var triggerCode      = codes.Length > 1 ? codes[1] : targetCode;
+            var facetConfigCodes = parts.Count > 1 ? parts[1] : targetCode;
+
             var facetCodes = facetConfigCodes
                 .Split('/')
                 .Where(z => !String.IsNullOrEmpty(z?.Trim()))
                 .Select(z => z.Split("@"))
-                .Select(z => (FacetCode: z[0].Trim(), Picks: z.Length > 1 ? ParsePicks(z[1]) : null))
+                .Select(z => (
+                    FacetCode: z[0].Trim(),
+                    Picks: z.Length > 1 ? ParsePicks(z[1]) : null
+                 ))
                 .ToDictionary(z => z.FacetCode, z => z.Picks);
 
             return new UriData {
