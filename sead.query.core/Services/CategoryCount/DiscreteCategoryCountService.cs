@@ -14,12 +14,12 @@ namespace SeadQueryCore
             IFacetSetting config,
             IRepositoryRegistry registry,
             IQuerySetupBuilder builder,
-            IDiscreteCategoryCountSqlQueryCompiler countSqlCompiler,
+            IDiscreteCategoryCountQueryCompiler countSqlCompiler,
             ITypedQueryProxy queryProxy) : base(config, registry, builder, queryProxy) {
             CountSqlCompiler = countSqlCompiler;
         }
 
-        public IDiscreteCategoryCountSqlQueryCompiler CountSqlCompiler { get; }
+        public IDiscreteCategoryCountQueryCompiler CountSqlCompiler { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {

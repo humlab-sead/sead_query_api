@@ -23,14 +23,14 @@ public class RangeFacetContentService : FacetContentService {
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
-            IRangeIntervalSqlQueryCompiler rangeSqlCompiler,
+            IRangeIntervalSqlCompiler rangeSqlCompiler,
             ITypedQueryProxy queryProxy) : base(config, context, builder, queryProxy)
         {
             CountService = countServices[EFacetType.Range];
             RangeSqlCompiler = rangeSqlCompiler;
         }
 
-        public IRangeIntervalSqlQueryCompiler RangeSqlCompiler { get; }
+        public IRangeIntervalSqlCompiler RangeSqlCompiler { get; }
 
         private RangeExtent GetFullExtent(FacetConfig2 config, int default_interval_count=120)
         {

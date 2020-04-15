@@ -14,7 +14,7 @@ namespace SeadQueryCore
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
             IIndex<EFacetType, ICategoryCountService> countServices,
-            IDiscreteContentSqlQueryCompiler sqlCompiler,
+            IDiscreteContentSqlCompiler sqlCompiler,
             ITypedQueryProxy queryProxy
             ) : base(config, context, builder, queryProxy)
         {
@@ -22,7 +22,7 @@ namespace SeadQueryCore
             SqlCompiler = sqlCompiler;
         }
 
-        public IDiscreteContentSqlQueryCompiler SqlCompiler { get; }
+        public IDiscreteContentSqlCompiler SqlCompiler { get; }
 
         protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count = 0)
         {

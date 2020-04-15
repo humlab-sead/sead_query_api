@@ -1,7 +1,7 @@
 ﻿
 namespace SeadQueryCore
 {
-    public class RangeCategoryCountSqlQueryCompiler : IRangeCategoryCountSqlQueryCompiler
+    public class RangeCategoryCountSqlCompiler : IRangeCategoryCountSqlCompiler
     {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, string intervalQuery, string countColumn)
         {

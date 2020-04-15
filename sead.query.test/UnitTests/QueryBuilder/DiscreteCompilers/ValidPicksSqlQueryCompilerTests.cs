@@ -25,9 +25,9 @@ namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
             this.mockRepository.VerifyAll();
         }
 
-        private ValidPicksSqlQueryCompiler CreateValidPicksSqlQueryCompiler()
+        private ValidPicksSqCompiler CreateValidPicksSqlQueryCompiler()
         {
-            return new ValidPicksSqlQueryCompiler();
+            return new ValidPicksSqCompiler();
         }
 
         [Fact(Skip = "Not implemented")]

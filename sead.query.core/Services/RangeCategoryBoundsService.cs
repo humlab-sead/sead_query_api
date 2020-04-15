@@ -10,12 +10,12 @@ namespace SeadQueryCore
 
     public class RangeCategoryBoundsService : QueryServiceBase, ICategoryBoundsService {
 
-        private IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> Compilers;
+        private IIndex<EFacetType, ICategoryBoundSqlCompiler> Compilers;
 
         public RangeCategoryBoundsService(
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IIndex<EFacetType, ICategoryBoundSqlQueryCompiler> compilers,
+            IIndex<EFacetType, ICategoryBoundSqlCompiler> compilers,
             ITypedQueryProxy queryProxy) : base(context, builder)
         {
             Compilers = compilers;

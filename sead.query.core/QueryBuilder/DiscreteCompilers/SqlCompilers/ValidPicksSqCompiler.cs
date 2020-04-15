@@ -3,7 +3,7 @@
 namespace SeadQueryCore
 {
 
-    public class ValidPicksSqlQueryCompiler : IValidPicksSqlQueryCompiler
+    public class ValidPicksSqCompiler : IValidPicksSqlCompiler
     {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, List<int> picks)
         {

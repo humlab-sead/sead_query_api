@@ -11,13 +11,13 @@ namespace SeadQueryCore
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IRangeCategoryCountSqlQueryCompiler rangeCountSqlCompiler,
+            IRangeCategoryCountSqlCompiler rangeCountSqlCompiler,
             ITypedQueryProxy queryProxy
         ) : base(config, context, builder, queryProxy) {
             RangeCountSqlCompiler = rangeCountSqlCompiler;
         }
 
-        private IRangeCategoryCountSqlQueryCompiler RangeCountSqlCompiler { get; }
+        private IRangeCategoryCountSqlCompiler RangeCountSqlCompiler { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
         {

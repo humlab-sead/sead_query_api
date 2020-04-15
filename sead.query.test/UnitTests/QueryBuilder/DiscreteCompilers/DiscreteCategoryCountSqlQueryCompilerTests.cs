@@ -30,7 +30,7 @@ namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
 
             // Act
 
-            var discreteCategoryCountSqlQueryCompiler = new DiscreteCategoryCountSqlQueryCompiler();
+            var discreteCategoryCountSqlQueryCompiler = new DiscreteCategoryCountSqlCompiler();
             var result = discreteCategoryCountSqlQueryCompiler.Compile(querySetup, facet, countFacet, aggType);
 
             result = result.Squeeze();

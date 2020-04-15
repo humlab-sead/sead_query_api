@@ -8,9 +8,9 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
     public class RangeCategoryCountSqlQueryCompilerTests
     {
-        private RangeCategoryCountSqlQueryCompiler CreateRangeCategoryCountSqlQueryCompiler()
+        private RangeCategoryCountSqlCompiler CreateRangeCategoryCountSqlQueryCompiler()
         {
-            return new RangeCategoryCountSqlQueryCompiler();
+            return new RangeCategoryCountSqlCompiler();
         }
 
         [Fact(Skip = "Not implemented")]

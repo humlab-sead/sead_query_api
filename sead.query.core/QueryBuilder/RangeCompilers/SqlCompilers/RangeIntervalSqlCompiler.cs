@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public class RangeIntervalSqlQueryCompiler : IRangeIntervalSqlQueryCompiler
+    public class RangeIntervalSqlCompiler : IRangeIntervalSqlCompiler
     {
         public string Compile(int interval, int min, int max, int interval_count)
         {

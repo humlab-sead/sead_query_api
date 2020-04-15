@@ -3,7 +3,7 @@
 namespace SeadQueryCore
 {
 
-    public interface ICategoryBoundSqlQueryCompiler
+    public interface ICategoryBoundSqlCompiler
     {
         string Compile(QuerySetup query, Facet facet, string facetCode);
     }

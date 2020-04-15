@@ -24,9 +24,9 @@ namespace SeadQueryTest.Services.FacetContent
             // Arrange
             var config = new SettingFactory().Create().Value.Facet;
             var querySetupBuilder = new Mock<IQuerySetupBuilder>();
-            var rangeCountSqlCompiler = new Mock<IRangeCategoryCountSqlQueryCompiler>();
+            var rangeCountSqlCompiler = new Mock<IRangeCategoryCountSqlCompiler>();
             var categoryCountServices = new Mock<IIndex<EFacetType, ICategoryCountService>>();
-            var discreteContentSqlQueryCompiler = new Mock<IDiscreteContentSqlQueryCompiler>();
+            var discreteContentSqlQueryCompiler = new Mock<IDiscreteContentSqlCompiler>();
 
             var queryProxy = new MockTypedQueryProxyFactory().Create<DiscreteContentDataReaderBuilder, CategoryCountItem>(3);
 

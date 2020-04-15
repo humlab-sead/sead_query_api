@@ -12,9 +12,9 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
         {
         }
 
-        private RangeCategoryBoundSqlQueryCompiler CreateRangeCategoryBoundSqlQueryCompiler()
+        private RangeCategoryBoundSqlCompiler CreateRangeCategoryBoundSqlQueryCompiler()
         {
-            return new RangeCategoryBoundSqlQueryCompiler();
+            return new RangeCategoryBoundSqlCompiler();
         }
 
         [Fact(Skip = "Not implemented")]

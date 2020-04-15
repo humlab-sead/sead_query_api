@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IRangeCategoryCountSqlQueryCompiler
+    public interface IRangeCategoryCountSqlCompiler
     {
         string Compile(QuerySetup query, Facet facet, string intervalQuery, string countColumn);
     }

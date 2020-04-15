@@ -1,7 +1,7 @@
 ﻿
 namespace SeadQueryCore
 {
-    public class DiscreteCategoryCountSqlQueryCompiler : IDiscreteCategoryCountSqlQueryCompiler
+    public class DiscreteCategoryCountSqlCompiler : IDiscreteCategoryCountQueryCompiler
     {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, Facet countFacet, string aggType)
         {

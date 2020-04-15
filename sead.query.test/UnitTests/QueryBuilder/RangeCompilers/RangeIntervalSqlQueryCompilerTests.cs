@@ -8,9 +8,9 @@ namespace SeadQueryTest.QueryBuilder.RangeCompilers
 {
     public class RangeIntervalSqlQueryCompilerTests
     {
-        private RangeIntervalSqlQueryCompiler CreateRangeIntervalSqlQueryCompiler()
+        private RangeIntervalSqlCompiler CreateRangeIntervalSqlQueryCompiler()
         {
-            return new RangeIntervalSqlQueryCompiler();
+            return new RangeIntervalSqlCompiler();
         }
 
         private string removeWhiteSpace(string str)

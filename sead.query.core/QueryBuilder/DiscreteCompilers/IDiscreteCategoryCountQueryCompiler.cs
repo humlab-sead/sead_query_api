@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IDiscreteCategoryCountSqlQueryCompiler
+    public interface IDiscreteCategoryCountQueryCompiler
     {
         string Compile(QuerySetup query, Facet facet, Facet countFacet, string aggType);
     }

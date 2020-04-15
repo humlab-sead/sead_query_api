@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public class DiscreteContentSqlQueryBuilder : IDiscreteContentSqlQueryCompiler
+    public class DiscreteContentSqlCompiler : IDiscreteContentSqlCompiler
     {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, string text_filter)
         {

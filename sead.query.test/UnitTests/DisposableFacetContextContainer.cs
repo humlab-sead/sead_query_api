@@ -155,9 +155,9 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual Mock<IRangeCategoryCountSqlQueryCompiler> MockRangeCategoryCountSqlQueryCompiler(string returnSql)
+        protected virtual Mock<IRangeCategoryCountSqlCompiler> MockRangeCategoryCountSqlQueryCompiler(string returnSql)
         {
-            var mockCategoryCountSqlQueryCompiler = new Mock<IRangeCategoryCountSqlQueryCompiler>();
+            var mockCategoryCountSqlQueryCompiler = new Mock<IRangeCategoryCountSqlCompiler>();
             mockCategoryCountSqlQueryCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),
@@ -174,9 +174,9 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual Mock<IDiscreteCategoryCountSqlQueryCompiler> MockDiscreteCategoryCountSqlQueryCompiler(string returnSql)
+        protected virtual Mock<IDiscreteCategoryCountQueryCompiler> MockDiscreteCategoryCountSqlQueryCompiler(string returnSql)
         {
-            var mockCategoryCountSqlQueryCompiler = new Mock<IDiscreteCategoryCountSqlQueryCompiler>();
+            var mockCategoryCountSqlQueryCompiler = new Mock<IDiscreteCategoryCountQueryCompiler>();
             mockCategoryCountSqlQueryCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),

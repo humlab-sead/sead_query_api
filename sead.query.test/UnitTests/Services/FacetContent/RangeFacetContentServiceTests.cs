@@ -73,7 +73,7 @@ namespace SeadQueryTest.Services.FacetContent
             MockIndex<EFacetType, ICategoryCountService> mockCountServices = MockCategoryCountServices();
 
             var settings = new SettingFactory().Create().Value.Facet;
-            var concreteRangeIntervalSqlQueryCompiler = new RangeIntervalSqlQueryCompiler();
+            var concreteRangeIntervalSqlQueryCompiler = new RangeIntervalSqlCompiler();
             var queryProxy = new Mock<ITypedQueryProxy>();
 
             queryProxy.Setup(foo => foo.QueryRows<CategoryCountItem>(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryCountItem >>())).Returns(
