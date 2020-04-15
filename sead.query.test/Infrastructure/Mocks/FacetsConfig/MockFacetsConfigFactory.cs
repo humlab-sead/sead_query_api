@@ -54,6 +54,16 @@ namespace SeadQueryTest.Mocks
             );
         }
 
+        /// <summary>
+        /// Creates a new FacesConfig instance based on given Uri template.
+        /// </summary>
+        /// <param name="uri">
+        /// String specification in format:
+        /// 
+        ///   "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*"
+        ///   
+        /// </param>
+        /// <returns></returns>
         public FacetsConfig2 Create(string uri)
         {
             var config = UriParser.Parse(uri);
