@@ -3,12 +3,6 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-    //public interface ICategoryCountServiceAggregate
-    //{
-    //    RangeCategoryCountService RangeCategoryCountService { get; set; }
-    //    DiscreteCategoryCountService DiscreteCategoryCountService { get; set; }
-    //}
-
     /// <summary>
     /// Gives the number of occurrences (Count) of a category determined by given extent
     /// The extent is a single value for discrete facets (the category ID) and an interval (lower, upper) for range facets
@@ -17,7 +11,6 @@ namespace SeadQueryCore
         public string Category { get; set; }
         public int? Count { get; set; }
         public List<decimal> Extent;
-        //public Dictionary<EFacetPickType, decimal> CategoryValues;
 
         [JsonIgnore]
         public decimal Lower
@@ -39,13 +32,12 @@ namespace SeadQueryCore
                 return Extent[index];
             return 0;
         }
+
         private void SetExtent(int index, decimal value)
         {
             if (Extent == null)
                 Extent = new List<decimal>() { 0, 0 };
             Extent[index] = value;
         }
-
     }
-
 }
