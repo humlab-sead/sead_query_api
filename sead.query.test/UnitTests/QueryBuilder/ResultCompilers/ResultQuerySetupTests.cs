@@ -7,38 +7,40 @@ using Xunit;
 
 namespace SeadQueryTest.QueryBuilder.ResultCompilers
 {
-    public class ResultQuerySetupTests : IDisposable
+    public class ResultQuerySetupTests
     {
-        private MockRepository mockRepository;
-
-        private Mock<List<ResultAggregateField>> mockList;
-
-        public ResultQuerySetupTests()
+ 
+        [Fact(Skip = "Not implemented")]
+        public void Ctor_Success()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
+            // Arrange
 
-            this.mockList = this.mockRepository.Create<List<ResultAggregateField>>();
-        }
+            // Act
+            var resultQuerySetup = new ResultQuerySetup(null);
 
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private ResultQuerySetup CreateResultQuerySetup()
-        {
-            return new ResultQuerySetup(
-                this.mockList.Object);
+            // Assert
+            Assert.True(false);
         }
 
         [Fact(Skip = "Not implemented")]
-        public void TestMethod1()
+        public void ResultFields_Success()
         {
             // Arrange
-            var resultQuerySetup = this.CreateResultQuerySetup();
 
             // Act
+            var resultQuerySetup = new ResultQuerySetup(null);
 
+            // Assert
+            Assert.True(false);
+        }
+
+        [Fact(Skip = "Not implemented")]
+        public void Tablenames_Success()
+        {
+            // Arrange
+
+            // Act
+            var resultQuerySetup = new ResultQuerySetup(null);
 
             // Assert
             Assert.True(false);

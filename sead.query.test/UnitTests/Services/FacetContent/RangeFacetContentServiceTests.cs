@@ -101,41 +101,5 @@ namespace SeadQueryTest.Services.FacetContent
 
         }
 
-        [Fact(Skip = "Needs rework")]
-        public void Load_WhenOnlineMeasuredValues_33_00_IsTrue()
-        {
-            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
-            using (var scope = container.BeginLifetimeScope()) {
-                // Arrange
-                var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-                var scaffolder = new MockFacetsConfigFactory(Registry.Facets);
-                var facetsConfig = scaffolder.Create(uri);
-                // var resultKeys = new List<string>() { "site_level" };
-                // var resultConfig = new ScaffoldResultConfig().Scaffold("tabular", resultKeys);
-
-                // var dumpsFacetConfig = ObjectDumper.Dump(facetsConfig);
-                var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
-
-                // Act
-                var resultSet = service.Load(facetsConfig);
-            }
-        }
-
-        [Fact(Skip = "Needs rework")]
-        public void Load_WhenOnlineMeasuredValues_33_82_IsTrue()
-        {
-            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
-            using (var scope = container.BeginLifetimeScope()) {
-
-                // Arrange
-                var uri = "tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82@(110,2904)";
-                var scaffolder = new MockFacetsConfigFactory(Registry.Facets);
-                var facetsConfig = scaffolder.Create(uri);
-                var service = scope.ResolveKeyed<IFacetContentService>(EFacetType.Range);
-
-                // Act
-                var resultSet = service.Load(facetsConfig);
-            }
-        }
     }
 }

@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SeadQueryCore.QueryBuilder;
 using Autofac.Features.Indexed;
 using SeadQueryCore.Model;
+using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {
