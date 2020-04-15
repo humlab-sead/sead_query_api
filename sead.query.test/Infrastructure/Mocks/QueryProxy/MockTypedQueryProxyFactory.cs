@@ -17,11 +17,13 @@ namespace SeadQueryTest.Infrastructure
         {
             var queryProxy = new Mock<ITypedQueryProxy>();
 
-            var dataReaderBuilder = new B().GenerateBogusRows(numberOfRows);
+            var dataReaderBuilder = new B()
+                .CreateNewTable()
+                .GenerateBogusRows(numberOfRows);
+            var fakeData = dataReaderBuilder.ToItems<T>().ToList();
 
-            queryProxy.Setup(foo => foo.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, T>>())).Returns(
-                dataReaderBuilder.ToItems<T>().ToList()
-            );
+            queryProxy.Setup(foo => foo.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, T>>()))
+                .Returns(fakeData);
 
             return queryProxy;
         }
