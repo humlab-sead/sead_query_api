@@ -11,10 +11,10 @@ namespace SeadQueryCore
         public ResultConfigCompiler(
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IResultSqlCompilerLocator compilerLocator
+            IResultSqlCompilerLocator sqlCompilerLocator
         ) : base(context, builder)
         {
-            SqlCompilerLocator = compilerLocator;
+            SqlCompilerLocator = sqlCompilerLocator;
         }
 
         public string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string resultFacetCode)
