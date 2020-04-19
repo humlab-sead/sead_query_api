@@ -1,122 +1,106 @@
-using FluentAssertions;
-using Moq;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SeadQueryAPI.Controllers;
-using SeadQueryAPI.Serializers;
-using SeadQueryAPI.Services;
-using SeadQueryCore;
-using SeadQueryTest;
-using SeadQueryTest.Infrastructure;
+using SQT.Mocks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace IntegrationTests
 {
-    [Collection("JsonSeededFacetContext")]
-    public class FacetsControllerTests : DisposableFacetContextContainer
+    public class ControllerTest : IClassFixture<TestHostBuilderFixture>
     {
-        public FacetsControllerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        protected readonly MockFacetsConfigFactory FacetsConfigMockFactory;
+
+        public TestHostBuilderFixture Fixture { get; }
+
+        public ControllerTest(TestHostBuilderFixture fixture)
+        {
+            FacetsConfigMockFactory = new MockFacetsConfigFactory(null);
+            Fixture = fixture;
+        }
+    }
+
+    public class FacetsControllerTests : ControllerTest, IClassFixture<TestHostBuilderFixture>
+    {
+        public FacetsControllerTests(TestHostBuilderFixture fixture): base(fixture)
         {
         }
 
-        private FacetsController CreateFacetsController()
+        [Fact]
+        public async Task API_GET_Server_IsAwake()
         {
-            var mockLoadFacetService = new Mock<IFacetReconstituteService>();
-            var mockReconstituteService = new Mock<IFacetConfigReconstituteService>();
-
-            return new FacetsController(
-                Registry,
-                mockReconstituteService.Object,
-                mockLoadFacetService.Object
-            );
-
+            // var builder = new SeadTestHostBuilder().Create<TestStartup<TestDependencyService>>();
+            // using (var server = await Fixture.Builder.StartAsync())
+            // using (var client = await Fixture.Server.GetTestClient())
+            using (var response = await Fixture.Client.GetAsync("api/facets")) {
+                response.EnsureSuccessStatusCode();
+                Assert.NotEmpty(await response.Content.ReadAsStringAsync());
+            }
         }
 
-        [Fact(Skip ="Not implemented")]
-        public void Get_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public async Task API_GET_Health_IsGood()
         {
-            // Arrange
-            var facetsController = CreateFacetsController();
-
-            // Act
-            var result = facetsController.Get();
-
-            // Assert
-            Assert.True(false);
+            using (var response = await Fixture.Client.GetAsync("api/values")) {
+                response.EnsureSuccessStatusCode();
+                Assert.Equal("[\"value1\",\"value2\"]", await response.Content.ReadAsStringAsync());
+            }
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void Get_StateUnderTest_ExpectedBehavior1()
+        [Fact]
+        public async Task API_GET_Facets_Success()
         {
-            // Arrange
-            var facetsController = CreateFacetsController();
-            int id = 0;
-
-            // Act
-            var result = facetsController.Get(
-                id);
-
-            // Assert
-            result.Should().Be(true);
+            using (var response = await Fixture.Client.GetAsync("api/facets")) {
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
+                Assert.NotEmpty(facets);
+            }
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void Load_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(5)]
+        [InlineData(10)]
+        public async Task API_GET_Facets_ById_Success(int facetId)
         {
-            // Arrange
-            var facetsController = this.CreateFacetsController();
-            FacetsConfig2 facetsConfig = null;
-
-            // Act
-            var result = facetsController.Load(
-                facetsConfig);
-
-            // Assert
-            result.Should().Be(true);
-
+            using (var response = await Fixture.Client.GetAsync($"api/facets/{facetId}")) {
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                JObject facet = JsonConvert.DeserializeObject<JObject>(json.ToString());
+                Assert.NotEmpty(facet);
+            }
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void Load2_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public async Task API_GET_Facets_Domain_Success()
         {
-            // Arrange
-            var facetsController = this.CreateFacetsController();
-            JObject json = null;
-
-            // Act
-            var result = facetsController.Load2(
-                json);
-
-            // Assert
-            Assert.True(false);
+            using (var response = await Fixture.Client.GetAsync($"api/facets/domain")) {
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                List<JObject> facet = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
+                Assert.NotEmpty(facet);
+            }
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void Load3_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("palaeoentomology")]
+        [InlineData("archaeobotany")]
+        [InlineData("pollen")]
+        [InlineData("geoarchaeology")]
+        [InlineData("dendrochronology")]
+        [InlineData("ceramic")]
+        [InlineData("isotope")]
+        public async Task API_GET_Facets_Domain_ById_Success(string facetCode)
         {
-            // Arrange
-            var facetsController = this.CreateFacetsController();
-            JObject json = null;
-
-            // Act
-            var result = facetsController.Load3(
-                json);
-
-            // Assert
-            Assert.True(false);
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Mirror_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var facetsController = this.CreateFacetsController();
-            JObject json = null;
-
-            // Act
-            var result = facetsController.Mirror(json);
-
-            // Assert
-            Assert.True(false);
+            using (var response = await Fixture.Client.GetAsync($"api/facets/domain/{facetCode}")) {
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
+                Assert.NotEmpty(facets);
+            }
         }
 
     }
