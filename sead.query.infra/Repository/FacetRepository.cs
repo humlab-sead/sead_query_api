@@ -71,27 +71,22 @@ namespace SeadQueryInfra
         public IEnumerable<Facet> Parents()
         {
             // FIXME: Get all with children instead of magic group id
-            return GetAll().Where(p => p.FacetGroupId == 0);
+            return GetAll().Where(p => p.FacetGroupId == 999);
         }
 
         public IEnumerable<Facet> Children(string facetCode)
         {
             // FÍXME Mapping Children directly without explicit FacetChild relation
-            return GetByCode(facetCode).Children.Select(z => z.Child).ToList();
+            var children = GetSet()
+                .Include("Children.Child")
+                .Where(f => f.FacetCode == facetCode)
+                .SelectMany(z => z.Children)
+                .Select(z => z.Child);
+            return children.ToList();
         }
 
         public IEnumerable<Facet> GetOfType(EFacetType type)
             => Find(z => z.FacetTypeId == type);
-
-        public (decimal, decimal) GetUpperLowerBounds(Facet facet)
-        {
-            string sql = new RangeOuterBoundSqlCompiler().Compile(null, facet);
-            var item = QueryRow(sql, r => new {
-                lower = r.IsDBNull(0) ? 0 : r.GetDecimal(0),
-                upper = r.IsDBNull(1) ? 0 : r.GetDecimal(1)
-            });
-            return item == null ? (0, 0) : (item.lower, item.upper);
-        }
 
     }
 
