@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using AutoFixture;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public class RangeCountDataReaderBuilder : DataReaderBuilder
     {
@@ -25,6 +25,7 @@ namespace SeadQueryTest.Infrastructure
                 Columns =
                     {
                         new DataColumn("Category", typeof(string)),
+                        new DataColumn("Name", typeof(string)),
                         new DataColumn("Lower", typeof(decimal)),
                         new DataColumn("Upper", typeof(decimal)),
                         new DataColumn("Count", typeof(int))

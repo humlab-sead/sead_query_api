@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public static class DataReaderExtensions
     {
@@ -65,7 +65,7 @@ namespace SeadQueryTest.Infrastructure
     //{
     //    /// <summary>
     //    /// Creates a converter that (tries) to conver a DataReader's DataRow to an entity
-    //    /// Thanks to 
+    //    /// Thanks to
     //    /// </summary>
     //    /// <typeparam name="T"></typeparam>
     //    /// <param name="reader"></param>

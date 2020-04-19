@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using AutoFixture;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public class DiscreteCountDataReaderBuilder : DataReaderBuilder
     {
@@ -20,6 +20,7 @@ namespace SeadQueryTest.Infrastructure
                 Columns =
                     {
                         new DataColumn("Category", typeof(string)),
+                        new DataColumn("Name", typeof(string)),
                         new DataColumn("Count", typeof(int))
                     }
             };

@@ -9,7 +9,7 @@ using AutoFixture;
 using AutoFixture.Kernel;
 using AutoMapper;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public abstract class DataReaderBuilder : IDisposable
     {

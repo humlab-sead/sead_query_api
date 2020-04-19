@@ -7,7 +7,7 @@ using System.Data;
 using System.Dynamic;
 using System.Linq;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public static class FakeDataUtility
     {
