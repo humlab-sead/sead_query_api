@@ -56,7 +56,8 @@ namespace SeadQueryAPI
             builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
 
-            builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
+            //            builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
+            builder.RegisterType<RangeOuterBoundExtentService>().As<IRangeOuterBoundExtentService>();
 
             builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
             builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(1);
@@ -67,6 +68,7 @@ namespace SeadQueryAPI
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
             builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
             builder.RegisterType<DiscreteCategoryCountService>().As<IDiscreteCategoryCountService>();
+            builder.RegisterType<CategoryCountServiceLocator>().As<ICategoryCountServiceLocator>();
 
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
@@ -75,18 +77,21 @@ namespace SeadQueryAPI
             builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
             builder.RegisterType<RangeIntervalSqlCompiler>().As<IRangeIntervalSqlCompiler>();
             builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
+
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
-
-            builder.RegisterType<ResultQueryCompiler>().As<IResultQueryCompiler>();
+            builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
+            
+            builder.RegisterType<ResultConfigCompiler>().As<IResultSqlCompiler>();
 
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
             builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
 
-            builder.RegisterType<TabularResultSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("tabular");
-            builder.RegisterType<MapResultQuerySetupSqlCompiler>().Keyed<IResultQuerySetupSqlCompiler>("map");
+            builder.RegisterType<TabularResultSqlCompiler>().Keyed<IResultSqlCompiler>("tabular");
+            builder.RegisterType<MapResultSqlCompiler>().Keyed<IResultSqlCompiler>("map");
+            builder.RegisterType<ResultSqlCompilerLocator>().As<IResultSqlCompilerLocator>();
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache) {
