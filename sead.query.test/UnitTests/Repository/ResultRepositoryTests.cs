@@ -1,14 +1,14 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.Repository
+namespace SQT.Infrastructure.Repository
 {
     [Collection("JsonSeededFacetContext")]
     public class ResultRepositoryTests : DisposableFacetContextContainer
@@ -17,175 +17,192 @@ namespace SeadQueryTest.Repository
         {
         }
 
-        private ResultRepository CreateRepository()
+        private ResultRepository MockResultRepository()
         {
             return new ResultRepository(FacetContext);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void ToDictionary_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public void ToDictionary_Called_Success()
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
+            var resultRepository = MockResultRepository();
 
             // Act
             var result = resultRepository.ToDictionary();
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetAll_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public void GetAll_Called_Success()
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
+            var resultRepository = MockResultRepository();
 
             // Act
             var result = resultRepository.GetAll();
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetByKey_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("site_level")]
+        public void GetByKey_Called_Success(string key)
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
-            string key = null;
+            var resultRepository = MockResultRepository();
 
             // Act
-            var result = resultRepository.GetByKey(
-                key);
+            var result = resultRepository.GetByKey(key);
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.Equal(key, result.AggregateKey);
+            Assert.NotEmpty(result.GetResultFields());
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetAllFields_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public void GetAllFields_Called_Success()
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
+            var resultRepository = MockResultRepository();
 
             // Act
             var result = resultRepository.GetAllFields();
 
             // Assert
-            Assert.True(false);
+            Assert.NotEmpty(result);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetViewTypes_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public void GetViewTypes_Called_Success()
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
+            var resultRepository = MockResultRepository();
 
             // Act
             var result = resultRepository.GetViewTypes();
 
             // Assert
-            Assert.True(false);
+            Assert.NotEmpty(result);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetViewType_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("tabular")]
+        [InlineData("map")]
+        public void GetViewType_Called_Success(string viewTypeId)
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
-            string viewTypeId = null;
+            var resultRepository = MockResultRepository();
 
             // Act
-            var result = resultRepository.GetViewType(
-                viewTypeId);
+            var result = resultRepository.GetViewType(viewTypeId);
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.Equal(viewTypeId, result.ViewTypeId);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetAllFieldTypes_StateUnderTest_ExpectedBehavior()
+        [Fact]
+        public void GetAllFieldTypes_Called_Success()
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
+            var resultRepository = MockResultRepository();
 
             // Act
             var result = resultRepository.GetAllFieldTypes();
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetByKeys_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("ste_level")]
+        public void GetByKeys_StateUnderTest_ExpectedBehavior(params string[] keys)
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
-            List<string> keys = null;
+            var resultRepository = MockResultRepository();
 
             // Act
-            var result = resultRepository.GetByKeys(
-                keys);
+            var result = resultRepository.GetByKeys(keys.ToList());
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
 
-        [Fact(Skip = "Not implemented")]
-        public void GetFieldsByKeys_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("site_level")]
+        public void GetFieldsByKeys_StateUnderTest_ExpectedBehavior(params string[] keys)
         {
             // Arrange
-            var resultRepository = this.CreateRepository();
-            List<string> keys = null;
+            var resultRepository = MockResultRepository();
 
             // Act
-            var result = resultRepository.GetFieldsByKeys(
-                keys);
+            var result = resultRepository.GetFieldsByKeys(keys.ToList());
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
         }
 
         [Fact]
-        public void ShouldBeAbleToFetchAllResultFields()
+        public void GetAllFields_Called_SameAsDbSet()
         {
             // Arrange
+            var resultRepository = MockResultRepository();
 
-            var sut = new ResultRepository(FacetContext);
+            // Act
+            var result = resultRepository.GetAllFields().ToList();
 
-            var expected = FacetContext.Set<ResultField>().ToList().Count;
-
-            Assert.Equal(expected, sut.GetAllFields().ToList().Count);
+            // Assert
+            var expected = FacetContext.Set<ResultField>().ToList();
+            Assert.Equal(expected, result);
         }
 
         [Fact]
-        public void ShouldBeAbleToFetchAllResultAggregates()
+        public void GetAll_Called_CompleteAggregate()
         {
-            var sut = new ResultRepository(FacetContext);
-            List<ResultAggregate> items = sut.GetAll().ToList();
+            // Arrange
+            var resultRepository = MockResultRepository();
 
-            Assert.Equal(4, items.Count);
-            foreach (ResultAggregate value in items) {
+            // Act
+            var result = resultRepository.GetAll().ToList();
+
+            // Assert
+            Assert.NotEmpty(result);
+            foreach (var value in result) {
                 Assert.NotNull(value.Fields);
-                Assert.True(value.Fields.Count > 0);
-                value.Fields.ForEach(z => Assert.NotNull(z.ResultField));
-                value.Fields.ForEach(z => Assert.NotNull(z.FieldType));
+                Assert.NotEmpty(value.Fields);
+                Assert.All(value.Fields, z => Assert.NotNull((z).ResultField));
+                Assert.All(value.Fields, z => Assert.NotNull((z).FieldType));
             }
         }
 
-        [Fact]
-        public void ShouldBeAbleToFetchAllResultTypes()
+        [Theory]
+        [InlineData("single_item")]
+        [InlineData("text_agg_item")]
+        [InlineData("count_item")]
+        [InlineData("link_item")]
+        [InlineData("sort_item")]
+        [InlineData("link_item_filtered")]
+        public void GetAllFieldTypes_Called_ExpectedTypes(string expectedType)
         {
-            var repository = new ResultRepository(FacetContext);
+            // Arrange
+            var resultRepository = MockResultRepository();
 
-            List<ResultFieldType> fieldTypes = repository.GetAllFieldTypes().ToList();
+            // Act
+            var result = resultRepository.GetAllFieldTypes().ToList();
 
-            Assert.True(fieldTypes.Count > 0);
-
-            var expected = new List<string>() { "single_item", "text_agg_item", "count_item", "link_item", "sort_item", "link_item_filtered" };
-
-            Assert.True(expected.All(x => fieldTypes.Exists(w => w.FieldTypeId == x)));
+            // Assert
+            Assert.NotEmpty(result);
+            Assert.Single(result.Where(z => z.FieldTypeId == expectedType));
         }
     }
 }
