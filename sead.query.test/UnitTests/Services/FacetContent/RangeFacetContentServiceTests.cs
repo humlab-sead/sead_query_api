@@ -61,41 +61,60 @@ namespace SQT.Services
         //    return mockQuerySetupBuilder;
         //}
 
+        public virtual Mock<RangeIntervalSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
+        {
+            var mock = new Mock<RangeIntervalSqlCompiler>();
+            mock.Setup(z => z.Compile(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(returnSql);
+            return mock;
+        }
+
+        public virtual Mock<IRangeOuterBoundExtentService> MockRangeOuterBoundExtentService(
+            decimal lower, decimal upper, int count = 0
+        )
+        {
+            var rangeOuterBoundExtentService = new Mock<IRangeOuterBoundExtentService>();
+
+            /* GetExtent generates an extent */
+            rangeOuterBoundExtentService
+                .Setup(z => z.GetExtent(It.IsAny<FacetConfig2>(), It.IsAny<int>()))
+                .Returns(new RangeExtent{Lower = lower, Upper = upper, Count = count });
+
+            /* GetUpperLowerBounds hits the database */
+            rangeOuterBoundExtentService
+                .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
+                .Returns((lower, upper));
+
+            return rangeOuterBoundExtentService;
+        }
+
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)")]
         public void Load_RangeFacetWithRangePick_IsLoaded(string uri)
         {
             // Arrange
-            var querySetup = FakeQuerySetup(uri);
-            var facetsConfig = FakeFacetsConfig(uri);
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(querySetup);
+            var fakeSettings = FakeFacetSetting();
+            var fakeQuerySetup = FakeQuerySetup(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeCategoryCountItems = FakeRangeCategoryCountItems(1, 10, 10);
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var mockCountServiceLocator = MockCategoryCountServiceLocator(fakeCategoryCountItems);
-            var settings = FakeFacetSetting();
-            var concreteRangeIntervalSqlCompiler = new RangeIntervalSqlCompiler();
-            var queryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
-            var rangeOuterBoundExtentService = new Mock<IRangeOuterBoundExtentService>();
-
-            rangeOuterBoundExtentService
-                .Setup(z => z.GetExtent(It.IsAny<FacetConfig2>(), It.IsAny<int>()))
-                .Returns(new RangeExtent {
-                    Lower = 0M,
-                    Upper = 10.0M,
-                    Count = 100
-                });
+            var mockRangeIntervalSqlCompiler = MockRangeIntervalSqlCompiler("#SQL#");
+            var mockQueryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
+            var mockRangeOuterBoundExtentService = MockRangeOuterBoundExtentService(0M, 100M, 100);
 
             // Act
             var service = new RangeFacetContentService(
-                settings,
+                fakeSettings,
                 Registry,
                 mockQuerySetupBuilder.Object,
                 mockCountServiceLocator.Object,
-                concreteRangeIntervalSqlCompiler,
-                rangeOuterBoundExtentService.Object,
-                queryProxy.Object
+                mockRangeIntervalSqlCompiler.Object,
+                mockRangeOuterBoundExtentService.Object,
+                mockQueryProxy.Object
             );
 
-            var result = service.Load(facetsConfig);
+            var result = service.Load(fakeFacetsConfig);
 
             // Assert
             Assert.NotNull(result);
