@@ -288,6 +288,27 @@ namespace SQT
             var graphRoutes = nodePairs.Select(z => FakeRoute(z)).ToList();
             return graphRoutes;
         }
+        public virtual Mock<IResultSqlCompilerLocator> MockResultSqlCompilerLocator(string returnSql)
+        {
+            var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
+            mockResultSqlCompiler
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<ResultQuerySetup>()))
+                .Returns(returnSql);
+            var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
+            mockResultSqlCompilerLocator
+                .Setup(z => z.Locate(It.IsAny<string>()))
+                .Returns(mockResultSqlCompiler.Object);
+            return null;
+        }
+
+        public virtual ResultConfig FakeResultConfig(string aggregateKey, string viewTypeId)
+            => new ResultConfig
+            {
+                AggregateKeys = new System.Collections.Generic.List<string> { aggregateKey },
+                RequestId = "1",
+                ViewTypeId = viewTypeId,
+                SessionId = "1"
+            };
 
         public static class RouteHelper
         {

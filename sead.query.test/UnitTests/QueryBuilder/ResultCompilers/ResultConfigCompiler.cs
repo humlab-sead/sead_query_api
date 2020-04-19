@@ -9,33 +9,12 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    public class ResultConfigCompiler : DisposableFacetContextContainer
+    public class ResultConfigCompilerTests : DisposableFacetContextContainer
     {
-        public ResultConfigCompiler(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public ResultConfigCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
 
-        public virtual Mock<IResultSqlCompilerLocator> MockResultSqlCompilerLocator(string returnSql)
-        {
-            var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
-            mockResultSqlCompiler
-                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<ResultQuerySetup>()))
-                .Returns(returnSql);
-            var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
-            mockResultSqlCompilerLocator
-                .Setup(z => z.Locate(It.IsAny<string>()))
-                .Returns(mockResultSqlCompiler.Object);
-            return null;
-        }
-
-        public virtual ResultConfig FakeResultConfig(string aggregateKey, string viewTypeId)
-            => new ResultConfig
-        {
-            AggregateKeys = new System.Collections.Generic.List<string> { aggregateKey },
-            RequestId = "1",
-            ViewTypeId = viewTypeId,
-            SessionId = "1"
-        };
 
         [Theory]
         [InlineData("sites:sites", "site_level", "tabular")]
