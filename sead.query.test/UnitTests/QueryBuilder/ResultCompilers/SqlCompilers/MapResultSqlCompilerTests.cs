@@ -3,14 +3,14 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Fixtures;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.ResultCompilers
+namespace SQT.SqlCompilers
 {
     [Collection("JsonSeededFacetContext")]
     public class MapResultSqlCompilerTests : DisposableFacetContextContainer
@@ -40,7 +40,7 @@ namespace SeadQueryTest.QueryBuilder.ResultCompilers
 
             // Act
 
-            var mapResultSqlCompiler = new MapResultQuerySetupSqlCompiler();
+            var mapResultSqlCompiler = new MapResultSqlCompiler();
             var result = mapResultSqlCompiler.Compile(querySetup, facet, resultConfig);
 
             // Assert

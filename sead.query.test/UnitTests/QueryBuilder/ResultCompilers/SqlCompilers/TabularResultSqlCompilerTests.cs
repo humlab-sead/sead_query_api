@@ -4,7 +4,7 @@ using SeadQueryCore.QueryBuilder;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.ResultCompilers
+namespace SQT.QueryBuilder.ResultCompilers
 {
     public class TabularResultSqlCompilerTests : IDisposable
     {
