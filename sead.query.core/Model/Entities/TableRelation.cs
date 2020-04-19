@@ -68,20 +68,17 @@ namespace SeadQueryCore
             return x;
         }
 
-        public Tuple<string, string> Key
-            => new Tuple<string, string>(SourceName, TargetName);
+        public Tuple<string, string> Key   => new Tuple<string, string>(SourceName, TargetName);
+        public Tuple<int, int> IdKey       => new Tuple<int, int>(SourceTableId, TargetTableId);
 
-        public Tuple<int, int> IdKey
-            => new Tuple<int, int>(SourceTableId, TargetTableId);
-
-        public override bool Equals(object x)
+        public bool IsOf(TableRelation x)
         {
-            return Equal(x as TableRelation);
+            return x != null && IsOf(x.SourceName, x.TargetName);
         }
 
-        public bool Equal(TableRelation x)
+        public bool IsOf(string sourceName, string targetName)
         {
-            return x != null && (SourceName == x.SourceName) && (TargetName == x.TargetName);
+            return SourceName == sourceName && TargetName == targetName;
         }
 
         public override int GetHashCode()
@@ -99,5 +96,10 @@ namespace SeadQueryCore
         public int GetWeight() => Weight;
         public Tuple<string, string> GetKey() => Key;
         public Tuple<int, int> GetIdKey() => IdKey;
+
+        public override bool Equals(object x)
+        {
+            return IsOf(x as TableRelation);
+        }
     }
 }
