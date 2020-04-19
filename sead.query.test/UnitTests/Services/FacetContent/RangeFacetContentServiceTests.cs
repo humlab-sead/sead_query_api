@@ -1,19 +1,13 @@
-using Autofac.Features.Indexed;
 using Moq;
 using SeadQueryCore;
-using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder;
-using SeadQueryInfra;
-using System;
+using SQT;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
-using SeadQueryTest.Infrastructure;
-using Autofac;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Mocks;
-using System.Data;
 
-namespace SeadQueryTest.Services.FacetContent
+namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
     public class RangeFacetContentServiceTests : DisposableFacetContextContainer
@@ -25,72 +19,79 @@ namespace SeadQueryTest.Services.FacetContent
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
 
-        private static MockIndex<EFacetType, ICategoryCountService> MockCategoryCountServices()
+        protected Mock<ICategoryCountService> MockCategoryCountService(List<CategoryCountItem> fakeCategoryCountItems)
         {
-            var mockRangeCategoryCountService = new Mock<ICategoryCountService>();
-            mockRangeCategoryCountService.Setup(
+            var mockCategoryCountService = new Mock<ICategoryCountService>();
+            mockCategoryCountService.Setup(
                 x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
             ).Returns(
                 new CategoryCountService.CategoryCountResult
                 {
-                    Data = new Dictionary<string, CategoryCountItem>() {
-
-                    },
-                    SqlQuery = ""
+                    Data = fakeCategoryCountItems.ToDictionary(z => z.Category),
+                    SqlQuery = "SELECT * FROM bla.bla"
                 }
             );
-            MockIndex<EFacetType, ICategoryCountService> mockServices = new MockIndex<EFacetType, ICategoryCountService> {
-                { EFacetType.Discrete, new Mock<ICategoryCountService>().Object },
-                { EFacetType.Range, mockRangeCategoryCountService.Object }
-            };
-            return mockServices;
+            return mockCategoryCountService;
         }
 
-        private static Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
+        protected Mock<ICategoryCountServiceLocator> MockCategoryCountServiceLocator(List<CategoryCountItem> fakeCategoryCountItems)
         {
-            var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
+            var mockCategoryCountService = MockCategoryCountService(fakeCategoryCountItems);
 
-            mockQuerySetupBuilder.Setup(
-                x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>())
-            ).Returns(querySetup);
-
-            mockQuerySetupBuilder.Setup(
-                x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>())
-            ).Returns(querySetup);
-            return mockQuerySetupBuilder;
+            var mockCategoryCountServiceLocator = new Mock<ICategoryCountServiceLocator>();
+            mockCategoryCountServiceLocator
+                .Setup(z => z.Locate(It.IsAny<EFacetType>()))
+                .Returns(
+                    mockCategoryCountService.Object
+                );
+            return mockCategoryCountServiceLocator;
         }
 
-        [Fact]
-        public void Load_RangeFacetWithRangePick_IsLoaded()
+        //private static Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
+        //{
+        //    var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
+
+        //    mockQuerySetupBuilder.Setup(
+        //        x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>())
+        //    ).Returns(querySetup);
+
+        //    mockQuerySetupBuilder.Setup(
+        //        x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>())
+        //    ).Returns(querySetup);
+        //    return mockQuerySetupBuilder;
+        //}
+
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)")]
+        public void Load_RangeFacetWithRangePick_IsLoaded(string uri)
         {
             // Arrange
-            var uri = "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)";
-            var querySetup = QuerySetupFixtures.Store[uri];
-            var facetsConfig = FacetsConfigFactory.Create(uri);
-
-            Mock<IQuerySetupBuilder> mockQuerySetupBuilder = MockQuerySetupBuilder(querySetup);
-
-            MockIndex<EFacetType, ICategoryCountService> mockCountServices = MockCategoryCountServices();
-
-            var settings = new SettingFactory().Create().Value.Facet;
+            var querySetup = FakeQuerySetup(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(querySetup);
+            var fakeCategoryCountItems = FakeRangeCategoryCountItems(1, 10, 10);
+            var mockCountServiceLocator = MockCategoryCountServiceLocator(fakeCategoryCountItems);
+            var settings = FakeFacetSetting();
             var concreteRangeIntervalSqlCompiler = new RangeIntervalSqlCompiler();
-            var queryProxy = new Mock<ITypedQueryProxy>();
+            var queryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
+            var rangeOuterBoundExtentService = new Mock<IRangeOuterBoundExtentService>();
 
-            queryProxy.Setup(foo => foo.QueryRows<CategoryCountItem>(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryCountItem >>())).Returns(
-                new List<CategoryCountItem>
-                {
-                    new CategoryCountItem { Category = "", Count = 0, Extent = null }
-                }
-            );
+            rangeOuterBoundExtentService
+                .Setup(z => z.GetExtent(It.IsAny<FacetConfig2>(), It.IsAny<int>()))
+                .Returns(new RangeExtent {
+                    Lower = 0M,
+                    Upper = 10.0M,
+                    Count = 100
+                });
 
             // Act
-
             var service = new RangeFacetContentService(
                 settings,
                 Registry,
                 mockQuerySetupBuilder.Object,
-                mockCountServices,
+                mockCountServiceLocator.Object,
                 concreteRangeIntervalSqlCompiler,
+                rangeOuterBoundExtentService.Object,
                 queryProxy.Object
             );
 
@@ -98,8 +99,7 @@ namespace SeadQueryTest.Services.FacetContent
 
             // Assert
             Assert.NotNull(result);
-
+            Assert.Equal(10, result.ItemCount);
         }
-
     }
 }
