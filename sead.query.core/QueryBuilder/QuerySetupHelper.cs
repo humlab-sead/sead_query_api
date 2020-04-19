@@ -21,14 +21,6 @@ namespace SeadQueryCore.QueryBuilder
             return /* tableCriterias.ContainsKey(edge.SourceName) || */ tableCriterias.ContainsKey(edge.TargetName);
         }
 
-        /// <summary>
-        /// Compiles where-clauses based on user picks.
-        /// FIXME: Dictionary no longer used, so this function will be removed
-        /// The function is moved from QuerySetupBuilder (where PickCompiler resides)
-        /// </summary>
-        /// <param name="targetFacet"></param>
-        /// <param name="involvedConfigs"></param>
-        /// <returns></returns>
         //protected Dictionary<string, string> CompilePickCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
         //{
         //    // Compute criteria clauses for user picks for each affected facet
@@ -48,20 +40,20 @@ namespace SeadQueryCore.QueryBuilder
         //}
 
         // FIXME: Dictionary no longer used, so this function will be removed
-        public static Dictionary<string, string> GroupCriteriaByTable(List<(string Tablename, string Criteria)> criterias) => criterias
-            .GroupBy(
-                p => p.Tablename,
-                p => p.Criteria,
-                (key, g) => new
-                {
-                    TableName = key,
-                    Criterias = g.ToList()
-                }
-            )
-            .ToDictionary(
-                z => z.TableName,
-                z => $"({z.Criterias.Combine(" AND ")})"
-            );
+        //public static Dictionary<string, string> GroupCriteriaByTable(List<(string Tablename, string Criteria)> criterias) => criterias
+        //    .GroupBy(
+        //        p => p.Tablename,
+        //        p => p.Criteria,
+        //        (key, g) => new
+        //        {
+        //            TableName = key,
+        //            Criterias = g.ToList()
+        //        }
+        //    )
+        //    .ToDictionary(
+        //        z => z.TableName,
+        //        z => $"({z.Criterias.Combine(" AND ")})"
+        //    );
 
     }
 }
