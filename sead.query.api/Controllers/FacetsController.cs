@@ -69,11 +69,11 @@ namespace SeadQueryAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Facet))]
-        [HttpGet("/domain")]
+        [HttpGet("domain")]
         [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
         public IEnumerable<Facet> GetDomainFacets()
         {
-            return Context.Facets.Parents();
+            return Context.Facets.Parents().ToList();
         }
 
         /// <summary>
@@ -82,11 +82,11 @@ namespace SeadQueryAPI.Controllers
         /// <param name="facetCode"></param>
         /// <returns></returns>
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Facet))]
-        [HttpGet("/domain/{id}")]
+        [HttpGet("domain/{id}")]
         [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
-        public IEnumerable<Facet> GetDomainFacetChildren(string facetCode)
+        public IEnumerable<Facet> GetDomainFacetChildren(string id)
         {
-            return Context.Facets.Children(facetCode);
+            return Context.Facets.Children(id);
         }
 
         /// <summary>
