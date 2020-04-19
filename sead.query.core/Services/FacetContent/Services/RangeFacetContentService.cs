@@ -12,35 +12,30 @@ namespace SeadQueryCore
         public decimal Upper { get; set; }
         public int Count { get; set; }
     }
+
     public class RangeIntervalQueryInfo : FacetContent.IntervalQueryInfo
     {
         public RangeExtent FullExtent { get; set; }
     };
 
-public class RangeFacetContentService : FacetContentService {
+    public class RangeFacetContentService : FacetContentService {
         public RangeFacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IIndex<EFacetType, ICategoryCountService> countServices,
-            IRangeIntervalSqlCompiler rangeSqlCompiler,
-            ITypedQueryProxy queryProxy) : base(config, context, builder, queryProxy)
+            ICategoryCountServiceLocator categoryCountServiceLocator,
+            IRangeIntervalSqlCompiler rangeIntervalSqlCompiler,
+            IRangeOuterBoundExtentService outerBoundExtentService,
+            ITypedQueryProxy queryProxy
+        ) : base(config, context, builder, queryProxy)
         {
-            CountService = countServices[EFacetType.Range];
-            RangeSqlCompiler = rangeSqlCompiler;
+            CategoryCountService = categoryCountServiceLocator.Locate(EFacetType.Range);
+            RangeIntervalSqlCompiler = rangeIntervalSqlCompiler;
+            OuterBoundExtentService = outerBoundExtentService;
         }
 
-        public IRangeIntervalSqlCompiler RangeSqlCompiler { get; }
-
-        private RangeExtent GetFullExtent(FacetConfig2 config, int default_interval_count=120)
-        {
-            var (lower, upper) = Registry.Facets.GetUpperLowerBounds(config.Facet);   // Fetch from database
-            return new RangeExtent {
-                Lower = lower,
-                Upper = upper,
-                Count = default_interval_count
-            };
-        }
+        public IRangeIntervalSqlCompiler RangeIntervalSqlCompiler { get; }
+        public IRangeOuterBoundExtentService OuterBoundExtentService { get; }
 
         private RangeExtent GetPickExtent(FacetConfig2 config, int default_interval_count = 120)
         {
@@ -61,14 +56,14 @@ public class RangeFacetContentService : FacetContentService {
         protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count=120)
         {
             var facetConfig = facetsConfig.GetConfig(facetCode);
-            var fullExtent = GetFullExtent(facetConfig, default_interval_count);
+            var fullExtent = OuterBoundExtentService.GetExtent(facetConfig, default_interval_count);
             var pickExtent = GetPickExtent(facetConfig, default_interval_count) ?? fullExtent;
 
             var (lower, upper, interval_count) = (pickExtent.Lower, pickExtent.Upper, pickExtent.Count);
 
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
 
-            string sql = RangeSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
+            string sql = RangeIntervalSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
 
             return new RangeIntervalQueryInfo
             {

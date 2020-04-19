@@ -14,11 +14,11 @@ namespace SeadQueryCore.Services.Result
 
         public MapResultService(
             IRepositoryRegistry context,
-            IResultQueryCompiler resultQueryCompiler,
+            IResultConfigCompiler resultConfigCompiler,
             IDiscreteCategoryCountService categoryCountService,
             IDynamicQueryProxy queryProxy
         )
-            : base(context, resultQueryCompiler, queryProxy)
+            : base(context, resultConfigCompiler, queryProxy)
         {
             FacetCode = "map_result";
             CategoryCountService = categoryCountService;
@@ -48,7 +48,7 @@ namespace SeadQueryCore.Services.Result
         protected override string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             // TODO This override seems redundant - same call as in base?
-            return QueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
+            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, FacetCode);
         }
     }
 

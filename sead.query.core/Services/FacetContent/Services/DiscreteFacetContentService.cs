@@ -13,13 +13,13 @@ namespace SeadQueryCore
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            IIndex<EFacetType, ICategoryCountService> countServices,
-            IDiscreteContentSqlCompiler sqlCompiler,
+            ICategoryCountServiceLocator categoryCountServiceLocator,
+            IDiscreteContentSqlCompiler contentSqlCompiler,
             ITypedQueryProxy queryProxy
             ) : base(config, context, builder, queryProxy)
         {
-            CountService = countServices[EFacetType.Discrete];
-            SqlCompiler = sqlCompiler;
+            CategoryCountService = categoryCountServiceLocator.Locate(EFacetType.Discrete);
+            SqlCompiler = contentSqlCompiler;
         }
 
         public IDiscreteContentSqlCompiler SqlCompiler { get; }

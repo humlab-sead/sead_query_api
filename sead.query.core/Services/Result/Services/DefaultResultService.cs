@@ -12,18 +12,18 @@ namespace SeadQueryCore.Services.Result
 
         public string FacetCode { get; protected set; }
 
-        public IResultQueryCompiler QueryCompiler { get; set; }
+        public IResultConfigCompiler ResultConfigCompiler { get; set; }
         public IDynamicQueryProxy QueryProxy { get; }
 
         public DefaultResultService(
             IRepositoryRegistry registry,
-            IResultQueryCompiler compiler,
+            IResultConfigCompiler compiler,
             IDynamicQueryProxy queryProxy
         )
         {
             RepositoryRegistry = registry;
             FacetCode = "result_facet";
-            QueryCompiler = compiler;
+            ResultConfigCompiler = compiler;
             QueryProxy = queryProxy;
         }
 
@@ -60,7 +60,7 @@ namespace SeadQueryCore.Services.Result
 
         protected virtual string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            return QueryCompiler.Compile(facetsConfig, resultConfig, FacetCode);
+            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, FacetCode /* result_facet */);
         }
     }
 
