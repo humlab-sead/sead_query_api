@@ -50,6 +50,7 @@ namespace SeadQueryCore.QueryBuilder
             // Noteworthy: TargetFacet differs from facetsConfig.TargetFacet when a result-facet is applied
 
             facetCodes ??= facetsConfig.GetFacetCodes();
+
             facetCodes = facetCodes.AddIfMissing(targetFacet.FacetCode);
 
             var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
