@@ -103,5 +103,8 @@ namespace SeadQueryCore
         [JsonIgnore]
         public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));
 
+        public IEnumerable<string> GetResolvedTableNames() =>
+            Tables.Select(x => x.ResolvedAliasOrTableOrUdfName);
+
     }
 }
