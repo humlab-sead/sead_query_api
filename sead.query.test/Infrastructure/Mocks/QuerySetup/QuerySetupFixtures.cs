@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Fixtures;
+using SQT.Fixtures;
 
-namespace SeadQueryTest.Fixtures
+namespace SQT.Fixtures
 {
     public static class QuerySetupFixtures
     {

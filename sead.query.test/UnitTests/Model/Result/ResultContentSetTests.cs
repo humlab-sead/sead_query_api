@@ -3,10 +3,10 @@ using SeadQueryCore.Model;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Model
+namespace SQT.Model
 {
     public class ResultContentSetTests
     {
- 
+
     }
 }

@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.ResultCompilers
+namespace SQT.QueryBuilder.ResultCompilers
 {
     public class ResultQuerySetupTests
     {
- 
+
         [Fact(Skip = "Not implemented")]
         public void Ctor_Success()
         {

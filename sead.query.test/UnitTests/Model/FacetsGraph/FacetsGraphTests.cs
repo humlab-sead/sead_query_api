@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using Xunit;
 using Autofac;
 using System.Linq;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using SeadQueryInfra;
-using SeadQueryTest.Mocks;
+using SQT.Mocks;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using System.Threading.Tasks;
 
-namespace SeadQueryTest.Model
+namespace SQT.Model
 {
     [Collection("JsonSeededFacetContext")]
     public class FacetsGraphTests : DisposableFacetContextContainer

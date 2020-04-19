@@ -1,12 +1,12 @@
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Mocks;
+using SQT.Mocks;
 using System.Collections.Generic;
 using Xunit;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Infrastructure;
+using SQT.Fixtures;
+using SQT.Infrastructure;
 
-namespace SeadQueryTest.QueryBuilder.RangeCompilers
+namespace SQT.SqlCompilers
 {
     [Collection("JsonSeededFacetContext")]
     public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer

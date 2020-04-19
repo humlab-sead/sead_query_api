@@ -3,8 +3,8 @@ using Newtonsoft.Json.Linq;
 using SeadQueryAPI.Controllers;
 using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
-using SeadQueryTest;
-using SeadQueryTest.Infrastructure;
+using SQT;
+using SQT.Infrastructure;
 using Xunit;
 
 namespace IntegrationTests

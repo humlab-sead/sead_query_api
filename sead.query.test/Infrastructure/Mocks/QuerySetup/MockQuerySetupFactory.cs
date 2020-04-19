@@ -1,18 +1,12 @@
-﻿using SeadQueryCore;
-using System.Collections.Generic;
-using System.Linq;
-using SeadQueryInfra;
-using SeadQueryCore.QueryBuilder;
-using Autofac.Features.Indexed;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest;
-using Xunit;
-using System;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+﻿using Autofac.Features.Indexed;
 using Moq;
+using SeadQueryCore;
+using SeadQueryCore.QueryBuilder;
+using SQT.Infrastructure;
+using SQT.Mocks;
+using System.Collections.Generic;
 
-namespace SeadQueryTest.Fixtures
+namespace SQT.Fixtures
 {
     public class MockQuerySetupFactory
     {

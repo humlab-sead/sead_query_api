@@ -1,14 +1,11 @@
-using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
+using SQT.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.FilterCompilers
+namespace SQT.SqlCompilers
 {
     [Collection("JsonSeededFacetContext")]
     public class DiscreteFacetPickFilterCompilerTests : DisposableFacetContextContainer

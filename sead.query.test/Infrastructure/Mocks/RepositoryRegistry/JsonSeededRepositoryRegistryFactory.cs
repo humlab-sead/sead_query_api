@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Infrastructure;
+using SQT.Fixtures;
+using SQT.Infrastructure;
 using System.Data.Common;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class JsonSeededRepositoryRegistryFactory
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using Xunit;
 
-namespace SeadQueryTest.Model.Result
+namespace SQT.Model.Result
 {
     public class TabularResultContentSetTests
     {

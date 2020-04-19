@@ -1,14 +1,14 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Mocks;
+using SQT.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 
-namespace SeadQueryTest.Model
+namespace SQT.Model
 {
     [Collection("JsonSeededFacetContext")]
     public class FacetGraphFactoryTests : DisposableFacetContextContainer

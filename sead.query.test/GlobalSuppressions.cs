@@ -5,5 +5,3 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "<Pending>", Scope = "member", Target = "~M:SeadQueryTest.ResultContentServiceTests.TestDataReader")]
-[assembly: SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "<Pending>", Scope = "member", Target = "~M:SeadQueryTest.ResultContentServiceTests.GenerateFakeResultValues(SeadQueryCore.ResultAggregate,System.Int32)~System.Object[,]")]

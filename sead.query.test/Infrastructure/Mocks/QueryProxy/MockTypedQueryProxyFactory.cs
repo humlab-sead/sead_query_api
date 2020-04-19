@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
 
     public class MockTypedQueryProxyFactory

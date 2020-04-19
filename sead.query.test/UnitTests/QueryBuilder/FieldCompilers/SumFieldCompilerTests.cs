@@ -3,7 +3,7 @@ using SeadQueryCore;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.FieldCompilers
+namespace SQT.SqlCompilers
 {
     public class SumFieldCompilerTests
     {

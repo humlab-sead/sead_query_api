@@ -5,7 +5,7 @@ using System;
 using Xunit;
 using System.Text.RegularExpressions;
 
-namespace SeadQueryTest.QueryBuilder.JoinCompilers
+namespace SQT.SqlCompilers
 {
     public class JoinSqlCompilerTests
     {

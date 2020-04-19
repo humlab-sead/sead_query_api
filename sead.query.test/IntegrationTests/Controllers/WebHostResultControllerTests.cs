@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryTest;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +49,7 @@ namespace IntegrationTests
                 { ("map", "map_result", "sites@sites:country@73/sites:"), 32 }
             };
 
-            var builder = CreateTestWebHostBuilder2<ControllerTestStartup<TestDependencyService>>();
+            var builder = CreateTestWebHostBuilder2<TestStartup<TestDependencyService>>();
 
             using (var server = new TestServer(builder)) {
 

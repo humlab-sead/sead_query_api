@@ -4,7 +4,7 @@ using SeadQueryCore.QueryBuilder;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.FilterCompilers
+namespace SQT.SqlCompilers
 {
     public class RangeFacetPickFilterCompilerTests : IDisposable
     {

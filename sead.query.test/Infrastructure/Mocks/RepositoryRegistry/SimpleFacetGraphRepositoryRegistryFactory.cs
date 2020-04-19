@@ -3,7 +3,7 @@ using SeadQueryCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class SimpleFacetGraphRepositoryRegistryFactory
     {

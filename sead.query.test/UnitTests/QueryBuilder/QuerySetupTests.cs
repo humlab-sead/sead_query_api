@@ -7,7 +7,7 @@ using Xunit;
 
 using MockRepository = Moq.MockRepository;
 
-namespace SeadQueryTest.QueryBuilder
+namespace SQT.QueryBuilder
 {
     public class QuerySetupTests : IDisposable
     {

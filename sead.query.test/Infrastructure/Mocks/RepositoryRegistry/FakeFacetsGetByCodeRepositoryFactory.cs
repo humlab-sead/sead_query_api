@@ -1,8 +1,8 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryTest.Fixtures;
+using SQT.Fixtures;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class FakeFacetsGetByCodeRepositoryFactory
     {

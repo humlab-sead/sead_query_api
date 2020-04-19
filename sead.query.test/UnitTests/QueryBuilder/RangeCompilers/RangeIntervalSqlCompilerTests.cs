@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.RangeCompilers
+namespace SQT.SqlCompilers
 {
     public class RangeIntervalSqlCompilerTests
     {

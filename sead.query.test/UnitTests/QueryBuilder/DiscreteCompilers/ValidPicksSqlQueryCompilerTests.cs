@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
+namespace SQT.SqlCompilers
 {
     public class ValidPicksSqlCompilerTests : IDisposable
     {
