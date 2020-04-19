@@ -82,7 +82,7 @@ namespace SeadQueryAPI
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
             builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
             
-            builder.RegisterType<ResultConfigCompiler>().As<IResultSqlCompiler>();
+            builder.RegisterType<ResultConfigCompiler>().As<IResultConfigCompiler>();
 
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
