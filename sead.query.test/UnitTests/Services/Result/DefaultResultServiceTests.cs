@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using Autofac;
-using Autofac.Features.Indexed;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
-using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using System.Data;
 using Xunit;
 
-namespace SeadQueryTest.Services.Result
+namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
     public class DefaultResultServiceTests : DisposableFacetContextContainer
@@ -27,10 +20,11 @@ namespace SeadQueryTest.Services.Result
         public void Load_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var compiler = new Mock<IResultQueryCompiler>().Object;
-            var queryProxy = new Mock<IDynamicQueryProxy>().Object;
+            var resultConfigCompiler = MockResultConfigCompiler("SQL", "result_facet");
+            //var fakeResult = null;
+            var queryProxy = new MockDynamicQueryProxyFactory().Create((DataTable)null);
 
-            var service = new DefaultResultService(Registry, compiler, queryProxy);
+            var service = new DefaultResultService(Registry, resultConfigCompiler.Object, queryProxy.Object);
 
             FacetsConfig2 facetsConfig = null;
             ResultConfig resultConfig = null;

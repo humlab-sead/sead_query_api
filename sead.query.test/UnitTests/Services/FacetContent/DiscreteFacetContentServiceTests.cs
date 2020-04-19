@@ -1,15 +1,11 @@
-using Autofac.Features.Indexed;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Infrastructure;
-using System;
-using System.Linq;
-using System.Data;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using Xunit;
-using SeadQueryTest.Mocks;
 
-namespace SeadQueryTest.Services.FacetContent
+namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
     public class DiscreteFacetContentServiceTests : DisposableFacetContextContainer
@@ -18,6 +14,7 @@ namespace SeadQueryTest.Services.FacetContent
         {
         }
 
+
         [Fact(Skip = "Not implemented")]
         public void TestMethod1()
         {
@@ -25,7 +22,7 @@ namespace SeadQueryTest.Services.FacetContent
             var config = new SettingFactory().Create().Value.Facet;
             var querySetupBuilder = new Mock<IQuerySetupBuilder>();
             var rangeCountSqlCompiler = new Mock<IRangeCategoryCountSqlCompiler>();
-            var categoryCountServices = new Mock<IIndex<EFacetType, ICategoryCountService>>();
+            var categoryCountServicesLocator = new Mock<ICategoryCountServiceLocator>();
             var discreteContentSqlCompiler = new Mock<IDiscreteContentSqlCompiler>();
 
             var queryProxy = new MockTypedQueryProxyFactory().Create<DiscreteContentDataReaderBuilder, CategoryCountItem>(3);
@@ -44,7 +41,7 @@ namespace SeadQueryTest.Services.FacetContent
                 config,
                 Registry,
                 querySetupBuilder.Object,
-                categoryCountServices.Object,
+                categoryCountServicesLocator.Object,
                 discreteContentSqlCompiler.Object,
                 queryProxy.Object
              );
