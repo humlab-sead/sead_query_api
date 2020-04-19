@@ -1,17 +1,12 @@
-using Moq;
+using KellermanSoftware.CompareNetObjects;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System.Linq;
 using Xunit;
-using KellermanSoftware.CompareNetObjects;
 
-namespace SeadQueryTest.Services.CategoryCount
+namespace SQT.Services
 {
 
     [Collection("JsonSeededFacetContext")]
@@ -29,11 +24,11 @@ namespace SeadQueryTest.Services.CategoryCount
         {
             // Arrange
             var config = new SettingFactory().Create().Value.Facet;
-            var mockRegistry = MockFacetRepository();
+            var mockRegistry = MockRegistryWithFacetRepository();
             var mockFacetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
             var mockRangeCountSqlCompiler = MockRangeCategoryCountSqlCompiler(returnSql: "SELECT * FROM foot.bar");
-            var fakeResult = MockRangeCategoryCountItems(start: 0, step: 10, count: 3);
+            var fakeResult = FakeRangeCategoryCountItems(start: 0, step: 10, count: 3);
             var mockQueryProxy = new MockTypedQueryProxyFactory()
                 .Create<CategoryCountItem>(fakeResult);
 
