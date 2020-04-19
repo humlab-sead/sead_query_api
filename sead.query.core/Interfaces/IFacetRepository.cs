@@ -5,10 +5,8 @@ namespace SeadQueryCore
     public interface IFacetRepository : IRepository<Facet, int>
     {
         IEnumerable<Facet> FindThoseWithAlias();
-        // string GenerateStateId();
         Facet GetByCode(string facetCode);
         IEnumerable<Facet> GetOfType(EFacetType type);
-        (decimal, decimal) GetUpperLowerBounds(Facet facet);
         IEnumerable<Facet> Parents();
         IEnumerable<Facet> Children(string facetCode);
         Dictionary<string, Facet> ToDictionary();
