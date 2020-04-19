@@ -1,12 +1,13 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Fixtures;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
+namespace SQT.SqlCompilers
 {
     [Collection("JsonSeededFacetContext")]
     public class DiscreteContentSqlCompilerTests : DisposableFacetContextContainer
@@ -16,27 +17,30 @@ namespace SeadQueryTest.QueryBuilder.DiscreteCompilers
         }
 
         [Theory]
-        [InlineData("sites:sites")]
-        [InlineData("country:country")]
-        [InlineData("ecocode:ecocode")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri)
+        [InlineData("sites@sites:sites", 0)]
+        [InlineData("country@country:country/sites", 1)]
+        [InlineData("sites@sites:country@57/sites@3", 1)]
+        public void Compile_StateUnderTest_ExpectedBehavior(string uri, int expectedJoinCount)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
-            QuerySetup query = null;
-            Facet facet = null;
-            string text_filter = null;
+            var facetsConfig = FakeFacetsConfig(uri);
+            var mockQuerySetupFactory = new MockQuerySetupFactory(Registry);
+            var querySetup = mockQuerySetupFactory.Scaffold(uri);
+            var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(facetsConfig.TargetCode);
+            string text_filter = "";
 
             // Act
-            var discreteContentSqlQueryBuilder = new DiscreteContentSqlCompiler();
 
-            var result = discreteContentSqlQueryBuilder.Compile(
-                query,
-                facet,
-                text_filter);
+            var result = new DiscreteContentSqlCompiler().Compile(querySetup, facet, text_filter);
 
             // Assert
-            Assert.True(false);
+            string expectedSql = $@"
+                SELECT cast\((?<IdExpr>[\w\._]+) AS varchar\) AS category, (?<NameExpr>[\w\._]+) AS name
+                FROM (?:[\w\.,_]+)(?: AS \w*)?(?<joins> .*)?
+                WHERE (?<Criterias>.*)
+                GROUP BY \1, \2.*";
+
+            Assert.Matches(expectedSql.Squeeze(), result.Squeeze());
         }
     }
 }
