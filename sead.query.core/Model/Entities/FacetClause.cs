@@ -11,7 +11,9 @@ namespace SeadQueryCore
         public int FacetClauseId { get; set; }
         public int FacetId { get; set; }
         public virtual string Clause { get; set; }
+        public virtual bool EnforceConstraint { get; set; }
 
-        [JsonIgnore] public Facet Facet { get; set; }
+        [JsonIgnore]
+        public Facet Facet { get; set; }
     }
 }

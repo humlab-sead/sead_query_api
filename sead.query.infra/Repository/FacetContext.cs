@@ -130,6 +130,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.FacetClauseId).HasColumnName("facet_clause_id").IsRequired();
                 entity.Property(b => b.FacetId).HasColumnName("facet_id").IsRequired();
                 entity.Property(b => b.Clause).HasColumnName("clause").IsRequired();
+                entity.Property(b => b.EnforceConstraint).HasColumnName("enforce_constraint").IsRequired();
                 entity.HasOne<Facet>(x => x.Facet).WithMany(x => x.Clauses).HasForeignKey(x => x.FacetId);
             });
 

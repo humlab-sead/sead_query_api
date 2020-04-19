@@ -45,6 +45,8 @@ namespace SeadQueryCore
         public bool HasPicks() => (Picks?.Count ?? 0) > 0;
         public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
         public bool HasConstraints() => (HasPicks() || HasCriterias());
+        public bool HasEnforcedConstraints()
+            => (Facet?.Clauses?.Where(x => x.EnforceConstraint == true).Any() ?? false);
 
         public void ClearPicks() => Picks.Clear();
 
@@ -67,19 +69,19 @@ namespace SeadQueryCore
             return Facet.Tables.FirstOrDefault(z => z.TableOrUdfName == name || z.ResolvedAliasOrTableOrUdfName == name);
         }
 
-        public bool IsPriorTo(List<string> facetCodes, Facet targetFacet)
-        {
-            if (!HasConstraints()) {
-                // FIXME Is this a relevant condition?
-                return false;
-            }
+        //public bool IsPriorTo(List<string> facetCodes, Facet targetFacet)
+        //{
+        //    if (!HasConstraints()) {
+        //        // FIXME Is this a relevant condition?
+        //        return false;
+        //    }
 
-            if (targetFacet.FacetCode == FacetCode)
-                return targetFacet.FacetType.ReloadAsTarget;
+        //    if (targetFacet.FacetCode == FacetCode)
+        //        return targetFacet.FacetType.ReloadAsTarget;
 
-            return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(FacetCode);
+        //    return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(FacetCode);
 
-        }
+        //}
 
     }
 }
