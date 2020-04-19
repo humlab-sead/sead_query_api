@@ -114,7 +114,7 @@ namespace SQT.IoC
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("tabular"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("map"));
 
-                Assert.NotNull(scope.Resolve<IResultSqlCompiler>());
+                Assert.NotNull(scope.Resolve<IResultConfigCompiler>());
                 Assert.NotNull(scope.Resolve<IFacetReconstituteService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
             }
