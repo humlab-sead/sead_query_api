@@ -16,14 +16,6 @@ namespace SeadQueryCore
             public string Query { get; set; } = "";
         }
 
-        public class ContentItem {
-            public string Category { get; set; }
-            public string DisplayName { get; set; }
-            public string Name { get; set; }
-            public int? Count { get; set; }
-            public List<decimal> Extent { get; set; }
-        }
-
         /// <summary>
         /// Facet configuration used in request
         /// </summary>
@@ -32,7 +24,7 @@ namespace SeadQueryCore
         /// <summary>
         /// List of items loaded for facet, one for each category in the filtered data
         /// </summary>
-        public List<ContentItem> Items { get; set; } = new List<ContentItem>();
+        public List<CategoryCountItem> Items { get; set; } = new List<CategoryCountItem>();
 
         /// <summary>
         /// Distribution (category counts) of result set filtered by facet configurationa and user picks
@@ -62,15 +54,15 @@ namespace SeadQueryCore
 
         public FacetContent(
             FacetsConfig2 facetsConfig,
-            List<ContentItem> items,
-            Dictionary<string, CategoryCountItem> filteredCounts,
+            List<CategoryCountItem> contentCategoryCounts,
+            Dictionary<string, CategoryCountItem> categoryCounts,
             Dictionary<string, FacetsConfig2.UserPickData> picks,
             IntervalQueryInfo intervalInfo
         )
         {
             FacetsConfig = facetsConfig;
-            Items = items.Where(z => z.Count != null).ToList();
-            Distribution = filteredCounts;
+            Items = contentCategoryCounts.Where(z => z.Count != null).ToList();
+            Distribution = categoryCounts;
             IntervalInfo = intervalInfo;
             Picks = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
         }
