@@ -2,17 +2,17 @@
 using Xunit;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System.Collections.Generic;
 using System;
 
-namespace SeadQueryTest.UtilityUtilityTest
+namespace SQT.Infrastructure.UtilityTest
 {
 
     public class UtilityTest
     {
- 
+
         [Fact]
         public void InsertAt_EmptyList_ThrowsException()
         {

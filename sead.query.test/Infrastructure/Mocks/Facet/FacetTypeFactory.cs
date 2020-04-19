@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public static class FacetTypeFactory
     {

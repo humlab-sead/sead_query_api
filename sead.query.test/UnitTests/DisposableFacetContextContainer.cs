@@ -1,19 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using KellermanSoftware.CompareNetObjects;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using SeadQueryCore;
+using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Fixtures;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Dynamic;
 using System.Linq;
 using System.Threading;
 using Xunit;
 
-namespace SeadQueryTest
+namespace SQT
 {
 
     [Collection("JsonSeededFacetContext")]
@@ -34,16 +38,16 @@ namespace SeadQueryTest
         public virtual FacetContext FacetContext => __FacetContext.Value;
         public virtual RepositoryRegistry Registry => __RepositoryRegistry.Value;
 
-        protected virtual ISetting CreateSettings()
+        public virtual ISetting CreateSettings()
             => (ISetting)new SettingFactory().Create().Value;
 
-        protected virtual DbConnection CreateDbConnection()
+        public virtual DbConnection CreateDbConnection()
             => SqliteConnectionFactory.CreateAndOpen();
 
-        protected virtual DbContextOptions CreateDbContextOptions()
+        public virtual DbContextOptions CreateDbContextOptions()
             => SqliteContextOptionsFactory.Create(DbConnection);
 
-        private FacetContext CreateFacetContext()
+        public FacetContext CreateFacetContext()
             => JsonSeededFacetContextFactory.Create(DbContextOptions, Fixture);
 
         public virtual RepositoryRegistry CreateRepositoryRegistry()
@@ -77,11 +81,11 @@ namespace SeadQueryTest
 
         // Common mock helpers
 
-        protected virtual IRepositoryRegistry FakeRegistry() => Registry;
+        public virtual IRepositoryRegistry FakeRegistry() => Registry;
 
-        protected virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
+        public virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
 
-        protected virtual Mock<IRepositoryRegistry> MockFacetRepository()
+        public virtual Mock<IRepositoryRegistry> MockRegistryWithFacetRepository()
         {
             // Default: a JSON-seeded FacetContext with Sqlite backend
             var mockRegistry = new Mock<IRepositoryRegistry>();
@@ -89,12 +93,15 @@ namespace SeadQueryTest
             return mockRegistry;
         }
 
+        public FacetsConfig2 FakeFacetsConfig(string uri) => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        public QuerySetup FakeQuerySetup(string uri) => new MockQuerySetupFactory(Registry).Scaffold(uri);
+
         /// <summary>
         /// Mocks IQuerySetupBuilder.Setup. Returns passed argument.
         /// </summary>
         /// <param name="querySetup"></param>
         /// <returns></returns>
-        protected virtual Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
+        public virtual Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
         {
             var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
             mockQuerySetupBuilder.Setup(x => x.Build(
@@ -110,14 +117,14 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="fakeResult"></param>
         /// <returns></returns>
-        protected virtual Mock<ITypedQueryProxy> MockTypedQueryProxy(List<CategoryCountItem> fakeResult)
+        public virtual Mock<ITypedQueryProxy> MockTypedQueryProxy(List<CategoryCountItem> fakeCategoryCountItems)
         {
             var mockQueryProxy = new Mock<ITypedQueryProxy>();
             mockQueryProxy.Setup(foo => foo.QueryRows<CategoryCountItem>(
                         It.IsAny<string>(),
                         It.IsAny<Func<IDataReader, CategoryCountItem>>()
                 )).Returns(
-                    fakeResult
+                    fakeCategoryCountItems
                 );
             return mockQueryProxy;
         }
@@ -127,9 +134,9 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual List<CategoryCountItem> MockDiscreteCategoryCountItems(int start, int step, int count)
+        public virtual List<CategoryCountItem> FakeDiscreteCategoryCountItems(int count)
         {
-            var fakeResult = new RangeCountDataReaderBuilder(start, step)
+            var fakeResult = new DiscreteCountDataReaderBuilder()
                 .CreateNewTable()
                 .GenerateBogusRows(count)
                 .ToItems<CategoryCountItem>().ToList();
@@ -141,7 +148,7 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual List<CategoryCountItem> MockRangeCategoryCountItems(int start, int step, int count)
+        public virtual List<CategoryCountItem> FakeRangeCategoryCountItems(int start, int step, int count)
         {
             var fakeResult = new RangeCountDataReaderBuilder(start, step)
                 .CreateNewTable()
@@ -155,7 +162,7 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual Mock<IRangeCategoryCountSqlCompiler> MockRangeCategoryCountSqlCompiler(string returnSql)
+        public virtual Mock<IRangeCategoryCountSqlCompiler> MockRangeCategoryCountSqlCompiler(string returnSql)
         {
             var mockCategoryCountSqlCompiler = new Mock<IRangeCategoryCountSqlCompiler>();
             mockCategoryCountSqlCompiler.Setup(c => c.Compile(
@@ -174,7 +181,7 @@ namespace SeadQueryTest
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        protected virtual Mock<IDiscreteCategoryCountQueryCompiler> MockDiscreteCategoryCountSqlCompiler(string returnSql)
+        public virtual Mock<IDiscreteCategoryCountQueryCompiler> MockDiscreteCategoryCountSqlCompiler(string returnSql)
         {
             var mockCategoryCountSqlCompiler = new Mock<IDiscreteCategoryCountQueryCompiler>();
             mockCategoryCountSqlCompiler.Setup(c => c.Compile(
@@ -187,7 +194,7 @@ namespace SeadQueryTest
             );
             return mockCategoryCountSqlCompiler;
         }
-        protected virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
+        public virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
         {
             var mockPickCompiler = new Mock<IPickFilterCompiler>();
 
@@ -204,7 +211,7 @@ namespace SeadQueryTest
             return mockLocator;
         }
 
-        protected virtual Mock<IJoinSqlCompiler> MockJoinSqlCompiler(string returnValue)
+        public virtual Mock<IJoinSqlCompiler> MockJoinSqlCompiler(string returnValue)
         {
             var mockJoinCompiler = new Mock<IJoinSqlCompiler>();
             mockJoinCompiler
@@ -217,7 +224,20 @@ namespace SeadQueryTest
             return mockJoinCompiler;
         }
 
-        protected virtual Mock<IFacetsGraph> MockFacetsGraph(List<GraphRoute> returnRoutes)
+        public virtual Mock<IResultConfigCompiler> MockResultConfigCompiler(string returnSql, string facetCode="result_facet")
+        {
+            var mockResultQueryCompiler = new Mock<IResultConfigCompiler>();
+            mockResultQueryCompiler.Setup(
+                c => c.Compile(
+                    It.IsAny<FacetsConfig2>(),
+                    It.IsAny<ResultConfig>(),
+                    facetCode
+                )
+            ).Returns(returnSql);
+            return mockResultQueryCompiler;
+        }
+
+        public virtual Mock<IFacetsGraph> MockFacetsGraph(List<GraphRoute> returnRoutes)
         {
             var mockFacetsGraph = new Mock<IFacetsGraph>();
 
@@ -228,23 +248,48 @@ namespace SeadQueryTest
             return mockFacetsGraph;
         }
 
-        protected GraphRoute MockGraphRoute(string[] nodePairs)
+        public TableRelation FakeTableRelation(string sourceName, string targetName)
         {
-            var graphRoute = new GraphRoute(nodePairs.Select(z => Registry.TableRelations.FindByName(z.Split("/")[0], z.Split("/")[1])));
-            return graphRoute;
-        }
-        protected GraphRoute MockGraphRoute2(params string[] trail)
-        {
-            return MockGraphRoute(RouteHelper.ToPairs(trail));
+            //try {
+            //    var repository = Registry.TableRelations;
+            //    return repository.FindByName(sourceName, targetName) ??
+            //        (TableRelation)repository.FindByName(targetName, sourceName).Reverse();
+            //} catch (System.NullReferenceException ex) {
+            //    throw;
+            //}
+
+            return new TableRelation
+            {
+                SourceTable = new Table { TableId = sourceName.GetHashCode(), TableOrUdfName = sourceName, IsUdf = sourceName.Contains("("), PrimaryKeyName = "X" },
+                TargetTable = new Table { TableId = targetName.GetHashCode(), TableOrUdfName = targetName, IsUdf = targetName.Contains("("), PrimaryKeyName = "X" },
+                SourceColumName = sourceName + "_id",
+                TargetColumnName = targetName + "_id",
+                Weight = 20
+            };
         }
 
-        protected List<GraphRoute> MockGraphRoutes(List<string[]> nodePairs)
+        public GraphRoute FakeRoute(string[] nodePairs)
         {
-            var graphRoutes = nodePairs.Select(z => MockGraphRoute(z)).ToList();
+            var graphRoute = new GraphRoute(
+                nodePairs.Select(x => x.Split("/"))
+                    .Select(z => new { Source = z[0], Target = z[1] })
+                    .Select(z => FakeTableRelation(z.Source, z.Target))
+            );
+            return graphRoute;
+        }
+
+        public GraphRoute FakeRoute2(params string[] trail)
+        {
+            return FakeRoute(RouteHelper.ToPairs(trail));
+        }
+
+        public List<GraphRoute> FakeRoutes(List<string[]> nodePairs)
+        {
+            var graphRoutes = nodePairs.Select(z => FakeRoute(z)).ToList();
             return graphRoutes;
         }
 
-        protected static class RouteHelper
+        public static class RouteHelper
         {
             public static string[] ToPairs(params string[] trail)
             {
@@ -257,5 +302,21 @@ namespace SeadQueryTest
             }
         }
 
+        public static bool AreEqualByProperty(object object1, object object2)
+        {
+            CompareLogic compareLogic = new CompareLogic();
+            ComparisonResult result = compareLogic.Compare(object1, object2);
+
+            return result.AreEqual;
+        }
+
+        public static void DumpUriObject(string uri, object value)
+        {
+            dynamic expando = new ExpandoObject();
+            expando.Uri = uri;
+            expando.ValueType = value.GetType().Name;
+            expando.Value = value;
+            ScaffoldUtility.Dump(expando, $@"C:\TEMP\{value.GetType().Name}_{uri.Replace(":", "#").Replace("/", "+")}.cs"); ;
+        }
     }
 }

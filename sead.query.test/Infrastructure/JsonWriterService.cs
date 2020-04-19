@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
+using SQT.Fixtures;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
 
     public class JsonWriterService

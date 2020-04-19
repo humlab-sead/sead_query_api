@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public static class ScaffoldUtility
     {

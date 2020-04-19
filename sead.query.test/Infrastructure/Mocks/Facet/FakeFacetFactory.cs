@@ -1,9 +1,9 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryTest.Fixtures;
+using SQT.Fixtures;
 using System;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class FacetFactory
     {

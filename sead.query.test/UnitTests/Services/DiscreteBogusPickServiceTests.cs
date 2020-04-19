@@ -4,7 +4,7 @@ using SeadQueryCore.QueryBuilder;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Services
+namespace SQT.Services
 {
     public class DeleteBogusPickServiceTests : IDisposable
     {

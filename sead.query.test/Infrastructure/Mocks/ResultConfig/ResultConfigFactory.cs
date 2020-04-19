@@ -1,7 +1,7 @@
 ﻿using SeadQueryCore.Model;
 using System.Collections.Generic;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
 
     internal static class ResultConfigFactory

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SeadQueryTest.Models
+namespace SQT.Models
 {
     public partial class TableRelation
     {

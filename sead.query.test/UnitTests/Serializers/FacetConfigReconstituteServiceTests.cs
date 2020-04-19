@@ -1,12 +1,8 @@
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
-using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
 using Xunit;
 
-namespace SeadQueryTest.Serializers
+namespace SQT.Infrastructure
 {
     [Collection("JsonSeededFacetContext")]
     public class FacetConfigReconstituteServiceTests : DisposableFacetContextContainer

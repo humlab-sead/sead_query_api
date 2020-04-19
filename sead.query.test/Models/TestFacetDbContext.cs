@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace SeadQueryTest.Models
+namespace SQT.Models
 {
     public partial class TestFacetDbContext : DbContext
     {

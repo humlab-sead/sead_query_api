@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System;
 using System.Diagnostics;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
         class IgnoreJsonAttributesResolver : PropertyRenameAndIgnoreSerializerContractResolver
     {

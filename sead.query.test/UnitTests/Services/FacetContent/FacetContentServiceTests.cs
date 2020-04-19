@@ -1,17 +1,12 @@
 using Autofac;
-using Moq;
 using Newtonsoft.Json;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SeadQueryTest.Services.FacetContent
+namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
     public class FacetContentServiceTests : DisposableFacetContextContainer

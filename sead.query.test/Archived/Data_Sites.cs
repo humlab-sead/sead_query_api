@@ -2,7 +2,7 @@
 //using System.Collections.Generic;
 //using System.Text;
 
-//namespace SeadQueryTest.Fixtures
+//namespace SQT.Fixtures
 //{
 //    public class Data_Sites
 //    {

@@ -1,15 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
+using SQT.Mocks;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.Repository
+namespace SQT.Infrastructure.Repository
 {
     public class FacetRepositoryTests: DisposableFacetContextContainer
     {

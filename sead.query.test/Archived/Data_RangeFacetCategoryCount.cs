@@ -1,7 +1,7 @@
 ﻿//using System.Collections.Generic;
 //using System.Linq;
 
-//namespace SeadQueryTest.Fixtures
+//namespace SQT.Fixtures
 //{
 //    public class Data_RangeFacetCategoryCount
 //    {
@@ -79,7 +79,7 @@
 //              { "1680 => 1704", 3 },
 //              { "1704 => 1728", 0 },
 //              { "1728 => 1752", 1 },
-//              { "1752 => 1776", 5 },   
+//              { "1752 => 1776", 5 },
 //              { "1776 => 1800", 0 },
 //              { "1800 => 1824", 0 },
 //              { "1824 => 1848", 5 },

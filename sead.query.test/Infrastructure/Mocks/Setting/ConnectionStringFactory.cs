@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Npgsql;
 
-namespace SeadQueryTest
+namespace SQT
 {
     public static class ConnectionStringFactory
     {

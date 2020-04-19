@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using SeadQueryCore;
 
-namespace SeadQueryTest
+namespace SQT
 {
     internal class MockIndex<T, T1> : Dictionary<T, T1>, IIndex<T, T1>
     {

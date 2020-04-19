@@ -4,10 +4,10 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Mocks;
+using SQT.Mocks;
 using Xunit;
 
-namespace SeadQueryTest.Infrastructure.Scaffolding
+namespace SQT.Infrastructure.Scaffolding
 {
     [Collection("JsonSeededFacetContext")]
     public class GenerateCSharpFixures : DisposableFacetContextContainer
@@ -16,7 +16,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
 
         public GenerateCSharpFixures(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-             mockQueryBuilderSetting = new SeadQueryTest.SettingFactory().Create().Value;
+             mockQueryBuilderSetting = new SQT.SettingFactory().Create().Value;
         }
 
         private string DataFolder()
@@ -99,7 +99,7 @@ namespace SeadQueryTest.Infrastructure.Scaffolding
         //[Fact(Skip = "Not a test. Scaffolds C# QuerySetup objects to file, read from a JSON seeded context")]
         public void ScaffoldCSharpQuerySetupsToFileUsingJsonSeededFacetContext()
         {
-            var scaffolder = new SeadQueryTest.Fixtures.MockQuerySetupFactory(Registry);
+            var scaffolder = new SQT.Fixtures.MockQuerySetupFactory(Registry);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {

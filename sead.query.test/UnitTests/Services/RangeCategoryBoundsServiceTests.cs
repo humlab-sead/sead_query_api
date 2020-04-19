@@ -2,11 +2,11 @@ using Autofac.Features.Indexed;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Services
+namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
     public class RangeCategoryBoundsServiceTests : DisposableFacetContextContainer

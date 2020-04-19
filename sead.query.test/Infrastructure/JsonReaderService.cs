@@ -4,13 +4,13 @@ using Newtonsoft.Json.Serialization;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Fixtures;
+using SQT.Fixtures;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     //public static class JsonTextLoader
     //{

@@ -1,14 +1,14 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.Model.Entities
+namespace SQT.Model
 {
     [Collection("JsonSeededFacetContext")]
     public class FacetTests : DisposableFacetContextContainer

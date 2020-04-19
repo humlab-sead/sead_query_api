@@ -2,10 +2,12 @@
 using Xunit;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
+using Moq;
 
-namespace SeadQueryTest.Cache {
+namespace SQT.Infrastructure.Cache
+{
 
     public class CacheTests
     {
@@ -48,10 +50,11 @@ namespace SeadQueryTest.Cache {
         [Fact]
         public void Resolve_CanResolveCacheService()
         {
-            var options = Startup.Options;
-            using (var container = TestDependencyService.CreateContainer(null, options))
+            var settingsMock = new Mock<ISetting>();
+            settingsMock.Setup(x => x.Facet).Returns(new FacetSetting());
+            settingsMock.Setup(x => x.Store).Returns(new StoreSetting());
+            using (var container = TestDependencyService.CreateContainer(null, settingsMock.Object))
             using (var scope = container.BeginLifetimeScope()) {
-                // Assert.IsNotNull(scope.Resolve<ICacheManager<object>>());
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
             }
         }

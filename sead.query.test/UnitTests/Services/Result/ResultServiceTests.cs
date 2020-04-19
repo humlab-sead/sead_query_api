@@ -2,15 +2,13 @@
 using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.Services.Result;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest
+namespace SQT
 {
     [Collection("JsonSeededFacetContext")]
     public class ResultContentServiceTests : DisposableFacetContextContainer
@@ -52,7 +50,7 @@ namespace SeadQueryTest
                 SessionId = "1",
                 AggregateKeys = new List<string> { resultKey }
             };
-            var mockResultQueryCompiler = MockResultQueryCompiler("SELECT * FROM dummy");
+            var mockResultQueryCompiler = MockResultConfigCompiler("SELECT * FROM dummy");
             var aggregate = Registry.Results.GetByKey(resultKey);
             var fields = aggregate.GetResultFieldTypes().ToList();
             var queryProxy = new MockDynamicQueryProxyFactory().CreateWithFakeData(fields, expectedCount);
@@ -80,18 +78,6 @@ namespace SeadQueryTest
         //    return mockCountServices;
         //}
 
-        private static Mock<IResultQueryCompiler> MockResultQueryCompiler(string returnSql)
-        {
-            var mockResultQueryCompiler = new Mock<IResultQueryCompiler>();
-            mockResultQueryCompiler.Setup(
-                c => c.Compile(
-                    It.IsAny<FacetsConfig2>(),
-                    It.IsAny<ResultConfig>(),
-                    "result_facet"
-                )
-            ).Returns(returnSql);
-            return mockResultQueryCompiler;
-        }
     }
 }
 

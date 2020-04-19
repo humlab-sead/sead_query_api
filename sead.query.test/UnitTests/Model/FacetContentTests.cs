@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Xunit;
 using static SeadQueryCore.FacetContent;
 
-namespace SeadQueryTest.Model
+namespace SQT.Model
 {
     public class FacetContentTests
     {

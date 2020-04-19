@@ -5,7 +5,7 @@ using SeadQueryCore.Services;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Services
+namespace SQT.Services
 {
     public class ReportServiceTests : IDisposable
     {

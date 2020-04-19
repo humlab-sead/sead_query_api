@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using Xunit;
 
-namespace SeadQueryTest.Fixtures
+namespace SQT.Fixtures
 {
 
     [Collection("JsonSeededFacetContext")]
@@ -20,7 +20,7 @@ namespace SeadQueryTest.Fixtures
         /// Reads out facets entities in Context and caches them in a Dictionary
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Facet> Build() { 
+        public Dictionary<string, Facet> Build() {
             return Registry.Facets.ToDictionary();
         }
     }

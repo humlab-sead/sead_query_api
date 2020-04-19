@@ -1,11 +1,10 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SeadQueryTest.Model.FacetsConfig
+namespace SQT.Model
 {
 
     [Collection("JsonSeededFacetContext")]

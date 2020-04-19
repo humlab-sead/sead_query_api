@@ -1,7 +1,7 @@
 ﻿using SeadQueryCore;
 using System;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public static class FacetGroupFactory
     {

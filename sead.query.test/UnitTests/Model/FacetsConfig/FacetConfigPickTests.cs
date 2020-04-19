@@ -3,7 +3,7 @@ using SeadQueryCore;
 using System;
 using Xunit;
 
-namespace SeadQueryTest.Model.FacetsConfig
+namespace SQT.Model
 {
     public class FacetConfigPickTests
     {

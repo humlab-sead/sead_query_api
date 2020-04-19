@@ -4,12 +4,12 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SeadQueryTest.Services.Result
+namespace SQT.Services.Result
 {
     [Collection("JsonSeededFacetContext")]
     public class MapResultServiceTests : DisposableFacetContextContainer
@@ -77,15 +77,15 @@ namespace SeadQueryTest.Services.Result
         //    }
         //}
 
-        private IResultQueryCompiler ConcreteResultCompiler(IRepositoryRegistry registry)
-        {
-            var resultSqlCompilers = new MockIndex<string, IResultQuerySetupSqlCompiler> {
-                {  "map", new MapResultQuerySetupSqlCompiler() }
-            };
-            IQuerySetupBuilder querySetupBuilder = MockQuerySetupBuilder();
-            var resultQueryCompiler = new ResultQueryCompiler(registry, querySetupBuilder, resultSqlCompilers);
-            return resultQueryCompiler;
-        }
+        //private IResultSqlCompiler ConcreteResultCompiler(IRepositoryRegistry registry)
+        //{
+        //    var resultSqlCompilers = new MockIndex<string, IResultSqlCompiler> {
+        //        {  "map", new MapResultSqlCompiler() }
+        //    };
+        //    IQuerySetupBuilder querySetupBuilder = MockQuerySetupBuilder();
+        //    var resultQueryCompiler = new ResultConfigCompiler(registry, querySetupBuilder, resultSqlCompilers);
+        //    return resultQueryCompiler;
+        //}
 
         //private IDiscreteCategoryCountService ConcreteDiscreteCategoryCountService(IRepositoryRegistry registry)
         //{

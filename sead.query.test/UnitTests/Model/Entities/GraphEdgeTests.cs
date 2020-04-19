@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using KellermanSoftware.CompareNetObjects;
 using SeadQueryCore;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using Xunit;
 
-namespace SeadQueryTest.Model.Entities
+namespace SQT.Model
 {
     public class GraphEdgeTests
     {

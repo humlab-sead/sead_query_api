@@ -1,15 +1,15 @@
 using Autofac;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SeadQueryTest.Repository
+namespace SQT.Infrastructure.Repository
 {
     [Collection("JsonSeededFacetContext")]
     public class RepositoryTests : DisposableFacetContextContainer

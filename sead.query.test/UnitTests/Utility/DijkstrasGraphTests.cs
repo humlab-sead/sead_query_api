@@ -1,11 +1,9 @@
-using Moq;
 using SeadQueryCore;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xunit;
 
-namespace SeadQueryTest.Utilities
+namespace SQT.Infrastructure.UtilityTest
 {
     public class DijkstrasGraphTests
     {

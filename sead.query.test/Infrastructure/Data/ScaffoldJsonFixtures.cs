@@ -2,11 +2,11 @@ using Newtonsoft.Json;
 using Xunit;
 using System.IO;
 using Newtonsoft.Json.Serialization;
-using SeadQueryTest.Fixtures;
-using SeadQueryTest.Mocks;
+using SQT.Fixtures;
+using SQT.Mocks;
 using SeadQueryInfra;
 
-namespace SeadQueryTest.Infrastructure.Scaffolding
+namespace SQT.Infrastructure.Scaffolding
 {
     public class ScaffoldJsonFixtures
     {

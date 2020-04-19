@@ -1,12 +1,10 @@
-using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryTest.Infrastructure;
-using SeadQueryTest.Mocks;
-using System;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using Xunit;
 
-namespace SeadQueryTest.Services.CategoryCount
+namespace SQT.Services
 {
 
     [Collection("JsonSeededFacetContext")]

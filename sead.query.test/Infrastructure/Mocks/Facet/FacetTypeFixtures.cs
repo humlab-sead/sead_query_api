@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SeadQueryCore;
 
-namespace SeadQueryTest.Fixtures
+namespace SQT.Fixtures
 {
     public static class FacetTypeFixtures
     {

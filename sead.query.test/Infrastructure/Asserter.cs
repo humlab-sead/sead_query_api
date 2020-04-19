@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     public static class Asserter
     {
