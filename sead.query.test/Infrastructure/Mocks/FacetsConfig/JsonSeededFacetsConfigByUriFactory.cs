@@ -1,7 +1,7 @@
 ﻿using SeadQueryCore;
 using SeadQueryInfra;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class JsonSeededFacetsConfigByUriFactory
     {

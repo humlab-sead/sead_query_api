@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public class JsonSeededFacetContext : FacetContext
     {

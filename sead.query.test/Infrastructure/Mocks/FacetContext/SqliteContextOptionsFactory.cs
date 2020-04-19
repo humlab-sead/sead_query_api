@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 using System.Data.Common;
 using SeadQueryInfra;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
 
     internal static class SqliteContextOptionsFactory

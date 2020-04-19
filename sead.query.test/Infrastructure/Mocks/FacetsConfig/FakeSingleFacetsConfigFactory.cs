@@ -1,7 +1,7 @@
 ﻿using SeadQueryCore;
 using SeadQueryAPI.Serializers;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class FakeSingleFacetsConfigFactory
     {

@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Globalization;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     /// <summary>
     /// Parses a URI that specifies a facetsConfig setup.
-    /// 
+    ///
     /// The URI must be of format:
-    /// 
+    ///
     ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
-    ///     
+    ///
     /// </summary>
     internal class MockFacetConfigUriParser
     {

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class SqliteConnectionFactory
     {
         public static DbConnection Create()
-        { 
+        {
             var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False");
             connection.Open();
             return connection;

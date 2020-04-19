@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class InMemoryContextOptionsFactory
     {

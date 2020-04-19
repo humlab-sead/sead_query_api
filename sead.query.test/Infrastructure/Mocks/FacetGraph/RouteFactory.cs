@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public static class RouteFactory
     {
-    
+
         public static List<string> ToPairs(List<string> trail)
         {
             return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();

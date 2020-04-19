@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace SeadQueryTest.Infrastructure
+namespace SQT.Infrastructure
 {
     using ItemsDictionary = Dictionary<Type, IEnumerable<object>>;
 

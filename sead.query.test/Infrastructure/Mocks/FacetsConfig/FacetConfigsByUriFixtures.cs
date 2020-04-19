@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public class FacetConfigsByUriFixtures
     {

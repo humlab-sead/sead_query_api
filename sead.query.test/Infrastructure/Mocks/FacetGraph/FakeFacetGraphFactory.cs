@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SeadQueryCore;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public static class FakeFacetGraphFactory
     {

@@ -3,7 +3,7 @@ using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class MockPickCompilersFactory
     {

@@ -1,7 +1,7 @@
 using Moq;
 using SeadQueryCore;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class SimpleFacetGraphFactoryFactory
     {

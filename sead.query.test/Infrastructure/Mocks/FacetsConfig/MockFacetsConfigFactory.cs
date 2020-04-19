@@ -4,10 +4,10 @@ using System.Linq;
 using System;
 using Moq;
 using System.Data.Common;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
 
     public class MockFacetsConfigFactory
@@ -56,12 +56,13 @@ namespace SeadQueryTest.Mocks
 
         /// <summary>
         /// Creates a new FacesConfig instance based on given Uri template.
+        ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*"
         /// </summary>
         /// <param name="uri">
         /// String specification in format:
-        /// 
+        ///
         ///   "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*"
-        ///   
+        ///
         /// </param>
         /// <returns></returns>
         public FacetsConfig2 Create(string uri)

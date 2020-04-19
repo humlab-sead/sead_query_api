@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryInfra;
-using SeadQueryTest.Infrastructure;
+using SQT.Infrastructure;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     internal static class JsonSeededFacetContextFactory
     {

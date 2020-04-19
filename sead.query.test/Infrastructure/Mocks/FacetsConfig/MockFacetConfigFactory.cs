@@ -1,7 +1,7 @@
 ﻿using SeadQueryCore;
 using System.Collections.Generic;
 
-namespace SeadQueryTest.Mocks
+namespace SQT.Mocks
 {
     public static class MockFacetConfigFactory
     {
