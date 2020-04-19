@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IResultQuerySetupSqlCompiler
+    public interface IResultSqlCompiler
     {
         string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup resultQuerySetup);
     }

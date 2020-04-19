@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore
 {
-    public interface IResultQueryCompiler {
+    public interface IResultConfigCompiler {
         string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode);
     }
 }
