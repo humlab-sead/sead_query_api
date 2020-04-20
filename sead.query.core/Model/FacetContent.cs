@@ -52,6 +52,12 @@ namespace SeadQueryCore
 
         public int CountOfSelections { get; set; } = 0;
 
+        [JsonConstructor]
+        public FacetContent()
+        {
+
+        }
+
         public FacetContent(
             FacetsConfig2 facetsConfig,
             List<CategoryCountItem> contentCategoryCounts,
