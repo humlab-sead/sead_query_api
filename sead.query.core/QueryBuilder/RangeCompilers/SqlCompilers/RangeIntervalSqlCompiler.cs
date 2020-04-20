@@ -4,7 +4,7 @@ namespace SeadQueryCore
 {
     public class RangeIntervalSqlCompiler : IRangeIntervalSqlCompiler
     {
-        public string Compile(int interval, int min, int max, int interval_count)
+        public virtual string Compile(int interval, int min, int max, int interval_count)
         {
             string sql = $@"
             (
