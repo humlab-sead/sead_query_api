@@ -21,6 +21,7 @@ namespace SQT.SqlCompilers
 
         [Theory]
         [InlineData("sites:sites", "sites", "count")]
+        [InlineData("sites:country/sites", "sites", "count")]
         public void Compile_StateUnderTest_ExpectedBehavior(string uri, string facetCode, string aggType)
         {
             // Arrange
@@ -28,7 +29,13 @@ namespace SQT.SqlCompilers
             var querySetup = querySetupMockFactory.Scaffold(uri);
             var resultConfig = CreateResultSetup();
             var facet = Registry.Facets.GetByCode(facetCode);
-            var countFacet = facet;
+
+            // Act
+
+            var mapResultSqlCompiler = new MapResultSqlCompiler();
+            var result = mapResultSqlCompiler.Compile(querySetup, facet, resultConfig);
+
+            // Assert
 
             string expectedSql = $@"
                 SELECT DISTINCT (?<idExpr>\w+) AS id_column, (?<nameExpr>\w+) AS name, coalesce(latitude_dd, 0.0) AS latitude_dd, coalesce(longitude_dd, 0) AS longitude_dd
@@ -37,13 +44,7 @@ namespace SQT.SqlCompilers
                 WHERE 1 = 1
                 (?<additionalCriteria>.*)
             ";
-
-            // Act
-
-            var mapResultSqlCompiler = new MapResultSqlCompiler();
-            var result = mapResultSqlCompiler.Compile(querySetup, facet, resultConfig);
-
-            // Assert
+            
             expectedSql = expectedSql.Squeeze();
             result = result.Squeeze();
 
