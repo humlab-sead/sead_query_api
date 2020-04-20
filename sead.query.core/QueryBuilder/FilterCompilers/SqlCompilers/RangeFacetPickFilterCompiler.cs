@@ -4,7 +4,6 @@ namespace SeadQueryCore.QueryBuilder
 {
     public class RangeFacetPickFilterCompiler : IPickFilterCompiler {
 
-
         public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             var picks = config.GetPickValues(true);
