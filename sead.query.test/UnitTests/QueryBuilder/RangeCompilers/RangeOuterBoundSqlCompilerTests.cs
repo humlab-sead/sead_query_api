@@ -15,49 +15,20 @@ namespace SQT.SqlCompilers
         {
         }
 
-        private RangeOuterBoundSqlCompiler CreateRangeOuterBoundSqlCompiler()
-        {
-            return new RangeOuterBoundSqlCompiler();
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Compile_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
+        public void Compile_VariousConfigs_ExpectedBehavior(string uri)
         {
             // Arrange
-            var rangeOuterBoundSqlCompiler = this.CreateRangeOuterBoundSqlCompiler();
-            var facetCode = "tbl_denormalized_measured_values_33_0";
-
-            var facet = Registry.Facets.GetByCode("tbl_denormalized_measured_values_33_0");
-
-            var targetFacetConfig = new FacetConfig2 {
-                FacetCode = facetCode,
-                Position = 1,
-                TextFilter = "",
-                Picks = new List<FacetConfigPick> {
-                },
-                Facet = facet
-            };
-
-            var sqlJoins = new List<string>() { };
-            var criterias = new List<string>() { };
-            var routes = new List<GraphRoute>() { };
-
-            QuerySetup query = new QuerySetup() {
-                TargetConfig = targetFacetConfig,
-                Facet = facet,
-                Joins = sqlJoins,
-                Criterias = criterias,
-                Routes = routes
-            };
+            var fakeQuerySetup = FakeQuerySetup(uri);
 
             // Act
-            var result = rangeOuterBoundSqlCompiler.Compile(
-                query,
-                facet
-            );
+            var rangeOuterBoundSqlCompiler = new RangeOuterBoundSqlCompiler();
+            var result = rangeOuterBoundSqlCompiler.Compile(null /* fakeQuerySetup not used */, fakeQuerySetup.Facet);
 
             // Assert
-            Assert.True(false);
+            var expectedSql = @"SELECT.*MIN.*MAX.*FROM.*";
+            Assert.Matches(expectedSql, result.Squeeze());
         }
     }
 }
