@@ -298,7 +298,7 @@ namespace SQT
             mockResultSqlCompilerLocator
                 .Setup(z => z.Locate(It.IsAny<string>()))
                 .Returns(mockResultSqlCompiler.Object);
-            return null;
+            return mockResultSqlCompilerLocator;
         }
 
         public virtual ResultConfig FakeResultConfig(string aggregateKey, string viewTypeId)
