@@ -28,7 +28,7 @@ namespace SQT.Model
         {
             // Arrange
             var reconstituter = new FacetConfigReconstituteService(Registry);
-            FacetsConfig2 facetsConfig = FacetsConfigFactory.CreateSingleFacetsConfigWithoutPicks("sites");
+            FacetsConfig2 facetsConfig = FacetsConfigFactory.Create("sites:sites");
             string json1 = JsonConvert.SerializeObject(facetsConfig);
             // Act
             FacetsConfig2 facetsConfig2 = reconstituter.Reconstitute(json1);
@@ -409,5 +409,6 @@ namespace SQT.Model
             // Assert
             Assert.False(facetsConfig.HasPicks());
         }
+
     }
 }

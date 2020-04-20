@@ -27,6 +27,7 @@ namespace SQT.Mocks
 
         public class UriData
         {
+            public string Domain { get; set; }
             public string Uri { get; set; }
             public string TargetCode { get; set; }
             public string TriggerCode { get; set; }
@@ -35,12 +36,20 @@ namespace SQT.Mocks
 
         /// <summary>
         /// Parsed URI of format:
-        ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
+        ///     "[domain://]target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
         /// </summary>
         /// <param name="uri"></param>
         /// <returns>@UriData instance with parsed data</returns>
         public UriData Parse(string uri)
         {
+            var domain = "";
+            var domainParts = uri.Split("://").ToList();
+
+            if (domainParts.Count > 1) {
+                domain = domainParts[0];
+                uri = domainParts[1];
+            }
+
             var parts            = uri.Split(':').ToList();
             var codes            = parts[0].Split("@");
             var targetCode       = codes[0];
@@ -58,6 +67,7 @@ namespace SQT.Mocks
                 .ToDictionary(z => z.FacetCode, z => z.Picks);
 
             return new UriData {
+                Domain = domain,
                 Uri = uri,
                 TargetCode = targetCode,
                 TriggerCode = triggerCode,

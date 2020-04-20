@@ -78,7 +78,9 @@ namespace SQT.Mocks
             return Create(
                 config.TargetCode,
                 config.TargetCode,
-                facetConfigs
+                facetConfigs,
+                "populate",
+                config.Domain
             );
         }
 
