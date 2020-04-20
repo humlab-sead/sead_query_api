@@ -132,7 +132,10 @@ namespace SeadQueryCore.QueryBuilder
             var criterias = involvedConfigs
                 .Select(
                     config => PickCompiler(config).Compile(targetFacet, config.Facet, config)
-                 );
+                 )
+                .Where(
+                    x => ! x.IsNotEmpty()
+                );
             return criterias;
         }
 
