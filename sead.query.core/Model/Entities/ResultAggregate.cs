@@ -17,10 +17,7 @@ namespace SeadQueryCore
         public int AggregateId { get; set; }
         public string AggregateKey { get; set; }
         public string DisplayText { get; set; }
-        public bool IsApplicable { get; set; }
         public bool IsActivated { get; set; }
-        public string InputType { get; set; }
-        public bool HasSelector { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<ResultAggregateField> Fields { get; set; }
@@ -37,7 +34,8 @@ namespace SeadQueryCore
 
         public IEnumerable<(string Name, Type Type)> GetResultFieldTypes()
         {
-            return GetResultFields().Select((field, i) => ($"alias_{i + 1}", field.ResultField.GetDataType()));
+            return GetResultFields()
+                .Select((field, i) => ($"alias_{i + 1}", field.ResultField.GetDataType()));
         }
 
     }

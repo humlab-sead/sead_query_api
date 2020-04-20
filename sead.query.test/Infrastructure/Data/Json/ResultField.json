@@ -37,8 +37,6 @@
     "DisplayText": "Full report",
     "FieldTypeId": "link_item",
     "Activated": true,
-    "LinkUrl": "api/report/show_site_details.php?site_id",
-    "LinkLabel": "Show site report",
     "DataType": "int"
   },
   {
@@ -49,8 +47,6 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item",
     "Activated": true,
-    "LinkUrl": "api/report/show_site_details.php?site_id",
-    "LinkLabel": "Show filtered report",
     "DataType": "int"
   },
   {
@@ -61,7 +57,6 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item_filtered",
     "Activated": true,
-    "LinkUrl": "api/report/show_details_all_levels.php?level",
     "DataType": "text"
   },
   {

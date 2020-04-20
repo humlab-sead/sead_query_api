@@ -5,7 +5,6 @@
     "DisplayText": "Site level",
     "IsApplicable": false,
     "IsActivated": true,
-    "InputType": "checkboxes",
     "HasSelector": true
   },
   {
@@ -14,7 +13,6 @@
     "DisplayText": "Aggregate all",
     "IsApplicable": false,
     "IsActivated": true,
-    "InputType": "checkboxes",
     "HasSelector": true
   },
   {
@@ -23,7 +21,6 @@
     "DisplayText": "Sample group level",
     "IsApplicable": false,
     "IsActivated": true,
-    "InputType": "checkboxes",
     "HasSelector": true
   },
   {
@@ -32,7 +29,6 @@
     "DisplayText": "Map result",
     "IsApplicable": false,
     "IsActivated": false,
-    "InputType": "checkboxes",
     "HasSelector": false
   }
 ]

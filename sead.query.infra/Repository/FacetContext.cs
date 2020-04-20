@@ -187,10 +187,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.AggregateId).HasColumnName("aggregate_id").IsRequired();
                 entity.Property(b => b.AggregateKey).HasColumnName("aggregate_key").IsRequired();
                 entity.Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
-                entity.Property(b => b.IsApplicable).HasColumnName("is_applicable").IsRequired();
                 entity.Property(b => b.IsActivated).HasColumnName("is_activated").IsRequired();
-                entity.Property(b => b.InputType).HasColumnName("input_type").IsRequired();
-                entity.Property(b => b.HasSelector).HasColumnName("has_selector").IsRequired();
                 entity.HasMany<ResultAggregateField>(x => x.Fields).WithOne(x => x.Aggregate).HasForeignKey(p => p.AggregateId);
             });
 
