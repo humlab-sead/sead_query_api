@@ -9,6 +9,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
+    [Collection("JsonSeededFacetContext")]
     public class ResultConfigCompilerTests : DisposableFacetContextContainer
     {
         public ResultConfigCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
@@ -24,7 +25,7 @@ namespace SQT.SqlCompilers
             // Arrange
             var facetsConfig = FakeFacetsConfig(uri);
             var querySetup = FakeQuerySetup(uri);
-            ResultConfig fakeResultConfig = FakeResultConfig(aggregateKey, viewTypeId);
+            var fakeResultConfig = FakeResultConfig(aggregateKey, viewTypeId);
 
             var mockQuerySetupBuilder = MockQuerySetupBuilder(querySetup);
             var mockResultSqlCompilerLocator = MockResultSqlCompilerLocator("#SQL#");
@@ -33,7 +34,7 @@ namespace SQT.SqlCompilers
 
             // Act
             var resultQueryCompiler = new SeadQueryCore.ResultConfigCompiler(
-                base.Registry,
+                Registry,
                 mockQuerySetupBuilder.Object,
                 mockResultSqlCompilerLocator.Object
             );
