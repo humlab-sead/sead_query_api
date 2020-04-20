@@ -72,7 +72,6 @@
     "DisplayText": "Full report",
     "FieldTypeId": "link_item",
     "Activated": true,
-    "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id",
     "DataType": "int"
   },
   {
@@ -83,7 +82,6 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "link_item",
     "Activated": true,
-    "LinkUrl": "api/report/show_sample_group_details.php?sample_group_id",
     "DataType": "int"
   },
   {
@@ -124,7 +122,6 @@
     "DisplayText": "Dataset details",
     "FieldTypeId": "single_item",
     "Activated": true,
-    "LinkUrl": "client/show_dataset_details.php?dataset_id",
     "DataType": "int"
   },
   {
@@ -135,7 +132,6 @@
     "DisplayText": "Filtered report",
     "FieldTypeId": "single_item",
     "Activated": true,
-    "LinkUrl": "client/show_dataset_details.php?dataset_id",
     "DataType": "int"
   },
   {

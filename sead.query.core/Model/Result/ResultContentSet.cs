@@ -13,8 +13,6 @@ namespace SeadQueryCore.Model
         {
             public string FieldKey { get; set; }
             public string DisplayText { get; set; }
-            public string LinkLabel { get; set; }
-            public string LinkUrl { get; set; }
             public string Type { get; set; }
 
             public static List<ResultColumn> Map(List<ResultAggregateField> resultFields, List<SourceColumnType> dataColumns)
@@ -23,8 +21,6 @@ namespace SeadQueryCore.Model
                 {
                     FieldKey = z.ResultField.ResultFieldKey,
                     DisplayText = z.ResultField.DisplayText,
-                    LinkLabel = z.ResultField.LinkLabel,
-                    LinkUrl = z.ResultField.LinkUrl,
                     Type = dataColumns[i].NetType
                 }).ToList();
             }

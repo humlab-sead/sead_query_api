@@ -165,8 +165,6 @@ namespace SeadQueryInfra
                 entity.Property(b => b.ColumnName).HasColumnName("column_name").IsRequired();
                 entity.Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
                 entity.Property(b => b.Activated).HasColumnName("activated").IsRequired();
-                entity.Property(b => b.LinkUrl).HasColumnName("link_url");
-                entity.Property(b => b.LinkLabel).HasColumnName("link_label");
                 entity.Property(b => b.DataType).HasColumnName("datatype");
                 entity.HasOne(x => x.FieldType).WithMany().HasForeignKey(p => p.FieldTypeId);
             });
