@@ -1,51 +1,51 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
+using SQT.Infrastructure;
 using System;
 using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    public class RangeFacetPickFilterCompilerTests : IDisposable
+    public class RangeFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
-        private MockRepository mockRepository;
-
-
-
-        public RangeFacetPickFilterCompilerTests()
+        public RangeFacetPickFilterCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
         }
 
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private RangeFacetPickFilterCompiler CreateRangeFacetPickFilterCompiler()
-        {
-            return new RangeFacetPickFilterCompiler();
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Compile_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
+        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@0,10")]
+        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@10,10")]
+        public void Compile_VariousConfigs_ExpectedBehavior(string uri)
         {
             // Arrange
-            var rangeFacetPickFilterCompiler = this.CreateRangeFacetPickFilterCompiler();
-            Facet targetFacet = null;
-            Facet currentFacet = null;
-            FacetConfig2 config = null;
+            var facetsConfig = FakeFacetsConfig(uri);
+            var facetConfig = facetsConfig.TargetConfig;
+            var facet = facetConfig.Facet;
 
             // Act
-            var result = rangeFacetPickFilterCompiler.Compile(
-                targetFacet,
-                currentFacet,
-                config);
+            var rangeFacetPickFilterCompiler = new RangeFacetPickFilterCompiler();
+            var result = rangeFacetPickFilterCompiler.Compile(null, facet, facetConfig);
 
             // Assert
-            Assert.True(false);
+
+            if (facetConfig.HasPicks()) {
+
+                var picks = facetConfig.Picks;
+                var sqlEqualExpected = (picks[0].PickValue == picks[1].PickValue) ?
+                        @"\(floor\(.+\) = [\d+-,]+\)" :  @"\(.+ >= [\d+-,]+ and .+ <= [\d+-,]+\)";
+                var sqlWhere = facetConfig.HasCriterias() ? "AND .+" : "";
+                var sqlExpected = $@"{sqlEqualExpected}\s?{sqlWhere}";
+
+                Assert.Matches(sqlExpected, result.Squeeze());
+
+            } else {
+
+                Assert.Matches("", result.Squeeze());
+
+            }
+
         }
     }
 }
