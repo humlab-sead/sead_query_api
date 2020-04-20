@@ -8,33 +8,21 @@ namespace SQT.SqlCompilers
 {
     public class RangeIntervalSqlCompilerTests
     {
-        private RangeIntervalSqlCompiler CreateRangeIntervalSqlCompiler()
-        {
-            return new RangeIntervalSqlCompiler();
-        }
-
         private string removeWhiteSpace(string str)
         {
             return new String((from c in str where !char.IsWhiteSpace(c) select c).ToArray()).ToLower();
         }
 
-        [Fact]
-        public void Compile_Interval_ContainsGenerateSeries()
+        [Theory]
+        [InlineData(10, 0, 120, 0)]
+        [InlineData(10, 0, 500, 0)]
+        public void Compile_Interval_ContainsGenerateSeries(int interval, int min, int max, int interval_count)
         {
             // Arrange
-            var compiler = this.CreateRangeIntervalSqlCompiler();
-            int interval = 10;
-            int min = 0;
-            int max = 120;
-            int interval_count = 0;
+            var compiler = new RangeIntervalSqlCompiler();
 
             // Act
-            var result = compiler.Compile(
-                interval,
-                min,
-                max,
-                interval_count
-            );
+            var result = compiler.Compile(interval, min, max, interval_count);
 
             // Assert
             var expected = $"generate_series({min},{max},{interval})";
