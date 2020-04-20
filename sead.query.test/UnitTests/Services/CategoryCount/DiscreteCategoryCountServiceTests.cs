@@ -22,7 +22,7 @@ namespace SQT.Services
             var fakeSettings = FakeFacetSetting();
             var fakeRegistry = FakeRegistry();
 
-            var fakeFacetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
 
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
             var mockCategoryCountSqlCompiler = MockDiscreteCategoryCountSqlCompiler(returnSql: "SELECT * FROM foot.bar");

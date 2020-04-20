@@ -25,7 +25,7 @@ namespace SQT.Services
             // Arrange
             var config = new SettingFactory().Create().Value.Facet;
             var mockRegistry = MockRegistryWithFacetRepository();
-            var mockFacetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var mockFacetsConfig = FakeFacetsConfig(uri);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
             var mockRangeCountSqlCompiler = MockRangeCategoryCountSqlCompiler(returnSql: "SELECT * FROM foot.bar");
             var fakeResult = FakeRangeCategoryCountItems(start: 0, step: 10, count: 3);

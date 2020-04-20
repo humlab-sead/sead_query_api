@@ -46,7 +46,7 @@ namespace SQT.Services
                 queryProxy.Object
              );
 
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create("sites:sites");
+            var facetsConfig = FakeFacetsConfig("sites:sites");
 
             var result = service.Load(facetsConfig);
 

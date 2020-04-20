@@ -79,7 +79,7 @@ namespace SQT.Model
         public void GetConfig_WhenConfigExists_ExpectedBehavior(string uri, string facetCode)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
 
             // Act
             var result = facetsConfig.GetConfig(facetCode);
@@ -100,7 +100,7 @@ namespace SQT.Model
         public void GetFacetCodes_VariousFacetsConfig_ExpectedBehavior(string uri, params string[] facetCodes)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
 
             // Act
             var result = facetsConfig.GetFacetCodes();
@@ -119,7 +119,7 @@ namespace SQT.Model
         public void GetFacetConfigsWithPicks_VariousFacetsConfig_ExpectedBehavior(string uri, params string[] facetCodes)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
 
             // Act
             var result = facetsConfig.GetFacetConfigsWithPicks();
@@ -154,7 +154,7 @@ namespace SQT.Model
         public void IsPriorTo_StateUnderTest_ExpectedBehavior(string uri, params string[] facetCodes)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
             var targetFacet = facetsConfig.TargetFacet;
 
             // Act
@@ -314,7 +314,7 @@ namespace SQT.Model
         public void GetConfigsThatAffectsTarget_StateUnderTest_ExpectedBehavior(string uri, bool isAggregate, params string[] expectedInvolvedCodes)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
             var facetCodes = facetsConfig.GetFacetCodes();
             var targetCode = facetsConfig.TargetCode;
 
@@ -336,7 +336,7 @@ namespace SQT.Model
         //public void GetFacetConfigsAffectedBy_StateUnderTest_ExpectedBehavior(string uri, params string[] facetCodes)
         //{
         //    // Arrange
-        //    var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        //    var facetsConfig = FakeFacetsConfig(uri);
 
         //    // Act
         //    var result = facetsConfig.GetFacetConfigsAffectedBy(facetsConfig.TargetFacet, facetCodes.ToList());
@@ -353,7 +353,7 @@ namespace SQT.Model
         public void CollectUserPicks_VariousFacetsConfig_ExpectedBehavior(string uri, params string[] expected)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
 
             // Act
             var result = facetsConfig.CollectUserPicks();
@@ -384,7 +384,7 @@ namespace SQT.Model
         public void HasPicks_VariousFacetsConfig_ExpectedBehavior(string uri, EFacetType facetType, bool hasPicks)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
 
             // Act
             var result = facetsConfig.HasPicks(facetType);
@@ -400,7 +400,7 @@ namespace SQT.Model
         public void ClearPicks_HasOrHasNotPicks_ExpectedBehavior(string uri, bool hasPicks)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
             Assert.Equal(hasPicks, facetsConfig.HasPicks());
 
             // Act

@@ -41,7 +41,7 @@ namespace SQT.Services.Result
 
         //        // Arrange
         //        var uri = "sites:sites";
-        //        var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        //        var facetsConfig = FakeFacetsConfig(uri);
         //        var resultKeys = new List<string>() { "site_level" };
         //        var resultConfig = ResultConfigFactory.Create("map", resultKeys);
 

@@ -42,7 +42,7 @@ namespace SQT
         public void Load_WithVariousSetups_Success(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
             // Arrange
-            var facetsConfig = new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
             var resultConfig = new ResultConfig()
             {
                 ViewTypeId = viewTypeId,
