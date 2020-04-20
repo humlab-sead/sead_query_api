@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class TestHostBuilderFixture : IDisposable
+    public class TestHostBuilderFixture<T> : IDisposable where T: class, new()
     {
         public IHostBuilder Builder;
         public Task<IHost> Server;
         public HttpClient Client;
         public TestHostBuilderFixture()
         {
-            Builder = new SeadTestHostBuilder().Create<TestStartup<TestDependencyService>>();
+            Builder = new SeadTestHostBuilder().Create<T>();
             Server = Builder.StartAsync();
             Client = Server.Result.GetTestClient();
         }

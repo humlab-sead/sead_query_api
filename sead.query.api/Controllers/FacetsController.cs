@@ -79,7 +79,6 @@ namespace SeadQueryAPI.Controllers
         /// <summary>
         /// Returns a specific facet definition
         /// </summary>
-        /// <param name="facetCode"></param>
         /// <returns></returns>
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Facet))]
         [HttpGet("domain/{id}")]

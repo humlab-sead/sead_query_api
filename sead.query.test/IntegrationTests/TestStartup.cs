@@ -51,7 +51,6 @@ namespace IntegrationTests
                 // endpoints.MapDefaultControllerRoute();
                 // endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 // endpoints.MapHealthChecks("/health");
-
             });
         }
     }

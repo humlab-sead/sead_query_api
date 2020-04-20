@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SQT.Mocks;
+using SQT.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,22 +9,15 @@ using Xunit;
 
 namespace IntegrationTests
 {
-    public class ControllerTest : IClassFixture<TestHostBuilderFixture>
+
+    public class FacetsControllerHostWithContainer : TestHostBuilderFixture<TestStartup<TestDependencyService>>
     {
-        protected readonly MockFacetsConfigFactory FacetsConfigMockFactory;
 
-        public TestHostBuilderFixture Fixture { get; }
-
-        public ControllerTest(TestHostBuilderFixture fixture)
-        {
-            FacetsConfigMockFactory = new MockFacetsConfigFactory(null);
-            Fixture = fixture;
-        }
     }
 
-    public class FacetsControllerTests : ControllerTest, IClassFixture<TestHostBuilderFixture>
+    public class FacetsControllerTests : ControllerTest<FacetsControllerHostWithContainer>, IClassFixture<FacetsControllerHostWithContainer>
     {
-        public FacetsControllerTests(TestHostBuilderFixture fixture): base(fixture)
+        public FacetsControllerTests(FacetsControllerHostWithContainer fixture): base(fixture)
         {
         }
 
@@ -77,7 +70,7 @@ namespace IntegrationTests
         [Fact]
         public async Task API_GET_Facets_Domain_Success()
         {
-            using (var response = await Fixture.Client.GetAsync($"api/facets/domain")) {
+            using (var response = await Fixture.Client.GetAsync("api/facets/domain")) {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<JObject> facet = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
