@@ -2,71 +2,85 @@
   {
     "FacetClauseId": 1,
     "FacetId": 32,
-    "Clause": "facet.view_abundance.abundance is not null"
+    "Clause": "facet.view_abundance.abundance is not null",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 2,
     "FacetId": 21,
-    "Clause": "countries.location_type_id=1"
+    "Clause": "countries.location_type_id=1",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 3,
     "FacetId": 25,
-    "Clause": "tbl_sites.site_id is not null"
+    "Clause": "tbl_sites.site_id is not null",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 4,
     "FacetId": 33,
-    "Clause": "facet.view_abundance.abundance is not null"
+    "Clause": "facet.view_abundance.abundance is not null",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 5,
     "FacetId": 36,
-    "Clause": "facet.view_sample_group_references.biblio_id is not null"
+    "Clause": "facet.view_sample_group_references.biblio_id is not null",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 6,
     "FacetId": 37,
-    "Clause": "facet.view_site_references.biblio_id is not null"
+    "Clause": "facet.view_site_references.biblio_id is not null",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 7,
     "FacetId": 41,
-    "Clause": "tbl_locations.location_type_id in (2, 7, 14, 16, 18)"
+    "Clause": "tbl_locations.location_type_id in (2, 7, 14, 16, 18)",
+    "EnforceConstraint": false
   },
   {
     "FacetClauseId": 8,
     "FacetId": 1001,
-    "Clause": "tbl_methods.method_id in (3, 6)"
+    "Clause": "tbl_methods.method_id in (3, 6)",
+    "EnforceConstraint":  true
   },
   {
     "FacetClauseId": 9,
     "FacetId": 1002,
-    "Clause": "tbl_methods.method_id in (4, 8)"
+    "Clause": "tbl_methods.method_id in (4, 8)",
+    "EnforceConstraint": true
   },
   {
     "FacetClauseId": 10,
     "FacetId": 1003,
-    "Clause": "tbl_methods.method_id in (14, 15, 21)"
+    "Clause": "tbl_methods.method_id in (14, 15, 21)",
+    "EnforceConstraint": true
   },
   {
     "FacetClauseId": 11,
     "FacetId": 1004,
-    "Clause": "tbl_methods.method_id in (32, 33, 35, 36, 37, 94, 106)"
+    "Clause": "tbl_methods.method_id in (32, 33, 35, 36, 37, 94, 106)",
+    "EnforceConstraint": true
   },
   {
     "FacetClauseId": 12,
     "FacetId": 1005,
-    "Clause": "tbl_methods.method_id in (10)"
+    "Clause": "tbl_methods.method_id in (10)",
+    "EnforceConstraint": true
   },
   {
     "FacetClauseId": 13,
     "FacetId": 1006,
-    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'The Laboratory for Ceramic Research (Lund/KFL)')"
+    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'The Laboratory for Ceramic Research (Lund/KFL)')",
+    "EnforceConstraint": true
   },
   {
     "FacetClauseId": 14,
     "FacetId": 1007,
-    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'Sample data Isotopes')"
+    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'Sample data Isotopes')",
+    "EnforceConstraint": true
   }
 ]
