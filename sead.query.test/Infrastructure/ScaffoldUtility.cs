@@ -20,7 +20,7 @@ namespace SQT.Infrastructure
                 LineBreakChar = Environment.NewLine,
                 SetPropertiesOnly = false,
                 MaxLevel = 10, // int.MaxValue,
-                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "TargetFacet", "TriggerFacet" },
+                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "DomainFacet", "TargetFacet", "TriggerFacet" },
                 PropertyOrderBy = null,
                 IgnoreDefaultValues = false
             };

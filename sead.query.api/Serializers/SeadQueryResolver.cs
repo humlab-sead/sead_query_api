@@ -32,6 +32,7 @@ namespace SeadQueryAPI.Serializers
             IgnoreProperty(typeof(FacetsConfig2),
                     "Context",
                     "facetConfigs",
+                    "DomainFacet",
                     "TargetFacet",
                     "TriggerFacet",
                     "TargetConfig"

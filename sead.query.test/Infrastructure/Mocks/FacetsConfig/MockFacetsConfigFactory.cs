@@ -33,6 +33,7 @@ namespace SQT.Mocks
             return new FacetsConfig2()
             {
                 DomainCode = domainCode,
+                DomainFacet = domainCode.IsNotEmpty() ? GetFacet(domainCode) : null,
                 TargetCode = targetCode,
                 TargetFacet = GetFacet(targetCode),
                 TriggerCode = triggerCode,

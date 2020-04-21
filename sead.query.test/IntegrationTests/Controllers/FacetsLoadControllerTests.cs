@@ -51,9 +51,9 @@ namespace IntegrationTests
             }
         }
         [Theory]
-        [InlineData("sites:sites")]
+        //[InlineData("sites:sites")]
         [InlineData("sites:country@5/sites")]
-        public async Task CanLoadSimpleDiscreteFacetWithoutPicks(string uri)
+        public async Task Load_DiscreteFacetConfigs_IsLoaded(string uri)
         {
             var facetsConfig = MockService.FakeFacetsConfig(uri);
             var json = JsonConvert.SerializeObject(facetsConfig);
@@ -71,7 +71,7 @@ namespace IntegrationTests
                 Assert.NotEmpty(facetContent.Items);
 
                 CompareLogic compare = new CompareLogic();
-                compare.Config.MembersToIgnore.AddRange(new string[] { "TriggerFacet", "TargetFacet", "Facet" });
+                compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TriggerFacet", "TargetFacet", "Facet" });
                 //.IgnoreProperty<FacetsConfig2>(x => x.TriggerFacet);
 
                 var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual;

@@ -29,6 +29,9 @@ namespace SeadQueryAPI.Serializers
 
         private Facet GetFacetByCode(string facetCode)
         {
+            if (String.IsNullOrEmpty(facetCode))
+                return null;
+
             return Registry.Facets.GetByCode(facetCode);
         }
 
@@ -44,15 +47,17 @@ namespace SeadQueryAPI.Serializers
             if (Utility.empty(facetsConfig.TriggerCode)) {
                 facetsConfig.TriggerCode = facetsConfig.TargetCode;
             }
+            facetsConfig.DomainFacet = GetFacetByCode(facetsConfig.DomainCode);
             facetsConfig.TargetFacet = GetFacetByCode(facetsConfig.TargetCode);
             facetsConfig.TriggerFacet = GetFacetByCode(facetsConfig.TriggerCode);
+
             foreach (var config in facetsConfig.FacetConfigs) {
                 Reconstitute(config);
             }
 
-            if (!String.IsNullOrEmpty(facetsConfig.DomainCode)) {
-                facetsConfig.FacetConfigs.Insert(0, CreateConfigByCode(facetsConfig.DomainCode));
-            }
+            // if (!String.IsNullOrEmpty(facetsConfig.DomainCode)) {
+            //     facetsConfig.FacetConfigs.Insert(0, CreateConfigByCode(facetsConfig.DomainCode));
+            // }
 
             new FacetsConfigSpecification().IsSatisfiedBy(facetsConfig);
 
