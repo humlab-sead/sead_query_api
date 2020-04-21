@@ -194,9 +194,11 @@ namespace SQT
             );
             return mockCategoryCountSqlCompiler;
         }
+
         public virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
         {
             var mockPickCompiler = new Mock<IPickFilterCompiler>();
+            var HasNoPicks = Match.Create<FacetConfig2>(x => ! x.HasPicks());
 
             mockPickCompiler
                 .Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
@@ -207,6 +209,20 @@ namespace SQT
             mockLocator
                 .Setup(x => x.Locate(It.IsAny<EFacetType>()))
                 .Returns(mockPickCompiler.Object);
+
+            return mockLocator;
+        }
+
+        public virtual Mock<IPickFilterCompilerLocator> MockConcretePickCompilerLocator()
+        {
+            var mockLocator = new Mock<IPickFilterCompilerLocator>();
+            mockLocator
+                .Setup(x => x.Locate(EFacetType.Discrete))
+                .Returns(new DiscreteFacetPickFilterCompiler());
+
+            mockLocator
+                .Setup(x => x.Locate(EFacetType.Range))
+                .Returns(new RangeFacetPickFilterCompiler());
 
             return mockLocator;
         }
