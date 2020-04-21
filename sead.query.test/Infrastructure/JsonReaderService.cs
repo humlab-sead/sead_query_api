@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace SQT.Infrastructure
 {
@@ -37,10 +38,13 @@ namespace SQT.Infrastructure
     public class JsonReaderService
     {
         public IContractResolver ContractResolver { get; }
+        public MethodInfo DeserializeMethodInfo { get; }
 
         public JsonReaderService(IContractResolver contractResolver)
         {
             ContractResolver = contractResolver; // ?? new JsonFileContractResolver();
+            DeserializeMethodInfo = typeof(JsonReaderService)
+                .GetMethods().Single(x => x.Name == "Deserialize" && x.IsGenericMethodDefinition);
         }
 
         public IEnumerable<T> Deserialize<T>(string folder) where T : class, new()
@@ -64,8 +68,7 @@ namespace SQT.Infrastructure
 
         public IEnumerable<object> Deserialize(Type type, string folder)
         {
-            return (IEnumerable<object>)typeof(JsonReaderService)
-                .GetMethods().Single(x => x.Name == "Deserialize" && x.IsGenericMethodDefinition)
+            return (IEnumerable<object>)DeserializeMethodInfo
                 .MakeGenericMethod(type)
                 .Invoke(this, new object[] { folder });
         }
