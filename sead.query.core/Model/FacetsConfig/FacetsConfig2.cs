@@ -27,7 +27,7 @@ namespace SeadQueryCore
 
         public string DomainCode { get; set; } = "";
         /// <summary>
-        /// Specifies request language. Only english supported in new version
+        /// Request specifier ("populate", ...)
         /// </summary>
         public string RequestType { get; set; } = "";       // Request specifier ("populate", ...)
 
@@ -46,7 +46,16 @@ namespace SeadQueryCore
             }
         }
 
+        [JsonIgnore]
+        public Facet DomainFacet { get; set; }
+        /// <summary>
+        /// The target facet of interest for which we want to produce content or result.
+        /// </summary>
         public Facet TargetFacet { get; set; }
+        /// <summary>
+        /// The facet that triggered this information. Not used by Core Logic, pass-through, round-trip variable
+        /// This is a facet that preceed the target facet in the facet chain
+        /// </summary>
         public Facet TriggerFacet { get; set; }
 
 
@@ -57,16 +66,74 @@ namespace SeadQueryCore
         }
 
         public FacetConfig2 GetConfig(string facetCode)                 => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
+        public FacetConfig2 GetConfig(Facet facet)                      => GetConfig(facet.FacetCode);
+
         public List<FacetConfig2> GetConfigs(List<string> facetCodes)   => FacetConfigs.Where(c => facetCodes.Contains(c.FacetCode)).ToList();
 
         public List<string> GetFacetCodes()                             => FacetConfigs.Select(x => x.FacetCode).ToList();
+
         public List<FacetConfig2> GetFacetConfigsWithPicks()            => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
-        // public List<string> GetFacetCodesWithPicks()                 => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
+
+        public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
+        {
+            if (!facetConfig.HasConstraints()) {
+                // FIXME Is this a relevant condition?
+                return false;
+            }
+
+            if (targetFacet.FacetCode == facetConfig.FacetCode)
+                return targetFacet.FacetType.ReloadAsTarget;
+
+            return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(facetConfig.FacetCode);
+
+        }
 
         public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet targetFacet, List<string> facetCodes)
         {
-            return GetConfigs(facetCodes).Where(c => c.IsPriorTo(facetCodes, targetFacet)).ToList();
+            return GetConfigs(facetCodes)
+                .Where(c => IsPriorTo(c, facetCodes, targetFacet))
+                .ToList();
         }
+
+        /// <summary>
+        /// Returns the facets (list of FacetConfig) involved in a query given FacetsConfig2 `facetsConfig` configuration and target facet `targetCode`
+        ///    => if facetsCode preceeds targetFacet AND has picks
+        /// </summary>
+        /// <param name="targetCode"></param>
+        /// <param name="facetCodes"></param>
+        /// <returns></returns>
+        public List<FacetConfig2> GetConfigsThatAffectsTarget(string targetCode, List<string> facetCodes)
+        {
+            if (!facetCodes.Contains(targetCode))
+                throw new ArgumentOutOfRangeException($"{nameof(targetCode)} ({targetCode}) not in {nameof(facetCodes)}");
+
+            List<FacetConfig2> configs = new List<FacetConfig2>();
+
+            foreach (var currentCode in facetCodes) {
+
+                var currentConfig = GetConfig(currentCode);
+                var currentFacet = currentConfig.Facet;
+
+                if (! (currentConfig.HasPicks() || currentConfig.HasEnforcedConstraints())) {
+                    /* If the facet doesn't have constraints then it cannot affect the target facet */
+                    continue;
+                }
+
+                if (facetCodes.IndexOf(currentCode) < facetCodes.IndexOf(targetCode)) {
+                    /* Has constraints and preceeds in chain */
+                    configs.Add(currentConfig);
+                } else
+                if (currentCode == targetCode) {
+                    /* Range facets also affects themselves */
+                    if (currentFacet.FacetType.ReloadAsTarget) {
+                        configs.Add(currentConfig);
+                    }
+                }
+            }
+
+            return configs;
+        }
+
 
         public FacetsConfig2 ClearPicks()
         {

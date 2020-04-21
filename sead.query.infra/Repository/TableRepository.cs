@@ -25,10 +25,11 @@ namespace SeadQueryInfra
 
         public TableRelation FindByName(string sourceName, string targetName)
         {
+            string[] names = { sourceName , targetName };
             return Context.Set<TableRelation>().BuildEntity()
-                .Where(r => (r.SourceName == sourceName && r.TargetName == targetName) ||
-                            (r.SourceName == targetName && r.TargetName == sourceName))
-                    .FirstOrDefault();
+                .Where(
+                    r => (r.SourceTable.TableOrUdfName == sourceName && r.TargetTable.TableOrUdfName == targetName)
+                ).FirstOrDefault();
         }
 
     }
