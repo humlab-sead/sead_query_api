@@ -1,14 +1,8 @@
-using FluentAssertions;
 using KellermanSoftware.CompareNetObjects;
-using Moq;
 using Newtonsoft.Json;
-using SeadQueryAPI.Controllers;
-using SeadQueryAPI.Serializers;
-using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SQT;
 using SQT.Infrastructure;
-using SQT.Mocks;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,8 +67,7 @@ namespace IntegrationTests
                 Assert.NotEmpty(facetContent.Items);
 
                 CompareLogic compare = new CompareLogic();
-                compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TriggerFacet", "TargetFacet", "Facet" });
-                //.IgnoreProperty<FacetsConfig2>(x => x.TriggerFacet);
+                compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet" });
 
                 var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual;
                 Assert.True(areEqual);

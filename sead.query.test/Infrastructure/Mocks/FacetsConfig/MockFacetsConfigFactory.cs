@@ -37,7 +37,6 @@ namespace SQT.Mocks
                 TargetCode = targetCode,
                 TargetFacet = GetFacet(targetCode),
                 TriggerCode = triggerCode,
-                TriggerFacet = GetFacet(triggerCode),
                 RequestId = "1",
                 RequestType = requestType,
                 FacetConfigs = facetConfigs

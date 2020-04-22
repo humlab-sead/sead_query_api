@@ -49,7 +49,6 @@ namespace SeadQueryAPI.Serializers
             }
             facetsConfig.DomainFacet = GetFacetByCode(facetsConfig.DomainCode);
             facetsConfig.TargetFacet = GetFacetByCode(facetsConfig.TargetCode);
-            facetsConfig.TriggerFacet = GetFacetByCode(facetsConfig.TriggerCode);
 
             foreach (var config in facetsConfig.FacetConfigs) {
                 Reconstitute(config);

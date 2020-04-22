@@ -35,7 +35,12 @@ namespace SeadQueryCore
         public string RequestType { get; set; } = "";       // Request specifier ("populate", ...)
 
         public string TargetCode { get; set; } = "";        // Target facet code i.e. facet for which new data is requested
-        public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
+
+        /// <summary>
+        /// Facet code that triggered the request (some preceeding facet)
+        /// Not used by Core Logic, pass-through, round-trip variable
+        /// </summary>
+        public string TriggerCode { get; set; } = "";       //
 
         [JsonIgnore]
         private List<FacetConfig2> facetConfigs;
@@ -55,11 +60,6 @@ namespace SeadQueryCore
         /// The target facet of interest for which we want to produce content or result.
         /// </summary>
         public Facet TargetFacet { get; set; }
-        /// <summary>
-        /// The facet that triggered this information. Not used by Core Logic, pass-through, round-trip variable
-        /// This is a facet that preceed the target facet in the facet chain
-        /// </summary>
-        public Facet TriggerFacet { get; set; }
 
 
         [JsonIgnore]
