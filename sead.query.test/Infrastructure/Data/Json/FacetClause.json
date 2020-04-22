@@ -45,7 +45,7 @@
     "FacetClauseId": 8,
     "FacetId": 1001,
     "Clause": "tbl_methods.method_id in (3, 6)",
-    "EnforceConstraint":  true
+    "EnforceConstraint": true
   },
   {
     "FacetClauseId": 9,

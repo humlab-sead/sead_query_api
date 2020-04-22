@@ -752,14 +752,6 @@
     "TargetColumnName": "dating_uncertainty_id"
   },
   {
-    "TableRelationId": 95,
-    "SourceTableId": 55,
-    "TargetTableId": 102,
-    "Weight": 20,
-    "SourceColumName": "physical_sample_id",
-    "TargetColumnName": "physical_sample_id"
-  },
-  {
     "TableRelationId": 96,
     "SourceTableId": 55,
     "TargetTableId": 71,
@@ -1746,6 +1738,14 @@
   {
     "TableRelationId": 219,
     "SourceTableId": 156,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "TableRelationId": 95,
+    "SourceTableId": 55,
     "TargetTableId": 4,
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",

@@ -1,23 +1,8 @@
 [
   {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "activeseason",
-    "Position": 6
-  },
-  {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "relative_age_name",
-    "Position": 5
-  },
-  {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "sites",
-    "Position": 15
-  },
-  {
-    "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "feature_type",
-    "Position": 5
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "geochronology",
+    "Position": 4
   },
   {
     "FacetCode": "palaeoentomology",
@@ -58,6 +43,11 @@
     "FacetCode": "palaeoentomology",
     "ChildFacetCode": "ecocode_system",
     "Position": 1
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "abundances_all",
+    "Position": 3
   },
   {
     "FacetCode": "palaeoentomology",
@@ -70,14 +60,19 @@
     "Position": 12
   },
   {
-    "FacetCode": "dendrochronology",
-    "ChildFacetCode": "relative_age_name",
-    "Position": 2
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "geochronology",
+    "Position": 4
   },
   {
-    "FacetCode": "dendrochronology",
-    "ChildFacetCode": "genus",
-    "Position": 4
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 5
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "sites",
+    "Position": 15
   },
   {
     "FacetCode": "archaeobotany",
@@ -100,14 +95,49 @@
     "Position": 10
   },
   {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "feature_type",
+    "Position": 11
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "ecocode_system",
+    "Position": 1
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "abundances_all",
+    "Position": 3
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "activeseason",
+    "Position": 6
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 12
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "geochronology",
+    "Position": 4
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 5
+  },
+  {
     "FacetCode": "pollen",
     "ChildFacetCode": "sites",
     "Position": 15
   },
   {
     "FacetCode": "pollen",
-    "ChildFacetCode": "relative_age_name",
-    "Position": 5
+    "ChildFacetCode": "ecocode",
+    "Position": 2
   },
   {
     "FacetCode": "pollen",
@@ -135,19 +165,29 @@
     "Position": 1
   },
   {
-    "FacetCode": "dendrochronology",
-    "ChildFacetCode": "species_author",
-    "Position": 6
+    "FacetCode": "pollen",
+    "ChildFacetCode": "abundances_all",
+    "Position": 3
   },
   {
-    "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "tbl_biblio_modern",
+    "FacetCode": "pollen",
+    "ChildFacetCode": "activeseason",
     "Position": 6
   },
   {
     "FacetCode": "pollen",
-    "ChildFacetCode": "ecocode",
-    "Position": 2
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 12
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_denormalized_measured_values_33_82",
+    "Position": 1
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "geochronology",
+    "Position": 3
   },
   {
     "FacetCode": "geoarchaeology",
@@ -160,29 +200,24 @@
     "Position": 9
   },
   {
-    "FacetCode": "archaeobotany",
+    "FacetCode": "geoarchaeology",
     "ChildFacetCode": "feature_type",
-    "Position": 11
+    "Position": 5
   },
   {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "ecocode_system",
-    "Position": 1
-  },
-  {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "activeseason",
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_biblio_modern",
     "Position": 6
   },
   {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "tbl_biblio_modern",
-    "Position": 12
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "geochronology",
+    "Position": 1
   },
   {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "tbl_biblio_modern",
-    "Position": 12
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 2
   },
   {
     "FacetCode": "dendrochronology",
@@ -196,38 +231,13 @@
   },
   {
     "FacetCode": "dendrochronology",
-    "ChildFacetCode": "tbl_biblio_modern",
-    "Position": 8
-  },
-  {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "geochronology",
+    "ChildFacetCode": "genus",
     "Position": 4
-  },
-  {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "geochronology",
-    "Position": 4
-  },
-  {
-    "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "geochronology",
-    "Position": 3
   },
   {
     "FacetCode": "dendrochronology",
-    "ChildFacetCode": "geochronology",
-    "Position": 1
-  },
-  {
-    "FacetCode": "ceramic",
-    "ChildFacetCode": "geochronology",
-    "Position": 1
-  },
-  {
-    "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "tbl_denormalized_measured_values_33_82",
-    "Position": 1
+    "ChildFacetCode": "species_author",
+    "Position": 6
   },
   {
     "FacetCode": "dendrochronology",
@@ -235,9 +245,19 @@
     "Position": 7
   },
   {
-    "FacetCode": "palaeoentomology",
-    "ChildFacetCode": "abundances_all",
-    "Position": 3
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 8
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "geochronology",
+    "Position": 1
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 2
   },
   {
     "FacetCode": "ceramic",
@@ -246,32 +266,12 @@
   },
   {
     "FacetCode": "ceramic",
-    "ChildFacetCode": "relative_age_name",
-    "Position": 2
-  },
-  {
-    "FacetCode": "palaeoentomology",
-    "ChildFacetCode": "geochronology",
-    "Position": 4
+    "ChildFacetCode": "feature_type",
+    "Position": 7
   },
   {
     "FacetCode": "ceramic",
     "ChildFacetCode": "tbl_biblio_modern",
     "Position": 8
-  },
-  {
-    "FacetCode": "ceramic",
-    "ChildFacetCode": "feature_type",
-    "Position": 7
-  },
-  {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "abundances_all",
-    "Position": 3
-  },
-  {
-    "FacetCode": "archaeobotany",
-    "ChildFacetCode": "abundances_all",
-    "Position": 3
   }
 ]
