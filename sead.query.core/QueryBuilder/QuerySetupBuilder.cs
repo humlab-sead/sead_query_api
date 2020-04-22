@@ -78,8 +78,9 @@ namespace SeadQueryCore.QueryBuilder
         /// 
         /// Rules:
         ///   - Collect/compile users pick constraint for all involved facets current facet
-        ///      - If target facet is "discrete" then all picks *predeeding* target facet should be included - not the target facet's own constraints!
-        ///      - for "range" facet it should also include the condition of the range-facets itself, although the bound should be expanded to show values outside the limiting range.
+        ///      - All picks *predeeding* target facet should be included
+        ///      - If target is "discrete" - not the target facet's own constraints!
+        ///      - If target facet is "range" then  the range-facets itself, although the bound should be expanded to show values outside the limiting range.
         ///      
         ///   - Get all selection preceding the target facet.
         ///   - Make where-clauses depending on  type of facets (range or discrete)

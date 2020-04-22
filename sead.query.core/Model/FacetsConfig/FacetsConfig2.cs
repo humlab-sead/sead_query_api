@@ -25,6 +25,9 @@ namespace SeadQueryCore
         /// </summary>
         public string RequestId { get; set; } = "";
 
+        /// <summary>
+        /// Facet domain under which current request is valid. Specifies a domain facet.
+        /// </summary>
         public string DomainCode { get; set; } = "";
         /// <summary>
         /// Request specifier ("populate", ...)
