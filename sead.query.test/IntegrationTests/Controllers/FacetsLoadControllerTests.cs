@@ -47,7 +47,7 @@ namespace IntegrationTests
 
         [Theory]
         [InlineData("relative_age_name:relative_age_name")]
-        [InlineData("master_dataset:master_dataset@1")]
+        [InlineData("dataset_master:dataset_master@1")]
         [InlineData("sites:country@5/sites")]
         public async Task Load_VariousFacetConfigs_IsLoaded(string uri)
         {
