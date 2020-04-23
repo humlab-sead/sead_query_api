@@ -184,6 +184,7 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
 - Bibligraphy fossil
 - Analysis entity ages
 - Everything else not specified in #13.
+- Renaming of facets
 
 ### Orphan facets
 
