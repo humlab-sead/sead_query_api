@@ -35,16 +35,16 @@ Example: Retrive sits constrained to domain `pollen`:
 
 ```json
 {
-  "facetsConfig": {
-    "requestId": 1,
-    "requestType": "populate",
-    "domainCode": "pollen",
-    "targetCode": "sites",
-    "triggerCode": "sites",
-    "facetConfigs": [ { "facetCode": "sites", "position": 1, "picks": [], "textFilter": "" }
+  facetsConfig: {
+    requestId: 1,
+    requestType: populate,
+    domainCode: pollen,
+    targetCode: sites,
+    triggerCode: sites,
+    facetConfigs: [ { facetCode: sites, position: 1, picks: [], textFilter:  }
     ]
   },
-  "resultConfig": {... }
+  resultConfig: {... }
 }
 ```
 
@@ -85,99 +85,99 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
 
 ### Domain facet configuration
 
-| "domain\_code"     | "facet\_code"                                 | "display\_title"     | "position" | "case"  |
+| domain\_code     | facet\_code                                 | display\_title     | position | case  |
 |--------------------|-----------------------------------------------|----------------------|------------|---------|
-| "archaeobotany"    | "ecocode\_system"                             | "Eco code system"    | 1          |         |
-| "archaeobotany"    | "ecocode"                                     | "Eco code"           | 2          |         |
-| "archaeobotany"    | "abundances\_all"                             | "Abundances"         | 3          |         |
-| "archaeobotany"    | "geochronology"                               | "Geochronology"      | 4          |         |
-| "archaeobotany"    | "relative\_age\_name"                         | "Time periods"       | 5          |         |
-| "archaeobotany"    | "activeseason"                                | "Seasons"            | 6          |         |
-| "archaeobotany"    | "family"                                      | "Family"             | 7          |         |
-| "archaeobotany"    | "genus"                                       | "Genus"              | 8          |         |
-| "archaeobotany"    | "species"                                     | "Taxon"              | 9          |         |
-| "archaeobotany"    | "species\_author"                             | "Author"             | 10         |         |
-| "archaeobotany"    | "feature\_type"                               | "Feature type"       | 11         |         |
-| "archaeobotany"    | "tbl\_biblio\_modern"                         | "Bibligraphy modern" | 12         |         |
-| "archaeobotany"    | "country"                                     | "Countries"          | 14         |         |
-| "archaeobotany"    | "sites"                                       | "Site"               | 15         |         |
-| "archaeobotany"    | "sample\_groups"                              | "Sample groups"      | 16         |         |
-| "archaeobotany"    | "sample\_group\_sampling\_contexts"           | "Sampling Contexts"  | 20         | "NEW\!" |
-| "archaeobotany"    | "data\_types"                                 | "Data types"         | 21         | "NEW\!" |
-| "archaeobotany"    | "modification\_types"                         | "Modification Types" | 22         | "NEW\!" |
-| "archaeobotany"    | "abundance\_elements"                         | "Abundance Elements" | 23         | "NEW\!" |
-| "ceramic"          | "geochronology"                               | "Geochronology"      | 1          |         |
-| "ceramic"          | "relative\_age\_name"                         | "Time periods"       | 2          |         |
-| "ceramic"          | "feature\_type"                               | "Feature type"       | 7          |         |
-| "ceramic"          | "tbl\_biblio\_modern"                         | "Bibligraphy modern" | 8          |         |
-| "ceramic"          | "country"                                     | "Countries"          | 10         |         |
-| "ceramic"          | "sites"                                       | "Site"               | 11         |         |
-| "ceramic"          | "sample\_groups"                              | "Sample groups"      | 12         |         |
-| "ceramic"          | "sample\_group\_sampling\_contexts"           | "Sampling Contexts"  | 20         | "NEW\!" |
-| "ceramic"          | "data\_types"                                 | "Data types"         | 21         | "NEW\!" |
-| "dendrochronology" | "geochronology"                               | "Geochronology"      | 1          |         |
-| "dendrochronology" | "relative\_age\_name"                         | "Time periods"       | 2          |         |
-| "dendrochronology" | "family"                                      | "Family"             | 3          |         |
-| "dendrochronology" | "genus"                                       | "Genus"              | 4          |         |
-| "dendrochronology" | "species"                                     | "Taxon"              | 5          |         |
-| "dendrochronology" | "species\_author"                             | "Author"             | 6          |         |
-| "dendrochronology" | "feature\_type"                               | "Feature type"       | 7          |         |
-| "dendrochronology" | "tbl\_biblio\_modern"                         | "Bibligraphy modern" | 8          |         |
-| "dendrochronology" | "country"                                     | "Countries"          | 10         |         |
-| "dendrochronology" | "sites"                                       | "Site"               | 11         |         |
-| "dendrochronology" | "sample\_groups"                              | "Sample groups"      | 12         |         |
-| "dendrochronology" | "sample\_group\_sampling\_contexts"           | "Sampling Contexts"  | 20         | "NEW\!" |
-| "dendrochronology" | "data\_types"                                 | "Data types"         | 21         | "NEW\!" |
-| "geoarchaeology"   | "tbl\_denormalized\_measured\_values\_33\_82" | "MS Heating 550"     | 1          |         |
-| "geoarchaeology"   | "tbl\_denormalized\_measured\_values\_37"     | "Phosphates"         | 2          |         |
-| "geoarchaeology"   | "geochronology"                               | "Geochronology"      | 3          |         |
-| "geoarchaeology"   | "relative\_age\_name"                         | "Time periods"       | 4          |         |
-| "geoarchaeology"   | "feature\_type"                               | "Feature type"       | 5          |         |
-| "geoarchaeology"   | "tbl\_biblio\_modern"                         | "Bibligraphy modern" | 6          |         |
-| "geoarchaeology"   | "country"                                     | "Countries"          | 8          |         |
-| "geoarchaeology"   | "sites"                                       | "Site"               | 9          |         |
-| "geoarchaeology"   | "sample\_groups"                              | "Sample groups"      | 10         |         |
-| "geoarchaeology"   | "sample\_group\_sampling\_contexts"           | "Sampling Contexts"  | 12         | "NEW\!" |
-| "geoarchaeology"   | "data\_types"                                 | "Data types"         | 13         | "NEW\!" |
-| "geoarchaeology"   | "tbl\_denormalized\_measured\_values\_32"     | "Loss of Ignition"   | 14         |         |
-| "geoarchaeology"   | "tbl\_denormalized\_measured\_values\_33\_0"  | "Magnetic sus\."     | 15         |         |
-| "palaeoentomology" | "ecocode\_system"                             | "Eco code system"    | 1          |         |
-| "palaeoentomology" | "ecocode"                                     | "Eco code"           | 2          |         |
-| "palaeoentomology" | "abundances\_all"                             | "Abundances"         | 3          |         |
-| "palaeoentomology" | "geochronology"                               | "Geochronology"      | 4          |         |
-| "palaeoentomology" | "relative\_age\_name"                         | "Time periods"       | 5          |         |
-| "palaeoentomology" | "activeseason"                                | "Seasons"            | 6          |         |
-| "palaeoentomology" | "family"                                      | "Family"             | 7          |         |
-| "palaeoentomology" | "genus"                                       | "Genus"              | 8          |         |
-| "palaeoentomology" | "species"                                     | "Taxon"              | 9          |         |
-| "palaeoentomology" | "species\_author"                             | "Author"             | 10         |         |
-| "palaeoentomology" | "feature\_type"                               | "Feature type"       | 11         |         |
-| "palaeoentomology" | "tbl\_biblio\_modern"                         | "Bibligraphy modern" | 12         |         |
-| "palaeoentomology" | "country"                                     | "Countries"          | 14         |         |
-| "palaeoentomology" | "sites"                                       | "Site"               | 15         |         |
-| "palaeoentomology" | "sample\_groups"                              | "Sample groups"      | 16         |         |
-| "palaeoentomology" | "rdb\_systems"                                | "RDB system"         | 17         | "NEW\!" |
-| "palaeoentomology" | "rdb\_codes"                                  | "RDB Code"           | 18         | "NEW\!" |
-| "palaeoentomology" | "sample\_group\_sampling\_contexts"           | "Sampling Contexts"  | 20         | "NEW\!" |
-| "palaeoentomology" | "data\_types"                                 | "Data types"         | 21         | "NEW\!" |
-| "pollen"           | "ecocode\_system"                             | "Eco code system"    | 1          |         |
-| "pollen"           | "ecocode"                                     | "Eco code"           | 2          |         |
-| "pollen"           | "abundances\_all"                             | "Abundances"         | 3          |         |
-| "pollen"           | "geochronology"                               | "Geochronology"      | 4          |         |
-| "pollen"           | "relative\_age\_name"                         | "Time periods"       | 5          |         |
-| "pollen"           | "activeseason"                                | "Seasons"            | 6          |         |
-| "pollen"           | "family"                                      | "Family"             | 7          |         |
-| "pollen"           | "genus"                                       | "Genus"              | 8          |         |
-| "pollen"           | "species"                                     | "Taxon"              | 9          |         |
-| "pollen"           | "species\_author"                             | "Author"             | 10         |         |
-| "pollen"           | "feature\_type"                               | "Feature type"       | 11         |         |
-| "pollen"           | "tbl\_biblio\_modern"                         | "Bibligraphy modern" | 12         |         |
-| "pollen"           | "country"                                     | "Countries"          | 14         |         |
-| "pollen"           | "sites"                                       | "Site"               | 15         |         |
-| "pollen"           | "sample\_groups"                              | "Sample groups"      | 16         |         |
-| "pollen"           | "sample\_group\_sampling\_contexts"           | "Sampling Contexts"  | 20         | "NEW\!" |
-| "pollen"           | "data\_types"                                 | "Data types"         | 21         | "NEW\!" |
-| "pollen"           | "abundance\_elements"                         | "Abundance Elements" | 23         | "NEW\!" |
+| archaeobotany    | ecocode\_system                             | Eco code system    | 1          |         |
+| archaeobotany    | ecocode                                     | Eco code           | 2          |         |
+| archaeobotany    | abundances\_all                             | Abundances         | 3          |         |
+| archaeobotany    | geochronology                               | Geochronology      | 4          |         |
+| archaeobotany    | relative\_age\_name                         | Time periods       | 5          |         |
+| archaeobotany    | activeseason                                | Seasons            | 6          |         |
+| archaeobotany    | family                                      | Family             | 7          |         |
+| archaeobotany    | genus                                       | Genus              | 8          |         |
+| archaeobotany    | species                                     | Taxon              | 9          |         |
+| archaeobotany    | species\_author                             | Author             | 10         |         |
+| archaeobotany    | feature\_type                               | Feature type       | 11         |         |
+| archaeobotany    | tbl\_biblio\_modern                         | Bibligraphy modern | 12         |         |
+| archaeobotany    | country                                     | Countries          | 14         |         |
+| archaeobotany    | sites                                       | Site               | 15         |         |
+| archaeobotany    | sample\_groups                              | Sample groups      | 16         |         |
+| archaeobotany    | sample\_group\_sampling\_contexts           | Sampling Contexts  | 20         | NEW\! |
+| archaeobotany    | data\_types                                 | Data types         | 21         | NEW\! |
+| archaeobotany    | modification\_types                         | Modification Types | 22         | NEW\! |
+| archaeobotany    | abundance\_elements                         | Abundance Elements | 23         | NEW\! |
+| ceramic          | geochronology                               | Geochronology      | 1          |         |
+| ceramic          | relative\_age\_name                         | Time periods       | 2          |         |
+| ceramic          | feature\_type                               | Feature type       | 7          |         |
+| ceramic          | tbl\_biblio\_modern                         | Bibligraphy modern | 8          |         |
+| ceramic          | country                                     | Countries          | 10         |         |
+| ceramic          | sites                                       | Site               | 11         |         |
+| ceramic          | sample\_groups                              | Sample groups      | 12         |         |
+| ceramic          | sample\_group\_sampling\_contexts           | Sampling Contexts  | 20         | NEW\! |
+| ceramic          | data\_types                                 | Data types         | 21         | NEW\! |
+| dendrochronology | geochronology                               | Geochronology      | 1          |         |
+| dendrochronology | relative\_age\_name                         | Time periods       | 2          |         |
+| dendrochronology | family                                      | Family             | 3          |         |
+| dendrochronology | genus                                       | Genus              | 4          |         |
+| dendrochronology | species                                     | Taxon              | 5          |         |
+| dendrochronology | species\_author                             | Author             | 6          |         |
+| dendrochronology | feature\_type                               | Feature type       | 7          |         |
+| dendrochronology | tbl\_biblio\_modern                         | Bibligraphy modern | 8          |         |
+| dendrochronology | country                                     | Countries          | 10         |         |
+| dendrochronology | sites                                       | Site               | 11         |         |
+| dendrochronology | sample\_groups                              | Sample groups      | 12         |         |
+| dendrochronology | sample\_group\_sampling\_contexts           | Sampling Contexts  | 20         | NEW\! |
+| dendrochronology | data\_types                                 | Data types         | 21         | NEW\! |
+| geoarchaeology   | tbl\_denormalized\_measured\_values\_33\_82 | MS Heating 550     | 1          |         |
+| geoarchaeology   | tbl\_denormalized\_measured\_values\_37     | Phosphates         | 2          |         |
+| geoarchaeology   | geochronology                               | Geochronology      | 3          |         |
+| geoarchaeology   | relative\_age\_name                         | Time periods       | 4          |         |
+| geoarchaeology   | feature\_type                               | Feature type       | 5          |         |
+| geoarchaeology   | tbl\_biblio\_modern                         | Bibligraphy modern | 6          |         |
+| geoarchaeology   | country                                     | Countries          | 8          |         |
+| geoarchaeology   | sites                                       | Site               | 9          |         |
+| geoarchaeology   | sample\_groups                              | Sample groups      | 10         |         |
+| geoarchaeology   | sample\_group\_sampling\_contexts           | Sampling Contexts  | 12         | NEW\! |
+| geoarchaeology   | data\_types                                 | Data types         | 13         | NEW\! |
+| geoarchaeology   | tbl\_denormalized\_measured\_values\_32     | Loss of Ignition   | 14         |         |
+| geoarchaeology   | tbl\_denormalized\_measured\_values\_33\_0  | Magnetic sus\.     | 15         |         |
+| palaeoentomology | ecocode\_system                             | Eco code system    | 1          |         |
+| palaeoentomology | ecocode                                     | Eco code           | 2          |         |
+| palaeoentomology | abundances\_all                             | Abundances         | 3          |         |
+| palaeoentomology | geochronology                               | Geochronology      | 4          |         |
+| palaeoentomology | relative\_age\_name                         | Time periods       | 5          |         |
+| palaeoentomology | activeseason                                | Seasons            | 6          |         |
+| palaeoentomology | family                                      | Family             | 7          |         |
+| palaeoentomology | genus                                       | Genus              | 8          |         |
+| palaeoentomology | species                                     | Taxon              | 9          |         |
+| palaeoentomology | species\_author                             | Author             | 10         |         |
+| palaeoentomology | feature\_type                               | Feature type       | 11         |         |
+| palaeoentomology | tbl\_biblio\_modern                         | Bibligraphy modern | 12         |         |
+| palaeoentomology | country                                     | Countries          | 14         |         |
+| palaeoentomology | sites                                       | Site               | 15         |         |
+| palaeoentomology | sample\_groups                              | Sample groups      | 16         |         |
+| palaeoentomology | rdb\_systems                                | RDB system         | 17         | NEW\! |
+| palaeoentomology | rdb\_codes                                  | RDB Code           | 18         | NEW\! |
+| palaeoentomology | sample\_group\_sampling\_contexts           | Sampling Contexts  | 20         | NEW\! |
+| palaeoentomology | data\_types                                 | Data types         | 21         | NEW\! |
+| pollen           | ecocode\_system                             | Eco code system    | 1          |         |
+| pollen           | ecocode                                     | Eco code           | 2          |         |
+| pollen           | abundances\_all                             | Abundances         | 3          |         |
+| pollen           | geochronology                               | Geochronology      | 4          |         |
+| pollen           | relative\_age\_name                         | Time periods       | 5          |         |
+| pollen           | activeseason                                | Seasons            | 6          |         |
+| pollen           | family                                      | Family             | 7          |         |
+| pollen           | genus                                       | Genus              | 8          |         |
+| pollen           | species                                     | Taxon              | 9          |         |
+| pollen           | species\_author                             | Author             | 10         |         |
+| pollen           | feature\_type                               | Feature type       | 11         |         |
+| pollen           | tbl\_biblio\_modern                         | Bibligraphy modern | 12         |         |
+| pollen           | country                                     | Countries          | 14         |         |
+| pollen           | sites                                       | Site               | 15         |         |
+| pollen           | sample\_groups                              | Sample groups      | 16         |         |
+| pollen           | sample\_group\_sampling\_contexts           | Sampling Contexts  | 20         | NEW\! |
+| pollen           | data\_types                                 | Data types         | 21         | NEW\! |
+| pollen           | abundance\_elements                         | Abundance Elements | 23         | NEW\! |
 
 ### Pending / Not implemented
 
@@ -188,11 +188,11 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
 
 ### Orphan facets
 
-"facet_code"
-"record_types"
-"abundance_classification"
-"tbl_biblio_sample_groups"
-"tbl_biblio_sites"
-"dataset_master"
-"dataset_methods"
-"region"
+facet_code
+record_types
+abundance_classification
+tbl_biblio_sample_groups
+tbl_biblio_sites
+dataset_master
+dataset_methods
+region
