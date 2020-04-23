@@ -66,7 +66,7 @@ namespace SQT.Mocks
         public List<object[]> DiscreteTestConfigsWithPicks = new List<object[]> {
 
             new object[] {
-                "country@country:sites/country@73:",
+                "country:sites/country@73:",
                 new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
@@ -74,7 +74,7 @@ namespace SQT.Mocks
             },
 
             new object[] {
-                "country@sites:sites/country@73:",
+                "country:sites/country@73:",
                 new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
@@ -82,7 +82,7 @@ namespace SQT.Mocks
             },
 
             new object[] {
-                "sites@sites:country@73/sites:",
+                "sites:country@73/sites:",
                 new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")
@@ -91,7 +91,7 @@ namespace SQT.Mocks
             },
 
             new object[] {
-                "sites@country:country@73/sites:",
+                "sites:country@73/sites:",
                 new List<List<string>> {
                     Trail("tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"),
                     Trail("tbl_analysis_entities", "tbl_datasets")

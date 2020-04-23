@@ -16,7 +16,6 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites")]
         [InlineData("country:country/sites")]
-        [InlineData("country@sites:country/sites")]
         [InlineData("sites:country@5/sites")]
         [InlineData("sites:country@5/sites@4,5")]
         [InlineData("sites:dataset_master/dataset_methods@10/country@44/sites@4,5/")]

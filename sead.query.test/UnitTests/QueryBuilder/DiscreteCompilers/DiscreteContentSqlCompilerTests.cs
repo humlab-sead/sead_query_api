@@ -17,9 +17,9 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData("sites@sites:sites", 0)]
-        [InlineData("country@country:country/sites", 1)]
-        [InlineData("sites@sites:country@57/sites@3", 1)]
+        [InlineData("sites:sites", 0)]
+        [InlineData("country:country/sites", 1)]
+        [InlineData("sites:country@57/sites@3", 1)]
         public void Compile_StateUnderTest_ExpectedBehavior(string uri, int expectedJoinCount)
         {
             // Arrange

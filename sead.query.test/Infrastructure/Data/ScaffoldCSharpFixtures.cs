@@ -81,9 +81,9 @@ namespace SQT.Infrastructure.Scaffolding
             var scaffolder = new MockFacetsConfigFactory(Registry.Facets);
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {
-                // "sites@sites:sites:",
-                // "sites@sites:sites@1",
-                // "sites@sites:country@73/sites:",
+                // "sites:sites:",
+                // "sites:sites@1",
+                // "sites:country@73/sites:",
                 "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)"
             };
 
@@ -103,9 +103,9 @@ namespace SQT.Infrastructure.Scaffolding
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {
-                "sites@sites:sites:",
-                "sites@sites:sites@1",
-                "sites@sites:country@73/sites:",
+                "sites:sites:",
+                "sites:sites@1",
+                "sites:country@73/sites:",
                 "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)"
             };
             var options = new DumpOptions() {

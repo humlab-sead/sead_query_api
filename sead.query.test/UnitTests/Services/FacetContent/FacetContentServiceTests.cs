@@ -206,8 +206,8 @@ namespace SQT.Services
             }
         }
 
-        //[DataRow("species@species")]
-        ////[DataRow("sites@sites:sites@1470,447,951,445/ecocode@38,12,92")]
+        //[DataRow("species")]
+        ////[DataRow("sites:sites@1470,447,951,445/ecocode@38,12,92")]
         //[TestMethod]
         //public void CanLoadDiscreteFacets(string uri)
         //{
@@ -263,7 +263,7 @@ namespace SQT.Services
         //public void LoadOfFinishSitesShouldEqualExpectedItems()
         //{
         //    IContainer container = new TestDependencyService().Register();
-        //    var config = fixture.Data.DiscreteTestConfigsWithPicks.Where(z => z.UriConfig == "sites@sites:country@73/sites:").First();
+        //    var config = fixture.Data.DiscreteTestConfigsWithPicks.Where(z => z.UriConfig == "sites:country@73/sites:").First();
         //    FacetsConfig2 facetsConfig = fixture.GenerateByConfig(config);
         //    using (var scope = container.BeginLifetimeScope())
         //    {

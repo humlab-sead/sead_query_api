@@ -35,10 +35,10 @@ namespace SQT
         }
 
         [Theory]
-        [InlineData("tabular", "site_level", "sites@sites:country@73/sites:", 30)]
-        [InlineData("tabular", "aggregate_all", "sites@sites:country@73/sites:", 1)]
-        [InlineData("tabular", "sample_group_level", "sites@sites:country@73/sites:", 30)]
-        [InlineData("map", "map_result", "sites@sites:country@73/sites:", 32)]
+        [InlineData("tabular", "site_level", "sites:country@73/sites:", 30)]
+        [InlineData("tabular", "aggregate_all", "sites:country@73/sites:", 1)]
+        [InlineData("tabular", "sample_group_level", "sites:country@73/sites:", 30)]
+        [InlineData("map", "map_result", "sites:country@73/sites:", 32)]
         public void Load_WithVariousSetups_Success(string viewTypeId, string resultKey, string uri, int expectedCount)
         {
             // Arrange

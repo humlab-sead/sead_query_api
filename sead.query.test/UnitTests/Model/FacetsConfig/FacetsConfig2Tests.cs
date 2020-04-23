@@ -70,7 +70,7 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites", "sites")]
         [InlineData("country:country/sites", "sites")]
-        [InlineData("country@sites:country/sites", "sites")]
+        [InlineData("country:country/sites", "sites")]
         [InlineData("country:country/sites", "country")]
         [InlineData("sites:country@5/sites", "sites")]
         [InlineData("sites:country@5/sites@4,5", "sites")]
@@ -92,7 +92,7 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites", "sites")]
         [InlineData("country:country/sites", "country", "sites")]
-        [InlineData("country@sites:country/region/sites", "country", "region", "sites")]
+        [InlineData("country:country/region/sites", "country", "region", "sites")]
         [InlineData("sites:country@5/sites", "country", "sites")]
         [InlineData("sites:sites@5/country@4,5", "sites", "country")]
         [InlineData("sites:dataset_master@2/dataset_methods@10/country@44/sites@4,5/", "dataset_master", "dataset_methods", "country", "sites")]
@@ -112,7 +112,6 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites")]
         [InlineData("country:country/sites")]
-        [InlineData("country@sites:country/sites")]
         [InlineData("sites:country@5/sites", "country")]
         [InlineData("sites:country@5/sites@4,5", "country", "sites")]
         [InlineData("sites:dataset_master/dataset_methods@10/country@44/sites@4,5/", "dataset_methods", "country", "sites")]
@@ -148,7 +147,7 @@ namespace SQT.Model
         }
 
         [Theory]
-        [InlineData("sites@sites:dataset_master/dataset_methods@10/country@44/sites@4,5/", "dataset_methods", "country", "sites")]
+        [InlineData("sites:dataset_master/dataset_methods@10/country@44/sites@4,5/", "dataset_methods", "country", "sites")]
         //[InlineData("ecocode:sites/ecocode", "ecocode")]
         //[InlineData("sites:sites@1,2/ecocode@2", "sites", "ecocode")]
         public void IsPriorTo_StateUnderTest_ExpectedBehavior(string uri, params string[] facetCodes)
@@ -170,39 +169,39 @@ namespace SQT.Model
 
         PICK ADDITIONAL COUNTRY:
 
-        sites@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: sites, facetCodes: country sites species ecocode
+        sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: sites, facetCodes: country sites species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, SKIPPING/POSITION
         => species: SKIPPING/NO-PICKS
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        sites@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: result_facet, facetCodes: country result_facet sites species ecocode
+        sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: result_facet, facetCodes: country result_facet sites species ecocode
         => country: HAS-PICKS, INVOLVED
         => result_facet: SKIPPING/NO-PICKS
         => sites: HAS-PICKS, SKIPPING/POSITION
         => species: SKIPPING/NO-PICKS
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        species@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: species, facetCodes: country sites species ecocode
+        species:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: species, facetCodes: country sites species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => species: SKIPPING/NO-PICKS
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        species@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
+        species:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => abundances_all_helper: SKIPPING/NO-PICKS
         => species: SKIPPING/NO-PICKS)
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        ecocode@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: ecocode, facetCodes: country sites species ecocode
+        ecocode:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: ecocode, facetCodes: country sites species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => species: SKIPPING/NO-PICKS
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        ecocode@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
+        ecocode:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => species: SKIPPING/NO-PICKS
@@ -211,26 +210,26 @@ namespace SQT.Model
 
         PICK ADDITIONAL SITE:
 
-        species@sites:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: species, facetCodes: country sites species ecocode
+        species:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: species, facetCodes: country sites species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => species: SKIPPING/NO-PICKS)
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        species@sites:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
+        species:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => abundances_all_helper: SKIPPING/NO-PICKS
         => species: SKIPPING/NO-PICKS
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        ecocode@sites:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: ecocode, facetCodes: country sites species ecocode
+        ecocode:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: ecocode, facetCodes: country sites species ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => species: SKIPPING/NO-PICKS
         => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-        ecocode@sites:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
+        ecocode:country@240,58,64/sites@1013,957,958,401/species/ecocode@28,12/       // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
         => country: HAS-PICKS, INVOLVED
         => sites: HAS-PICKS, INVOLVED
         => species: SKIPPING/NO-PICKS
@@ -261,33 +260,33 @@ namespace SQT.Model
         /*
 
 
-                species@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: species, facetCodes: country sites species ecocode
+                species:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: species, facetCodes: country sites species ecocode
                 => country: HAS-PICKS, INVOLVED
                 => sites: HAS-PICKS, INVOLVED
                 => species: SKIPPING/NO-PICKS
                 => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-                species@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
+                species:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
                 => country: HAS-PICKS, INVOLVED
                 => sites: HAS-PICKS, INVOLVED
                 => abundances_all_helper: SKIPPING/NO-PICKS
                 => species: SKIPPING/NO-PICKS)
                 => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-                ecocode@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: ecocode, facetCodes: country sites species ecocode
+                ecocode:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: ecocode, facetCodes: country sites species ecocode
                 => country: HAS-PICKS, INVOLVED
                 => sites: HAS-PICKS, INVOLVED
                 => species: SKIPPING/NO-PICKS
                 => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-                ecocode@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
+                ecocode:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
                 => country: HAS-PICKS, INVOLVED
                 => sites: HAS-PICKS, INVOLVED
                 => species: SKIPPING/NO-PICKS
                 => result_facet: SKIPPING/NO-PICKS
                 => ecocode: HAS-PICKS, SKIPPING/POSITION
 
-                           sites@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: result_facet, facetCodes: country result_facet sites species ecocode
+                           sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: result_facet, facetCodes: country result_facet sites species ecocode
                 => country: HAS-PICKS, INVOLVED
                 => result_facet: SKIPPING/NO-PICKS
                 => sites: HAS-PICKS, SKIPPING/POSITION
@@ -298,16 +297,16 @@ namespace SQT.Model
 
         [Theory]
         [InlineData(
-            "sites@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/",
+            "sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/",
             false,
             "country"
          )]
         [InlineData(
-            "sites@country:country/sites@1013,957,958/species/ecocode@28,12/",
+            "sites:country/sites@1013,957,958/species/ecocode@28,12/",
             false
          )]
         [InlineData(
-            "sites@country:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/",
+            "sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/",
             true,
             "country"
          )]
@@ -330,7 +329,7 @@ namespace SQT.Model
         }
 
         //[Theory]
-        //[InlineData("sites@sites:sites")]
+        //[InlineData("sites:sites")]
         ////[InlineData("ecocode:sites/ecocode", "ecocode")]
         ////[InlineData("sites:sites@1,2/ecocode@2", "sites", "ecocode")]
         //public void GetFacetConfigsAffectedBy_StateUnderTest_ExpectedBehavior(string uri, params string[] facetCodes)

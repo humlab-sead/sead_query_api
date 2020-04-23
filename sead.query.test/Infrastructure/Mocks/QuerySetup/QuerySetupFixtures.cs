@@ -29,7 +29,7 @@ namespace SQT.Fixtures
                 }
             },
             {
-                "sites@sites:country@73/sites:",
+                "sites:country@73/sites:",
                 new QuerySetup {
                     TargetConfig = new FacetConfig2
                     {

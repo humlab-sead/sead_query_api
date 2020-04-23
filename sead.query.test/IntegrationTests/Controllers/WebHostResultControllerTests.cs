@@ -43,10 +43,10 @@ namespace IntegrationTests
         {
             var testConfigs = new Dictionary<(string, string, string), int>()
             {
-                { ("tabular", "site_level", "sites@sites:country@73/sites:"), 30 },
-                { ("tabular", "aggregate_all", "sites@sites:country@73/sites:"), 1 },
-                { ("tabular", "sample_group_level", "sites@sites:country@73/sites:"), 30 },
-                { ("map", "map_result", "sites@sites:country@73/sites:"), 32 }
+                { ("tabular", "site_level", "sites:country@73/sites:"), 30 },
+                { ("tabular", "aggregate_all", "sites:country@73/sites:"), 1 },
+                { ("tabular", "sample_group_level", "sites:country@73/sites:"), 30 },
+                { ("map", "map_result", "sites:country@73/sites:"), 32 }
             };
 
             var builder = CreateTestWebHostBuilder2<TestStartup<TestDependencyService>>();

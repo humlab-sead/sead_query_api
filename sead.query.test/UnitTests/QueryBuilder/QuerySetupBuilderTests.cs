@@ -38,8 +38,8 @@ namespace SQT.QueryBuilder
         [Theory]
         [InlineData("sites:sites")]
         [InlineData("sites:country@1/sites")]
-        [InlineData("sites@sites:country@1,2,3/sites")]
-        [InlineData("sites@country:country@1,2,3/sites")]
+        [InlineData("sites:country@1,2,3/sites")]
+        [InlineData("sites:country@1,2,3/sites")]
         public void Build_WithConcretePickCompilerAndVariousConfigs_GivesExpecteCriteriadCount(string uri)
         {
             // Arrange
@@ -124,7 +124,7 @@ namespace SQT.QueryBuilder
 
         private int ExpectedCriteriaCount(FacetsConfig2 facetsConfig)
         {
- 
+
             var expectedCount = 0;
             var involvedConfigs = facetsConfig.GetConfigsThatAffectsTarget(facetsConfig.TargetCode, facetsConfig.GetFacetCodes());
 
