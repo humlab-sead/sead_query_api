@@ -382,5 +382,59 @@
     "FacetId": 1007,
     "SequenceId": 2,
     "TableId": 89
+  },
+  {
+    "FacetTableId": 118,
+    "FacetId": 42,
+    "SequenceId": 1,
+    "TableId": 135
+  },
+  {
+    "FacetTableId": 119,
+    "FacetId": 43,
+    "SequenceId": 1,
+    "TableId": 143
+  },
+  {
+    "FacetTableId": 120,
+    "FacetId": 44,
+    "SequenceId": 1,
+    "TableId": 24
+  },
+  {
+    "FacetTableId": 121,
+    "FacetId": 45,
+    "SequenceId": 1,
+    "TableId": 142
+  },
+  {
+    "FacetTableId": 122,
+    "FacetId": 46,
+    "SequenceId": 1,
+    "TableId": 38
+  },
+  {
+    "FacetTableId": 123,
+    "FacetId": 46,
+    "SequenceId": 2,
+    "TableId": 88
+  },
+  {
+    "FacetTableId": 124,
+    "FacetId": 47,
+    "SequenceId": 1,
+    "TableId": 40
+  },
+  {
+    "FacetTableId": 125,
+    "FacetId": 47,
+    "SequenceId": 2,
+    "TableId": 91
+  },
+  {
+    "FacetTableId": 126,
+    "FacetId": 47,
+    "SequenceId": 3,
+    "TableId": 102
   }
 ]

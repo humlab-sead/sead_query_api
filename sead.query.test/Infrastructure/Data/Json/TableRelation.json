@@ -1750,5 +1750,61 @@
     "Weight": 20,
     "SourceColumName": "analysis_entity_id",
     "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "TableRelationId": 220,
+    "SourceTableId": 139,
+    "TargetTableId": 161,
+    "Weight": 20,
+    "SourceColumName": "ceramics_lookup_id",
+    "TargetColumnName": "ceramics_lookup_id"
+  },
+  {
+    "TableRelationId": 221,
+    "SourceTableId": 69,
+    "TargetTableId": 163,
+    "Weight": 20,
+    "SourceColumName": "dendro_lookup_id",
+    "TargetColumnName": "dendro_lookup_id"
+  },
+  {
+    "TableRelationId": 222,
+    "SourceTableId": 165,
+    "TargetTableId": 166,
+    "Weight": 20,
+    "SourceColumName": "isotope_measurement_id",
+    "TargetColumnName": "isotope_measurement_id"
+  },
+  {
+    "TableRelationId": 223,
+    "SourceTableId": 4,
+    "TargetTableId": 166,
+    "Weight": 20,
+    "SourceColumName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "TableRelationId": 224,
+    "SourceTableId": 165,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "TableRelationId": 225,
+    "SourceTableId": 163,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "TableRelationId": 226,
+    "SourceTableId": 161,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
   }
 ]
