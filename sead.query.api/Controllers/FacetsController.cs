@@ -47,7 +47,7 @@ namespace SeadQueryAPI.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK , Type = typeof(IEnumerable<Facet>))]
         public IEnumerable<Facet> Get()
         {
-            var facets = Context.Facets.GetAll().Where(z => z.FacetGroupId != 0 && z.IsApplicable == true).ToList();
+            var facets = Context.Facets.GetAllUserFacets();
             return facets;
         }
 
