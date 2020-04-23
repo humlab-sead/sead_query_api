@@ -5,72 +5,38 @@ using SeadQueryAPI.Serializers;
 using SeadQueryAPI.Services;
 using SQT;
 using SQT.Infrastructure;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace IntegrationTests
 {
-    [Collection("JsonSeededFacetContext")]
-    public class ResultControllerTests : DisposableFacetContextContainer
+    public class ResultTestStartupWithContainer : TestStartup<TestDependencyService>
     {
-        public ResultControllerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+    }
+
+    public class ResultTestHostWithContainer : TestHostBuilderFixture<ResultTestStartupWithContainer>
+    {
+
+    }
+
+    [Collection("JsonSeededFacetContext")]
+    public class ResultControllerTests : ControllerTest<ResultTestHostWithContainer>, IClassFixture<ResultTestHostWithContainer>
+    {
+        public JsonSeededFacetContextFixture FacetContextFixture { get; }
+        public DisposableFacetContextContainer MockService { get; }
+
+        public ResultControllerTests(ResultTestHostWithContainer hostBuilderFixture, JsonSeededFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
+            FacetContextFixture = facetContextFixture;
+            MockService = new DisposableFacetContextContainer(facetContextFixture);
         }
 
-        private ResultController CreateResultController()
+        [Fact]
+        public async Task API_GET_Server_IsAwake()
         {
-            var mockResultService = new Mock<ILoadResultService>();
-            var mockReconstituteService = new Mock<IFacetConfigReconstituteService>();
-            return new ResultController(
-                Registry,
-                mockReconstituteService.Object,
-                mockResultService.Object
-            );
-        }
-
-        [Fact(Skip="Not implemented")]
-        public void Get_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            using (var resultController = this.CreateResultController()) {
-
-                // Act
-                var result = resultController.Get();
-
-                // Assert
-                Assert.True(false);
-            }
-
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Get_StateUnderTest_ExpectedBehavior1()
-        {
-            // Arrange
-            using (var resultController = this.CreateResultController()) {
-
-                int id = 0;
-
-                // Act
-                var result = resultController.Get(id);
-
-                // Assert
-                Assert.True(false);
-            }
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Load_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            // Arrange
-            using (var resultController = this.CreateResultController()) {
-                JObject data = null;
-
-                // Act
-                var result = resultController.Load(data);
-
-                // Assert
-                Assert.True(false);
+            using (var response = await Fixture.Client.GetAsync("api/values")) {
+                response.EnsureSuccessStatusCode();
+                Assert.NotEmpty(await response.Content.ReadAsStringAsync());
             }
         }
 
