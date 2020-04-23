@@ -1,13 +1,10 @@
-﻿using DataAccessPostgreSqlProvider;
+﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace SeadQueryInfra {
+namespace SeadQueryInfra
+{
 
 
     public class FacetTypeRepository : Repository<FacetType, int>, IFacetTypeRepository
@@ -38,19 +35,11 @@ namespace SeadQueryInfra {
             return set.Include(x => x.Table);
         }
 
-        public Dictionary<string, FacetTable> AliasTablesDict()
-        {
-            return FindThoseWithAlias()
-                .ToDictionary(
-                    x => x.Alias,
-                    x => x
-                );
-        }
     }
 
     public class FacetRepository : Repository<Facet, int>, IFacetRepository
     {
-        private Dictionary<string, Facet> dictionary = null;
+        private Dictionary<string, Facet> hash = null;
 
         public FacetRepository(IFacetContext context) : base(context)
         {
@@ -66,7 +55,7 @@ namespace SeadQueryInfra {
 
         public Dictionary<string, Facet> ToDictionary()
         {
-            return dictionary ?? (dictionary = GetAll().ToDictionary(x => x.FacetCode));
+            return hash ?? (hash = GetAll().ToDictionary(x => x.FacetCode));
         }
 
         public Facet GetByCode(string facetCode)
@@ -76,22 +65,28 @@ namespace SeadQueryInfra {
 
         public IEnumerable<Facet> FindThoseWithAlias()
         {
-            // FIXME Only check first table?
-            return GetAll().Where(p => p.Tables.Any(c => !c.Alias.Equals("")));
+            return GetAll().Where(p => p.Tables.Any(c => !c.Alias.IsEmpty()));
+        }
+
+        public IEnumerable<Facet> Parents()
+        {
+            // FIXME: Get all with children instead of magic group id
+            return GetAll().Where(p => p.FacetGroupId == 999);
+        }
+
+        public IEnumerable<Facet> Children(string facetCode)
+        {
+            // FÍXME Mapping Children directly without explicit FacetChild relation
+            var children = GetSet()
+                .Include("Children.Child")
+                .Where(f => f.FacetCode == facetCode)
+                .SelectMany(z => z.Children)
+                .Select(z => z.Child);
+            return children.ToList();
         }
 
         public IEnumerable<Facet> GetOfType(EFacetType type)
             => Find(z => z.FacetTypeId == type);
-
-        public (decimal, decimal) GetUpperLowerBounds(Facet facet)
-        {
-            string sql = new RangeOuterBoundSqlCompiler().Compile(null, facet);
-            var item = QueryRow(sql, r => new {
-                lower = r.IsDBNull(0) ? 0 : r.GetDecimal(0),
-                upper = r.IsDBNull(1) ? 0 : r.GetDecimal(1)
-            });
-            return item == null ? (0, 0) : (item.lower, item.upper);
-        }
 
     }
 

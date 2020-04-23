@@ -25,15 +25,22 @@ namespace SeadQueryCore
         /// </summary>
         public string RequestId { get; set; } = "";
 
-        [JsonIgnore]
-        public string Language { get; set; } = "";
         /// <summary>
-        /// Specifies request language. Only english supported in new version
+        /// Facet domain under which current request is valid. Specifies a domain facet.
+        /// </summary>
+        public string DomainCode { get; set; } = "";
+        /// <summary>
+        /// Request specifier ("populate", ...)
         /// </summary>
         public string RequestType { get; set; } = "";       // Request specifier ("populate", ...)
 
         public string TargetCode { get; set; } = "";        // Target facet code i.e. facet for which new data is requested
-        public string TriggerCode { get; set; } = "";       // Facet code that triggerd the request (some preceeding facet)
+
+        /// <summary>
+        /// Facet code that triggered the request (some preceeding facet)
+        /// Not used by Core Logic, pass-through, round-trip variable
+        /// </summary>
+        public string TriggerCode { get; set; } = "";       //
 
         [JsonIgnore]
         private List<FacetConfig2> facetConfigs;
@@ -48,10 +55,11 @@ namespace SeadQueryCore
         }
 
         [JsonIgnore]
-        public List<FacetConfig2> InactiveConfigs { get; set; }                         // Those having unset position
-
+        public Facet DomainFacet { get; set; }
+        /// <summary>
+        /// The target facet of interest for which we want to produce content or result.
+        /// </summary>
         public Facet TargetFacet { get; set; }
-        public Facet TriggerFacet { get; set; }
 
 
         [JsonIgnore]
@@ -60,18 +68,75 @@ namespace SeadQueryCore
             get => GetConfig(TargetCode);
         }
 
-        public FacetConfig2 GetConfig(string facetCode)         => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
-        public List<string> GetFacetCodes()                     => FacetConfigs.Select(x => x.FacetCode).ToList();
-        public List<FacetConfig2> GetFacetConfigsWithPicks()    => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
-        public List<string> GetFacetCodesWithPicks()            => GetFacetConfigsWithPicks().Select(x => x.FacetCode).ToList();
+        public FacetConfig2 GetConfig(string facetCode)                 => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
+        public FacetConfig2 GetConfig(Facet facet)                      => GetConfig(facet.FacetCode);
+
+        public List<FacetConfig2> GetConfigs(List<string> facetCodes)   => FacetConfigs.Where(c => facetCodes.Contains(c.FacetCode)).ToList();
+
+        public List<string> GetFacetCodes()                             => FacetConfigs.Select(x => x.FacetCode).ToList();
+
+        public List<FacetConfig2> GetFacetConfigsWithPicks()            => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
+
+        public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
+        {
+            if (!facetConfig.HasConstraints()) {
+                // FIXME Is this a relevant condition?
+                return false;
+            }
+
+            if (targetFacet.FacetCode == facetConfig.FacetCode)
+                return targetFacet.FacetType.ReloadAsTarget;
+
+            return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(facetConfig.FacetCode);
+
+        }
 
         public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet targetFacet, List<string> facetCodes)
         {
-            return facetCodes
-                .Select(z => GetConfig(z))
-                .Where(c => (c?.HasPicks() ?? false) && c.Facet.IsAffectedBy(facetCodes, targetFacet))
+            return GetConfigs(facetCodes)
+                .Where(c => IsPriorTo(c, facetCodes, targetFacet))
                 .ToList();
         }
+
+        /// <summary>
+        /// Returns the facets (list of FacetConfig) involved in a query given FacetsConfig2 `facetsConfig` configuration and target facet `targetCode`
+        ///    => if facetsCode preceeds targetFacet AND has picks
+        /// </summary>
+        /// <param name="targetCode"></param>
+        /// <param name="facetCodes"></param>
+        /// <returns></returns>
+        public List<FacetConfig2> GetConfigsThatAffectsTarget(string targetCode, List<string> facetCodes)
+        {
+            if (!facetCodes.Contains(targetCode))
+                throw new ArgumentOutOfRangeException($"{nameof(targetCode)} ({targetCode}) not in {nameof(facetCodes)}");
+
+            List<FacetConfig2> configs = new List<FacetConfig2>();
+
+            foreach (var currentCode in facetCodes) {
+
+                var currentConfig = GetConfig(currentCode);
+                var currentFacet = currentConfig.Facet;
+
+                if (! (currentConfig.HasPicks() || currentConfig.HasEnforcedConstraints())) {
+                    /* If the facet doesn't have constraints then it cannot affect the target facet */
+                    continue;
+                }
+
+                if (facetCodes.IndexOf(currentCode) < facetCodes.IndexOf(targetCode)) {
+                    /* Has constraints and preceeds in chain */
+                    configs.Add(currentConfig);
+                } else
+                if (currentCode == targetCode) {
+                    /* Range facets also affects themselves */
+                    if (currentFacet.FacetType.ReloadAsTarget) {
+                        configs.Add(currentConfig);
+                    }
+                }
+            }
+
+            return configs;
+        }
+
 
         public FacetsConfig2 ClearPicks()
         {
@@ -114,7 +179,7 @@ namespace SeadQueryCore
             //filter = ConfigRegistry::getFilterByText() ? this.targetFacet.textFilter : "no_text_filter";
             return TargetCode + "_" + string.Join("", GetFacetCodes()) +
                     "_" + GetPicksCacheId() +
-                    "_" + Language + "_" + GetTargetTextFilter();
+                    "_" + DomainCode + "_" + GetTargetTextFilter();
         }
 
         public string GetTargetTextFilter()

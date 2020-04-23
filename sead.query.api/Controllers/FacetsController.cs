@@ -65,6 +65,30 @@ namespace SeadQueryAPI.Controllers
         }
 
         /// <summary>
+        /// Returns domain facets
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Facet))]
+        [HttpGet("domain")]
+        [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
+        public IEnumerable<Facet> GetDomainFacets()
+        {
+            return Context.Facets.Parents().ToList();
+        }
+
+        /// <summary>
+        /// Returns a specific facet definition
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(Facet))]
+        [HttpGet("domain/{id}")]
+        [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
+        public IEnumerable<Facet> GetDomainFacetChildren(string id)
+        {
+            return Context.Facets.Children(id);
+        }
+
+        /// <summary>
         /// Returns facet content given supplied configuration
         /// </summary>
         /// <remarks>

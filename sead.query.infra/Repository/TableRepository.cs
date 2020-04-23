@@ -1,10 +1,10 @@
-﻿using DataAccessPostgreSqlProvider;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace SeadQueryInfra {
+namespace SeadQueryInfra
+{
 
     public class TableRepository : Repository<Table, int>, ITableRepository {
         public TableRepository(IFacetContext context) : base(context)
@@ -22,6 +22,16 @@ namespace SeadQueryInfra {
         {
             return Context.Set<TableRelation>().BuildEntity().ToList();
         }
+
+        public TableRelation FindByName(string sourceName, string targetName)
+        {
+            string[] names = { sourceName , targetName };
+            return Context.Set<TableRelation>().BuildEntity()
+                .Where(
+                    r => (r.SourceTable.TableOrUdfName == sourceName && r.TargetTable.TableOrUdfName == targetName)
+                ).FirstOrDefault();
+        }
+
     }
 
     public static class EdgeRepositoryEagerBuilder {

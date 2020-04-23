@@ -6,6 +6,13 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
+    public static class FacetTableExtensions
+    {
+        public static FacetTable FindByAlias(this IEnumerable<FacetTable> aliases, string aliasName)
+        {
+            return aliases.Where(x => x.Alias == aliasName).FirstOrDefault();
+        }
+    }
 
     /// <summary>
     /// A relational table associated to a facet
@@ -23,7 +30,7 @@ namespace SeadQueryCore
         public Table Table { get; set; }
 
         [JsonIgnore]
-        public string TableOrUdfName { get { return Table.TableOrUdfName; } }
+        public string TableOrUdfName { get { return Table?.TableOrUdfName; } }
 
         [JsonIgnore]
         public virtual Facet Facet { get; set; }

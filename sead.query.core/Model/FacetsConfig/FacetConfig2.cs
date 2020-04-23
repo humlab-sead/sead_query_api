@@ -4,6 +4,19 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
+    public static class FacetConfig2Extensions
+    {
+        public static bool ContainsFacetConfig(this IEnumerable<FacetConfig2> facetConfigs, FacetConfig2 facetConfig)
+        {
+            return facetConfigs.Contains(facetConfig);
+        }
+        public static bool ContainsFacet(this IEnumerable<FacetConfig2> facetConfigs, Facet facet)
+        {
+            return facetConfigs.FirstOrDefault(z => z.FacetCode == facet.FacetCode) != default(FacetConfig2);
+        }
+
+    }
+
     public class FacetConfig2 {
 
         public string FacetCode { get; set; } = "";
@@ -22,7 +35,6 @@ namespace SeadQueryCore
 
         public FacetConfig2(Facet facet, int position, string filter, List<FacetConfigPick> picks)
         {
-            // FacetCode = facetCode;
             FacetCode = facet.FacetCode;
             Facet = facet;
             Position = position;
@@ -31,6 +43,11 @@ namespace SeadQueryCore
         }
 
         public bool HasPicks() => (Picks?.Count ?? 0) > 0;
+        public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
+        public bool HasConstraints() => (HasPicks() || HasCriterias());
+        public bool HasEnforcedConstraints()
+            => (Facet?.Clauses?.Where(x => x.EnforceConstraint == true).Any() ?? false);
+
         public void ClearPicks() => Picks.Clear();
 
         public List<decimal> GetPickValues(bool sort = false)
@@ -51,6 +68,20 @@ namespace SeadQueryCore
         {
             return Facet.Tables.FirstOrDefault(z => z.TableOrUdfName == name || z.ResolvedAliasOrTableOrUdfName == name);
         }
+
+        //public bool IsPriorTo(List<string> facetCodes, Facet targetFacet)
+        //{
+        //    if (!HasConstraints()) {
+        //        // FIXME Is this a relevant condition?
+        //        return false;
+        //    }
+
+        //    if (targetFacet.FacetCode == FacetCode)
+        //        return targetFacet.FacetType.ReloadAsTarget;
+
+        //    return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(FacetCode);
+
+        //}
 
     }
 }

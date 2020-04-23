@@ -13,7 +13,7 @@ namespace SeadQueryCore
     public class FacetGroup {
         public FacetGroup()
         {
-            Facets = new HashSet<Facet>();
+            //Facets = new HashSet<Facet>();
         }
 
         [JsonIgnore]
@@ -27,7 +27,7 @@ namespace SeadQueryCore
         [JsonIgnore]
         public bool IsDefault { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Facet> Facets { get; set; }
+        //[JsonIgnore]
+        //public ICollection<Facet> Facets { get; set; }
     }
 }

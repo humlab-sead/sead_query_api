@@ -1,7 +1,6 @@
 var facetsConfig2 = new FacetsConfig2
 {
 	RequestId = "1",
-	Language = "",
 	RequestType = "populate",
 	TargetCode = "sites",
 	TriggerCode = "sites",
@@ -17,7 +16,6 @@ var facetsConfig2 = new FacetsConfig2
 			}
 		}
 	},
-	InactiveConfigs = null,
 	TargetConfig = new FacetConfig2
 	{
 		FacetCode = "sites",

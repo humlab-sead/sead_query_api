@@ -3,34 +3,57 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using SeadQueryCore;
-using Microsoft.AspNetCore.Routing;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.Extensions.PlatformAbstractions;
-using System.IO;
-using Npgsql.Logging;
+using Microsoft.Extensions.Hosting;
+//using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Serialization;
+using Npgsql.Logging;
+using SeadQueryCore;
+//using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
 
-namespace SeadQueryAPI {
+namespace SeadQueryAPI
+{
 
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; private set; }
+
         public IContainer Container { get; private set; }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
+        public Startup()
+        {
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
+
+        private Setting GetOptions()
+        {
+            return Configuration.GetSection("QueryBuilderSetting").Get<Setting>();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
             NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
 
-            app.UseMvcWithDefaultRoute();
-            app.UseResponseBuffering();
+            // app.UseResponseBuffering();
+
+            app.UseRouting();
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
             );
+
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
+                // endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                // endpoints.MapHealthChecks("/health");
+            });
 
             if (env.IsDevelopment())
             {
@@ -40,59 +63,22 @@ namespace SeadQueryAPI {
             appLifetime.ApplicationStopped.Register(() => this.Container.Dispose());
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             _ = services
                 .AddOptions()
                 .AddCors()
-                .AddMvc()
-                .AddJsonOptions(opts =>
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
                 {
-                    var settings = opts.SerializerSettings;
-                    var resolver = new SeadQueryAPI.Serializers.SeadQueryResolver();
-                    settings.ContractResolver = resolver as DefaultContractResolver;
+                    var resolver = new Serializers.SeadQueryResolver();
+                    options.SerializerSettings.ContractResolver = resolver as DefaultContractResolver;
                 });
-
-            //services.AddLogging(builder => builder.AddConsole());
-            //AddSwagger(services);
-
-            var options = GetOptions();
-            Container = new DependencyService().Register(services, options);
-
-            return Container.Resolve<IServiceProvider>();
         }
 
-
-        private static void AddSwagger(IServiceCollection services)
+        public void ConfigureContainer(ContainerBuilder builder)
         {
-            //See https://github.com/domaindrivendev/Swashbuckle
-            // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info
-                {
-                    Title = "SEAD Query API",
-                    Version = "v1",
-                    Description = "API used by the SEAD Query clients",
-                    TermsOfService = "None"
-                });
-                string[] files = { "SeadQueryAPI.xml", "SeadQueryCore.xml" };
-                foreach (var file in files)
-                {
-                    c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, file));
-                }
-            });
-        }
-
-        private QueryBuilderSetting GetOptions()
-        {
-            var options = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build()
-                .GetSection("QueryBuilderSetting")
-                .Get<QueryBuilderSetting>();
-            return options;
+            builder.RegisterModule(new DependencyService() { Options = GetOptions() });
         }
     }
 }

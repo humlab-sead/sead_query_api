@@ -7,18 +7,18 @@ namespace SeadQueryCore
 {
     public class ServiceBase
     {
-        public IRepositoryRegistry Context { get; set; }
+        public IRepositoryRegistry Registry { get; set; }
 
         public ServiceBase(IRepositoryRegistry context)
         {
-            Context = context;
+            Registry = context;
         }
     }
 
     public class QueryServiceBase : ServiceBase {
-        public IQuerySetupCompiler QuerySetupBuilder { get; set; }
+        public IQuerySetupBuilder QuerySetupBuilder { get; set; }
 
-        public QueryServiceBase(IRepositoryRegistry context, IQuerySetupCompiler builder) : base(context)
+        public QueryServiceBase(IRepositoryRegistry context, IQuerySetupBuilder builder) : base(context)
         {
             QuerySetupBuilder = builder;
         }

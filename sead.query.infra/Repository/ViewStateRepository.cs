@@ -1,4 +1,3 @@
-using DataAccessPostgreSqlProvider;
 using SeadQueryCore;
 
 namespace SeadQueryInfra

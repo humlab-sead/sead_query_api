@@ -9,14 +9,17 @@ namespace SeadQueryCore
 
         public DiscreteBogusPickService(
             IRepositoryRegistry registry,
-            IQuerySetupCompiler builder,
-            IValidPicksSqlQueryCompiler picksCompiler
+            IQuerySetupBuilder builder,
+            IValidPicksSqlCompiler picksCompiler,
+            ITypedQueryProxy queryProxy
         ) : base(registry, builder)
         {
             PicksCompiler = picksCompiler;
+            QueryProxy = queryProxy;
         }
 
-        public IValidPicksSqlQueryCompiler PicksCompiler { get; }
+        public IValidPicksSqlCompiler PicksCompiler { get; }
+        public ITypedQueryProxy QueryProxy { get; }
 
         /*
         public:  Delete
@@ -41,12 +44,10 @@ namespace SeadQueryCore
 
         private List<FacetConfigPick> GetValidPicks(FacetsConfig2 facetsConfig, string facetCode, FacetConfig2 config)
         {
-            Facet facet = Context.Facets.GetByCode(facetCode);
-            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, facet);
-
-            string sql = PicksCompiler.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
-
-            List<FacetConfigPick> rows = Context.QueryRows(sql, x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
+            var facet = Registry.Facets.GetByCode(facetCode);
+            var query = QuerySetupBuilder.Build(facetsConfig, facet);
+            var sql = PicksCompiler.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
+            var rows = QueryProxy.QueryRows(sql, x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
             return rows;
         }
     }

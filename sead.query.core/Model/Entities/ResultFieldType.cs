@@ -15,11 +15,13 @@ namespace SeadQueryCore
         public virtual bool IsAggregateField { get; set; }
         public bool IsItemField { get; set; }
         public string SqlFieldCompiler { get; set; }
-        public string SqlTemplate { get; set; }
+        public virtual string SqlTemplate { get; set; }
 
         public bool IsGroupByField => IsItemField || IsSortField;
 
         private ISqlFieldCompiler __compiler = null;
+
+        [JsonIgnore]
         public ISqlFieldCompiler Compiler => __compiler ?? (__compiler = CreateCompiler());
 
         private ISqlFieldCompiler CreateCompiler()

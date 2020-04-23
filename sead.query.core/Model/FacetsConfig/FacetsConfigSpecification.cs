@@ -20,19 +20,11 @@ namespace SeadQueryCore
             {
                 throw new QuerySeadException("Target facet is undefined");
             }
-            if (facetsConfig.TriggerFacet == null)
-            {
-                throw new QuerySeadException("Trigger facet is undefined");
-            }
             if (facetsConfig.TargetCode != "" && facetsConfig.TargetFacet == null) {
                 throw new QuerySeadException("Target facet is undefined");
             }
-            foreach (var facetCode in new List<string>() { facetsConfig.TargetFacet.FacetCode, facetsConfig.TriggerFacet.FacetCode })
-            {
-                if ( ! facetsConfig.FacetConfigs.Exists(z => z.FacetCode == facetCode))
-                {
-                    throw new QuerySeadException("Target or trigger facet code invalid (not found in any config)");
-                }
+            if (facetsConfig.GetConfig(facetsConfig.TargetCode) == null) {
+                throw new QuerySeadException("Target facet code invalid (not found in any config)");
             }
             return true;
         }

@@ -1,7 +1,6 @@
 var facetsConfig2 = new FacetsConfig2
 {
 	RequestId = "1",
-	Language = "",
 	RequestType = "populate",
 	TargetCode = "tbl_denormalized_measured_values_33_0",
 	TriggerCode = "tbl_denormalized_measured_values_33_0",
@@ -29,7 +28,6 @@ var facetsConfig2 = new FacetsConfig2
 			}
 		}
 	},
-	InactiveConfigs = null,
 	TargetConfig = new FacetConfig2
 	{
 		FacetCode = "tbl_denormalized_measured_values_33_0",

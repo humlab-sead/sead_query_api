@@ -359,3 +359,6 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 sead.query.test/RequestsRFC2616/format.json
+
+users.sql
+sead_staging_devdocker.sql*

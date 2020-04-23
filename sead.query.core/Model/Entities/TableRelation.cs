@@ -6,12 +6,22 @@ using System.Text;
 
 namespace SeadQueryCore
 {
+    public interface IGraphEdge
+    {
+        int GetSourceId();
+        int GetTargetId();
+        int GetWeight();
+        Tuple<string, string> GetKey();
+        Tuple<int, int> GetIdKey();
+        IGraphEdge Reverse();
+    }
 
-    public class TableRelation {
+    public class TableRelation : IGraphEdge {
         public int TableRelationId { get; set; }
         public int SourceTableId { get; set; }
         public int TargetTableId { get; set; }
         public int Weight { get; set; }
+        //public string ExtraConstraint { get; set; }
 
         public string SourceColumName { get; set; }
         public string TargetColumnName { get; set; }
@@ -38,7 +48,7 @@ namespace SeadQueryCore
             };
         }
 
-        public TableRelation Reverse()
+        public IGraphEdge Reverse()
         {
             var x = Clone();
             x.TableRelationId = -x.TableRelationId;
@@ -58,16 +68,17 @@ namespace SeadQueryCore
             return x;
         }
 
-        public Tuple<string, string> Key { get { return new Tuple<string, string>(SourceName, TargetName); } }
+        public Tuple<string, string> Key   => new Tuple<string, string>(SourceName, TargetName);
+        public Tuple<int, int> IdKey       => new Tuple<int, int>(SourceTableId, TargetTableId);
 
-        public override bool Equals(object x)
+        public bool IsOf(TableRelation x)
         {
-            return Equal(x as TableRelation);
+            return x != null && IsOf(x.SourceName, x.TargetName);
         }
 
-        public bool Equal(TableRelation x)
+        public bool IsOf(string sourceName, string targetName)
         {
-            return x != null && (SourceName == x.SourceName) && (TargetName == x.TargetName);
+            return SourceName == sourceName && TargetName == targetName;
         }
 
         public override int GetHashCode()
@@ -78,6 +89,17 @@ namespace SeadQueryCore
         public string ToStringPair()
         {
             return $"{SourceName}/{TargetName}";
+        }
+
+        public int GetSourceId() => SourceTableId;
+        public int GetTargetId() => TargetTableId;
+        public int GetWeight() => Weight;
+        public Tuple<string, string> GetKey() => Key;
+        public Tuple<int, int> GetIdKey() => IdKey;
+
+        public override bool Equals(object x)
+        {
+            return IsOf(x as TableRelation);
         }
     }
 }

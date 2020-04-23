@@ -1,15 +1,75 @@
 {
-    "version": "0.1.0",
-    "command": "dotnet",
-    "isShellCommand": true,
-    "args": [],
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
     "tasks": [
         {
-            "taskName": "build",
-            "args": [
-                "${workspaceRoot}/sead.query.api/sead.query.api.csproj"
-            ],
-            "isBuildCommand": true,
+            "label": "dotnet:restore:sead_query_api",
+            "group": "build",
+            "command": "dotnet restore sead_query_api.sln",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet:build:sead_query_api",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command": "dotnet build sead_query_api.sln",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "dotnet:restore:sead_query_api"
+            ]
+        },
+        {
+            "label": "dotnet:restore:test",
+            "group": "build",
+            "command": "dotnet restore sead.query.test/sead.query.test.csproj",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet:build:test",
+            "group": "build",
+            "command": "dotnet build sead.query.test/sead.query.test.csproj",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "dotnet:restore:test"
+            ]
+        },
+        {
+            "label": "dotnet:run:test",
+            "group": "test",
+            "command": "dotnet test sead.query.test/sead.query.test.csproj",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet:run:commandline:unittests",
+            "group": "test",
+            "command": "dotnet run -p sead.query.test/sead.query.test.csproj",
+            "type": "shell",
+            "presentation": {
+                "reveal": "always"
+            },
             "problemMatcher": "$msCompile"
         }
     ]

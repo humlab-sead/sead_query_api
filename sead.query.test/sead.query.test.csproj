@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <!-- <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> -->
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>SeadQueryTest</RootNamespace>
   </PropertyGroup>
@@ -12,65 +12,118 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Infrastructure\Fixtures\RequestConfig.cs" />
+    <Compile Remove="Infrastructure\FacetContext\**" />
+    <Compile Remove="Infrastructure\Services\**" />
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Infrastructure\FacetContext\**" />
+    <EmbeddedResource Remove="Infrastructure\Services\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Infrastructure\FacetContext\**" />
+    <None Remove="Infrastructure\Services\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Archived\Data_RangeFacetCategoryCount.cs" />
+    <Compile Remove="Archived\Data_Sites.cs" />
+    <Compile Remove="Archived\FacetConfigFixtures.cs" />
+    <Compile Remove="Archived\FacetRepository.cs" />
+    <Compile Remove="Archived\FacetsConfigFixtures.cs" />
+    <Compile Remove="Archived\FacetTypeRepository.cs" />
+    <Compile Remove="Archived\FakeFacetContext.cs" />
+    <Compile Remove="Archived\FakeFacetContextFactory.cs" />
+    <Compile Remove="Archived\FakeFacetContextSeeder.cs" />
+    <Compile Remove="Archived\FakeRepository.cs" />
+    <Compile Remove="Archived\RepositoryMocks\FacetRepository.cs" />
+    <Compile Remove="Archived\RepositoryMocks\FacetTypeRepository.cs" />
+    <Compile Remove="Archived\RepositoryMocks\FakeFacetContext.cs" />
+    <Compile Remove="Archived\RepositoryMocks\FakeRepository.cs" />
+    <Compile Remove="Archived\ResetRelations.cs" />
+    <Compile Remove="Archived\Startup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Archived\Data_RangeFacetCategoryCount.cs" />
+    <None Include="Archived\Data_Sites.cs" />
+    <None Include="Archived\FacetConfigFixtures.cs" />
+    <None Include="Archived\FacetsConfigFixtures.cs" />
+    <None Include="Archived\FakeFacetContextFactory.cs" />
+    <None Include="Archived\FakeFacetContextSeeder.cs" />
+    <None Include="Archived\RepositoryMocks\FacetRepository.cs" />
+    <None Include="Archived\RepositoryMocks\FacetTypeRepository.cs" />
+    <None Include="Archived\RepositoryMocks\FakeFacetContext.cs" />
+    <None Include="Archived\RepositoryMocks\FakeRepository.cs" />
+    <None Include="Archived\ResetRelations.cs" />
+    <None Include="Archived\Startup.cs" />
   </ItemGroup>
 
   <ItemGroup>
 
-    <PackageReference Include="Autofac" Version="4.9.4" />
-
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
-
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Autofac.Extras.AggregateService" Version="5.0.0" />
+    <PackageReference Include="AutoFixture" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.AutoMoq" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.Idioms" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.SeedExtensions" Version="4.11.0" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.11.0" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-
-    <PackageReference Include="Bogus" Version="28.0.2" />
-
+    <PackageReference Include="Bogus" Version="29.0.1" />
     <PackageReference Include="CacheManager.Core" Version="1.2.0" />
-
     <PackageReference Include="CacheManager.Microsoft.Extensions.Caching.Memory" Version="1.2.0" />
     <PackageReference Include="CacheManager.Serialization.Json" Version="1.2.0" />
     <PackageReference Include="CacheManager.StackExchange.Redis" Version="1.2.0" />
-    <PackageReference Include="CompareNETObjects" Version="4.62.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
-
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-
-    <PackageReference Include="Moq" Version="4.12.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-
-    <PackageReference Include="Autofac.Extras.AggregateService" Version="4.1.0" />
-
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+    <PackageReference Include="CompareNETObjects" Version="4.65.0" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Npgsql" Version="4.0.9" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
-    <!--<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="2.0.0-preview1" />-->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
+    <PackageReference Include="ObjectDumper.NET" Version="2.5.20033.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.3" />
 
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-    <PackageReference Include="ObjectDumper.NET" Version="2.4.19218.1" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
+    <PackageReference Include="coverlet.collector" Version="1.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.3" />
+
+    <PackageReference Include="Moq" Version="4.13.1" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Npgsql" Version="4.1.3.1" />
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.3" />
+
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.3.1" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.4.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
     <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
+
+    <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.analyzers" Version="0.10.0" />
+    <PackageReference Include="xunit.assert" Version="2.4.1" />
+
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

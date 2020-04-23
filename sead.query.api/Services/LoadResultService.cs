@@ -21,7 +21,7 @@ namespace SeadQueryAPI.Services {
         private IDiscreteBogusPickService BogusPickService;
 
         public LoadResultService(
-            IQueryBuilderSetting config,
+            ISetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,
@@ -42,7 +42,7 @@ namespace SeadQueryAPI.Services {
     {
 
         public CachedLoadResultService(
-            IQueryBuilderSetting config,
+            ISetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,

@@ -25,13 +25,13 @@ namespace SeadQueryCore
         public int CachePort { get; set; } = 0;
     }
 
-    public class QueryBuilderSetting: IQueryBuilderSetting {
+    public class Setting: ISetting {
         // https://msdn.microsoft.com/en-us/magazine/mt632279.aspx
-        public QueryBuilderSetting()
+        public Setting()
         {
 
         }
-        public QueryBuilderSetting(FacetSetting facet, StoreSetting store)
+        public Setting(FacetSetting facet, StoreSetting store)
         {
             Facet = facet;
             Store = store;

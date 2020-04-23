@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
@@ -17,11 +19,12 @@ namespace SeadQueryAPI {
 
         public static int Main(string[] args)
         {
-            Log.Logger = CreateSerilogger();
+            Log.Logger = Logger.CreateSerilogger();
 
             try {
                 Log.Information("Starting web host");
-                CreateWebHostBuilder(args).Build().Run();
+                var host = CreateHostBuilder(args).Build();
+                host.Run();
                 return 0;
             } catch (Exception ex) {
                 Log.Fatal(ex, "Host terminated unexpectedly");
@@ -31,24 +34,20 @@ namespace SeadQueryAPI {
             }
         }
 
-        private static Serilog.ILogger CreateSerilogger()
-        {
-            return new LoggerConfiguration()
-                .ReadFrom.Configuration(new ConfigurationBuilder()
-                    .AddJsonFile("logging.json", true)
-                    .Build())
-                //.Enrich.FromLogContext()
-                //.MinimumLevel.Debug()
-                //.MinimumLevel.Override("Microsoft", LogEventLevel.Information).WriteTo.Debug()
-                //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
-                .CreateLogger();
-        }
+         public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        // Set properties and call methods on options
+                    })
+                    .UseStartup<Startup>()
+                    .UseSerilog();
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseSerilog();
-
+                })
+            ;
     }
 }
 

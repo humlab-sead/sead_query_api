@@ -27,9 +27,17 @@ namespace SeadQueryAPI.Serializers
             };
         }
 
+        private Facet GetFacetByCode(string facetCode)
+        {
+            if (String.IsNullOrEmpty(facetCode))
+                return null;
+
+            return Registry.Facets.GetByCode(facetCode);
+        }
+
         public FacetConfig2 Reconstitute(FacetConfig2 facetConfig)
         {
-            facetConfig.Facet = Registry.Facets.GetByCode(facetConfig.FacetCode);
+            facetConfig.Facet = GetFacetByCode(facetConfig.FacetCode);
             return facetConfig;
         }
 
@@ -39,16 +47,26 @@ namespace SeadQueryAPI.Serializers
             if (Utility.empty(facetsConfig.TriggerCode)) {
                 facetsConfig.TriggerCode = facetsConfig.TargetCode;
             }
-            facetsConfig.TargetFacet = Registry.Facets.GetByCode(facetsConfig.TargetCode);
-            facetsConfig.TriggerFacet = Registry.Facets.GetByCode(facetsConfig.TriggerCode);
+            facetsConfig.DomainFacet = GetFacetByCode(facetsConfig.DomainCode);
+            facetsConfig.TargetFacet = GetFacetByCode(facetsConfig.TargetCode);
+
             foreach (var config in facetsConfig.FacetConfigs) {
                 Reconstitute(config);
             }
+
+            // if (!String.IsNullOrEmpty(facetsConfig.DomainCode)) {
+            //     facetsConfig.FacetConfigs.Insert(0, CreateConfigByCode(facetsConfig.DomainCode));
+            // }
+
             new FacetsConfigSpecification().IsSatisfiedBy(facetsConfig);
 
             return facetsConfig;
         }
 
+        private FacetConfig2 CreateConfigByCode(string facetCode)
+        {
+            return FacetConfigFactory.CreateSimple(GetFacetByCode(facetCode), 0);
+        }
 
         public FacetsConfig2 Reconstitute(string json)
         {
@@ -64,6 +82,7 @@ namespace SeadQueryAPI.Serializers
             facetsConfig = Reconstitute(facetsConfig);
             return facetsConfig;
         }
+
         public FacetsConfig2 Reconstitute(JObject json)
         {
             var facetsConfig = Reconstitute(json.ToString());
