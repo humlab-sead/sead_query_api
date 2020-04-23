@@ -39,6 +39,8 @@ namespace SeadQueryInfra
 
     public class FacetRepository : Repository<Facet, int>, IFacetRepository
     {
+        public static int DOMAIN_FACET_GROUP_ID = 999;
+
         private Dictionary<string, Facet> hash = null;
 
         public FacetRepository(IFacetContext context) : base(context)
@@ -71,22 +73,28 @@ namespace SeadQueryInfra
         public IEnumerable<Facet> Parents()
         {
             // FIXME: Get all with children instead of magic group id
-            return GetAll().Where(p => p.FacetGroupId == 999);
+            return GetAll().Where(p => p.FacetGroupId == DOMAIN_FACET_GROUP_ID);
         }
 
         public IEnumerable<Facet> Children(string facetCode)
         {
-            // FÍXME Mapping Children directly without explicit FacetChild relation
+            if (facetCode.IsEmpty() || facetCode.ToLower().Equals("general")) {
+                return GetAllUserFacets();
+            }
             var children = GetSet()
                 .Include("Children.Child")
                 .Where(f => f.FacetCode == facetCode)
                 .SelectMany(z => z.Children)
+                .OrderBy(z => z.Position)
                 .Select(z => z.Child);
             return children.ToList();
         }
 
         public IEnumerable<Facet> GetOfType(EFacetType type)
             => Find(z => z.FacetTypeId == type);
+
+        public IEnumerable<Facet> GetAllUserFacets()
+            => GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable == true).ToList();
 
     }
 

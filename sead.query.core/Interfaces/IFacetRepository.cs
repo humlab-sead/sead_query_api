@@ -4,6 +4,7 @@ namespace SeadQueryCore
 {
     public interface IFacetRepository : IRepository<Facet, int>
     {
+        IEnumerable<Facet> GetAllUserFacets();
         IEnumerable<Facet> FindThoseWithAlias();
         Facet GetByCode(string facetCode);
         IEnumerable<Facet> GetOfType(EFacetType type);
