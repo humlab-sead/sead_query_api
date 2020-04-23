@@ -1,0 +1,47 @@
+{
+  "RequestId": "1",
+  "Meta": {
+    "Columns": [
+      {
+        "FieldKey": "sitename",
+        "DisplayText": "Site name",
+        "LinkLabel": null,
+        "LinkUrl": null,
+        "Type": "String"
+      },
+      {
+        "FieldKey": "record_type",
+        "DisplayText": "Record type(s)",
+        "LinkLabel": null,
+        "LinkUrl": null,
+        "Type": "String"
+      },
+      {
+        "FieldKey": "analysis_entities",
+        "DisplayText": "Filtered records",
+        "LinkLabel": null,
+        "LinkUrl": null,
+        "Type": "Int64"
+      },
+      {
+        "FieldKey": "site_link",
+        "DisplayText": "Full report",
+        "LinkLabel": "Show site report",
+        "LinkUrl": "api/report/show_site_details.php?site_id",
+        "Type": "Int32"
+      },
+      {
+        "FieldKey": "site_link_filtered",
+        "DisplayText": "Filtered report",
+        "LinkLabel": "Show filtered report",
+        "LinkUrl": "api/report/show_site_details.php?site_id",
+        "Type": "Int32"
+      }
+    ]
+  },
+  "Data": {
+    "DataCollection": []
+  },
+  "Payload": null,
+  "Query": "\n            SELECT alias_1, ARRAY_TO_STRING(ARRAY_AGG(DISTINCT alias_2),',') AS text_agg_of_alias_2, COUNT(alias_3) AS count_of_alias_3, alias_4, alias_5\n            FROM (\n                SELECT tbl_sites.site_name AS alias_1, tbl_record_types.record_type_name AS alias_2, tbl_analysis_entities.analysis_entity_id AS alias_3, tbl_sites.site_id AS alias_4, tbl_sites.site_id AS alias_5, tbl_sites.site_name AS alias_6\n                FROM tbl_analysis_entities\n                      INNER JOIN tbl_physical_samples ON tbl_physical_samples.\"physical_sample_id\" = tbl_analysis_entities.\"physical_sample_id\"  INNER JOIN tbl_sample_groups ON tbl_sample_groups.\"sample_group_id\" = tbl_physical_samples.\"sample_group_id\"  INNER JOIN tbl_sites ON tbl_sites.\"site_id\" = tbl_sample_groups.\"site_id\"  INNER JOIN tbl_datasets ON tbl_datasets.\"dataset_id\" = tbl_analysis_entities.\"dataset_id\"  INNER JOIN tbl_methods ON tbl_methods.\"method_id\" = tbl_datasets.\"method_id\"  INNER JOIN tbl_record_types ON tbl_record_types.\"record_type_id\" = tbl_methods.\"record_type_id\"  INNER JOIN tbl_dataset_masters ON tbl_dataset_masters.\"master_set_id\" = tbl_datasets.\"master_set_id\" \n                WHERE 1 = 1\n                AND ( (tbl_dataset_masters.master_set_id ::text in ('11')) )\n                GROUP BY alias_1, alias_2, alias_3, alias_4, alias_5, alias_6\n            ) AS X\n            GROUP BY alias_1, alias_4, alias_5, alias_6\n            ORDER BY alias_6\n        "
+}
