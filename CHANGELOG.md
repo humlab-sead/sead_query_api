@@ -84,3 +84,15 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
 ### New facets
 
 The following new facets have been added to the system:
+
+1. data_types (palaeoentomology, archaeobotany, pollen, geoarchaeology, dendrochronology, ceramic)
+2. rdb_system (palaeoentomology)
+3. rdb_codes (palaeoentomology)
+4. modification_types (archaeobotany)
+
+
+Pending:
+
+5. analysis_entity_ages
+6. sample_group_sampling_contexts
+7. abundance_elements
