@@ -453,5 +453,45 @@
     "FacetCode": "ceramic",
     "ChildFacetCode": "sample_group_sampling_contexts",
     "Position": 20
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 2
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sites",
+    "Position": 11
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "feature_type",
+    "Position": 7
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 8
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
   }
 ]
