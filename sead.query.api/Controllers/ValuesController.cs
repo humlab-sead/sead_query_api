@@ -13,7 +13,7 @@ namespace query_sead_net.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "2020", "03" };
         }
 
         // GET api/values/5
