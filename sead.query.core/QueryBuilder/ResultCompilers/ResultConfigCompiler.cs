@@ -1,5 +1,8 @@
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryBuilder.Ext;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SeadQueryCore
 {
@@ -21,25 +24,24 @@ namespace SeadQueryCore
         {
             var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
 
-            var resultQuerySetup = CreateResultSetup(resultConfig);
+            var fields = GetResultAggregateFields(resultConfig);
 
-            if (!resultQuerySetup.IsEmpty) {
-
-                QuerySetup querySetup = QuerySetupBuilder
-                    .Build(facetsConfig, resultFacet, resultQuerySetup.TableNames);
-
-                return SqlCompilerLocator
-                    .Locate(resultConfig.ViewTypeId)
-                    .Compile(querySetup, resultFacet, resultQuerySetup);
+            if (!fields.Any()) {
+                return "";
             }
-            return "";
+
+            QuerySetup querySetup = QuerySetupBuilder
+                .Build(facetsConfig, resultFacet, fields.GetAggregateTableNames().ToList());
+
+            return SqlCompilerLocator
+                .Locate(resultConfig.ViewTypeId)
+                .Compile(querySetup, resultFacet, fields);
         }
 
-        private ResultQuerySetup CreateResultSetup(ResultConfig resultConfig)
+        private IEnumerable<ResultAggregateField> GetResultAggregateFields(ResultConfig resultConfig)
         {
-            var resultFields = Registry.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
-            var resultQuerySetup = new ResultQuerySetup(resultFields);
-            return resultQuerySetup;
+            var fields = Registry.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
+            return fields;
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using SeadQueryCore.QueryBuilder;
+﻿using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
     public class MapResultSqlCompiler : IResultSqlCompiler {
-        public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
+        public string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultAggregateField> fields)
         {
             string sql = $@"
             SELECT DISTINCT {facet.CategoryIdExpr} AS id_column, {facet.CategoryNameExpr} AS name, coalesce(latitude_dd, 0.0) AS latitude_dd, coalesce(longitude_dd, 0) AS longitude_dd

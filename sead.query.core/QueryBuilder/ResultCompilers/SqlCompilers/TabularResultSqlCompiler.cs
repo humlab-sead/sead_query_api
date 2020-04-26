@@ -1,23 +1,25 @@
 ﻿using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryBuilder.Ext;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SeadQueryCore
 {
     public class TabularResultSqlCompiler : IResultSqlCompiler {
-        public string Compile(QueryBuilder.QuerySetup query, Facet facet, ResultQuerySetup config)
+        public string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultAggregateField> fields)
         {
             string sql = $@"
-            SELECT {config.DataFields.Combine(", ")}
+            SELECT {fields.GetAggregateCompiledDataFields().ToList().Combine(", ")}
             FROM (
-                SELECT {config.AliasPairs.Select(x => $"{x.Item1} AS {x.Item2}").ToList().Combine(", ")}
+                SELECT {fields.GetAggregateColumnNameAliasPairs().Select(x => $"{x.ColumnName} AS {x.Alias}").ToList().Combine(", ")}
                 FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
-                GROUP BY {config.InnerGroupByFields.Combine(", ")}
+                GROUP BY {fields.GetAggregateInnerGroupByFields().ToList().Combine(", ")}
             ) AS X
-            {"GROUP BY ".GlueTo(config.GroupByFields.Combine(", "))}
-            {"ORDER BY ".GlueTo(config.SortFields.Combine(", "))}
+            {"GROUP BY ".GlueTo(fields.GetAggregateGroupByFields().ToList().Combine(", "))}
+            {"ORDER BY ".GlueTo(fields.GetAggregateSortFields().ToList().Combine(", "))}
         ";
             return sql;
         }

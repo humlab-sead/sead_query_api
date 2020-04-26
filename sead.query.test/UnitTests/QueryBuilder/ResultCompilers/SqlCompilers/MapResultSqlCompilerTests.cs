@@ -27,13 +27,13 @@ namespace SQT.SqlCompilers
             // Arrange
             var querySetupMockFactory = new MockQuerySetupFactory(Registry);
             var querySetup = querySetupMockFactory.Scaffold(uri);
-            var resultConfig = CreateResultSetup();
+            var fields = FakeResultAggregateFields("site_level", "map");
             var facet = Registry.Facets.GetByCode(facetCode);
 
             // Act
 
             var mapResultSqlCompiler = new MapResultSqlCompiler();
-            var result = mapResultSqlCompiler.Compile(querySetup, facet, resultConfig);
+            var result = mapResultSqlCompiler.Compile(querySetup, facet, fields);
 
             // Assert
 
@@ -52,22 +52,6 @@ namespace SQT.SqlCompilers
 
             Assert.NotNull(matches);
         }
-
-        private ResultQuerySetup CreateResultSetup()
-        {
-            ResultConfig resultConfig = CreateResultConfig();
-            var resultFields = Registry.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
-            ResultQuerySetup resultQuerySetup = new ResultQuerySetup(resultFields);
-            return resultQuerySetup;
-        }
-
-        private static ResultConfig CreateResultConfig() => new ResultConfig()
-        {
-            ViewTypeId = "map",
-            RequestId = "1",
-            SessionId = "1",
-            AggregateKeys = new System.Collections.Generic.List<string> { "site_level" }
-        };
 
         /*
     public class ResultQuerySetup

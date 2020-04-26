@@ -1,6 +1,6 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryBuilder.Ext;
 using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-	public class ResultQuerySetupTests : DisposableFacetContextContainer
+	public class ResultAggregateFieldExtensionTests : DisposableFacetContextContainer
 	{
-		public ResultQuerySetupTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+		public ResultAggregateFieldExtensionTests(JsonSeededFacetContextFixture fixture) : base(fixture)
 		{
 		}
 
@@ -57,36 +57,110 @@ namespace SQT.QueryBuilder.ResultCompilers
 #endif
 
 		[Fact]
-		public void Ctor_Success()
+		public void GetAggregateAliasedFields_Called_Success()
 		{
-
-			var resultAggregate = FakeResultAggregateFixture();
+			// Arrange
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
 
 			// Act
-			var resultQuerySetup = new ResultQuerySetup(resultAggregate.Fields.ToList());
+			var result = fields.GetAggregateAliasedFields();
 
-			//// Assert
-			Assert.NotNull(resultQuerySetup);
-			Assert.Equal(resultAggregate.Fields.Count, resultQuerySetup.Fields.Count);
-			Assert.Equal(resultAggregate.Fields.Count, resultQuerySetup.AliasPairs.Count);
-			Assert.Equal(resultAggregate.Fields.Where(z => z.FieldType.IsGroupByField).Count(), resultQuerySetup.GroupByFields.Count);
-			Assert.Equal(resultAggregate.Fields.Where(z => z.FieldType.IsResultValue).Count(), resultQuerySetup.DataFields.Count);
+			// Assert
+			var expected = aggregate.Fields.Count;
+			Assert.Equal(expected, result.Count());
 		}
 
 		[Fact]
-		public void IsEmpty_Success()
+		public void GetAggregateGroupByFields_Called_Success()
 		{
-			var resultAggregate = FakeResultAggregateFixture();
-			var resultQuerySetup = new ResultQuerySetup(resultAggregate.Fields.ToList());
+			// Arrange
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
 
 			// Act
-			var result = resultQuerySetup.IsEmpty;
+			var result = fields.GetAggregateGroupByFields();
 
-			//// Assert
-			Assert.False(result);
+			// Assert
+			var expected = aggregate.Fields.Where(z => z.FieldType.IsGroupByField);
+			Assert.Equal(expected.Count(), result.Count());
 		}
 
-		ResultAggregate FakeResultAggregateFixture() => new ResultAggregate
+		[Fact]
+		public void GetAggregateCompiledDataFields_Called_Success()
+		{
+			// Arrange
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
+
+			// Act
+			var result = fields.GetAggregateCompiledDataFields();
+
+			// Assert
+			var expected = aggregate.Fields.Where(z => z.FieldType.IsResultValue);
+			Assert.Equal(expected.Count(), result.Count());
+		}
+
+		[Fact]
+		public void GetAggregateSortFields_Called_Success()
+		{
+			// Arrange
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
+
+			// Act
+			var result = fields.GetAggregateSortFields();
+
+			// Assert
+			var expected = aggregate.Fields.Where(z => z.FieldType.IsSortField);
+			Assert.Equal(expected.Count(), result.Count());
+		}
+
+		[Fact]
+		public void GetAggregateInnerGroupByFields_Called_Success()
+		{
+			// Arrange
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
+
+			// Act
+			var result = fields.GetAggregateInnerGroupByFields();
+
+			// Assert
+			var expected = aggregate.Fields;
+			Assert.Equal(expected.Count, result.Count());
+		}
+		[Fact]
+		public void GetAggregateColumnNameAliasPairs_Called_Success()
+		{
+			// Arrange
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
+
+			// Act
+			var result = fields.GetAggregateColumnNameAliasPairs();
+
+			// Assert
+			var expected = aggregate.Fields;
+			Assert.Equal(expected.Count, result.Count());
+		}
+
+		[Fact]
+		public void Any_Success()
+		{
+			var aggregate = FakeResultAggregateFixture();
+			var fields = aggregate.GetFields();
+
+			// Act
+			var result = fields.Any();
+
+			//// Assert
+			Assert.True(result);
+		}
+
+        #region FakeData
+
+        ResultAggregate FakeResultAggregateFixture() => new ResultAggregate
 		{
 			AggregateId = 1,
 			AggregateKey = "site_level",
@@ -409,6 +483,8 @@ namespace SQT.QueryBuilder.ResultCompilers
 				SqlTemplate = "COUNT({0}) AS count_of_{0}"
 			}
 		}.ToDictionary(z => z.FieldTypeId);
+
+		#endregion
 
 	}
 }
