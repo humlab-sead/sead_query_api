@@ -5,3 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+[assembly: SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "<Pending>", Scope = "member", Target = "~M:SQT.Infrastructure.DataTableUtility.CreateDataTable(System.Collections.Generic.List{System.ValueTuple{System.String,System.Type}},System.Object[,])~System.Data.DataTable")]
+[assembly: SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "<Pending>", Scope = "member", Target = "~M:SQT.Infrastructure.FakeDataUtility.GenerateRows(System.Collections.Generic.List{System.ValueTuple{System.String,System.Type}},System.Int32)~System.Object[,]")]
+[assembly: SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "<Pending>", Scope = "member", Target = "~M:SQT.Infrastructure.MockDynamicQueryProxyFactory.CreateWithData(System.Collections.Generic.List{System.ValueTuple{System.String,System.Type}},System.Object[,])~Moq.Mock{SeadQueryCore.IDynamicQueryProxy}")]
+[assembly: SuppressMessage("Performance", "CA1814:Prefer jagged arrays over multidimensional", Justification = "<Pending>", Scope = "member", Target = "~M:SQT.ResultContentServiceTests.Example_HowToSetup_DynamicQueryProxyMock")]

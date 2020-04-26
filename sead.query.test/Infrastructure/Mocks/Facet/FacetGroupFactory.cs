@@ -9,7 +9,7 @@ namespace SQT.Mocks
             int facetGroupId = 999
         ) => new FacetGroup
         {
-            //FacetGroupId = 1,
+            FacetGroupId = facetGroupId,
             Description = Guid.NewGuid().ToString(),
             DisplayTitle = Guid.NewGuid().ToString(),
             FacetGroupKey = Guid.NewGuid().ToString()

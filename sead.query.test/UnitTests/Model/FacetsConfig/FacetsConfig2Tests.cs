@@ -70,7 +70,6 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites", "sites")]
         [InlineData("country:country/sites", "sites")]
-        [InlineData("country:country/sites", "sites")]
         [InlineData("country:country/sites", "country")]
         [InlineData("sites:country@5/sites", "sites")]
         [InlineData("sites:country@5/sites@4,5", "sites")]
@@ -144,24 +143,6 @@ namespace SQT.Model
 
             return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(facetConfig.FacetCode);
 
-        }
-
-        [Theory]
-        [InlineData("sites:dataset_master/dataset_methods@10/country@44/sites@4,5/", "dataset_methods", "country", "sites")]
-        //[InlineData("ecocode:sites/ecocode", "ecocode")]
-        //[InlineData("sites:sites@1,2/ecocode@2", "sites", "ecocode")]
-        public void IsPriorTo_StateUnderTest_ExpectedBehavior(string uri, params string[] facetCodes)
-        {
-            // Arrange
-            var facetsConfig = FakeFacetsConfig(uri);
-            var targetFacet = facetsConfig.TargetFacet;
-
-            // Act
-            // IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
-            //var result = facetsConfig.IsPriorTo(targetConfig, facetsConfig.TargetFacet, facetCodes.ToList());
-
-            // Assert
-            //Assert.True(new CompareLogic().Compare(result, facetCodes.ToList()).AreEqual);
         }
 
         /*

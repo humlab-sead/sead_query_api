@@ -61,3 +61,12 @@ dotnet_code_quality.ca1801.api_surface = private, internal
 
 # IDE0060: Remove unused parameter
 dotnet_code_quality_unused_parameters = all:silent
+
+# CA2234: Pass system uri objects instead of strings
+dotnet_diagnostic.CA2234.severity = none
+
+# CA1814: Prefer jagged arrays over multidimensional
+dotnet_diagnostic.CA1814.severity = none
+
+# CA1715: Identifiers should have correct prefix
+dotnet_diagnostic.CA1715.severity = none

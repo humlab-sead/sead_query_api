@@ -67,8 +67,8 @@ namespace SQT.Infrastructure.Repository
         {
             var context = FacetContext;
             var facetTypeRepository = new Repository<FacetType, EFacetType>(context);
-            var parentGroup = FacetGroupFactory.Fake();
-            var childGroup = FacetGroupFactory.Fake();
+            var parentGroup = FacetGroupFactory.Fake(999);
+            var childGroup = FacetGroupFactory.Fake(777);
 
             var discreteType = facetTypeRepository.Get(EFacetType.Discrete);
 

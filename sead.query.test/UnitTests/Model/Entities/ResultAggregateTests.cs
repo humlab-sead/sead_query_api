@@ -4,6 +4,7 @@ using SQT.Infrastructure;
 using SQT.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SQT.Model
@@ -72,7 +73,7 @@ namespace SQT.Model
             var result = item.GetFields();
 
             // Assert
-            Assert.Equal(2, result.Count);
+            Assert.Equal(2, result.Count());
         }
 
 

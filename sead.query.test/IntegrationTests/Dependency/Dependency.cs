@@ -31,6 +31,7 @@ namespace SQT.Infrastructure
 
         public void Dispose()
         {
+            MockService.Dispose();
         }
 
         public virtual ISeadQueryCache GetCache(StoreSetting settings)
@@ -78,7 +79,7 @@ namespace SQT.Infrastructure
             builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build()).SingleInstance();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
-            builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
+            builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
 
             //builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();

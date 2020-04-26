@@ -4,13 +4,6 @@ using System.Linq;
 
 namespace SeadQueryCore.Model
 {
-    //public class MapResultContentSet : TabularResultContentSet
-    //{
-    //    public MapResultContentSet(ResultConfig resultConfig, List<ResultAggregateField> resultFields, IDataReader reader) : base(resultConfig, resultFields, reader)
-    //    {
-    //    }
-    //}
-
     public class SourceColumnType
     {
         public string Name { get; set; }

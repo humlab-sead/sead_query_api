@@ -15,11 +15,6 @@ namespace SQT.SqlCompilers
         {
         }
 
-        private DiscreteFacetPickFilterCompiler CreateDiscreteFacetPickFilterCompiler()
-        {
-            return new DiscreteFacetPickFilterCompiler();
-        }
-
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()
         {

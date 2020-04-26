@@ -101,8 +101,9 @@ namespace SeadQueryAPI.Controllers
         [Consumes("application/json")]
         public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
         {
-            facetsConfig = ReconstituteConfigService.Reconstitute(facetsConfig);
-            return LoadService.Load(facetsConfig);
+            var reconstitutedFacetConfig = ReconstituteConfigService.Reconstitute(facetsConfig);
+            var facetContent = LoadService.Load(reconstitutedFacetConfig);
+            return facetContent;
         }
 
         [HttpPost("load2")]

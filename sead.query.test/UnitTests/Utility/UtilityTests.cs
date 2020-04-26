@@ -10,7 +10,7 @@ using System;
 namespace SQT.Infrastructure.UtilityTest
 {
 
-    public class UtilityTest
+    public class UtilityTests
     {
 
         [Fact]
