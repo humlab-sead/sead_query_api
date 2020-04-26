@@ -5,9 +5,10 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class DiscreteBogusPickService : QueryServiceBase, IDiscreteBogusPickService {
 
-        public DiscreteBogusPickService(
+    public class BogusPickService : QueryServiceBase, IBogusPickService {
+
+        public BogusPickService(
             IRepositoryRegistry registry,
             IQuerySetupBuilder builder,
             IValidPicksSqlCompiler picksCompiler,
@@ -21,13 +22,14 @@ namespace SeadQueryCore
         public IValidPicksSqlCompiler PicksCompiler { get; }
         public ITypedQueryProxy QueryProxy { get; }
 
-        /*
-        public:  Delete
-        Removes invalid selections e.g. hidden selections still being sent from the client.
-        The client keep them since they can be visible when the filters changes
-        This is only applicable for discrete facets (range facet selection are always visible)
-        */
-        public FacetsConfig2 Delete(FacetsConfig2 facetsConfig)
+        /// <summary>
+        /// Removes invalid selections e.g. hidden selections still being sent from the client.
+        /// The client keep them since they can be visible when the filters changes.
+        /// This is only applicable for discrete facets (range facet selection are always visible)
+        /// </summary>
+        /// <param name="facetsConfig"></param>
+        /// <returns></returns>
+        public FacetsConfig2 Update(FacetsConfig2 facetsConfig)
         {
             foreach (string facetCode in facetsConfig.GetFacetCodes()) {
 

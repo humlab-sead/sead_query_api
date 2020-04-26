@@ -13,11 +13,11 @@ namespace SeadQueryAPI.Services
 
     public class LoadFacetService : AppServiceBase, IFacetReconstituteService {
 
-        public IDiscreteBogusPickService BogusPickService { get; private set; }
+        public IBogusPickService BogusPickService { get; private set; }
         public IFacetContentServiceLocator ContentServiceLocator { get; private set; }
 
         public LoadFacetService(ISetting config, IRepositoryRegistry context, ISeadQueryCache cache,
-            IDiscreteBogusPickService bogusService, IFacetContentServiceLocator contentServiceLocator) : base(config, context)
+            IBogusPickService bogusService, IFacetContentServiceLocator contentServiceLocator) : base(config, context)
         {
             BogusPickService = bogusService;
             ContentServiceLocator = contentServiceLocator;
@@ -25,7 +25,7 @@ namespace SeadQueryAPI.Services
 
         public virtual FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            facetsConfig = BogusPickService.Delete(facetsConfig);
+            facetsConfig = BogusPickService.Update(facetsConfig);
             var facetContent = ContentServiceLocator.Locate(facetsConfig.TargetFacet.FacetTypeId).Load(facetsConfig);
             return facetContent;
         }
@@ -38,7 +38,7 @@ namespace SeadQueryAPI.Services
             ISetting config, 
             IRepositoryRegistry context,
             ISeadQueryCache cache,
-            IDiscreteBogusPickService bogusService,
+            IBogusPickService bogusService,
             IFacetContentServiceLocator contentServiceLocator) : base(config, context, cache, bogusService, contentServiceLocator)
         {
             Cache = cache;

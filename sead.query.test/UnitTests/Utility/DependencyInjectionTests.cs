@@ -101,7 +101,7 @@ namespace SQT.IoC
                 Assert.NotNull(scope.Resolve<IFacetGraphFactory>());
                 Assert.NotNull(scope.Resolve<IFacetsGraph>());
                 Assert.NotNull(scope.Resolve<IQuerySetupBuilder>());
-                Assert.NotNull(scope.Resolve<IDiscreteBogusPickService>());
+                Assert.NotNull(scope.Resolve<IBogusPickService>());
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Discrete));
                 Assert.NotNull(scope.ResolveKeyed<IFacetContentService>(EFacetType.Range));
                 Assert.NotNull(scope.ResolveKeyed<ICategoryCountService>(EFacetType.Discrete));

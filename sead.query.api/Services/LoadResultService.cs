@@ -18,14 +18,14 @@ namespace SeadQueryAPI.Services {
     public class LoadResultService : AppServiceBase, ILoadResultService {
 
         public IResultServiceIndex ResultServices { get; private set; }
-        private IDiscreteBogusPickService BogusPickService;
+        private IBogusPickService BogusPickService;
 
         public LoadResultService(
             ISetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,
-            IDiscreteBogusPickService bogusPickService) : base(config, context) {
+            IBogusPickService bogusPickService) : base(config, context) {
             ResultServices = services;
             BogusPickService = bogusPickService;
         }
@@ -46,7 +46,7 @@ namespace SeadQueryAPI.Services {
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultServiceIndex services,
-            IDiscreteBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
+            IBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
         {
             Cache = cache;
         }

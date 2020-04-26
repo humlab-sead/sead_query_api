@@ -53,7 +53,7 @@ namespace SeadQueryAPI
             builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build()).InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
-            builder.RegisterType<DiscreteBogusPickService>().As<IDiscreteBogusPickService>();
+            builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
 
             //            builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
