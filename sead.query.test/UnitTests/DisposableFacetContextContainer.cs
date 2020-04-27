@@ -21,13 +21,13 @@ namespace SQT
     [Collection("JsonSeededFacetContext")]
     public class DisposableFacetContextContainer : IDisposable
     {
-        private JsonSeededFacetContextFixture __fixture;
+        private readonly JsonSeededFacetContextFixture __fixture;
 
-        private Lazy<DbConnection> __DbConnection;
-        private Lazy<DbContextOptions> __DbContextOptions;
-        private Lazy<FacetContext> __FacetContext;
-        private Lazy<RepositoryRegistry> __RepositoryRegistry;
-        private Lazy<ISetting> __Settings;
+        private readonly Lazy<DbConnection> __DbConnection;
+        private readonly Lazy<DbContextOptions> __DbContextOptions;
+        private readonly Lazy<FacetContext> __FacetContext;
+        private readonly Lazy<RepositoryRegistry> __RepositoryRegistry;
+        private readonly Lazy<ISetting> __Settings;
 
         public virtual JsonSeededFacetContextFixture Fixture => __fixture;
         public virtual ISetting Settings => __Settings.Value;
