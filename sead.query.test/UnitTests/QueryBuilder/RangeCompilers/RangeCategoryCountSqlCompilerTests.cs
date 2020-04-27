@@ -1,11 +1,12 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
+using SQT.SQL.Matcher;
 using SQT.Fixtures;
 using SQT.Infrastructure;
 using System;
 using System.Text.RegularExpressions;
 using Xunit;
+using System.Linq;
 
 namespace SQT.SqlCompilers
 {
@@ -18,49 +19,49 @@ namespace SQT.SqlCompilers
 
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
-        public void Compile_VariousConfigs_ExpectedBehavior(string uri)
+        //[InlineData("palaeoentomology://geochronology:geochronology", "tbl_geochronology")]
+        //[InlineData("palaeoentomology://abundances_all:abundances_all", "facet.view_abundance")]
+        //[InlineData("archaeobotany://geochronology:geochronology", "tbl_geochronology")]
+        //[InlineData("archaeobotany://abundances_all:abundances_all", "facet.view_abundance")]
+        //[InlineData("pollen://abundances_all:abundances_all", "facet.view_abundance")]
+        //[InlineData("pollen://geochronology:geochronology", "tbl_geochronology")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_32:tbl_denormalized_measured_values_32", "facet.method_measured_values(32,0)")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_37:tbl_denormalized_measured_values_37", "facet.method_measured_values(37,0)")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0", "facet.method_measured_values(33,0)")]
+        //[InlineData("geoarchaeology://geochronology:geochronology", "tbl_geochronology")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82", "facet.method_measured_values(33,82)")]
+        //[InlineData("dendrochronology://geochronology:geochronology", "tbl_geochronology")]
+        //[InlineData("ceramic://geochronology:geochronology", "tbl_geochronology")]
+        public void Compile_VariousConfigs_ExpectedBehavior(string uri, params string[] expectedJoinTables)
         {
             // Arrange
             var mockQuerySetupFactory = new MockQuerySetupFactory(Registry);
-            var querySetup = mockQuerySetupFactory.Scaffold(uri);
-            var facet = querySetup.Facet;
-
-            var intervalQuery = "#INTERVAL-QUERY#";
+            var fakeQuerySetup = FakeQuerySetup(uri);
+            var facet = fakeQuerySetup.Facet;
+            // FIXME:::
+            var intervalQuery = "( #INTERVAL-QUERY# )";
             var countColumn = "#COUNT-COLUMN#";
 
             // Act
             var rangeCategoryCountSqlCompiler = new RangeCategoryCountSqlCompiler();
             var result = rangeCategoryCountSqlCompiler.Compile(
-                querySetup,
+                fakeQuerySetup,
                 facet,
                 intervalQuery,
                 countColumn);
 
             // Assert
             result = result.Squeeze();
+            var match = FacetLoadSqlMatcher
+                .Create(facet.FacetTypeId).Match(result);
 
-            //
-            //WITH categories(category, lower, upper) AS ( #INTERVAL-QUERY# ), outerbounds(lower, upper) AS ( SELECT MIN(lower), MAX(upper) FROM categories ) SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column FROM categories c LEFT JOIN ( SELECT category, COUNT(DISTINCT #COUNT-COLUMN#) AS count_column FROM facet.method_measured_values(33,0) AS method_values_33 CROSS JOIN outerbounds JOIN categories ON categories.lower <= cast(method_values_33.measured_value as decimal(15, 6)) AND categories.upper >= cast(method_values_33.measured_value as decimal(15, 6)) AND (NOT (categories.upper < outerbounds.upper AND cast(method_values_33.measured_value as decimal(15, 6)) = categories.upper)) WHERE TRUE GROUP BY category ) AS r ON r.category = c.category ORDER BY c.lower"
+            Assert.True(match.Success);
 
-            // SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column FROM categories c LEFT JOIN ( SELECT category, COUNT(DISTINCT #COUNT-COLUMN#) AS count_column FROM facet.method_measured_values(33,0) AS method_values_33 CROSS JOIN outerbounds JOIN categories ON categories.lower <= cast(method_values_33.measured_value as decimal(15, 6)) AND categories.upper >= cast(method_values_33.measured_value as decimal(15, 6)) AND (NOT (categories.upper < outerbounds.upper AND cast(method_values_33.measured_value as decimal(15, 6)) = categories.upper)) WHERE TRUE GROUP BY category ) AS r ON r.category = c.category ORDER BY c.lower"
-            //var categorySql = @"categories\(category, lower, upper\) AS \( #INTERVAL-QUERY# \)";
-            //var boundSql = @"outerbounds\(lower, upper\) AS \( SELECT MIN\(lower\), MAX\(upper\) FROM categories \)";
-            //var outerSql = $@"SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column FROM categories c LEFT JOIN ( (?<innerSql>) ";
-            var expectedSql = @"WITH (?<categorySql>categories.*\( #INTERVAL-QUERY# \)), (?<boundSql>\s?outerbounds.*FROM categories \)\s?)\s*(?<outerSql>SELECT.*FROM.*LEFT JOIN \((?<innerSql>.*)\)) AS r ON.*";
+            Assert.True(match.InnerSelect.Success);
 
-            var rx = Regex.Match(result, expectedSql);
-            Assert.True(rx.Success);
-            Assert.Matches(expectedSql, result);
+            Assert.NotEmpty(match.InnerSelect.Tables);
 
-            // Won't test these further (not dependent on input)
-            //var categorySql = rx.Groups["categorySql"];
-            //var boundSql = rx.Groups["boundSql"];
-            //var outerSql = rx.Groups["outerSql"];
-
-            var innerSql = rx.Groups["innerSql"];
-            //SELECT category, COUNT(DISTINCT #COUNT-COLUMN#) AS count_column FROM facet.method_measured_values(33,0) AS method_values_33 CROSS JOIN outerbounds JOIN categories ON categories.lower <= cast(method_values_33.measured_value as decimal(15, 6)) AND categories.upper >= cast(method_values_33.measured_value as decimal(15, 6)) AND (NOT (categories.upper < outerbounds.upper AND cast(method_values_33.measured_value as decimal(15, 6)) = categories.upper)) WHERE TRUE GROUP BY category )";
-            //var expectedInnerSql = @"\s?SELECT .* FROM (?<targetTable>.*) CROSS JOIN outerbounds JOIN categories ON categories.lower <= cast(method_values_33.measured_value as decimal(15, 6)) AND categories.upper >= cast(method_values_33.measured_value as decimal(15, 6)) AND (NOT (categories.upper < outerbounds.upper AND cast(method_values_33.measured_value as decimal(15, 6)) = categories.upper)) WHERE TRUE GROUP BY category )";
-            // FIXME: Further matching
+            Assert.True(expectedJoinTables.All(x => match.InnerSelect.Tables.Contains(x)));
 
         }
     }
