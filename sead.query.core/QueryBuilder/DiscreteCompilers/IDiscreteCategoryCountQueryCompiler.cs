@@ -1,4 +1,6 @@
-﻿namespace SeadQueryCore
+﻿using SeadQueryCore.QueryBuilder;
+
+namespace SeadQueryCore
 {
     public interface IDiscreteCategoryCountQueryCompiler : ISqlCompiler
     {

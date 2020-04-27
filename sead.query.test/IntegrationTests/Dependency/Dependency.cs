@@ -21,7 +21,7 @@ namespace SQT.Infrastructure
         public IFacetContext FacetContext { get; set; } = null;
         public JsonSeededFacetContextFixture Fixture { get; set; } = null;
 
-        private DisposableFacetContextContainer MockService;
+        private readonly DisposableFacetContextContainer MockService;
 
         public TestDependencyService()
         {
