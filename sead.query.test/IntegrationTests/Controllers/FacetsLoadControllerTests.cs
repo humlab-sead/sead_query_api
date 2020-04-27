@@ -107,7 +107,7 @@ namespace IntegrationTests
 
                 var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-                var match = FacetLoadSqlMatcher
+                var match = CategoryCountSqlCompilerMatcher
                     .Create(facetsConfig.TargetFacet.FacetTypeId).Match(sqlQuery);
 
                 Assert.True(match.Success);
@@ -340,7 +340,7 @@ namespace IntegrationTests
 
                 var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-                var match = FacetLoadSqlMatcher
+                var match = CategoryCountSqlCompilerMatcher
                     .Create(facetsConfig.TargetFacet.FacetTypeId).Match(sqlQuery);
 
                 Assert.True(match.Success);

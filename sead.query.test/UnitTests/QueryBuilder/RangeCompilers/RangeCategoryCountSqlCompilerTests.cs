@@ -52,7 +52,7 @@ namespace SQT.SqlCompilers
 
             // Assert
             result = result.Squeeze();
-            var match = FacetLoadSqlMatcher
+            var match = CategoryCountSqlCompilerMatcher
                 .Create(facet.FacetTypeId).Match(result);
 
             Assert.True(match.Success);

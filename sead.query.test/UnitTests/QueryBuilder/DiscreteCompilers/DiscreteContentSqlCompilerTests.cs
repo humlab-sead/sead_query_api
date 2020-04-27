@@ -10,7 +10,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    public class DiscreteContentSelectClauseMatcher : SelectClauseMatcher
+    public class DiscreteContentSelectClauseMatcher : GenericSelectSqlMatcher
     {
         //public override string ExpectedSql { get; } =
         //        @"SELECT (?<SelectFieldsSql>.*?(?= FROM))
