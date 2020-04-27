@@ -14,12 +14,10 @@ using System.Data;
 using System.Data.Common;
 using System.Dynamic;
 using System.Linq;
-using System.Threading;
 using Xunit;
 
 namespace SQT
 {
-
     [Collection("JsonSeededFacetContext")]
     public class DisposableFacetContextContainer : IDisposable
     {
@@ -78,7 +76,6 @@ namespace SQT
                 DbConnection.Dispose();
         }
 
-
         // Common mock helpers
 
         public virtual IRepositoryRegistry FakeRegistry() => Registry;
@@ -94,6 +91,7 @@ namespace SQT
         }
 
         public FacetsConfig2 FakeFacetsConfig(string uri) => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+
         public QuerySetup FakeQuerySetup(string uri) => new MockQuerySetupFactory(Registry).Scaffold(uri);
 
         /// <summary>
@@ -148,9 +146,9 @@ namespace SQT
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        public virtual List<CategoryCountItem> FakeRangeCategoryCountItems(int start, int step, int count)
+        public virtual List<CategoryCountItem> FakeRangeCategoryCountItems(int start, int size, int count)
         {
-            var fakeResult = new RangeCountDataReaderBuilder(start, step)
+            var fakeResult = new RangeCountDataReaderBuilder(start, size)
                 .CreateNewTable()
                 .GenerateBogusRows(count)
                 .ToItems<CategoryCountItem>().ToList();
@@ -198,7 +196,7 @@ namespace SQT
         public virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
         {
             var mockPickCompiler = new Mock<IPickFilterCompiler>();
-            var HasNoPicks = Match.Create<FacetConfig2>(x => ! x.HasPicks());
+            var HasNoPicks = Match.Create<FacetConfig2>(x => !x.HasPicks());
 
             mockPickCompiler
                 .Setup(foo => foo.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
@@ -240,7 +238,7 @@ namespace SQT
             return mockJoinCompiler;
         }
 
-        public virtual Mock<IResultConfigCompiler> MockResultConfigCompiler(string returnSql, string facetCode="result_facet")
+        public virtual Mock<IResultConfigCompiler> MockResultConfigCompiler(string returnSql, string facetCode = "result_facet")
         {
             var mockResultQueryCompiler = new Mock<IResultConfigCompiler>();
             mockResultQueryCompiler.Setup(
@@ -304,11 +302,12 @@ namespace SQT
             var graphRoutes = nodePairs.Select(z => FakeRoute(z)).ToList();
             return graphRoutes;
         }
+
         public virtual Mock<IResultSqlCompilerLocator> MockResultSqlCompilerLocator(string returnSql)
         {
             var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
             mockResultSqlCompiler
-                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<ResultQuerySetup>()))
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultAggregateField>>()))
                 .Returns(returnSql);
             var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
             mockResultSqlCompilerLocator
@@ -325,6 +324,13 @@ namespace SQT
                 ViewTypeId = viewTypeId,
                 SessionId = "1"
             };
+
+        protected virtual IEnumerable<ResultAggregateField> FakeResultAggregateFields(string aggregateKey, string viewTypeId)
+        {
+            ResultConfig resultConfig = FakeResultConfig(aggregateKey, viewTypeId);
+            var fields = Registry.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
+            return fields;
+        }
 
         public static class RouteHelper
         {
