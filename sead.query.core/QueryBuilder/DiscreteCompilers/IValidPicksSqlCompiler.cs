@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {
-    public interface IValidPicksSqlCompiler
+    public interface IValidPicksSqlCompiler : ISqlCompiler
     {
         string Compile(QuerySetup query, Facet facet, List<int> picks);
     }

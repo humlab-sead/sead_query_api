@@ -1,7 +1,6 @@
-﻿
-namespace SeadQueryCore
+﻿namespace SeadQueryCore
 {
-    public interface ISqlFieldCompiler
+    public interface ISqlFieldCompiler : ISqlCompiler
     {
         string Compile(string expr);
     }

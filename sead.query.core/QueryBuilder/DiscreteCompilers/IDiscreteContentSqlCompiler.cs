@@ -1,8 +1,6 @@
-﻿using SeadQueryCore.QueryBuilder;
-
-namespace SeadQueryCore
+﻿namespace SeadQueryCore
 {
-    public interface IDiscreteContentSqlCompiler
+    public interface IDiscreteContentSqlCompiler : ISqlCompiler
     {
         string Compile(QuerySetup query, Facet facet, string text_filter);
     }

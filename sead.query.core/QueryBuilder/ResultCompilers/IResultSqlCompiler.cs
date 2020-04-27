@@ -1,9 +1,8 @@
-﻿using SeadQueryCore.QueryBuilder;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-    public interface IResultSqlCompiler
+    public interface IResultSqlCompiler : ISqlCompiler
     {
         string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultAggregateField> fields);
     }

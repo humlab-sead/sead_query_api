@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace SeadQueryCore
+﻿namespace SeadQueryCore
 {
-    public interface IJoinSqlCompiler
+    public interface IJoinSqlCompiler : ISqlCompiler
     {
         string Compile(TableRelation edge, FacetTable facetTable, bool innerJoin = false);
     }

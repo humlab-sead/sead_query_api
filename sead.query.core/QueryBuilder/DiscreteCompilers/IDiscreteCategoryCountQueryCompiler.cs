@@ -1,8 +1,6 @@
-﻿using SeadQueryCore.QueryBuilder;
-
-namespace SeadQueryCore
+﻿namespace SeadQueryCore
 {
-    public interface IDiscreteCategoryCountQueryCompiler
+    public interface IDiscreteCategoryCountQueryCompiler : ISqlCompiler
     {
         string Compile(QuerySetup query, Facet facet, Facet countFacet, string aggType);
     }
