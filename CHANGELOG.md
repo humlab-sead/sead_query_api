@@ -68,7 +68,6 @@ New facets can now be specified using JSON
 
 2) Avoid using the `/api/facets` API call since it retrieves all enabled facets (except those having facet group 0 or 999). Note that some of twe new facets are only valid for specific domain(s), so the `/api/facets/domain/:domainCode` should be used instead since it only retrieves facets valid for the specified domain.
 
-
 ### Fixes
 
 See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Aissue+is%3Aclosed+milestone%3A%22SEAD+%402020.03+release%22+label%3Abug)
@@ -82,6 +81,8 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
 1) The unit and integration testing has been vastly improved. The `Moq` framework is used for SUT isolation, dependent objects are to SUT are faked or mocked  The tests uses a fixed facet database context stored as JSON files. This data can be updated from an online database. The integration tests that requires a DB backend loads the data into an in-memory Sqlite database engine.  A total of +200 tests has been added. The code coverage has not been computed, but the goal is to reach ~ 100%.
 
 1) Table `facet.facet_children` associates domain facets to their children/user facets.
+
+1) A `SqlQuery` field has been added to the `/api/facets/load`. The field contains query that produced the result items. The prupose is to simplify debugging (and integration testing).
 
 ### Domain facet configuration
 
@@ -176,7 +177,7 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
  | pollen | Pollen | activeseason | Seasons | 6 |  |
  | pollen | Pollen | family | Family | 7 |  |
  | pollen | Pollen | genus | Genus | 8 |  |
- | pollen | Pollen | species | Taxon | 9 |  |
+ | pollen | Pollen | species | Taxa | 9 |  |
  | pollen | Pollen | species_author | Author | 10 |  |
  | pollen | Pollen | feature_type | Feature type | 11 |  |
  | pollen | Pollen | tbl_biblio_modern | Bibligraphy modern | 12 |  |
@@ -187,22 +188,27 @@ See [closed bugs].(https://github.com/humlab-sead/sead_query_api/issues?q=is%3Ai
  | pollen | Pollen | data_types | Data types | 21 | NEW! |
  | pollen | Pollen | abundance_elements | Abundance Elements | 23 | NEW! |
 
+### Renamed facet display names
+
+1) "Loss of Ignition" => "Loss on Ignition"
+2) "Taxon" => "Taxa"
 
 ### Pending / Not implemented
 
 - Bibligraphy fossil
 - Analysis entity ages
-- Everything else not specified in #13.
-- Renaming of facets
+- [Any|Every]thing else not specified in #13.
 - Additonal Ceramics user facets not specified (apart from #13)
-- Isotope user facets not specified in #13 (set to same as Ceramics)
+- Isotope user facets not specified in #13 (set to those displaying data in broswer.sead.se)
 
-### Orphan facets
+### Orphaned facets
 
-record_types
-abundance_classification
-tbl_biblio_sample_groups
-tbl_biblio_sites
-dataset_master
-dataset_methods
-region
+These facets have not been assoiciated to any domain facet, although, they are returned by `api/facets` and `api/facets/domain/general`:
+
+- record_types
+- abundance_classification
+- tbl_biblio_sample_groups
+- tbl_biblio_sites
+- dataset_master
+- dataset_methods
+- region
