@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SeadQueryCore.QueryBuilder;
+using System.Collections.Generic;
 
 namespace SeadQueryCore
 {

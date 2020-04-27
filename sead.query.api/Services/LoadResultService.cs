@@ -1,13 +1,10 @@
-using SeadQueryCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac.Features.Indexed;
+using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.Services.Result;
 
-namespace SeadQueryAPI.Services {
+namespace SeadQueryAPI.Services
+{
 
     using IResultServiceIndex = IIndex<string, IResultService>;
 
