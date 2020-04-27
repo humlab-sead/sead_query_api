@@ -384,7 +384,7 @@ namespace SQT.Model
             Assert.Equal(hasPicks, facetsConfig.HasPicks());
 
             // Act
-            var result = facetsConfig.ClearPicks();
+            facetsConfig.ClearPicks();
 
             // Assert
             Assert.False(facetsConfig.HasPicks());
