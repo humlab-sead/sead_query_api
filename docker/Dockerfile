@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-stretch-slim AS repo
 
-ARG BRANCH=v1.1.0
+ARG BRANCH=master
 
 RUN apt-get update && apt-get install -y \
   git
