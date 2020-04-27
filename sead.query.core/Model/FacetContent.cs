@@ -48,6 +48,8 @@ namespace SeadQueryCore
         [JsonIgnore]
         public int ItemCount { get => Items.Count; }
 
+        public string SqlQuery { get; set; }
+
         public IntervalQueryInfo IntervalInfo { get; set; }
 
         public int CountOfSelections { get; set; } = 0;
@@ -62,6 +64,7 @@ namespace SeadQueryCore
             FacetsConfig2 facetsConfig,
             List<CategoryCountItem> contentCategoryCounts,
             Dictionary<string, CategoryCountItem> categoryCounts,
+            string categoryCountSqlQuery,
             Dictionary<string, FacetsConfig2.UserPickData> picks,
             IntervalQueryInfo intervalInfo
         )
@@ -70,6 +73,7 @@ namespace SeadQueryCore
             Items = contentCategoryCounts.Where(z => z.Count != null).ToList();
             Distribution = categoryCounts;
             IntervalInfo = intervalInfo;
+            SqlQuery = categoryCountSqlQuery;
             Picks = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
         }
     }
