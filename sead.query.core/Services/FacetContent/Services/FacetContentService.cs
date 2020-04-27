@@ -33,7 +33,7 @@ namespace SeadQueryCore
             var outerCategoryCounts = QueryOuterCategoryCounts(intervalInfo.Query, categoryCounts.Data).ToList();
             var userPicks           = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
 
-            var facetContent = new FacetContent(facetsConfig, outerCategoryCounts, categoryCounts.Data, userPicks, intervalInfo);
+            var facetContent = new FacetContent(facetsConfig, outerCategoryCounts, categoryCounts.Data, categoryCounts.SqlQuery, userPicks, intervalInfo);
 
             return facetContent;
         }
