@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SeadQueryCore;
 using SQT.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,8 @@ namespace IntegrationTests
         {
             using (var response = await Fixture.Client.GetAsync("api/values")) {
                 response.EnsureSuccessStatusCode();
-                Assert.Equal("[\"value1\",\"value2\"]", await response.Content.ReadAsStringAsync());
+                var json = await response.Content.ReadAsStringAsync();
+                Assert.Matches(@"\[""\d{4}"",""\d{2}""\]", json);
             }
         }
 
@@ -62,8 +64,8 @@ namespace IntegrationTests
             using (var response = await Fixture.Client.GetAsync($"api/facets/{facetId}")) {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                JObject facet = JsonConvert.DeserializeObject<JObject>(json.ToString());
-                Assert.NotEmpty(facet);
+                Facet facet = JsonConvert.DeserializeObject<Facet>(json.ToString());
+                Assert.Equal(facetId, facet.FacetId);
             }
         }
 
@@ -73,8 +75,10 @@ namespace IntegrationTests
             using (var response = await Fixture.Client.GetAsync("api/facets/domain")) {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                List<JObject> facet = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
-                Assert.NotEmpty(facet);
+                List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());
+                Assert.NotEmpty(facets);
+                var facetCodes = facets.Select(x => x.FacetCode);
+                Assert.Contains("pollen", facetCodes);
             }
         }
 
@@ -91,8 +95,11 @@ namespace IntegrationTests
             using (var response = await Fixture.Client.GetAsync($"api/facets/domain/{facetCode}")) {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
-                Assert.NotEmpty(facets);
+                List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());
+                Assert.Single(facets);
+                var facet = facets[0];
+                Assert.Equal(facetCode, facet.FacetCode);
+                Assert.NotEmpty(facet.Clauses);
             }
         }
 
