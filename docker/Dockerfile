@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-stretch-slim AS repo
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS repo
 
 ARG BRANCH=master
 
@@ -13,7 +13,7 @@ RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH
 COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
 #COPY hosting.json /repo/sead_query_api/conf/hosting.json
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-stretch AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 
 WORKDIR /src
 
@@ -30,7 +30,7 @@ RUN cd sead.query.api \
     && dotnet publish sead.query.api.csproj -c Release -o /src/app --no-restore
     #dotnet test    "sead.query.api.csproj" -c Release -o /src/app --no-build --no-restore
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-stretch-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
