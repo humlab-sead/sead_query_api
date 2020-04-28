@@ -114,9 +114,29 @@ namespace SQT.IoC
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("tabular"));
                 Assert.NotNull(scope.ResolveKeyed<IResultService>("map"));
 
+                Assert.NotNull(scope.Resolve<IResultSqlCompilerLocator>());
+
                 Assert.NotNull(scope.Resolve<IResultConfigCompiler>());
                 Assert.NotNull(scope.Resolve<IFacetReconstituteService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
+            }
+        }
+        [Fact]
+        public void CanResolveResultSqlCompilerLocator()
+        {
+            //using (var context = JsonSeededFacetContextFactory.Create())
+            using (var container = TestDependencyService.CreateContainer(null, null))
+            using (var scope = container.BeginLifetimeScope()) {
+
+                var locator = scope.Resolve<IResultSqlCompilerLocator>();
+
+                Assert.NotNull(locator);
+
+                Assert.NotNull(locator.Locate("tabular"));
+                Assert.NotNull(locator.Locate("map"));
+
+                Assert.Throws<Exception>(() => locator.Locate("flaejl"));
+
             }
         }
 
