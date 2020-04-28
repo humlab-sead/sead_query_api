@@ -113,3 +113,37 @@ Content-Type: application/json; charset=UTF-8
     "aggregateKeys": ["site_level"]
   }
 }
+
+### Type:   discrete
+### Chain:  sample_groups
+### Picks:  [510]
+
+POST {{protocol}}://{{host}}:{{port}}/api/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "facetsConfig": {
+    "requestId": 1,
+    "requestType": "populate",
+    "targetCode": "sites",
+    "triggerCode": "sites",
+    "domainCode": "pollen",
+    "facetConfigs": [
+      {
+        "facetCode": "sites",
+        "position": 1,
+        "picks": [],
+        "textFilter": ""
+      }
+    ]
+  },
+  "resultConfig": {
+    "requestId": 1,
+    "sessionId": "1",
+    "viewTypeId": "tabular",
+    "aggregateKeys": [ "site_level" ]
+  }
+}
