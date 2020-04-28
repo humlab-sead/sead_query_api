@@ -35,8 +35,8 @@ namespace SeadQueryCore.Services.Result
                 return null;
 
             // This is (for now) only call to generic QueryProxy.Query
-            var reader = QueryProxy.Query(sql);
             var fields = GetResultFields(resultConfig);
+            var reader = QueryProxy.Query(sql);
             var resultSet = new TabularResultContentSet(resultConfig, fields, reader) {
                 Payload = GetExtraPayload(facetsConfig),
                 Query = sql
