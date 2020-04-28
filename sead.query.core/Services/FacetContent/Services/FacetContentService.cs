@@ -28,39 +28,54 @@ namespace SeadQueryCore
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            var intervalInfo        = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
-            var categoryCounts      = QueryCategoryCounts(facetsConfig, intervalInfo.Query);
-            var outerCategoryCounts = QueryOuterCategoryCounts(intervalInfo.Query, categoryCounts.Data).ToList();
-            var userPicks           = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
+            /* Compile Interval Sql and number of categories */
+            var intervalInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
 
-            var facetContent = new FacetContent(facetsConfig, outerCategoryCounts, categoryCounts.Data, categoryCounts.SqlQuery, userPicks, intervalInfo);
+            /* Compute (filtered) category counts */
+            var categoryCounts = QueryCategoryCounts(facetsConfig, intervalInfo.Query);
 
+            /* Compile counts for full set of categories */
+            var outerCategoryCounts = QueryOuterCategoryCounts(intervalInfo.Query, categoryCounts.CategoryCounts).ToList();
+
+            /* Collect user picks */
+            var userPicks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
+
+            var facetContent = new FacetContent
+            {
+                FacetsConfig = facetsConfig,
+                Items = outerCategoryCounts.Where(z => z.Count != null).ToList(), /* add empty categories then remove, hmmm...? */
+                Distribution = categoryCounts.CategoryCounts,
+                IntervalInfo = intervalInfo,
+                SqlQuery = categoryCounts.SqlQuery,
+                Picks = userPicks ?? new Dictionary<string, FacetsConfig2.UserPickData>()
+            };
             return facetContent;
         }
 
         protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=120) => new IntervalQueryInfo();
 
-        private CategoryCountService.CategoryCountResult QueryCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
+        private CategoryCountService.CategoryCountData QueryCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {
             var categoryCounts = CategoryCountService.Load(facetsConfig.TargetCode, facetsConfig, intervalQuery);
             return categoryCounts;
         }
 
-        protected List<CategoryCountItem> QueryOuterCategoryCounts(string intervalQuery, Dictionary<string, CategoryCountItem> distribution)
+        protected List<CategoryCountItem> QueryOuterCategoryCounts(string intervalQuery, Dictionary<string, CategoryCountItem> categoryCounts)
         {
-            var outerCategoryCounts = QueryProxy.QueryRows(intervalQuery, dr => CreateItem(dr, distribution)).ToList();
+            var outerCategoryCounts = QueryProxy.QueryRows(intervalQuery, dr => CreateItem(dr, categoryCounts)).ToList();
             return outerCategoryCounts;
         }
 
-        protected CategoryCountItem CreateItem(IDataReader dr, Dictionary<string, CategoryCountItem> filteredCategoryCounts)
+        protected CategoryCountItem CreateItem(IDataReader dr, Dictionary<string, CategoryCountItem> categoryCounts)
         {
             var category = GetCategory(dr);
             var name = GetName(dr);
-            var categoryCountItem = filteredCategoryCounts.GetValueOrDefault(category);
-            return CategoryCountItem.Create(categoryCountItem, category, name);
+            var value = categoryCounts.GetValueOrDefault(category);
+            return CategoryCountItem.Create(value, category, name);
         }
 
         protected virtual string GetCategory(IDataReader dr) => dr.IsDBNull(0) ? "" : dr.GetString(0);
         protected virtual string GetName(IDataReader dr) => dr.IsDBNull(1) ? "" : dr.GetString(1);
     }
+
 }
