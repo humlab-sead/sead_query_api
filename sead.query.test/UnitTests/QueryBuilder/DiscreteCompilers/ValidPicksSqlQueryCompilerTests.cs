@@ -1,49 +1,33 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
+using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    public class ValidPicksSqlCompilerTests : IDisposable
+    // FIXME Kolla vilka som saknar detta attribut!!!
+    [Collection("JsonSeededFacetContext")]
+    public class ValidPicksSqlQueryCompilerTests : DisposableFacetContextContainer
     {
-        private MockRepository mockRepository;
-
-
-
-        public ValidPicksSqlCompilerTests()
+        public ValidPicksSqlQueryCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
-
-
         }
 
-        public void Dispose()
-        {
-            this.mockRepository.VerifyAll();
-        }
-
-        private ValidPicksSqCompiler CreateValidPicksSqlCompiler()
-        {
-            return new ValidPicksSqCompiler();
-        }
-
-        [Fact(Skip = "Not implemented")]
-        public void Compile_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("uri:uri")]
+        public void Compile_StateUnderTest_ExpectedBehavior(string uri)
         {
             // Arrange
-            var validPicksSqlCompiler = this.CreateValidPicksSqlCompiler();
-            QuerySetup query = null;
-            Facet facet = null;
+            QuerySetup fakeQuerySetup = FakeQuerySetup(uri);
+            Facet facet = fakeQuerySetup.Facet;
             List<int> picks = null;
 
             // Act
-            var result = validPicksSqlCompiler.Compile(
-                query,
-                facet,
-                picks);
+            var validPicksSqlCompiler = new ValidPicksSqCompiler();
+            var result = validPicksSqlCompiler.Compile(fakeQuerySetup, facet, picks);
 
             // Assert
             Assert.True(false);
