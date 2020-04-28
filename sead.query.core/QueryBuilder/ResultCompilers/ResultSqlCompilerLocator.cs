@@ -4,9 +4,9 @@ namespace SeadQueryCore
 {
     public class ResultSqlCompilerLocator : IResultSqlCompilerLocator
     {
-        public ResultSqlCompilerLocator(IIndex<int, IResultSqlCompiler> compilers)
+        public ResultSqlCompilerLocator(IIndex<string, IResultSqlCompiler> compilers)
         {
-            Compilers = Compilers;
+            Compilers = compilers;
         }
 
         public IIndex<string, IResultSqlCompiler> Compilers { get; }
