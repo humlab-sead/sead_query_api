@@ -4,7 +4,7 @@ namespace SeadQueryCore
 {
     public class DiscreteContentSqlCompiler : IDiscreteContentSqlCompiler
     {
-        public string Compile(QueryBuilder.QuerySetup query, Facet facet, string text_filter)
+        public virtual string Compile(QueryBuilder.QuerySetup query, Facet facet, string text_filter)
         {
             string text_criteria = text_filter.IsEmpty() ? "" : $" AND {facet.CategoryNameExpr} ILIKE '{text_filter}' ";
             string sort_clause = empty(facet.SortExpr) ? "" : $", {facet.SortExpr} ORDER BY {facet.SortExpr}";
