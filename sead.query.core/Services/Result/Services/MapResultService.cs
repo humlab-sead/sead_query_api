@@ -30,15 +30,15 @@ namespace SeadQueryCore.Services.Result
             return base.Load(facetsConfig, resultConfig);
         }
 
-        private CategoryCountService.CategoryCountResult GetCategoryCounts(FacetsConfig2 facetsConfig)
+        private CategoryCountService.CategoryCountData GetCategoryCounts(FacetsConfig2 facetsConfig)
         {
             return CategoryCountService.Load(FacetCode, facetsConfig, null);
         }
 
         protected override dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
         {
-            var filtered = GetCategoryCounts(facetsConfig)?.Data ?? new Dictionary<string, CategoryCountItem>();
-            var unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.ClearPicks())?.Data : filtered;
+            var filtered = GetCategoryCounts(facetsConfig)?.CategoryCounts ?? new Dictionary<string, CategoryCountItem>();
+            var unfiltered = facetsConfig.HasPicks() ? GetCategoryCounts(facetsConfig.ClearPicks())?.CategoryCounts : filtered;
             return new {
                 FilteredCategoryCounts = filtered,
                 FullCategoryCounts = unfiltered

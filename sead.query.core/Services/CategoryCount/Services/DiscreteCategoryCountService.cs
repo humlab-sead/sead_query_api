@@ -23,8 +23,8 @@ namespace SeadQueryCore
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
-            Facet computeFacet = Repository.Get(facet.AggregateFacetId);
-            Facet targetFacet  = Repository.GetByCode(facetsConfig.TargetCode);
+            Facet computeFacet = Facets.Get(facet.AggregateFacetId);
+            Facet targetFacet  = Facets.GetByCode(facetsConfig.TargetCode);
 
             List<string> tables     = GetTables(facetsConfig, targetFacet, computeFacet);
             List<string> facetCodes = facetsConfig.GetFacetCodes();
