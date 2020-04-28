@@ -2,7 +2,6 @@ using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
-using SQT.SQL.Matcher;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +9,8 @@ using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-    public class ResultSqlMatcher : FacetLoadSqlMatcher
-    {
-        public class ResultInnerSqlMatcher : SelectClauseMatcher
-        {
-            public override string ExpectedSql { get; } =
-                    @"SELECT (?<SelectFieldsSql>.*?(?= FROM))
-                      FROM (?<TargetSql>[\w\."",\(\)]+)(?: AS \w*)?(?<JoinSql>.*)?
-                      WHERE 1 = 1\s?(?<CriteriaSql>.*)?(?:\sGROUP BY (?<GroupByFieldsSql>.*))?".Squeeze();
-        }
 
-        public override string ExpectedSql { get; } = @"
-            SELECT (?<SelectItems>.*)(?= FROM \()
-            FROM \((?<InnerSql>.*)(?=\) AS X GROUP BY)\) AS X
-            GROUP BY (?<GroupByFields>.*)(?= ORDER)(?: ORDER BY (?<OrderByFields>.*))?";
-
-        public override SelectClauseMatcher InnerSqlMatcher { get; } = new ResultInnerSqlMatcher();
-
-    }
-
+    [Collection("JsonSeededFacetContext")]
     public class TabularResultSqlCompilerTests : DisposableFacetContextContainer
     {
         public TabularResultSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
@@ -55,16 +37,15 @@ namespace SQT.QueryBuilder.ResultCompilers
             var compiler = new TabularResultSqlCompiler();
             var result = compiler.Compile(querySetup, facet, fields);
 
-            var match = new ResultSqlMatcher().Match(result);
+            var match = new TabularResultSqlCompilerMatcher().Match(result);
 
             // Assert
             Assert.True(match.Success);
-
             Assert.True(match.InnerSelect.Success);
 
             Assert.NotEmpty(match.InnerSelect.Tables);
             Assert.True(expectedJoinTables.All(x => match.InnerSelect.Tables.Contains(x)));
         }
- 
+
     }
 }

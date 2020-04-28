@@ -1,10 +1,4 @@
-using Autofac.Features.Indexed;
-using Moq;
-using SeadQueryCore;
-using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
-using System;
 using Xunit;
 
 namespace SQT.SqlCompilers
@@ -15,7 +9,6 @@ namespace SQT.SqlCompilers
         public ResultConfigCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
-
 
         [Theory]
         [InlineData("sites:sites", "site_level", "tabular")]
