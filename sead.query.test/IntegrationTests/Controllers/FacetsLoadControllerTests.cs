@@ -120,74 +120,7 @@ namespace IntegrationTests
             }
         }
 
-        [Fact]
-        public void MatchRange()
-        {
-
-            string sqlQuery =
-                @"
-                WITH categories(category, lower, upper) AS ((
-                    SELECT n::text || ' => ' || (n + 69)::text, n, n + 69
-                    FROM generate_series(1, 8351, 69) as a(n)
-                    WHERE n < 8351
-                )), outerbounds(lower, upper) AS (
-                    SELECT MIN(lower), MAX(upper)
-                    FROM categories
-                )
-                    SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column
-                    FROM categories c
-                    LEFT JOIN (
-                        SELECT category, COUNT(DISTINCT tbl_analysis_entities.analysis_entity_id) AS count_column
-                        FROM facet.view_abundance
-                        CROSS JOIN outerbounds
-                        JOIN categories
-                          ON categories.lower <= cast(facet.view_abundance.abundance as decimal(15, 6))
-                         AND categories.upper >= cast(facet.view_abundance.abundance as decimal(15, 6))
-                         AND (NOT (categories.upper < outerbounds.upper
-                         AND cast(facet.view_abundance.abundance as decimal(15, 6)) = categories.upper))
-                        INNER JOIN tbl_analysis_entities
-                          ON tbl_analysis_entities.analysis_entity_id = facet.view_abundance.analysis_entity_id
-                        INNER JOIN tbl_datasets
-                          ON tbl_datasets.dataset_id = tbl_analysis_entities.dataset_id
-                        WHERE TRUE AND facet.view_abundance.abundance is not null
-                          AND tbl_datasets.method_id in (4, 8)
-                          AND facet.view_abundance.abundance is not null
-                        GROUP BY category
-                     ) AS r
-                        ON r.category = c.category
-                     ORDER BY c.lower
-
-            ".Squeeze();
-            string expectedOuterSql =
-               @"
-                WITH categories\(category, lower, upper\) AS \(\(
-                    SELECT .*::text, n, n \+ \d+
-                    FROM generate_series\(\d+, \d+, \d+\) as a\(n\)
-                    WHERE n < \d+
-                \)\), outerbounds\(lower, upper\) AS \(
-                    SELECT MIN\(lower\), MAX\(upper\)
-                    FROM categories
-                \)
-                    SELECT c.category, c.lower, c.upper, COALESCE\(r.count_column, 0\) as count_column
-                    FROM categories c
-                    LEFT JOIN \((?<InnerSql>.*)\) AS r
-                      ON r.category = c.category
-                    ORDER BY c.lower
-
-            ".Squeeze();
-            string expectedInnerSql = @"
-                    SELECT (?<CategoryExpr>[\w\."",\(\)]+) AS category, (?<ValueExpr>[\w\."",\(\)]+) AS value
-                    FROM (?<TargetSql>[\w\."",\(\)]+)(?: AS \w*)?(?<JoinSql>.*)?
-                    WHERE 1 = 1\s?(?<CriteriaSql>.*)?
-                    GROUP BY \1.*\2
-                ".Squeeze();
-
-            var rx = Regex.Match(sqlQuery.Squeeze(), expectedOuterSql);
-
-            Assert.True(rx.Success);
-        }
-
-        /// <summary>
+         /// <summary>
         /// Tests all domain facets
         /// </summary>
         /// <param name="uri"></param>

@@ -19,33 +19,6 @@ namespace SQT.Services
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
 
-        protected Mock<ICategoryCountService> MockCategoryCountService(List<CategoryCountItem> fakeCategoryCountItems)
-        {
-            var mockCategoryCountService = new Mock<ICategoryCountService>();
-            mockCategoryCountService.Setup(
-                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
-            ).Returns(
-                new CategoryCountService.CategoryCountData
-                {
-                    CategoryCounts = fakeCategoryCountItems.ToDictionary(z => z.Category),
-                    SqlQuery = "SELECT * FROM bla.bla"
-                }
-            );
-            return mockCategoryCountService;
-        }
-
-        protected Mock<ICategoryCountServiceLocator> MockCategoryCountServiceLocator(List<CategoryCountItem> fakeCategoryCountItems)
-        {
-            var mockCategoryCountService = MockCategoryCountService(fakeCategoryCountItems);
-
-            var mockCategoryCountServiceLocator = new Mock<ICategoryCountServiceLocator>();
-            mockCategoryCountServiceLocator
-                .Setup(z => z.Locate(It.IsAny<EFacetType>()))
-                .Returns(
-                    mockCategoryCountService.Object
-                );
-            return mockCategoryCountServiceLocator;
-        }
 
         //private static Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
         //{

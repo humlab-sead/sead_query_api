@@ -37,11 +37,14 @@ namespace IntegrationTests
         [Fact]
         public async Task API_GET_Health_IsGood()
         {
-            using (var response = await Fixture.Client.GetAsync("api/values")) {
-                response.EnsureSuccessStatusCode();
-                var json = await response.Content.ReadAsStringAsync();
-                Assert.Matches(@"\[""\d{4}"",""\d{2}""\]", json);
-            }
+            // Act
+            using var response = await Fixture.Client.GetAsync("api/values");
+
+            // Assert
+
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            Assert.Matches(@"\[""\d{4}"",""\d{2}""\]", json);
         }
 
         [Fact]

@@ -3,7 +3,9 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.Services.Result;
 using SQT.Infrastructure;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Xunit;
 
 namespace SQT.Services
@@ -15,21 +17,29 @@ namespace SQT.Services
         public DefaultResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
+        public virtual List<CategoryCountItem> FakeResultItems(int count)
+        {
+            var fakeResult = new DiscreteCountDataReaderBuilder()
+                .CreateNewTable()
+                .GenerateBogusRows(count)
+                .ToItems<CategoryCountItem>().ToList();
+            return fakeResult;
+        }
 
-        [Fact(Skip = "Not implemented")]
-        public void Load_StateUnderTest_ExpectedBehavior()
+        [Theory]
+        [InlineData("sites:sites")]
+        public void Load_VariousConfigs_Success(string uri)
         {
             // Arrange
             var resultConfigCompiler = MockResultConfigCompiler("SQL", "result_facet");
-            //var fakeResult = null;
+            FacetsConfig2 facetsConfig = FakeFacetsConfig(uri);
+            ResultConfig resultConfig = FakeResultConfig("site_level", "tabular");
+
+            var fakeResult = FakeResultItems(10);
             var queryProxy = new MockDynamicQueryProxyFactory().Create((DataTable)null);
 
-            var service = new DefaultResultService(Registry, resultConfigCompiler.Object, queryProxy.Object);
-
-            FacetsConfig2 facetsConfig = null;
-            ResultConfig resultConfig = null;
-
             // Act
+            var service = new DefaultResultService(FakeRegistry(), resultConfigCompiler.Object, queryProxy.Object);
             var result = service.Load(facetsConfig, resultConfig);
 
             // Assert

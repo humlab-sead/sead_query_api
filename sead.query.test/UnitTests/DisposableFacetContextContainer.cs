@@ -332,6 +332,47 @@ namespace SQT
             return fields;
         }
 
+        protected virtual Mock<DiscreteContentSqlCompiler> MockDiscreteContentSqlCompiler(string returnSql)
+        {
+            var mock = new Mock<DiscreteContentSqlCompiler>();
+            mock.Setup(
+                x => x.Compile(
+                        It.IsAny<QuerySetup>(),
+                        It.IsAny<Facet>(),
+                        It.IsAny<string>()
+                )
+            ).Returns(returnSql);
+            return mock;
+        }
+
+        protected Mock<ICategoryCountService> MockCategoryCountService(List<CategoryCountItem> fakeCategoryCountItems)
+        {
+            var mockCategoryCountService = new Mock<ICategoryCountService>();
+            mockCategoryCountService.Setup(
+                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
+            ).Returns(
+                new CategoryCountService.CategoryCountData
+                {
+                    CategoryCounts = fakeCategoryCountItems.ToDictionary(z => z.Category),
+                    SqlQuery = "SELECT * FROM bla.bla"
+                }
+            );
+            return mockCategoryCountService;
+        }
+
+        protected Mock<ICategoryCountServiceLocator> MockCategoryCountServiceLocator(List<CategoryCountItem> fakeCategoryCountItems)
+        {
+            var mockCategoryCountService = MockCategoryCountService(fakeCategoryCountItems);
+
+            var mockCategoryCountServiceLocator = new Mock<ICategoryCountServiceLocator>();
+            mockCategoryCountServiceLocator
+                .Setup(z => z.Locate(It.IsAny<EFacetType>()))
+                .Returns(
+                    mockCategoryCountService.Object
+                );
+            return mockCategoryCountServiceLocator;
+        }
+
         public static class RouteHelper
         {
             public static string[] ToPairs(params string[] trail)

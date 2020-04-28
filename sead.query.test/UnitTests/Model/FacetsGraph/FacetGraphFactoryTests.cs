@@ -21,16 +21,16 @@ namespace SQT.Model
         [Fact]
         public void Build_WhenSuccessfullyCalled_HasExpectedNodesAndEdges()
         {
-            var bidirectedges = new List<(string, string, int)> {
-                ("A", "B", 7 ), ( "A", "C", 8 ),
-                ("B", "A", 7 ), ( "B", "F", 2 ),
-                ("C", "A", 8 ), ( "C", "F", 6 ), ( "C", "G", 4 ),
-                ("D", "F", 8 ),
-                ("E", "H", 1 ),
-                ("F", "B", 2 ), ( "F", "C", 6 ), ( "F", "D", 8 ), ( "F", "G", 9 ), ( "F", "H", 3),
-                ("G", "C", 4 ), ( "G", "F", 9 ),
-                ("H", "E", 1 ), ( "H", "F", 3 )
-            };
+            //var bidirectedges = new List<(string, string, int)> {
+            //    ("A", "B", 7 ), ( "A", "C", 8 ),
+            //    ("B", "A", 7 ), ( "B", "F", 2 ),
+            //    ("C", "A", 8 ), ( "C", "F", 6 ), ( "C", "G", 4 ),
+            //    ("D", "F", 8 ),
+            //    ("E", "H", 1 ),
+            //    ("F", "B", 2 ), ( "F", "C", 6 ), ( "F", "D", 8 ), ( "F", "G", 9 ), ( "F", "H", 3),
+            //    ("G", "C", 4 ), ( "G", "F", 9 ),
+            //    ("H", "E", 1 ), ( "H", "F", 3 )
+            //};
             var uniedges = new List<(string, string, int)> {
                 ("A", "B", 7),
                 ("A", "C", 8),

@@ -14,10 +14,10 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData("sites:sites", "sites", "count", 0)]
-        [InlineData("country:sites", "sites", "count", 1)]
-        [InlineData("country@57:sites@3", "sites", "count", 1)]
-        public void Compile_VariousConfigs_ExpectedBehavior(string uri, string facetCode, string aggType, int expectedJoinCount)
+        [InlineData("sites:sites", "sites", "count")]
+        [InlineData("country:sites", "sites", "count")]
+        [InlineData("country@57:sites@3", "sites", "count")]
+        public void Compile_VariousConfigs_ExpectedBehavior(string uri, string facetCode, string aggType)
         {
             // Arrange
             var mockQuerySetupFactory = new MockQuerySetupFactory(Registry);

@@ -4,6 +4,7 @@ using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SQT.SqlCompilers
@@ -17,13 +18,14 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData("uri:uri")]
+        [InlineData("sites:sites")]
         public void Compile_StateUnderTest_ExpectedBehavior(string uri)
         {
             // Arrange
+            FacetsConfig2 fakeFacetsConfig = FakeFacetsConfig(uri);
             QuerySetup fakeQuerySetup = FakeQuerySetup(uri);
-            Facet facet = fakeQuerySetup.Facet;
-            List<int> picks = null;
+            Facet facet = fakeFacetsConfig.TargetFacet;
+            List<int> picks = fakeFacetsConfig.TargetConfig.Picks.Select(x => x.ToInt()).ToList();
 
             // Act
             var validPicksSqlCompiler = new ValidPicksSqCompiler();
