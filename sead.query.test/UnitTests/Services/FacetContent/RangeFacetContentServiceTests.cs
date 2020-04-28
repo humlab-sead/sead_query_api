@@ -25,9 +25,9 @@ namespace SQT.Services
             mockCategoryCountService.Setup(
                 x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
             ).Returns(
-                new CategoryCountService.CategoryCountResult
+                new CategoryCountService.CategoryCountData
                 {
-                    Data = fakeCategoryCountItems.ToDictionary(z => z.Category),
+                    CategoryCounts = fakeCategoryCountItems.ToDictionary(z => z.Category),
                     SqlQuery = "SELECT * FROM bla.bla"
                 }
             );

@@ -1,10 +1,7 @@
-using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
 using SQT.Fixtures;
 using SQT.Infrastructure;
-using System;
-using System.Text.RegularExpressions;
+using SQT.SQL.Matcher;
 using Xunit;
 
 namespace SQT.SqlCompilers
@@ -31,43 +28,16 @@ namespace SQT.SqlCompilers
             // Act
 
             var discreteCategoryCountSqlCompiler = new DiscreteCategoryCountSqlCompiler();
-            var result = discreteCategoryCountSqlCompiler.Compile(querySetup, facet, countFacet, aggType);
-
-            result = result.Squeeze();
+            var sqlQuery = discreteCategoryCountSqlCompiler.Compile(querySetup, facet, countFacet, aggType);
 
             // Assert
 
-            var outerExpected = $@"
-                SELECT category, {aggType}\(value\) AS count
-                FROM \((?<innerSql>.*)\) AS x
-                GROUP BY category;".Squeeze();
-            Assert.Matches(outerExpected, result);
+            var matcher = new DiscreteCategoryCountSqlCompilerMatcher();
 
-            var rx = Regex.Match(result, outerExpected);
+            var match = matcher.Match(sqlQuery.Squeeze());
 
-            var innerSql = rx.Groups["innerSql"].Value.Squeeze();
-            var innerExpected = @"
-                SELECT (?<tableName>\w+).(?<catName>\w+) AS category, (?:[\w\.]+).(?:[\w\.]+) AS value
-                FROM (?:[\w\.]+)(?: AS \w*)?(?<joins>.*)?
-                WHERE 1 = 1\s?(?<criterias>.*)?
-                GROUP BY \1.\2, \1.\2".Squeeze();
-            Assert.Matches(innerExpected, innerSql);
+            Assert.True(match.Success);
 
-            rx = Regex.Match(result, innerExpected);
-
-            var joinSql = (rx.Groups["joins"]?.Value ?? "").Squeeze();
-            if (!joinSql.IsEmpty()) {
-                var joinExpected = @"(?<joins>(?:INNER|LEFT|RIGHT|OUTER)?\s?JOIN\s[\w\.""]+\sON\s[\w\.""]+\s=\s[\w\.""]+\s?)+";
-                Assert.Matches(joinExpected, joinSql);
-                rx = Regex.Match(joinSql, joinExpected);
-                Assert.Equal(expectedJoinCount, rx.Captures.Count);
-            }
-
-            var criteriaSql = (rx.Groups["criterias"]?.Value ?? "").Squeeze();
-            if (!criteriaSql.IsEmpty()) {
-                var criteriaExpected = ".*AND*.";
-                Assert.Matches(criteriaExpected, criteriaSql);
-            }
          }
     }
 }

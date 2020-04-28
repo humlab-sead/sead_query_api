@@ -44,12 +44,12 @@ namespace SQT.Services
 
             // Assert
             Assert.NotNull(result);
-            Assert.NotNull(result.Data);
-            Assert.Equal(fakeResult.Count, result.Data.Count);
+            Assert.NotNull(result.CategoryCounts);
+            Assert.Equal(fakeResult.Count, result.CategoryCounts.Count);
 
             CompareLogic compareLogic = new CompareLogic();
 
-            Assert.True(compareLogic.Compare(fakeResult, result.Data.Values.ToList()).AreEqual);
+            Assert.True(compareLogic.Compare(fakeResult, result.CategoryCounts.Values.ToList()).AreEqual);
         }
     }
 }

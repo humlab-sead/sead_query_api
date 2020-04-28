@@ -68,7 +68,7 @@ namespace SQT.SQL.Matcher
 
             result.SelectFieldsSql = rx.Groups?["SelectFieldsSql"]?.Value?.Squeeze() ?? "";
             result.TargetSql = rx.Groups["TargetSql"].Value.Squeeze();
-            result.JoinSql = rx.Groups["JoinSql"].Value.Squeeze();
+            result.JoinSql = rx.Groups?["JoinSql"]?.Value?.Squeeze() ?? "";
             result.CriteriaSql = rx.Groups?["CriteriaSql"]?.Value?.Squeeze() ?? "";
             result.GroupByFieldsSql = rx.Groups?["GroupByFieldsSql"]?.Value?.Squeeze() ?? "";
 

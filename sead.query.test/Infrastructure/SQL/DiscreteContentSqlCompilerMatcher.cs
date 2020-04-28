@@ -1,5 +1,4 @@
-﻿using static SeadQueryCore.Utility;
-
+﻿
 namespace SQT.SQL.Matcher
 {
     public class DiscreteContentSqlCompilerMatcher : GenericSelectSqlMatcher

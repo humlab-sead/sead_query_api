@@ -1,17 +1,13 @@
-using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder.Ext;
 using SQT.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
+    [Collection("JsonSeededFacetContext")]
 	public class ResultAggregateFieldExtensionTests : DisposableFacetContextContainer
 	{
 		public ResultAggregateFieldExtensionTests(JsonSeededFacetContextFixture fixture) : base(fixture)
