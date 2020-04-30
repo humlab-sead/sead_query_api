@@ -9,11 +9,16 @@
 		"visual.studio.debug": {
 			"protocol" : "http",
 			"host": "localhost",
-			"port": "53053",
+			"port": "53052",
 		},
 		"seadserv.humlab.umu.se": {
 			"protocol" : "https",
 			"host": "seadserv.humlab.umu.se",
+			"port": "8089",
+		},
+		"supersead.humlab.umu.se": {
+			"protocol" : "https",
+			"host": "supersead.humlab.umu.se",
 			"port": "8089",
 		}
     },
