@@ -2,6 +2,7 @@ using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
+using SQT.SQL.Matcher;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,21 +19,28 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData("sites:sites")]
+        [InlineData("sites:sites@5")]
+        [InlineData("sites:country@57/sites@3")]
+        [InlineData("country:country@57/sites@3")]
         public void Compile_StateUnderTest_ExpectedBehavior(string uri)
         {
             // Arrange
-            FacetsConfig2 fakeFacetsConfig = FakeFacetsConfig(uri);
-            QuerySetup fakeQuerySetup = FakeQuerySetup(uri);
-            Facet facet = fakeFacetsConfig.TargetFacet;
-            List<int> picks = fakeFacetsConfig.TargetConfig.Picks.Select(x => x.ToInt()).ToList();
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(uri);
 
             // Act
-            var validPicksSqlCompiler = new ValidPicksSqCompiler();
-            var result = validPicksSqlCompiler.Compile(fakeQuerySetup, facet, picks);
+            var compiler = new ValidPicksSqCompiler();
+            var result = compiler.Compile(
+                fakeQuerySetup,
+                fakeFacetsConfig.TargetFacet,
+                fakeFacetsConfig.TargetConfig.GetIntegerPickValues()
+            );
 
             // Assert
-            Assert.True(false);
+            var matcher = new ValidPicksSqlCompilerMatcher();
+            var match = matcher.Match(result);
+
+            Assert.True(match.Success);
         }
     }
 }

@@ -20,14 +20,14 @@ namespace SQT.SqlCompilers
         {
             // Arrange
             var querySetupMockFactory = new MockQuerySetupFactory(Registry);
-            var querySetup = querySetupMockFactory.Scaffold(uri);
-            var fields = FakeResultAggregateFields("site_level", "map");
-            var facet = Registry.Facets.GetByCode(facetCode);
+            var fakeQuerySetup = new MockQuerySetupFactory(Registry).Scaffold(uri);
+            var fakeResultFields = FakeResultAggregateFields("site_level", "map");
+            var fakeFacet = FakeRegistry().Facets.GetByCode(facetCode);
 
             // Act
 
             var mapResultSqlCompiler = new MapResultSqlCompiler();
-            var result = mapResultSqlCompiler.Compile(querySetup, facet, fields);
+            var result = mapResultSqlCompiler.Compile(fakeQuerySetup, fakeFacet, fakeResultFields);
 
             // Assert
             var matcher = new MapResultSqlCompilerMatcher();
