@@ -13,25 +13,25 @@ namespace SQT.Infrastructure
 {
     public abstract class DataReaderBuilder : IDisposable
     {
-        protected DataTable dataTable = new DataTable();
+        public DataTable DataTable { get; protected set; } = new DataTable();
         protected readonly Fixture fixture = new Fixture();
         private readonly string tableName;
 
         protected DataReaderBuilder(string tableName)
         {
             this.tableName = tableName;
-            dataTable = new DataTable(tableName);
+            DataTable = new DataTable(tableName);
         }
 
         protected DataReaderBuilder(string tableName, IEnumerable<DataColumn>  columns) : this(tableName)
         {
-            dataTable.Columns.AddRange(columns.ToArray());
+            DataTable.Columns.AddRange(columns.ToArray());
         }
 
         public virtual DataReaderBuilder CreateNewTable(IEnumerable<DataColumn> columns)
         {
-            dataTable = new DataTable(tableName);
-            dataTable.Columns.AddRange(columns.ToArray());
+            DataTable = new DataTable(tableName);
+            DataTable.Columns.AddRange(columns.ToArray());
             return this;
         }
 
@@ -42,9 +42,9 @@ namespace SQT.Infrastructure
 
         protected virtual object[] BogusRow(int rowNumber = 0)
         {
-            var row = new object[dataTable.Columns.Count];
+            var row = new object[DataTable.Columns.Count];
             var i = 0;
-            foreach (DataColumn column in dataTable.Columns) {
+            foreach (DataColumn column in DataTable.Columns) {
                 var value = new SpecimenContext(fixture).Resolve(column.DataType);
                 row[i++] = value;
             }
@@ -53,7 +53,7 @@ namespace SQT.Infrastructure
 
         public virtual DataReaderBuilder GenerateBogusRows(int numberOfRows = 3)
         {
-            foreach (var i in Enumerable.Range(1, numberOfRows + 1)) {
+            foreach (var i in Enumerable.Range(1, numberOfRows)) {
                 AddRow(BogusRow(i));
             }
             return this;
@@ -61,7 +61,7 @@ namespace SQT.Infrastructure
 
         public virtual DataReaderBuilder AddRow(params object[] row)
         {
-            dataTable.Rows.Add(row);
+            DataTable.Rows.Add(row);
             return this;
         }
         public virtual DataReaderBuilder AddRows(IEnumerable<object[]> rows)
@@ -74,7 +74,7 @@ namespace SQT.Infrastructure
 
         public IDataReader ToDataReader()
         {
-            return dataTable.CreateDataReader();
+            return DataTable.CreateDataReader();
         }
 
         public IEnumerable<T> ToItems<T>(Func<IDataReader, T> converter)
@@ -86,12 +86,12 @@ namespace SQT.Infrastructure
 
         public IEnumerable<T> ToItems<T>() where T : class, new()
         {
-            return dataTable.CreateDataReader().AsItems<T>();
+            return DataTable.CreateDataReader().AsItems<T>();
         }
 
         public void Dispose()
         {
-            dataTable.Dispose();
+            DataTable.Dispose();
         }
     }
 }

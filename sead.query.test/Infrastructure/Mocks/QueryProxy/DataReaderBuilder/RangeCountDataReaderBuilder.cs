@@ -20,7 +20,7 @@ namespace SQT.Infrastructure
 
         public override DataReaderBuilder CreateNewTable()
         {
-            dataTable = new DataTable("CategoryCount")
+            DataTable = new DataTable("CategoryCount")
             {
                 Columns =
                     {
