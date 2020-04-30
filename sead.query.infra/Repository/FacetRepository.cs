@@ -83,6 +83,7 @@ namespace SeadQueryInfra
             }
             var children = GetSet()
                 .Include("Children.Child")
+                .Include("Children.Child.FacetGroup")
                 .Where(f => f.FacetCode == facetCode)
                 .SelectMany(z => z.Children)
                 .OrderBy(z => z.Position)

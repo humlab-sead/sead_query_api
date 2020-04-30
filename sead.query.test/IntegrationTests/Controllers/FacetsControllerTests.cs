@@ -106,5 +106,22 @@ namespace IntegrationTests
             }
         }
 
+        [Theory]
+        [InlineData("palaeoentomology")]
+        [InlineData("archaeobotany")]
+        [InlineData("pollen")]
+        [InlineData("geoarchaeology")]
+        [InlineData("dendrochronology")]
+        [InlineData("ceramic")]
+        [InlineData("isotope")]
+        public async Task API_GET_DomainChildren_HasFacetGroupBug86(string facetCode)
+        {
+            using var response = await Fixture.Client.GetAsync($"api/facets/domain/{facetCode}");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());
+            Assert.True(facets.All(z => z.FacetGroup != null));
+        }
+
     }
 }
