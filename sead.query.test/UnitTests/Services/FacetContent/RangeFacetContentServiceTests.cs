@@ -12,27 +12,10 @@ namespace SQT.Services
     [Collection("JsonSeededFacetContext")]
     public class RangeFacetContentServiceTests : DisposableFacetContextContainer
     {
-        private readonly MockFacetsConfigFactory FacetsConfigFactory;
 
         public RangeFacetContentServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
-            FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
-
-
-        //private static Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
-        //{
-        //    var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
-
-        //    mockQuerySetupBuilder.Setup(
-        //        x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>())
-        //    ).Returns(querySetup);
-
-        //    mockQuerySetupBuilder.Setup(
-        //        x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>())
-        //    ).Returns(querySetup);
-        //    return mockQuerySetupBuilder;
-        //}
 
         public virtual Mock<RangeIntervalSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
         {
