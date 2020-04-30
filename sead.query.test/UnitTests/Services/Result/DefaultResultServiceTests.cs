@@ -17,34 +17,36 @@ namespace SQT.Services
         public DefaultResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
-        public virtual List<CategoryCountItem> FakeResultItems(int count)
+
+        public virtual DataReaderBuilder FakeResultDataBuilder(ResultAggregate aggregate, int count)
         {
-            var fakeResult = new DiscreteCountDataReaderBuilder()
+            var builder = new TabularResultDataReaderBuilder(aggregate)
                 .CreateNewTable()
-                .GenerateBogusRows(count)
-                .ToItems<CategoryCountItem>().ToList();
-            return fakeResult;
+                .GenerateBogusRows(count);
+            return builder;
         }
 
         [Theory]
-        [InlineData("sites:sites")]
-        public void Load_VariousConfigs_Success(string uri)
+        [InlineData("sites:sites", "result_facet", "site_level", "tabular")]
+        public void Load_VariousConfigs_Success(string uri, string resultCode, string aggregateKey, string viewType)
         {
             // Arrange
-            var resultConfigCompiler = MockResultConfigCompiler("SQL", "result_facet");
-            FacetsConfig2 facetsConfig = FakeFacetsConfig(uri);
-            ResultConfig resultConfig = FakeResultConfig("site_level", "tabular");
-
-            var fakeResult = FakeResultItems(10);
-            var queryProxy = new MockDynamicQueryProxyFactory().Create((DataTable)null);
+            var mockResultConfigCompiler = MockResultConfigCompiler("#RETURN-SQL#", resultCode);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeResultConfig = FakeResultConfig(aggregateKey, viewType);
+            var resultAggregate = FakeRegistry().Results.GetByKey(fakeResultConfig.AggregateKeys[0]);
+            var fakeResultDataBuilder = FakeResultDataBuilder(resultAggregate, 10);
+            var fakeDataTable = fakeResultDataBuilder.DataTable;
+            var mockQueryProxy = new MockDynamicQueryProxyFactory().Create(fakeDataTable);
 
             // Act
-            var service = new DefaultResultService(FakeRegistry(), resultConfigCompiler.Object, queryProxy.Object);
-            var result = service.Load(facetsConfig, resultConfig);
+            var service = new DefaultResultService(FakeRegistry(), mockResultConfigCompiler.Object, mockQueryProxy.Object);
+            var result = service.Load(fakeFacetsConfig, fakeResultConfig);
 
             // Assert
-            Assert.True(false);
+            Assert.NotNull(result);
         }
+
 
     }
 }
