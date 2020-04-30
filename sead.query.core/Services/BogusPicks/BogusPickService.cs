@@ -39,18 +39,20 @@ namespace SeadQueryCore
                     continue;
                 }
 
-                config.Picks = GetValidPicks(facetsConfig, facetCode, config);
+                if (!config.HasPicks()) {
+                    continue;
+                }
+
+                config.Picks = QueryProxy.QueryRows(
+                    PicksCompiler.Compile(
+                        QuerySetupBuilder.Build(facetsConfig, config.Facet),
+                        config.Facet,
+                        config.GetIntegerPickValues()
+                    ),
+                    x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))
+                );
             }
             return facetsConfig;
-        }
-
-        private List<FacetConfigPick> GetValidPicks(FacetsConfig2 facetsConfig, string facetCode, FacetConfig2 config)
-        {
-            var facet = Registry.Facets.GetByCode(facetCode);
-            var query = QuerySetupBuilder.Build(facetsConfig, facet);
-            var sql = PicksCompiler.Compile(query, config.Facet, config.GetPickValues().ConvertAll<int>(x => (int)x));
-            var rows = QueryProxy.QueryRows(sql, x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))).ToList();
-            return rows;
         }
     }
 }
