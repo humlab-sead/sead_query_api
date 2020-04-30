@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using AutoFixture;
+using AutoFixture.Kernel;
 
 namespace SQT.Infrastructure
 {
@@ -15,7 +16,7 @@ namespace SQT.Infrastructure
 
         public override  DataReaderBuilder CreateNewTable()
         {
-            dataTable = new DataTable("CategoryCount")
+            DataTable = new DataTable("CategoryCount")
             {
                 Columns =
                     {
@@ -27,15 +28,14 @@ namespace SQT.Infrastructure
             return this;
         }
 
-        public override DataReaderBuilder GenerateBogusRows(int numberOfRows = 3)
+        protected override object[] BogusRow(int rowNumber = 0)
         {
-            for (var i = 0; i < numberOfRows; i++) {
-                AddRow(new object[] {
-                    $"Category #{i}",
-                    fixture.Create<UInt16>()
-                });
-            }
-            return this;
+            var row = new object[3] {
+                $"Category #{rowNumber}",
+                $"Dummy #{rowNumber}",
+                new SpecimenContext(fixture).Resolve(typeof(Int32))
+            };
+            return row;
         }
     }
 }
