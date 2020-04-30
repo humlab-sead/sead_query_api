@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SQT
+namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
     public class ResultContentServiceTests : DisposableFacetContextContainer

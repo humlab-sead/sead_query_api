@@ -6,7 +6,7 @@ using SQT.Infrastructure;
 using SQT.Mocks;
 using Moq;
 
-namespace SQT.Infrastructure.Cache
+namespace SQT.Infrastructure
 {
 
     public class CacheTests

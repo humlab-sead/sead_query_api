@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Xunit;
 
-namespace SQT.Infrastructure.UtilityTest
+namespace SQT.Infrastructure
 {
     public class DijkstrasGraphTests
     {

@@ -7,7 +7,7 @@ using SQT.Mocks;
 using System.Collections.Generic;
 using System;
 
-namespace SQT.Infrastructure.UtilityTest
+namespace SQT.Infrastructure
 {
 
     public class UtilityTests

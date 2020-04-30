@@ -5,8 +5,9 @@ using Newtonsoft.Json.Serialization;
 using SQT.Fixtures;
 using SQT.Mocks;
 using SeadQueryInfra;
+using SQT.Infrastructure;
 
-namespace SQT.Infrastructure.Scaffolding
+namespace SQT.TestInfrastructure
 {
     public class ScaffoldJsonFixtures
     {

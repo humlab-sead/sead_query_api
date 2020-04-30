@@ -8,9 +8,8 @@ using System;
 using System.Diagnostics;
 using Xunit;
 
-namespace SQT.IoC
+namespace SQT.Infrastructure
 {
-
     public interface IDependent {
         void DoSomeThingNice();
     }
