@@ -57,7 +57,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		{
 			// Arrange
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.GetAggregateAliasedFields();
@@ -72,7 +72,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		{
 			// Arrange
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.GetAggregateGroupByFields();
@@ -87,7 +87,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		{
 			// Arrange
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.GetAggregateCompiledDataFields();
@@ -102,7 +102,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		{
 			// Arrange
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.GetAggregateSortFields();
@@ -117,7 +117,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		{
 			// Arrange
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.GetAggregateInnerGroupByFields();
@@ -131,7 +131,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		{
 			// Arrange
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.GetAggregateColumnNameAliasPairs();
@@ -145,7 +145,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 		public void Any_Success()
 		{
 			var aggregate = FakeResultAggregateFixture();
-			var fields = aggregate.GetFields();
+			var fields = aggregate.GetSortedFields();
 
 			// Act
 			var result = fields.Any();

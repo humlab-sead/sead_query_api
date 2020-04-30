@@ -54,7 +54,7 @@ namespace SeadQueryInfra
 
         public List<ResultAggregateField> GetFieldsByKeys(List<string> keys)
         {
-            return GetByKeys(keys).SelectMany(x => x.GetFields()).ToList();
+            return GetByKeys(keys).SelectMany(x => x.GetSortedFields()).ToList();
         }
     }
 

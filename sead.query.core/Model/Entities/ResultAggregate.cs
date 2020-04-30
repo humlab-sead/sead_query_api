@@ -22,16 +22,13 @@ namespace SeadQueryCore
         [JsonIgnore]
         public virtual ICollection<ResultAggregateField> Fields { get; set; }
 
-        public IEnumerable<ResultAggregateField> GetFields()
+        public IEnumerable<ResultAggregateField> GetSortedFields()
             => Fields.OrderBy(z => z.SequenceId);
 
         public IEnumerable<ResultAggregateField> GetResultFields()
-            => GetFields().Where(z => z.FieldType.IsResultValue)
-                .OrderBy(z => z.SequenceId);
-
-        // TODO: Consider merging logic in ResultQuerySetup to this class 
-        //   if and only if exactly one AggregateKey is allowed per query
-
+            => GetSortedFields()
+                .Where(z => z.FieldType.IsResultValue);
+ 
         public IEnumerable<(string Name, Type Type)> GetResultFieldTypes()
         {
             return GetResultFields()

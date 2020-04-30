@@ -70,7 +70,7 @@ namespace SQT.Model
             var item = CreateResultAggregate();
 
             // Act
-            var result = item.GetFields();
+            var result = item.GetSortedFields();
 
             // Assert
             Assert.Equal(2, result.Count());
