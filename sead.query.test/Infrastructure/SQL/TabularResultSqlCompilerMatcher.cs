@@ -1,7 +1,6 @@
 ﻿using SeadQueryCore;
-using SQT.SQL.Matcher;
 
-namespace SQT.QueryBuilder.ResultCompilers
+namespace SQT.SQL.Matcher
 {
     public class TabularResultSqlCompilerMatcher : CategoryCountSqlCompilerMatcher
     {

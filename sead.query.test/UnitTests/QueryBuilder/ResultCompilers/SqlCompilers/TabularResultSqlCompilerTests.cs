@@ -2,6 +2,7 @@ using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
+using SQT.SQL.Matcher;
 using System;
 using System.Collections.Generic;
 using System.Linq;
