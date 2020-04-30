@@ -147,3 +147,57 @@ Content-Type: application/json; charset=UTF-8
     "aggregateKeys": [ "site_level" ]
   }
 }
+
+### Type:
+### Chain:
+### Picks:  
+
+POST {{protocol}}://{{host}}:{{port}}/api/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "facetsConfig": {
+    "requestId": 10,
+    "requestType": "populate",
+    "targetCode": "genus",
+    "triggerCode": "genus",
+    "facetConfigs": [
+      {
+        "facetCode": "dataset_master",
+        "position": 1,
+        "picks": [{ "pickType": 1, "pickValue": 10, "text": 10 }],
+        "textFilter": ""
+      },
+      {
+        "facetCode": "sites",
+        "position": 2,
+        "picks": [
+          { "pickType": 1, "pickValue": 1985, "text": 1985 },
+          { "pickType": 1, "pickValue": 2044, "text": 2044 },
+          { "pickType": 1, "pickValue": 2046, "text": 2046 },
+          { "pickType": 1, "pickValue": 2017, "text": 2017 },
+          { "pickType": 1, "pickValue": 2045, "text": 2045 }
+        ],
+        "textFilter": ""
+      },
+      {
+        "facetCode": "genus",
+        "position": 3,
+        "picks": [
+          { "pickType": 1, "pickValue": 764, "text": 764 },
+          { "pickType": 1, "pickValue": 551, "text": 551 }
+        ],
+        "textFilter": ""
+      }
+    ]
+  },
+  "resultConfig": {
+    "requestId": 10,
+    "sessionId": "1",
+    "viewTypeId": "map",
+    "aggregateKeys": ["site_level"]
+  }
+}

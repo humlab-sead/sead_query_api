@@ -17,16 +17,17 @@ namespace SQT.Services
 
         [Theory]
         [InlineData("sites:sites", false)]
+        [InlineData("dataset_methods:dataset_methods", false)]
         public void Load_VariousDescreteFacets_Success(string uri, bool hasPicks)
         {
             // Arrange
             var fakeRegistry = FakeRegistry();
             var fakeSettings = FakeFacetSetting();
-            var fakeFacetsConfig = FakeQuerySetup(uri);
+            var facetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeQuerySetup(uri);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var fakeValues = FakeDiscreteCategoryCountItems(5);
-            var mockDiscreteContentSqlCompiler = MockDiscreteContentSqlCompiler("#SQL-QUERY");
+            var mockDiscreteContentSqlCompiler = MockDiscreteContentSqlCompiler("#SQL-QUERY#");
             var mockQueryProxy = MockTypedQueryProxy(fakeValues);
             var mockCategoryCountServicesLocator = MockCategoryCountServiceLocator(fakeValues);
 
@@ -40,7 +41,6 @@ namespace SQT.Services
                 mockQueryProxy.Object
              );
 
-            var facetsConfig = FakeFacetsConfig("sites:sites");
             var result = service.Load(facetsConfig);
 
             // Assert

@@ -15,6 +15,7 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
+        [InlineData("dataset_methods:dataset_methods")]
         [InlineData("sites:sites")]
         [InlineData("country:country/sites")]
         [InlineData("sites:country@57/sites@3")]
