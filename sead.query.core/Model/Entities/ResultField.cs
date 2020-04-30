@@ -32,12 +32,18 @@ namespace SeadQueryCore
                 return typeof(bool);
             }
             if ("int integer smallint short long".Contains(DataType)) {
-                return typeof(int);
+                return typeof(long);
             }
             if ("float".Contains(DataType)) {
                 return typeof(float);
             }
             throw new ArgumentException($"Unknown field type {DataType}");
         }
+
+        /// <summary>
+        /// Name sent to REST API consumer
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetDataTypeName() => GetDataType().Name;
     }
 }
