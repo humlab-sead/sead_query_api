@@ -24,7 +24,7 @@ namespace SeadQueryCore.Model
                     while (Reader.Read())
                     {
                         var values = new object[Reader.FieldCount];
-                        int i = Reader.GetValues(values);
+                        Reader.GetValues(values);
                         yield return values;
                     }
             }

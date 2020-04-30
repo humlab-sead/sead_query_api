@@ -126,10 +126,10 @@ namespace SQT.Model
             Assert.Equal(facetCodes.Length, result.Select(x => x.FacetCode).Intersect(facetCodes).Count());
         }
 
-        public bool affectsTarget(int currentPosition, int targetPosition)
-        {
-            return currentPosition < targetPosition;
-        }
+        //public bool affectsTarget(int currentPosition, int targetPosition)
+        //{
+        //    return currentPosition < targetPosition;
+        //}
 
         public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
         {

@@ -15,12 +15,14 @@ namespace SeadQueryAPI.Services
     public class LoadResultService : AppServiceBase, ILoadResultService {
 
         public IResultServiceIndex ResultServices { get; private set; }
-        private IBogusPickService BogusPickService;
+        private readonly IBogusPickService BogusPickService;
 
         public LoadResultService(
             ISetting config,
             IRepositoryRegistry context,
+            #pragma warning disable IDE0060
             ISeadQueryCache cache,
+            #pragma warning restore IDE0060
             IResultServiceIndex services,
             IBogusPickService bogusPickService) : base(config, context) {
             ResultServices = services;
@@ -29,7 +31,7 @@ namespace SeadQueryAPI.Services
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            // BogusPickService.Delete(facetsConfig);
+            BogusPickService.Update(facetsConfig);
             return ResultServices[resultConfig.ViewTypeId].Load(facetsConfig, resultConfig);
         }
 
