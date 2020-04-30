@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
@@ -7,6 +8,9 @@ namespace SeadQueryCore
     {
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, List<int> picks)
         {
+            if (picks.Count == 0)
+                throw new ArgumentException("No picks specified!");
+
             string picks_clause = picks.Combine(",", x => $"('{x}'::text)");
             string sql = $@"
             SELECT DISTINCT pick_id, {facet.CategoryNameExpr} AS name
