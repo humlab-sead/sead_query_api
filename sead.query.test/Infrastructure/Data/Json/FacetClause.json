@@ -36,51 +36,51 @@
     "EnforceConstraint": false
   },
   {
-    "FacetClauseId": 7,
-    "FacetId": 41,
-    "Clause": "tbl_locations.location_type_id in (2, 7, 14, 16, 18)",
-    "EnforceConstraint": false
-  },
-  {
-    "FacetClauseId": 8,
+    "FacetClauseId": 35,
     "FacetId": 1001,
-    "Clause": "tbl_methods.method_id in (3, 6)",
+    "Clause": "tbl_datasets.method_id in (3, 6)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 9,
+    "FacetClauseId": 36,
     "FacetId": 1002,
-    "Clause": "tbl_methods.method_id in (4, 8)",
+    "Clause": "tbl_datasets.method_id in (4, 8)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 10,
+    "FacetClauseId": 37,
     "FacetId": 1003,
-    "Clause": "tbl_methods.method_id in (14, 15, 21)",
+    "Clause": "tbl_datasets.method_id in (14, 15, 21)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 11,
+    "FacetClauseId": 38,
     "FacetId": 1004,
-    "Clause": "tbl_methods.method_id in (32, 33, 35, 36, 37, 94, 106)",
+    "Clause": "tbl_datasets.method_id in (32, 33, 35, 36, 37, 94, 106)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 12,
+    "FacetClauseId": 39,
     "FacetId": 1005,
-    "Clause": "tbl_methods.method_id in (10)",
+    "Clause": "tbl_datasets.method_id in (10)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 13,
+    "FacetClauseId": 40,
     "FacetId": 1006,
-    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'The Laboratory for Ceramic Research (Lund/KFL)')",
+    "Clause": "tbl_datasets.method_id in (172, 171)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 14,
+    "FacetClauseId": 41,
     "FacetId": 1007,
-    "Clause": "tbl_methods.master_set_id in (select master_set_id from public.tbl_dataset_masters where master_name = 'Sample data Isotopes')",
+    "Clause": "tbl_datasets.method_id in (175)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 44,
+    "FacetId": 41,
+    "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
     "EnforceConstraint": true
   }
 ]

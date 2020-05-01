@@ -251,11 +251,6 @@
   },
   {
     "FacetCode": "pollen",
-    "ChildFacetCode": "species",
-    "Position": 9
-  },
-  {
-    "FacetCode": "pollen",
     "ChildFacetCode": "country",
     "Position": 14
   },
@@ -268,6 +263,11 @@
     "FacetCode": "pollen",
     "ChildFacetCode": "data_types",
     "Position": 21
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "species",
+    "Position": 9
   },
   {
     "FacetCode": "pollen",
@@ -316,11 +316,6 @@
   },
   {
     "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "tbl_denormalized_measured_values_32",
-    "Position": 14
-  },
-  {
-    "FacetCode": "geoarchaeology",
     "ChildFacetCode": "tbl_denormalized_measured_values_37",
     "Position": 2
   },
@@ -338,6 +333,11 @@
     "FacetCode": "geoarchaeology",
     "ChildFacetCode": "data_types",
     "Position": 13
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_denormalized_measured_values_32",
+    "Position": 14
   },
   {
     "FacetCode": "geoarchaeology",
@@ -386,11 +386,6 @@
   },
   {
     "FacetCode": "dendrochronology",
-    "ChildFacetCode": "species",
-    "Position": 5
-  },
-  {
-    "FacetCode": "dendrochronology",
     "ChildFacetCode": "country",
     "Position": 10
   },
@@ -403,6 +398,11 @@
     "FacetCode": "dendrochronology",
     "ChildFacetCode": "data_types",
     "Position": 21
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "species",
+    "Position": 5
   },
   {
     "FacetCode": "dendrochronology",
