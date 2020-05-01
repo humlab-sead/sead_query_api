@@ -3,6 +3,6 @@
 namespace SeadQueryCore
 {
     public interface IResultConfigCompiler  : ISqlCompiler {
-        string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string facetCode);
+        string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string resultFacetCode);
     }
 }
