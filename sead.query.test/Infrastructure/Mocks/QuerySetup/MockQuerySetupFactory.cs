@@ -30,31 +30,34 @@ namespace SQT.Fixtures
             return mock;
         }
 
-        public QuerySetup Scaffold(string uri)
+        private FacetsConfig2 FakeFacetsConfig(string uri)
         {
-            var facetsConfigScaffolder = new MockFacetsConfigFactory(Registry.Facets);
-            var facetsConfig = facetsConfigScaffolder.Create(uri);
+            return new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        }
+
+        public QuerySetup Scaffold(string uri, string targetCode = null, List<string> extraTables = null)
+        {
+            return Scaffold(FakeFacetsConfig(uri), targetCode, extraTables);
+        }
+
+        public QuerySetup Scaffold(FacetsConfig2 facetsConfig, string targetCode = null, List<string> extraTables = null)
+        {
             var joinCompiler = new JoinSqlCompiler();
             var pickCompilers = ConcretePickCompilers();
             var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
             var facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facetsConfig.TargetFacet.FacetCode);
-            var extraTables = new List<string>();
+            var targetFacet = Registry.Facets.GetByCode(targetCode ?? facetsConfig.TargetCode);
 
             QuerySetupBuilder compiler = new QuerySetupBuilder(facetsGraph, pickCompilers.Object, joinCompiler);
 
             var querySetup = compiler.Build(
                 facetsConfig,
-                facetsConfig.TargetFacet,
-                extraTables,
+                targetFacet,
+                extraTables ?? new List<string>(),
                 facetCodes
             );
             return querySetup;
         }
 
-        //public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables = null, IEnumerable<FacetTable> aliases = null)
-        //{
-        //    List<string> facetCodes = facetsConfig.GetFacetCodes().AddIfMissing(facet.FacetCode);
-        //    return Build(facetsConfig, facet, extraTables ?? new List<string>(), facetCodes, aliases);
-        //}
     }
 }

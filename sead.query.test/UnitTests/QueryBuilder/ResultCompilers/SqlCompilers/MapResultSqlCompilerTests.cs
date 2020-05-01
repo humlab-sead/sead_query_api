@@ -2,6 +2,7 @@ using SeadQueryCore;
 using SQT.Fixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SQT.SqlCompilers
@@ -14,15 +15,18 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData("sites:sites", "sites")]
-        [InlineData("sites:country/sites", "sites")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string facetCode)
+        [InlineData("sites:sites", "result_facet")]
+        [InlineData("sites:country/sites", "result_facet")]
+        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultCode)
         {
             // Arrange
-            var querySetupMockFactory = new MockQuerySetupFactory(Registry);
-            var fakeQuerySetup = new MockQuerySetupFactory(Registry).Scaffold(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeResultConfig = FakeResultConfig("site_level", "map");
+            var fields = FakeResultAggregateFields("site_level", "map");
+            List<string> extraTables = null;
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig, resultCode, extraTables);
             var fakeResultFields = FakeResultAggregateFields("site_level", "map");
-            var fakeFacet = FakeRegistry().Facets.GetByCode(facetCode);
+            var fakeFacet = FakeRegistry().Facets.GetByCode(resultCode);
 
             // Act
 

@@ -35,10 +35,9 @@ namespace SQT.SqlCompilers
         public void Compile_VariousConfigs_ExpectedBehavior(string uri, params string[] expectedJoinTables)
         {
             // Arrange
-            var mockQuerySetupFactory = new MockQuerySetupFactory(Registry);
-            var fakeQuerySetup = FakeQuerySetup(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
             var facet = fakeQuerySetup.Facet;
-            // FIXME:::
             var intervalQuery = "( #INTERVAL-QUERY# )";
             var countColumn = "#COUNT-COLUMN#";
 

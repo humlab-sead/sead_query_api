@@ -21,13 +21,13 @@ namespace SQT.SqlCompilers
         public void Compile_RangeFacet_Success(string uri)
         {
             // Arrange
-            var mockQuerySetupFactory = new MockQuerySetupFactory(Registry);
-            var querySetup = mockQuerySetupFactory.Scaffold(uri);
-            var facetCode = querySetup.Facet.FacetCode;
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var facetCode = fakeQuerySetup.Facet.FacetCode;
 
             // Act
             var compiler = new RangeCategoryBoundSqlCompiler();
-            var result = compiler.Compile(querySetup, querySetup.Facet, facetCode);
+            var result = compiler.Compile(fakeQuerySetup, fakeQuerySetup.Facet, facetCode);
 
             // Assert
             string expectedSql = $@"

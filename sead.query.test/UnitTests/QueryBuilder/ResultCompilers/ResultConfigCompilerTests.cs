@@ -16,14 +16,14 @@ namespace SQT.SqlCompilers
         public void Compile_StateUnderTest_ExpectedBehavior(string uri, string aggregateKey, string viewTypeId)
         {
             // Arrange
-            var facetsConfig = FakeFacetsConfig(uri);
-            var querySetup = FakeQuerySetup(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
             var fakeResultConfig = FakeResultConfig(aggregateKey, viewTypeId);
 
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(querySetup);
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var mockResultSqlCompilerLocator = MockResultSqlCompilerLocator("#SQL#");
 
-            string facetCode = facetsConfig.TargetCode;
+            string facetCode = fakeFacetsConfig.TargetCode;
 
             // Act
             var resultQueryCompiler = new SeadQueryCore.ResultConfigCompiler(
@@ -32,7 +32,7 @@ namespace SQT.SqlCompilers
                 mockResultSqlCompilerLocator.Object
             );
 
-            var result = resultQueryCompiler.Compile(facetsConfig, fakeResultConfig, facetCode);
+            var result = resultQueryCompiler.Compile(fakeFacetsConfig, fakeResultConfig, facetCode);
 
             // Assert
             Assert.NotEmpty(result);

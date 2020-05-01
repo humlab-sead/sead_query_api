@@ -24,7 +24,7 @@ namespace SQT.Services
             var fakeRegistry = FakeRegistry();
             var fakeSettings = FakeFacetSetting();
             var facetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(uri);
+            var fakeQuerySetup = FakeQuerySetup(facetsConfig);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var fakeValues = FakeDiscreteCategoryCountItems(5);
             var mockDiscreteContentSqlCompiler = MockDiscreteContentSqlCompiler("#SQL-QUERY#");

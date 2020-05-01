@@ -30,12 +30,13 @@ namespace SQT.QueryBuilder.ResultCompilers
         public void Compile_StateUnderTest_ExpectedBehavior(string uri, params string[] expectedJoinTables)
         {
             // Arrange
-            var querySetup = FakeQuerySetup(uri, "result_facet");
-            var facet = querySetup.Facet;
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig, "result_facet");
+            var facet = fakeQuerySetup.Facet;
             var fields = FakeResultAggregateFields("site_level", "tabular");
             // Act
             var compiler = new TabularResultSqlCompiler();
-            var result = compiler.Compile(querySetup, facet, fields);
+            var result = compiler.Compile(fakeQuerySetup, facet, fields);
 
             var match = new TabularResultSqlCompilerMatcher().Match(result);
 

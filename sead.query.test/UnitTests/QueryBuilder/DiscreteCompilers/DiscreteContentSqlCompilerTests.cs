@@ -24,7 +24,7 @@ namespace SQT.SqlCompilers
 
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
             var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(fakeFacetsConfig.TargetCode);
             string text_filter = "";
 

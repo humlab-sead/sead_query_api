@@ -20,15 +20,15 @@ namespace SQT.SqlCompilers
         public void Compile_VariousConfigs_ExpectedBehavior(string uri, string facetCode, string aggType)
         {
             // Arrange
-            var mockQuerySetupFactory = new MockQuerySetupFactory(Registry);
-            var querySetup = mockQuerySetupFactory.Scaffold(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
             var facet = Registry.Facets.GetByCode(facetCode);
             var countFacet = facet;
 
             // Act
 
             var discreteCategoryCountSqlCompiler = new DiscreteCategoryCountSqlCompiler();
-            var sqlQuery = discreteCategoryCountSqlCompiler.Compile(querySetup, facet, countFacet, aggType);
+            var sqlQuery = discreteCategoryCountSqlCompiler.Compile(fakeQuerySetup, facet, countFacet, aggType);
 
             // Assert
 

@@ -20,7 +20,8 @@ namespace SQT.SqlCompilers
         public void Compile_VariousConfigs_ExpectedBehavior(string uri)
         {
             // Arrange
-            var fakeQuerySetup = FakeQuerySetup(uri);
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
 
             // Act
             var rangeOuterBoundSqlCompiler = new RangeOuterBoundSqlCompiler();

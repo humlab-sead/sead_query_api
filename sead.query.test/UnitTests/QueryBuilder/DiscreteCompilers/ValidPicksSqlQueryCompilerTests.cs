@@ -26,7 +26,7 @@ namespace SQT.SqlCompilers
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(uri);
+            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
 
             // Act
             var compiler = new ValidPicksSqCompiler();
