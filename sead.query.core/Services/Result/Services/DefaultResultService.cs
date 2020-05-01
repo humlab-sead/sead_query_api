@@ -8,9 +8,9 @@ namespace SeadQueryCore.Services.Result
 
     public class DefaultResultService : IResultService
     {
-        public IRepositoryRegistry RepositoryRegistry { get; set; }
+        public IResultRepository ResultRepository { get; set; }
 
-        public string FacetCode { get; protected set; }
+        public string ResultCode { get; protected set; }
 
         public IResultConfigCompiler ResultConfigCompiler { get; set; }
         public IDynamicQueryProxy QueryProxy { get; }
@@ -21,8 +21,8 @@ namespace SeadQueryCore.Services.Result
             IDynamicQueryProxy queryProxy
         )
         {
-            RepositoryRegistry = registry;
-            FacetCode = "result_facet";
+            ResultRepository = registry.Results;
+            ResultCode = "result_facet";
             ResultConfigCompiler = compiler;
             QueryProxy = queryProxy;
         }
@@ -47,7 +47,7 @@ namespace SeadQueryCore.Services.Result
 
         protected virtual List<ResultAggregateField> GetResultFields(ResultConfig resultConfig)
         {
-            return RepositoryRegistry.Results
+            return ResultRepository
                     .GetFieldsByKeys(resultConfig.AggregateKeys)
                     .Where(z => z.FieldType.IsResultValue).ToList();
         }
@@ -60,7 +60,7 @@ namespace SeadQueryCore.Services.Result
 
         protected virtual string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, FacetCode /* result_facet */);
+            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, ResultCode /* result_facet */);
         }
     }
 
