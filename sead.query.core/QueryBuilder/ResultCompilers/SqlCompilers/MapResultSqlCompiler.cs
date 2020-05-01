@@ -3,6 +3,7 @@
 namespace SeadQueryCore
 {
     public class MapResultSqlCompiler : IResultSqlCompiler {
+        // FIXME Check if facet can ce refactored away
         public string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultAggregateField> fields)
         {
             string sql = $@"
