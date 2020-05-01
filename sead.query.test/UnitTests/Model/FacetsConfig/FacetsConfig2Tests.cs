@@ -126,11 +126,6 @@ namespace SQT.Model
             Assert.Equal(facetCodes.Length, result.Select(x => x.FacetCode).Intersect(facetCodes).Count());
         }
 
-        //public bool affectsTarget(int currentPosition, int targetPosition)
-        //{
-        //    return currentPosition < targetPosition;
-        //}
-
         public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
         {
             if (!facetConfig.HasConstraints()) {
@@ -237,70 +232,21 @@ namespace SQT.Model
 
         */
 
-
-        /*
-
-
-                species:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: species, facetCodes: country sites species ecocode
-                => country: HAS-PICKS, INVOLVED
-                => sites: HAS-PICKS, INVOLVED
-                => species: SKIPPING/NO-PICKS
-                => ecocode: HAS-PICKS, SKIPPING/POSITION
-
-                species:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: abundances_all_helper, facetCodes: country sites abundances_all_helper species ecocode
-                => country: HAS-PICKS, INVOLVED
-                => sites: HAS-PICKS, INVOLVED
-                => abundances_all_helper: SKIPPING/NO-PICKS
-                => species: SKIPPING/NO-PICKS)
-                => ecocode: HAS-PICKS, SKIPPING/POSITION
-
-                ecocode:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: ecocode, facetCodes: country sites species ecocode
-                => country: HAS-PICKS, INVOLVED
-                => sites: HAS-PICKS, INVOLVED
-                => species: SKIPPING/NO-PICKS
-                => ecocode: HAS-PICKS, SKIPPING/POSITION
-
-                ecocode:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/         // facetCode: result_facet, facetCodes: country sites species result_facet ecocode
-                => country: HAS-PICKS, INVOLVED
-                => sites: HAS-PICKS, INVOLVED
-                => species: SKIPPING/NO-PICKS
-                => result_facet: SKIPPING/NO-PICKS
-                => ecocode: HAS-PICKS, SKIPPING/POSITION
-
-                           sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/           // facetCode: result_facet, facetCodes: country result_facet sites species ecocode
-                => country: HAS-PICKS, INVOLVED
-                => result_facet: SKIPPING/NO-PICKS
-                => sites: HAS-PICKS, SKIPPING/POSITION
-                => species: SKIPPING/NO-PICKS
-                => ecocode: HAS-PICKS, SKIPPING/POSITION
-
-        */
-
         [Theory]
         [InlineData(
             "sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/",
-            false,
             "country"
          )]
         [InlineData(
-            "sites:country/sites@1013,957,958/species/ecocode@28,12/",
-            false
+            "sites:country/sites@1013,957,958/species/ecocode@28,12/"
          )]
-        [InlineData(
-            "sites:country@240,58,64/sites@1013,957,958/species/ecocode@28,12/",
-            true,
-            "country"
-         )]
-        public void GetConfigsThatAffectsTarget_StateUnderTest_ExpectedBehavior(string uri, bool isAggregate, params string[] expectedInvolvedCodes)
+        public void GetConfigsThatAffectsTarget_StateUnderTest_ExpectedBehavior(string uri, params string[] expectedInvolvedCodes)
         {
             // Arrange
             var facetsConfig = FakeFacetsConfig(uri);
             var facetCodes = facetsConfig.GetFacetCodes();
             var targetCode = facetsConfig.TargetCode;
 
-            if (isAggregate) {
-                facetCodes.Add("result_facet");
-            }
             // Act
             var result = facetsConfig.GetConfigsThatAffectsTarget(targetCode, facetCodes.ToList());
 
@@ -308,22 +254,6 @@ namespace SQT.Model
             var involvedCodes = result.Select(x => x.FacetCode);
             Assert.True(new CompareLogic().Compare(involvedCodes.ToList(), expectedInvolvedCodes.ToList()).AreEqual);
         }
-
-        //[Theory]
-        //[InlineData("sites:sites")]
-        ////[InlineData("ecocode:sites/ecocode", "ecocode")]
-        ////[InlineData("sites:sites@1,2/ecocode@2", "sites", "ecocode")]
-        //public void GetFacetConfigsAffectedBy_StateUnderTest_ExpectedBehavior(string uri, params string[] facetCodes)
-        //{
-        //    // Arrange
-        //    var facetsConfig = FakeFacetsConfig(uri);
-
-        //    // Act
-        //    var result = facetsConfig.GetFacetConfigsAffectedBy(facetsConfig.TargetFacet, facetCodes.ToList());
-
-        //    // Assert
-        //    Assert.True(new CompareLogic().Compare(result, facetCodes.ToList()).AreEqual);
-        //}
 
         [Theory]
         [InlineData("sites:sites@1", "sites:1")]
