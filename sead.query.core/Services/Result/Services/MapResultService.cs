@@ -13,14 +13,14 @@ namespace SeadQueryCore.Services.Result
         private readonly string ResultKey = "map_result";
 
         public MapResultService(
-            IRepositoryRegistry context,
+            IRepositoryRegistry repositoryRegistry,
             IResultConfigCompiler resultConfigCompiler,
             IDiscreteCategoryCountService categoryCountService,
             IDynamicQueryProxy queryProxy
         )
-            : base(context, resultConfigCompiler, queryProxy)
+            : base(repositoryRegistry, resultConfigCompiler, queryProxy)
         {
-            FacetCode = "map_result";
+            ResultCode = "map_result";
             CategoryCountService = categoryCountService;
         }
 
@@ -32,7 +32,7 @@ namespace SeadQueryCore.Services.Result
 
         private CategoryCountService.CategoryCountData GetCategoryCounts(FacetsConfig2 facetsConfig)
         {
-            return CategoryCountService.Load(FacetCode, facetsConfig, null);
+            return CategoryCountService.Load(ResultCode, facetsConfig, null);
         }
 
         protected override dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
@@ -48,7 +48,7 @@ namespace SeadQueryCore.Services.Result
         protected override string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             // TODO This override seems redundant - same call as in base?
-            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, FacetCode);
+            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, ResultCode);
         }
     }
 
