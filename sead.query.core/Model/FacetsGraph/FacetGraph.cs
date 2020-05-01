@@ -48,7 +48,6 @@ namespace SeadQueryCore
         public Dictionary<EdgeKey, T> KeyLookup { get; private set; }
         public Dictionary<EdgeIdKey, T> IdKeyLookup { get; private set; }
         public IEnumerable<T> Edges { get; private set; }
-
         public GraphEdges(IEnumerable<T> edges, bool bidirectional=true)
         {
             if (bidirectional) {
@@ -69,7 +68,6 @@ namespace SeadQueryCore
         {
             return Edges.GetEnumerator();
         }
-
         public IEnumerable<T> ReversedEdges(IEnumerable<T> edges)
         {
             return edges
@@ -81,8 +79,6 @@ namespace SeadQueryCore
         public WeightDictionary ToWeightGraph() => Edges
          .GroupBy(p => p.GetSourceId(), (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.GetTargetId(), x => x.GetWeight())))
          .ToDictionary(x => x.SourceId, y => y.TargetWeights);
-
-
     }
 
     public class FacetsGraph : IFacetsGraph {
@@ -108,6 +104,7 @@ namespace SeadQueryCore
             if (reduce) {
                 return GraphRouteUtility.Reduce(routes);
             }
+
             return routes;
         }
 
@@ -120,6 +117,10 @@ namespace SeadQueryCore
         {
             IEnumerable<int> trail = new DijkstrasGraph<int>(EdgeContaniner.ToWeightGraph())
                 .shortest_path(startId, destId);
+
+            if (trail == null)
+                throw new ArgumentOutOfRangeException($"No route found between {startId} and {destId}");
+
             return ToGraphRoute(trail.Concat(new[] { startId }));
         }
 
