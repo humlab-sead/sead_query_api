@@ -44,6 +44,7 @@ namespace SeadQueryCore.QueryBuilder
         {
             return Build(facetsConfig, facet, extraTables, null);
         }
+
         /*
           Function: get_query_clauses
           This the core of the dynamic query builder.     It's input are previous seleceted filter and the code of the facet that triggered the action.
@@ -79,8 +80,9 @@ namespace SeadQueryCore.QueryBuilder
         /// Rules:
         ///   - Collect/compile users pick constraint for all involved facets current facet
         ///      - All picks *predeeding* target facet should be included
-        ///      - If target is "discrete" - not the target facet's own constraints!
-        ///      - If target facet is "range" then  the range-facets itself, although the bound should be expanded to show values outside the limiting range.
+        ///      - If target is a "discrete" facet then the facet's own constraints should NOT be included.
+        ///      - If target facet is "range" then the facet's own constraints should be included,
+        ///          but the bound should be expanded to the facet's entire range.
         ///      
         ///   - Get all selection preceding the target facet.
         ///   - Make where-clauses depending on  type of facets (range or discrete)
@@ -112,14 +114,16 @@ namespace SeadQueryCore.QueryBuilder
             facetCodes = facetCodes.AddIfMissing(targetFacet.FacetCode);
 
             var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
+
             if (!String.IsNullOrEmpty(facetsConfig.DomainCode)) {
                 var domainConfig = FacetConfigFactory.CreateSimple(facetsConfig.DomainFacet, 0);
                 involvedConfigs.Insert(0, domainConfig);
             }
+
             var pickCriterias = CompilePickCriterias(targetFacet, involvedConfigs);
             var facetCriterias = CompileFacetCriterias(targetFacet, involvedConfigs);
 
-            var routes = CompileRoutes(targetFacet, extraTables, involvedConfigs);
+            var routes = ComputeRoutes(targetFacet, extraTables, involvedConfigs);
             var joins = CompileJoins(routes, facetsConfig);
 
             QuerySetup querySetup = new QuerySetup()
@@ -134,7 +138,7 @@ namespace SeadQueryCore.QueryBuilder
             return querySetup;
         }
 
-        private List<GraphRoute> CompileRoutes(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
+        private List<GraphRoute> ComputeRoutes(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
         {
             var tables = GetInvolvedTables(targetFacet, extraTables, involvedConfigs);
             var routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
@@ -152,8 +156,8 @@ namespace SeadQueryCore.QueryBuilder
         }
 
         /// <summary>
-        /// Returns FacetTable instance for given relation
-        /// Note: previoulsy, HasUserPicks(edge, pickCriterias) was used as join type argument
+        /// Compiles join-clause for given edge
+        /// Note: previoulyy, HasUserPicks(edge, pickCriterias) was used as join type argument
         /// </summary>
         /// <param name="facetsConfig"></param>
         /// <param name="edge"></param>
@@ -182,7 +186,6 @@ namespace SeadQueryCore.QueryBuilder
             return criterias;
         }
 
-
         /// <summary>
         /// Returns where-clauses based on user picks for all involved facets
         /// </summary>
@@ -202,7 +205,7 @@ namespace SeadQueryCore.QueryBuilder
         }
 
         /// <summary>
-        /// Collect all tables specified ib affected facets and target facet
+        /// Collect all tables found in affected facets and target facet
         /// </summary>
         /// <param name="targetFacet"></param>
         /// <param name="extraTables"></param>
@@ -210,14 +213,17 @@ namespace SeadQueryCore.QueryBuilder
         /// <returns></returns>
         protected List<string> GetInvolvedTables(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
         {
-            var facets = involvedConfigs.Select(c => c.Facet).Append(targetFacet);
-            var tables = facets
+            var tables = involvedConfigs
+                .Select(c => c.Facet)
+                    .Append(targetFacet)
                 .SelectMany(
                     f => f.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName)
                  )
                 .Concat(
                     extraTables ?? new List<string>()
-                ).Distinct().ToList();
+                )
+                .Distinct()
+                .ToList();
             return tables;
         }
 
