@@ -6,7 +6,7 @@ using System.Linq;
 namespace SeadQueryCore
 {
     public class TabularResultSqlCompiler : IResultSqlCompiler {
-        public string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultAggregateField> fields)
+        public string Compile(QueryBuilder.QuerySetup query, Facet notUsed, IEnumerable<ResultAggregateField> fields)
         {
             string sql = $@"
             SELECT {fields.GetAggregateCompiledDataFields().ToList().Combine(", ")}
