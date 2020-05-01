@@ -1,4 +1,5 @@
 using Autofac;
+using Autofac.Core.Registration;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
@@ -134,7 +135,7 @@ namespace SQT.Infrastructure
                 Assert.NotNull(locator.Locate("tabular"));
                 Assert.NotNull(locator.Locate("map"));
 
-                Assert.Throws<Exception>(() => locator.Locate("flaejl"));
+                Assert.Throws<ComponentNotRegisteredException>(() => locator.Locate("flaejl"));
 
             }
         }
