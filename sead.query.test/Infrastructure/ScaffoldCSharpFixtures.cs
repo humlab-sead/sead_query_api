@@ -99,7 +99,7 @@ namespace SQT.Infrastructure.Scaffolding
         //[Fact(Skip = "Not a test. Scaffolds C# QuerySetup objects to file, read from a JSON seeded context")]
         public void ScaffoldCSharpQuerySetupsToFileUsingJsonSeededFacetContext()
         {
-            var scaffolder = new SQT.Fixtures.MockQuerySetupFactory(Registry);
+            var scaffolder = new DisposableFacetContextContainer(Fixture);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {
@@ -128,7 +128,8 @@ namespace SQT.Infrastructure.Scaffolding
 
             foreach (var uri in uris) {
 
-                var querySetup = scaffolder.Scaffold(uri);
+                var facetsConfig = scaffolder.FakeFacetsConfig(uri);
+                var querySetup = scaffolder.FakeQuerySetup(facetsConfig);
 
                 var path = Path.Join(DataFolder(), $"QuerySetup_{UriName(uri)}.cs.txt");
                 ScaffoldUtility.Dump(querySetup, path, options);

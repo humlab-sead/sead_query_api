@@ -17,9 +17,6 @@ namespace SQT.Fixtures
             Registry = registry;
         }
 
-        private Facet GetFacet(string facetCode) => !string.IsNullOrEmpty(facetCode) ? Registry.Facets.GetByCode(facetCode) : null;
-        // FacetInstances.Store[facetCode]
-
         private Mock<PickFilterCompilerLocator> ConcretePickCompilers()
         {
             var mock = new Mock<PickFilterCompilerLocator>(It.IsAny<IIndex<int, IPickFilterCompiler>>());
@@ -30,15 +27,15 @@ namespace SQT.Fixtures
             return mock;
         }
 
-        private FacetsConfig2 FakeFacetsConfig(string uri)
-        {
-            return new MockFacetsConfigFactory(Registry.Facets).Create(uri);
-        }
+        //private FacetsConfig2 FakeFacetsConfig(string uri)
+        //{
+        //    return new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        //}
 
-        public QuerySetup Scaffold(string uri, string targetCode = null, List<string> extraTables = null)
-        {
-            return Scaffold(FakeFacetsConfig(uri), targetCode, extraTables);
-        }
+        //public QuerySetup Scaffold(string uri, string targetCode = null, List<string> extraTables = null)
+        //{
+        //    return Scaffold(FakeFacetsConfig(uri), targetCode, extraTables);
+        //}
 
         public QuerySetup Scaffold(FacetsConfig2 facetsConfig, string targetCode = null, List<string> extraTables = null)
         {
