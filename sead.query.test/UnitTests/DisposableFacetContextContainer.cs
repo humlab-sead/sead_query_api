@@ -90,9 +90,11 @@ namespace SQT
             return mockRegistry;
         }
 
-        public FacetsConfig2 FakeFacetsConfig(string uri) => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        public FacetsConfig2 FakeFacetsConfig(string uri)
+            => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
-        public QuerySetup FakeQuerySetup(string uri) => new MockQuerySetupFactory(Registry).Scaffold(uri);
+        public QuerySetup FakeQuerySetup(string uri, string targetCode = null)
+            => new MockQuerySetupFactory(Registry).Scaffold(uri, targetCode);
 
         /// <summary>
         /// Mocks IQuerySetupBuilder.Setup. Returns passed argument.
