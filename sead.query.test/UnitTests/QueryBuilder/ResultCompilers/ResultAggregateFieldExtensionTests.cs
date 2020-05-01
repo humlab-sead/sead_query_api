@@ -60,7 +60,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetAggregateAliasedFields();
+			var result = fields.GetResultAliasedFields();
 
 			// Assert
 			var expected = aggregate.Fields.Count;
@@ -75,7 +75,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetAggregateGroupByFields();
+			var result = fields.GetResultGroupByFields();
 
 			// Assert
 			var expected = aggregate.Fields.Where(z => z.FieldType.IsGroupByField);
@@ -90,7 +90,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetAggregateCompiledDataFields();
+			var result = fields.GetResultCompiledDataFields();
 
 			// Assert
 			var expected = aggregate.Fields.Where(z => z.FieldType.IsResultValue);
@@ -105,7 +105,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetAggregateSortFields();
+			var result = fields.GetResultSortFields();
 
 			// Assert
 			var expected = aggregate.Fields.Where(z => z.FieldType.IsSortField);
@@ -120,7 +120,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetAggregateInnerGroupByFields();
+			var result = fields.GetResultInnerGroupByFields();
 
 			// Assert
 			var expected = aggregate.Fields;
@@ -134,7 +134,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetAggregateColumnNameAliasPairs();
+			var result = fields.GetResultColumnNameAliasPairs();
 
 			// Assert
 			var expected = aggregate.Fields;

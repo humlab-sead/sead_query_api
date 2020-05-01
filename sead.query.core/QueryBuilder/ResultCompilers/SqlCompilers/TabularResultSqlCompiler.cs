@@ -9,17 +9,17 @@ namespace SeadQueryCore
         public string Compile(QueryBuilder.QuerySetup query, Facet notUsed, IEnumerable<ResultAggregateField> fields)
         {
             string sql = $@"
-            SELECT {fields.GetAggregateCompiledDataFields().ToList().Combine(", ")}
+            SELECT {fields.GetResultCompiledDataFields().ToList().Combine(", ")}
             FROM (
-                SELECT {fields.GetAggregateColumnNameAliasPairs().Select(x => $"{x.ColumnName} AS {x.Alias}").ToList().Combine(", ")}
+                SELECT {fields.GetResultColumnNameAliasPairs().Select(x => $"{x.ColumnName} AS {x.Alias}").ToList().Combine(", ")}
                 FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                      {query.Joins.Combine("")}
                 WHERE 1 = 1
                 {"AND ".GlueTo(query.Criterias.Combine(" AND "))}
-                GROUP BY {fields.GetAggregateInnerGroupByFields().ToList().Combine(", ")}
+                GROUP BY {fields.GetResultInnerGroupByFields().ToList().Combine(", ")}
             ) AS X
-            {"GROUP BY ".GlueTo(fields.GetAggregateGroupByFields().ToList().Combine(", "))}
-            {"ORDER BY ".GlueTo(fields.GetAggregateSortFields().ToList().Combine(", "))}
+            {"GROUP BY ".GlueTo(fields.GetResultGroupByFields().ToList().Combine(", "))}
+            {"ORDER BY ".GlueTo(fields.GetResultSortFields().ToList().Combine(", "))}
         ";
             return sql;
         }

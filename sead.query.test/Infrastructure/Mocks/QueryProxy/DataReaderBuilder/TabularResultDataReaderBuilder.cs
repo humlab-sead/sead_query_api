@@ -32,7 +32,7 @@ namespace SQT.Infrastructure
         private IEnumerable<(string Alias, ResultAggregateField Field)> GetAliasFieldPairs()
             => ResultAggregate
                 .GetSortedFields()
-                .GetAggregateAliasedFields()
+                .GetResultAliasedFields()
                 .Where(z => z.Field.FieldType.IsResultValue);
 
         public virtual IEnumerable<DataColumn> GetDataColumns()
