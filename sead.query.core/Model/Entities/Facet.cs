@@ -101,7 +101,10 @@ namespace SeadQueryCore
         public FacetTable TargetTable => Tables?.Find(z => z.SequenceId == 1) ?? null;
 
         [JsonIgnore]
-        public string QueryCriteria => String.Join(" AND ", Clauses.Select(x => x.Clause));
+        public string Criteria => String.Join(" AND ", Criterias);
+
+        [JsonIgnore]
+        public IEnumerable<string> Criterias => Clauses.Select(x => x.Clause);
 
         public IEnumerable<string> GetResolvedTableNames() =>
             Tables.Select(x => x.ResolvedAliasOrTableOrUdfName);
