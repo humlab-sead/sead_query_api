@@ -15,18 +15,25 @@ namespace SeadQueryCore
             ITypedQueryProxy queryProxy
         ) : base(config, context, builder, queryProxy) {
             RangeCountSqlCompiler = rangeCountSqlCompiler;
+            CountTables = new List<string>() { Config.CountTable };
         }
 
         private IRangeCategoryCountSqlCompiler RangeCountSqlCompiler { get; }
+        public List<string> CountTables { get; }
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string intervalQuery)
-        {
-            List<string> tables = new List<string>() { /* facet.TargetTable.TableOrUdfName, */ Config.CountTable };
-            QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, facet, tables);
-            string sql = RangeCountSqlCompiler.Compile(querySetup, facet, intervalQuery, Config.CountColumn);
-            return sql;
-        }
-
+            => RangeCountSqlCompiler.Compile(
+                    QuerySetupBuilder.Build(
+                        facetsConfig,
+                        facet,
+                        CountTables,
+                        facetsConfig.GetFacetCodes()
+                    ),
+                    facet,
+                    intervalQuery,
+                    Config.CountColumn
+                );
+        
         protected override string GetCategory(IDataReader x)
             => x.IsDBNull(0) ? "(null)" : x.GetString(0);
 

@@ -10,7 +10,6 @@ namespace SeadQueryCore
 
     public class CategoryCountService : QueryServiceBase, ICategoryCountService {
 
-        protected IFacetRepository Facets { get; set; }
         public ITypedQueryProxy QueryProxy { get; }
 
         public class CategoryCountData {
@@ -21,7 +20,6 @@ namespace SeadQueryCore
         public CategoryCountService(IFacetSetting config, IRepositoryRegistry registry, IQuerySetupBuilder builder, ITypedQueryProxy queryProxy) : base(registry, builder)
         {
             Config = config;
-            Facets = Registry.Facets;
             QueryProxy = queryProxy;
         }
 

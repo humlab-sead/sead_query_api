@@ -90,6 +90,7 @@ namespace SQT.Infrastructure
             builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(2);
             builder.RegisterType<GeoFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(3);
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
+            builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
 
             builder.RegisterType<RangeCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Range);
             builder.RegisterType<DiscreteCategoryCountService>().Keyed<ICategoryCountService>(EFacetType.Discrete);
