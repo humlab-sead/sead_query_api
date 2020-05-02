@@ -8,7 +8,7 @@ namespace SeadQueryCore.QueryBuilder.Ext
         public static IEnumerable<ResultField> GetResultFields(this IEnumerable<ResultAggregateField> fields)
              => fields.Select(z => z.ResultField);
 
-        public static IEnumerable<string> GetResultFieldsTableNames(this IEnumerable<ResultAggregateField> fields)
+        public static IEnumerable<string> GetResultFieldTableNames(this IEnumerable<ResultAggregateField> fields)
             => fields.Select(z => z.ResultField.TableName).Where(t => t != null);
 
         public static IEnumerable<(string Alias, ResultAggregateField Field)> GetResultAliasedFields(this IEnumerable<ResultAggregateField> fields)

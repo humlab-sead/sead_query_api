@@ -57,7 +57,7 @@ namespace SQT.Model
             facet.Clauses = new List<FacetClause>();
 
             // Act
-            var result = facet.QueryCriteria;
+            var result = facet.Criteria;
 
             Assert.Equal("", result);
         }
@@ -72,7 +72,7 @@ namespace SQT.Model
             facet.Clauses = new List<FacetClause>() { mockClause.Object };
 
             // Act
-            var result = facet.QueryCriteria;
+            var result = facet.Criteria;
 
             Assert.Equal("A = 1", result);
         }
@@ -92,7 +92,7 @@ namespace SQT.Model
             facet.Clauses = new List<FacetClause>() { mockClause1.Object, mockClause2.Object };
 
             // Act
-            var result = facet.QueryCriteria;
+            var result = facet.Criteria;
 
             Assert.Equal("A = 1 AND B = 2", result);
         }
@@ -105,7 +105,7 @@ namespace SQT.Model
             var facet = CreateFacet("sites");
 
             // Act
-            var result = facet.QueryCriteria;
+            var result = facet.Criteria;
 
             Assert.Equal("", result);
         }
