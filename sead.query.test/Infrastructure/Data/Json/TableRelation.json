@@ -1806,5 +1806,13 @@
     "Weight": 20,
     "SourceColumName": "method_id",
     "TargetColumnName": "method_id"
+  },
+  {
+    "TableRelationId": 227,
+    "SourceTableId": 162,
+    "TargetTableId": 89,
+    "Weight": 20,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
   }
 ]
