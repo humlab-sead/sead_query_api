@@ -85,13 +85,13 @@ namespace SeadQueryCore
 
         public GraphNodes<Table> NodeContainer { get; private set; }
         public GraphEdges<TableRelation> EdgeContaniner { get; private set; }
-        public IEnumerable<FacetTable> Aliases { get; private set; }
+        public IEnumerable<FacetTable> AliasedFacetTables { get; private set; }
 
         public FacetsGraph(IEnumerable<Table> nodes, IEnumerable<TableRelation> edges, IEnumerable<FacetTable> aliases, bool bidirectional=true)
         {
             NodeContainer = new GraphNodes<Table>(nodes);
             EdgeContaniner = new GraphEdges<TableRelation>(edges, bidirectional);
-            Aliases = aliases;
+            AliasedFacetTables = aliases;
         }
 
         public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true)
@@ -139,5 +139,8 @@ namespace SeadQueryCore
                 sb.Append($"{edge.SourceName};{edge.TargetName};{edge.Weight}\n");
             return sb.ToString();
         }
+
+        public FacetTable GetAliasedFacetTable(string aliasName)
+            => AliasedFacetTables.Where(x => x.Alias == aliasName).FirstOrDefault();
     }
 }
