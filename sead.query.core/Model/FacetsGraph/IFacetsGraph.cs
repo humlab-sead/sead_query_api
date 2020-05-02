@@ -13,6 +13,7 @@ namespace SeadQueryCore
         List<GraphRoute> Find(string startTable, List<string> destinationTable, bool reduce=true);
         string ToCSV();
 
-        IEnumerable<FacetTable> Aliases { get; }
+        IEnumerable<FacetTable> AliasedFacetTables { get; }
+        FacetTable GetAliasedFacetTable(string aliasName);
     }
 }
