@@ -6,14 +6,6 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public static class FacetTableExtensions
-    {
-        public static FacetTable FindByAlias(this IEnumerable<FacetTable> aliases, string aliasName)
-        {
-            return aliases.Where(x => x.Alias == aliasName).FirstOrDefault();
-        }
-    }
-
     /// <summary>
     /// A relational table associated to a facet
     /// </summary>
