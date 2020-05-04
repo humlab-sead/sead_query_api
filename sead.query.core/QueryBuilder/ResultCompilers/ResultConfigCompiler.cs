@@ -1,6 +1,6 @@
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
-using SeadQueryCore.QueryBuilder.Ext;
+using SeadQueryCore.Model.Ext;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,20 +24,22 @@ namespace SeadQueryCore
             if (resultConfig?.IsEmpty ?? true)
                 throw new System.ArgumentNullException($"ResultConfig is null or is missing aggregate keys!");
 
-            var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
+            var resultFacet = Facets.GetByCode(resultFacetCode);
 
-            var fields = GetResultAggregateFields(resultConfig);
+            /* Get the result fields for the requested aggregate keys */
+            var fields = Results.GetFieldsByKeys(resultConfig.AggregateKeys);
 
             if (!fields.Any()) {
                 throw new System.ArgumentException($"No result fields found for given {resultConfig.AggregateKeys[0]}!");
             }
 
-            QuerySetup querySetup = QuerySetupBuilder
-                .Build(facetsConfig, resultFacet, fields.GetAggregateTableNames().ToList());
+            /* Setup query */
+            QuerySetup querySetup = QuerySetupBuilder.Build(facetsConfig, resultFacet, fields);
 
+            /* Compile query */
             return SqlCompilerLocator
                 .Locate(resultConfig.ViewTypeId)
-                .Compile(querySetup, resultFacet, fields);
+                    .Compile(querySetup, resultFacet, fields);
         }
 
         private IEnumerable<ResultAggregateField> GetResultAggregateFields(ResultConfig resultConfig)
