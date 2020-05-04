@@ -1,8 +1,6 @@
 # SEAD Query API
 
-Backend for Supe
-
-# Development
+Backend for SEAD broser.
 
 ## User Linux dotnet install
 
