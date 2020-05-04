@@ -45,8 +45,7 @@ namespace SeadQueryCore
 
                 config.Picks = QueryProxy.QueryRows(
                     PicksCompiler.Compile(
-                        QuerySetupBuilder.Build(facetsConfig, config.Facet),
-                        config.Facet,
+                        QuerySetupBuilder.Build(facetsConfig, config.Facet, null, null),
                         config.GetIntegerPickValues()
                     ),
                     x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))
