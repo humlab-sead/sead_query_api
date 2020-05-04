@@ -26,7 +26,7 @@ namespace SeadQueryCore
 
         protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int count = 0)
         {
-            var querySetup = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, null, facetsConfig.GetFacetCodes());
+            var querySetup = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, null, null);
             var sql = SqlCompiler.Compile(querySetup, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
             return new FacetContent.IntervalQueryInfo {
                 Count = 1,
