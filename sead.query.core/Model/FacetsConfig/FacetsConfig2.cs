@@ -91,10 +91,12 @@ namespace SeadQueryCore
 
         }
 
-        public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet targetFacet, List<string> facetCodes)
+        public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet facet, List<string> facetCodes)
         {
+            facetCodes = (facetCodes ?? GetFacetCodes())
+                .AddIfMissing(facet.FacetCode);
             return GetConfigs(facetCodes)
-                .Where(c => IsPriorTo(c, facetCodes, targetFacet))
+                .Where(c => IsPriorTo(c, facetCodes, facet))
                 .ToList();
         }
 
@@ -136,7 +138,6 @@ namespace SeadQueryCore
 
             return configs;
         }
-
 
         public FacetsConfig2 ClearPicks()
         {
@@ -196,6 +197,12 @@ namespace SeadQueryCore
             }
             return default;
         }
+
+        public bool HasDomainCode() =>
+            !string.IsNullOrEmpty(DomainCode);
+
+        public FacetConfig2 CreateDomainConfig() =>
+            HasDomainCode() ? FacetConfigFactory.Create(DomainFacet, 0) : null;
 
     }
 }
