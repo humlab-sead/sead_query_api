@@ -65,7 +65,7 @@ namespace SeadQueryAPI.Serializers
 
         private FacetConfig2 CreateConfigByCode(string facetCode)
         {
-            return FacetConfigFactory.CreateSimple(GetFacetByCode(facetCode), 0);
+            return FacetConfigFactory.Create(GetFacetByCode(facetCode), 0);
         }
 
         public FacetsConfig2 Reconstitute(string json)

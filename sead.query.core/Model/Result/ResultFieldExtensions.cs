@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SeadQueryCore.QueryBuilder.Ext
+namespace SeadQueryCore.Model.Ext
 {
      public static class ResultFieldExtensions
     {

@@ -6,7 +6,7 @@ namespace SeadQueryCore
 {
     public static class FacetConfigFactory
     {
-        public static FacetConfig2 CreateSimple(Facet facet, int position)
+        public static FacetConfig2 Create(Facet facet, int position)
         {
             var config = new FacetConfig2
             {
