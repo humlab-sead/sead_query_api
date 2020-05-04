@@ -1,5 +1,5 @@
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder.Ext;
+using SeadQueryCore.Model.Ext;
 using SQT.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;

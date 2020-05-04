@@ -18,7 +18,7 @@ namespace SQT.Services
         {
             var mockCompiler = new Mock<IValidPicksSqlCompiler>();
             mockCompiler
-                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<List<int>>()))
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<List<int>>()))
                 .Returns(returnSql);
             return mockCompiler;
         }

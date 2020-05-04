@@ -25,7 +25,8 @@ namespace IntegrationTests
 
 
     [Collection("JsonSeededFacetContext")]
-    public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
+    public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>,
+                                             IClassFixture<TestHostWithContainer>
     {
         public JsonSeededFacetContextFixture FacetContextFixture { get; }
         public DisposableFacetContextContainer MockService { get; }
@@ -33,7 +34,7 @@ namespace IntegrationTests
         public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture, JsonSeededFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
-            MockService = new DisposableFacetContextContainer(facetContextFixture);
+            MockService = new DisposableFacetContextContainer(FacetContextFixture);
         }
 
         [Fact]

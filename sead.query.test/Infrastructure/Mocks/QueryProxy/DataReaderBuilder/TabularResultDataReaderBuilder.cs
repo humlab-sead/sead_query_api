@@ -6,7 +6,7 @@ using System.Text;
 using AutoFixture;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder.Ext;
+using SeadQueryCore.Model.Ext;
 
 namespace SQT.Infrastructure
 {

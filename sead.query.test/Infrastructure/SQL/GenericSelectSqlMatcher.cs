@@ -54,7 +54,7 @@ namespace SQT.SQL.Matcher
 
         public SelectMatch Match(string sqlQuery)
         {
-            return Match(sqlQuery, ExpectedSql);
+            return Match(sqlQuery.Squeeze(), ExpectedSql.Squeeze());
         }
 
         public SelectMatch Match(string sqlQuery, string expectedSql)

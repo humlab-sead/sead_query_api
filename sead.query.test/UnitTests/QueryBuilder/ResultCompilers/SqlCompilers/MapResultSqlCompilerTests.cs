@@ -1,5 +1,5 @@
 using SeadQueryCore;
-using SQT.Fixtures;
+using SeadQueryCore.Model.Ext;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using System.Collections.Generic;
@@ -15,23 +15,19 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData("sites:sites", "result_facet")]
-        [InlineData("sites:country/sites", "result_facet")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultCode)
+        [InlineData("sites:sites", "result_facet", "site_level")]
+        [InlineData("sites:country/sites", "result_facet", "site_level")]
+        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string aggregateKey)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeResultConfig = FakeResultConfig("site_level", "map");
-            var fields = FakeResultAggregateFields("site_level", "map");
-            List<string> extraTables = null;
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig, resultCode, extraTables);
-            var fakeResultFields = FakeResultAggregateFields("site_level", "map");
-            var fakeFacet = FakeRegistry().Facets.GetByCode(resultCode);
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, aggregateKey);
+            var fakeResultFields = FakeResultAggregateFields(aggregateKey, "map");
 
             // Act
 
-            var mapResultSqlCompiler = new MapResultSqlCompiler();
-            var result = mapResultSqlCompiler.Compile(fakeQuerySetup, fakeFacet, fakeResultFields);
+            var sqlCompiler = new MapResultSqlCompiler();
+            var result = sqlCompiler.Compile(fakeQuerySetup, fakeQuerySetup.Facet, fakeResultFields);
 
             // Assert
             var matcher = new MapResultSqlCompilerMatcher();

@@ -13,7 +13,6 @@ using Xunit;
 
 namespace SQT.Infrastructure
 {
-    [CollectionDefinition("JsonSeededFacetContext")]
     public class TestDependencyService : Module, IDisposable
     {
         public ISetting Options { get; set; }

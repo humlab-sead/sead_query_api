@@ -68,6 +68,7 @@ namespace IntegrationTests
         [InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("ceramic://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        [InlineData("palaeoentomology://data_types:data_types", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets")]
         public async Task Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
             // Arrange

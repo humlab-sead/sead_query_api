@@ -22,15 +22,10 @@ namespace SQT.Services.Result
         {
             IFacetsGraph facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
 
-            var mockPickCompiler = new Mock<IPickFilterCompiler>();
-            mockPickCompiler
-                .Setup(x => x.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
-                .Returns("");
+            var pickCriterias = new List<string> { "Q1 = Q2", "Q3 = Q4" };
+            var mockPicksCompiler = MockPicksFilterCompiler(pickCriterias ?? new List<string>());
 
-            var pickCompilers = new Mock<IPickFilterCompilerLocator>();
-            pickCompilers.Setup(x => x.Locate(It.IsAny<EFacetType>())).Returns(mockPickCompiler.Object);
-
-            IQuerySetupBuilder querySetupBuilder = new QuerySetupBuilder(facetsGraph, pickCompilers.Object, new JoinSqlCompiler());
+            IQuerySetupBuilder querySetupBuilder = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, new JoinSqlCompiler());
             return querySetupBuilder;
         }
 

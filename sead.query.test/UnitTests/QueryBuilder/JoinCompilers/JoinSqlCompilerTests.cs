@@ -16,7 +16,7 @@ namespace SQT.SqlCompilers
         private static Mock<IFacetsGraph> MockFacetGraph()
         {
             var facetGraphMock = new Mock<IFacetsGraph>();
-            facetGraphMock.Setup(x => x.Aliases).Returns(new List<FacetTable>());
+            facetGraphMock.Setup(x => x.AliasedFacetTables).Returns(new List<FacetTable>());
             return facetGraphMock;
         }
 
