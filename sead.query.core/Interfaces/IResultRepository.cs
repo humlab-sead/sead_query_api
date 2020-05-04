@@ -9,6 +9,7 @@ namespace SeadQueryCore
         ResultAggregate GetByKey(string key);
         List<ResultAggregate> GetByKeys(List<string> keys);
         List<ResultAggregateField> GetFieldsByKeys(List<string> keys);
+        List<ResultAggregateField> GetFieldsByKey(string key);
         ResultViewType GetViewType(string viewTypeId);
         List<ResultViewType> GetViewTypes();
         Dictionary<string, ResultAggregate> ToDictionary();

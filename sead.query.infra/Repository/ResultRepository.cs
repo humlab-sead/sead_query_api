@@ -56,6 +56,10 @@ namespace SeadQueryInfra
         {
             return GetByKeys(keys).SelectMany(x => x.GetSortedFields()).ToList();
         }
+        public List<ResultAggregateField> GetFieldsByKey(string key)
+        {
+            return GetByKey(key).GetSortedFields().ToList();
+        }
     }
 
     public static class ResultDefinitionRepositoryEagerBuilder {
