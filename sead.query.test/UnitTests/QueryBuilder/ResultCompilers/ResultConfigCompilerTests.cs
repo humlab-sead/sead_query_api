@@ -17,7 +17,7 @@ namespace SQT.SqlCompilers
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var fakeResultConfig = FakeResultConfig(aggregateKey, viewTypeId);
 
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);

@@ -21,7 +21,7 @@ namespace SQT.SqlCompilers
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
 
             // Act
             var rangeOuterBoundSqlCompiler = new RangeOuterBoundSqlCompiler();

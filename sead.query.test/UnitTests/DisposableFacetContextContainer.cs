@@ -79,6 +79,7 @@ namespace SQT
         // Common mock helpers
 
         public virtual IRepositoryRegistry FakeRegistry() => Registry;
+        public virtual IFacetRepository Facets => FakeRegistry().Facets;
 
         public virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
 
@@ -93,8 +94,10 @@ namespace SQT
         public FacetsConfig2 FakeFacetsConfig(string uri)
             => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
-        public QuerySetup FakeQuerySetup(FacetsConfig2 facetsConfig, string targetCode = null, List<string> extraTables = null)
-            => new MockQuerySetupFactory(Registry).Scaffold(facetsConfig, targetCode, extraTables);
+        public QuerySetup FakeCountOrContentQuerySetup(FacetsConfig2 facetsConfig)
+            => new MockQuerySetupFactory(Registry).CountOrContentQuerySetup(facetsConfig);
+        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string aggregateKey)
+            => new MockQuerySetupFactory(Registry).ResultQuerySetup(facetsConfig, resultFacetCode, aggregateKey);
 
         //public QuerySetup FakeQuerySetup(string uri, string targetCode = null, List<string> extraTables = null)
         //    => new MockQuerySetupFactory(Registry).Scaffold(uri, targetCode, extraTables);
@@ -110,6 +113,7 @@ namespace SQT
             mockQuerySetupBuilder.Setup(x => x.Build(
                         It.IsAny<FacetsConfig2>(),
                         It.IsAny<Facet>(),
+                        It.IsAny<List<string>>(),
                         It.IsAny<List<string>>()
                     )).Returns(querySetup ?? new QuerySetup { });
             return mockQuerySetupBuilder;
@@ -377,6 +381,16 @@ namespace SQT
                 );
             return mockCategoryCountServiceLocator;
         }
+
+
+        protected Mock<IPicksFilterCompiler> MockPicksFilterCompiler(IEnumerable<string> returnPicks)
+        {
+            var mock = new Mock<IPicksFilterCompiler>();
+            mock.Setup(x => x.Compile(It.IsAny<Facet>(), It.IsAny<List<FacetConfig2>>()))
+                .Returns(returnPicks);
+            return mock;
+        }
+
 
         public static class RouteHelper
         {

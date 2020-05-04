@@ -1,16 +1,10 @@
-using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    // FIXME Kolla vilka som saknar detta attribut!!!
     [Collection("JsonSeededFacetContext")]
     public class ValidPicksSqlQueryCompilerTests : DisposableFacetContextContainer
     {
@@ -22,17 +16,16 @@ namespace SQT.SqlCompilers
         [InlineData("sites:sites@5")]
         [InlineData("sites:country@57/sites@3")]
         [InlineData("country:country@57/sites@3")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri)
+        public void Compile_VariousConfigs_ExpectedBehavior(string uri)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
 
             // Act
             var compiler = new ValidPicksSqCompiler();
             var result = compiler.Compile(
                 fakeQuerySetup,
-                fakeFacetsConfig.TargetFacet,
                 fakeFacetsConfig.TargetConfig.GetIntegerPickValues()
             );
 

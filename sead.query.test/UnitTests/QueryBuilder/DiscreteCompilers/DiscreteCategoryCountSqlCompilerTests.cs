@@ -21,7 +21,7 @@ namespace SQT.SqlCompilers
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var facet = Registry.Facets.GetByCode(facetCode);
             var countFacet = facet;
 

@@ -129,7 +129,7 @@ namespace SQT.Infrastructure.Scaffolding
             foreach (var uri in uris) {
 
                 var facetsConfig = scaffolder.FakeFacetsConfig(uri);
-                var querySetup = scaffolder.FakeQuerySetup(facetsConfig);
+                var querySetup = scaffolder.FakeCountOrContentQuerySetup(facetsConfig);
 
                 var path = Path.Join(DataFolder(), $"QuerySetup_{UriName(uri)}.cs.txt");
                 ScaffoldUtility.Dump(querySetup, path, options);

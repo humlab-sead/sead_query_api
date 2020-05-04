@@ -22,7 +22,7 @@ namespace SQT.SqlCompilers
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var facetCode = fakeQuerySetup.Facet.FacetCode;
 
             // Act

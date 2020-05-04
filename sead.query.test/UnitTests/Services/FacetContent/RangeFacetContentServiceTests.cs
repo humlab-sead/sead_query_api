@@ -51,7 +51,7 @@ namespace SQT.Services
             // Arrange
             var fakeSettings = FakeFacetSetting();
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeQuerySetup(fakeFacetsConfig);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var fakeCategoryCountItems = FakeRangeCategoryCountItems(1, 10, 10);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var mockCountServiceLocator = MockCategoryCountServiceLocator(fakeCategoryCountItems);
