@@ -73,6 +73,8 @@ namespace SeadQueryAPI
 
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
+            builder.RegisterType<JoinsClauseCompiler>().As<IJoinsClauseCompiler>();
+            
             builder.RegisterType<DiscreteContentSqlCompiler>().As<IDiscreteContentSqlCompiler>();
             builder.RegisterType<DiscreteCategoryCountSqlCompiler>().As<IDiscreteCategoryCountQueryCompiler>();
             builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
@@ -83,8 +85,6 @@ namespace SeadQueryAPI
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
             builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
             
-            builder.RegisterType<ResultConfigCompiler>().As<IResultConfigCompiler>();
-
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
             builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");

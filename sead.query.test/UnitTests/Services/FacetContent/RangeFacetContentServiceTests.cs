@@ -74,7 +74,9 @@ namespace SQT.Services
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(10, result.ItemCount);
+            Assert.Equal(fakeCategoryCountItems.Count, result.Distribution.Count);
+            Assert.Equal(fakeCategoryCountItems.Count, result.Items.Count);
+            Assert.Equal(fakeCategoryCountItems.Count, result.ItemCount);
         }
     }
 }

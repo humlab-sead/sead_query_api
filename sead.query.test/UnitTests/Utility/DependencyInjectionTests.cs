@@ -116,7 +116,6 @@ namespace SQT.Infrastructure
 
                 Assert.NotNull(scope.Resolve<IResultSqlCompilerLocator>());
 
-                Assert.NotNull(scope.Resolve<IResultConfigCompiler>());
                 Assert.NotNull(scope.Resolve<IFacetReconstituteService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
             }

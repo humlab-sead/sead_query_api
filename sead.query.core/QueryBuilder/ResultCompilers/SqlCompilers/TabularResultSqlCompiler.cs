@@ -10,7 +10,7 @@ namespace SeadQueryCore
         public string Compile(QueryBuilder.QuerySetup querySetup, Facet notUsed, IEnumerable<ResultAggregateField> fields)
         {
             string sql = $@"
-            SELECT {fields.GetResultCompiledDataFields().ToList().Combine(", ")}
+            SELECT {fields.GetResultCompiledValueFields().ToList().Combine(", ")}
             FROM (
                 SELECT {fields.GetResultColumnNameAliasPairs().Select(x => $"{x.ColumnName} AS {x.Alias}").ToList().Combine(", ")}
                 FROM {querySetup.Facet.TargetTable.ResolvedSqlJoinName}

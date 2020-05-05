@@ -24,8 +24,9 @@ namespace SQT.Services.Result
 
             var pickCriterias = new List<string> { "Q1 = Q2", "Q3 = Q4" };
             var mockPicksCompiler = MockPicksFilterCompiler(pickCriterias ?? new List<string>());
-
-            IQuerySetupBuilder querySetupBuilder = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, new JoinSqlCompiler());
+            var fakeJoins = FakeJoinsClause(5);
+            var mockJoinsClauseCompiler = MockJoinsClauseCompiler(fakeJoins);
+            var querySetupBuilder = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, mockJoinsClauseCompiler.Object);
             return querySetupBuilder;
         }
 

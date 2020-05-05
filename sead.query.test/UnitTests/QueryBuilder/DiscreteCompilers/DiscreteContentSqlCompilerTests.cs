@@ -26,17 +26,15 @@ namespace SQT.SqlCompilers
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(fakeFacetsConfig.TargetCode);
-            string text_filter = "";
+            string textFilter = "";
 
             // Act
-
-            var result = new DiscreteContentSqlCompiler().Compile(fakeQuerySetup, facet, text_filter);
+            var result = new DiscreteContentSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
 
             // Assert
             var matcher = new DiscreteContentSqlCompilerMatcher();
             var match = matcher.Match(result);
             Assert.True(match.Success);
-            // FIXME : More asserts!
 
         }
     }

@@ -94,13 +94,95 @@ namespace SQT
         public FacetsConfig2 FakeFacetsConfig(string uri)
             => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
-        public QuerySetup FakeCountOrContentQuerySetup(FacetsConfig2 facetsConfig)
-            => new MockQuerySetupFactory(Registry).CountOrContentQuerySetup(facetsConfig);
-        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string aggregateKey)
-            => new MockQuerySetupFactory(Registry).ResultQuerySetup(facetsConfig, resultFacetCode, aggregateKey);
+        public virtual Mock<IPickFilterCompiler> MockPickFilterCompiler(string returnCriteria)
+        {
+            var mock = new Mock<IPickFilterCompiler>();
+            mock.Setup(x => x.Compile(It.IsAny<Facet>(), It.IsAny<Facet>(), It.IsAny<FacetConfig2>()))
+                .Returns(returnCriteria);
+            return mock;
+        }
 
-        //public QuerySetup FakeQuerySetup(string uri, string targetCode = null, List<string> extraTables = null)
-        //    => new MockQuerySetupFactory(Registry).Scaffold(uri, targetCode, extraTables);
+        protected Mock<IPicksFilterCompiler> MockPicksFilterCompiler(IEnumerable<string> returnPicks)
+        {
+            var mock = new Mock<IPicksFilterCompiler>();
+            mock.Setup(x => x.Compile(It.IsAny<Facet>(), It.IsAny<List<FacetConfig2>>()))
+                .Returns(returnPicks);
+            return mock;
+        }
+
+        public virtual IPicksFilterCompiler MockPicksFilterCompiler(Mock<IPickFilterCompiler> discreteMock, Mock<IPickFilterCompiler> rangeMock)
+        {
+            var locator = new Mock<IPickFilterCompilerLocator>();
+            locator.Setup(x => x.Locate(EFacetType.Discrete)).Returns(discreteMock.Object);
+            locator.Setup(x => x.Locate(EFacetType.Range)).Returns(rangeMock.Object);
+            var compiler = new PicksFilterCompiler(locator.Object);
+            return compiler;
+        }
+
+        protected virtual List<string> FakeJoinsClause(int nCount) 
+            => Enumerable.Range(0, nCount)
+                .Select(i => (L: Convert.ToChar('A' + (char)i), R: Convert.ToChar('A' + (char)(i + 1))))
+                .Select(x => $" INNER JOIN {x.L} as {x.L}.{x.L.ToString().ToLower()}_id = {x.R}.{x.R.ToString().ToLower()}_id ")
+                .ToList();
+
+        public virtual Mock<IJoinSqlCompiler> MockJoinSqlCompiler(string returnValue)
+        {
+            var mockCompiler = new Mock<IJoinSqlCompiler>();
+            mockCompiler
+                .Setup(x => x.Compile(It.IsAny<TableRelation>(), It.IsAny<FacetTable>(), It.IsAny<bool>()))
+                .Returns(returnValue);
+            return mockCompiler;
+        }
+
+        protected virtual Mock<IJoinsClauseCompiler> MockJoinsClauseCompiler(List<string> fakeJoins)
+        {
+            var mock = new Mock<IJoinsClauseCompiler>();
+            mock.Setup(x => x.Compile(
+                It.IsAny<FacetsConfig2>(),
+                It.IsAny<Facet>(),
+                It.IsAny<List<Facet>>(),
+                It.IsAny<List<string>>())
+            ).Returns(fakeJoins);
+            return mock;
+        }
+
+        public QuerySetup FakeCountOrContentQuerySetup(FacetsConfig2 facetsConfig)
+        {
+            List<string> fakeJoins = FakeJoinsClause(5);
+            var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
+            var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
+            var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
+            var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+
+            // FIXME: Should be mocked
+            var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinsCompiler.Object);
+
+            var querySetup = compiler.Build(
+                facetsConfig,
+                facetsConfig.TargetFacet,
+                new List<string>(),
+                null
+            );
+
+            return querySetup;
+        }
+
+        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string aggregateKey)
+        {
+            var resultFields = Registry.Results.GetFieldsByKey(aggregateKey);
+            var fakeJoins = FakeJoinsClause(5);
+            var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
+            var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
+            var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
+            var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+            var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
+
+            // FIXME: Should be mocked
+            var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinCompiler.Object);
+            var querySetup = compiler.Build(facetsConfig, resultFacet, resultFields);
+
+            return querySetup;
+        }
 
         /// <summary>
         /// Mocks IQuerySetupBuilder.Setup. Returns passed argument.
@@ -234,31 +316,18 @@ namespace SQT
             return mockLocator;
         }
 
-        public virtual Mock<IJoinSqlCompiler> MockJoinSqlCompiler(string returnValue)
-        {
-            var mockJoinCompiler = new Mock<IJoinSqlCompiler>();
-            mockJoinCompiler
-                .Setup(x => x.Compile(
-                    It.IsAny<TableRelation>(),
-                    It.IsAny<FacetTable>(),
-                    It.IsAny<bool>()
-                ))
-                .Returns(returnValue);
-            return mockJoinCompiler;
-        }
-
-        public virtual Mock<IResultConfigCompiler> MockResultConfigCompiler(string returnSql, string facetCode = "result_facet")
-        {
-            var mockResultQueryCompiler = new Mock<IResultConfigCompiler>();
-            mockResultQueryCompiler.Setup(
-                c => c.Compile(
-                    It.IsAny<FacetsConfig2>(),
-                    It.IsAny<ResultConfig>(),
-                    facetCode
-                )
-            ).Returns(returnSql);
-            return mockResultQueryCompiler;
-        }
+        //public virtual Mock<IResultConfigCompiler> MockResultConfigCompiler(string returnSql, string facetCode = "result_facet")
+        //{
+        //    var mockResultQueryCompiler = new Mock<IResultConfigCompiler>();
+        //    mockResultQueryCompiler.Setup(
+        //        c => c.Compile(
+        //            It.IsAny<FacetsConfig2>(),
+        //            It.IsAny<ResultConfig>(),
+        //            facetCode
+        //        )
+        //    ).Returns(returnSql);
+        //    return mockResultQueryCompiler;
+        //}
 
         public virtual Mock<IFacetsGraph> MockFacetsGraph(List<GraphRoute> returnRoutes)
         {
@@ -381,16 +450,6 @@ namespace SQT
                 );
             return mockCategoryCountServiceLocator;
         }
-
-
-        protected Mock<IPicksFilterCompiler> MockPicksFilterCompiler(IEnumerable<string> returnPicks)
-        {
-            var mock = new Mock<IPicksFilterCompiler>();
-            mock.Setup(x => x.Compile(It.IsAny<Facet>(), It.IsAny<List<FacetConfig2>>()))
-                .Returns(returnPicks);
-            return mock;
-        }
-
 
         public static class RouteHelper
         {

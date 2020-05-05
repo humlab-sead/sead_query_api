@@ -90,7 +90,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 			var fields = aggregate.GetSortedFields();
 
 			// Act
-			var result = fields.GetResultCompiledDataFields();
+			var result = fields.GetResultCompiledValueFields();
 
 			// Assert
 			var expected = aggregate.Fields.Where(z => z.FieldType.IsResultValue);

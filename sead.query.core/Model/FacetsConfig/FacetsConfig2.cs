@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SeadQueryCore.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,12 +94,24 @@ namespace SeadQueryCore
 
         public List<FacetConfig2> GetFacetConfigsAffectedBy(Facet facet, List<string> facetCodes)
         {
-            facetCodes = (facetCodes ?? GetFacetCodes())
-                .AddIfMissing(facet.FacetCode);
+            facetCodes = (facetCodes ?? GetFacetCodes()).AddIfMissing(facet.FacetCode);
             return GetConfigs(facetCodes)
                 .Where(c => IsPriorTo(c, facetCodes, facet))
-                .ToList();
+                    .ToList();
         }
+
+        public List<FacetConfig2> GetInvolvedConfigs(Facet facet, List<string> facetCodes=null)
+            => GetFacetConfigsAffectedBy(facet, facetCodes);
+
+        public List<Facet> GetInvolvedFacets(Facet facet, List<string> facetCodes=null)
+            => GetInvolvedConfigs(facet, facetCodes)
+                .Facets().AddUnion(facet)
+                    .ToList();
+
+        public List<string> GetInvolvedTables(Facet facet, List<string> facetCodes=null, List<string> extraTables=null)
+            => GetInvolvedFacets(facet, facetCodes)
+                .TableNames().NullableUnion(extraTables)
+                        .Distinct().ToList();
 
         /// <summary>
         /// Returns the facets (list of FacetConfig) involved in a query given FacetsConfig2 `facetsConfig` configuration and target facet `targetCode`

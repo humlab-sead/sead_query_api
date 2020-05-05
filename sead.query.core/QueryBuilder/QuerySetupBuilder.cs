@@ -1,235 +1,142 @@
+using SeadQueryCore.Model.Ext;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public interface IQuerySetupBuilder
-    {
-        IFacetsGraph Graph { get; set; }
-
-        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet);
-        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables);
-        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables, List<string> facetCodes);
-    }
-
-    public interface IQuerySetupBuilderArgs
-    {
-        IFacetsGraph Graph { get; }
-        IPickFilterCompilerLocator PickCompilers { get; }
-        IJoinSqlCompiler JoinCompiler { get; }
-    }
-
     public class QuerySetupBuilder : IQuerySetupBuilder {
-        public IFacetsGraph Graph { get; set; }
-        public IPickFilterCompilerLocator PickCompilers { get; set; }
-        public IJoinSqlCompiler JoinCompiler { get; }
 
-        public QuerySetupBuilder(IFacetsGraph graph, IPickFilterCompilerLocator pickCompilers, IJoinSqlCompiler joinCompiler) {
-            Graph = graph;
-            PickCompilers = pickCompilers;
+        public IFacetsGraph FacetsGraph { get; set; }
+        public IPicksFilterCompiler PicksCompiler { get; set; }
+        public IJoinsClauseCompiler JoinCompiler { get; }
+
+        public QuerySetupBuilder(IFacetsGraph graph, IPicksFilterCompiler picksCompiler, IJoinsClauseCompiler joinCompiler)
+        {
+            FacetsGraph = graph;
+            PicksCompiler = picksCompiler;
             JoinCompiler = joinCompiler;
         }
-        public QuerySetupBuilder(IQuerySetupBuilderArgs args) : this(args.Graph, args.PickCompilers, args.JoinCompiler)
-        {
-        }
 
-        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet)
-        {
-            return Build(facetsConfig, facet, null);
-        }
-
-        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables)
-        {
-            return Build(facetsConfig, facet, extraTables, null);
-        }
-
-        /*
-          Function: get_query_clauses
-          This the core of the dynamic query builder.     It's input are previous seleceted filter and the code of the facet that triggered the action.
-          It is also using a array of filter to filter by text each facet result,
-
-          Parameters:
-         * $paramss all facet_params, selections, text_filter, positions of facets ie the view.state of the client)
-         * the target facet to which the query should populate/compute counts etc
-         * $data_tables, any extra tables that should be part of the query, the function uses the tables via get_joins to join the tables
-         * $f_list, the list of the facets in the view-state
-
-          Logics:
-         *  Get all selection preceding the target facet. 
-         *  Make query-where statements depending on which type of facets (range or discrete)
-
-          Exceptions:
-         * a - for target facets (f_code) of "discrete" type it should be affected by all selection from facets preceeding the requested/target facets.
-         * b - for "range" facet it should also include the condition of the range-facets itself, although the bound should be expanded to show values outside the limiting range.
-
-
-          Returns:
-          select clauses (not used)
-          where clauses
-          join conditions
-          tables to used
-
-
- */
         /// <summary>
         /// This the core of the query builder that builds SQL query components for a given target facet, and the
         /// chain of facet configurations preceeding the target facet.
-        /// 
+        ///
         /// Rules:
         ///   - Collect/compile users pick constraint for all involved facets current facet
         ///      - All picks *predeeding* target facet should be included
         ///      - If target is a "discrete" facet then the facet's own constraints should NOT be included.
         ///      - If target facet is "range" then the facet's own constraints should be included,
         ///          but the bound should be expanded to the facet's entire range.
-        ///      
+        ///
         ///   - Get all selection preceding the target facet.
         ///   - Make where-clauses depending on  type of facets (range or discrete)
-        ///   
+        ///
+        /// OLD COMMENTS: Function: get_query_clauses
+        /// This the core of the dynamic query builder.It's input are previous seleceted filter and the code of the facet that triggered the action.
+        ///  It is also using a array of filter to filter by text each facet result,
+        ///  Parameters:
+        /// * $paramss all facet_params, selections, text_filter, positions of facets ie the view.state of the client)
+        /// * the target facet to which the query should populate/compute counts etc
+        /// * $data_tables, any extra tables that should be part of the query, the function uses the tables via get_joins to join the tables
+        /// * $f_list, the list of the facets in the view-state
+        ///  Logics:
+        /// *  Get all selection preceding the target facet.
+        /// *  Make query-where statements depending on which type of facets (range or discrete)
+        ///  Exceptions:
+        /// * a - for target facets(f_code) of "discrete" type it should be affected by all selection from facets preceeding the requested/target facets.
+        /// * b - for "range" facet it should also include the condition of the range-facets itself, although the bound should be expanded to show values outside the limiting range.
         /// </summary>
         /// <param name="facetsConfig">The (complete) facet configuration, including user picks</param>
         /// <param name="targetFacet">Target facet that the query populates/computes/counts etc</param>
         /// <param name="extraTables">,Any extra tables that should be part of the query (path to these tables are included in final query)</param>
         /// <param name="facetCodes">FIXME: "The list of the facets in the view-state"</param>
         /// <returns>
-        /// 
-        /// QuerySetup 
-        /// {
+        /// QuerySetup:
         ///     TargetConfig    Reference to targets facet's configuration              (only added for convenience)
         ///     Facet           Reference to target facet                               (only added for convenience)
         ///     Routes          Compiled routes                                         (added for easier testing purposes)
         ///     Joins           Join clauses to be used in final SQL
         ///     Criterias       Criteria clauses to be included in final SQL
-        /// }
-        /// 
-        /// 
         /// </returns>
         public QuerySetup Build(FacetsConfig2 facetsConfig, Facet targetFacet, List<string> extraTables, List<string> facetCodes)
         {
             // Noteworthy: TargetFacet differs from facetsConfig.TargetFacet when a result-facet is applied
 
-            facetCodes ??= facetsConfig.GetFacetCodes();
-
-            facetCodes = facetCodes.AddIfMissing(targetFacet.FacetCode);
+            extraTables ??= new List<string>();
 
             var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
 
-            if (!String.IsNullOrEmpty(facetsConfig.DomainCode)) {
-                var domainConfig = FacetConfigFactory.CreateSimple(facetsConfig.DomainFacet, 0);
-                involvedConfigs.Insert(0, domainConfig);
-            }
+            if (facetsConfig.HasDomainCode())
+                involvedConfigs.Insert(0, facetsConfig.CreateDomainConfig());
 
-            var pickCriterias = CompilePickCriterias(targetFacet, involvedConfigs);
-            var facetCriterias = CompileFacetCriterias(targetFacet, involvedConfigs);
+            var involvedFacets = involvedConfigs.Facets().AddUnion(targetFacet).ToList();
 
-            var routes = ComputeRoutes(targetFacet, extraTables, involvedConfigs);
-            var joins = CompileJoins(routes, facetsConfig);
+            //System.Diagnostics.Debug.Assert(involvedFacets.Contains(facetsConfig.TargetFacet));
+
+            var pickCriterias = PicksCompiler.Compile(targetFacet, involvedConfigs);
+            var facetCriterias = involvedFacets.Criterias();
+
+            var involvedJoins = JoinCompiler.Compile(facetsConfig, targetFacet, involvedFacets, extraTables);
 
             QuerySetup querySetup = new QuerySetup()
             {
                 TargetConfig = facetsConfig?.TargetConfig,
                 Facet = targetFacet,
-                Routes = routes,
-                Joins = joins,
+                Joins = involvedJoins,
                 Criterias = pickCriterias.Concat(facetCriterias).ToList()
             };
 
             return querySetup;
         }
-
-        private List<GraphRoute> ComputeRoutes(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
+ 
+        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet resultFacet, IEnumerable<ResultAggregateField> resultFields)
         {
-            var tables = GetInvolvedTables(targetFacet, extraTables, involvedConfigs);
-            var routes = Graph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, tables, true);
-            return routes;
+            if (!resultFields?.Any() ?? false)
+                throw new System.ArgumentNullException($"ResultConfig is null or is missing aggregate keys!");
+            
+            /* All tables referenced by the result fields must be included in query */
+            return Build(
+                facetsConfig: facetsConfig,
+                targetFacet:  resultFacet,
+                extraTables:  resultFields.GetResultFieldTableNames().ToList(),
+                facetCodes:   null
+            );
+        }
+    }
+
+    public interface IJoinsClauseCompiler
+    {
+        List<string> Compile(FacetsConfig2 facetsConfig, Facet targetFacet, List<Facet> involvedFacets, List<string> extraTables);
+    }
+
+    public class JoinsClauseCompiler: IJoinsClauseCompiler
+    {
+        public JoinsClauseCompiler(IFacetsGraph graph, IJoinSqlCompiler joinCompiler)
+        {
+            FacetsGraph = graph;
+            JoinCompiler = joinCompiler;
         }
 
-        protected List<string> CompileJoins(List<GraphRoute> routes, FacetsConfig2 facetsConfig)
+        public IJoinSqlCompiler JoinCompiler { get; }
+        public IFacetsGraph FacetsGraph { get; set; }
+
+        private FacetTable GetFacetTableByNameOrAlias(FacetsConfig2 facetsConfig, TableRelation edge)
+            => facetsConfig.GetFacetTable(edge.TargetName) ?? FacetsGraph.GetAliasedFacetTable(edge.TargetName);
+
+        public virtual List<string> Compile(
+            FacetsConfig2 facetsConfig,
+            Facet targetFacet,
+            List<Facet> involvedFacets,
+            List<string> extraTables
+        )
         {
-            var joins = routes
-                .SelectMany(route => route.Items)
-                    .OrderByDescending(z => z.TargetTable.IsUdf)
-                        .Select(edge => CompileJoin(facetsConfig, edge))
-                            .ToList();
+            var involvedTables = involvedFacets.TableNames().Union(extraTables).Distinct().ToList();
+            var routes = FacetsGraph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, involvedTables, true);
+            var joins = routes.Edges().Select(
+                    edge => JoinCompiler.Compile(edge, GetFacetTableByNameOrAlias(facetsConfig, edge), true)
+                ).ToList();
             return joins;
-        }
-
-        /// <summary>
-        /// Compiles join-clause for given edge
-        /// Note: previoulyy, HasUserPicks(edge, pickCriterias) was used as join type argument
-        /// </summary>
-        /// <param name="facetsConfig"></param>
-        /// <param name="edge"></param>
-        /// <returns></returns>
-        private string CompileJoin(FacetsConfig2 facetsConfig, TableRelation edge)
-        {
-            var facetTable = facetsConfig.GetFacetTable(edge.TargetName)
-                 ?? Graph.Aliases.FindByAlias(edge.TargetName);
-            var join = JoinCompiler.Compile(edge, facetTable, true);
-            return join;
-        }
-
-        /// <summary>
-        /// Returns Facet.QueryCriteria for all involved facets, target facet included
-        /// </summary>
-        /// <param name="targetFacet"></param>
-        /// <param name="involvedConfigs"></param>
-        /// <returns></returns>
-        private IEnumerable<string> CompileFacetCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
-        {
-            var criterias = involvedConfigs
-                .Select(c => c.Facet)
-                    .Union(new List<Facet> { targetFacet })    // target facet is not always in affected list (ReloadIfTarget)
-                        .Where(z => !z.QueryCriteria.IsEmpty())
-                            .Select(z => z.QueryCriteria);
-            return criterias;
-        }
-
-        /// <summary>
-        /// Returns where-clauses based on user picks for all involved facets
-        /// </summary>
-        /// <param name="targetFacet"></param>
-        /// <param name="involvedConfigs"></param>
-        /// <returns></returns>
-        protected IEnumerable<string> CompilePickCriterias(Facet targetFacet, List<FacetConfig2> involvedConfigs)
-        {
-            var criterias = involvedConfigs
-                .Select(
-                    config => PickCompiler(config).Compile(targetFacet, config.Facet, config)
-                 )
-                .Where(
-                    x => x.IsNotEmpty()
-                );
-            return criterias;
-        }
-
-        /// <summary>
-        /// Collect all tables found in affected facets and target facet
-        /// </summary>
-        /// <param name="targetFacet"></param>
-        /// <param name="extraTables"></param>
-        /// <param name="involvedConfigs"></param>
-        /// <returns></returns>
-        protected List<string> GetInvolvedTables(Facet targetFacet, List<string> extraTables, List<FacetConfig2> involvedConfigs)
-        {
-            var tables = involvedConfigs
-                .Select(c => c.Facet)
-                    .Append(targetFacet)
-                .SelectMany(
-                    f => f.Tables.Select(z => z.ResolvedAliasOrTableOrUdfName)
-                 )
-                .Concat(
-                    extraTables ?? new List<string>()
-                )
-                .Distinct()
-                .ToList();
-            return tables;
-        }
-
-        protected IPickFilterCompiler PickCompiler(FacetConfig2 c)
-        {
-            return PickCompilers.Locate(c.Facet.FacetTypeId);
         }
     }
 }

@@ -59,15 +59,15 @@ namespace IntegrationTests
         /// <param name="expectedJoinCount">Basically the number of tables involved in the join i.e. unique routes returned from Graoh.Find</param>
         /// <returns></returns>
         [Theory]
-        [InlineData("genus:dataset_master@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
-        [InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
-        [InlineData("dataset_master:dataset_master@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
-        [InlineData("country:country@10", "tbl_analysis_entities", "tbl_locations")]
-        [InlineData("country:country", "tbl_analysis_entities", "tbl_locations", "tbl_sites")]
-        [InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        [InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        [InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        [InlineData("ceramic://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        //[InlineData("genus:dataset_master@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
+        //[InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
+        //[InlineData("dataset_master:dataset_master@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
+        //[InlineData("country:country@10", "tbl_analysis_entities", "tbl_locations")]
+        //[InlineData("country:country", "tbl_analysis_entities", "tbl_locations", "tbl_sites")]
+        //[InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        //[InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        //[InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        //[InlineData("ceramic://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("palaeoentomology://data_types:data_types", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets")]
         public async Task Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
@@ -79,34 +79,32 @@ namespace IntegrationTests
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            using (var response = await Fixture.Client.PostAsync("api/result/load", payload)) {
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
-                // Assert
-                response.EnsureSuccessStatusCode();
+            // Assert
+            response.EnsureSuccessStatusCode();
 
-                var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-                var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
 
-                //Assert.NotNull(result);
-                Assert.NotNull(result.Data);
-                Assert.NotNull(result.Data.DataCollection);
-                Assert.NotNull(result.Meta);
-                Assert.NotNull(result.Meta.Columns);
-                Assert.NotEmpty(result.Query);
+            Assert.NotNull(result);
+            Assert.NotNull(result.Data);
+            Assert.NotNull(result.Data.DataCollection);
+            Assert.NotNull(result.Meta);
+            Assert.NotNull(result.Meta.Columns);
+            Assert.NotEmpty(result.Query);
 
-                var sqlQuery = result.Query.Squeeze();
+            var sqlQuery = result.Query.Squeeze();
 
-                var matcher = new TabularResultSqlCompilerMatcher();
-                var match = matcher.Match(sqlQuery);
+            var matcher = new TabularResultSqlCompilerMatcher();
+            var match = matcher.Match(sqlQuery);
 
-                Assert.True(match.Success);
-                Assert.True(match.InnerSelect.Success);
+            Assert.True(match.Success);
+            Assert.True(match.InnerSelect.Success);
 
-                Assert.NotEmpty(match.InnerSelect.Tables);
-                Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
-            }
+            Assert.NotEmpty(match.InnerSelect.Tables);
+            Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
-
     }
 }

@@ -1,67 +1,99 @@
 
 using SeadQueryCore.Model;
+using SeadQueryCore.Model.Ext;
+using SeadQueryCore.QueryBuilder;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SeadQueryCore.Services.Result
 {
-
-    public class DefaultResultService : IResultService
+    public class DefaultResultService : QueryServiceBase, IResultService
     {
-        public IResultRepository ResultRepository { get; set; }
-
-        public string ResultCode { get; protected set; }
-
-        public IResultConfigCompiler ResultConfigCompiler { get; set; }
+        public IResultSqlCompilerLocator SqlCompilerLocator { get; }
+        public string ResultFacetCode { get; protected set; }
         public IDynamicQueryProxy QueryProxy { get; }
 
         public DefaultResultService(
-            IRepositoryRegistry registry,
-            IResultConfigCompiler compiler,
-            IDynamicQueryProxy queryProxy
-        )
+            IRepositoryRegistry repositoryRegistry,
+            IDynamicQueryProxy queryProxy,
+            IQuerySetupBuilder builder,
+            IResultSqlCompilerLocator sqlCompilerLocator
+        ) : base(repositoryRegistry, builder)
         {
-            ResultRepository = registry.Results;
-            ResultCode = "result_facet";
-            ResultConfigCompiler = compiler;
+            SqlCompilerLocator = sqlCompilerLocator;
+            ResultFacetCode = "result_facet";
             QueryProxy = queryProxy;
         }
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            string sql = CompileSql(facetsConfig, resultConfig);
+            var resultFacet = Facets.GetByCode(ResultFacetCode);
+            var queryFields = Results.GetFieldsByKeys(resultConfig.AggregateKeys);
 
-            if (Utility.empty(sql))
-                return null;
+            var querySetup = QuerySetupBuilder
+                .Build(facetsConfig, resultFacet, queryFields);
 
-            // This is (for now) only call to generic QueryProxy.Query
-            var fields = GetResultFields(resultConfig);
-            var reader = QueryProxy.Query(sql);
-            var resultSet = new TabularResultContentSet(resultConfig, fields, reader) {
+            var sqlQuery = SqlCompilerLocator
+                .Locate(resultConfig.ViewTypeId)
+                    .Compile(querySetup, resultFacet, queryFields);
+
+            return new TabularResultContentSet(
+                resultConfig: resultConfig,
+                resultFields: queryFields.GetResultValueFields().ToList(),
+                reader: QueryProxy.Query(sqlQuery) /* This is (for now) only call to generic QueryProxy.Query */
+            ) {
                 Payload = GetExtraPayload(facetsConfig),
-                Query = sql
+                Query = sqlQuery
             };
-
-            return resultSet;
         }
 
-        protected virtual List<ResultAggregateField> GetResultFields(ResultConfig resultConfig)
-        {
-            return ResultRepository
-                    .GetFieldsByKeys(resultConfig.AggregateKeys)
-                    .Where(z => z.FieldType.IsResultValue).ToList();
-        }
+        //public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
+        //{
+        //    string sql = Compile(facetsConfig, resultConfig, ResultCode);
+
+        //    if (sql.IsEmpty())
+        //        return null;
+            
+        //    var valueFields = Results.GetFieldsByKeys(resultConfig.AggregateKeys).GetResultValueFields().ToList();
+            
+        //    /* This is (for now) only call to generic QueryProxy.Query */
+        //    var reader = QueryProxy.Query(sql);
+
+        //    var resultSet = new TabularResultContentSet(resultConfig, valueFields, reader) {
+        //        Payload = GetExtraPayload(facetsConfig),
+        //        Query = sql
+        //    };
+
+        //    return resultSet;
+        //}
+
+        //public string Compile(FacetsConfig2 facetsConfig, ResultConfig resultConfig, string resultFacetCode)
+        //{
+        //    var resultFacet = Facets.GetByCode(resultFacetCode);
+
+        //    /* Get the result fields for the requested aggregate keys */
+        //    var fields = Results
+        //        .GetFieldsByKeys(resultConfig.AggregateKeys);
+
+        //    /* Setup query */
+        //    QuerySetup querySetup = QuerySetupBuilder
+        //        .Build(facetsConfig, resultFacet, fields);
+
+        //    /* Compile query */
+        //    return SqlCompilerLocator
+        //        .Locate(resultConfig.ViewTypeId)
+        //            .Compile(querySetup, resultFacet, fields);
+        //}
+
+        //protected virtual List<ResultAggregateField> GetResultValueFields(ResultConfig resultConfig)
+        //{
+        //    return Results.GetFieldsByKeys(resultConfig.AggregateKeys).GetResultValueFields().ToList();
+        //}
 
         protected virtual dynamic GetExtraPayload(FacetsConfig2 facetsConfig)
         {
             // TODO Check if this really always should be null for tabular results
             return null;
         }
-
-        protected virtual string CompileSql(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
-        {
-            return ResultConfigCompiler.Compile(facetsConfig, resultConfig, ResultCode /* result_facet */);
-        }
     }
-
 }

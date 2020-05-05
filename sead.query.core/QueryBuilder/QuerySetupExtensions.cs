@@ -8,12 +8,11 @@ namespace SeadQueryCore.QueryBuilder
         public static IEnumerable<Facet> Facets(this IEnumerable<FacetConfig2> configs)
             => configs.Select(c => c.Facet);
 
-        public static IEnumerable<Facet> AddUnion(this IEnumerable<Facet> facets, Facet facet)
-            => facets.Union(new List<Facet> { facet });
+        //public static IEnumerable<Facet> AddUnion(this IEnumerable<Facet> facets, Facet facet)
+        //    => facet == null ? facets : facets.Union(new List<Facet> { facet });
 
         public static IEnumerable<string> Criterias(this IEnumerable<Facet> facets)
             => facets.SelectMany(z => z.Criterias);
-
 
         public static IEnumerable<string> Criterias(this IEnumerable<FacetConfig2> configs)
             => configs.Facets().Criterias();

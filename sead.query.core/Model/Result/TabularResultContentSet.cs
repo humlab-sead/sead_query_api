@@ -12,7 +12,9 @@ namespace SeadQueryCore.Model
         public TabularResultContentSet(ResultConfig resultConfig, List<ResultAggregateField> resultFields, IDataReader reader) : base()
         {
             Reader = reader;
-            Meta = new ResultMetaData() { Columns = ResultColumn.Map(resultFields, SourceColumnType.GetColumnTypes(reader)) };
+            Meta = new ResultMetaData() {
+                Columns = ResultColumn.Map(resultFields, SourceColumnType.GetColumnTypes(reader))
+            };
             Data = new ResultData() { DataCollection = Iterator.ToList() };
             RequestId = resultConfig.RequestId;
         }

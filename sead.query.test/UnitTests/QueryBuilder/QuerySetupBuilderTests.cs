@@ -78,7 +78,8 @@ namespace SQT.QueryBuilder
             var facetsConfig = FakeFacetsConfig(uri);
             var pickCriterias = new List<string> { "Q1 = Q2", "Q3 = Q4" };
             var mockPicksCompiler = MockPicksFilterCompiler(pickCriterias ?? new List<string>());
-            var mockJoinCompiler = MockJoinSqlCompiler("==JOIN<==");
+            var fakeJoins = FakeJoinsClause(5);
+            var mockJoinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var mockRoutes = new List<GraphRoute> {
                 FakeRoute2( "A", "B", "C", "D"),
                 FakeRoute2( "E", "K")
@@ -101,7 +102,6 @@ namespace SQT.QueryBuilder
 
             Assert.Same(facetsConfig.TargetConfig, querySetup.TargetConfig);
             Assert.Same(facetsConfig.TargetFacet, querySetup.Facet);
-            Assert.True(AreEqualByProperty(mockRoutes, querySetup.Routes));
             // Assert.Equal(mockRoutes.Aggregate(0, (i,z) => i + z.Items.Count), querySetup.Joins.Count);
         }
 
@@ -127,8 +127,8 @@ namespace SQT.QueryBuilder
 
             var pickCriterias = new List<string> { "Q1 = Q2", "Q3 = Q4" };
             var mockPicksCompiler = MockPicksFilterCompiler(pickCriterias ?? new List<string>());
-
-            var mockJoinCompiler = MockJoinSqlCompiler("==>JOIN<== ");
+            var fakeJoins = FakeJoinsClause(5);
+            var mockJoinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var mockRoutes = new List<GraphRoute> {
                 FakeRoute2( "A", "B", "C", "D"),
                 FakeRoute2( "E", "K")
@@ -146,7 +146,6 @@ namespace SQT.QueryBuilder
             // Assert
             Assert.Same(facetsConfig.TargetFacet, querySetup.Facet);
             Assert.Equal(expectedConfigCount, facetsConfig.FacetConfigs.Count);
-            Assert.True(AreEqualByProperty(mockRoutes, querySetup.Routes));
             //Assert.Equal(mockRoutes.Aggregate(0, (i, z) => i + z.Items.Count), querySetup.Joins.Count);
         }
 

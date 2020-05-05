@@ -92,40 +92,59 @@ namespace IntegrationTests
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            using (var response = await Fixture.Client.PostAsync("api/facets/load", payload)) {
+            using var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
-                // Assert
-                response.EnsureSuccessStatusCode();
+            // Assert
+            response.EnsureSuccessStatusCode();
 
-                var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-                var facetContent = JsonConvert.DeserializeObject<FacetContent>(responseContent);
+            var facetContent = JsonConvert.DeserializeObject<FacetContent>(responseContent);
 
-                Assert.NotNull(facetContent);
+            Assert.NotNull(facetContent);
 
-                if (checkNotEmpty)
-                    Assert.NotEmpty(facetContent.Items);
+            if (checkNotEmpty)
+                Assert.NotEmpty(facetContent.Items);
 
-                // CompareLogic compare = new CompareLogic();
-                // compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet", "Text" });
-                // var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual; // Will fail if bogus picks are removed
-                // Assert.True(areEqual);
+            // CompareLogic compare = new CompareLogic();
+            // compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet", "Text" });
+            // var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual; // Will fail if bogus picks are removed
+            // Assert.True(areEqual);
 
-                var sqlQuery = facetContent.SqlQuery.Squeeze();
+            var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-                var matcher = CategoryCountSqlCompilerMatcher.Create(facetsConfig.TargetFacet.FacetTypeId);
-                var match = matcher.Match(sqlQuery);
+            var matcher = CategoryCountSqlCompilerMatcher.Create(facetsConfig.TargetFacet.FacetTypeId);
+            var match = matcher.Match(sqlQuery);
 
-                Assert.True(match.Success);
-                Assert.Equal("count", match.AggregateType);
-                Assert.True(match.InnerSelect.Success);
-                Assert.NotEmpty(match.InnerSelect.Tables);
-                Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
-            }
-
+            Assert.True(match.Success);
+            Assert.Equal("count", match.AggregateType);
+            Assert.True(match.InnerSelect.Success);
+            Assert.NotEmpty(match.InnerSelect.Tables);
+            Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
 
-         /// <summary>
+
+        /* SQL to generate the inline data
+            with facet_tables as (
+             select f.facet_id, f.facet_code, string_agg('"' || t.table_or_udf_name || '"', ', ') as tables
+             from facet.facet f
+             join facet.facet_table ft using (facet_id)
+             join facet.table t using (table_id)
+             group by f.facet_id, f.facet_code
+            )
+            select '[InlineData("' || d.facet_code || '://' || c.facet_code || ':' || c.facet_code ||'", ' || t.tables || coalesce(', ' || a.tables, '') || ')]'
+            from facet.facet d
+            join facet.facet_children r
+            on r.facet_code = d.facet_code
+            join facet.facet c
+            on c.facet_code = r.child_facet_code
+            join facet_tables as t
+            on t.facet_code = c.facet_code
+            left join facet_tables as a
+            on a.facet_id = c.aggregate_facet_id
+            and c.facet_type_id = 1 -- aggregate facet only used for discrete facets
+             */
+        /// <summary>
         /// Tests all domain facets
         /// </summary>
         /// <param name="uri"></param>
@@ -231,66 +250,43 @@ namespace IntegrationTests
         [InlineData("isotope://sample_groups:sample_groups", "tbl_sample_groups", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         [InlineData("isotope://data_types:data_types", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         [InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "tbl_sample_group_sampling_contexts", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
-
         public async Task Load_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
-            /*
-        with facet_tables as (
-	        select f.facet_id, f.facet_code, string_agg('"' || t.table_or_udf_name || '"', ', ') as tables
-	        from facet.facet f
-	        join facet.facet_table ft using (facet_id)
-	        join facet.table t using (table_id)
-	        group by f.facet_id, f.facet_code
-        )
-        select '[InlineData("' || d.facet_code || '://' || c.facet_code || ':' || c.facet_code ||'", ' || t.tables || coalesce(', ' || a.tables, '') || ')]'
-        from facet.facet d
-        join facet.facet_children r
-          on r.facet_code = d.facet_code
-        join facet.facet c
-          on c.facet_code = r.child_facet_code
-        join facet_tables as t
-         on t.facet_code = c.facet_code
-        left join facet_tables as a
-          on a.facet_id = c.aggregate_facet_id
-         and c.facet_type_id = 1 -- aggregate facet only used for discrete facets
-            */
+            
             var facetsConfig = MockService.FakeFacetsConfig(uri);
             var json = JsonConvert.SerializeObject(facetsConfig);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
-            using (var response = await Fixture.Client.PostAsync("api/facets/load", payload)) {
+            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
-                response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-                var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-                var facetContent = JsonConvert.DeserializeObject<FacetContent>(responseContent);
+            var facetContent = JsonConvert.DeserializeObject<FacetContent>(responseContent);
 
-                Assert.NotNull(facetContent);
-                // Assert.NotEmpty(facetContent.Items);
+            Assert.NotNull(facetContent);
+            // Assert.NotEmpty(facetContent.Items);
 
-                CompareLogic compare = new CompareLogic();
-                compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet", "Text" });
+            CompareLogic compare = new CompareLogic();
+            compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet", "Text" });
 
-                var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual; // Will fail if bogus picks are removed
+            var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual; // Will fail if bogus picks are removed
 
-                Assert.True(areEqual);
+            Assert.True(areEqual);
 
-                var sqlQuery = facetContent.SqlQuery.Squeeze();
+            var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-                var match = CategoryCountSqlCompilerMatcher
-                    .Create(facetsConfig.TargetFacet.FacetTypeId).Match(sqlQuery);
+            var match = CategoryCountSqlCompilerMatcher
+                .Create(facetsConfig.TargetFacet.FacetTypeId).Match(sqlQuery);
 
-                Assert.True(match.Success);
-                //Assert.Equal("count", match.AggregateType);
+            Assert.True(match.Success);
+            //Assert.Equal("count", match.AggregateType);
 
-                Assert.True(match.InnerSelect.Success);
+            Assert.True(match.InnerSelect.Success);
 
-                Assert.NotEmpty(match.InnerSelect.Tables);
-                Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
-
-            }
-
+            Assert.NotEmpty(match.InnerSelect.Tables);
+            Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
     }
 }

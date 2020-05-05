@@ -98,6 +98,8 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
+            builder.RegisterType<JoinsClauseCompiler>().As<IJoinsClauseCompiler>();
+
             builder.RegisterType<DiscreteContentSqlCompiler>().As<IDiscreteContentSqlCompiler>();
             builder.RegisterType<DiscreteCategoryCountSqlCompiler>().As<IDiscreteCategoryCountQueryCompiler>();
             builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
@@ -107,8 +109,6 @@ namespace SQT.Infrastructure
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
             builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
-
-            builder.RegisterType<ResultConfigCompiler>().As<IResultConfigCompiler>();
 
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 

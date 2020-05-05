@@ -31,16 +31,20 @@ namespace SQT.Services
         public void Load_VariousConfigs_Success(string uri, string resultCode, string aggregateKey, string viewType)
         {
             // Arrange
-            var mockResultConfigCompiler = MockResultConfigCompiler("#RETURN-SQL#", resultCode);
+            var mockResultSqlCompilerLocator = MockResultSqlCompilerLocator("#RETURN-SQL#");
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeResultConfig = FakeResultConfig(aggregateKey, viewType);
             var resultAggregate = FakeRegistry().Results.GetByKey(fakeResultConfig.AggregateKeys[0]);
             var fakeResultDataBuilder = FakeResultDataBuilder(resultAggregate, 10);
             var fakeDataTable = fakeResultDataBuilder.DataTable;
             var mockQueryProxy = new MockDynamicQueryProxyFactory().Create(fakeDataTable);
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultCode, aggregateKey);
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
 
             // Act
-            var service = new DefaultResultService(FakeRegistry(), mockResultConfigCompiler.Object, mockQueryProxy.Object);
+            var service = new DefaultResultService(
+                FakeRegistry(), mockQueryProxy.Object, mockQuerySetupBuilder.Object, mockResultSqlCompilerLocator.Object
+            );
             var result = service.Load(fakeFacetsConfig, fakeResultConfig);
 
             // Assert

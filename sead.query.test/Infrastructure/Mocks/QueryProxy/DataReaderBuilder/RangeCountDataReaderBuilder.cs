@@ -41,6 +41,7 @@ namespace SQT.Infrastructure
             for (var i = 0; i < numberOfRows; i++, lower += step, upper += step) {
                 AddRow(new object[] {
                     $"{lower}-{upper}",
+                    $"{lower}-{upper}",
                     lower,
                     upper,
                     fixture.Create<UInt16>()
