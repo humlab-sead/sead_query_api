@@ -1,0 +1,14 @@
+<Playlist Version="1.0">
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_DomainChildren_HasFacetGroupBug86" />
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_Facets_ById_Success" />
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_Facets_Domain_ById_Success" />
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_Facets_Domain_Success" />
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_Facets_Success" />
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_Health_IsGood" />
+  <Add Test="IntegrationTests.FacetsControllerTests.API_GET_Server_IsAwake" />
+  <Add Test="IntegrationTests.FacetsLoadControllerTests.API_GET_Server_IsAwake" />
+  <Add Test="IntegrationTests.FacetsLoadControllerTests.Load_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery" />
+  <Add Test="IntegrationTests.FacetsLoadControllerTests.Load_VariousFacetConfigs_HasExpectedSqlQuery" />
+  <Add Test="IntegrationTests.ResultControllerTests.API_GET_Server_IsAwake" />
+  <Add Test="IntegrationTests.ResultControllerTests.Load_VariousFacetConfigs_HasExpectedSqlQuery" />
+</Playlist>
