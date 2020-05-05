@@ -448,6 +448,22 @@
     "SortExpr": "tbl_rdb_codes.rdb_definition"
   },
   {
+    "FacetId": 25,
+    "FacetCode": "species",
+    "DisplayTitle": "Taxa",
+    "Description": "Taxonomic species (under genus)",
+    "FacetGroupId": 6,
+    "FacetTypeId": 1,
+    "CategoryIdExpr": "tbl_taxa_tree_master.taxon_id",
+    "CategoryNameExpr": "concat_ws(' ', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species, tbl_taxa_tree_authors.author_name)",
+    "IsApplicable": true,
+    "IsDefault": false,
+    "AggregateType": "sum",
+    "AggregateTitle": "sum of Abundance",
+    "AggregateFacetId": 32,
+    "SortExpr": "2"
+  },
+  {
     "FacetId": 5,
     "FacetCode": "tbl_denormalized_measured_values_32",
     "DisplayTitle": "Loss on Ignition",
@@ -462,22 +478,6 @@
     "AggregateTitle": "Number of samples",
     "AggregateFacetId": 1,
     "SortExpr": "method_values_32.measured_value"
-  },
-  {
-    "FacetId": 25,
-    "FacetCode": "species",
-    "DisplayTitle": "Taxa",
-    "Description": "Taxonomic species (under genus)",
-    "FacetGroupId": 6,
-    "FacetTypeId": 1,
-    "CategoryIdExpr": "tbl_taxa_tree_master.taxon_id",
-    "CategoryNameExpr": "concat_ws(' ', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species, tbl_taxa_tree_authors.author_name)",
-    "IsApplicable": true,
-    "IsDefault": false,
-    "AggregateType": "sum",
-    "AggregateTitle": "sum of Abundance",
-    "AggregateFacetId": 32,
-    "SortExpr": "tbl_taxa_tree_genera.genus_name||' '||tbl_taxa_tree_master.species"
   },
   {
     "FacetId": 41,
