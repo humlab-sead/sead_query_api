@@ -148,7 +148,4 @@
       <TargetPath>appsettings.test.json</TargetPath>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntegrationTests\Dependency\" />
-  </ItemGroup>
 </Project>
