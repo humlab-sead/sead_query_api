@@ -32,7 +32,7 @@ namespace SQT.QueryBuilder.ResultCompilers
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, aggregateKey);
             var facet = fakeQuerySetup.Facet;
-            var fields = FakeResultAggregateFields("site_level", "tabular");
+            var fields = FakeResultConfig(resultFacetCode, aggregateKey, "tabular").GetSortedFields();
             // Act
             var compiler = new TabularResultSqlCompiler();
             var result = compiler.Compile(fakeQuerySetup, facet, fields);

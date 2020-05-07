@@ -22,7 +22,7 @@ namespace SQT.SqlCompilers
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, aggregateKey);
-            var fakeResultFields = FakeResultAggregateFields(aggregateKey, "map");
+            var fakeResultFields = FakeResultConfig(resultFacetCode, aggregateKey, "map").GetSortedFields();
 
             // Act
 

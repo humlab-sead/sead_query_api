@@ -26,5 +26,14 @@ namespace SeadQueryCore.Model {
         }
 
         [JsonIgnore] public bool IsEmpty => (AggregateKeys?.Count ?? 0) == 0;
+
+        public string FacetCode { get; set; } = "result_facet";
+
+        public Facet Facet { get; set; }
+
+        public List<ResultAggregate> ResultComposites = new List<ResultAggregate>();
+
+        public List<ResultAggregateField> GetSortedFields()
+            => ResultComposites.SelectMany(x => x.GetSortedFields()).ToList();
     }
 }

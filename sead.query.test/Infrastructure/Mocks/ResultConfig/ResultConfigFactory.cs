@@ -1,26 +1,29 @@
-﻿using SeadQueryCore.Model;
+﻿using SeadQueryCore;
+using SeadQueryCore.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SQT.Mocks
 {
-
     internal static class ResultConfigFactory
     {
-        public static ResultConfig Create(string viewTypeId, List<string> resultKeys, string sessionId = "1")
+        public static ResultConfig Create(Facet facet, List<ResultAggregate> queryAggregates, string viewTypeId)
         {
             var resultConfig =  new ResultConfig()
             {
-                ViewTypeId = viewTypeId,
+                Facet = facet,
+                FacetCode = facet.FacetCode,
                 RequestId = "1",
-                SessionId = sessionId,
-                AggregateKeys = resultKeys  // "site_level"
+                SessionId = "1",
+                ResultComposites = queryAggregates,
+                AggregateKeys = queryAggregates.Select(z => z.AggregateKey).ToList(),
+                ViewTypeId = viewTypeId,
             };
             return resultConfig;
         }
-
-        public static ResultConfig Create(string viewTypeId, string resultKey, string sessionId = "1")
+        public static ResultConfig Create(Facet facet, ResultAggregate queryAggregate, string viewTypeId)
         {
-            return Create(viewTypeId,  new List<string>() { resultKey }, sessionId);
+            return Create(facet, new List<ResultAggregate> { queryAggregate }, viewTypeId);
         }
     }
 }

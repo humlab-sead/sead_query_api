@@ -80,6 +80,7 @@ namespace SQT
 
         public virtual IRepositoryRegistry FakeRegistry() => Registry;
         public virtual IFacetRepository Facets => FakeRegistry().Facets;
+        public virtual IResultRepository Results => FakeRegistry().Results;
 
         public virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
 
@@ -140,7 +141,6 @@ namespace SQT
             mock.Setup(x => x.Compile(
                 It.IsAny<FacetsConfig2>(),
                 It.IsAny<Facet>(),
-                It.IsAny<List<Facet>>(),
                 It.IsAny<List<string>>())
             ).Returns(fakeJoins);
             return mock;
@@ -394,31 +394,14 @@ namespace SQT
             return mockResultSqlCompilerLocator;
         }
 
-        public virtual ResultConfig FakeResultConfig(string aggregateKey, string viewTypeId)
-            => new ResultConfig
-            {
-                AggregateKeys = new System.Collections.Generic.List<string> { aggregateKey },
-                RequestId = "1",
-                ViewTypeId = viewTypeId,
-                SessionId = "1"
-            };
-
-        protected virtual IEnumerable<ResultAggregateField> FakeResultAggregateFields(string aggregateKey, string viewTypeId)
-        {
-            ResultConfig resultConfig = FakeResultConfig(aggregateKey, viewTypeId);
-            var fields = Registry.Results.GetFieldsByKeys(resultConfig.AggregateKeys);
-            return fields;
-        }
+        public virtual ResultConfig FakeResultConfig(string facetCode, string aggregateKey, string viewTypeId)
+            => ResultConfigFactory.Create(Facets.GetByCode(facetCode), Results.GetByKey(aggregateKey), viewTypeId);
 
         protected virtual Mock<DiscreteContentSqlCompiler> MockDiscreteContentSqlCompiler(string returnSql)
         {
             var mock = new Mock<DiscreteContentSqlCompiler>();
             mock.Setup(
-                x => x.Compile(
-                        It.IsAny<QuerySetup>(),
-                        It.IsAny<Facet>(),
-                        It.IsAny<string>()
-                )
+                x => x.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<string>())
             ).Returns(returnSql);
             return mock;
         }

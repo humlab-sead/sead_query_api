@@ -59,21 +59,22 @@ namespace IntegrationTests
         /// <param name="expectedJoinCount">Basically the number of tables involved in the join i.e. unique routes returned from Graoh.Find</param>
         /// <returns></returns>
         [Theory]
-        //[InlineData("genus:dataset_master@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
-        //[InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
-        //[InlineData("dataset_master:dataset_master@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
-        //[InlineData("country:country@10", "tbl_analysis_entities", "tbl_locations")]
-        //[InlineData("country:country", "tbl_analysis_entities", "tbl_locations", "tbl_sites")]
-        //[InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        //[InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        //[InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        //[InlineData("ceramic://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
-        [InlineData("palaeoentomology://data_types:data_types", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets")]
+        [InlineData("genus:dataset_master@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
+        [InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
+        [InlineData("dataset_master:dataset_master@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
+        [InlineData("country:country@10", "tbl_analysis_entities", "tbl_locations")]
+        [InlineData("country:country", "tbl_analysis_entities", "tbl_locations", "tbl_sites")]
+        [InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        [InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        [InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        [InlineData("ceramic://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        [InlineData("palaeoentomology://data_types:data_types", "tbl_analysis_entities", "tbl_datasets")]
+        //[InlineData("palaeoentomology://data_types:data_types@3", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets")]
         public async Task Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
             // Arrange
             var facetsConfig = MockService.FakeFacetsConfig(uri);
-            var resultConfig = MockService.FakeResultConfig("site_level", "tabular");
+            var resultConfig = MockService.FakeResultConfig("result_facet", "site_level", "tabular");
             var bothConfigs = new LoadPayload { facetsConfig = facetsConfig, resultConfig = resultConfig };
             var json = JsonConvert.SerializeObject(bothConfigs);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
@@ -102,9 +103,153 @@ namespace IntegrationTests
 
             Assert.True(match.Success);
             Assert.True(match.InnerSelect.Success);
-
             Assert.NotEmpty(match.InnerSelect.Tables);
+
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
+        }
+
+        /// <summary>
+        /// Tests all domain facets
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="expectedJoins"></param>
+        /// <returns></returns>
+        [Theory]
+        //[InlineData("palaeoentomology://ecocode_system:ecocode_system", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://ecocode:ecocode", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://abundances_all:abundances_all", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://geochronology:geochronology", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://activeseason:activeseason", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://family:family", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://genus:genus", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://species:species", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://species_author:species_author", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://rdb_systems:rdb_systems", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://rdb_codes:rdb_codes", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        //[InlineData("palaeoentomology://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://ecocode_system:ecocode_system", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://ecocode:ecocode", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://abundances_all:abundances_all", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://geochronology:geochronology", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://activeseason:activeseason", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://family:family", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://genus:genus", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://species:species", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://species_author:species_author", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://modification_types:modification_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("archaeobotany://abundance_elements:abundance_elements", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://geochronology:geochronology", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://ecocode:ecocode", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://family:family", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://genus:genus", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://species_author:species_author", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://ecocode_system:ecocode_system", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://abundances_all:abundances_all", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://activeseason:activeseason", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://species:species", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://abundance_elements:abundance_elements", "result_facet", "site_level", "tabular")]
+        //[InlineData("pollen://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_33_82:tbl_denormalized_measured_values_33_82", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://geochronology:geochronology", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_37:tbl_denormalized_measured_values_37", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://tbl_denormalized_measured_values_32:tbl_denormalized_measured_values_32", "result_facet", "site_level", "tabular")]
+        //[InlineData("geoarchaeology://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://geochronology:geochronology", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://family:family", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://genus:genus", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://species_author:species_author", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://species:species", "result_facet", "site_level", "tabular")]
+        //[InlineData("dendrochronology://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://geochronology:geochronology", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("ceramic://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://relative_age_name:relative_age_name", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://sites:sites", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://feature_type:feature_type", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://tbl_biblio_modern:tbl_biblio_modern", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://country:country", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://sample_groups:sample_groups", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://data_types:data_types", "result_facet", "site_level", "tabular")]
+        //[InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
+        [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular")]
+        public async Task ResultLoad_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string aggregateKey, string viewType)
+        {
+            // Arrange
+            var facetsConfig = MockService.FakeFacetsConfig(uri);
+            var resultConfig = MockService.FakeResultConfig(resultFacetCode, aggregateKey, viewType);
+            var bothConfigs = new LoadPayload { facetsConfig = facetsConfig, resultConfig = resultConfig };
+            var json = JsonConvert.SerializeObject(bothConfigs);
+            var payload = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // Act
+            /* using */ var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Data);
+            Assert.NotNull(result.Data.DataCollection);
+            Assert.NotNull(result.Meta);
+            Assert.NotNull(result.Meta.Columns);
+            Assert.NotEmpty(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            var matcher = new TabularResultSqlCompilerMatcher();
+            var match = matcher.Match(sqlQuery);
+
+            Assert.True(match.Success);
+            Assert.True(match.InnerSelect.Success);
+            Assert.NotEmpty(match.InnerSelect.Tables);
+
         }
     }
 }
