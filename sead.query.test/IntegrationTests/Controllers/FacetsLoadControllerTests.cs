@@ -40,13 +40,9 @@ namespace IntegrationTests
         [Fact]
         public async Task API_GET_Server_IsAwake()
         {
-            // var builder = new SeadTestHostBuilder().Create<TestStartup<TestDependencyService>>();
-            // using (var server = await Fixture.Builder.StartAsync())
-            // using (var client = await Fixture.Server.GetTestClient())
-            using (var response = await Fixture.Client.GetAsync("api/facets")) {
-                response.EnsureSuccessStatusCode();
-                Assert.NotEmpty(await response.Content.ReadAsStringAsync());
-            }
+            using var response = await Fixture.Client.GetAsync("api/facets");
+            response.EnsureSuccessStatusCode();
+            Assert.NotEmpty(await response.Content.ReadAsStringAsync());
         }
 
         //[Fact]
@@ -92,7 +88,7 @@ namespace IntegrationTests
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            using var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -257,7 +253,7 @@ namespace IntegrationTests
             var json = JsonConvert.SerializeObject(facetsConfig);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             response.EnsureSuccessStatusCode();
 

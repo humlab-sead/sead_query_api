@@ -26,12 +26,6 @@ namespace SQT.Infrastructure
             LazyItems = new Lazy<ItemsDictionary>(Load);
         }
 
-        //public JsonSeededFacetContextFixture(string folder, ICollection<Type> types) : this()
-        //{
-        //    Folder = folder;
-        //    Types = types;
-        //}
-
         protected ItemsDictionary Load()
         {
             // ... initialize data in the test database ...

@@ -141,14 +141,14 @@ namespace SQT.Infrastructure.Scaffolding
         //[InlineData("tabular", "aggregate_all")]
         //[InlineData("tabular", "sample_group_level")]
         //[InlineData("map", "map_result")]
-        public void ScaffoldCSharpResultConfigsToFile(string viewTypeId, string resultKey)
-        {
-            var resultConfig = ResultConfigFactory.Create(viewTypeId, resultKey);
+        //public void ScaffoldCSharpResultConfigsToFile(string viewTypeId, string resultKey)
+        //{
+        //    var resultConfig = ResultConfigFactory.Create(viewTypeId, resultKey);
 
-            var path = Path.Join(DataFolder(), $"ResultConfig_{viewTypeId}_{resultKey}.cs.txt");
+        //    var path = Path.Join(DataFolder(), $"ResultConfig_{viewTypeId}_{resultKey}.cs.txt");
 
-            ScaffoldUtility.Dump(resultConfig, path);
-        }
+        //    ScaffoldUtility.Dump(resultConfig, path);
+        //}
     }
 }
 

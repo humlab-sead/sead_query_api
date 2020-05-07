@@ -13,9 +13,6 @@ namespace SeadQueryCore.QueryBuilder
         public QuerySetup()
         {
         }
-    }
-
-    public class QueryJoin {
 
     }
 }

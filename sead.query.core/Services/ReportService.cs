@@ -1,9 +1,4 @@
-﻿using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using static SeadQueryCore.Utility;
+﻿using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore.Services
 {
@@ -11,6 +6,7 @@ namespace SeadQueryCore.Services
     {
         public string FacetCode { get; protected set; }
 
+        // TODO Allow for transient, on-the-fly result facets
         public ReportService(IRepositoryRegistry context, IQuerySetupBuilder builder) : base(context, builder)
         {
             FacetCode = "distinct_expr";
