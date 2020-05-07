@@ -55,8 +55,8 @@ namespace SeadQueryAPI
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
+            builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
 
-            //            builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
             builder.RegisterType<RangeOuterBoundExtentService>().As<IRangeOuterBoundExtentService>();
 
             builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
@@ -87,8 +87,11 @@ namespace SeadQueryAPI
             
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
-            builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
-            builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
+            builder.RegisterType<ResultService>().Keyed<IResultService>("tabular");
+
+            builder.RegisterType<CategoryCountPayloadService>().Keyed<IResultPayloadService>("map");
+            builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("tabular");
+            builder.RegisterType<ResultPayloadServiceLocator>().As<IResultPayloadServiceLocator>();
 
             builder.RegisterType<TabularResultSqlCompiler>().Keyed<IResultSqlCompiler>("tabular");
             builder.RegisterType<MapResultSqlCompiler>().Keyed<IResultSqlCompiler>("map");
@@ -96,10 +99,10 @@ namespace SeadQueryAPI
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache) {
-                builder.RegisterType<Services.CachedLoadFacetService>().As<Services.IFacetReconstituteService>();
+                builder.RegisterType<Services.CachedLoadFacetService>().As<Services.IFacetContentReconstituteService>();
                 builder.RegisterType<Services.CachedLoadResultService>().As<Services.ILoadResultService>();
             } else {
-                builder.RegisterType<Services.LoadFacetService>().As<Services.IFacetReconstituteService>();
+                builder.RegisterType<Services.LoadFacetService>().As<Services.IFacetContentReconstituteService>();
                 builder.RegisterType<Services.LoadResultService>().As<Services.ILoadResultService>();
             }
         }
