@@ -44,5 +44,18 @@ namespace SeadQueryCore.Model
         public ResultData Data { get; set; }
         public dynamic Payload { get; set; } = null;
         public string Query { get; set; } = "Hej Hopp";
+
+        public ResultContentSet Nullify()
+        {
+            Data.DataCollection.ForEach(row => Nullify(row));
+            return this;
+        }
+        public void Nullify(object[] row)
+        {
+            for (var i = 0; i < row.Length; i++)
+                if (row[i] == DBNull.Value)
+                    row[i] = null;
+        }
+
     }
 }
