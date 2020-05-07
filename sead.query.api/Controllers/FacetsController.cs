@@ -24,13 +24,13 @@ namespace SeadQueryAPI.Controllers
         /// <summary>
         /// Reference to facet contetnt load service
         /// </summary>
-        public Services.IFacetReconstituteService LoadService { get; private set; }
+        public Services.IFacetContentReconstituteService LoadService { get; private set; }
         public IFacetConfigReconstituteService ReconstituteConfigService { get; }
 
         public FacetsController(
             IRepositoryRegistry context,
             IFacetConfigReconstituteService reconstituteConfigService,
-            Services.IFacetReconstituteService loadService
+            Services.IFacetContentReconstituteService loadService
         )
         {
             Context = context;
