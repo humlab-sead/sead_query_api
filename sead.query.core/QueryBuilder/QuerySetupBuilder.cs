@@ -63,21 +63,17 @@ namespace SeadQueryCore.QueryBuilder
         {
             // Noteworthy: TargetFacet differs from facetsConfig.TargetFacet when a result-facet is applied
 
-            extraTables ??= new List<string>();
-
             var involvedConfigs = facetsConfig.GetFacetConfigsAffectedBy(targetFacet, facetCodes);
 
             if (facetsConfig.HasDomainCode())
                 involvedConfigs.Insert(0, facetsConfig.CreateDomainConfig());
 
-            var involvedFacets = involvedConfigs.Facets().AddUnion(targetFacet).ToList();
-
-            //System.Diagnostics.Debug.Assert(involvedFacets.Contains(facetsConfig.TargetFacet));
-
             var pickCriterias = PicksCompiler.Compile(targetFacet, involvedConfigs);
-            var facetCriterias = involvedFacets.Criterias();
 
-            var involvedJoins = JoinCompiler.Compile(facetsConfig, targetFacet, involvedFacets, extraTables);
+            var involvedFacets = involvedConfigs.Facets().AddUnion(targetFacet).ToList();
+            var involvedTables = involvedFacets.TableNames().NullableUnion(extraTables).Distinct().ToList();
+            var involvedJoins = JoinCompiler.Compile(facetsConfig, targetFacet, involvedTables);
+            var facetCriterias = involvedFacets.Criterias();
 
             QuerySetup querySetup = new QuerySetup()
             {
@@ -102,41 +98,6 @@ namespace SeadQueryCore.QueryBuilder
                 extraTables:  resultFields.GetResultFieldTableNames().ToList(),
                 facetCodes:   null
             );
-        }
-    }
-
-    public interface IJoinsClauseCompiler
-    {
-        List<string> Compile(FacetsConfig2 facetsConfig, Facet targetFacet, List<Facet> involvedFacets, List<string> extraTables);
-    }
-
-    public class JoinsClauseCompiler: IJoinsClauseCompiler
-    {
-        public JoinsClauseCompiler(IFacetsGraph graph, IJoinSqlCompiler joinCompiler)
-        {
-            FacetsGraph = graph;
-            JoinCompiler = joinCompiler;
-        }
-
-        public IJoinSqlCompiler JoinCompiler { get; }
-        public IFacetsGraph FacetsGraph { get; set; }
-
-        private FacetTable GetFacetTableByNameOrAlias(FacetsConfig2 facetsConfig, TableRelation edge)
-            => facetsConfig.GetFacetTable(edge.TargetName) ?? FacetsGraph.GetAliasedFacetTable(edge.TargetName);
-
-        public virtual List<string> Compile(
-            FacetsConfig2 facetsConfig,
-            Facet targetFacet,
-            List<Facet> involvedFacets,
-            List<string> extraTables
-        )
-        {
-            var involvedTables = involvedFacets.TableNames().Union(extraTables).Distinct().ToList();
-            var routes = FacetsGraph.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, involvedTables, true);
-            var joins = routes.Edges().Select(
-                    edge => JoinCompiler.Compile(edge, GetFacetTableByNameOrAlias(facetsConfig, edge), true)
-                ).ToList();
-            return joins;
         }
     }
 }
