@@ -5,12 +5,7 @@ using SeadQueryCore.Services.Result;
 
 namespace SeadQueryAPI.Services
 {
-
     using IResultServiceIndex = IIndex<string, IResultService>;
-
-    public interface ILoadResultService {
-        ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig);
-    }
 
     public class LoadResultService : AppServiceBase, ILoadResultService {
 
