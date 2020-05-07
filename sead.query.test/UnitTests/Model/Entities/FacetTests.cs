@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
@@ -21,6 +22,42 @@ namespace SQT.Model
         private Facet CreateFacet(string facetCode)
         {
             return Registry.Facets.GetByCode(facetCode);
+        }
+
+        private Facet MockFacet(string facetCode, EFacetType facetType, List<FacetTable> tables, List<FacetClause> clauses)
+        {
+            var facet = new Facet()
+            {
+                FacetId = 1,
+                FacetCode = facetCode,
+                DisplayTitle = "Dummy title",
+                FacetGroupId = 1,
+                FacetGroup = new FacetGroup {
+                    FacetGroupId = 1,
+                    FacetGroupKey = "1",
+                    Description = "Dummy group",
+                    DisplayTitle = "Dummy group",
+                    IsApplicable = true,
+                    IsDefault = true
+                },
+                FacetTypeId = facetType,
+                FacetType = new FacetType {
+                    FacetTypeId = facetType,
+                    FacetTypeName = "Dummy type",
+                    ReloadAsTarget = facetType == EFacetType.Range
+                },
+                CategoryIdExpr = "A.a_id",
+                CategoryNameExpr = "A.a_name",
+                SortExpr = "A.a_name",
+                IsApplicable = true,
+                IsDefault = false,
+                AggregateType = "count",
+                AggregateTitle = "Number of dummies",
+                AggregateFacetId = 1,
+                Tables = tables,
+                Clauses = clauses
+            };
+            return facet;
         }
 
         [Fact]
@@ -89,7 +126,7 @@ namespace SQT.Model
             var mockClause2 = new Mock<FacetClause>();
             mockClause2.Setup(x => x.Clause).Returns("B = 2");
 
-            facet.Clauses = new List<FacetClause>() { mockClause1.Object, mockClause2.Object };
+            facet.Clauses = new List<FacetClause> { mockClause1.Object, mockClause2.Object };
 
             // Act
             var result = facet.Criteria;

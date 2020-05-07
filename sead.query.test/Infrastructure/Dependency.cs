@@ -80,8 +80,8 @@ namespace SQT.Infrastructure
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
+            builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
 
-            //builder.RegisterType<RangeCategoryBoundsService>().As<ICategoryBoundsService>();
             builder.RegisterType<RangeOuterBoundExtentService>().As<IRangeOuterBoundExtentService>();
 
             builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
@@ -112,8 +112,11 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
-            builder.RegisterType<DefaultResultService>().Keyed<IResultService>("tabular");
-            builder.RegisterType<MapResultService>().Keyed<IResultService>("map");
+            builder.RegisterType<ResultService>().As<IResultService>();
+
+            builder.RegisterType<CategoryCountPayloadService>().Keyed<IResultPayloadService>("map");
+            builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("tabular");
+            builder.RegisterType<ResultPayloadServiceLocator>().As<IResultPayloadServiceLocator>();
 
             builder.RegisterType<TabularResultSqlCompiler>().Keyed<IResultSqlCompiler>("tabular");
             builder.RegisterType<MapResultSqlCompiler>().Keyed<IResultSqlCompiler>("map");
@@ -121,10 +124,10 @@ namespace SQT.Infrastructure
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache) {
-                builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
+                builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.IFacetContentReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             } else {
-                builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.IFacetReconstituteService>();
+                builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.IFacetContentReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.LoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
         }
@@ -136,6 +139,5 @@ namespace SQT.Infrastructure
             dependencyService.Load(builder);
             return builder.Build();
         }
-
     }
 }

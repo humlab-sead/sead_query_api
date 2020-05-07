@@ -148,4 +148,7 @@
       <TargetPath>appsettings.test.json</TargetPath>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UnitTests\SharedKernel\" />
+  </ItemGroup>
 </Project>
