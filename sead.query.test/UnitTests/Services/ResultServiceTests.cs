@@ -14,10 +14,10 @@ using Xunit;
 namespace SQT.Services
 {
     [Collection("JsonSeededFacetContext")]
-    public class DefaultResultServiceTests : DisposableFacetContextContainer
+    public class ResultServiceTests : DisposableFacetContextContainer
     {
 
-        public DefaultResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public ResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
 

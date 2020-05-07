@@ -22,7 +22,7 @@ namespace SeadQueryAPI.Serializers
         public static Dictionary<string, List<string>> FixedViewTypeAggregateKeys = new Dictionary<string, List<string>>
         {
             { "map", new List<string>() { "map_result" } },
-            { "tabular", new List<string>() { "result_facet" } }
+            { "tabular", new List<string>() { "site_level" } }
         };
 
         public ResultConfigReconstituteService(IRepositoryRegistry registry) : base(registry)

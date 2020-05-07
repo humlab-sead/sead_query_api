@@ -87,7 +87,7 @@ namespace SeadQueryAPI
             
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
-            builder.RegisterType<ResultService>().Keyed<IResultService>("tabular");
+            builder.RegisterType<ResultService>().As<IResultService>();
 
             builder.RegisterType<CategoryCountPayloadService>().Keyed<IResultPayloadService>("map");
             builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("tabular");

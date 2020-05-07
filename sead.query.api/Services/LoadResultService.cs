@@ -5,11 +5,9 @@ using SeadQueryCore.Services.Result;
 
 namespace SeadQueryAPI.Services
 {
-    using IResultServiceIndex = IIndex<string, IResultService>;
-
     public class LoadResultService : AppServiceBase, ILoadResultService {
 
-        public IResultServiceIndex ResultServices { get; private set; }
+        public IResultService ResultService { get; private set; }
         private readonly IBogusPickService BogusPickService;
 
         public LoadResultService(
@@ -18,16 +16,16 @@ namespace SeadQueryAPI.Services
             #pragma warning disable IDE0060
             ISeadQueryCache cache,
             #pragma warning restore IDE0060
-            IResultServiceIndex services,
+            IResultService service,
             IBogusPickService bogusPickService) : base(config, context) {
-            ResultServices = services;
+            ResultService = service;
             BogusPickService = bogusPickService;
         }
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             BogusPickService.Update(facetsConfig);
-            return ResultServices[resultConfig.ViewTypeId].Load(facetsConfig, resultConfig);
+            return ResultService.Load(facetsConfig, resultConfig);
         }
 
     }
@@ -39,8 +37,8 @@ namespace SeadQueryAPI.Services
             ISetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,
-            IResultServiceIndex services,
-            IBogusPickService bogusPickService) : base(config, context, cache, services, bogusPickService)
+            IResultService service,
+            IBogusPickService bogusPickService) : base(config, context, cache, service, bogusPickService)
         {
             Cache = cache;
         }
