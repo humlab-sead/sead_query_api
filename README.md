@@ -1,37 +1,16 @@
-# SEAD Query API
+SEAD Faceted Query API
+============
+[![GitHub Stars](https://img.shields.io/github/stars/humlab-sead/sead_query_api.svg)](https://github.com/humlab-sead/sead_query_api/stargazers) [![GitHub Issues](https://img.shields.io/github/issues/humlab-sead/sead_query_api.svg)](https://github.com/humlab-sead/sead_query_api/issues) [![Current Version](https://img.shields.io/badge/version-1.1.0-green.svg)](https://github.com/humlab-sead/sead_query_api) [![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://browser.sead.se)
 
-Backend for SEAD broser.
+This is a .NET Core application that provides a faceted browsing REST API for the SEAD database.
+---
 
-## User Linux dotnet install
+[![DOI](https://zenodo.org/badge/89851568.svg)](https://zenodo.org/badge/latestdoi/89851568)
 
-Fetch Linux x64 binaries from ```https://dotnet.microsoft.com/download/dotnet-core```
+## Change log
 
-```bash
+See [CHANGELOG](https://github.com/humlab-sead/sead_query_api/CHANGELOG.md)
 
-mkdir -p $HOME/bin/dotnet && cd ~${HOME}/bin/dotnet
+## Setup
 
-wget https://download.visualstudio.microsoft.com/download/pr/daec2daf-b458-4ae1-9046-b8ba09b5fb49/733e2d73b41640d6e6bdf1cc6b9ef03b/dotnet-sdk-3.1.200-linux-x64.tar.gz
-
-tar zxf dotnet-sdk-3.1.200-linux-x64.tar.gz
-
-export DOTNET_ROOT=$HOME/bin/dotnet
-export PATH=$PATH:$HOME/bin/dotnet
-
-```
-
-## VS Code SSH Remote Development
-
- - Insstall OpenSSH
-
- - Generate keys:
-
- > ssh-keygen
-
- - Copy keys:
-
- > SET REMOTEHOST=user@your.remote.host
- > scp %USERPROFILE%\.ssh\id_rsa.pub %REMOTEHOST%:~/tmp.pub
- > ssh %REMOTEHOST% "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat ~/tmp.pub >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && rm -f ~/tmp.pub"
-
-
-C# vscode extension must be installed on remote host
+Clone this and run `dotnet restore` to install all the dependencies.
