@@ -1,0 +1,14 @@
+language: csharp
+solution: sead_query_api.sln
+mono: none
+dist: bionic
+dotnet: 3.1.201
+
+install:
+  - dotnet restore
+  - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
+
+script:
+  - dotnet build -nologo
+  - dotnet test --filter FullyQualifiedName~SQT
+  
