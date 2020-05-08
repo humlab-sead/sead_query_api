@@ -28,7 +28,7 @@ namespace SeadQueryInfra
                 { typeof(IFacetRepository),         new FacetRepository(Context) },
                 { typeof(ITableRelationRepository), new TableRelationRepository(Context) },
                 { typeof(ITableRepository),         new TableRepository(Context) },
-                { typeof(IResultRepository),        new ResultRepository(Context) },
+                { typeof(IResultSpecificationRepository),        new ResultSpecificationRepository(Context) },
                 { typeof(IFacetGroupRepository),    new FacetGroupRepository(Context) },
                 { typeof(IFacetTypeRepository),     new FacetTypeRepository(Context) },
                 { typeof(IFacetTableRepository),    new FacetTableRepository(Context) },
@@ -72,7 +72,7 @@ namespace SeadQueryInfra
         public virtual IFacetRepository Facets                      => GetRepository<IFacetRepository>();
         public virtual ITableRelationRepository TableRelations      => GetRepository<ITableRelationRepository>();
         public virtual ITableRepository Tables                      => GetRepository<ITableRepository>();
-        public virtual IResultRepository Results                    => GetRepository<IResultRepository>();
+        public virtual IResultSpecificationRepository Results                    => GetRepository<IResultSpecificationRepository>();
         public virtual IFacetGroupRepository FacetGroups            => GetRepository<IFacetGroupRepository>();
         public virtual IFacetTypeRepository FacetTypes              => GetRepository<IFacetTypeRepository>();
         public virtual IViewStateRepository ViewStates              => GetRepository<IViewStateRepository>();

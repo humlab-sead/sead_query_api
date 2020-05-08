@@ -1,25 +1,25 @@
 [
   {
-    "CompositeId": 1,
-    "CompositeKey": "site_level",
+    "SpecificationId": 1,
+    "SpecificationKey": "site_level",
     "DisplayText": "Site level",
     "IsActivated": true
   },
   {
-    "CompositeId": 2,
-    "CompositeKey": "aggregate_all",
+    "SpecificationId": 2,
+    "SpecificationKey": "aggregate_all",
     "DisplayText": "Aggregate all",
     "IsActivated": true
   },
   {
-    "CompositeId": 3,
-    "CompositeKey": "sample_group_level",
+    "SpecificationId": 3,
+    "SpecificationKey": "sample_group_level",
     "DisplayText": "Sample group level",
     "IsActivated": true
   },
   {
-    "CompositeId": 4,
-    "CompositeKey": "map_result",
+    "SpecificationId": 4,
+    "SpecificationKey": "map_result",
     "DisplayText": "Map result",
     "IsActivated": false
   }

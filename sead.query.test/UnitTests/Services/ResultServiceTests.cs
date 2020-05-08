@@ -21,9 +21,9 @@ namespace SQT.Services
         {
         }
 
-        public virtual DataReaderBuilder FakeResultDataBuilder(ResultComposite aggregate, int count)
+        public virtual DataReaderBuilder FakeResultDataBuilder(ResultSpecification specification, int count)
         {
-            var builder = new TabularResultDataReaderBuilder(aggregate)
+            var builder = new TabularResultDataReaderBuilder(specification)
                 .CreateNewTable()
                 .GenerateBogusRows(count);
             return builder;
@@ -40,12 +40,12 @@ namespace SQT.Services
             return mock;
         }
 
-        protected ResultComposite FixedResultComposite(string compositeKey)
-            => FakeRegistry().Results.GetByKey(compositeKey);
+        protected ResultSpecification FixedResultSpecification(string specificationKey)
+            => FakeRegistry().Results.GetByKey(specificationKey);
 
-        protected Mock<IDynamicQueryProxy> MockDynamicQueryProxyWithFakeData(int testItemCount, ResultComposite fakeComposite)
+        protected Mock<IDynamicQueryProxy> MockDynamicQueryProxyWithFakeData(int testItemCount, ResultSpecification fakeSpecification)
         {
-            var fakeResultDataBuilder = FakeResultDataBuilder(fakeComposite, testItemCount);
+            var fakeResultDataBuilder = FakeResultDataBuilder(fakeSpecification, testItemCount);
             var fakeDataTable = fakeResultDataBuilder.DataTable;
             var mockQueryProxy = new MockDynamicQueryProxyFactory().Create(fakeDataTable);
             return mockQueryProxy;
@@ -54,15 +54,15 @@ namespace SQT.Services
         [Theory]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "map", 10)]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular", 10)]
-        public void Load_VariousConfigs_Success(string uri, string resultCode, string compositeKey, string viewType, int testItemCount)
+        public void Load_VariousConfigs_Success(string uri, string resultCode, string specificationKey, string viewType, int testItemCount)
         {
             // Arrange
             var mockResultPayloadServiceLocator = MockResultPayloadServiceLocator(null);
             var mockResultSqlCompilerLocator = MockResultSqlCompilerLocator("#RETURN-SQL#");
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeResultConfig = FakeResultConfig(resultCode, compositeKey, viewType);
-            var mockQueryProxy = MockDynamicQueryProxyWithFakeData(testItemCount, fakeResultConfig.ResultComposites.FirstOrDefault());
-            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultCode, compositeKey);
+            var fakeResultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
+            var mockQueryProxy = MockDynamicQueryProxyWithFakeData(testItemCount, fakeResultConfig.ResultSpecifications.FirstOrDefault());
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultCode, specificationKey);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
 
             // Act

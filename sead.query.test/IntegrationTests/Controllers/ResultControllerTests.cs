@@ -51,10 +51,10 @@ namespace IntegrationTests
             #pragma warning restore IDE1006 // Naming Styles
         }
 
-        protected StringContent FakeLoadResultPayload(string uri, string resultFacetCode, string compositeKey, string viewType)
+        protected StringContent FakeLoadResultPayload(string uri, string resultFacetCode, string specificationKey, string viewType)
         {
             var facetsConfig = MockService.FakeFacetsConfig(uri);
-            var resultConfig = MockService.FakeResultConfig(resultFacetCode, compositeKey, viewType);
+            var resultConfig = MockService.FakeResultConfig(resultFacetCode, specificationKey, viewType);
             var bothConfigs = new LoadPayload { facetsConfig = facetsConfig, resultConfig = resultConfig };
             var json = JsonConvert.SerializeObject(bothConfigs);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
@@ -224,10 +224,10 @@ namespace IntegrationTests
         [InlineData("isotope://data_types:data_types", "result_facet", "site_level", "tabular")]
         [InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular")]
-        public async Task LoadTabular_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string compositeKey, string viewType)
+        public async Task LoadTabular_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string viewType)
         {
             // Arrange
-            var payload = FakeLoadResultPayload(uri, resultFacetCode, compositeKey, viewType);
+            var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
 
             // Act
             /* using */ var response = await Fixture.Client.PostAsync("api/result/load", payload);

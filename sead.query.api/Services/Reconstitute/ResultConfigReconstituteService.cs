@@ -20,7 +20,7 @@ namespace SeadQueryAPI.Serializers
             { "tabular", "result_facet" }
         };
 
-        public static Dictionary<string, List<string>> FixedViewTypeCompositeKeys = new Dictionary<string, List<string>>
+        public static Dictionary<string, List<string>> FixedViewTypeSpecificationKeys = new Dictionary<string, List<string>>
         {
             { "map", new List<string>() { "map_result" } },
             { "tabular", new List<string>() { "site_level" } }
@@ -35,7 +35,7 @@ namespace SeadQueryAPI.Serializers
         {
             var resultConfig = new ResultConfig
             {
-                CompositeKeys = resultConfigDTO.AggregateKeys,
+                SpecificationKeys = resultConfigDTO.AggregateKeys,
                 RequestId = resultConfigDTO.RequestId,
                 SessionId = resultConfigDTO.SessionId,
                 ViewTypeId = resultConfigDTO.ViewTypeId,
@@ -49,13 +49,13 @@ namespace SeadQueryAPI.Serializers
                 resultConfig.FacetCode = DefaultViewTypeResultFacet[resultConfig.ViewTypeId];
             }
 
-            if (FixedViewTypeCompositeKeys.ContainsKey(resultConfig.ViewTypeId)) {
-                resultConfig.CompositeKeys = FixedViewTypeCompositeKeys[resultConfig.ViewTypeId];
+            if (FixedViewTypeSpecificationKeys.ContainsKey(resultConfig.ViewTypeId)) {
+                resultConfig.SpecificationKeys = FixedViewTypeSpecificationKeys[resultConfig.ViewTypeId];
             }
 
             resultConfig.Facet = GetFacetByCode(resultConfig.FacetCode);
 
-            resultConfig.ResultComposites = Registry.Results.GetByKeys(resultConfig.CompositeKeys);
+            resultConfig.ResultSpecifications = Registry.Results.GetByKeys(resultConfig.SpecificationKeys);
 
             return resultConfig;
         }

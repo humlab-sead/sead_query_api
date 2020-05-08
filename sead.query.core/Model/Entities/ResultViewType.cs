@@ -12,6 +12,9 @@ namespace SeadQueryCore {
     {
         public string ViewTypeId { get; set; }
         public string ViewName { get; set; }
+        public string ResultFacetCode { get; set; }
+        public string SqlCompiler { get; set; }
+        public string SpecificationKey { get; set; }
         public bool IsCachable { get; set; }
     }
 }

@@ -85,12 +85,12 @@ namespace SeadQueryCore.QueryBuilder
 
             return querySetup;
         }
- 
-        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet resultFacet, IEnumerable<ResultCompositeField> resultFields)
+
+        public QuerySetup Build(FacetsConfig2 facetsConfig, Facet resultFacet, IEnumerable<ResultSpecificationField> resultFields)
         {
             if (!resultFields?.Any() ?? false)
-                throw new System.ArgumentNullException($"ResultConfig is null or is missing aggregate keys!");
-            
+                throw new System.ArgumentNullException($"ResultConfig is null or is missing specification keys!");
+
             /* All tables referenced by the result fields must be included in query */
             return Build(
                 facetsConfig: facetsConfig,

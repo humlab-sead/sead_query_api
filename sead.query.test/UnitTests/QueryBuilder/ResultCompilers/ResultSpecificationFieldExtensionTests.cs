@@ -8,9 +8,9 @@ using Xunit;
 namespace SQT.QueryBuilder.ResultCompilers
 {
     [Collection("JsonSeededFacetContext")]
-	public class ResultCompositeFieldExtensionTests : DisposableFacetContextContainer
+	public class ResultSpecificationFieldExtensionTests : DisposableFacetContextContainer
 	{
-		public ResultCompositeFieldExtensionTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+		public ResultSpecificationFieldExtensionTests(JsonSeededFacetContextFixture fixture) : base(fixture)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace SQT.QueryBuilder.ResultCompilers
 					"FieldType",
 					"ResultField",
 					"IsGroupByField",
-					"Composite"
+					"Specification"
 				},
 				PropertyOrderBy = null,
 				IgnoreDefaultValues = false
@@ -43,109 +43,109 @@ namespace SQT.QueryBuilder.ResultCompilers
 				{
 					//ResultFieldTypes = Registry.Context.Set<ResultFieldType>().ToList(),
 					//ResultFields = Registry.Context.Set<ResultField>().ToList(),
-					// ResultCompositeFields = Registry.Context.Set<ResultCompositeField>().ToList(),
-					ResultComposites = Registry.Context.Set<ResultComposite>().Include(z => z.Fields).ToList()
+					// ResultSpecificationFields = Registry.Context.Set<ResultSpecificationField>().ToList(),
+					ResultSpecifications = Registry.Context.Set<ResultSpecification>().Include(z => z.Fields).ToList()
 				},
-				@"C:\TEMP\ResultCompositeFields.cs",
+				@"C:\TEMP\ResultSpecificationFields.cs",
 				options
 			);
 		}
 #endif
 
 		[Fact]
-		public void GetCompositeAliasedFields_Called_Success()
+		public void GetSpecificationAliasedFields_Called_Success()
 		{
 			// Arrange
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.GetResultAliasedFields();
 
 			// Assert
-			var expected = aggregate.Fields.Count;
+			var expected = specification.Fields.Count;
 			Assert.Equal(expected, result.Count());
 		}
 
 		[Fact]
-		public void GetCompositeGroupByFields_Called_Success()
+		public void GetSpecificationGroupByFields_Called_Success()
 		{
 			// Arrange
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.GetResultGroupByFields();
 
 			// Assert
-			var expected = aggregate.Fields.Where(z => z.FieldType.IsGroupByField);
+			var expected = specification.Fields.Where(z => z.FieldType.IsGroupByField);
 			Assert.Equal(expected.Count(), result.Count());
 		}
 
 		[Fact]
-		public void GetCompositeCompiledDataFields_Called_Success()
+		public void GetSpecificationCompiledDataFields_Called_Success()
 		{
 			// Arrange
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.GetResultCompiledValueFields();
 
 			// Assert
-			var expected = aggregate.Fields.Where(z => z.FieldType.IsResultValue);
+			var expected = specification.Fields.Where(z => z.FieldType.IsResultValue);
 			Assert.Equal(expected.Count(), result.Count());
 		}
 
 		[Fact]
-		public void GetCompositeSortFields_Called_Success()
+		public void GetSpecificationSortFields_Called_Success()
 		{
 			// Arrange
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.GetResultSortFields();
 
 			// Assert
-			var expected = aggregate.Fields.Where(z => z.FieldType.IsSortField);
+			var expected = specification.Fields.Where(z => z.FieldType.IsSortField);
 			Assert.Equal(expected.Count(), result.Count());
 		}
 
 		[Fact]
-		public void GetCompositeInnerGroupByFields_Called_Success()
+		public void GetSpecificationInnerGroupByFields_Called_Success()
 		{
 			// Arrange
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.GetResultInnerGroupByFields();
 
 			// Assert
-			var expected = aggregate.Fields;
+			var expected = specification.Fields;
 			Assert.Equal(expected.Count, result.Count());
 		}
 		[Fact]
-		public void GetCompositeColumnNameAliasPairs_Called_Success()
+		public void GetSpecificationColumnNameAliasPairs_Called_Success()
 		{
 			// Arrange
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.GetResultColumnNameAliasPairs();
 
 			// Assert
-			var expected = aggregate.Fields;
+			var expected = specification.Fields;
 			Assert.Equal(expected.Count, result.Count());
 		}
 
 		[Fact]
 		public void Any_Success()
 		{
-			var aggregate = FakeResultCompositeFixture();
-			var fields = aggregate.GetSortedFields();
+			var specification = FakeResultSpecificationFixture();
+			var fields = specification.GetSortedFields();
 
 			// Act
 			var result = fields.Any();
@@ -156,27 +156,27 @@ namespace SQT.QueryBuilder.ResultCompilers
 
         #region FakeData
 
-        ResultComposite FakeResultCompositeFixture() => new ResultComposite
+        ResultSpecification FakeResultSpecificationFixture() => new ResultSpecification
 		{
-			CompositeId = 1,
-			CompositeKey = "site_level",
+			SpecificationId = 1,
+			SpecificationKey = "site_level",
 			DisplayText = "Site level",
 			IsActivated = true,
-			Fields = new List<ResultCompositeField> {
-				FakeResultCompositeField(4, "single_item", 1, 1),
-				FakeResultCompositeField(5, "text_agg_item", 2, 2),
-				FakeResultCompositeField(8, "count_item", 3, 3),
-				FakeResultCompositeField(10, "link_item", 4, 4),
-				FakeResultCompositeField(13, "link_item_filtered", 5, 5),
-				FakeResultCompositeField(16, "sort_item", 1, 99)
+			Fields = new List<ResultSpecificationField> {
+				FakeResultSpecificationField(4, "single_item", 1, 1),
+				FakeResultSpecificationField(5, "text_agg_item", 2, 2),
+				FakeResultSpecificationField(8, "count_item", 3, 3),
+				FakeResultSpecificationField(10, "link_item", 4, 4),
+				FakeResultSpecificationField(13, "link_item_filtered", 5, 5),
+				FakeResultSpecificationField(16, "sort_item", 1, 99)
 			}
 		};
 
-		private static ResultCompositeField FakeResultCompositeField(int id, string fieldTypeId, int resultFieldId, int sequenceId)
-			=> new ResultCompositeField
+		private static ResultSpecificationField FakeResultSpecificationField(int id, string fieldTypeId, int resultFieldId, int sequenceId)
+			=> new ResultSpecificationField
 				{
-					CompositeFieldId = id,
-					CompositeId = 1,
+					SpecificationFieldId = id,
+					SpecificationId = 1,
 					FieldTypeId = fieldTypeId,
 					ResultFieldId = resultFieldId,
 					SequenceId = sequenceId,

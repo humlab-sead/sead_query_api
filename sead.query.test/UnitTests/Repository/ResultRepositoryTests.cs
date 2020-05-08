@@ -17,9 +17,9 @@ namespace SQT.Infrastructure.Repository
         {
         }
 
-        private ResultRepository MockResultRepository()
+        private ResultSpecificationRepository MockResultRepository()
         {
-            return new ResultRepository(FacetContext);
+            return new ResultSpecificationRepository(FacetContext);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace SQT.Infrastructure.Repository
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(key, result.CompositeKey);
+            Assert.Equal(key, result.SpecificationKey);
             Assert.NotEmpty(result.GetResultFields());
         }
 
@@ -167,7 +167,7 @@ namespace SQT.Infrastructure.Repository
         }
 
         [Fact]
-        public void GetAll_Called_CompleteComposite()
+        public void GetAll_Called_CompleteSpecification()
         {
             // Arrange
             var resultRepository = MockResultRepository();

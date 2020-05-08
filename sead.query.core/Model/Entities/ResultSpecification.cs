@@ -8,24 +8,24 @@ using System.Linq;
 namespace SeadQueryCore
 {
 
-    public class ResultComposite {
-        public ResultComposite()
+    public class ResultSpecification {
+        public ResultSpecification()
         {
-            Fields = new HashSet<ResultCompositeField>();
+            Fields = new HashSet<ResultSpecificationField>();
         }
 
-        public int CompositeId { get; set; }
-        public string CompositeKey { get; set; }
+        public int SpecificationId { get; set; }
+        public string SpecificationKey { get; set; }
         public string DisplayText { get; set; }
         public bool IsActivated { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<ResultCompositeField> Fields { get; set; }
+        public virtual ICollection<ResultSpecificationField> Fields { get; set; }
 
-        public IEnumerable<ResultCompositeField> GetSortedFields()
+        public IEnumerable<ResultSpecificationField> GetSortedFields()
             => Fields.OrderBy(z => z.SequenceId);
 
-        public IEnumerable<ResultCompositeField> GetResultFields()
+        public IEnumerable<ResultSpecificationField> GetResultFields()
             => GetSortedFields()
                 .Where(z => z.FieldType.IsResultValue);
  

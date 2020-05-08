@@ -80,7 +80,7 @@ namespace SQT
 
         public virtual IRepositoryRegistry FakeRegistry() => Registry;
         public virtual IFacetRepository Facets => FakeRegistry().Facets;
-        public virtual IResultRepository Results => FakeRegistry().Results;
+        public virtual IResultSpecificationRepository Results => FakeRegistry().Results;
 
         public virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
 
@@ -167,9 +167,9 @@ namespace SQT
             return querySetup;
         }
 
-        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string compositeKey)
+        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string specificationKey)
         {
-            var resultFields = Registry.Results.GetFieldsByKey(compositeKey);
+            var resultFields = Registry.Results.GetFieldsByKey(specificationKey);
             var fakeJoins = FakeJoinsClause(5);
             var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
@@ -385,7 +385,7 @@ namespace SQT
         {
             var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
             mockResultSqlCompiler
-                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultCompositeField>>()))
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultSpecificationField>>()))
                 .Returns(returnSql);
             var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
             mockResultSqlCompilerLocator
@@ -394,8 +394,8 @@ namespace SQT
             return mockResultSqlCompilerLocator;
         }
 
-        public virtual ResultConfig FakeResultConfig(string facetCode, string compositeKey, string viewTypeId)
-            => ResultConfigFactory.Create(Facets.GetByCode(facetCode), Results.GetByKey(compositeKey), viewTypeId);
+        public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
+            => ResultConfigFactory.Create(Facets.GetByCode(facetCode), Results.GetByKey(specificationKey), viewTypeId);
 
         protected virtual Mock<DiscreteContentSqlCompiler> MockDiscreteContentSqlCompiler(string returnSql)
         {

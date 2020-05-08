@@ -2,11 +2,17 @@
   {
     "ViewTypeId": "tabular",
     "ViewName": "Tabular",
+    "ResultFacetCode": "",
+    "SqlCompiler": "",
+    "SpecificationKey": "",
     "IsCachable": true
   },
   {
     "ViewTypeId": "map",
     "ViewName": "Map",
+    "ResultFacetCode": "",
+    "SqlCompiler": "",
+    "SpecificationKey": "",
     "IsCachable": false
   }
 ]

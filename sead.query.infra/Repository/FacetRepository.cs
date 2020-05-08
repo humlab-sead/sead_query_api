@@ -5,8 +5,6 @@ using System.Linq;
 
 namespace SeadQueryInfra
 {
-
-
     public class FacetTypeRepository : Repository<FacetType, int>, IFacetTypeRepository
     {
         public FacetTypeRepository(IFacetContext context) : base(context)

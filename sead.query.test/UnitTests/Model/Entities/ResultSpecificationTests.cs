@@ -9,16 +9,16 @@ using Xunit;
 
 namespace SQT.Model
 {
-    public class ResultCompositeTests
+    public class ResultSpecificationTests
     {
-        private ResultComposite CreateResultAggregate()
+        private ResultSpecification CreateResultSpecification()
         {
-            return new ResultComposite() {
-                CompositeId = 3,
-                CompositeKey = "sample_group_level",
-                Fields = new List<ResultCompositeField>() {
-                    new ResultCompositeField() {
-                        CompositeFieldId = 1,
+            return new ResultSpecification() {
+                SpecificationId = 3,
+                SpecificationKey = "sample_group_level",
+                Fields = new List<ResultSpecificationField>() {
+                    new ResultSpecificationField() {
+                        SpecificationFieldId = 1,
                         FieldTypeId = "count_item",
                         SequenceId = 1,
                         ResultField = new ResultField() {
@@ -30,8 +30,8 @@ namespace SQT.Model
                         }
                     },
 
-                    new ResultCompositeField() {
-                        CompositeFieldId = 2,
+                    new ResultSpecificationField() {
+                        SpecificationFieldId = 2,
                         FieldTypeId = "count_item",
                         SequenceId = 2,
                         ResultField = new ResultField() {
@@ -46,28 +46,28 @@ namespace SQT.Model
             };
         }
 
-        //private ResultAggregate CreateMockedResultAggregate()
+        //private ResultSpecification CreateMockedResultSpecification()
         //{
-        //    var field1 = new Mock<ResultAggregateField>();
+        //    var field1 = new Mock<ResultSpecificationField>();
         //    field1.Setup(o => o.FieldType.IsResultValue).Returns(false);
-        //    field1.Setup(o => o.AggregateFieldId).Returns(1);
+        //    field1.Setup(o => o.SpecificationFieldId).Returns(1);
 
-        //    var field2 = new Mock<ResultAggregateField>();
+        //    var field2 = new Mock<ResultSpecificationField>();
         //    field2.Setup(o => o.FieldType.IsResultValue).Returns(true);
-        //    field1.Setup(o => o.AggregateFieldId).Returns(2);
+        //    field1.Setup(o => o.SpecificationFieldId).Returns(2);
 
-        //    var fields = (new List<ResultAggregateField>() { field1.Object, field2.Object });
-        //    var mockResultAggregate = new Mock<ResultAggregate>();
-        //    mockResultAggregate.Setup(x => x.Fields).Returns<ICollection<ResultAggregateField>>(_ => fields);
+        //    var fields = (new List<ResultSpecificationField>() { field1.Object, field2.Object });
+        //    var mockResultSpecification = new Mock<ResultSpecification>();
+        //    mockResultSpecification.Setup(x => x.Fields).Returns<ICollection<ResultSpecificationField>>(_ => fields);
 
-        //    return mockResultAggregate.Object;
+        //    return mockResultSpecification.Object;
         //}
 
         [Fact]
         public void GetFields_WithTwoFieldsField_ReturnsFields()
         {
             // Arrange
-            var item = CreateResultAggregate();
+            var item = CreateResultSpecification();
 
             // Act
             var result = item.GetSortedFields();
@@ -81,7 +81,7 @@ namespace SQT.Model
         public void GetResultFields_WithTwoFields_ReturnsTwoResultFields()
         {
             // Arrange
-            var item = CreateResultAggregate();
+            var item = CreateResultSpecification();
 
             // Act
             var result = item.GetResultFields();

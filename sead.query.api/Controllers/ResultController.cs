@@ -34,13 +34,13 @@ namespace SeadQueryAPI.Controllers
         }
 
         [HttpGet("definition")]
-        public IEnumerable<ResultComposite> Get()
+        public IEnumerable<ResultSpecification> Get()
         {
             return Context.Results.GetAll().ToList();
         }
 
         [HttpGet("definition/{id}")]
-        public ResultComposite Get(int id)
+        public ResultSpecification Get(int id)
         {
             return Context.Results.Get(id);
         }

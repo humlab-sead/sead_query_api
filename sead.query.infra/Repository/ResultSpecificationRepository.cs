@@ -6,25 +6,25 @@ using System.Linq;
 namespace SeadQueryInfra
 {
 
-    public class ResultRepository : Repository<ResultComposite, int>, IResultRepository
+    public class ResultSpecificationRepository : Repository<ResultSpecification, int>, IResultSpecificationRepository
     {
-        public ResultRepository(IFacetContext context) : base(context)
+        public ResultSpecificationRepository(IFacetContext context) : base(context)
         {
         }
 
-        public Dictionary<string, ResultComposite> ToDictionary()
+        public Dictionary<string, ResultSpecification> ToDictionary()
         {
-            return GetAll().ToDictionary(x => x.CompositeKey);
+            return GetAll().ToDictionary(x => x.SpecificationKey);
         }
 
-        public override IEnumerable<ResultComposite> GetAll()
+        public override IEnumerable<ResultSpecification> GetAll()
         {
-            return Context.Set<ResultComposite>().BuildEntity().ToList();
+            return Context.Set<ResultSpecification>().BuildEntity().ToList();
         }
 
-        public ResultComposite GetByKey(string key)
+        public ResultSpecification GetByKey(string key)
         {
-            return GetAll().FirstOrDefault(x => x.CompositeKey.Equals(key));
+            return GetAll().FirstOrDefault(x => x.SpecificationKey.Equals(key));
         }
 
         public IEnumerable<ResultField> GetAllFields()
@@ -47,23 +47,23 @@ namespace SeadQueryInfra
             return Context.Set<ResultFieldType>().ToList();
         }
 
-        public List<ResultComposite> GetByKeys(List<string> keys)
+        public List<ResultSpecification> GetByKeys(List<string> keys)
         {
             return (keys ?? new List<string>()).Select(key => GetByKey(key)).ToList();
         }
 
-        public List<ResultCompositeField> GetFieldsByKeys(List<string> keys)
+        public List<ResultSpecificationField> GetFieldsByKeys(List<string> keys)
         {
             return GetByKeys(keys).SelectMany(x => x.GetSortedFields()).ToList();
         }
-        public List<ResultCompositeField> GetFieldsByKey(string key)
+        public List<ResultSpecificationField> GetFieldsByKey(string key)
         {
             return GetByKey(key).GetSortedFields().ToList();
         }
     }
 
     public static class ResultDefinitionRepositoryEagerBuilder {
-        public static IQueryable<ResultComposite> BuildEntity(this IQueryable<ResultComposite> query)
+        public static IQueryable<ResultSpecification> BuildEntity(this IQueryable<ResultSpecification> query)
         {
             return query.Include(x => x.Fields)
                         .Include("Fields.FieldType")
