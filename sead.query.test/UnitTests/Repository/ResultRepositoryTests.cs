@@ -62,7 +62,7 @@ namespace SQT.Infrastructure.Repository
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(key, result.AggregateKey);
+            Assert.Equal(key, result.CompositeKey);
             Assert.NotEmpty(result.GetResultFields());
         }
 
@@ -167,7 +167,7 @@ namespace SQT.Infrastructure.Repository
         }
 
         [Fact]
-        public void GetAll_Called_CompleteAggregate()
+        public void GetAll_Called_CompleteComposite()
         {
             // Arrange
             var resultRepository = MockResultRepository();

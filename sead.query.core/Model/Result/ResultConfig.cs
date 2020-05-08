@@ -14,7 +14,7 @@ namespace SeadQueryCore.Model {
         public string RequestId { get; set; }
         public string SessionId { get; set; }
         public string ViewTypeId { get; set; }
-        public List<string> AggregateKeys { get; set; } = new List<string>();
+        public List<string> CompositeKeys { get; set; } = new List<string>();
 
         public ResultConfig()
         {
@@ -22,18 +22,18 @@ namespace SeadQueryCore.Model {
 
         public string GetCacheId(FacetsConfig2 facetsConfig)
         {
-            return  $"{ViewTypeId}_{facetsConfig.GetPicksCacheId()}_{String.Join("", AggregateKeys)}_{facetsConfig.DomainCode}";
+            return  $"{ViewTypeId}_{facetsConfig.GetPicksCacheId()}_{String.Join("", CompositeKeys)}_{facetsConfig.DomainCode}";
         }
 
-        [JsonIgnore] public bool IsEmpty => (AggregateKeys?.Count ?? 0) == 0;
+        [JsonIgnore] public bool IsEmpty => (CompositeKeys?.Count ?? 0) == 0;
 
         public string FacetCode { get; set; } = "result_facet";
 
         public Facet Facet { get; set; }
 
-        public List<ResultAggregate> ResultComposites = new List<ResultAggregate>();
+        public List<ResultComposite> ResultComposites = new List<ResultComposite>();
 
-        public List<ResultAggregateField> GetSortedFields()
+        public List<ResultCompositeField> GetSortedFields()
             => ResultComposites.SelectMany(x => x.GetSortedFields()).ToList();
     }
 }

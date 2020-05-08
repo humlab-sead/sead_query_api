@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SeadQueryAPI.DTO;
 using SeadQueryCore.Model;
 
 namespace SeadQueryAPI.Serializers
@@ -6,6 +7,6 @@ namespace SeadQueryAPI.Serializers
     public interface IResultConfigReconstituteService
     {
         ResultConfig Reconstitute(JObject resultConfigJson);
-        ResultConfig Reconstitute(ResultConfig resultConfig);
+        ResultConfig Reconstitute(ResultConfigDTO resultConfig);
     }
 }

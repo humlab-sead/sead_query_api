@@ -17,12 +17,12 @@ namespace SQT.SqlCompilers
         [Theory]
         [InlineData("sites:sites", "result_facet", "site_level")]
         [InlineData("sites:country/sites", "result_facet", "site_level")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string aggregateKey)
+        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string compositeKey)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, aggregateKey);
-            var fakeResultFields = FakeResultConfig(resultFacetCode, aggregateKey, "map").GetSortedFields();
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, compositeKey);
+            var fakeResultFields = FakeResultConfig(resultFacetCode, compositeKey, "map").GetSortedFields();
 
             // Act
 

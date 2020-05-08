@@ -5,7 +5,7 @@ namespace SeadQueryCore
 {
     public class MapResultSqlCompiler : IResultSqlCompiler {
         // FIXME Check if facet can be refactored away
-        public string Compile(QueryBuilder.QuerySetup querySetup, Facet facet, IEnumerable<ResultAggregateField> fields)
+        public string Compile(QueryBuilder.QuerySetup querySetup, Facet facet, IEnumerable<ResultCompositeField> fields)
         {
 
             Debug.Assert(querySetup.Facet.FacetCode.Equals(facet.FacetCode), "Refactor check: Refactor away facet");

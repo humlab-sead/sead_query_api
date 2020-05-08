@@ -8,6 +8,7 @@ using SeadQueryCore.Model;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using SeadQueryAPI.Serializers;
+using SeadQueryAPI.DTO;
 
 namespace SeadQueryAPI.Controllers
 {
@@ -33,13 +34,13 @@ namespace SeadQueryAPI.Controllers
         }
 
         [HttpGet("definition")]
-        public IEnumerable<ResultAggregate> Get()
+        public IEnumerable<ResultComposite> Get()
         {
             return Context.Results.GetAll().ToList();
         }
 
         [HttpGet("definition/{id}")]
-        public ResultAggregate Get(int id)
+        public ResultComposite Get(int id)
         {
             return Context.Results.Get(id);
         }
@@ -55,8 +56,8 @@ namespace SeadQueryAPI.Controllers
             return result;
         }
 
-        private ResultConfig GetResultConfig(JObject data)
-            => data["resultConfig"].ToObject<ResultConfig>();
+        private ResultConfigDTO GetResultConfig(JObject data)
+            => data["resultConfig"].ToObject<ResultConfigDTO>();
 
         private FacetsConfig2 GetFacetsConfig(JObject data)
             => data["facetsConfig"].ToObject<FacetsConfig2>();

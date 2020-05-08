@@ -167,9 +167,9 @@ namespace SQT
             return querySetup;
         }
 
-        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string aggregateKey)
+        public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string compositeKey)
         {
-            var resultFields = Registry.Results.GetFieldsByKey(aggregateKey);
+            var resultFields = Registry.Results.GetFieldsByKey(compositeKey);
             var fakeJoins = FakeJoinsClause(5);
             var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
@@ -385,7 +385,7 @@ namespace SQT
         {
             var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
             mockResultSqlCompiler
-                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultAggregateField>>()))
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultCompositeField>>()))
                 .Returns(returnSql);
             var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
             mockResultSqlCompilerLocator
@@ -394,8 +394,8 @@ namespace SQT
             return mockResultSqlCompilerLocator;
         }
 
-        public virtual ResultConfig FakeResultConfig(string facetCode, string aggregateKey, string viewTypeId)
-            => ResultConfigFactory.Create(Facets.GetByCode(facetCode), Results.GetByKey(aggregateKey), viewTypeId);
+        public virtual ResultConfig FakeResultConfig(string facetCode, string compositeKey, string viewTypeId)
+            => ResultConfigFactory.Create(Facets.GetByCode(facetCode), Results.GetByKey(compositeKey), viewTypeId);
 
         protected virtual Mock<DiscreteContentSqlCompiler> MockDiscreteContentSqlCompiler(string returnSql)
         {

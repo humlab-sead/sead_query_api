@@ -175,38 +175,6 @@ namespace SQT.Model
             }
         }
 
-        // [Fact]
-        // public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
-        // {
-        //     var seeder = new FakeFacetContextJsonSeeder();
-        //     var options = SqliteInMemoryContextOptionsFactory.Create(null);
-        //     var context = new FacetContext(options);
-        //     context.Database.OpenConnection();
-        //     context.Database.EnsureCreated();
-
-        //     var reader = new JsonReaderService(new IgnoreJsonAttributesResolver());
-        //     var modelTypes = new List<Type>() {
-        //             typeof(ResultFieldType),
-        //             typeof(ResultField),
-        //             typeof(ResultViewType),
-        //             typeof(FacetType),
-        //             typeof(FacetGroup),
-        //             typeof(Table),
-        //             typeof(Facet),
-        //             typeof(FacetClause),
-        //             typeof(FacetChild),
-        //             typeof(FacetTable),
-        //             typeof(TableRelation),
-        //             typeof(ResultAggregateField),
-        //             typeof(ResultAggregate),
-        //             typeof(ViewState)
-        //         };
-
-        //     foreach (var type in modelTypes) {
-        //         seeder.Seed(type, context, reader);
-        //     }
-        // }
-
         [Fact]
         public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
         {

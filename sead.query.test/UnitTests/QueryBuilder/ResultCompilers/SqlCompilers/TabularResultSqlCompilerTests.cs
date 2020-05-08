@@ -26,13 +26,13 @@ namespace SQT.QueryBuilder.ResultCompilers
         //[InlineData("palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level")]
         [InlineData("palaeoentomology://data_types:data_types", "result_facet", "site_level")]
         //[InlineData("archaeobotany://ecocode:ecocode", "result_facet", "site_level")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string aggregateKey)
+        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string compositeKey)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, aggregateKey);
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultFacetCode, compositeKey);
             var facet = fakeQuerySetup.Facet;
-            var fields = FakeResultConfig(resultFacetCode, aggregateKey, "tabular").GetSortedFields();
+            var fields = FakeResultConfig(resultFacetCode, compositeKey, "tabular").GetSortedFields();
             // Act
             var compiler = new TabularResultSqlCompiler();
             var result = compiler.Compile(fakeQuerySetup, facet, fields);

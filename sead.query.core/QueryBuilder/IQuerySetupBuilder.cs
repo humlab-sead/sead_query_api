@@ -7,6 +7,6 @@ namespace SeadQueryCore.QueryBuilder
         IFacetsGraph FacetsGraph { get; set; }
 
         QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, List<string> extraTables, List<string> facetCodes);
-        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, IEnumerable<ResultAggregateField> fields);
+        QuerySetup Build(FacetsConfig2 facetsConfig, Facet facet, IEnumerable<ResultCompositeField> fields);
     }
 }

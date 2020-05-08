@@ -77,8 +77,8 @@ namespace SQT.Infrastructure
                     typeof(FacetTable),
                     typeof(Facet),
                     typeof(TableRelation),
-                    typeof(ResultAggregateField),
-                    typeof(ResultAggregate),
+                    typeof(ResultCompositeField),
+                    typeof(ResultComposite),
                     typeof(ViewState)
                 };
         }

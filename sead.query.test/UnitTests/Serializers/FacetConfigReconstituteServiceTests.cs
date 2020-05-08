@@ -17,60 +17,6 @@ namespace SQT.Infrastructure
             return service;
         }
 
-        //[Fact]
-        //public void Reconstitute_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var service = this.CreateService();
-        //    FacetConfig2 facetConfig = null;
-
-        //    // Act
-        //    var result = service.Reconstitute(
-        //        facetConfig);
-
-        //    // Assert
-        //    Assert.True(false);
-        //}
-
-        //[Fact]
-        //public void Reconstitute_StateUnderTest_ExpectedBehavior1()
-        //{
-        //    // Arrange
-        //    var service = this.CreateService();
-        //    FacetsConfig2 facetsConfig = null;
-
-        //    // Act
-        //    var result = service.Reconstitute(
-        //        facetsConfig);
-
-        //    // Assert
-        //    Assert.True(false);
-        //}
-
-        //const string json = @"
-        //        {
-        //          ""facetsConfig"": {
-        //            ""requestId"": 1,
-        //            ""requestType"": ""populate"",
-        //            ""targetCode"": ""sites"",
-        //            ""triggerCode"": ""sites"",
-        //            ""facetConfigs"": [
-        //              {
-        //                ""facetCode"": ""sites"",
-        //                ""position"": 1,
-        //                ""picks"": [],
-        //                ""textFilter"": """"
-        //              }
-        //            ]
-        //          },
-        //          ""resultConfig"": {
-        //            ""requestId"": 1,
-        //            ""sessionId"": ""1"",
-        //            ""viewTypeId"": ""map"",
-        //            ""aggregateKeys"": [ ""site_level"" ]
-        //          }
-        //        }
-        //    ";
         [Fact]
         public void Reconstitute_UsingLowerCaseJsonFacetsConfig_ReturnsExpectedResult()
         {

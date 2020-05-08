@@ -15,7 +15,7 @@ namespace SeadQueryCore.Model
             public string DisplayText { get; set; }
             public string Type { get; set; }
 
-            public static List<ResultColumn> Map(List<ResultAggregateField> resultFields, List<SourceColumnType> dataColumns)
+            public static List<ResultColumn> Map(List<ResultCompositeField> resultFields, List<SourceColumnType> dataColumns)
             {
                 return resultFields.Select((z, i) => new ResultColumn()
                 {

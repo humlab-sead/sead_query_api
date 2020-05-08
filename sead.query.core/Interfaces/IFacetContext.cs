@@ -13,7 +13,7 @@ namespace SeadQueryCore
         DbSet<FacetGroup> FacetGroups { get; set; }
         DbSet<FacetType> FacetTypes { get; set; }
         DbSet<Table> Tables { get; set; }
-        DbSet<ResultAggregate> ResultDefinitions { get; set; }
+        DbSet<ResultComposite> ResultComposite { get; set; }
         DbSet<ResultField> ResultFields { get; set; }
         DbSet<ResultFieldType> ResultFieldTypes { get; set; }
         DbSet<ViewState> ViewStates { get; set; }

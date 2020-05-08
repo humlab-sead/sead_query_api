@@ -151,6 +151,7 @@
   },
   {
     "ResultFieldId": 18,
+    "TableName": "tbl_sites",
     "ColumnName": "category_id",
     "ResultFieldKey": "category_id",
     "DisplayText": "Site ID",
@@ -160,6 +161,7 @@
   },
   {
     "ResultFieldId": 19,
+    "TableName": "tbl_sites",
     "ColumnName": "category_name",
     "ResultFieldKey": "category_name",
     "DisplayText": "Site Name",
@@ -169,6 +171,7 @@
   },
   {
     "ResultFieldId": 20,
+    "TableName": "tbl_sites",
     "ColumnName": "latitude_dd",
     "ResultFieldKey": "latitude_dd",
     "DisplayText": "Latitude (dd)",
@@ -178,6 +181,7 @@
   },
   {
     "ResultFieldId": 21,
+    "TableName": "tbl_sites",
     "ColumnName": "longitude_dd",
     "ResultFieldKey": "longitude_dd",
     "DisplayText": "Longitude (dd)",

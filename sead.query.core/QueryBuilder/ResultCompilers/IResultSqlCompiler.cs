@@ -4,6 +4,6 @@ namespace SeadQueryCore
 {
     public interface IResultSqlCompiler : ISqlCompiler
     {
-        string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultAggregateField> fields);
+        string Compile(QueryBuilder.QuerySetup query, Facet facet, IEnumerable<ResultCompositeField> fields);
     }
 }

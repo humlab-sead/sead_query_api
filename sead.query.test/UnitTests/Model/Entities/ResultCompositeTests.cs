@@ -9,16 +9,16 @@ using Xunit;
 
 namespace SQT.Model
 {
-    public class ResultAggregateTests
+    public class ResultCompositeTests
     {
-        private ResultAggregate CreateResultAggregate()
+        private ResultComposite CreateResultAggregate()
         {
-            return new ResultAggregate() {
-                AggregateId = 3,
-                AggregateKey = "sample_group_level",
-                Fields = new List<ResultAggregateField>() {
-                    new ResultAggregateField() {
-                        AggregateFieldId = 1,
+            return new ResultComposite() {
+                CompositeId = 3,
+                CompositeKey = "sample_group_level",
+                Fields = new List<ResultCompositeField>() {
+                    new ResultCompositeField() {
+                        CompositeFieldId = 1,
                         FieldTypeId = "count_item",
                         SequenceId = 1,
                         ResultField = new ResultField() {
@@ -30,8 +30,8 @@ namespace SQT.Model
                         }
                     },
 
-                    new ResultAggregateField() {
-                        AggregateFieldId = 2,
+                    new ResultCompositeField() {
+                        CompositeFieldId = 2,
                         FieldTypeId = "count_item",
                         SequenceId = 2,
                         ResultField = new ResultField() {

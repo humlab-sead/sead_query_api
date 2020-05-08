@@ -1,0 +1,26 @@
+[
+  {
+    "CompositeId": 1,
+    "CompositeKey": "site_level",
+    "DisplayText": "Site level",
+    "IsActivated": true
+  },
+  {
+    "CompositeId": 2,
+    "CompositeKey": "aggregate_all",
+    "DisplayText": "Aggregate all",
+    "IsActivated": true
+  },
+  {
+    "CompositeId": 3,
+    "CompositeKey": "sample_group_level",
+    "DisplayText": "Sample group level",
+    "IsActivated": true
+  },
+  {
+    "CompositeId": 4,
+    "CompositeKey": "map_result",
+    "DisplayText": "Map result",
+    "IsActivated": false
+  }
+]

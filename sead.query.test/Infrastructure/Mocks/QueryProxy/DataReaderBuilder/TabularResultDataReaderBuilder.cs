@@ -13,11 +13,11 @@ namespace SQT.Infrastructure
 
     public class TabularResultDataReaderBuilder : DataReaderBuilder
     {
-        private readonly ResultAggregate ResultAggregate;
+        private readonly ResultComposite ResultComposite;
 
-        public TabularResultDataReaderBuilder(ResultAggregate resultAggregate) : base("TabuleResult")
+        public TabularResultDataReaderBuilder(ResultComposite resultComposite) : base("TabuleResult")
         {
-            ResultAggregate = resultAggregate;
+            ResultComposite = resultComposite;
         }
 
         public override DataReaderBuilder CreateNewTable()
@@ -29,8 +29,8 @@ namespace SQT.Infrastructure
             return this;
         }
 
-        private IEnumerable<(string Alias, ResultAggregateField Field)> GetAliasFieldPairs()
-            => ResultAggregate
+        private IEnumerable<(string Alias, ResultCompositeField Field)> GetAliasFieldPairs()
+            => ResultComposite
                 .GetSortedFields()
                 .GetResultAliasedFields()
                 .Where(z => z.Field.FieldType.IsResultValue);

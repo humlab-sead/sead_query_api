@@ -2,16 +2,16 @@
 
 namespace SeadQueryCore
 {
-    public interface IResultRepository : IRepository<ResultAggregate, int>
+    public interface IResultRepository : IRepository<ResultComposite, int>
     {
         IEnumerable<ResultField> GetAllFields();
         IEnumerable<ResultFieldType> GetAllFieldTypes();
-        ResultAggregate GetByKey(string key);
-        List<ResultAggregate> GetByKeys(List<string> keys);
-        List<ResultAggregateField> GetFieldsByKeys(List<string> keys);
-        List<ResultAggregateField> GetFieldsByKey(string key);
+        ResultComposite GetByKey(string key);
+        List<ResultComposite> GetByKeys(List<string> keys);
+        List<ResultCompositeField> GetFieldsByKeys(List<string> keys);
+        List<ResultCompositeField> GetFieldsByKey(string key);
         ResultViewType GetViewType(string viewTypeId);
         List<ResultViewType> GetViewTypes();
-        Dictionary<string, ResultAggregate> ToDictionary();
+        Dictionary<string, ResultComposite> ToDictionary();
     }
 }

@@ -7,7 +7,7 @@ namespace SQT.Mocks
 {
     internal static class ResultConfigFactory
     {
-        public static ResultConfig Create(Facet facet, List<ResultAggregate> queryAggregates, string viewTypeId)
+        public static ResultConfig Create(Facet facet, List<ResultComposite> resultComposites, string viewTypeId)
         {
             var resultConfig =  new ResultConfig()
             {
@@ -15,15 +15,15 @@ namespace SQT.Mocks
                 FacetCode = facet.FacetCode,
                 RequestId = "1",
                 SessionId = "1",
-                ResultComposites = queryAggregates,
-                AggregateKeys = queryAggregates.Select(z => z.AggregateKey).ToList(),
+                ResultComposites = resultComposites,
+                CompositeKeys = resultComposites.Select(z => z.CompositeKey).ToList(),
                 ViewTypeId = viewTypeId,
             };
             return resultConfig;
         }
-        public static ResultConfig Create(Facet facet, ResultAggregate queryAggregate, string viewTypeId)
+        public static ResultConfig Create(Facet facet, ResultComposite resultComposite, string viewTypeId)
         {
-            return Create(facet, new List<ResultAggregate> { queryAggregate }, viewTypeId);
+            return Create(facet, new List<ResultComposite> { resultComposite }, viewTypeId);
         }
     }
 }

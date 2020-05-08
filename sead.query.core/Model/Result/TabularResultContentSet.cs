@@ -9,7 +9,7 @@ namespace SeadQueryCore.Model
 
     public class TabularResultContentSet : ResultContentSet
     {
-        public TabularResultContentSet(ResultConfig resultConfig, List<ResultAggregateField> resultFields, IDataReader reader) : base()
+        public TabularResultContentSet(ResultConfig resultConfig, List<ResultCompositeField> resultFields, IDataReader reader) : base()
         {
             Reader = reader;
             Meta = new ResultMetaData() {

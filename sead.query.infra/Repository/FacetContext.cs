@@ -14,7 +14,7 @@ namespace SeadQueryInfra
             DynamicQueryProxy = new DatabaseQueryProxy(this);
         }
 
-        public virtual DbSet<ResultAggregate> ResultDefinitions { get; set; }
+        public virtual DbSet<ResultComposite> ResultComposite { get; set; }
         public virtual DbSet<ResultField> ResultFields { get; set; }
         public virtual DbSet<ResultFieldType> ResultFieldTypes { get; set; }
         public virtual DbSet<Facet> Facets { get; set; }
@@ -24,7 +24,7 @@ namespace SeadQueryInfra
         public virtual DbSet<ResultViewType> ViewTypes { get; set; }
         public virtual DbSet<FacetType> FacetTypes { get; set; }
         public virtual DbSet<FacetGroup> FacetGroups { get; set; }
-        public virtual DbSet<ResultAggregateField> ResultAggregateFields { get; set; }
+        public virtual DbSet<ResultCompositeField> ResultCompositeFields { get; set; }
         public virtual DbSet<FacetClause> FacetClauses { get; set; }
         public virtual DbSet<FacetTable> FacetTables { get; set; }
         public virtual DbSet<FacetChild> FacetChildren { get; set; }
@@ -181,22 +181,22 @@ namespace SeadQueryInfra
                 entity.Property(b => b.SqlTemplate).HasColumnName("sql_template").IsRequired();
             });
 
-            builder.Entity<ResultAggregate>(entity =>
+            builder.Entity<ResultComposite>(entity =>
             {
-                entity.ToTable("result_aggregate", "facet").HasKey(b => b.AggregateId);
-                entity.Property(b => b.AggregateId).HasColumnName("aggregate_id").IsRequired();
-                entity.Property(b => b.AggregateKey).HasColumnName("aggregate_key").IsRequired();
+                entity.ToTable("result_aggregate", "facet").HasKey(b => b.CompositeId);
+                entity.Property(b => b.CompositeId).HasColumnName("aggregate_id").IsRequired();
+                entity.Property(b => b.CompositeKey).HasColumnName("aggregate_key").IsRequired();
                 entity.Property(b => b.DisplayText).HasColumnName("display_text").IsRequired();
                 entity.Property(b => b.IsActivated).HasColumnName("is_activated").IsRequired();
-                entity.HasMany<ResultAggregateField>(x => x.Fields).WithOne(x => x.Aggregate).HasForeignKey(p => p.AggregateId);
+                entity.HasMany<ResultCompositeField>(x => x.Fields).WithOne(x => x.Composite).HasForeignKey(p => p.CompositeId);
             });
 
-            builder.Entity<ResultAggregateField>(entity =>
+            builder.Entity<ResultCompositeField>(entity =>
             {
-                entity.ToTable("result_aggregate_field", "facet").HasKey(b => b.AggregateFieldId);
-                entity.Property(b => b.AggregateFieldId).HasColumnName("aggregate_field_id").IsRequired();
+                entity.ToTable("result_aggregate_field", "facet").HasKey(b => b.CompositeFieldId);
+                entity.Property(b => b.CompositeFieldId).HasColumnName("aggregate_field_id").IsRequired();
                 entity.Property(b => b.SequenceId).HasColumnName("sequence_id").IsRequired();
-                entity.Property(b => b.AggregateId).HasColumnName("aggregate_id").IsRequired();
+                entity.Property(b => b.CompositeId).HasColumnName("aggregate_id").IsRequired();
                 entity.Property(b => b.ResultFieldId).HasColumnName("result_field_id").IsRequired();
                 entity.Property(b => b.FieldTypeId).HasColumnName("field_type_id").IsRequired();
                 entity.HasOne<ResultFieldType>(x => x.FieldType).WithMany().HasForeignKey(p => p.FieldTypeId);

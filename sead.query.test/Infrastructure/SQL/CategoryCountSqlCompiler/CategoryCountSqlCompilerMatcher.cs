@@ -10,6 +10,8 @@ namespace SQT.SQL.Matcher
 
         public OuterSelectMatch Match(string sqlQuery, string expectedOuterSql)
         {
+            sqlQuery = sqlQuery.Squeeze();
+            expectedOuterSql = expectedOuterSql.Squeeze();
             var rx = Regex.Match(sqlQuery.Squeeze(), expectedOuterSql.Squeeze());
 
             OuterSelectMatch result = new OuterSelectMatch
