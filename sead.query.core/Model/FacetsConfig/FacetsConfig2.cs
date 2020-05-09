@@ -161,7 +161,7 @@ namespace SeadQueryCore
         public Dictionary<string, UserPickData> CollectUserPicks(string onlyCode = "")
         {
 
-            Func<FacetConfig2, bool> filter() => x => (empty(onlyCode) || onlyCode == x.FacetCode) && (x.Picks.Count > 0);
+            Func<FacetConfig2, bool> filter() => x => (onlyCode.IsEmpty() || onlyCode == x.FacetCode) && (x.Picks.Count > 0);
             var values = new Dictionary<string, UserPickData>();
             foreach (var config in FacetConfigs.Where(filter())) {
                 values[config.FacetCode] = new UserPickData() {

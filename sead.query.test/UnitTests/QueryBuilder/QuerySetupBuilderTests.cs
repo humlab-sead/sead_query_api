@@ -113,13 +113,6 @@ namespace SQT.QueryBuilder
         [InlineData("palaeoentomology://sites:country@5/sites", 2)]
         public void Build_WithVariousDomainConfigs_Success(string uri, int expectedConfigCount)
         {
-            //"palaeoentomology"
-            //"archaeobotany"
-            //"pollen"
-            //"geoarchaeology"
-            //"dendrochronology"
-            //"ceramic"
-            //"isotope"
             // Arrange
             var facetsConfig = FakeFacetsConfig(uri);
 

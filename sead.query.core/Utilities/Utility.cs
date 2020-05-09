@@ -11,8 +11,6 @@ namespace SeadQueryCore
 
     public static class Utility {
 
-        public static bool empty(string x) => (x ?? "").Equals("");
-
         public static string Coalesce(params string[] data)
         {
             return data.FirstOrDefault(x => !x.IsEmpty()) ?? "";

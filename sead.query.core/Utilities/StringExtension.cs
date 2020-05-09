@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SeadQueryCore
 {
@@ -45,6 +46,18 @@ namespace SeadQueryCore
         public static string Squeeze(this string text)
         {
             return Regex.Replace(text ?? "", @"\s+", " ").Trim();
+        }
+
+        /// <summary>
+        /// Returns item wrapped in a list
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static List<string> WrapToList(this string text)
+        {
+            if (text == null)
+                return new List<string>();
+            return new List<string> { text };
         }
     }
 }

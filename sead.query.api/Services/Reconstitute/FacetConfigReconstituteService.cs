@@ -25,7 +25,7 @@ namespace SeadQueryAPI.Serializers
         public FacetsConfig2 Reconstitute(FacetsConfig2 facetsConfig)
         {
             Debug.Assert(facetsConfig.TargetCode != null);
-            if (Utility.empty(facetsConfig.TriggerCode)) {
+            if (facetsConfig.TriggerCode.IsEmpty()) {
                 facetsConfig.TriggerCode = facetsConfig.TargetCode;
             }
             facetsConfig.DomainFacet = GetFacetByCode(facetsConfig.DomainCode);
