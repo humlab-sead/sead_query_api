@@ -14,21 +14,14 @@ namespace SeadQueryAPI.Serializers
 {
     public class ResultConfigReconstituteService : ReconstituteService, IResultConfigReconstituteService
     {
-        public static Dictionary<string, string> DefaultViewTypeResultFacet = new Dictionary<string, string>
-        {
-            { "map", "map_result" },
-            { "tabular", "result_facet" }
-        };
-
-        public static Dictionary<string, List<string>> FixedViewTypeSpecificationKeys = new Dictionary<string, List<string>>
-        {
-            { "map", new List<string>() { "map_result" } },
-            { "tabular", new List<string>() { "site_level" } }
-        };
+        //public static Dictionary<string, List<string>> FixedViewTypeSpecificationKeys = new Dictionary<string, List<string>>
+        //{
+        //    { "map", new List<string>() { "map_result" } },
+        //    { "tabular", new List<string>() { "site_level" } }
+        //};
 
         public ResultConfigReconstituteService(IRepositoryRegistry registry) : base(registry)
         {
-
         }
 
         public ResultConfig Reconstitute(ResultConfigDTO resultConfigDTO)
@@ -42,20 +35,21 @@ namespace SeadQueryAPI.Serializers
                 FacetCode = resultConfigDTO.FacetCode
             };
 
-            if (resultConfig.ViewTypeId.IsEmpty() || !DefaultViewTypeResultFacet.ContainsKey(resultConfig.ViewTypeId))
-                throw new ArgumentNullException("Unknown or empty viewType cannot be reconstituted!");
+            if (resultConfig.ViewTypeId.IsEmpty())
+                throw new ArgumentNullException("Empty viewType cannot be reconstituted!");
+
+            resultConfig.ViewType = Registry.Results.GetViewType(resultConfig.ViewTypeId);
 
             if (resultConfig.FacetCode.IsEmpty()) {
-                resultConfig.FacetCode = DefaultViewTypeResultFacet[resultConfig.ViewTypeId];
+                resultConfig.FacetCode = resultConfig.ViewType.ResultFacetCode;
             }
 
-            if (FixedViewTypeSpecificationKeys.ContainsKey(resultConfig.ViewTypeId)) {
-                resultConfig.SpecificationKeys = FixedViewTypeSpecificationKeys[resultConfig.ViewTypeId];
-            }
+            //if (resultConfig.SpecificationKeys.Count == 0) {
+                resultConfig.SpecificationKeys = resultConfig.ViewType.SpecificationKey.WrapToList();
+            //}
 
             resultConfig.Facet = GetFacetByCode(resultConfig.FacetCode);
-
-            resultConfig.ResultSpecifications = Registry.Results.GetByKeys(resultConfig.SpecificationKeys);
+            resultConfig.Specifications = Registry.Results.GetByKeys(resultConfig.SpecificationKeys);
 
             return resultConfig;
         }

@@ -15,7 +15,7 @@ namespace SQT.Mocks
                 FacetCode = facet.FacetCode,
                 RequestId = "1",
                 SessionId = "1",
-                ResultSpecifications = resultSpecifications,
+                Specifications = resultSpecifications,
                 SpecificationKeys = resultSpecifications.Select(z => z.SpecificationKey).ToList(),
                 ViewTypeId = viewTypeId,
             };

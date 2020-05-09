@@ -15,7 +15,7 @@ namespace SeadQueryCore
             ITypedQueryProxy queryProxy
         ) : base(config, context, builder, queryProxy) {
             RangeCountSqlCompiler = rangeCountSqlCompiler;
-            CountTables = new List<string>() { Config.CountTable };
+            CountTables = Config.CountTable.WrapToList();
         }
 
         private IRangeCategoryCountSqlCompiler RangeCountSqlCompiler { get; }
@@ -33,7 +33,7 @@ namespace SeadQueryCore
                     intervalQuery,
                     Config.CountColumn
                 );
-        
+
         protected override string GetCategory(IDataReader x)
             => x.IsDBNull(0) ? "(null)" : x.GetString(0);
 

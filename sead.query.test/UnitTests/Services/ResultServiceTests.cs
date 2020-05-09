@@ -61,7 +61,7 @@ namespace SQT.Services
             var mockResultSqlCompilerLocator = MockResultSqlCompilerLocator("#RETURN-SQL#");
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeResultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
-            var mockQueryProxy = MockDynamicQueryProxyWithFakeData(testItemCount, fakeResultConfig.ResultSpecifications.FirstOrDefault());
+            var mockQueryProxy = MockDynamicQueryProxyWithFakeData(testItemCount, fakeResultConfig.Specifications.FirstOrDefault());
             var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultCode, specificationKey);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
 

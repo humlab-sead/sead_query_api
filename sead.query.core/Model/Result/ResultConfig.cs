@@ -31,9 +31,11 @@ namespace SeadQueryCore.Model {
 
         public Facet Facet { get; set; }
 
-        public List<ResultSpecification> ResultSpecifications = new List<ResultSpecification>();
+        public List<ResultSpecification> Specifications = new List<ResultSpecification>();
+
+        public ResultViewType ViewType { get; set; }
 
         public List<ResultSpecificationField> GetSortedFields()
-            => ResultSpecifications.SelectMany(x => x.GetSortedFields()).ToList();
+            => Specifications.SelectMany(x => x.GetSortedFields()).ToList();
     }
 }

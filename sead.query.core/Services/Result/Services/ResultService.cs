@@ -33,6 +33,7 @@ namespace SeadQueryCore.Services.Result
             var querySetup = QuerySetupBuilder
                 .Build(facetsConfig, resultConfig.Facet, queryFields);
 
+            // var sqlQuery = resultConfig.ViewType.GetSqlCompiler()
             var sqlQuery = SqlCompilerLocator
                 .Locate(resultConfig.ViewTypeId)
                     .Compile(querySetup, resultConfig.Facet, queryFields);

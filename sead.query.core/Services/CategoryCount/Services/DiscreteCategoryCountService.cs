@@ -23,26 +23,24 @@ namespace SeadQueryCore
 
         protected override string Compile(Facet facet, FacetsConfig2 facetsConfig, string payload)
         {
-            Facet computeFacet = Facets.Get(facet.AggregateFacetId);
-            Facet targetFacet  = Facets.GetByCode(facetsConfig.TargetCode);
+            // FIXME: Fix confusing args, when does facet differ from targetFacet?
+            var aggregateFacet = Facets.Get(facet.AggregateFacetId);
+            var targetFacet = Facets.GetByCode(facetsConfig.TargetCode);
+            var tableNames = GetTables(facetsConfig, targetFacet, aggregateFacet);
+            var facetCodes = facetsConfig.GetFacetCodes();
 
-            List<string> tables     = GetTables(facetsConfig, targetFacet, computeFacet);
-            List<string> facetCodes = facetsConfig.GetFacetCodes();
+            facetCodes.InsertAt(targetFacet.FacetCode, aggregateFacet.FacetCode);
 
-            facetCodes.InsertAt(targetFacet.FacetCode, computeFacet.FacetCode);
-
-            QuerySetup query = QuerySetupBuilder.Build(facetsConfig, computeFacet, tables, facetCodes);
-            string sql = CountSqlCompiler.Compile(query, targetFacet, computeFacet, Coalesce(facet.AggregateType, "count"));
+            var querySetup = QuerySetupBuilder.Build(facetsConfig, aggregateFacet, tableNames, facetCodes);
+            var sql = CountSqlCompiler.Compile(querySetup, targetFacet, aggregateFacet, Coalesce(facet.AggregateType, "count"));
             return sql;
         }
 
         private List<string> GetTables(FacetsConfig2 facetsConfig, Facet targetFacet, Facet computeFacet)
         {
-            List<string> tables = targetFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName).ToList();
-            if (computeFacet.FacetCode != targetFacet.FacetCode) {
-                tables.AddRange(computeFacet.Tables.Select(x => x.ResolvedAliasOrTableOrUdfName));
-            }
-            return tables.Distinct().ToList();
+            return targetFacet.GetResolvedTableNames()
+                .Union(computeFacet.GetResolvedTableNames())
+                    .Distinct().ToList();
         }
 
         private string Category2String(IDataReader x, int ordinal)
