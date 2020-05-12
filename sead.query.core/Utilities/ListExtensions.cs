@@ -13,11 +13,6 @@ namespace SeadQueryCore
             return array;
         }
 
-        public static IEnumerable<string> AppendIf(this IEnumerable<string> array, string element)
-        {
-            return element.IsEmpty() ? array : array.Append(element);
-        }
-
         public static string Combine(this List<string> array, string glue)
         {
             return String.Join(glue, array);

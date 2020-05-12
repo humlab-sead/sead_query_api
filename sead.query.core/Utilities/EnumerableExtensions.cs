@@ -7,6 +7,11 @@ namespace SeadQueryCore
     public static class IEnumerableExtensions
     {
 
+        public static IEnumerable<string> AppendIf(this IEnumerable<string> array, string element)
+        {
+            return element.IsEmpty() ? array : array.Append(element);
+        }
+
         public static IEnumerable<T> AddUnion<T>(this IEnumerable<T> values, T value)
             => value == null ? values : values.Union(new List<T> { value });
 
