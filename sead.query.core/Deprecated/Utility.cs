@@ -8,15 +8,8 @@ using System.IO;
 
 namespace SeadQueryCore
 {
-
     public static class Utility {
 
-        public static string Coalesce(params string[] data)
-        {
-            return data.FirstOrDefault(x => !x.IsEmpty()) ?? "";
-        }
-
-        public static List<T> ToList<T>(params T[] items) => new List<T>(items);
 
         public static string ToJson(object value)
         {
