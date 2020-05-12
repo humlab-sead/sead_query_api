@@ -45,22 +45,6 @@ namespace SQT.Model
                 }
             };
         }
-
-        //private ResultSpecification CreateMockedResultSpecification()
-        //{
-        //    var field1 = new Mock<ResultSpecificationField>();
-        //    field1.Setup(o => o.FieldType.IsResultValue).Returns(false);
-        //    field1.Setup(o => o.SpecificationFieldId).Returns(1);
-
-        //    var field2 = new Mock<ResultSpecificationField>();
-        //    field2.Setup(o => o.FieldType.IsResultValue).Returns(true);
-        //    field1.Setup(o => o.SpecificationFieldId).Returns(2);
-
-        //    var fields = (new List<ResultSpecificationField>() { field1.Object, field2.Object });
-        //    var mockResultSpecification = new Mock<ResultSpecification>();
-        //    mockResultSpecification.Setup(x => x.Fields).Returns<ICollection<ResultSpecificationField>>(_ => fields);
-
-        //    return mockResultSpecification.Object;
         //}
 
         [Fact]

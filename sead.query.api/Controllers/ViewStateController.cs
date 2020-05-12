@@ -47,6 +47,5 @@ namespace SeadQueryAPI.Controllers
             Context.Commit();
             return viewstate;
         }
-
     }
 }

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using static SeadQueryCore.Utility;
 
 namespace SeadQueryCore
 {
@@ -28,7 +27,7 @@ namespace SeadQueryCore
         public virtual CategoryCountData Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery=null)
         {
             var sqlQuery = Compile(Facets.GetByCode(facetCode), facetsConfig, intervalQuery);
-            var categoryCounts = Query(sqlQuery).ToDictionary(z => Coalesce(z.Category, "(null)"));
+            var categoryCounts = Query(sqlQuery).ToDictionary(z => z.Category ?? "(null)");
 
             return new CategoryCountData {
                 SqlQuery = sqlQuery,

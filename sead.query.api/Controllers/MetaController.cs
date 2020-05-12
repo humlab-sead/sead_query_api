@@ -74,6 +74,5 @@ namespace SeadQueryAPI.Controllers
             var groups = Context.FacetGroups.GetAll().ToList();
             return new FacetMetaData() { FacetGroup = groups, FacetType = types };
         }
-
     }
 }

@@ -1,5 +1,4 @@
-﻿using static SeadQueryCore.Utility;
-
+﻿
 namespace SeadQueryCore
 {
     public class DiscreteContentSqlCompiler : IDiscreteContentSqlCompiler

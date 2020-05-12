@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using static SeadQueryCore.Utility;
 
 namespace SeadQueryCore
 {
@@ -32,7 +31,7 @@ namespace SeadQueryCore
             facetCodes.InsertAt(targetFacet.FacetCode, aggregateFacet.FacetCode);
 
             var querySetup = QuerySetupBuilder.Build(facetsConfig, aggregateFacet, tableNames, facetCodes);
-            var sql = CountSqlCompiler.Compile(querySetup, targetFacet, aggregateFacet, Coalesce(facet.AggregateType, "count"));
+            var sql = CountSqlCompiler.Compile(querySetup, targetFacet, aggregateFacet, facet.AggregateType ?? "count");
             return sql;
         }
 

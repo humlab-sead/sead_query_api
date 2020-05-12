@@ -36,37 +36,7 @@ namespace SQT.Model
             // Assert
             Assert.Equal(json1, json2);
         }
-        /*
-        country@240,58/site@957,958/ecocode&12,28
 
-        "facet_code"	                            "display_title"	                               "reload_as_target"
-        "tbl_denormalized_measured_values_33_82"	"MS Heating 550"	                "range"	    true
-        "geochronology"	                            "Geochronology"	                    "range"	    true
-        "relative_age_name"	                        "Time periods"	                    "discrete"	false
-        "record_types"	                            "Proxy types"	                    "discrete"	false
-        "sites"	                                    "Site"	                            "discrete"	false
-        "ecocode"	                                "Eco code"	                        "discrete"	false
-        "family"	                                "Family"	                        "discrete"	false
-        "genus"	                                    "Genus"	                            "discrete"	false
-        "species_author"	                        "Author"	                        "discrete"	false
-        "feature_type"	                            "Feature type"	                    "discrete"	false
-        "ecocode_system"	                        "Eco code system"	                "discrete"	false
-        "abundance_classification"	                "abundance classification"	        "discrete"	false
-        "abundances_all"	                        "Abundances"	                    "range"	    true
-        "activeseason"	                            "Seasons"	                        "discrete"	false
-        "tbl_biblio_modern"	                        "Bibligraphy modern"	            "discrete"	false
-        "tbl_biblio_sample_groups"	                "Bibligraphy sites/Samplegroups"	"discrete"	false
-        "tbl_biblio_sites"	                        "Bibligraphy sites"	                "discrete"	false
-        "dataset_master"	                        "Master datasets"	                "discrete"	false
-        "dataset_methods"	                        "Dataset methods"	                "discrete"	false
-        "region"	                                "Region"	                        "discrete"	false
-        "tbl_denormalized_measured_values_33_0"	    "Magnetic sus."	                    "range"	    true
-        "tbl_denormalized_measured_values_32"	    "Loss of Ignition"	                "range"	    true
-        "tbl_denormalized_measured_values_37"	    "Phosphates"	                    "range"	    true
-        "species"	                                "Taxon"	                            "discrete"	false
-        "country"	                                "Countries"	                        "discrete"	false
-        "sample_groups"	                            "Sample groups"	                    "discrete"	false
-        */
         [Theory]
         [InlineData("sites:sites", "sites")]
         [InlineData("country:country/sites", "sites")]

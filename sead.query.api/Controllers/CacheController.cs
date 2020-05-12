@@ -6,7 +6,7 @@ namespace query_sead_net.Controllers
     [Route("api/[controller]")]
     public class CacheController : Controller
     {
-        private ISeadQueryCache cache;
+        private readonly ISeadQueryCache cache;
 
         public CacheController(ISeadQueryCache cache)
         {
