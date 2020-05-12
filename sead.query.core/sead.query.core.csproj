@@ -14,13 +14,19 @@
 
   <ItemGroup>
     <Compile Remove="CategoryDistributionLoader.cs" />
+    <Compile Remove="Deprecated\DumpUtility.cs" />
     <Compile Remove="Deprecated\ICategoryBoundsService.cs" />
+    <Compile Remove="Deprecated\QuerySetupHelper.cs" />
     <Compile Remove="Deprecated\RangeCategoryBoundsService.cs" />
+    <Compile Remove="Deprecated\Utility.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Deprecated\DumpUtility.cs" />
     <None Include="Deprecated\ICategoryBoundsService.cs" />
+    <None Include="Deprecated\QuerySetupHelper.cs" />
     <None Include="Deprecated\RangeCategoryBoundsService.cs" />
+    <None Include="Deprecated\Utility.cs" />
   </ItemGroup>
 
   <ItemGroup>
