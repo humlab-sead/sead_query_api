@@ -15,22 +15,19 @@ namespace SQT.Services
         }
 
         [Theory]
-        [InlineData("sites:sites")]
-        public void Load_UsingVariousConfigs_LoadsSuccessfully(string uri)
+        [InlineData("sites:sites", 5)]
+        public void Load_UsingVariousConfigs_LoadsSuccessfully(string uri, int nCount)
         {
             // Arrange
             var fakeSettings = FakeFacetSetting();
             var fakeRegistry = FakeRegistry();
-
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
-            var mockCategoryCountSqlCompiler = MockDiscreteCategoryCountSqlCompiler(returnSql: "SELECT * FROM foot.bar");
-            var queryProxy = new MockTypedQueryProxyFactory()
-                .Create<DiscreteCountDataReaderBuilder, CategoryCountItem>(3);
+            var mockCategoryCountSqlCompiler = MockDiscreteCategoryCountSqlCompiler(returnSql: "SELECT * FROM foo.bar");
+            var fakeCategoryCountItems = FakeDiscreteCategoryCountItems(nCount);
+            var queryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
 
             // Act
-
             var service = new DiscreteCategoryCountService(
                 fakeSettings,
                 fakeRegistry,

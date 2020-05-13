@@ -16,7 +16,6 @@ namespace SQT.Services
     [Collection("JsonSeededFacetContext")]
     public class ResultServiceTests : DisposableFacetContextContainer
     {
-
         public ResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
         {
         }
@@ -52,6 +51,7 @@ namespace SQT.Services
         }
 
         [Theory]
+        [InlineData("sites:country@5/sites@4,5", "result_facet", "site_level", "map", 10)]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "map", 10)]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular", 10)]
         public void Load_VariousConfigs_Success(string uri, string resultCode, string specificationKey, string viewType, int testItemCount)

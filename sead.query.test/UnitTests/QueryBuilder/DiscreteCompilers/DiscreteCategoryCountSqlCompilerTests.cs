@@ -33,7 +33,6 @@ namespace SQT.SqlCompilers
             // Assert
 
             var matcher = new DiscreteCategoryCountSqlCompilerMatcher();
-
             var match = matcher.Match(sqlQuery.Squeeze());
 
             Assert.True(match.Success);
