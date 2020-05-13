@@ -35,6 +35,7 @@
     <Compile Remove="Archived\FakeFacetContextSeeder.cs" />
     <Compile Remove="Archived\FakeRepository.cs" />
     <Compile Remove="Archived\QuerySetupFixtures.cs" />
+    <Compile Remove="Archived\ReportServiceTests.cs" />
     <Compile Remove="Archived\RepositoryMocks\FacetRepository.cs" />
     <Compile Remove="Archived\RepositoryMocks\FacetTypeRepository.cs" />
     <Compile Remove="Archived\RepositoryMocks\FakeFacetContext.cs" />
@@ -51,6 +52,7 @@
     <None Include="Archived\FakeFacetContextFactory.cs" />
     <None Include="Archived\FakeFacetContextSeeder.cs" />
     <None Include="Archived\QuerySetupFixtures.cs" />
+    <None Include="Archived\ReportServiceTests.cs" />
     <None Include="Archived\RepositoryMocks\FacetRepository.cs" />
     <None Include="Archived\RepositoryMocks\FacetTypeRepository.cs" />
     <None Include="Archived\RepositoryMocks\FakeFacetContext.cs" />
