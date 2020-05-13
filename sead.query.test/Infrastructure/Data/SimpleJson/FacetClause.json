@@ -1,0 +1,86 @@
+[
+  {
+    "FacetClauseId": 1,
+    "FacetId": 32,
+    "Clause": "facet.view_abundance.abundance is not null",
+    "EnforceConstraint": false
+  },
+  {
+    "FacetClauseId": 2,
+    "FacetId": 21,
+    "Clause": "countries.location_type_id=1",
+    "EnforceConstraint": false
+  },
+  {
+    "FacetClauseId": 3,
+    "FacetId": 25,
+    "Clause": "tbl_sites.site_id is not null",
+    "EnforceConstraint": false
+  },
+  {
+    "FacetClauseId": 4,
+    "FacetId": 33,
+    "Clause": "facet.view_abundance.abundance is not null",
+    "EnforceConstraint": false
+  },
+  {
+    "FacetClauseId": 5,
+    "FacetId": 36,
+    "Clause": "facet.view_sample_group_references.biblio_id is not null",
+    "EnforceConstraint": false
+  },
+  {
+    "FacetClauseId": 6,
+    "FacetId": 37,
+    "Clause": "facet.view_site_references.biblio_id is not null",
+    "EnforceConstraint": false
+  },
+  {
+    "FacetClauseId": 35,
+    "FacetId": 1001,
+    "Clause": "tbl_datasets.method_id in (3, 6)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 36,
+    "FacetId": 1002,
+    "Clause": "tbl_datasets.method_id in (4, 8)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 37,
+    "FacetId": 1003,
+    "Clause": "tbl_datasets.method_id in (14, 15, 21)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 38,
+    "FacetId": 1004,
+    "Clause": "tbl_datasets.method_id in (32, 33, 35, 36, 37, 94, 106)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 39,
+    "FacetId": 1005,
+    "Clause": "tbl_datasets.method_id in (10)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 40,
+    "FacetId": 1006,
+    "Clause": "tbl_datasets.method_id in (172, 171)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 41,
+    "FacetId": 1007,
+    "Clause": "tbl_datasets.method_id in (175)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 44,
+    "FacetId": 41,
+    "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
+    "EnforceConstraint": true
+  }
+]

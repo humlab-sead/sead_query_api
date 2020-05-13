@@ -43,9 +43,9 @@ namespace SQT
         public static Setting GetSettings(Dictionary<string, string> memorySettings = null)
         {
             var config = new ConfigurationBuilder()
-                .AddInMemoryCollection(memorySettings ?? new Dictionary<string, string>())
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
+                .AddInMemoryCollection(memorySettings ?? new Dictionary<string, string>())
                 .Build()
                 .GetSection("QueryBuilderSetting")
                 .Get<Setting>();
@@ -59,18 +59,5 @@ namespace SQT
             return options.Object;
         }
 
-        //public static Dictionary<string, string> DefaultSettings()
-        //{
-        //    var defaultSettings = new Dictionary<string, string>
-        //    {
-        //        { "QueryBuilderSetting:Facet:CountTable",           "tbl_analysis_entities"                     },
-        //        { "QueryBuilderSetting:Facet:CountColumn",          "tbl_analysis_entities.analysis_entity_id"  },
-        //        { "QueryBuilderSetting:Store:Host",                 "seadserv.humlab.umu.se"                    },
-        //        { "QueryBuilderSetting:Store:Port",                 "5432"                                      },
-        //        { "QueryBuilderSetting:Store:Database",             "sead_staging"                              },
-        //        { "QueryBuilderSetting:Store:UseRedisCache",        "false"                                     }
-        //    };
-        //    return defaultSettings;
-        //}
     }
 }

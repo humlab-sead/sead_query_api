@@ -1,0 +1,26 @@
+[
+  {
+    "FacetGroupId": 99,
+    "FacetGroupKey": "ROOT",
+    "DisplayTitle": "ROOT",
+    "Description": "ROOT",
+    "IsApplicable": false,
+    "IsDefault": false
+  },
+  {
+    "FacetGroupId": 1,
+    "FacetGroupKey": "others",
+    "DisplayTitle": "Others",
+    "Description": "Others",
+    "IsApplicable": true,
+    "IsDefault": false
+  },
+  {
+    "FacetGroupId": 999,
+    "FacetGroupKey": "DOMAIN",
+    "DisplayTitle": "DOMAIN",
+    "Description": "DOMAIN",
+    "IsApplicable": false,
+    "IsDefault": false
+  }
+]

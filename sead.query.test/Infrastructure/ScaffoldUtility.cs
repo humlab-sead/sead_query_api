@@ -25,9 +25,14 @@ namespace SQT.Infrastructure
                 IgnoreDefaultValues = false
             };
 
-        public static DbContextOptionsBuilder<FacetContext> GetDbContextOptionBuilder()
+        public static DbContextOptionsBuilder<FacetContext> GetDbContextOptionBuilder(string hostName, string databaseName)
         {
-            var connectionString = ConnectionStringFactory.Create();
+            var defaultSettings = new Dictionary<string, string>
+            {
+                { "QueryBuilderSetting:Store:Host",     hostName     },
+                { "QueryBuilderSetting:Store:Database", databaseName }
+            };
+            var connectionString = ConnectionStringFactory.Create(defaultSettings);
             var optionsBuilder = new DbContextOptionsBuilder<FacetContext>();
             optionsBuilder.UseNpgsql(connectionString);
             return optionsBuilder;

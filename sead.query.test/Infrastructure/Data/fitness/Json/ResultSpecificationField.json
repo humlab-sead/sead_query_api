@@ -1,0 +1,58 @@
+[
+  {
+    "SpecificationFieldId": 3,
+    "SpecificationId": 1,
+    "FieldTypeId": "count_item",
+    "ResultFieldId": 3,
+    "SequenceId": 3
+  },
+  {
+    "SpecificationFieldId": 2,
+    "SpecificationId": 1,
+    "FieldTypeId": "text_agg_item",
+    "ResultFieldId": 2,
+    "SequenceId": 2
+  },
+  {
+    "SpecificationFieldId": 1,
+    "SpecificationId": 1,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 1,
+    "SequenceId": 1
+  },
+  {
+    "SpecificationFieldId": 4,
+    "SpecificationId": 1,
+    "FieldTypeId": "sort_item",
+    "ResultFieldId": 1,
+    "SequenceId": 99
+  },
+  {
+    "SpecificationFieldId": 8,
+    "SpecificationId": 2,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 11,
+    "SequenceId": 4
+  },
+  {
+    "SpecificationFieldId": 7,
+    "SpecificationId": 2,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 10,
+    "SequenceId": 3
+  },
+  {
+    "SpecificationFieldId": 6,
+    "SpecificationId": 2,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 9,
+    "SequenceId": 2
+  },
+  {
+    "SpecificationFieldId": 5,
+    "SpecificationId": 2,
+    "FieldTypeId": "single_item",
+    "ResultFieldId": 8,
+    "SequenceId": 1
+  }
+]

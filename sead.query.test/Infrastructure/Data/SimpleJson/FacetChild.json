@@ -1,0 +1,497 @@
+[
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "ecocode_system",
+    "Position": 1
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "ecocode",
+    "Position": 2
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "abundances_all",
+    "Position": 3
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "geochronology",
+    "Position": 4
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 5
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "activeseason",
+    "Position": 6
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "family",
+    "Position": 7
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "genus",
+    "Position": 8
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "species",
+    "Position": 9
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "species_author",
+    "Position": 10
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "feature_type",
+    "Position": 11
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 12
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "country",
+    "Position": 14
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "sites",
+    "Position": 15
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "sample_groups",
+    "Position": 16
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "rdb_systems",
+    "Position": 17
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "rdb_codes",
+    "Position": 18
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "ecocode_system",
+    "Position": 1
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "ecocode",
+    "Position": 2
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "abundances_all",
+    "Position": 3
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "geochronology",
+    "Position": 4
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 5
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "activeseason",
+    "Position": 6
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "family",
+    "Position": 7
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "genus",
+    "Position": 8
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "species",
+    "Position": 9
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "species_author",
+    "Position": 10
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "feature_type",
+    "Position": 11
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 12
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "country",
+    "Position": 14
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "sites",
+    "Position": 15
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "sample_groups",
+    "Position": 16
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "modification_types",
+    "Position": 22
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "abundance_elements",
+    "Position": 23
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "geochronology",
+    "Position": 4
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 5
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "sites",
+    "Position": 15
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "ecocode",
+    "Position": 2
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "family",
+    "Position": 7
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "genus",
+    "Position": 8
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "species_author",
+    "Position": 10
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "feature_type",
+    "Position": 11
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "ecocode_system",
+    "Position": 1
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "abundances_all",
+    "Position": 3
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "activeseason",
+    "Position": 6
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 12
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "country",
+    "Position": 14
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "sample_groups",
+    "Position": 16
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "species",
+    "Position": 9
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "abundance_elements",
+    "Position": 23
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_denormalized_measured_values_33_82",
+    "Position": 1
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "geochronology",
+    "Position": 3
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 4
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "sites",
+    "Position": 9
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "feature_type",
+    "Position": 5
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 6
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_denormalized_measured_values_33_0",
+    "Position": 15
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_denormalized_measured_values_37",
+    "Position": 2
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "country",
+    "Position": 8
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "sample_groups",
+    "Position": 10
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "data_types",
+    "Position": 13
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "tbl_denormalized_measured_values_32",
+    "Position": 14
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 12
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "geochronology",
+    "Position": 1
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 2
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "sites",
+    "Position": 11
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "family",
+    "Position": 3
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "genus",
+    "Position": 4
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "species_author",
+    "Position": 6
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "feature_type",
+    "Position": 7
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 8
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "species",
+    "Position": 5
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "geochronology",
+    "Position": 1
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 2
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "sites",
+    "Position": 11
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "feature_type",
+    "Position": 7
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 8
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "relative_age_name",
+    "Position": 2
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sites",
+    "Position": 11
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "feature_type",
+    "Position": 7
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "tbl_biblio_modern",
+    "Position": 8
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "data_types",
+    "Position": 21
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sample_group_sampling_contexts",
+    "Position": 20
+  }
+]

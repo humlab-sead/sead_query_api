@@ -1,0 +1,14 @@
+[
+  {
+    "SpecificationId": 1,
+    "SpecificationKey": "tabular_default",
+    "DisplayText": "Tabular default",
+    "IsActivated": true
+  },
+  {
+    "SpecificationId": 2,
+    "SpecificationKey": "map_default",
+    "DisplayText": "Map default",
+    "IsActivated": true
+  }
+]

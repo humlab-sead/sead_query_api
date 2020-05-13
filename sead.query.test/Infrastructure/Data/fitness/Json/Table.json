@@ -1,0 +1,128 @@
+[
+  {
+    "TableId": 1,
+    "TableOrUdfName": "arena",
+    "PrimaryKeyName": "arena_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 2,
+    "TableOrUdfName": "arena_type",
+    "PrimaryKeyName": "arena_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 3,
+    "TableOrUdfName": "dataset",
+    "PrimaryKeyName": "dataset_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 4,
+    "TableOrUdfName": "dataset_type",
+    "PrimaryKeyName": "dataset_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 5,
+    "TableOrUdfName": "endurance",
+    "PrimaryKeyName": "endurance_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 6,
+    "TableOrUdfName": "enterprise",
+    "PrimaryKeyName": "enterprise_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 7,
+    "TableOrUdfName": "enterprise_arena",
+    "PrimaryKeyName": "enterprise_arena_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 8,
+    "TableOrUdfName": "enterprise_property",
+    "PrimaryKeyName": "enterprise_property_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 9,
+    "TableOrUdfName": "enterprise_report",
+    "PrimaryKeyName": "enterprise_report_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 10,
+    "TableOrUdfName": "enterprise_type",
+    "PrimaryKeyName": "enterprise_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 11,
+    "TableOrUdfName": "method",
+    "PrimaryKeyName": "method_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 12,
+    "TableOrUdfName": "method_type",
+    "PrimaryKeyName": "method_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 13,
+    "TableOrUdfName": "player",
+    "PrimaryKeyName": "player_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 14,
+    "TableOrUdfName": "player_note",
+    "PrimaryKeyName": "player_note_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 15,
+    "TableOrUdfName": "player_type",
+    "PrimaryKeyName": "player_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 16,
+    "TableOrUdfName": "repetition",
+    "PrimaryKeyName": "repetition_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 17,
+    "TableOrUdfName": "report",
+    "PrimaryKeyName": "report_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 18,
+    "TableOrUdfName": "strength",
+    "PrimaryKeyName": "strength_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 19,
+    "TableOrUdfName": "team",
+    "PrimaryKeyName": "team_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 20,
+    "TableOrUdfName": "team_description",
+    "PrimaryKeyName": "team_description_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 21,
+    "TableOrUdfName": "fitness_test",
+    "PrimaryKeyName": "fitness_test_id",
+    "IsUdf": false
+  }
+]

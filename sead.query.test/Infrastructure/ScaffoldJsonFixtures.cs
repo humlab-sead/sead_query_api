@@ -30,9 +30,9 @@ namespace SQT.TestInfrastructure
             return serializer;
         }
 
-        private static FacetContext CreateContext()
+        private static FacetContext CreateContext(string hostName, string databaseName)
         {
-            var builder = ScaffoldUtility.GetDbContextOptionBuilder();
+            var builder = ScaffoldUtility.GetDbContextOptionBuilder(hostName, databaseName);
             return new FacetContext(builder.Options);
         }
 
@@ -41,16 +41,17 @@ namespace SQT.TestInfrastructure
         /// </summary>
         /// <param name="updateTheModel">Set to true if you want to update fixture</param>
         [Theory]
-        [InlineData(false)]
-        public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel)
+        [InlineData(true, "127.0.0.1", "fitness", "Infrastructure/Data/fitness/Json")]
+        [InlineData(false, "127.0.0.1", "sead_staging", "Infrastructure/Data/Json")]
+        public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string hostName, string databaseName, string folder)
         {
             if (!updateTheModel)
                 return;
 
             var serializer = CreateSerializer();
-            var path = ScaffoldUtility.JsonDataFolder();
+            var path = Path.Combine(ScaffoldUtility.GetRootFolder(), folder);
 
-            using (var context = CreateContext()) {
+            using (var context = CreateContext(hostName, databaseName)) {
                 new JsonWriterService(serializer).SerializeTypesToPath(context, ScaffoldUtility.GetModelTypes(), path);
             }
         }
