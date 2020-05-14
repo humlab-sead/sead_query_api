@@ -12,13 +12,9 @@ namespace SQT.Mocks
     {
         public JsonSeededFacetContextFixture Fixture { get; }
 
-        public JsonSeededFacetContext(DbContextOptions options, JsonSeededFacetContextFixture fixture) : this(options)
+        public JsonSeededFacetContext(DbContextOptions options, JsonSeededFacetContextFixture fixture) : base(options)
         {
             Fixture = fixture;
-        }
-
-        public JsonSeededFacetContext(DbContextOptions options) : base(options)
-        {
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
