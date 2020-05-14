@@ -19,9 +19,9 @@ namespace SQT.Infrastructure
         public string Folder { get; }
         public ICollection<Type> Types { get; }
 
-        public JsonSeededFacetContextFixture()
+        public JsonSeededFacetContextFixture(string folder)
         {
-            Folder = ScaffoldUtility.JsonDataFolder();
+            Folder = folder; // ScaffoldUtility.JsonDataFolder();
             Types = ScaffoldUtility.GetModelTypes();
             LazyItems = new Lazy<ItemsDictionary>(Load);
         }
