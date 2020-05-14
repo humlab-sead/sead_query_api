@@ -3,10 +3,8 @@
 # This script uses
 # dotnet tool uninstall --global dotnet-ef
 # dotnet tool install --global dotnet-ef
-# Not needed for .NET Code 2.1+
-# dotnet add package Microsoft.EntityFrameworkCore.Design
-# dotnet restore
-# dotnet ef
+# https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
+
 
 # Usage: dotnet ef dbcontext scaffold [arguments] [options]
 
@@ -36,13 +34,13 @@
 #   --no-color                             Don't colorize output.
 #   --prefix-output                        Prefix output with level.
 
-sc_host=seadserv.humlab.umu.se
+sc_host=127.0.0.1
 sc_db=sead_staging
 sc_user=${QueryBuilderSetting__Store__Username}
 sc_pwd=${QueryBuilderSetting__Store__Password}
 sc_provider=Npgsql.EntityFrameworkCore.PostgreSQL
-sc_schema=facet
+sc_schema=public
 
 sc_connection="Host=${sc_host};Database=${sc_db};Username=${sc_user};Password=${sc_pwd}"
 
-print dotnet ef dbcontext scaffold "${sc_connection}" ${sc_provider} --schema facet --context TestFacetDbContext --output-dir Models --json
+dotnet ef dbcontext scaffold "${sc_connection}" ${sc_provider} --force --schema public --context PublicTestDbContext --output-dir Infrastructure/Model --json

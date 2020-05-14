@@ -1,0 +1,128 @@
+[
+  {
+    "TableId": 1,
+    "TableOrUdfName": "residence",
+    "PrimaryKeyName": "residence_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 2,
+    "TableOrUdfName": "residence_type",
+    "PrimaryKeyName": "residence_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 3,
+    "TableOrUdfName": "game_plays",
+    "PrimaryKeyName": "game_plays_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 4,
+    "TableOrUdfName": "game_plays_type",
+    "PrimaryKeyName": "game_plays_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 5,
+    "TableOrUdfName": "play_property_span",
+    "PrimaryKeyName": "play_property_span_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 6,
+    "TableOrUdfName": "child",
+    "PrimaryKeyName": "child_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 7,
+    "TableOrUdfName": "child_residence",
+    "PrimaryKeyName": "child_residence_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 8,
+    "TableOrUdfName": "child_property",
+    "PrimaryKeyName": "child_property_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 9,
+    "TableOrUdfName": "child_report",
+    "PrimaryKeyName": "child_report_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 10,
+    "TableOrUdfName": "child_type",
+    "PrimaryKeyName": "child_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 11,
+    "TableOrUdfName": "method",
+    "PrimaryKeyName": "method_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 12,
+    "TableOrUdfName": "method_type",
+    "PrimaryKeyName": "method_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 13,
+    "TableOrUdfName": "toy",
+    "PrimaryKeyName": "toy_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 14,
+    "TableOrUdfName": "toy_note",
+    "PrimaryKeyName": "toy_note_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 15,
+    "TableOrUdfName": "toy_type",
+    "PrimaryKeyName": "toy_type_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 16,
+    "TableOrUdfName": "play_property_count",
+    "PrimaryKeyName": "play_property_count_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 17,
+    "TableOrUdfName": "report",
+    "PrimaryKeyName": "report_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 18,
+    "TableOrUdfName": "play_property_magnitude",
+    "PrimaryKeyName": "play_property_magnitude_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 19,
+    "TableOrUdfName": "toy_group",
+    "PrimaryKeyName": "toy_group_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 20,
+    "TableOrUdfName": "toy_group_description",
+    "PrimaryKeyName": "toy_group_description_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 21,
+    "TableOrUdfName": "play_with_toy",
+    "PrimaryKeyName": "play_with_toy_id",
+    "IsUdf": false
+  }
+]
