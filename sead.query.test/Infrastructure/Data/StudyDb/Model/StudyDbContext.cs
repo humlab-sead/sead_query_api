@@ -1,17 +1,16 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using SQT.Infrastructure;
+using SQT.Mocks;
 
 namespace SeadQueryTest.Infrastructure.Data.StudyModel.Model
 {
-    public partial class StudyDbContext : DbContext
+    public partial class StudyDbContext : JsonSeededFacetContext
     {
-        public StudyDbContext()
-        {
-        }
 
-        public StudyDbContext(DbContextOptions<StudyDbContext> options)
-            : base(options)
+        public StudyDbContext(DbContextOptions<StudyDbContext> options, JsonSeededFacetContextFixture fixture)
+            : base(options, fixture)
         {
         }
 
@@ -38,17 +37,9 @@ namespace SeadQueryTest.Infrastructure.Data.StudyModel.Model
         public virtual DbSet<SubjectNote> SubjectNote { get; set; }
         public virtual DbSet<SubjectType> SubjectType { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=127.0.0.1;Database=study_model;Username=humlab_admin;Password=Vua9VagZ");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Cohort>(entity =>
             {
                 entity.ToTable("cohort");
