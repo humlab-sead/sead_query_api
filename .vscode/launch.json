@@ -14,6 +14,11 @@
                "pipeProgram": "enter the fully qualified path for the pipe program name, for example '/usr/bin/ssh'",
                "pipeArgs": [],
                "debuggerPath": "enter the path for the debugger on the target machine, for example ~/vsdbg/vsdbg"
+           },
+           "logging": {
+               "moduleLoad": false,
+               "processExit": false,
+               "threadExit": false
            }
         },
         {
@@ -47,13 +52,23 @@
             "envFile": "${workspaceFolder}/conf/.env",
             "sourceFileMap": {
                 "/Views": "${workspaceRoot}/Views"
+            },
+            "logging": {
+                "moduleLoad": false,
+                "processExit": false,
+                "threadExit": false
             }
         },
         {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
-            "processId": "${command:pickProcess}"
+            "processId": "${command:pickProcess}",
+            "logging": {
+                "moduleLoad": false,
+                "processExit": false,
+                "threadExit": false
+            }
         }
     ]
 }
