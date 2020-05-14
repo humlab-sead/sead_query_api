@@ -3,8 +3,10 @@
 # This script uses
 # dotnet tool uninstall --global dotnet-ef
 # dotnet tool install --global dotnet-ef
-# https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
-
+# Not needed for .NET Code 2.1+
+# dotnet add package Microsoft.EntityFrameworkCore.Design
+# dotnet restore
+# dotnet ef
 
 # Usage: dotnet ef dbcontext scaffold [arguments] [options]
 
@@ -34,13 +36,20 @@
 #   --no-color                             Don't colorize output.
 #   --prefix-output                        Prefix output with level.
 
-sc_host=127.0.0.1
-sc_db=sead_staging
-sc_user=${QueryBuilderSetting__Store__Username}
-sc_pwd=${QueryBuilderSetting__Store__Password}
-sc_provider=Npgsql.EntityFrameworkCore.PostgreSQL
-sc_schema=public
+dbhost=127.0.0.1
+dbname=study_model
+# note name that contains : not allowed in bash
+# dbuser=${QueryBuilderSetting:Store:Username}
+# dbpwd=${QueryBuilderSetting:Store:Password}
+dbuser=humlab_admin
+dbpwd=secret
+dbprovider=Npgsql.EntityFrameworkCore.PostgreSQL
+dbschema=public
 
-sc_connection="Host=${sc_host};Database=${sc_db};Username=${sc_user};Password=${sc_pwd}"
+dotnetproject=../../../sead.query.test.csproj
+output_dir=Infrastructure/Data/StudyModel/Model
 
-dotnet ef dbcontext scaffold "${sc_connection}" ${sc_provider} --force --schema public --context PublicTestDbContext --output-dir Infrastructure/Model --json
+dbconnection="Host=${dbhost};Database=${dbname};Username=${dbuser};Password=${dbpwd}"
+
+dotnet ef dbcontext scaffold "${dbconnection}" ${dbprovider} --schema ${dbschema} \
+    --context StudyDbContext --output-dir ${output_dir} --json --project ${dotnetproject}
