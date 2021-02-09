@@ -7,6 +7,7 @@ using SeadQueryCore.Services.Result;
 using SQT.Infrastructure;
 using System;
 using System.Diagnostics;
+using System.IO;
 using Xunit;
 
 namespace SQT.Infrastructure
@@ -48,6 +49,14 @@ namespace SQT.Infrastructure
 
     public class DependencyInjectionTests
     {
+
+        private IContainer CreateDependencyContainer()
+        {
+            var folder = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
+            var container = DependencyService.CreateContainer(null, folder, null);
+            return container;
+        }
+
         [Fact]
         public void TestResolveService()
         {
@@ -92,7 +101,7 @@ namespace SQT.Infrastructure
         public void CanResolveRegisteredDependencies()
         {
             //using (var context = JsonSeededFacetContextFactory.Create())
-            using (var container = TestDependencyService.CreateContainer(null, null))
+            using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope()) {
                 Assert.NotNull(scope.Resolve<ISetting>());
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
@@ -123,7 +132,7 @@ namespace SQT.Infrastructure
         public void CanResolveResultSqlCompilerLocator()
         {
             //using (var context = JsonSeededFacetContextFactory.Create())
-            using (var container = TestDependencyService.CreateContainer(null, null))
+            using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope()) {
 
                 var locator = scope.Resolve<IResultSqlCompilerLocator>();
@@ -141,7 +150,7 @@ namespace SQT.Infrastructure
         [Fact]
         public void CannotResolveGeoDependency()
         {
-            using (var container = TestDependencyService.CreateContainer(null, null))
+            using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope()) {
 
                 Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));

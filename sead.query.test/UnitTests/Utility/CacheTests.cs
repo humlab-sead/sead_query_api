@@ -53,7 +53,7 @@ namespace SQT.Infrastructure
             var settingsMock = new Mock<ISetting>();
             settingsMock.Setup(x => x.Facet).Returns(new FacetSetting());
             settingsMock.Setup(x => x.Store).Returns(new StoreSetting());
-            using (var container = TestDependencyService.CreateContainer(null, settingsMock.Object))
+            using (var container = DependencyService.CreateContainer(null, ScaffoldUtility.JsonDataFolder(), settingsMock.Object))
             using (var scope = container.BeginLifetimeScope()) {
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
             }

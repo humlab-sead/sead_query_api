@@ -1,7 +1,4 @@
 ﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using SeadQueryAPI;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
@@ -9,22 +6,21 @@ using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
 using System;
 using System.Diagnostics;
-using Xunit;
 
 namespace SQT.Infrastructure
 {
-    public class TestDependencyService : Module, IDisposable
+    public class DependencyService : Module, IDisposable
     {
         public ISetting Options { get; set; }
 
         public IFacetContext FacetContext { get; set; } = null;
-        public JsonSeededFacetContextFixture Fixture { get; set; } = null;
+        public JsonFacetContextFixture Fixture { get; set; } = null;
 
         private readonly DisposableFacetContextContainer MockService;
 
-        public TestDependencyService()
+        public DependencyService(JsonFacetContextFixture fixture)
         {
-            Fixture = new JsonSeededFacetContextFixture();
+            Fixture = fixture;
             MockService = new DisposableFacetContextContainer(Fixture);
         }
 
@@ -132,12 +128,15 @@ namespace SQT.Infrastructure
             }
         }
 
-        public static IContainer CreateContainer(IFacetContext facetContext, ISetting options)
+        public static IContainer CreateContainer(IFacetContext facetContext, string jsonFolder, ISetting options)
         {
             var builder = new Autofac.ContainerBuilder();
-            var dependencyService = new TestDependencyService() { FacetContext = facetContext, Options = options };
+            var fixture = new JsonFacetContextFixture(jsonFolder);
+            var dependencyService = new DependencyService(fixture) { FacetContext = facetContext, Options = options };
             dependencyService.Load(builder);
             return builder.Build();
         }
     }
+
+
 }
