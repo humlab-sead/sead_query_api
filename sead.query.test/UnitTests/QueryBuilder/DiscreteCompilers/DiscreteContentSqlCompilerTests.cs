@@ -10,7 +10,7 @@ namespace SQT.SqlCompilers
     [Collection("JsonSeededFacetContext")]
     public class DiscreteContentSqlCompilerTests : DisposableFacetContextContainer
     {
-        public DiscreteContentSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public DiscreteContentSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

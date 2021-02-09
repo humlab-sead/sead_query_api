@@ -9,7 +9,7 @@ namespace SQT.Infrastructure.Repository
 {
     public class FacetRepositoryTests: DisposableFacetContextContainer
     {
-        public FacetRepositoryTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public FacetRepositoryTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -74,9 +74,9 @@ namespace SQT.Infrastructure.Repository
 
             var facets = new List<Facet>()
             {
-                FacetFactory.Fake("parent", discreteType, parentGroup, is_applicable: false),
-                FacetFactory.Fake("child 1", discreteType, childGroup),
-                FacetFactory.Fake("child 2", discreteType, childGroup)
+                FakeFacet("parent", discreteType, parentGroup, is_applicable: false),
+                FakeFacet("child 1", discreteType, childGroup),
+                FakeFacet("child 2", discreteType, childGroup)
             };
 
             var relations = new List<FacetChild>()

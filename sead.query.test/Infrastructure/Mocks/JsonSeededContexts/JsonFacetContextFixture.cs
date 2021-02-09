@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Xunit;
 
 namespace SQT.Infrastructure
 {
     using ItemsDictionary = Dictionary<Type, IEnumerable<object>>;
 
-    public class JsonSeededFacetContextFixture : IDisposable
+    public class JsonFacetContextFixture : IDisposable
     {
         /// <summary>
         /// Reads Json Facet Schema entities and stores them in a dictionary
@@ -19,7 +18,7 @@ namespace SQT.Infrastructure
         public string Folder { get; }
         public ICollection<Type> Types { get; }
 
-        public JsonSeededFacetContextFixture(string folder)
+        public JsonFacetContextFixture(string folder)
         {
             Folder = folder; // ScaffoldUtility.JsonDataFolder();
             Types = ScaffoldUtility.GetModelTypes();
@@ -44,14 +43,6 @@ namespace SQT.Infrastructure
             // ... clean up test data...
         }
 
-    }
-
-    [CollectionDefinition("JsonSeededFacetContext")]
-    public class JsonCollectionFixture : ICollectionFixture<JsonSeededFacetContextFixture>
-    {
-        // This class has no code, and is never created. Its purpose is simply
-        // to be the place to apply [CollectionDefinition] and all the
-        // ICollectionFixture<> interfaces.
     }
 
 }

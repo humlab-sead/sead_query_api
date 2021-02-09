@@ -10,7 +10,7 @@ namespace SQT.Infrastructure.Repository
     [Collection("JsonSeededFacetContext")]
     public class ViewStateRepositoryTests : DisposableFacetContextContainer
     {
-        public ViewStateRepositoryTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public ViewStateRepositoryTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

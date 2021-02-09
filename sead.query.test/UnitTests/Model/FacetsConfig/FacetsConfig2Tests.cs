@@ -18,7 +18,7 @@ namespace SQT.Model
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;
 
-        public FacetsConfig2Tests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public FacetsConfig2Tests(JsonFacetContextFixture fixture) : base(fixture)
         {
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }

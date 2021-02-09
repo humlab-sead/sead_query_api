@@ -21,7 +21,7 @@ namespace SQT
     [Collection("JsonSeededFacetContext")]
     public class DisposableFacetContextContainer : IDisposable
     {
-        private readonly JsonSeededFacetContextFixture __fixture;
+        private readonly JsonFacetContextFixture __fixture;
 
         private readonly Lazy<DbConnection> __DbConnection;
         private readonly Lazy<DbContextOptions> __DbContextOptions;
@@ -29,7 +29,7 @@ namespace SQT
         private readonly Lazy<RepositoryRegistry> __RepositoryRegistry;
         private readonly Lazy<ISetting> __Settings;
 
-        public virtual JsonSeededFacetContextFixture Fixture => __fixture;
+        public virtual JsonFacetContextFixture Fixture => __fixture;
         public virtual ISetting Settings => __Settings.Value;
         public virtual DbConnection DbConnection => __DbConnection.Value;
         public virtual DbContextOptions DbContextOptions => __DbContextOptions.Value;
@@ -51,7 +51,7 @@ namespace SQT
         public virtual RepositoryRegistry CreateRepositoryRegistry()
             => new RepositoryRegistry(FacetContext);
 
-        public DisposableFacetContextContainer(JsonSeededFacetContextFixture fixture)
+        public DisposableFacetContextContainer(JsonFacetContextFixture fixture)
         {
             __fixture = fixture;
             __DbConnection = new Lazy<DbConnection>(CreateDbConnection);
@@ -91,6 +91,28 @@ namespace SQT
             mockRegistry.Setup(r => r.Facets).Returns(Registry.Facets);
             return mockRegistry;
         }
+
+        public virtual Facet FakeFacet(
+            string facetCode,
+            FacetType t,
+            FacetGroup g,
+            bool is_applicable = true
+        ) =>
+            new Facet
+            {
+                FacetCode = facetCode,
+                CategoryIdExpr = Guid.NewGuid().ToString(),
+                CategoryNameExpr = Guid.NewGuid().ToString(),
+                Description = Guid.NewGuid().ToString(),
+                DisplayTitle = Guid.NewGuid().ToString(),
+                AggregateType = "",
+                AggregateTitle = "",
+                AggregateFacetId = 0,
+                SortExpr = "",
+                FacetGroup = g,
+                FacetType = t,
+                IsApplicable = is_applicable
+            };
 
         public FacetsConfig2 FakeFacetsConfig(string uri)
             => new MockFacetsConfigFactory(Registry.Facets).Create(uri);

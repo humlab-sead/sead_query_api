@@ -13,7 +13,7 @@ namespace SQT.Services
     public class RangeCategoryCountServiceTests : DisposableFacetContextContainer
     {
 
-        public RangeCategoryCountServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public RangeCategoryCountServiceTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

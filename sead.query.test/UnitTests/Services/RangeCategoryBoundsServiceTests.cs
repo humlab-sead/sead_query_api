@@ -11,7 +11,7 @@ namespace SQT.Services
     [Collection("JsonSeededFacetContext")]
     public class RangeCategoryBoundsServiceTests : DisposableFacetContextContainer
     {
-        public RangeCategoryBoundsServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public RangeCategoryBoundsServiceTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
     }
