@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class TestHostBuilderFixture<T> : IDisposable where T: class, new()
+    public class TestHostFixture<T> : IDisposable where T: class, new()
     {
         public IHostBuilder Builder;
         public Task<IHost> Server;
         public HttpClient Client;
-        public TestHostBuilderFixture()
+        public TestHostFixture()
         {
-            Builder = new SeadTestHostBuilder().Create<T>();
+            Builder = new TestHostBuilder().Create<T>("apa");
             Server = Builder.StartAsync();
             Client = Server.Result.GetTestClient();
         }

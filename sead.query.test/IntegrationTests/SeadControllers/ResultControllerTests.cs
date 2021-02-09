@@ -13,13 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationTests
+namespace IntegrationTests.Sead
 {
-    public class ResultTestStartupWithContainer : TestStartup<TestDependencyService>
-    {
-    }
 
-    public class ResultTestHostWithContainer : TestHostBuilderFixture<ResultTestStartupWithContainer>
+    public class ResultTestHostWithContainer : TestHostFixture<FacetDependencyService>
     {
 
     }
@@ -27,10 +24,10 @@ namespace IntegrationTests
     [Collection("JsonSeededFacetContext")]
     public class ResultControllerTests : ControllerTest<ResultTestHostWithContainer>, IClassFixture<ResultTestHostWithContainer>
     {
-        public JsonSeededFacetContextFixture FacetContextFixture { get; }
+        public JsonFacetContextFixture FacetContextFixture { get; }
         public DisposableFacetContextContainer MockService { get; }
 
-        public ResultControllerTests(ResultTestHostWithContainer hostBuilderFixture, JsonSeededFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(ResultTestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
             MockService = new DisposableFacetContextContainer(facetContextFixture);
