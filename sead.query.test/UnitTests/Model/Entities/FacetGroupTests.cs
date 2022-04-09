@@ -25,7 +25,7 @@ namespace SQT.Model
             }
         };
 
-        public FacetGroupTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetGroupTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

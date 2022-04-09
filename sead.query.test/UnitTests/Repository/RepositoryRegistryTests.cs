@@ -14,7 +14,7 @@ namespace SQT.Infrastructure.Repository
     [Collection("JsonSeededFacetContext")]
     public class RepositoryRegistryTests : DisposableFacetContextContainer
         {
-        public RepositoryRegistryTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RepositoryRegistryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

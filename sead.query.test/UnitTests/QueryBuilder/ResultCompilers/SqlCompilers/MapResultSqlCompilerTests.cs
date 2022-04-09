@@ -10,7 +10,7 @@ namespace SQT.SqlCompilers
     [Collection("JsonSeededFacetContext")]
     public class MapResultSqlCompilerTests : DisposableFacetContextContainer
     {
-        public MapResultSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public MapResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

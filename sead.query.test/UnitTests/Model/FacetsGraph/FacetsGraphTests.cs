@@ -19,7 +19,7 @@ namespace SQT.Model
     [Collection("JsonSeededFacetContext")]
     public class FacetsGraphTests : DisposableFacetContextContainer
     {
-        public FacetsGraphTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetsGraphTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -34,7 +34,7 @@ namespace SQT.Model
             var container = DependencyService.CreateContainer(FacetContext, folder, null);
             return container;
         }
- 
+
         [Fact]
         public void GetEdge_ByNodeNames_WhenEdgeExists_ReturnsEdge()
         {

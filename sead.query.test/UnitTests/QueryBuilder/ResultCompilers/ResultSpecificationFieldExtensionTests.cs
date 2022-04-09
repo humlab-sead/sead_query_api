@@ -10,7 +10,7 @@ namespace SQT.QueryBuilder.ResultCompilers
     [Collection("JsonSeededFacetContext")]
 	public class ResultSpecificationFieldExtensionTests : DisposableFacetContextContainer
 	{
-		public ResultSpecificationFieldExtensionTests(JsonFacetContextFixture fixture) : base(fixture)
+		public ResultSpecificationFieldExtensionTests(SeadJsonFacetContextFixture fixture) : base(fixture)
 		{
 		}
 

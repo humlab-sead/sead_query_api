@@ -10,7 +10,7 @@ namespace SQT.Services
 {
     public class DeleteBogusPickServiceTests : DisposableFacetContextContainer
     {
-        public DeleteBogusPickServiceTests(JsonFacetContextFixture fixture) : base(fixture)
+        public DeleteBogusPickServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

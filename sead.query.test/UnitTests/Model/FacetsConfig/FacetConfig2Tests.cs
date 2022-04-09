@@ -10,7 +10,7 @@ namespace SQT.Model
     [Collection("JsonSeededFacetContext")]
     public class FacetConfig2Tests : DisposableFacetContextContainer
     {
-        public FacetConfig2Tests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetConfig2Tests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

@@ -9,7 +9,7 @@ namespace SQT.Infrastructure.Repository
 {
     public class FacetRepositoryTests: DisposableFacetContextContainer
     {
-        public FacetRepositoryTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

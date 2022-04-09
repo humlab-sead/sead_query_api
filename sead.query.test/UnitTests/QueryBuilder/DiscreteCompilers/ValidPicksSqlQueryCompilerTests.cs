@@ -8,7 +8,7 @@ namespace SQT.SqlCompilers
     [Collection("JsonSeededFacetContext")]
     public class ValidPicksSqlQueryCompilerTests : DisposableFacetContextContainer
     {
-        public ValidPicksSqlQueryCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public ValidPicksSqlQueryCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

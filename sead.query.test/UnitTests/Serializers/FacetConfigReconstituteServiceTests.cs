@@ -7,7 +7,7 @@ namespace SQT.Infrastructure
     [Collection("JsonSeededFacetContext")]
     public class FacetConfigReconstituteServiceTests : DisposableFacetContextContainer
     {
-        public FacetConfigReconstituteServiceTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetConfigReconstituteServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

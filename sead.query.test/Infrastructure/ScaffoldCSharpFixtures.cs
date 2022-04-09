@@ -14,7 +14,7 @@ namespace SQT.Infrastructure.Scaffolding
     {
         private Setting mockQueryBuilderSetting;
 
-        public GenerateCSharpFixures(JsonFacetContextFixture fixture) : base(fixture)
+        public GenerateCSharpFixures(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
              mockQueryBuilderSetting = new SQT.SettingFactory().Create().Value;
         }

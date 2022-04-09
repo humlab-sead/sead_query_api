@@ -11,7 +11,7 @@ namespace SQT.SqlCompilers
     [Collection("JsonSeededFacetContext")]
     public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer
     {
-        public RangeOuterBoundSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RangeOuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

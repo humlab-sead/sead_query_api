@@ -10,7 +10,7 @@ namespace SQT.SqlCompilers
     [Collection("JsonSeededFacetContext")]
     public class RangeFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
-        public RangeFacetPickFilterCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RangeFacetPickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
