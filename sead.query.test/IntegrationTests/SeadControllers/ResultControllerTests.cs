@@ -42,11 +42,12 @@ namespace IntegrationTests.Sead
             }
         }
 
-        public class LoadPayload {
-            #pragma warning disable IDE1006 // Naming Styles
+        public class LoadPayload
+        {
+#pragma warning disable IDE1006 // Naming Styles
             public FacetsConfig2 facetsConfig { get; set; }
             public ResultConfig resultConfig { get; set; }
-            #pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore IDE1006 // Naming Styles
         }
 
         protected StringContent FakeLoadResultPayload(string uri, string resultFacetCode, string specificationKey, string viewType)
@@ -129,7 +130,8 @@ namespace IntegrationTests.Sead
             var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/result/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -171,7 +173,8 @@ namespace IntegrationTests.Sead
             var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/result/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
