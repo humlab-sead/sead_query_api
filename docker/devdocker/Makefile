@@ -46,4 +46,10 @@ nuke:
 	-docker rm -fv `docker ps --all -q`
 	-docker images -q --filter "dangling=true" | xargs docker rmi
 
-.PHONY: bash clear_volumes clean down up follow build restart nuke network
+devdb:
+	-source ./create_dev_db.sh --create-database --create-users
+
+psql_client:
+	-sudo apt install postgresql-client-common postgresql-client
+
+.PHONY: bash clear_volumes clean down up follow build restart nuke network devdb psql_client
