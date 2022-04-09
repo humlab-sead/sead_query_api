@@ -8,13 +8,19 @@ namespace SQT.Mocks
 {
     internal static class JsonSeededFacetContextFactory
     {
-        public static FacetContext Create(DbContextOptions options, JsonFacetContextFixture fixture)
+        public static FacetContext Create(DbContextOptions options, JsonFacetContextFixture fixture, string modelSchemaFilename=null)
         {
-            using (var context = new JsonSeededFacetContext(options, fixture)) {
-                context.Database.EnsureCreated();
-                context.SaveChanges();
-            }
-            return new FacetContext(options);
+            var context = new JsonSeededFacetContext(options, fixture);
+            context.ExecuteRawSqlFile(modelSchemaFilename);
+            context.Database.EnsureCreated();
+            context.SaveChanges();
+            return context;
+            // using (var context = new JsonSeededFacetContext(options, fixture)) {
+            //     context.Database.EnsureCreated();
+            //     context.SaveChanges();
+            // }
+            // // FIXME: why not return context????
+            // return new FacetContext(options);
         }
     }
 }

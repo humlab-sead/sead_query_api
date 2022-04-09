@@ -97,9 +97,10 @@ namespace SQT.Infrastructure
             }
         }
 
-        [Fact]
+        [Fact(Skip="Skipped until #88 is fixed")]
         public void CanResolveRegisteredDependencies()
         {
+            // FIXME: #88 Make test use offline data fixtue
             //using (var context = JsonSeededFacetContextFactory.Create())
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope()) {

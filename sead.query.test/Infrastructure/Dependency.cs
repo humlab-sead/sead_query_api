@@ -22,6 +22,7 @@ namespace SQT.Infrastructure
         {
             Fixture = fixture;
             MockService = new DisposableFacetContextContainer(Fixture);
+            FacetContext = MockService.FacetContext;
         }
 
         public void Dispose()
