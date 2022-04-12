@@ -36,7 +36,10 @@ namespace SeadQueryAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+            //#if DEBUG
+            //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+            //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            //#endif
 
             // app.UseResponseBuffering();
 

@@ -42,7 +42,11 @@ namespace IntegrationTests
 
         public void Configure(IApplicationBuilder app)
         {
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+            //#if DEBUG
+            //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+            //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            //#endif
+
             //app.UseMvcWithDefaultRoute();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

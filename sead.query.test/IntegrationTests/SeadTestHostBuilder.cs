@@ -11,7 +11,10 @@ namespace IntegrationTests
     {
         public IHostBuilder Create<T>() where T : class
         {
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+//#if DEBUG
+//            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+//            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+//#endif
             return new HostBuilder()
                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                .ConfigureWebHost(webHost =>
