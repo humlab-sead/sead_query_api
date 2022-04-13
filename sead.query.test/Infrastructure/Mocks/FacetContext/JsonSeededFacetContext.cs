@@ -22,7 +22,8 @@ namespace SQT.Mocks
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            foreach (var type in ScaffoldUtility.GetModelTypes()) {
+            foreach (var type in ScaffoldUtility.GetModelTypes())
+            {
                 builder.Entity(type).HasData(Fixture.Items[type]);
             }
         }
