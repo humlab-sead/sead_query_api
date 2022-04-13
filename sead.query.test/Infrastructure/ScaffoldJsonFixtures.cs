@@ -41,7 +41,7 @@ namespace SQT.TestInfrastructure
         /// </summary>
         /// <param name="updateTheModel">Set to true if you want to update fixture</param>
         [Theory]
-        [InlineData(true, "127.0.0.1", "fitness", "Infrastructure/Data/fitness/Json")]
+        //[InlineData(true, "127.0.0.1", "fitness", "Infrastructure/Data/fitness/Json")]
         [InlineData(false, "127.0.0.1", "sead_staging", "Infrastructure/Data/Json")]
         public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string hostName, string databaseName, string folder)
         {
