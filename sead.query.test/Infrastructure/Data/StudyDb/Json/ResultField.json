@@ -1,0 +1,112 @@
+[
+  {
+    "ResultFieldId": 1,
+    "TableName": "child",
+    "ColumnName": "child.name",
+    "ResultFieldKey": "child",
+    "DisplayText": "Enterprise",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 2,
+    "TableName": "game_plays_type",
+    "ColumnName": "game_plays_type.name",
+    "ResultFieldKey": "game_plays_type",
+    "DisplayText": "Data type",
+    "FieldTypeId": "text_agg_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 3,
+    "TableName": "play_with_toy",
+    "ColumnName": "play_with_toy.play_with_toy_id",
+    "ResultFieldKey": "play_with_toy",
+    "DisplayText": "Fitness tests",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 4,
+    "TableName": "play_property_count",
+    "ColumnName": "play_property_count.count",
+    "ResultFieldKey": "play_property_count",
+    "DisplayText": "Number of play_property_counts",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 5,
+    "TableName": "game_plays",
+    "ColumnName": "tbl_game_playss.game_plays_name",
+    "ResultFieldKey": "game_plays",
+    "DisplayText": "Dataset",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 6,
+    "TableName": "toy_group",
+    "ColumnName": "toy_group.name",
+    "ResultFieldKey": "toy_group",
+    "DisplayText": "Team",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 7,
+    "TableName": "method",
+    "ColumnName": "method.method_name",
+    "ResultFieldKey": "method",
+    "DisplayText": "Method",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 8,
+    "TableName": "child",
+    "ColumnName": "category_id",
+    "ResultFieldKey": "category_id",
+    "DisplayText": "Enterprise ID",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 9,
+    "TableName": "child",
+    "ColumnName": "category_name",
+    "ResultFieldKey": "category_name",
+    "DisplayText": "Enterprise Name",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 10,
+    "TableName": "child",
+    "ColumnName": "latitude_dd",
+    "ResultFieldKey": "latitude_dd",
+    "DisplayText": "Latitude (dd)",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  },
+  {
+    "ResultFieldId": 11,
+    "TableName": "child",
+    "ColumnName": "longitude_dd",
+    "ResultFieldKey": "longitude_dd",
+    "DisplayText": "Longitude (dd)",
+    "FieldTypeId": "single_item",
+    "Activated": true,
+    "DataType": "text"
+  }
+]

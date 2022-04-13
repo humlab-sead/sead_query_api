@@ -1,0 +1,186 @@
+[
+  {
+    "TableRelationId": 1,
+    "SourceTableId": 1,
+    "TargetTableId": 2,
+    "Weight": 20,
+    "SourceColumName": "residence_type_id",
+    "TargetColumnName": "residence_type_id"
+  },
+  {
+    "TableRelationId": 2,
+    "SourceTableId": 11,
+    "TargetTableId": 17,
+    "Weight": 20,
+    "SourceColumName": "report_id",
+    "TargetColumnName": "report_id"
+  },
+  {
+    "TableRelationId": 3,
+    "SourceTableId": 11,
+    "TargetTableId": 12,
+    "Weight": 20,
+    "SourceColumName": "method_type_id",
+    "TargetColumnName": "method_type_id"
+  },
+  {
+    "TableRelationId": 4,
+    "SourceTableId": 6,
+    "TargetTableId": 10,
+    "Weight": 20,
+    "SourceColumName": "child_type_id",
+    "TargetColumnName": "child_type_id"
+  },
+  {
+    "TableRelationId": 5,
+    "SourceTableId": 8,
+    "TargetTableId": 6,
+    "Weight": 20,
+    "SourceColumName": "child_id",
+    "TargetColumnName": "child_id"
+  },
+  {
+    "TableRelationId": 6,
+    "SourceTableId": 7,
+    "TargetTableId": 1,
+    "Weight": 20,
+    "SourceColumName": "residence_id",
+    "TargetColumnName": "residence_id"
+  },
+  {
+    "TableRelationId": 7,
+    "SourceTableId": 7,
+    "TargetTableId": 6,
+    "Weight": 20,
+    "SourceColumName": "child_id",
+    "TargetColumnName": "child_id"
+  },
+  {
+    "TableRelationId": 8,
+    "SourceTableId": 9,
+    "TargetTableId": 6,
+    "Weight": 20,
+    "SourceColumName": "child_id",
+    "TargetColumnName": "child_id"
+  },
+  {
+    "TableRelationId": 9,
+    "SourceTableId": 9,
+    "TargetTableId": 17,
+    "Weight": 20,
+    "SourceColumName": "report_id",
+    "TargetColumnName": "report_id"
+  },
+  {
+    "TableRelationId": 10,
+    "SourceTableId": 3,
+    "TargetTableId": 4,
+    "Weight": 20,
+    "SourceColumName": "game_plays_type_id",
+    "TargetColumnName": "game_plays_type_id"
+  },
+  {
+    "TableRelationId": 11,
+    "SourceTableId": 3,
+    "TargetTableId": 11,
+    "Weight": 20,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "TableRelationId": 12,
+    "SourceTableId": 3,
+    "TargetTableId": 17,
+    "Weight": 20,
+    "SourceColumName": "report_id",
+    "TargetColumnName": "report_id"
+  },
+  {
+    "TableRelationId": 13,
+    "SourceTableId": 19,
+    "TargetTableId": 6,
+    "Weight": 20,
+    "SourceColumName": "child_id",
+    "TargetColumnName": "child_id"
+  },
+  {
+    "TableRelationId": 14,
+    "SourceTableId": 19,
+    "TargetTableId": 11,
+    "Weight": 20,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
+  },
+  {
+    "TableRelationId": 15,
+    "SourceTableId": 20,
+    "TargetTableId": 19,
+    "Weight": 20,
+    "SourceColumName": "toy_group_id",
+    "TargetColumnName": "toy_group_id"
+  },
+  {
+    "TableRelationId": 16,
+    "SourceTableId": 13,
+    "TargetTableId": 19,
+    "Weight": 20,
+    "SourceColumName": "toy_group_id",
+    "TargetColumnName": "toy_group_id"
+  },
+  {
+    "TableRelationId": 17,
+    "SourceTableId": 13,
+    "TargetTableId": 15,
+    "Weight": 20,
+    "SourceColumName": "toy_type_id",
+    "TargetColumnName": "toy_type_id"
+  },
+  {
+    "TableRelationId": 18,
+    "SourceTableId": 14,
+    "TargetTableId": 13,
+    "Weight": 20,
+    "SourceColumName": "toy_id",
+    "TargetColumnName": "toy_id"
+  },
+  {
+    "TableRelationId": 19,
+    "SourceTableId": 21,
+    "TargetTableId": 13,
+    "Weight": 20,
+    "SourceColumName": "toy_id",
+    "TargetColumnName": "toy_id"
+  },
+  {
+    "TableRelationId": 20,
+    "SourceTableId": 21,
+    "TargetTableId": 3,
+    "Weight": 20,
+    "SourceColumName": "game_plays_id",
+    "TargetColumnName": "game_plays_id"
+  },
+  {
+    "TableRelationId": 21,
+    "SourceTableId": 16,
+    "TargetTableId": 21,
+    "Weight": 20,
+    "SourceColumName": "play_with_toy_id",
+    "TargetColumnName": "play_with_toy_id"
+  },
+  {
+    "TableRelationId": 22,
+    "SourceTableId": 5,
+    "TargetTableId": 21,
+    "Weight": 20,
+    "SourceColumName": "play_with_toy_id",
+    "TargetColumnName": "play_with_toy_id"
+  },
+  {
+    "TableRelationId": 23,
+    "SourceTableId": 18,
+    "TargetTableId": 21,
+    "Weight": 20,
+    "SourceColumName": "play_with_toy_id",
+    "TargetColumnName": "play_with_toy_id"
+  }
+]
