@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System.Runtime.CompilerServices;
 using SeadQueryCore;
+
+[assembly: InternalsVisibleTo("sead.query.test")]
 
 namespace SeadQueryAPI
 {

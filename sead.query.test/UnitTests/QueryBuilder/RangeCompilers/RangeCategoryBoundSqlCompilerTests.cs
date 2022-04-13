@@ -12,7 +12,7 @@ namespace SQT.SqlCompilers
     public class RangeCategoryBoundSqlCompilerTests : DisposableFacetContextContainer
     {
 
-        public RangeCategoryBoundSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public RangeCategoryBoundSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

@@ -362,3 +362,4 @@ sead.query.test/RequestsRFC2616/format.json
 
 users.sql
 sead_staging_devdocker.sql*
+deprecated

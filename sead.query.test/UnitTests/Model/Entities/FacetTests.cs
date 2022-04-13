@@ -15,7 +15,7 @@ namespace SQT.Model
     public class FacetTests : DisposableFacetContextContainer
     {
 
-        public FacetTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public FacetTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

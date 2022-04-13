@@ -12,13 +12,14 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SQT.Model
 {
     [Collection("JsonSeededFacetContext")]
     public class FacetsGraphTests : DisposableFacetContextContainer
     {
-        public FacetsGraphTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public FacetsGraphTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -27,6 +28,13 @@ namespace SQT.Model
             return ScaffoldUtility.DefaultFacetsGraph(testContext);
         }
 
+        private IContainer CreateDependencyContainer()
+        {
+            var folder = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
+            var container = DependencyService.CreateContainer(FacetContext, folder, null);
+            return container;
+        }
+ 
         [Fact]
         public void GetEdge_ByNodeNames_WhenEdgeExists_ReturnsEdge()
         {
@@ -168,7 +176,7 @@ namespace SQT.Model
         [Fact]
         public void Build_WhenResolvedByIoC_HasExpectedEdges()
         {
-            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
+            using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope()) {
                 var service = scope.Resolve<IFacetsGraph>();
                 Assert.True(service.EdgeContaniner.Edges.Any());
@@ -178,7 +186,7 @@ namespace SQT.Model
         [Fact]
         public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
         {
-            using (var container = TestDependencyService.CreateContainer(FacetContext, null))
+            using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope()) {
                 // Arrange
                 var graph = scope.Resolve<IFacetsGraph>();

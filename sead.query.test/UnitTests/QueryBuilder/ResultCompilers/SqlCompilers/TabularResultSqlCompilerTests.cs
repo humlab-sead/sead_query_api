@@ -15,7 +15,7 @@ namespace SQT.QueryBuilder.ResultCompilers
     [Collection("JsonSeededFacetContext")]
     public class TabularResultSqlCompilerTests : DisposableFacetContextContainer
     {
-        public TabularResultSqlCompilerTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public TabularResultSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

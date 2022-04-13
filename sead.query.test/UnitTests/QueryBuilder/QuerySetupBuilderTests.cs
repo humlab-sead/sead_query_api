@@ -17,7 +17,7 @@ namespace SQT.QueryBuilder
     [Collection("JsonSeededFacetContext")]
     public class QuerySetupBuilderTests : DisposableFacetContextContainer
     {
-        public QuerySetupBuilderTests(JsonSeededFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
+        public QuerySetupBuilderTests(JsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
         {
             Output = output;
         }

@@ -16,7 +16,7 @@ namespace SQT.Services
     [Collection("JsonSeededFacetContext")]
     public class ResultServiceTests : DisposableFacetContextContainer
     {
-        public ResultServiceTests(JsonSeededFacetContextFixture fixture) : base(fixture)
+        public ResultServiceTests(JsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

@@ -8,26 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationTests
+namespace IntegrationTests.Sead
 {
 
-    public class FacetsControllerHostWithContainer : TestHostBuilderFixture<TestStartup<TestDependencyService>>
+    public class FacetsControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
-
-    }
-
-    public class FacetsControllerTests : ControllerTest<FacetsControllerHostWithContainer>, IClassFixture<FacetsControllerHostWithContainer>
-    {
-        public FacetsControllerTests(FacetsControllerHostWithContainer fixture): base(fixture)
+        public FacetsControllerTests(TestHostWithContainer fixture): base(fixture)
         {
         }
 
         [Fact]
         public async Task API_GET_Server_IsAwake()
         {
-            // var builder = new SeadTestHostBuilder().Create<TestStartup<TestDependencyService>>();
-            // using (var server = await Fixture.Builder.StartAsync())
-            // using (var client = await Fixture.Server.GetTestClient())
             using (var response = await Fixture.Client.GetAsync("api/facets")) {
                 response.EnsureSuccessStatusCode();
                 Assert.NotEmpty(await response.Content.ReadAsStringAsync());
