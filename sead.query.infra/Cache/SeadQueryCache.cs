@@ -28,19 +28,19 @@ namespace SeadQueryInfra
 
         public virtual T Get<T>(string key)
         {
-            return Cache.Get<T>(KeyPrefix+key);
+            return Cache.Get<T>(KeyPrefix + key);
         }
 
         public virtual void Set<T>(string key, T value, int duration)
         {
-            Cache.Put(KeyPrefix+key, value);
-            Cache.Expire(KeyPrefix+key, DateTime.Now.AddMinutes(duration));
+            Cache.Put(KeyPrefix + key, value);
+            Cache.Expire(KeyPrefix + key, DateTime.Now.AddMinutes(duration));
         }
 
         public virtual void SetSliding<T>(string key, T value, int duration)
         {
-            Cache.Put(KeyPrefix+key, value);
-            Cache.Expire(KeyPrefix+key, new TimeSpan(0, duration, 0));
+            Cache.Put(KeyPrefix + key, value);
+            Cache.Expire(KeyPrefix + key, new TimeSpan(0, duration, 0));
         }
 
         public virtual void Set<T>(string key, T value, DateTimeOffset expiration)
@@ -66,7 +66,7 @@ namespace SeadQueryInfra
 
         public virtual void Remove(string key)
         {
-            Cache.Remove(KeyPrefix+key);
+            Cache.Remove(KeyPrefix + key);
         }
 
         public virtual void Clear()

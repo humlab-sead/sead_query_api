@@ -25,13 +25,15 @@ namespace SeadQueryAPI.Serializers
         public FacetsConfig2 Reconstitute(FacetsConfig2 facetsConfig)
         {
             Debug.Assert(facetsConfig.TargetCode != null);
-            if (facetsConfig.TriggerCode.IsEmpty()) {
+            if (facetsConfig.TriggerCode.IsEmpty())
+            {
                 facetsConfig.TriggerCode = facetsConfig.TargetCode;
             }
             facetsConfig.DomainFacet = GetFacetByCode(facetsConfig.DomainCode);
             facetsConfig.TargetFacet = GetFacetByCode(facetsConfig.TargetCode);
 
-            foreach (var config in facetsConfig.FacetConfigs) {
+            foreach (var config in facetsConfig.FacetConfigs)
+            {
                 Reconstitute(config);
             }
 
@@ -54,10 +56,13 @@ namespace SeadQueryAPI.Serializers
             FacetsConfig2 facetsConfig = default(FacetsConfig2);
 
             var enclosedFacetsConfigsObject = JObject.Parse(json).SelectToken("FacetsConfig");
-            if (enclosedFacetsConfigsObject != null) {
+            if (enclosedFacetsConfigsObject != null)
+            {
                 var enclosedJson = enclosedFacetsConfigsObject.ToString();
                 facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(enclosedJson, SerializerSettings);
-            } else {
+            }
+            else
+            {
                 facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(json, SerializerSettings);
             }
             facetsConfig = Reconstitute(facetsConfig);

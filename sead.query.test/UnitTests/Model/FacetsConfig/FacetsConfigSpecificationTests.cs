@@ -29,7 +29,7 @@ namespace SQT.Model
             // Act
             var result = facetsConfigSpecification.IsSatisfiedBy(facetsConfig);
 
-           // Assert
+            // Assert
             Assert.True(result);
         }
 

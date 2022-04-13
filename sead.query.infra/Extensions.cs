@@ -10,9 +10,12 @@ namespace SeadQueryInfra
         public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException("assembly");
-            try {
+            try
+            {
                 return assembly.GetTypes();
-            } catch (ReflectionTypeLoadException e) {
+            }
+            catch (ReflectionTypeLoadException e)
+            {
                 return e.Types.Where(t => t != null);
             }
         }

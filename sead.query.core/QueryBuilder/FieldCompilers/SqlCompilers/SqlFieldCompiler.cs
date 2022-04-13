@@ -8,7 +8,8 @@ namespace SeadQueryCore
         {
             FieldType = fieldType;
         }
-        public virtual string Compile(string expr) {
+        public virtual string Compile(string expr)
+        {
             return expr;
         }
     }

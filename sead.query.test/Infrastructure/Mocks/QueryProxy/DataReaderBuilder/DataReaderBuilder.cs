@@ -23,7 +23,7 @@ namespace SQT.Infrastructure
             DataTable = new DataTable(tableName);
         }
 
-        protected DataReaderBuilder(string tableName, IEnumerable<DataColumn>  columns) : this(tableName)
+        protected DataReaderBuilder(string tableName, IEnumerable<DataColumn> columns) : this(tableName)
         {
             DataTable.Columns.AddRange(columns.ToArray());
         }
@@ -44,7 +44,8 @@ namespace SQT.Infrastructure
         {
             var row = new object[DataTable.Columns.Count];
             var i = 0;
-            foreach (DataColumn column in DataTable.Columns) {
+            foreach (DataColumn column in DataTable.Columns)
+            {
                 var value = new SpecimenContext(fixture).Resolve(column.DataType);
                 row[i++] = value;
             }
@@ -53,7 +54,8 @@ namespace SQT.Infrastructure
 
         public virtual DataReaderBuilder GenerateBogusRows(int numberOfRows = 3)
         {
-            foreach (var i in Enumerable.Range(1, numberOfRows)) {
+            foreach (var i in Enumerable.Range(1, numberOfRows))
+            {
                 AddRow(BogusRow(i));
             }
             return this;
@@ -66,7 +68,8 @@ namespace SQT.Infrastructure
         }
         public virtual DataReaderBuilder AddRows(IEnumerable<object[]> rows)
         {
-            foreach (var row in rows) {
+            foreach (var row in rows)
+            {
                 AddRow(row);
             }
             return this;

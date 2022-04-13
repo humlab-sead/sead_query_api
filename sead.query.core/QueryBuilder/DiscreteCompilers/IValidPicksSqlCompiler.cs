@@ -5,6 +5,6 @@ namespace SeadQueryCore
 {
     public interface IValidPicksSqlCompiler : ISqlCompiler
     {
-        string Compile(QuerySetup query,List<int> picks);
+        string Compile(QuerySetup query, List<int> picks);
     }
 }

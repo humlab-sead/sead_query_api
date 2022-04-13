@@ -112,7 +112,8 @@ namespace SQT.SQL.Matcher
             var expectedJoin = @"(?<JoinTable>[\w\."",\(\)]+)(?:AS (?<JoinAlias>[""\w]+\s))?(?: ON\s(?<JoinCriteria>.*))?";
 
             result.Items = new List<JoinMatch>();
-            foreach (var join in result.Joins) {
+            foreach (var join in result.Joins)
+            {
 
                 var joinItem = new JoinMatch();
                 result.Items.Add(joinItem);

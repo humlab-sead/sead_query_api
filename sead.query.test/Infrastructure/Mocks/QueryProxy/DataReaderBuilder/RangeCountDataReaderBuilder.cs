@@ -38,14 +38,15 @@ namespace SQT.Infrastructure
         {
             var lower = start;
             var upper = step;
-            for (var i = 0; i < numberOfRows; i++, lower += step, upper += step) {
+            for (var i = 0; i < numberOfRows; i++, lower += step, upper += step)
+            {
                 AddRow(new object[] {
                     $"{lower}-{upper}",
                     $"{lower}-{upper}",
                     lower,
                     upper,
                     fixture.Create<UInt16>()
-                }) ;
+                });
             }
             return this;
         }

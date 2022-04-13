@@ -36,17 +36,19 @@ namespace IntegrationTests.StudyDb
         [Fact]
         public async Task API_GET_Server_IsAwake()
         {
-            using (var response = await Fixture.Client.GetAsync("api/values")) {
+            using (var response = await Fixture.Client.GetAsync("api/values"))
+            {
                 response.EnsureSuccessStatusCode();
                 Assert.NotEmpty(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public class LoadPayload {
-            #pragma warning disable IDE1006 // Naming Styles
+        public class LoadPayload
+        {
+#pragma warning disable IDE1006 // Naming Styles
             public FacetsConfig2 facetsConfig { get; set; }
             public ResultConfig resultConfig { get; set; }
-            #pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore IDE1006 // Naming Styles
         }
 
         protected StringContent FakeLoadResultPayload(string uri, string resultFacetCode, string specificationKey, string viewType)

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public class JoinsClauseCompiler: IJoinsClauseCompiler
+    public class JoinsClauseCompiler : IJoinsClauseCompiler
     {
         public JoinsClauseCompiler(IFacetsGraph graph, IJoinSqlCompiler joinCompiler)
         {

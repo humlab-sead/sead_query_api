@@ -18,14 +18,15 @@ namespace IntegrationTests.StudyDb
 
     public class FacetsControllerTests : ControllerTest<FacetsControllerHostWithContainer>, IClassFixture<FacetsControllerHostWithContainer>
     {
-        public FacetsControllerTests(FacetsControllerHostWithContainer fixture): base(fixture)
+        public FacetsControllerTests(FacetsControllerHostWithContainer fixture) : base(fixture)
         {
         }
 
         [Fact]
         public async Task API_GET_Server_IsAwake()
         {
-            using (var response = await Fixture.Client.GetAsync("api/facets")) {
+            using (var response = await Fixture.Client.GetAsync("api/facets"))
+            {
                 response.EnsureSuccessStatusCode();
                 Assert.NotEmpty(await response.Content.ReadAsStringAsync());
             }
@@ -47,7 +48,8 @@ namespace IntegrationTests.StudyDb
         [Fact]
         public async Task API_GET_Facets_Success()
         {
-            using (var response = await Fixture.Client.GetAsync("api/facets")) {
+            using (var response = await Fixture.Client.GetAsync("api/facets"))
+            {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
@@ -61,7 +63,8 @@ namespace IntegrationTests.StudyDb
         [InlineData(10)]
         public async Task API_GET_Facets_ById_Success(int facetId)
         {
-            using (var response = await Fixture.Client.GetAsync($"api/facets/{facetId}")) {
+            using (var response = await Fixture.Client.GetAsync($"api/facets/{facetId}"))
+            {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 Facet facet = JsonConvert.DeserializeObject<Facet>(json.ToString());
@@ -72,7 +75,8 @@ namespace IntegrationTests.StudyDb
         [Fact]
         public async Task API_GET_Facets_Domain_Success()
         {
-            using (var response = await Fixture.Client.GetAsync("api/facets/domain")) {
+            using (var response = await Fixture.Client.GetAsync("api/facets/domain"))
+            {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());
@@ -86,7 +90,8 @@ namespace IntegrationTests.StudyDb
         [InlineData("isotope")]
         public async Task API_GET_Facets_Domain_ById_Success(string facetCode)
         {
-            using (var response = await Fixture.Client.GetAsync($"api/facets/domain/{facetCode}")) {
+            using (var response = await Fixture.Client.GetAsync($"api/facets/domain/{facetCode}"))
+            {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());

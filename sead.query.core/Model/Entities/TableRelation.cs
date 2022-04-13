@@ -16,7 +16,8 @@ namespace SeadQueryCore
         IGraphEdge Reverse();
     }
 
-    public class TableRelation : IGraphEdge {
+    public class TableRelation : IGraphEdge
+    {
         public int TableRelationId { get; set; }
         public int SourceTableId { get; set; }
         public int TargetTableId { get; set; }
@@ -28,7 +29,7 @@ namespace SeadQueryCore
 
         [JsonIgnore] private Table _SourceTable, _TargetTable;
 
-        public Table SourceTable { get { return _SourceTable; } set { _SourceTable = value; SourceTableId = value?.TableId ?? SourceTableId;  } }
+        public Table SourceTable { get { return _SourceTable; } set { _SourceTable = value; SourceTableId = value?.TableId ?? SourceTableId; } }
         public Table TargetTable { get { return _TargetTable; } set { _TargetTable = value; TargetTableId = value?.TableId ?? TargetTableId; } }
 
         [JsonIgnore] public string SourceName { get { return SourceTable?.TableOrUdfName ?? ""; } }
@@ -36,7 +37,8 @@ namespace SeadQueryCore
 
         public TableRelation Clone()
         {
-            return new TableRelation() {
+            return new TableRelation()
+            {
                 TableRelationId = TableRelationId + 1000,
                 Weight = Weight,
                 SourceTableId = SourceTableId,
@@ -68,8 +70,8 @@ namespace SeadQueryCore
             return x;
         }
 
-        public Tuple<string, string> Key   => new Tuple<string, string>(SourceName, TargetName);
-        public Tuple<int, int> IdKey       => new Tuple<int, int>(SourceTableId, TargetTableId);
+        public Tuple<string, string> Key => new Tuple<string, string>(SourceName, TargetName);
+        public Tuple<int, int> IdKey => new Tuple<int, int>(SourceTableId, TargetTableId);
 
         public bool IsOf(TableRelation x)
         {

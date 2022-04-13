@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTests
 {
-    public class TestHostFixture<T> : IDisposable where T: class, new()
+    public class TestHostFixture<T> : IDisposable where T : class, new()
     {
         public IHostBuilder Builder;
         public Task<IHost> Server;

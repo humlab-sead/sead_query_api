@@ -31,17 +31,20 @@ namespace SQT.SqlCompilers
 
             // Assert
 
-            if (facetConfig.HasPicks()) {
+            if (facetConfig.HasPicks())
+            {
 
                 var picks = facetConfig.Picks;
                 var sqlEqualExpected = (picks[0].PickValue == picks[1].PickValue) ?
-                        @"\(floor\(.+\) = [\d+-,]+\)" :  @"\(.+ >= [\d+-,]+ and .+ <= [\d+-,]+\)";
+                        @"\(floor\(.+\) = [\d+-,]+\)" : @"\(.+ >= [\d+-,]+ and .+ <= [\d+-,]+\)";
                 var sqlWhere = facetConfig.HasCriterias() ? "AND .+" : "";
                 var sqlExpected = $@"{sqlEqualExpected}\s?{sqlWhere}";
 
                 Assert.Matches(sqlExpected, result.Squeeze());
 
-            } else {
+            }
+            else
+            {
 
                 Assert.Matches("", result.Squeeze());
 

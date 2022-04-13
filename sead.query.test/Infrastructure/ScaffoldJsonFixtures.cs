@@ -20,7 +20,8 @@ namespace SQT.TestInfrastructure
 
         private static JsonSerializer CreateSerializer()
         {
-            var serializer = new JsonSerializer {
+            var serializer = new JsonSerializer
+            {
                 // serializer.Converters.Add(new JavaScriptDateTimeConverter());
                 NullValueHandling = NullValueHandling.Ignore,
                 Formatting = Formatting.Indented,
@@ -51,7 +52,8 @@ namespace SQT.TestInfrastructure
             var serializer = CreateSerializer();
             var path = Path.Combine(ScaffoldUtility.GetRootFolder(), folder);
 
-            using (var context = CreateContext(hostName, databaseName)) {
+            using (var context = CreateContext(hostName, databaseName))
+            {
                 new JsonWriterService(serializer).SerializeTypesToPath(context, ScaffoldUtility.GetModelTypes(), path);
             }
         }

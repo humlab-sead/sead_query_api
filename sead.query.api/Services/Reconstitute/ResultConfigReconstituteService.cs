@@ -40,12 +40,13 @@ namespace SeadQueryAPI.Serializers
 
             resultConfig.ViewType = Registry.Results.GetViewType(resultConfig.ViewTypeId);
 
-            if (resultConfig.FacetCode.IsEmpty()) {
+            if (resultConfig.FacetCode.IsEmpty())
+            {
                 resultConfig.FacetCode = resultConfig.ViewType.ResultFacetCode;
             }
 
             //if (resultConfig.SpecificationKeys.Count == 0) {
-                resultConfig.SpecificationKeys = resultConfig.ViewType.SpecificationKey.WrapToList();
+            resultConfig.SpecificationKeys = resultConfig.ViewType.SpecificationKey.WrapToList();
             //}
 
             resultConfig.Facet = GetFacetByCode(resultConfig.FacetCode);

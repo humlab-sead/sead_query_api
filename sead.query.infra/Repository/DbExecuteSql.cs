@@ -9,7 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace Microsoft.EntityFrameworkCore {
+namespace Microsoft.EntityFrameworkCore
+{
 
     public static class RDFacadeExtensions
     {
@@ -56,7 +57,8 @@ namespace Microsoft.EntityFrameworkCore {
         }
         public static IEnumerable<T> Select<T>(this DbDataReader reader, System.Func<DbDataReader, T> selector)
         {
-            while (reader.Read()) {
+            while (reader.Read())
+            {
                 yield return selector(reader);
             }
         }

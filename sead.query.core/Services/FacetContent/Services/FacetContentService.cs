@@ -9,7 +9,8 @@ using static SeadQueryCore.FacetContent;
 
 namespace SeadQueryCore
 {
-    public class FacetContentService : QueryServiceBase, IFacetContentService {
+    public class FacetContentService : QueryServiceBase, IFacetContentService
+    {
 
         public ICategoryCountService CategoryCountService { get; set; }
         public IFacetSetting Config { get; }
@@ -52,7 +53,7 @@ namespace SeadQueryCore
             return facetContent;
         }
 
-        protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval=120) => new IntervalQueryInfo();
+        protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval = 120) => new IntervalQueryInfo();
 
         private CategoryCountService.CategoryCountData QueryCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {

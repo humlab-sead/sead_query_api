@@ -37,7 +37,8 @@ namespace SeadQueryCore
 
         public List<string> Trail()
         {
-            if (Items.Count > 0) {
+            if (Items.Count > 0)
+            {
                 return Items.Select(z => z.TargetName).Prepend(Items[0].SourceName).ToList();
             }
             return new List<string>();

@@ -59,7 +59,8 @@ namespace IntegrationTests.Sead
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -219,12 +220,13 @@ namespace IntegrationTests.Sead
         [InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "tbl_sample_group_sampling_contexts", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         public async Task Load_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
-            
+
             var facetsConfig = MockService.FakeFacetsConfig(uri);
             var json = JsonConvert.SerializeObject(facetsConfig);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
-            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             response.EnsureSuccessStatusCode();
 

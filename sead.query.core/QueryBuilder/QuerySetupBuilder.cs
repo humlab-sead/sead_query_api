@@ -5,7 +5,8 @@ using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public class QuerySetupBuilder : IQuerySetupBuilder {
+    public class QuerySetupBuilder : IQuerySetupBuilder
+    {
 
         public IFacetsGraph FacetsGraph { get; set; }
         public IPicksFilterCompiler PicksCompiler { get; set; }
@@ -77,9 +78,9 @@ namespace SeadQueryCore.QueryBuilder
             /* All tables referenced by the result fields must be included in query */
             return Build(
                 facetsConfig: facetsConfig,
-                targetFacet:  resultFacet,
-                extraTables:  resultFields.GetResultFieldTableNames().ToList(),
-                facetCodes:   null
+                targetFacet: resultFacet,
+                extraTables: resultFields.GetResultFieldTableNames().ToList(),
+                facetCodes: null
             );
         }
     }

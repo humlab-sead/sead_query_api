@@ -18,7 +18,8 @@ namespace SQT.Model
         public void HasPicks_WhenRangeFacetHasPicks_IsTrue()
         {
             // Arrange
-            var facetConfig2 = new FacetConfig2 {
+            var facetConfig2 = new FacetConfig2
+            {
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
@@ -35,7 +36,8 @@ namespace SQT.Model
         public void HasPicks_WhenFacetHasNoPicks_IsFalse()
         {
             // Arrange
-            var facetConfig2 = new FacetConfig2 {
+            var facetConfig2 = new FacetConfig2
+            {
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
@@ -52,11 +54,12 @@ namespace SQT.Model
         public void HasPicks_WhenDiscreteFacetHasPicks_IsTrue()
         {
             // Arrange
-            var facetConfig2 = new FacetConfig2 {
+            var facetConfig2 = new FacetConfig2
+            {
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
-                Picks = FacetConfigPick.CreateDiscrete(new List<int>() {  1, 2, 3 })
+                Picks = FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
             };
             // Act
             var result = facetConfig2.HasPicks();
@@ -69,7 +72,8 @@ namespace SQT.Model
         public void ClearPicks_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var facetConfig2 = new FacetConfig2 {
+            var facetConfig2 = new FacetConfig2
+            {
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
@@ -87,7 +91,8 @@ namespace SQT.Model
         public void GetPickValues_WhenHasPicks_Success()
         {
             // Arrange
-            var facetConfig2 = new FacetConfig2 {
+            var facetConfig2 = new FacetConfig2
+            {
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
@@ -110,7 +115,8 @@ namespace SQT.Model
         {
             // Arrange
             var facet = Registry.Facets.GetByCode("result_facet");
-            var facetConfig2 = new FacetConfig2 {
+            var facetConfig2 = new FacetConfig2
+            {
                 FacetCode = "result_facet",
                 Facet = facet,
                 Position = 0,

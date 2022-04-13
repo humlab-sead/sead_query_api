@@ -98,7 +98,8 @@ namespace SQT.Model
 
         public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
         {
-            if (!facetConfig.HasConstraints()) {
+            if (!facetConfig.HasConstraints())
+            {
                 // FIXME Is this a relevant condition?
                 return false;
             }
@@ -276,7 +277,7 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites@1", true)]
         [InlineData("ecocode:sites/ecocode", false)]
-        [InlineData("sites:sites@1,2/ecocode@2",  true)]
+        [InlineData("sites:sites@1,2/ecocode@2", true)]
         public void ClearPicks_HasOrHasNotPicks_ExpectedBehavior(string uri, bool hasPicks)
         {
             // Arrange

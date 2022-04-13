@@ -45,15 +45,16 @@ namespace SQT.Mocks
             var domain = "";
             var domainParts = uri.Split("://").ToList();
 
-            if (domainParts.Count > 1) {
+            if (domainParts.Count > 1)
+            {
                 domain = domainParts[0];
                 uri = domainParts[1];
             }
 
-            var parts            = uri.Split(':').ToList();
-            var codes            = parts[0].Split("@");
-            var targetCode       = codes[0];
-            var triggerCode      = codes.Length > 1 ? codes[1] : targetCode;
+            var parts = uri.Split(':').ToList();
+            var codes = parts[0].Split("@");
+            var targetCode = codes[0];
+            var triggerCode = codes.Length > 1 ? codes[1] : targetCode;
             var facetConfigCodes = parts.Count > 1 ? parts[1] : targetCode;
 
             var facetCodes = facetConfigCodes
@@ -66,7 +67,8 @@ namespace SQT.Mocks
                  ))
                 .ToDictionary(z => z.FacetCode, z => z.Picks);
 
-            return new UriData {
+            return new UriData
+            {
                 Domain = domain,
                 Uri = uri,
                 TargetCode = targetCode,
@@ -79,9 +81,10 @@ namespace SQT.Mocks
         {
             var cultureInfo = new CultureInfo("en-US");
 
-            Match m  = tupleRegex.Match(data);
+            Match m = tupleRegex.Match(data);
 
-            if (m.Success && m.Groups.Count == 3) {
+            if (m.Success && m.Groups.Count == 3)
+            {
 
                 var lower = Decimal.Parse(m.Groups[1].Value, NumberStyles.Any, cultureInfo);
                 var upper = Decimal.Parse(m.Groups[2].Value, NumberStyles.Any, cultureInfo);

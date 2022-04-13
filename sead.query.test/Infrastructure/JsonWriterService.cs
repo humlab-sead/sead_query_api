@@ -22,7 +22,8 @@ namespace SQT.Infrastructure
 
         public void SerializeTypesToPath(DbContext context, ICollection<Type> types, string path)
         {
-            foreach (var type in types) {
+            foreach (var type in types)
+            {
                 object entities = context.SetEx(type);
                 SerializeToFile(type, entities, path);
             }
@@ -32,7 +33,8 @@ namespace SQT.Infrastructure
         {
             string filename = Path.Combine(path, $"{type.Name}.json");
             using (StreamWriter sw = new StreamWriter(filename))
-            using (JsonWriter writer = new JsonTextWriter(sw)) {
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
                 Serializer.Serialize(writer, entities);
             }
         }

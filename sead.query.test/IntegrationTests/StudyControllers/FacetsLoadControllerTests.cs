@@ -55,7 +55,8 @@ namespace IntegrationTests.StudyDb
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();

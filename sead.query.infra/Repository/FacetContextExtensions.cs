@@ -7,7 +7,7 @@ namespace SeadQueryInfra
     {
         public static object SetEx(this DbContext context, Type type)
         {
-            return typeof(DbContext).GetMethod("Set").MakeGenericMethod(new[] { type }).Invoke(context, Array.Empty<object>());;
+            return typeof(DbContext).GetMethod("Set").MakeGenericMethod(new[] { type }).Invoke(context, Array.Empty<object>()); ;
         }
     }
 }

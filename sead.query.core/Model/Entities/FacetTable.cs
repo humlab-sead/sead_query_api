@@ -9,7 +9,8 @@ namespace SeadQueryCore
     /// <summary>
     /// A relational table associated to a facet
     /// </summary>
-    public class FacetTable {
+    public class FacetTable
+    {
 
         public int FacetTableId { get; set; }
         public int FacetId { get; set; }

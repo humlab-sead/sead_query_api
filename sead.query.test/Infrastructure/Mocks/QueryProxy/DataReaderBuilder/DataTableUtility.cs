@@ -14,12 +14,15 @@ namespace SQT.Infrastructure
         public static DataTable CreateDataTable(List<(string Name, Type Type)> fields, object[,] values)
         {
             var dt = new DataTable();
-            foreach (var p in fields) {
+            foreach (var p in fields)
+            {
                 dt.Columns.Add(p.Name, p.Type);
             }
-            for (var row = 0; row < values.GetLength(0); row++) {
+            for (var row = 0; row < values.GetLength(0); row++)
+            {
                 var dtrow = dt.NewRow();
-                for (var column = 0; column < values.GetLength(1); column++) {
+                for (var column = 0; column < values.GetLength(1); column++)
+                {
                     dtrow[column] = values[row, column];
                 }
                 dt.Rows.Add(dtrow);

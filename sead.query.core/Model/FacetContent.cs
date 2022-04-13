@@ -5,7 +5,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class FacetContent {
+    public class FacetContent
+    {
 
         public class IntervalQueryInfo
         {

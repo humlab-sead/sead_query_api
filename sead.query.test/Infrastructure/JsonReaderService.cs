@@ -50,7 +50,8 @@ namespace SQT.Infrastructure
         public IEnumerable<T> Deserialize<T>(string folder) where T : class, new()
         {
             var filename = Path.Combine(folder, $"{typeof(T).Name}.json");
-            if (!File.Exists(filename)) {
+            if (!File.Exists(filename))
+            {
                 throw new FileNotFoundException(filename);
                 // return new List<T>();
             }
@@ -59,7 +60,8 @@ namespace SQT.Infrastructure
                 ContractResolver = ContractResolver
             };
             // var json = JsonTextLoader.Get(filename);
-            using (StreamReader stream = new StreamReader(filename)) {
+            using (StreamReader stream = new StreamReader(filename))
+            {
                 var json = stream.ReadToEnd();
                 IEnumerable<T> items = JsonConvert.DeserializeObject<IEnumerable<T>>(json, settings);
                 return items;

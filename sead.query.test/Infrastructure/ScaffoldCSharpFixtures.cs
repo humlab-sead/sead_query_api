@@ -16,7 +16,7 @@ namespace SQT.Infrastructure.Scaffolding
 
         public GenerateCSharpFixures(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
-             mockQueryBuilderSetting = new SQT.SettingFactory().Create().Value;
+            mockQueryBuilderSetting = new SQT.SettingFactory().Create().Value;
         }
 
         private string DataFolder()
@@ -29,7 +29,8 @@ namespace SQT.Infrastructure.Scaffolding
         {
             string invalidChars = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
             var uriName = uri.Replace(":", "=").Replace("/", "+");
-            foreach (var c in invalidChars) {
+            foreach (var c in invalidChars)
+            {
                 uriName = uriName.Replace(c.ToString(), "");
             }
             return uriName;
@@ -38,7 +39,8 @@ namespace SQT.Infrastructure.Scaffolding
         //[Fact(Skip = "Not a test. Scaffolds C# facets from database. Stores data in FacetDict.cs.txt")]
         public void ScaffoldCSharpFacetsToFileUsingOnlineDatabase()
         {
-            var options = new DumpOptions() {
+            var options = new DumpOptions()
+            {
                 DumpStyle = DumpStyle.CSharp,
                 IndentSize = 1,
                 IndentChar = '\t',
@@ -66,7 +68,8 @@ namespace SQT.Infrastructure.Scaffolding
             var facets = Registry.Facets.GetAll();
 
             Dictionary<string, Facet> facetsDict = new Dictionary<string, Facet>();
-            foreach (var facet in facets) {
+            foreach (var facet in facets)
+            {
                 facetsDict.Add(facet.FacetCode, facet);
             }
             var path = Path.Join(DataFolder(), "FacetsDict.cs.txt");
@@ -87,7 +90,8 @@ namespace SQT.Infrastructure.Scaffolding
                 "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(3,52)"
             };
 
-            foreach (var uri in uris) {
+            foreach (var uri in uris)
+            {
                 var facetsConfig = scaffolder.Create(uri);
                 var uriName = UriName(uri);
                 var path = Path.Join(DataFolder(), $"FacetsConfig_{uriName}.cs.txt");
@@ -108,7 +112,8 @@ namespace SQT.Infrastructure.Scaffolding
                 "sites:country@73/sites:",
                 "tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0@(110,2904)"
             };
-            var options = new DumpOptions() {
+            var options = new DumpOptions()
+            {
                 DumpStyle = DumpStyle.CSharp,
                 IndentSize = 1,
                 IndentChar = '\t',
@@ -126,7 +131,8 @@ namespace SQT.Infrastructure.Scaffolding
                 IgnoreDefaultValues = false
             };
 
-            foreach (var uri in uris) {
+            foreach (var uri in uris)
+            {
 
                 var facetsConfig = scaffolder.FakeFacetsConfig(uri);
                 var querySetup = scaffolder.FakeCountOrContentQuerySetup(facetsConfig);

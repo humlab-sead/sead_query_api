@@ -177,7 +177,8 @@ namespace SQT.Infrastructure.Repository
 
             // Assert
             Assert.NotEmpty(result);
-            foreach (var value in result) {
+            foreach (var value in result)
+            {
                 Assert.NotNull(value.Fields);
                 Assert.NotEmpty(value.Fields);
                 Assert.All(value.Fields, z => Assert.NotNull((z).ResultField));

@@ -41,7 +41,7 @@ namespace SeadQueryAPI.Controllers
         [HttpPost("")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ViewState Store([FromBody]ViewState viewstate)
+        public ViewState Store([FromBody] ViewState viewstate)
         {
             Context.ViewStates.Add(viewstate);
             Context.Commit();

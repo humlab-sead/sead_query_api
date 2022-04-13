@@ -37,6 +37,6 @@ namespace SQT.SqlCompilers
 
             Assert.True(match.Success);
 
-         }
+        }
     }
 }

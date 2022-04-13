@@ -12,11 +12,13 @@ using Xunit;
 
 namespace SQT.Infrastructure
 {
-    public interface IDependent {
+    public interface IDependent
+    {
         void DoSomeThingNice();
     }
 
-    public class MyDependent : IDependent {
+    public class MyDependent : IDependent
+    {
         public void DoSomeThingNice()
         {
             Debug.Write("Hello World!");
@@ -24,11 +26,13 @@ namespace SQT.Infrastructure
         }
     }
 
-    public interface IMyController {
+    public interface IMyController
+    {
         void CallMyDependent();
     }
 
-    public class MyController : IMyController {
+    public class MyController : IMyController
+    {
 
         public IDependent Dependent { get; set; }
 
@@ -63,7 +67,8 @@ namespace SQT.Infrastructure
             var builder = new ContainerBuilder();
             builder.RegisterInstance<IDependent>(new MyDependent());
             var container = builder.Build();
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 var service = scope.Resolve<IDependent>();
                 service.DoSomeThingNice();
             }
@@ -76,7 +81,8 @@ namespace SQT.Infrastructure
             builder.RegisterInstance<IDependent>(new MyDependent()); //.As<IDependent>();
             builder.RegisterType<MyController2>().As<IMyController>();
             var container = builder.Build();
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 var service = scope.Resolve<IMyController>();
                 service.CallMyDependent();
             }
@@ -91,7 +97,8 @@ namespace SQT.Infrastructure
                 .OnActivating(e => { e.Instance.Dependent = e.Context.Resolve<IDependent>(); });
 
             var container = builder.Build();
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 var service = scope.Resolve<IMyController>();
                 service.CallMyDependent();
             }
@@ -102,7 +109,8 @@ namespace SQT.Infrastructure
         {
             //using (var context = JsonSeededFacetContextFactory.Create())
             using (var container = CreateDependencyContainer())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 Assert.NotNull(scope.Resolve<ISetting>());
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
                 Assert.NotNull(scope.Resolve<IFacetContext>());
@@ -133,7 +141,8 @@ namespace SQT.Infrastructure
         {
             //using (var context = JsonSeededFacetContextFactory.Create())
             using (var container = CreateDependencyContainer())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
 
                 var locator = scope.Resolve<IResultSqlCompilerLocator>();
 
@@ -151,7 +160,8 @@ namespace SQT.Infrastructure
         public void CannotResolveGeoDependency()
         {
             using (var container = CreateDependencyContainer())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
 
                 Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
 

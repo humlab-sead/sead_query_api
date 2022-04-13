@@ -67,7 +67,8 @@ namespace SeadQueryAPI.Serializers
 
             IEnumerable<string> map;
             var isIgnoreList = (map = _IgnorePropertiesMap[type]) != null;
-            if (isIgnoreList || (map = _IncludePropertiesMap[type]) != null) {
+            if (isIgnoreList || (map = _IncludePropertiesMap[type]) != null)
+            {
                 var globals = GlobalProperties.Where(kv => kv.Value != isIgnoreList);
                 map = map
                   .Concat(globals.Select(kv => kv.Key))
@@ -75,7 +76,9 @@ namespace SeadQueryAPI.Serializers
                 return properties
                   .Where(jp => map.Contains(jp.PropertyName) != isIgnoreList)
                   .ToArray();
-            } else {
+            }
+            else
+            {
                 return properties
                   .Where(p =>
                   {
@@ -84,9 +87,12 @@ namespace SeadQueryAPI.Serializers
                 .Where(kv => kv.Value == include);
                       var globalProperties = globalIncludes
                 .Select(kv => kv.Key);
-                      if (globalIncludes.Any()) {
+                      if (globalIncludes.Any())
+                      {
                           return globalProperties.Contains(p.PropertyName);
-                      } else {
+                      }
+                      else
+                      {
                           include = false;
                           return !p.Ignored && !globalProperties.Contains(p.PropertyName);
                       }
@@ -100,7 +106,8 @@ namespace SeadQueryAPI.Serializers
         {
             var body = propertyLambda.Body;
             if (!(body is MemberExpression member)
-               && !(body is UnaryExpression unary && (member = unary.Operand as MemberExpression) != null)) {
+               && !(body is UnaryExpression unary && (member = unary.Operand as MemberExpression) != null))
+            {
                 throw new ArgumentException($"Expression '{propertyLambda}' refers to a method, not a property.");
             }
 
@@ -120,7 +127,8 @@ namespace SeadQueryAPI.Serializers
 
             public IEnumerable<string> this[Type type]
             {
-                get {
+                get
+                {
                     if (type == null) throw new ArgumentNullException(nameof(type));
                     if (Map.TryGetValue(type, out HashSet<string> value))
                         return value;
@@ -131,14 +139,18 @@ namespace SeadQueryAPI.Serializers
 
                     return Map[type] = result.Any() ? new HashSet<string>(result) : null;
                 }
-                set {
+                set
+                {
                     if (type == null) throw new ArgumentNullException(nameof(type));
                     if (value == null) throw new ArgumentNullException(nameof(value));
 
-                    if (Map.TryGetValue(type, out var existing)) {
+                    if (Map.TryGetValue(type, out var existing))
+                    {
                         foreach (var property in value)
                             existing.Add(property);
-                    } else {
+                    }
+                    else
+                    {
                         Map[type] = new HashSet<string>(value);
                     }
                 }

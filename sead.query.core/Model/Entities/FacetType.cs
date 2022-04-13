@@ -10,7 +10,8 @@ namespace SeadQueryCore
     /// <summary>
     /// Facet definition ID and name
     /// </summary>
-    public class FacetType {
+    public class FacetType
+    {
 
         /// <summary>
         /// Facet type id

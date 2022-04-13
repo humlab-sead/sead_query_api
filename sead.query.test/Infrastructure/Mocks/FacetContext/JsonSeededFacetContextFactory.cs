@@ -10,7 +10,8 @@ namespace SQT.Mocks
     {
         public static FacetContext Create(DbContextOptions options, JsonFacetContextFixture fixture)
         {
-            using (var context = new JsonSeededFacetContext(options, fixture)) {
+            using (var context = new JsonSeededFacetContext(options, fixture))
+            {
                 context.Database.EnsureCreated();
                 context.SaveChanges();
             }

@@ -20,10 +20,12 @@ namespace SeadQueryCore
             {
                 throw new QuerySeadException("Target facet is undefined");
             }
-            if (facetsConfig.TargetCode != "" && facetsConfig.TargetFacet == null) {
+            if (facetsConfig.TargetCode != "" && facetsConfig.TargetFacet == null)
+            {
                 throw new QuerySeadException("Target facet is undefined");
             }
-            if (facetsConfig.GetConfig(facetsConfig.TargetCode) == null) {
+            if (facetsConfig.GetConfig(facetsConfig.TargetCode) == null)
+            {
                 throw new QuerySeadException("Target facet code invalid (not found in any config)");
             }
             return true;
@@ -43,7 +45,8 @@ namespace SeadQueryCore
             {
                 throw new QuerySeadException("Facets' codes within facet chain are not unique");
             }
-            if (configs.Any(z => z.Facet == null)) {
+            if (configs.Any(z => z.Facet == null))
+            {
                 throw new QuerySeadException("FacetConfig with null Facet not allowed");
             }
             return true;

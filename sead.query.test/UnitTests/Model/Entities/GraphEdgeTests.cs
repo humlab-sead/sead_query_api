@@ -12,7 +12,8 @@ namespace SQT.Model
     {
         private TableRelation CreateGraphEdge()
         {
-            return new TableRelation() {
+            return new TableRelation()
+            {
                 TableRelationId = 1,
                 SourceTable = new Table() { TableId = 1, TableOrUdfName = "A" },
                 TargetTable = new Table() { TableId = 2, TableOrUdfName = "B" },
@@ -32,7 +33,7 @@ namespace SQT.Model
             var result = graphEdge.Clone();
 
             // Assert
-            Asserter.EqualByProperty( graphEdge, result);
+            Asserter.EqualByProperty(graphEdge, result);
         }
 
         [Fact]

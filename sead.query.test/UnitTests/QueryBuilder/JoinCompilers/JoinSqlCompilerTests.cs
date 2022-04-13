@@ -25,7 +25,8 @@ namespace SQT.SqlCompilers
         {
             // Arrange
 
-            TableRelation edge = new TableRelation() {
+            TableRelation edge = new TableRelation()
+            {
                 TableRelationId = -2151,
                 SourceTableId = 46,
                 TargetTableId = 113,
@@ -36,7 +37,8 @@ namespace SQT.SqlCompilers
                 TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations" }
             };
 
-            FacetTable facetTable = new FacetTable {
+            FacetTable facetTable = new FacetTable
+            {
                 FacetTableId = 1,
                 FacetId = 1,
                 SequenceId = 1,
@@ -60,16 +62,18 @@ namespace SQT.SqlCompilers
         {
             // Arrange
 
-            TableRelation edge = new TableRelation() {
+            TableRelation edge = new TableRelation()
+            {
                 TableRelationId = -2151,
                 Weight = 5,
                 SourceColumName = "a",
                 TargetColumnName = "a",
-                SourceTable = new Table() { TableId = 1, TableOrUdfName = "A"},
-                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B"}
+                SourceTable = new Table() { TableId = 1, TableOrUdfName = "A" },
+                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B" }
             };
 
-            FacetTable facetTable = new FacetTable {
+            FacetTable facetTable = new FacetTable
+            {
                 FacetTableId = 1,
                 FacetId = 1,
                 SequenceId = 1,

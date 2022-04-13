@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace SQT.Infrastructure
 {
-        class IgnoreJsonAttributesResolver : PropertyRenameAndIgnoreSerializerContractResolver
+    class IgnoreJsonAttributesResolver : PropertyRenameAndIgnoreSerializerContractResolver
     {
         private Dictionary<string, HashSet<string>> ignores = new Dictionary<string, HashSet<string>>();
 
@@ -23,8 +23,10 @@ namespace SQT.Infrastructure
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
-            foreach (var prop in props) {
-                if (IsIgnored(prop)) {
+            foreach (var prop in props)
+            {
+                if (IsIgnored(prop))
+                {
                     prop.ShouldSerialize = obj => false;
                     prop.Ignored = true;
                     continue;
@@ -47,7 +49,8 @@ namespace SQT.Infrastructure
             if (!prop.Writable)
                 return true;
 
-            if (!ignores.ContainsKey(type.Name)) {
+            if (!ignores.ContainsKey(type.Name))
+            {
                 return false;
             }
 

@@ -76,7 +76,8 @@ namespace SeadQueryInfra
 
         public IEnumerable<Facet> Children(string facetCode)
         {
-            if (facetCode.IsEmpty() || facetCode.ToLower().Equals("general")) {
+            if (facetCode.IsEmpty() || facetCode.ToLower().Equals("general"))
+            {
                 return GetAllUserFacets();
             }
             var children = GetSet()
@@ -97,7 +98,8 @@ namespace SeadQueryInfra
 
     }
 
-    public static class FacetRepositoryEagerBuilder {
+    public static class FacetRepositoryEagerBuilder
+    {
         public static IQueryable<Facet> BuildFacetDefinition(this IQueryable<Facet> query)
         {
             return query.Include(x => x.FacetGroup)

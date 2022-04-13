@@ -10,7 +10,8 @@ namespace SQT.ClassData
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            foreach (var uri in UriCollections.CompleteSetOfSingleDomainFacetUrisWithNoPicks) {
+            foreach (var uri in UriCollections.CompleteSetOfSingleDomainFacetUrisWithNoPicks)
+            {
                 yield return new object[] { uri, "result_facet", "site_level", "tabular" };
             }
         }
@@ -23,7 +24,8 @@ namespace SQT.ClassData
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            foreach (var uri in UriCollections.CompleteSetOfSingleDomainFacetUrisWithNoPicks) {
+            foreach (var uri in UriCollections.CompleteSetOfSingleDomainFacetUrisWithNoPicks)
+            {
                 yield return new object[] { uri, "map_result", "site_level", "map" };
             }
         }

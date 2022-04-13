@@ -26,7 +26,7 @@ namespace SQT.Infrastructure
         //}
 
         public Mock<IDynamicQueryProxy> Create<T>(IEnumerable<T> items)
-            where T: class, new()
+            where T : class, new()
         {
             var queryProxy = new Mock<IDynamicQueryProxy>();
 

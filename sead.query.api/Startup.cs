@@ -51,7 +51,8 @@ namespace SeadQueryAPI
                 .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
             );
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
                 // endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
