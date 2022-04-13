@@ -18,7 +18,6 @@ using Xunit;
 
 namespace SQT
 {
-    [Collection("JsonSeededFacetContext")]
     public class DisposableFacetContextContainer : IDisposable
     {
         private readonly JsonFacetContextFixture __fixture;

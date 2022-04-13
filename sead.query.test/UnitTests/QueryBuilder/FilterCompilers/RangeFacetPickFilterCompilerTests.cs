@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
-        public RangeFacetPickFilterCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RangeFacetPickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

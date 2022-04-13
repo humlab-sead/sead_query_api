@@ -14,10 +14,10 @@ using Xunit.Abstractions;
 namespace SQT.QueryBuilder
 {
 
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class QuerySetupBuilderTests : DisposableFacetContextContainer
     {
-        public QuerySetupBuilderTests(JsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
+        public QuerySetupBuilderTests(SeadJsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
         {
             Output = output;
         }

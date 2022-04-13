@@ -8,10 +8,10 @@ using Xunit;
 
 namespace SQT.Services
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteFacetContentServiceTests : DisposableFacetContextContainer
     {
-        public DiscreteFacetContentServiceTests(JsonFacetContextFixture fixture) : base(fixture)
+        public DiscreteFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

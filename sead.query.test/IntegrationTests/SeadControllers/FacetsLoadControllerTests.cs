@@ -14,7 +14,7 @@ using Xunit;
 namespace IntegrationTests.Sead
 {
 
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public JsonFacetContextFixture FacetContextFixture { get; }

@@ -22,12 +22,12 @@ namespace IntegrationTests.StudyDb
     }
 
     [Collection("StudyJsonSeededFacetContext")]
-    public class ResultControllerTests : ControllerTest<ResultTestHostWithContainer>, IClassFixture<ResultTestHostWithContainer>
+    public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public JsonFacetContextFixture FacetContextFixture { get; }
         public DisposableFacetContextContainer MockService { get; }
 
-        public ResultControllerTests(ResultTestHostWithContainer hostBuilderFixture, StudyJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(TestHostWithContainer hostBuilderFixture, StudyJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
             MockService = new DisposableFacetContextContainer(facetContextFixture);
@@ -65,7 +65,7 @@ namespace IntegrationTests.StudyDb
         /// <param name="uri">Facet configuration</param>
         /// <param name="expectedJoinCount">Basically the number of tables involved in the join i.e. unique routes returned from Graoh.Find</param>
         /// <returns></returns>
-        [Theory]
+        [Theory(Skip = "Not implemented")]
         [InlineData("palaeoentomology://data_types:data_types", "tbl_analysis_entities", "tbl_datasets")]
         public async Task Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {

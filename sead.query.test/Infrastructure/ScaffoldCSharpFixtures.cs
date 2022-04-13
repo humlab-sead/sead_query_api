@@ -9,12 +9,12 @@ using Xunit;
 
 namespace SQT.Infrastructure.Scaffolding
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class GenerateCSharpFixures : DisposableFacetContextContainer
     {
         private Setting mockQueryBuilderSetting;
 
-        public GenerateCSharpFixures(JsonFacetContextFixture fixture) : base(fixture)
+        public GenerateCSharpFixures(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
              mockQueryBuilderSetting = new SQT.SettingFactory().Create().Value;
         }

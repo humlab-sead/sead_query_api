@@ -45,7 +45,7 @@ namespace IntegrationTests.StudyDb
         /// <param name="uri">Facet configuration</param>
         /// <param name="expectedJoinCount">Basically the number of tables involved in the join i.e. unique routes returned from Graoh.Find</param>
         /// <returns></returns>
-        [Theory]
+        [Theory(Skip = "Not implemented")]
         [InlineData("study:study", false)]
         public async Task Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri, bool checkNotEmpty, params string[] expectedJoins)
         {

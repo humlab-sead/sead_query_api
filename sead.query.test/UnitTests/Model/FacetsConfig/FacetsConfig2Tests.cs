@@ -13,12 +13,12 @@ using static SeadQueryCore.FacetsConfig2;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsConfig2Tests : DisposableFacetContextContainer
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;
 
-        public FacetsConfig2Tests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetsConfig2Tests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }

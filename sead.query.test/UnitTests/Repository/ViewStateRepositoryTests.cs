@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class ViewStateRepositoryTests : DisposableFacetContextContainer
     {
-        public ViewStateRepositoryTests(JsonFacetContextFixture fixture) : base(fixture)
+        public ViewStateRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 

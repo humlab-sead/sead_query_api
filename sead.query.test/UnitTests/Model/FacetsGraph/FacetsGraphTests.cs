@@ -16,10 +16,10 @@ using System.IO;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsGraphTests : DisposableFacetContextContainer
     {
-        public FacetsGraphTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetsGraphTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
