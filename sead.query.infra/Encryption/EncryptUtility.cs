@@ -51,7 +51,8 @@ namespace SeadQueryInfra.Encryption
 
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < data.Length; i++) {
+            for (int i = 0; i < data.Length; i++)
+            {
                 sb.Append(data[i].ToString("x2"));
             }
 

@@ -5,6 +5,6 @@ namespace SeadQueryCore
 {
     public static class GraphExtensions
     {
- 
+
     }
 }

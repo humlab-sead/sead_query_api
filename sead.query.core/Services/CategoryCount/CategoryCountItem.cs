@@ -8,14 +8,16 @@ namespace SeadQueryCore
     /// Gives the number of occurrences (Count) of a category determined by given extent
     /// The extent is a single value for discrete facets (the category ID) and an interval (lower, upper) for range facets
     /// </summary>
-    public class CategoryCountItem {
+    public class CategoryCountItem
+    {
 
         public string Category { get; set; }
         public int? Count { get; set; }
         public List<decimal> Extent { get; set; }
         public string Name { get; set; } = null;
 
-        public string DisplayName {
+        public string DisplayName
+        {
             get { return Name; }
             set { Name = value; }
         }
@@ -24,7 +26,7 @@ namespace SeadQueryCore
         public decimal Lower
         {
             get { return GetExtent(0); }
-            set { SetExtent(0, value);  }
+            set { SetExtent(0, value); }
         }
 
         [JsonIgnore]

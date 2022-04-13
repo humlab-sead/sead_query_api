@@ -13,11 +13,15 @@ namespace IntegrationTests
     {
         public IHostBuilder Create<TStartup>(string jsonFolder) where TStartup : class
         {
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+            //#if DEBUG
+            //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+            //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            //#endif
             return new HostBuilder()
                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                .ConfigureHostConfiguration(
-                    builder => {
+                    builder =>
+                    {
                         builder.AddInMemoryCollection(new Dictionary<string, string>
                         {
                             { "jsonFolder", jsonFolder }

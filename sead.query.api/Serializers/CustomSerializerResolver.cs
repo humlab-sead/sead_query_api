@@ -32,11 +32,13 @@ namespace SeadQueryAPI.Serializers
         /// <param name="jsonPropertyNames">One or more JSON properties to ignore.</param>
         public void IgnoreProperty(Type type, params string[] jsonPropertyNames)
         {
-            if (!_ignores.ContainsKey(type.FullName)) {
+            if (!_ignores.ContainsKey(type.FullName))
+            {
                 _ignores[type.FullName] = new HashSet<string>();
             }
 
-            foreach (var prop in jsonPropertyNames) {
+            foreach (var prop in jsonPropertyNames)
+            {
                 _ignores[type.FullName].Add(prop);
             }
         }
@@ -47,7 +49,8 @@ namespace SeadQueryAPI.Serializers
         /// <param name="newJsonPropertyName">The new JSON property name.</param>
         public void RenameProperty(Type type, string propertyName, string newJsonPropertyName)
         {
-            if (!_renames.ContainsKey(type.FullName)) {
+            if (!_renames.ContainsKey(type.FullName))
+            {
                 _renames[type.FullName] = new Dictionary<string, string>();
             }
 
@@ -62,14 +65,16 @@ namespace SeadQueryAPI.Serializers
         {
             var property = base.CreateProperty(member, memberSerialization);
 
-            if (IsIgnored(property.DeclaringType, property.PropertyName)) {
+            if (IsIgnored(property.DeclaringType, property.PropertyName))
+            {
                 property.Ignored = true;
 
                 property.ShouldSerialize = i => false;
                 property.ShouldDeserialize = i => false;
             }
 
-            if (IsRenamed(property.DeclaringType, property.PropertyName, out var newJsonPropertyName)) {
+            if (IsRenamed(property.DeclaringType, property.PropertyName, out var newJsonPropertyName))
+            {
                 property.PropertyName = newJsonPropertyName;
             }
 
@@ -78,7 +83,8 @@ namespace SeadQueryAPI.Serializers
 
         private bool IsIgnored(Type type, string jsonPropertyName)
         {
-            if (!_ignores.ContainsKey(type.FullName)) {
+            if (!_ignores.ContainsKey(type.FullName))
+            {
                 return false;
             }
 
@@ -87,7 +93,8 @@ namespace SeadQueryAPI.Serializers
 
         private bool IsRenamed(Type type, string jsonPropertyName, out string newJsonPropertyName)
         {
-            if (!_renames.TryGetValue(type.FullName, out var renames) || !renames.TryGetValue(jsonPropertyName, out newJsonPropertyName)) {
+            if (!_renames.TryGetValue(type.FullName, out var renames) || !renames.TryGetValue(jsonPropertyName, out newJsonPropertyName))
+            {
                 newJsonPropertyName = null;
                 return false;
             }

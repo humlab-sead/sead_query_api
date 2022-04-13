@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeCategoryCountSqlCompilerTests : DisposableFacetContextContainer
     {
         public RangeCategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)

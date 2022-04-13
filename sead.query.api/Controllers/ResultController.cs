@@ -48,7 +48,7 @@ namespace SeadQueryAPI.Controllers
         [HttpPost("load")]
         [Produces("application/json", Type = typeof(ResultContentSet))]
         [Consumes("application/json")]
-        public ResultContentSet Load([FromBody]JObject data)
+        public ResultContentSet Load([FromBody] JObject data)
         {
             var facetsConfig = ReconstituteFacetsConfigService.Reconstitute(GetFacetsConfig(data));
             var resultConfig = ReconstituteResultConfigService.Reconstitute(GetResultConfig(data));

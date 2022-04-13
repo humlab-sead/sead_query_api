@@ -13,17 +13,17 @@ namespace SQT.Infrastructure
     public static class ScaffoldUtility
     {
         public static DumpOptions GetDefaultDumpOptions() => new DumpOptions()
-            {
-                DumpStyle = DumpStyle.CSharp,
-                IndentSize = 1,
-                IndentChar = '\t',
-                LineBreakChar = Environment.NewLine,
-                SetPropertiesOnly = false,
-                MaxLevel = 10, // int.MaxValue,
-                ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "DomainFacet", "TargetFacet" },
-                PropertyOrderBy = null,
-                IgnoreDefaultValues = false
-            };
+        {
+            DumpStyle = DumpStyle.CSharp,
+            IndentSize = 1,
+            IndentChar = '\t',
+            LineBreakChar = Environment.NewLine,
+            SetPropertiesOnly = false,
+            MaxLevel = 10, // int.MaxValue,
+            ExcludeProperties = new HashSet<string>() { "Facets", "Tables", "Facet", "DomainFacet", "TargetFacet" },
+            PropertyOrderBy = null,
+            IgnoreDefaultValues = false
+        };
 
         public static DbContextOptionsBuilder<FacetContext> GetDbContextOptionBuilder(string hostName, string databaseName)
         {
@@ -63,7 +63,8 @@ namespace SQT.Infrastructure
         {
             options ??= GetDefaultDumpOptions();
             var data = ObjectDumper.Dump(instance, options);
-            using (StreamWriter file = new StreamWriter(filename)) {
+            using (StreamWriter file = new StreamWriter(filename))
+            {
                 file.Write(data);
             }
         }
@@ -96,7 +97,8 @@ namespace SQT.Infrastructure
         }
         public static IFacetsGraph DefaultFacetsGraph(IFacetContext testContext)
         {
-            using (var registry = new RepositoryRegistry(testContext)) {
+            using (var registry = new RepositoryRegistry(testContext))
+            {
                 var g = DefaultFacetsGraph(registry);
                 return g;
             }

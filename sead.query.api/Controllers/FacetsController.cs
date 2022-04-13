@@ -44,7 +44,7 @@ namespace SeadQueryAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.OK , Type = typeof(IEnumerable<Facet>))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<Facet>))]
         public IEnumerable<Facet> Get()
         {
             var facets = Context.Facets.GetAllUserFacets();
@@ -99,7 +99,7 @@ namespace SeadQueryAPI.Controllers
         [HttpPost("load")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        public FacetContent Load([FromBody]FacetsConfig2 facetsConfig)
+        public FacetContent Load([FromBody] FacetsConfig2 facetsConfig)
         {
             var reconstitutedFacetConfig = ReconstituteConfigService.Reconstitute(facetsConfig);
             var facetContent = LoadService.Load(reconstitutedFacetConfig);
@@ -109,7 +109,7 @@ namespace SeadQueryAPI.Controllers
         [HttpPost("load2")]
         [Produces("application/json", Type = typeof(FacetContent))]
         [Consumes("application/json")]
-        public FacetContent Load2([FromBody]JObject json)
+        public FacetContent Load2([FromBody] JObject json)
         {
             var facetsConfig = ReconstituteConfigService.Reconstitute(json);
             var facetContent = LoadService.Load(facetsConfig);
@@ -119,7 +119,7 @@ namespace SeadQueryAPI.Controllers
         [HttpPost("load3")]
         [Produces("application/json", Type = typeof(string))]
         [Consumes("application/json")]
-        public string Load3([FromBody]JObject json)
+        public string Load3([FromBody] JObject json)
         {
             var facetsConfig = ReconstituteConfigService.Reconstitute(json);
             FacetContent facetContent = LoadService.Load(facetsConfig);
@@ -130,7 +130,7 @@ namespace SeadQueryAPI.Controllers
         [HttpPost("mirror")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        public JObject Mirror([FromBody]JObject json)
+        public JObject Mirror([FromBody] JObject json)
         {
             return json;
         }

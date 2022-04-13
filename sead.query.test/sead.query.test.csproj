@@ -24,8 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Archived\Data_RangeFacetCategoryCount.cs" />
-    <Compile Remove="Archived\Data_Sites.cs" />
     <Compile Remove="Archived\FacetConfigFixtures.cs" />
     <Compile Remove="Archived\FacetConfigsByUriFixtures.cs" />
     <Compile Remove="Archived\FacetFixtures.cs" />
@@ -52,8 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Archived\Data_RangeFacetCategoryCount.cs" />
-    <None Include="Archived\Data_Sites.cs" />
     <None Include="Archived\FacetConfigFixtures.cs" />
     <None Include="Archived\FacetConfigsByUriFixtures.cs" />
     <None Include="Archived\FacetFixtures.cs" />
@@ -165,7 +161,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\Data\SeadDb\" />
     <Folder Include="UnitTests\SharedKernel\" />
   </ItemGroup>
 </Project>

@@ -28,7 +28,8 @@ namespace SQT.Mocks
 
             public FakeGraphGenerator Add(string x, string y, int w)
             {
-                var edge = new TableRelation() {
+                var edge = new TableRelation()
+                {
                     TableRelationId = Edges.Count + 1,
                     SourceTable = NodeMap[x],
                     TargetTable = NodeMap[y],
@@ -42,7 +43,8 @@ namespace SQT.Mocks
 
             public FakeGraphGenerator Add(List<(string x, string y, int w)> xyws)
             {
-                foreach (var (x, y, w) in xyws) {
+                foreach (var (x, y, w) in xyws)
+                {
                     Add(x, y, w);
                 }
                 return this;
@@ -50,7 +52,8 @@ namespace SQT.Mocks
 
             public FakeGraphGenerator Add(string x, Dictionary<string, int> yw)
             {
-                foreach (var y in yw.Keys) {
+                foreach (var y in yw.Keys)
+                {
                     Add(x, y, yw[y]);
                 }
                 return this;

@@ -62,7 +62,8 @@ namespace SeadQueryInfra
         }
     }
 
-    public static class ResultDefinitionRepositoryEagerBuilder {
+    public static class ResultDefinitionRepositoryEagerBuilder
+    {
         public static IQueryable<ResultSpecification> BuildEntity(this IQueryable<ResultSpecification> query)
         {
             return query.Include(x => x.Fields)

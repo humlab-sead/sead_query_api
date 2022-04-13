@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
 
@@ -26,7 +26,7 @@ namespace SQT.SqlCompilers
                 targetFacet,
                 1,
                 "A = B",
-                FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3})
+                FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
             );
 
             // Act
@@ -47,7 +47,7 @@ namespace SQT.SqlCompilers
                 targetFacet,
                 1,
                 "",
-                FacetConfigPick.CreateDiscrete(new List<int>() {  })
+                FacetConfigPick.CreateDiscrete(new List<int>() { })
             );
 
             // Act

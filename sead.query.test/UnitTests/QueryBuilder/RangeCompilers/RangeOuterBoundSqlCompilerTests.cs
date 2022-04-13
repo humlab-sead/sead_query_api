@@ -8,7 +8,7 @@ using SQT.Infrastructure;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer
     {
         public RangeOuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)

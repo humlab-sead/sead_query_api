@@ -9,7 +9,8 @@ namespace SeadQueryInfra
         public ITypedQueryProxy TypedQueryProxy { get; set; }
         public IDynamicQueryProxy DynamicQueryProxy { get; set; }
 
-        public FacetContext(DbContextOptions options) : base(options) {
+        public FacetContext(DbContextOptions options) : base(options)
+        {
             TypedQueryProxy = new DatabaseQueryProxy(this);
             DynamicQueryProxy = new DatabaseQueryProxy(this);
         }

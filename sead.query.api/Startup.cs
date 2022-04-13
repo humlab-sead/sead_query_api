@@ -36,7 +36,10 @@ namespace SeadQueryAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+            //#if DEBUG
+            //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+            //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            //#endif
 
             // app.UseResponseBuffering();
 
@@ -48,7 +51,8 @@ namespace SeadQueryAPI
                 .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
             );
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
                 // endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

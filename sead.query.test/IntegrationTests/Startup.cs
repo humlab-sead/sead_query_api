@@ -12,7 +12,7 @@ using System.Configuration;
 
 namespace IntegrationTests
 {
-    public class Startup<T> where T: DependencyService, new()
+    public class Startup<T> where T : DependencyService, new()
     {
         public Startup()
         {

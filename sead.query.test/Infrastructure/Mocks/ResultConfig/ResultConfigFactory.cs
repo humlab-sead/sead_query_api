@@ -9,7 +9,7 @@ namespace SQT.Mocks
     {
         public static ResultConfig Create(Facet facet, List<ResultSpecification> resultSpecifications, string viewTypeId)
         {
-            var resultConfig =  new ResultConfig()
+            var resultConfig = new ResultConfig()
             {
                 Facet = facet,
                 FacetCode = facet.FacetCode,

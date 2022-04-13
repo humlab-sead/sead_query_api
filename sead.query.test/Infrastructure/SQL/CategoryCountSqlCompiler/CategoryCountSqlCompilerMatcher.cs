@@ -6,7 +6,7 @@ namespace SQT.SQL.Matcher
     public class CategoryCountSqlCompilerMatcher
     {
         public virtual string ExpectedSql { get; } = "";
-        public virtual GenericSelectSqlMatcher InnerSqlMatcher  { get; }
+        public virtual GenericSelectSqlMatcher InnerSqlMatcher { get; }
 
         public OuterSelectMatch Match(string sqlQuery, string expectedOuterSql)
         {

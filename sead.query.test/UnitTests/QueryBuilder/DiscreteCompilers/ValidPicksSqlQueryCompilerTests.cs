@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class ValidPicksSqlQueryCompilerTests : DisposableFacetContextContainer
     {
         public ValidPicksSqlQueryCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)

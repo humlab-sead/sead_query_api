@@ -1,6 +1,7 @@
 ﻿namespace SeadQueryCore
 {
-    public class TextAggFieldCompiler : SqlFieldCompiler {
+    public class TextAggFieldCompiler : SqlFieldCompiler
+    {
         public TextAggFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
         public override string Compile(string expr)
         {

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeCategoryBoundSqlCompilerTests : DisposableFacetContextContainer
     {
 

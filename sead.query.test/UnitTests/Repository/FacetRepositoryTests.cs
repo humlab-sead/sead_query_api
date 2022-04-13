@@ -7,7 +7,8 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    public class FacetRepositoryTests: DisposableFacetContextContainer
+    [Collection("SeadJsonFacetContextFixture")]
+    public class FacetRepositoryTests : DisposableFacetContextContainer
     {
         public FacetRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
@@ -62,48 +63,48 @@ namespace SQT.Infrastructure.Repository
 
         }
 
-        [Fact]
-        public void Children_FacetHasASingleChild_ReturnsThatChild()
-        {
-            var context = FacetContext;
-            var facetTypeRepository = new Repository<FacetType, EFacetType>(context);
-            var parentGroup = FacetGroupFactory.Fake(27218);
-            var childGroup = FacetGroupFactory.Fake(175);
+        //    [Fact]
+        //    public void Children_FacetHasASingleChild_ReturnsThatChild()
+        //    {
+        //        var context = FacetContext;
+        //        var facetTypeRepository = new Repository<FacetType, EFacetType>(context);
+        //        var parentGroup = FacetGroupFactory.Fake(27218);
+        //        var childGroup = FacetGroupFactory.Fake(175);
 
-            var discreteType = facetTypeRepository.Get(EFacetType.Discrete);
+        //        var discreteType = facetTypeRepository.Get(EFacetType.Discrete);
 
-            var facets = new List<Facet>()
-            {
-                FakeFacet("parent", discreteType, parentGroup, is_applicable: false),
-                FakeFacet("child 1", discreteType, childGroup),
-                FakeFacet("child 2", discreteType, childGroup)
-            };
+        //        var facets = new List<Facet>()
+        //        {
+        //            FacetFactory.Fake("parent", discreteType, parentGroup, is_applicable: false),
+        //            FacetFactory.Fake("child 1", discreteType, childGroup),
+        //            FacetFactory.Fake("child 2", discreteType, childGroup)
+        //        };
 
-            var relations = new List<FacetChild>()
-            {
-                new FacetChild {
-                    FacetCode = facets[0].FacetCode,
-                    ChildFacetCode = facets[1].FacetCode,
-                }
-            };
+        //        var relations = new List<FacetChild>()
+        //        {
+        //            new FacetChild {
+        //                FacetCode = facets[0].FacetCode,
+        //                ChildFacetCode = facets[1].FacetCode,
+        //            }
+        //        };
 
-            context.FacetGroups.Add(parentGroup);
-            context.FacetGroups.Add(childGroup);
-            context.Facets.AddRange(facets);
-            context.FacetChildren.AddRange(relations);
+        //        context.FacetGroups.Add(parentGroup);
+        //        context.FacetGroups.Add(childGroup);
+        //        context.Facets.AddRange(facets);
+        //        context.FacetChildren.AddRange(relations);
 
-            context.SaveChanges();
+        //        context.SaveChanges();
 
-            var repository = new FacetRepository(context);
+        //        var repository = new FacetRepository(context);
 
-            var parent = repository.GetByCode("parent");
-            Assert.NotNull(parent);
+        //        var parent = repository.GetByCode("parent");
+        //        Assert.NotNull(parent);
 
-            var children = repository.Children(parent.FacetCode);
+        //        var children = repository.Children(parent.FacetCode);
 
-            Assert.NotNull(children);
-            Assert.Single(children);
-            Assert.Same(facets[1], children.FirstOrDefault());
-        }
+        //        Assert.NotNull(children);
+        //        Assert.Single(children);
+        //        Assert.Same(facets[1], children.FirstOrDefault());
+        //    }
     }
 }

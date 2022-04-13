@@ -89,7 +89,7 @@ namespace SQT.Model
             var result = graphRoute.ToString();
 
             // Assert
-            Assert.Equal(expected, result );
+            Assert.Equal(expected, result);
         }
 
         [Fact]

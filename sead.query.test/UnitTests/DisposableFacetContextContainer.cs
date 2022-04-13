@@ -18,7 +18,6 @@ using Xunit;
 
 namespace SQT
 {
-    [Collection("JsonSeededFacetContext")]
     public class DisposableFacetContextContainer : IDisposable
     {
         private readonly JsonFacetContextFixture __fixture;
@@ -142,7 +141,7 @@ namespace SQT
             return compiler;
         }
 
-        protected virtual List<string> FakeJoinsClause(int nCount) 
+        protected virtual List<string> FakeJoinsClause(int nCount)
             => Enumerable.Range(0, nCount)
                 .Select(i => (L: Convert.ToChar('A' + (char)i), R: Convert.ToChar('A' + (char)(i + 1))))
                 .Select(x => $" INNER JOIN {x.L} as {x.L}.{x.L.ToString().ToLower()}_id = {x.R}.{x.R.ToString().ToLower()}_id ")

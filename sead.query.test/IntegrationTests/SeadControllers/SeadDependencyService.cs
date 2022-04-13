@@ -11,7 +11,7 @@ namespace IntegrationTests.Sead
         }
 
         public FacetDependencyService() :
-            base(new SeadJsonFacetContextFixture())
+            base(new JsonFacetContextFixture(SeadJsonDataFolder()))
         {
         }
     }

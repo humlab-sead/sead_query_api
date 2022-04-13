@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class MapResultSqlCompilerTests : DisposableFacetContextContainer
     {
         public MapResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
@@ -38,7 +38,7 @@ namespace SQT.SqlCompilers
 
         [Theory]
         [ClassData(typeof(SQT.ClassData.CompleteSetOfSingleTabularResultUriCollection))]
-        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string _)
+        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);

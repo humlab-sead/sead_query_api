@@ -7,11 +7,13 @@ using Autofac.Features.Indexed;
 
 namespace SeadQueryAPI.Services
 {
-    public interface IFacetContentReconstituteService {
+    public interface IFacetContentReconstituteService
+    {
         FacetContent Load(FacetsConfig2 facetsConfig);
     }
 
-    public class LoadFacetService : AppServiceBase, IFacetContentReconstituteService {
+    public class LoadFacetService : AppServiceBase, IFacetContentReconstituteService
+    {
 
         public IBogusPickService BogusPickService { get; private set; }
         public IFacetContentServiceLocator ContentServiceLocator { get; private set; }
@@ -35,7 +37,7 @@ namespace SeadQueryAPI.Services
     {
 
         public CachedLoadFacetService(
-            ISetting config, 
+            ISetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IBogusPickService bogusService,

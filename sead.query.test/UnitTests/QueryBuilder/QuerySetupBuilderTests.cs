@@ -14,7 +14,7 @@ using Xunit.Abstractions;
 namespace SQT.QueryBuilder
 {
 
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class QuerySetupBuilderTests : DisposableFacetContextContainer
     {
         public QuerySetupBuilderTests(SeadJsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
@@ -25,7 +25,7 @@ namespace SQT.QueryBuilder
         private readonly ITestOutputHelper Output;
 
         [Fact]
-        public void SkitTest ()
+        public void SkitTest()
         {
             string[] trail = { "tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions" };
             var pairs = RouteHelper.ToPairs(trail);

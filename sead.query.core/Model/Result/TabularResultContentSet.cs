@@ -12,16 +12,19 @@ namespace SeadQueryCore.Model
         public TabularResultContentSet(ResultConfig resultConfig, List<ResultSpecificationField> resultFields, IDataReader reader) : base()
         {
             Reader = reader;
-            Meta = new ResultMetaData() {
+            Meta = new ResultMetaData()
+            {
                 Columns = ResultColumn.Map(resultFields, SourceColumnType.GetColumnTypes(reader))
             };
             Data = new ResultData() { DataCollection = Iterator.ToList() };
             RequestId = resultConfig.RequestId;
         }
 
-        [JsonIgnore] public IEnumerable<object[]> Iterator
+        [JsonIgnore]
+        public IEnumerable<object[]> Iterator
         {
-            get {
+            get
+            {
                 using (Reader)
                     while (Reader.Read())
                     {

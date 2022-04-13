@@ -24,7 +24,8 @@ namespace SQT.Infrastructure
             foreach (var p in properties)
                 table.Columns.Add(p.Name, Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType);
 
-            foreach (T item in items) {
+            foreach (T item in items)
+            {
                 DataRow row = table.NewRow();
                 foreach (var prop in properties)
                     row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
@@ -38,9 +39,11 @@ namespace SQT.Infrastructure
         {
             DataTable table = new DataTable();
 
-            foreach (IDictionary<string, object> item in items) {
+            foreach (IDictionary<string, object> item in items)
+            {
 
-                if (table.Columns.Count == 0) {
+                if (table.Columns.Count == 0)
+                {
                     foreach (var key in item.Keys)
                         table.Columns.Add(key, item[key].GetType());
                 }

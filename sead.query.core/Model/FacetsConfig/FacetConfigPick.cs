@@ -5,7 +5,8 @@ using System.Globalization;
 
 namespace SeadQueryCore
 {
-    public class FacetConfigPick {
+    public class FacetConfigPick
+    {
 
         private static CultureInfo cultureInfo = new CultureInfo("en-US");
 
@@ -53,7 +54,7 @@ namespace SeadQueryCore
         {
             return ids.Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
         }
- 
+
         public static List<FacetConfigPick> CreateLowerUpper(decimal lower, decimal upper)
         {
             return new List<FacetConfigPick>() {

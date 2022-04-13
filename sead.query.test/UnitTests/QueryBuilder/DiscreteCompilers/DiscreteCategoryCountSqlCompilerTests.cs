@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteCategoryCountSqlCompilerTests : DisposableFacetContextContainer
     {
         public DiscreteCategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
@@ -37,6 +37,6 @@ namespace SQT.SqlCompilers
 
             Assert.True(match.Success);
 
-         }
+        }
     }
 }

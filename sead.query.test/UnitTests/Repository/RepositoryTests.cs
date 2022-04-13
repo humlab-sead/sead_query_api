@@ -11,7 +11,7 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RepositoryTests : DisposableFacetContextContainer
     {
         public RepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
@@ -33,7 +33,8 @@ namespace SQT.Infrastructure.Repository
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>();
 
             using (var container = builder.Build())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 var service = scope.Resolve<IRepositoryRegistry>();
                 Assert.True(service.Facets.GetAll().Any());
             }

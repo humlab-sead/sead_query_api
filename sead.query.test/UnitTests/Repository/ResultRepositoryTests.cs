@@ -10,7 +10,7 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class ResultRepositoryTests : DisposableFacetContextContainer
     {
         public ResultRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
@@ -177,7 +177,8 @@ namespace SQT.Infrastructure.Repository
 
             // Assert
             Assert.NotEmpty(result);
-            foreach (var value in result) {
+            foreach (var value in result)
+            {
                 Assert.NotNull(value.Fields);
                 Assert.NotEmpty(value.Fields);
                 Assert.All(value.Fields, z => Assert.NotNull((z).ResultField));

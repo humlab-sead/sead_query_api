@@ -5,7 +5,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class RangeCategoryCountService : CategoryCountService {
+    public class RangeCategoryCountService : CategoryCountService
+    {
 
         public RangeCategoryCountService(
             IFacetSetting config,
@@ -13,7 +14,8 @@ namespace SeadQueryCore
             IQuerySetupBuilder builder,
             IRangeCategoryCountSqlCompiler rangeCountSqlCompiler,
             ITypedQueryProxy queryProxy
-        ) : base(config, context, builder, queryProxy) {
+        ) : base(config, context, builder, queryProxy)
+        {
             RangeCountSqlCompiler = rangeCountSqlCompiler;
             CountTables = Config.CountTable.WrapToList();
         }

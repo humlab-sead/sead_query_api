@@ -10,7 +10,8 @@ namespace SeadQueryCore
     /// <summary>
     /// Enum for supported facet types
     /// </summary>
-    public enum EFacetType {
+    public enum EFacetType
+    {
         Unknown = 0,
         Discrete = 1,
         Range = 2,
@@ -18,7 +19,8 @@ namespace SeadQueryCore
     }
 
     [JsonObject(MemberSerialization.OptOut)]
-    public class Facet {
+    public class Facet
+    {
         public Facet()
         {
             Clauses = new List<FacetClause>();
@@ -48,7 +50,7 @@ namespace SeadQueryCore
         [JsonIgnore]
         public int FacetGroupId { get; set; }
 
-        public string FacetGroupKey { get { return FacetGroup?.FacetGroupKey ?? "unknown";  } }
+        public string FacetGroupKey { get { return FacetGroup?.FacetGroupKey ?? "unknown"; } }
 
         /// <summary>
         /// Facet type ID

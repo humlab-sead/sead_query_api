@@ -3,7 +3,8 @@ using System.Diagnostics;
 
 namespace SeadQueryCore
 {
-    public class MapResultSqlCompiler : IResultSqlCompiler {
+    public class MapResultSqlCompiler : IResultSqlCompiler
+    {
         // FIXME Check if facet can be refactored away
         public string Compile(QueryBuilder.QuerySetup querySetup, Facet facet, IEnumerable<ResultSpecificationField> fields)
         {

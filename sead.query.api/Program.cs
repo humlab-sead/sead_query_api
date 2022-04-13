@@ -12,7 +12,8 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
-namespace SeadQueryAPI {
+namespace SeadQueryAPI
+{
 
     public static class Program
     {
@@ -21,33 +22,38 @@ namespace SeadQueryAPI {
         {
             Log.Logger = Logger.CreateSerilogger();
 
-            try {
+            try
+            {
                 Log.Information("Starting web host");
                 var host = CreateHostBuilder(args).Build();
                 host.Run();
                 return 0;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Log.Fatal(ex, "Host terminated unexpectedly");
                 return 1;
-            } finally {
+            }
+            finally
+            {
                 Log.CloseAndFlush();
             }
         }
 
-         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+           Host.CreateDefaultBuilder(args)
+               .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+               .ConfigureWebHostDefaults(webBuilder =>
+               {
+                   webBuilder.ConfigureKestrel(serverOptions =>
+                   {
                         // Set properties and call methods on options
                     })
-                    .UseStartup<Startup>()
-                    .UseSerilog();
+                   .UseStartup<Startup>()
+                   .UseSerilog();
 
-                })
-            ;
+               })
+           ;
     }
 }
 

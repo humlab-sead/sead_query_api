@@ -10,7 +10,7 @@ using SQT.Infrastructure;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetGraphFactoryTests : DisposableFacetContextContainer
     {
         public FacetGraphFactoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)

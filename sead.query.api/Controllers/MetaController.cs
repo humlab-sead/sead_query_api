@@ -38,7 +38,7 @@ namespace SeadQueryAPI.Controllers
         /// <returns></returns>
         [HttpGet("facet/group")]
         [Produces("application/json", Type = typeof(IEnumerable<FacetGroup>))]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.OK , Type = typeof(IEnumerable<FacetGroup>))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<FacetGroup>))]
         public IEnumerable<FacetGroup> GetGroups()
         {
             return Context.FacetGroups.GetAll().ToList();

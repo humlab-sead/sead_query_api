@@ -13,7 +13,8 @@ namespace SQT.Model
     {
         private ResultSpecification CreateResultSpecification()
         {
-            return new ResultSpecification() {
+            return new ResultSpecification()
+            {
                 SpecificationId = 3,
                 SpecificationKey = "sample_group_level",
                 Fields = new List<ResultSpecificationField>() {

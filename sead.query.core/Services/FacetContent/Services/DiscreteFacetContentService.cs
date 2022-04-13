@@ -8,7 +8,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class DiscreteFacetContentService : FacetContentService {
+    public class DiscreteFacetContentService : FacetContentService
+    {
         public DiscreteFacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
@@ -28,7 +29,8 @@ namespace SeadQueryCore
         {
             var querySetup = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, null, null);
             var sql = SqlCompiler.Compile(querySetup, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
-            return new FacetContent.IntervalQueryInfo {
+            return new FacetContent.IntervalQueryInfo
+            {
                 Count = 1,
                 Query = sql
             };

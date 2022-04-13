@@ -25,7 +25,7 @@ namespace SeadQueryCore
             var sql = $" {Join[innerJoin]} JOIN {targetTable?.ResolvedSqlJoinName ?? edge.TargetName} " +
                         $"ON {targetTable?.ResolvedAliasOrTableOrUdfName ?? edge.TargetName}.\"{edge.TargetColumnName}\" = " +
                                 $"{edge.SourceName}.\"{edge.SourceColumName}\" ";
-                                //.GlueIf(edge.ExtraConstraint, " AND ");
+            //.GlueIf(edge.ExtraConstraint, " AND ");
 
             return sql;
         }
