@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS repo
 
-ARG BRANCH=master
+ARG BRANCH
 
 RUN apt-get update && apt-get install -y \
   git
@@ -10,7 +10,7 @@ WORKDIR /repo
 ADD https://api.github.com/repos/humlab-sead/sead_query_api/git/refs/heads/$BRANCH version.json
 RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --single-branch
 
-COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
+# COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
 #COPY hosting.json /repo/sead_query_api/conf/hosting.json
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build

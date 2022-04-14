@@ -7,9 +7,15 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
+      args:
+        - BRANCH=2022.04.14.rc1
     restart: always
     depends_on:
       - redis.cache
+    volumes:
+        - ./conf/appsettings.Production.json:/app/appsettings.json
+        # - ./conf/.env:/app/.env
+    env_file: ./conf/.env
     networks:
       sead_query_net:
         ipv4_address: 172.31.128.1
