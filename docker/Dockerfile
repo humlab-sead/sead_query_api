@@ -7,7 +7,8 @@ ARG BRANCH
 
 WORKDIR /repo
 
-RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
+RUN echo "info: using tag $BRANCH" \
+    &&git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 

@@ -8,9 +8,6 @@ ifeq (,$(wildcard ./conf/appsettings.Production.json))
     $(error ./conf/appsettings.Production.json does not exist!)
 endif
 
-ifeq (,$(wildcard ./conf/docker-compose.override.yml))
-    $(error ./conf/docker-compose.override.yml does not exist!)
-endif
 
 ifeq (,$(wildcard ./conf/.env))
     $(error ./conf/.env does not exist!)
@@ -25,11 +22,11 @@ endif
 .PHONY: clean up down build fetch help follow info
 
 clean:
-	@rm -f ./conf/Dockerfile ./conf/docker-compose.yml
+	@rm -f ./Dockerfile ./docker-compose.yml
 
 fetch: clean
-	@wget -nv -O ./conf/Dockerfile https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/Dockerfile
-	@wget -nv -O ./conf/docker-compose.yml https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/docker-compose.yml
+	@wget -nv -O ./Dockerfile https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/Dockerfile
+	@wget -nv -O ./docker-compose.yml https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/docker-compose.yml
 
 # @wget -o Makefile https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/Makefile
 
@@ -39,13 +36,13 @@ image:
 		--build-arg BRANCH=$(SEAD_QUERY_API_TAG) \
         -t $(IMAGE_NAME):latest \
         -t $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) \
-		-f ./conf/Dockerfile .
+		-f ./Dockerfile .
 
 down:
-	-docker-compose -f conf/docker-compose.yml down
+	-docker-compose -f docker-compose.yml down
 
 up:
-	@docker-compose -f conf/docker-compose.yml up -d
+	@docker-compose -f docker-compose.yml up -d
 
 follow:
 	@docker logs $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) --follow
