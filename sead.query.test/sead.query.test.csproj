@@ -24,54 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Archived\FacetConfigFixtures.cs" />
-    <Compile Remove="Archived\FacetConfigsByUriFixtures.cs" />
-    <Compile Remove="Archived\FacetFixtures.cs" />
-    <Compile Remove="Archived\FacetRepository.cs" />
-    <Compile Remove="Archived\FacetsConfigFixtures.cs" />
-    <Compile Remove="Archived\FacetTypeRepository.cs" />
-    <Compile Remove="Archived\FakeFacetContext.cs" />
-    <Compile Remove="Archived\FakeFacetContextFactory.cs" />
-    <Compile Remove="Archived\FakeFacetContextSeeder.cs" />
-    <Compile Remove="Archived\FakeFacetFactory.cs" />
-    <Compile Remove="Archived\FakeFacetsConfigByJsonFactory.cs" />
-    <Compile Remove="Archived\FakeFacetsGetByCodeRepositoryFactory.cs" />
-    <Compile Remove="Archived\FakeRepository.cs" />
-    <Compile Remove="Archived\FakeSingleFacetsConfigFactory.cs" />
-    <Compile Remove="Archived\JsonSeededFacetsConfigByUriFactory.cs" />
-    <Compile Remove="Archived\QuerySetupFixtures.cs" />
-    <Compile Remove="Archived\ReportServiceTests.cs" />
-    <Compile Remove="Archived\RepositoryMocks\FacetRepository.cs" />
-    <Compile Remove="Archived\RepositoryMocks\FacetTypeRepository.cs" />
-    <Compile Remove="Archived\RepositoryMocks\FakeFacetContext.cs" />
-    <Compile Remove="Archived\RepositoryMocks\FakeRepository.cs" />
-    <Compile Remove="Archived\ResetRelations.cs" />
-    <Compile Remove="Archived\Startup.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Archived\FacetConfigFixtures.cs" />
-    <None Include="Archived\FacetConfigsByUriFixtures.cs" />
-    <None Include="Archived\FacetFixtures.cs" />
-    <None Include="Archived\FacetsConfigFixtures.cs" />
-    <None Include="Archived\FakeFacetContextFactory.cs" />
-    <None Include="Archived\FakeFacetContextSeeder.cs" />
-    <None Include="Archived\FakeFacetFactory.cs" />
-    <None Include="Archived\FakeFacetsConfigByJsonFactory.cs" />
-    <None Include="Archived\FakeFacetsGetByCodeRepositoryFactory.cs" />
-    <None Include="Archived\FakeSingleFacetsConfigFactory.cs" />
-    <None Include="Archived\JsonSeededFacetsConfigByUriFactory.cs" />
-    <None Include="Archived\QuerySetupFixtures.cs" />
-    <None Include="Archived\ReportServiceTests.cs" />
-    <None Include="Archived\RepositoryMocks\FacetRepository.cs" />
-    <None Include="Archived\RepositoryMocks\FacetTypeRepository.cs" />
-    <None Include="Archived\RepositoryMocks\FakeFacetContext.cs" />
-    <None Include="Archived\RepositoryMocks\FakeRepository.cs" />
-    <None Include="Archived\ResetRelations.cs" />
-    <None Include="Archived\Startup.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
 
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
