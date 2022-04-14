@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Autofac.Features.Indexed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
 using SeadQueryCore;
+using SeadQueryInfra;
 
 namespace SQT
 {
@@ -44,6 +46,7 @@ namespace SQT
 
         public static Setting GetSettings(Dictionary<string, string> memorySettings = null)
         {
+            DotEnv.Load(".env", "conf/.env");
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
