@@ -1,17 +1,13 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS repo
 
-ARG BRANCH
-
 RUN apt-get update && apt-get install -y \
   git
 
+ARG BRANCH
+
 WORKDIR /repo
 
-ADD https://api.github.com/repos/humlab-sead/sead_query_api/git/refs/heads/$BRANCH version.json
-RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --single-branch
-
-# COPY appsettings.Production.json /repo/sead_query_api/conf/appsettings.Production.json
-#COPY hosting.json /repo/sead_query_api/conf/hosting.json
+RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 
@@ -24,6 +20,7 @@ COPY --from=repo ["/repo/sead_query_api/sead.query.infra/sead.query.infra.csproj
 RUN dotnet restore "sead.query.api/sead.query.api.csproj"
 
 COPY --from=repo /repo/sead_query_api .
+COPY conf /src/conf
 
 RUN cd sead.query.api \
     && dotnet build   sead.query.api.csproj -c Release \
