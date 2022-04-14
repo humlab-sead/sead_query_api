@@ -87,4 +87,10 @@
       <TargetPath>logging.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
+  <ItemGroup>
+      <ContentWithTargetPath Include="../conf/.env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>.env</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
 </Project>
