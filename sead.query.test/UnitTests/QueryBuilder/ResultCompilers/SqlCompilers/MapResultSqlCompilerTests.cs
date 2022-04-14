@@ -38,7 +38,7 @@ namespace SQT.SqlCompilers
 
         [Theory]
         [ClassData(typeof(SQT.ClassData.CompleteSetOfSingleTabularResultUriCollection))]
-        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey)
+        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string viewType)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
