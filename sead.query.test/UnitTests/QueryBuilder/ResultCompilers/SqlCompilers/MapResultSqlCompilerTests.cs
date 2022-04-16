@@ -18,7 +18,7 @@ namespace SQT.SqlCompilers
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level")]
         [InlineData("sites:sites", "result_facet", "site_level")]
         [InlineData("sites:country/sites", "result_facet", "site_level")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string specificationKey)
+        public void Compile_MapResult_Matches(string uri, string resultFacetCode, string specificationKey)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);

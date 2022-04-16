@@ -19,7 +19,7 @@ namespace SQT.SqlCompilers
         [InlineData("sites:sites")]
         [InlineData("country:country/sites")]
         [InlineData("sites:country@57/sites@3")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri)
+        public void Compile_DiscreteContent_Matches(string uri)
         {
 
             // Arrange
