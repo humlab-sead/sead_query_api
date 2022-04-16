@@ -8,6 +8,9 @@
     <UserSecretsId>ce0f2374-2571-4e88-ac08-603c414fa867</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+	  <VersionPrefix>2022.04.15</VersionPrefix>
+	  <Company>Humlab, Umeå universitet</Company>
+	  
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,9 +18,9 @@
     <NoWarn>1701;1702;1705;1591;CS1591;NU1603</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Folder Include="wwwroot\" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
 
