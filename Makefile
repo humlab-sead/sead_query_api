@@ -17,8 +17,9 @@ kill-all:
 .PHONY: kill-all test
 
 clean:
-	dotnet clean
-	dotnet clean -c Release
+	@dotnet clean
+	@dotnet clean -c Release
+	@dotnet nuget locals --clear all
 
 build:
 	dotnet build -c Release
@@ -28,5 +29,5 @@ publish:
 
 tidy:
 	dotnet format
-	
+
 .PHONY: test clean build publish

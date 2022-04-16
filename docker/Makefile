@@ -28,7 +28,8 @@ fetch: clean
 	@wget -nv -O ./Dockerfile https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/Dockerfile
 	@wget -nv -O ./docker-compose.yml https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/docker-compose.yml
 
-# @wget -o Makefile https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/Makefile
+fetch-makefile:
+	@wget -o Makefile https://raw.githubusercontent.com/humlab-sead/sead_query_api/$(SEAD_QUERY_API_TAG)/docker/Makefile
 
 image:
 	@echo "Building image using $(SEAD_QUERY_API_TAG)..."
@@ -50,3 +51,5 @@ follow:
 info:
 	@echo "Target branch: $(SEAD_QUERY_API_TAG)"
 
+nuke: down clean
+	@docker network prune
