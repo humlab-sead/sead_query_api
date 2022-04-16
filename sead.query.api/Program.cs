@@ -49,10 +49,9 @@ namespace SeadQueryAPI
                    {
                         // Set properties and call methods on options
                     })
-                   .UseStartup<Startup>()
-                   .UseSerilog();
+                   .UseStartup<Startup>();
 
-               })
+               }).UseSerilog()
            ;
     }
 }
