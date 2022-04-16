@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS repo
+FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-buster-slim AS repo
 
 RUN apt-get update && apt-get install -y \
   git
@@ -10,7 +10,7 @@ WORKDIR /repo
 RUN echo "info: using tag $BRANCH" \
     &&git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:5.0-buster-slim AS build
 
 WORKDIR /src
 
@@ -28,7 +28,7 @@ RUN cd sead.query.api \
     && dotnet publish sead.query.api.csproj -c Release -o /src/app --no-restore
     #dotnet test    "sead.query.api.csproj" -c Release -o /src/app --no-build --no-restore
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-buster-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
