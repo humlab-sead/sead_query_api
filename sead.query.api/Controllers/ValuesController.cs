@@ -9,13 +9,13 @@ namespace query_sead_net.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "2020", "03" };
+            return new string[] { "hello", "world", "!" };
         }
 
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return $"Hello {id}!";
         }
 
         [HttpPost]
