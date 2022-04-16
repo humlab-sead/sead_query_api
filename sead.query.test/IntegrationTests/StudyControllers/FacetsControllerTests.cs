@@ -35,14 +35,11 @@ namespace IntegrationTests.StudyDb
         [Fact]
         public async Task API_GET_Health_IsGood()
         {
-            // Act
             using var response = await Fixture.Client.GetAsync("api/values");
-
-            // Assert
-
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            Assert.Matches(@"\[""\d{4}"",""\d{2}""\]", json);
+            // Assert.Matches(@"\[""\d{4}"",""\d{2}""\]", json);
+            Assert.Equal(json, @"[""hello"",""world"",""!""]");
         }
 
         [Fact]
