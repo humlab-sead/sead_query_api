@@ -1,3 +1,43 @@
+###
+
+POST {{protocol}}://{{host}}:{{port}}/api/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+    "facetsConfig": {
+        "requestId": 3,
+        "requestType": "populate",
+        "domainCode": "",
+        "targetCode": "ecocode",
+        "triggerCode": "ecocode",
+        "facetConfigs": [
+            {
+                "facetCode": "ecocode",
+                "position": 1,
+                "picks": [
+                    {
+                        "pickType": 1,
+                        "pickValue": 36,
+                        "text": 36
+                    }
+                ],
+                "textFilter": ""
+            }
+        ]
+    },
+    "resultConfig": {
+        "requestId": 3,
+        "sessionId": "1",
+        "viewTypeId": "map",
+        "aggregateKeys": [
+            "site_level"
+        ]
+    }
+}
+
 ### Type:   discrete
 ### Chain:  sites
 ### Picks:  [64]
@@ -150,7 +190,7 @@ Content-Type: application/json; charset=UTF-8
 
 ### Type:
 ### Chain:
-### Picks:  
+### Picks:
 
 POST {{protocol}}://{{host}}:{{port}}/api/result/load
 Sec-Fetch-Mode: cors
