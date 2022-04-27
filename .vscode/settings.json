@@ -20,6 +20,11 @@
 			"protocol" : "https",
 			"host": "supersead.humlab.umu.se",
 			"port": "8089",
+		},
+		"browser.sead.se": {
+			"protocol" : "https",
+			"host": "browser.sead.se",
+			"port": "8089",
 		}
     },
     "workbench.colorCustomizations": {
