@@ -73,11 +73,11 @@ namespace IntegrationTests.Debug
         //     var resultConfigDTO = data["resultConfig"].ToObject<ResultConfigDTO>();
         //     var facetsConfig = new FacetConfigReconstituteService(MockService.Registry).Reconstitute(facetsConfigDTO);
         //     var resultConfig = new ResultConfigReconstituteService(MockService.Registry).Reconstitute(resultConfigDTO);
-        //     var result = new ResultService(
-        //         MockService.Registry,
-        //         MockService.MockTypedQueryProxy,
 
-        //     ).Load(facetsConfig, resultConfig).Nullify();
+        //     IContainer container = DependencyService.CreateContainer(MockService.FacetContext, "PAP", MockService.Settings);
+
+        //     ILoadResultService service = container.Resolve<ILoadResultService>();
+        //     service.Load(facetsConfig, resultConfig).Nullify();
         // }
 
         [Fact]

@@ -4,13 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-//using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Serialization;
-using Npgsql.Logging;
 using SeadQueryCore;
-//using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.IO;
 
 namespace SeadQueryAPI
 {
@@ -19,7 +15,7 @@ namespace SeadQueryAPI
     {
         public IConfigurationRoot Configuration { get; private set; }
 
-        public IContainer Container { get; private set; }
+        public Autofac.IContainer Container { get; private set; }
 
         public Startup()
         {
@@ -36,14 +32,19 @@ namespace SeadQueryAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
+            //Configure application's request pipeline.
+
             //#if DEBUG
             //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
             //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
             //#endif
 
-            // app.UseResponseBuffering();
-
+            /* Add a Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware middleware
+             * to the IApplicationBuilder. */
             app.UseRouting();
+
+            /* Adds a CORS middleware to application pipeline
+             * to allow cross domain requests. */
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
@@ -51,16 +52,21 @@ namespace SeadQueryAPI
                 .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
             );
 
+            /* Adds a Microsoft.AspNetCore.Routing.EndpointMiddleware middleware
+             * to the specified IApplicationBuilder with the EndpointDataSource 
+             * instances built from configured IEndpointRouteBuilder.
+             * The Microsoft.AspNetCore.Routing.EndpointMiddleware will execute
+             * the Endpoint associated with the current request.*/
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
-                // endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                // endpoints.MapHealthChecks("/health");
             });
 
             if (env.IsDevelopment())
             {
+                /* Captures synchronous and asynchronous axceptions from the pipeline
+                * and generates HTML error responses.*/
                 app.UseDeveloperExceptionPage();
             }
 
@@ -80,7 +86,7 @@ namespace SeadQueryAPI
                 });
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
+        public void ConfigureContainer(Autofac.ContainerBuilder builder)
         {
             builder.RegisterModule(new DependencyService() { Options = GetOptions() });
         }
