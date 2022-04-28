@@ -39,17 +39,14 @@ namespace SQT.Infrastructure
         }
 
         [Fact]
-        public void add_vertex_StateUnderTest_ExpectedBehavior()
+        public void TestAddVertex()
         {
-            // Arrange
             var dijkstrasGraph = this.CreateDijkstrasGraph();
 
-            // Act
-            var source = 'A';
+            const char source = 'A';
             var neighbours = new Dictionary<char, int>() { { 'B', 7 }, { 'C', 8 } };
             dijkstrasGraph.add_vertex(source, neighbours);
 
-            // Assert
             var storedNeighbours = dijkstrasGraph.Vertices.GetValueOrDefault(source);
 
             Assert.NotNull(storedNeighbours);
@@ -59,12 +56,9 @@ namespace SQT.Infrastructure
 
         [Theory]
         [MemberData(nameof(TestGraphData))]
-        public void shortest_path_StateUnderTest_ExpectedBehavior(DijkstrasGraph<char> g, char start, char stop, int expected)
+        public void TestShortestPath(DijkstrasGraph<char> g, char start, char stop, int expected)
         {
-            // Act
             var result = g.shortest_path(start, stop);
-
-            // Assert
             Assert.Equal<int>(expected, result.Count);
         }
     }
