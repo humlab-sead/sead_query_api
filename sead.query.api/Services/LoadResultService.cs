@@ -13,9 +13,9 @@ namespace SeadQueryAPI.Services
         public LoadResultService(
             ISetting config,
             IRepositoryRegistry context,
-#pragma warning disable IDE0060
+#pragma warning disable IDE0060, RCS1163
             ISeadQueryCache cache,
-#pragma warning restore IDE0060
+#pragma warning restore IDE0060, RCS1163
             IResultService service,
             IBogusPickService bogusPickService) : base(config, context)
         {
@@ -28,7 +28,6 @@ namespace SeadQueryAPI.Services
             BogusPickService.Update(facetsConfig);
             return ResultService.Load(facetsConfig, resultConfig);
         }
-
     }
 
     public class CachedLoadResultService : LoadResultService
@@ -61,5 +60,4 @@ namespace SeadQueryAPI.Services
             return result;
         }
     }
-
 }

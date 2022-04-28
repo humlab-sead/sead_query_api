@@ -109,7 +109,7 @@ namespace SQT.SQL.Matcher
             result.Joins = joins.Select(x => x.Squeeze()).ToList();
 
             //var expectedJoin = @"(?:INNER|LEFT|RIGHT|OUTER)?\s?JOIN\s(?<JoinTable>[\w\."",\(\)]+)\s(?:AS (?<JoinAlias>[""\w]+\s))?ON\s(?<LeftOnExpr>[\w\."",\(\)]+)\s=\s(?<RightOnExpr>[\w\."",\(\)]+)";
-            var expectedJoin = @"(?<JoinTable>[\w\."",\(\)]+)(?:AS (?<JoinAlias>[""\w]+\s))?(?: ON\s(?<JoinCriteria>.*))?";
+            const string expectedJoin = @"(?<JoinTable>[\w\."",\(\)]+)(?:AS (?<JoinAlias>[""\w]+\s))?(?: ON\s(?<JoinCriteria>.*))?";
 
             result.Items = new List<JoinMatch>();
             foreach (var join in result.Joins)

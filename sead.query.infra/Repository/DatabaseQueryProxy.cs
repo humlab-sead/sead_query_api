@@ -25,7 +25,7 @@ namespace SeadQueryInfra
         }
 
         /// <summary>
-        /// Exceutes a generic query. built from 
+        /// Exceutes a generic query. built from
         /// Only used in ResultContentService.
         /// </summary>
         /// <param name="sql"></param>

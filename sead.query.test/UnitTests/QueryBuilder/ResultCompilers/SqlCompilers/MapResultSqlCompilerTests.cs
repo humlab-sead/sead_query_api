@@ -5,6 +5,8 @@ using SQT.SQL.Matcher;
 using System.Collections.Generic;
 using Xunit;
 
+#pragma warning disable RCS1163, IDE0060
+
 namespace SQT.SqlCompilers
 {
     [Collection("SeadJsonFacetContextFixture")]

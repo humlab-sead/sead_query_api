@@ -11,7 +11,7 @@ namespace SeadQueryCore
             {
                 return false;
             }
-            if (facetsConfig.RequestId == "")
+            if (facetsConfig.RequestId?.Length == 0)
             {
                 throw new QuerySeadException("Undefined request id");
             }
@@ -32,7 +32,7 @@ namespace SeadQueryCore
 
         public bool IsSatisfiedBy(List<FacetConfig2> configs)
         {
-            if (0 == configs.Count)
+            if (configs.Count == 0)
             {
                 throw new QuerySeadException("Facet chain is empty");
             }

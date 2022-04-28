@@ -46,7 +46,7 @@ namespace SeadQueryCore
         public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
         public bool HasConstraints() => (HasPicks() || HasCriterias());
         public bool HasEnforcedConstraints()
-            => (Facet?.Clauses?.Where(x => x.EnforceConstraint == true).Any() ?? false);
+            => (Facet?.Clauses?.Where(x => x.EnforceConstraint).Any() ?? false);
 
         public void ClearPicks() => Picks.Clear();
 

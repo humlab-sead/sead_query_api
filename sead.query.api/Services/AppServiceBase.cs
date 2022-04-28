@@ -18,6 +18,5 @@ namespace SeadQueryAPI.Services
             Config = config.Facet;
             Context = context;
         }
-
     }
 }

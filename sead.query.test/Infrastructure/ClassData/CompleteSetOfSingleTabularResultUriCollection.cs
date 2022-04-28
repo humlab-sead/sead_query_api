@@ -29,5 +29,4 @@ namespace SQT.ClassData
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
-
 }

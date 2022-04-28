@@ -25,12 +25,14 @@ namespace SeadQueryCore.Model
             get
             {
                 using (Reader)
+                {
                     while (Reader.Read())
                     {
                         var values = new object[Reader.FieldCount];
                         Reader.GetValues(values);
                         yield return values;
                     }
+                }
             }
         }
     }

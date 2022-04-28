@@ -12,7 +12,7 @@ namespace SQT.Infrastructure
         /// <summary>
         /// Reads Json Facet Schema entities and stores them in a dictionary
         /// </summary>
-        private Lazy<ItemsDictionary> LazyItems;
+        private readonly Lazy<ItemsDictionary> LazyItems;
         public ItemsDictionary Items => LazyItems.Value;
         public string Folder { get; }
         public ICollection<Type> Types { get; }

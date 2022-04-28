@@ -21,7 +21,7 @@ namespace SQT.Infrastructure.Repository
 
             Facet facet = repository.GetByCode("species");
 
-            Dictionary<string, object> expectedProperties = new Dictionary<string, object>() {
+            Dictionary<string, object> expectedProperties = new() {
                 { "FacetId", 25 },
                 { "FacetCode", "species" },
                 { "DisplayTitle", "Taxa" },
@@ -45,7 +45,6 @@ namespace SQT.Infrastructure.Repository
             Assert.NotNull(facet.Tables);
 
             Assert.True(facet.Tables.Count > 0);
-
         }
 
         [Fact]
@@ -56,7 +55,7 @@ namespace SQT.Infrastructure.Repository
             List<Facet> aliasFacets = repository.FindThoseWithAlias().ToList();
             Assert.True(aliasFacets.Count > 0);
 
-            var facet = aliasFacets.First();
+            var facet = aliasFacets[0];
 
             Assert.NotNull(facet);
             Assert.True(facet.Tables.Exists(z => z.HasAlias));

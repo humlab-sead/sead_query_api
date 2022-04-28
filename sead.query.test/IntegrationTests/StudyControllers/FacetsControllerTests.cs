@@ -47,7 +47,7 @@ namespace IntegrationTests.StudyDb
             {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json.ToString());
+                List<JObject> facets = JsonConvert.DeserializeObject<List<JObject>>(json);
                 Assert.NotEmpty(facets);
             }
         }
@@ -62,7 +62,7 @@ namespace IntegrationTests.StudyDb
             {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                Facet facet = JsonConvert.DeserializeObject<Facet>(json.ToString());
+                Facet facet = JsonConvert.DeserializeObject<Facet>(json);
                 Assert.Equal(facetId, facet.FacetId);
             }
         }
@@ -74,7 +74,7 @@ namespace IntegrationTests.StudyDb
             {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());
+                List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json);
                 Assert.NotEmpty(facets);
                 var facetCodes = facets.Select(x => x.FacetCode);
                 Assert.Contains("pollen", facetCodes);
@@ -89,10 +89,9 @@ namespace IntegrationTests.StudyDb
             {
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json.ToString());
+                List<Facet> facets = JsonConvert.DeserializeObject<List<Facet>>(json);
                 Assert.NotEmpty(facets);
             }
         }
-
     }
 }

@@ -97,7 +97,7 @@ namespace SQT.Model
                 Position = 0,
                 Picks = FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
             };
-            bool sort = false;
+            const bool sort = false;
 
             // Act
             var result = facetConfig2.GetPickValues(sort);

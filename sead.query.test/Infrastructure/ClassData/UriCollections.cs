@@ -107,6 +107,5 @@ namespace SQT.ClassData
                 "isotope://data_types:data_types",
                 "isotope://sample_group_sampling_contexts:sample_group_sampling_contexts"
             };
-
     }
 }

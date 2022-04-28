@@ -88,7 +88,6 @@ namespace SeadQueryInfra
                     .WithMany(p => p.Children)
                     .HasPrincipalKey(p => p.FacetCode)
                     .HasForeignKey(d => d.FacetCode);
-
             });
 
             builder.Entity<Facet>(entity =>
@@ -214,13 +213,11 @@ namespace SeadQueryInfra
             });
 
             base.OnModelCreating(builder);
-
         }
 
         public override void Dispose()
         {
             base.Dispose();
         }
-
     }
 }

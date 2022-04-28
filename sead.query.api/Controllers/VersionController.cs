@@ -10,7 +10,7 @@ namespace SeadQueryAPI.Controllers
         public IEnumerable<string> Get()
         {
             System.Version version = typeof(VersionController).Assembly.GetName().Version;
-            return version == null ? new string[] { } : version.ToString().Split(".");
+            return version == null ? System.Array.Empty<string>() : version.ToString().Split(".");
         }
     }
 }

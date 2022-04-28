@@ -31,7 +31,6 @@ namespace SQT.Infrastructure
         {
             EqualByDictionary(entity.GetType(), expected, entity);
         }
-
     }
 
     // protected MethodInfo GetGenericMethodForType<T>(string name, Type type)

@@ -80,15 +80,12 @@ namespace SeadQueryInfra
 
         public int Commit() => Context.SaveChanges();
         public void Dispose() => Context.Dispose();
-
     }
 
     public static class QueryDynamicExt
     {
         public static IEnumerable<T> Populate<T>(this DbDataReader dr) where T : class
         {
-            var results = new List<T>();
-            var properties = typeof(T).GetProperties();
             while (dr.Read())
             {
                 var item = Activator.CreateInstance<T>();
@@ -105,8 +102,6 @@ namespace SeadQueryInfra
 
         public static T Populate2<T>(this DbDataReader dr, T instance) where T : class
         {
-            var results = new List<T>();
-            var properties = typeof(T).GetProperties();
             var item = Activator.CreateInstance<T>();
             foreach (var property in typeof(T).GetProperties())
             {

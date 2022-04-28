@@ -10,7 +10,7 @@ namespace SQT.Infrastructure
 {
     class IgnoreJsonAttributesResolver : PropertyRenameAndIgnoreSerializerContractResolver
     {
-        private Dictionary<string, HashSet<string>> ignores = new Dictionary<string, HashSet<string>>();
+        private readonly Dictionary<string, HashSet<string>> ignores = new Dictionary<string, HashSet<string>>();
 
         public IgnoreJsonAttributesResolver()
         {
@@ -26,7 +26,7 @@ namespace SQT.Infrastructure
             {
                 if (IsIgnored(prop))
                 {
-                    prop.ShouldSerialize = obj => false;
+                    prop.ShouldSerialize = _ => false;
                     prop.Ignored = true;
                     continue;
                 }

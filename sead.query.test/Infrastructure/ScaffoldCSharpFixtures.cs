@@ -12,7 +12,7 @@ namespace SQT.Infrastructure.Scaffolding
     [Collection("SeadJsonFacetContextFixture")]
     public class GenerateCSharpFixures : DisposableFacetContextContainer
     {
-        private Setting mockQueryBuilderSetting;
+        private readonly Setting mockQueryBuilderSetting;
 
         public GenerateCSharpFixures(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

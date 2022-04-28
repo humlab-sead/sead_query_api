@@ -9,16 +9,17 @@ namespace SQT.SqlCompilers
 {
     public class JoinSqlCompilerTests
     {
-        private JoinSqlCompiler CreateEdgeSqlCompiler()
-        {
-            return new JoinSqlCompiler();
-        }
-        private static Mock<IFacetsGraph> MockFacetGraph()
-        {
-            var facetGraphMock = new Mock<IFacetsGraph>();
-            facetGraphMock.Setup(x => x.AliasedFacetTables).Returns(new List<FacetTable>());
-            return facetGraphMock;
-        }
+        // private JoinSqlCompiler CreateEdgeSqlCompiler()
+        // {
+        //     return new JoinSqlCompiler();
+        // }
+
+        // private static Mock<IFacetsGraph> MockFacetGraph()
+        // {
+        //     var facetGraphMock = new Mock<IFacetsGraph>();
+        //     facetGraphMock.Setup(x => x.AliasedFacetTables).Returns(new List<FacetTable>());
+        //     return facetGraphMock;
+        // }
 
         [Fact]
         public void Compile_WithSingleEdge_ReturnSingleJoin()
@@ -53,7 +54,7 @@ namespace SQT.SqlCompilers
             var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
-            var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
+            const string expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
             Assert.Equal(expected, result.ToLower().Trim());
         }
 
@@ -88,7 +89,7 @@ namespace SQT.SqlCompilers
             var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
-            var expected = @"\s*left\s+join\s+b\s+on\s+b\.""a""\s+=\s+a\.""a""\s*";
+            const string expected = @"\s*left\s+join\s+b\s+on\s+b\.""a""\s+=\s+a\.""a""\s*";
             Assert.Matches(expected, result.ToLower());
         }
     }

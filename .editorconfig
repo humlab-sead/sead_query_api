@@ -70,3 +70,9 @@ dotnet_diagnostic.CA1814.severity = none
 
 # CA1715: Identifiers should have correct prefix
 dotnet_diagnostic.CA1715.severity = none
+
+dotnet_diagnostic.IDE0090.severity = silent
+
+# RCS1170: Use read-only auto-implemented property.
+# FIXME: Remove?
+dotnet_diagnostic.RCS1170.severity = none

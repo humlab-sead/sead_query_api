@@ -27,7 +27,6 @@ namespace SeadQueryAPI
             ISetting setting = configuration.GetSection("QueryBuilderSetting").Get<Setting>();
 
             return setting;
-
         }
 
         //public Startup(IHostingEnvironment env)

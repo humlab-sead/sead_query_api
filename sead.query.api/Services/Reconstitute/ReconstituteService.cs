@@ -35,6 +35,5 @@ namespace SeadQueryAPI.Serializers
 
             return Registry.Facets.GetByCode(facetCode);
         }
-
     }
 }

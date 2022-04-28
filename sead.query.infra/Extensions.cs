@@ -9,7 +9,7 @@ namespace SeadQueryInfra
     {
         public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
         {
-            if (assembly == null) throw new ArgumentNullException("assembly");
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             try
             {
                 return assembly.GetTypes();
@@ -27,6 +27,5 @@ namespace SeadQueryInfra
                 .Where(t => !(t.IsAbstract || t.IsInterface) && typeof(T).IsAssignableFrom(t))
                 .ToList();
         }
-
     }
 }

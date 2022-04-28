@@ -74,7 +74,7 @@ namespace SQT.Mocks
             var facetsGraph = new FacetsGraph(
                 nodes: generator.Nodes,
                 edges: generator.Edges,
-                aliases: new List<FacetTable> { }
+                aliases: new List<FacetTable>()
             );
             return facetsGraph;
         }

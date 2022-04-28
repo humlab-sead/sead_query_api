@@ -52,8 +52,10 @@ namespace SeadQueryCore.Model
         public void Nullify(object[] row)
         {
             for (var i = 0; i < row.Length; i++)
+            {
                 if (row[i] == DBNull.Value)
                     row[i] = null;
+            }
         }
 
     }

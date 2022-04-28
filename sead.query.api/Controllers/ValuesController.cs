@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
+#pragma warning disable RCS1163, IDE0060
+
 namespace query_sead_net.Controllers
 {
     [Route("api/[controller]")]
@@ -19,7 +21,7 @@ namespace query_sead_net.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] string _)
         {
         }
 

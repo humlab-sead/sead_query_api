@@ -38,8 +38,8 @@ namespace SQT.SqlCompilers
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var facet = fakeQuerySetup.Facet;
-            var intervalQuery = "( #INTERVAL-QUERY# )";
-            var countColumn = "dummy_column";
+            const string intervalQuery = "( #INTERVAL-QUERY# )";
+            const string countColumn = "dummy_column";
 
             // Act
             var rangeCategoryCountSqlCompiler = new RangeCategoryCountSqlCompiler();

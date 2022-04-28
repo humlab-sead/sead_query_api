@@ -7,7 +7,7 @@ namespace SeadQueryInfra
 {
     public class SeadQueryCache : ISeadQueryCache
     {
-        const int defaultCacheDurationMinutes = 60 * 24 * 30;
+        // const int defaultCacheDurationMinutes = 60 * 24 * 30;
 
         public int CacheDuration { get; set; }
         protected readonly ICacheManager<object> Cache;
@@ -72,8 +72,5 @@ namespace SeadQueryInfra
         {
             Cache.Clear();
         }
-
     }
-
-
 }

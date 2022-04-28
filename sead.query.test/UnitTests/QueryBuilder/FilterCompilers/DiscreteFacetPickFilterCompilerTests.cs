@@ -17,21 +17,18 @@ namespace SQT.SqlCompilers
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()
         {
-            // Arrange
             var discreteFacetPickFilterCompiler = new DiscreteFacetPickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("sites");
             Facet currentFacet = targetFacet;
-            FacetConfig2 config = new FacetConfig2(
+            var config = new FacetConfig2(
                 targetFacet,
                 1,
                 "A = B",
                 FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
             );
 
-            // Act
             var result = discreteFacetPickFilterCompiler.Compile(targetFacet, currentFacet, config);
 
-            // Assert
             Assert.Equal("", result);
         }
 
@@ -42,11 +39,11 @@ namespace SQT.SqlCompilers
             var discreteFacetPickFilterCompiler = new DiscreteFacetPickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("sites");
             Facet currentFacet = Registry.Facets.GetByCode("country");
-            FacetConfig2 config = new FacetConfig2(
+            var config = new FacetConfig2(
                 targetFacet,
                 1,
                 "",
-                FacetConfigPick.CreateDiscrete(new List<int>() { })
+                FacetConfigPick.CreateDiscrete(new List<int>())
             );
 
             // Act
@@ -72,7 +69,6 @@ namespace SQT.SqlCompilers
             // Assert
             Assert.NotEqual($"({currentFacet.CategoryIdExpr}::text in ({picks.BuildString<int>(", ", "'")})) ", result);
         }
-
     }
 
     public static class IEnumerableExtensions

@@ -15,10 +15,10 @@ namespace SQT.Infrastructure.Repository
         {
         }
 
-        private FacetTypeRepository CreateFacetTypeRepository()
-        {
-            return new FacetTypeRepository(FacetContext);
-        }
+        // private FacetTypeRepository CreateFacetTypeRepository()
+        // {
+        //     return new FacetTypeRepository(FacetContext);
+        // }
 
         [Theory]
         [InlineData(EFacetType.Discrete)]

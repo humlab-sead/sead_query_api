@@ -43,7 +43,7 @@ namespace SeadQueryAPI
                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                .ConfigureWebHostDefaults(webBuilder =>
                {
-                   webBuilder.ConfigureKestrel(serverOptions =>
+                   webBuilder.ConfigureKestrel(_ =>
                    {
                         // Set properties and call methods on options
                     })

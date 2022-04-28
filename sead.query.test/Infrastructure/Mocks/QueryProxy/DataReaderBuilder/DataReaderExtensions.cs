@@ -59,7 +59,6 @@ namespace SQT.Infrastructure
             var lambda = Expression.Lambda<Func<DataTableReader, T>>(memberInit, new ParameterExpression[] { readerParam });
             resDelegate = lambda.Compile();
             return (Func<DataTableReader, T>)resDelegate;
-
         }
     }
 

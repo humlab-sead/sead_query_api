@@ -24,8 +24,8 @@ namespace SQT.Infrastructure.Repository
         {
             // Arrange
             var repository = this.CreateRepository();
-            var key = "key";
-            var data = "data";
+            const string key = "key";
+            const string data = "data";
 
             repository.Add(new ViewState() { Key = key, Data = data });
 

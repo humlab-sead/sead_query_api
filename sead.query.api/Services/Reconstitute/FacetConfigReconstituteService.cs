@@ -46,16 +46,15 @@ namespace SeadQueryAPI.Serializers
             return facetsConfig;
         }
 
-        private FacetConfig2 CreateConfigByCode(string facetCode)
-        {
-            return FacetConfigFactory.Create(GetFacetByCode(facetCode), 0);
-        }
+        // private FacetConfig2 CreateConfigByCode(string facetCode)
+        // {
+        //     return FacetConfigFactory.Create(GetFacetByCode(facetCode), 0);
+        // }
 
         public FacetsConfig2 Reconstitute(string json)
         {
-            FacetsConfig2 facetsConfig = default(FacetsConfig2);
-
             var enclosedFacetsConfigsObject = JObject.Parse(json).SelectToken("FacetsConfig");
+            FacetsConfig2 facetsConfig;
             if (enclosedFacetsConfigsObject != null)
             {
                 var enclosedJson = enclosedFacetsConfigsObject.ToString();
@@ -65,8 +64,7 @@ namespace SeadQueryAPI.Serializers
             {
                 facetsConfig = JsonConvert.DeserializeObject<FacetsConfig2>(json, SerializerSettings);
             }
-            facetsConfig = Reconstitute(facetsConfig);
-            return facetsConfig;
+            return Reconstitute(facetsConfig);
         }
 
         public FacetsConfig2 Reconstitute(JObject json)
@@ -74,7 +72,5 @@ namespace SeadQueryAPI.Serializers
             var facetsConfig = Reconstitute(json.ToString());
             return facetsConfig;
         }
-
-
     }
 }
