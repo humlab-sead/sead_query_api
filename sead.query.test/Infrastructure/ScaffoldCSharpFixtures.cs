@@ -75,7 +75,6 @@ namespace SQT.Infrastructure.Scaffolding
             var path = Path.Join(DataFolder(), "FacetsDict.cs.txt");
 
             ScaffoldUtility.Dump(facetsDict, path, options);
-
         }
 
         //[Fact(Skip = "Not a test. Scaffolds FacetsConfigs from JSON seeded context")]
@@ -133,7 +132,6 @@ namespace SQT.Infrastructure.Scaffolding
 
             foreach (var uri in uris)
             {
-
                 var facetsConfig = scaffolder.FakeFacetsConfig(uri);
                 var querySetup = scaffolder.FakeCountOrContentQuerySetup(facetsConfig);
 
@@ -157,4 +155,3 @@ namespace SQT.Infrastructure.Scaffolding
         //}
     }
 }
-

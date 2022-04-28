@@ -46,7 +46,6 @@ namespace SeadQueryCore
             // Copy target tables relations for each alias...
             foreach (var facetTable in aliases)
             {
-
                 // ...fetch all relations where target is a node...
                 var targetEdges = edges.Where(x => x.SourceName == facetTable.TableOrUdfName || x.TargetName == facetTable.TableOrUdfName);
 

@@ -85,7 +85,6 @@ namespace SeadQueryInfra
 
     public static class QueryDynamicExt
     {
-
         public static IEnumerable<T> Populate<T>(this DbDataReader dr) where T : class
         {
             var results = new List<T>();

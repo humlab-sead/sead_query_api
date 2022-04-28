@@ -6,7 +6,6 @@ using Xunit;
 
 namespace SQT.Services
 {
-
     [Collection("SeadJsonFacetContextFixture")]
     public class CategoryCountServiceTests : DisposableFacetContextContainer
     {
@@ -41,6 +40,5 @@ namespace SQT.Services
             // Assert
             Assert.NotNull(result);
         }
-
     }
 }

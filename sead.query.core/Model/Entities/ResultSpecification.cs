@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     public class ResultSpecification
     {
         public ResultSpecification()

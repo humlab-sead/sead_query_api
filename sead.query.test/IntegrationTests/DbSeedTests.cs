@@ -10,7 +10,6 @@ using Xunit;
 
 namespace IntegrationTests
 {
-
     public class SeedPublicTests
     {
         public SeedPublicTests()
@@ -27,7 +26,6 @@ namespace IntegrationTests
 
             using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
             {
-
                 connection.Open();
 
                 var options = new DbContextOptionsBuilder<FacetContext>().UseSqlite(connection).Options;
@@ -40,12 +38,10 @@ namespace IntegrationTests
                     // context.SaveChanges();
 
                     Console.WriteLine("TEST");
-
                 }
 
                 using (var context = Create(options, fixture))
                 {
-
                     var count = await context.FacetGroups.CountAsync();
                     Assert.True(count > 0);
                     var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
@@ -65,6 +61,5 @@ namespace IntegrationTests
             }
             return new FacetContext(options);
         }
-
     }
 }

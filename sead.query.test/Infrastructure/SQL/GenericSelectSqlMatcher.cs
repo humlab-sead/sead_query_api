@@ -114,7 +114,6 @@ namespace SQT.SQL.Matcher
             result.Items = new List<JoinMatch>();
             foreach (var join in result.Joins)
             {
-
                 var joinItem = new JoinMatch();
                 result.Items.Add(joinItem);
 
@@ -127,11 +126,9 @@ namespace SQT.SQL.Matcher
                 joinItem.Target = rx.Groups["JoinTable"].Value.Squeeze();
                 joinItem.Alias = rx.Groups?["JoinAlias"]?.Value?.Squeeze();
                 joinItem.JoinCriteria = rx.Groups?["JoinCriteria"]?.Value?.Squeeze();
-
             }
             result.Success = result.Success && result.Items.All(z => z.Success);
             return result;
         }
     }
-
 }

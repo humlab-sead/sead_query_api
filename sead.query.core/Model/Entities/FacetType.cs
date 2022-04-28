@@ -6,13 +6,11 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     /// <summary>
     /// Facet definition ID and name
     /// </summary>
     public class FacetType
     {
-
         /// <summary>
         /// Facet type id
         /// </summary>

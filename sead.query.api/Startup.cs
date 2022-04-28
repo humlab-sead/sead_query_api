@@ -10,7 +10,6 @@ using System;
 
 namespace SeadQueryAPI
 {
-
     public class Startup
     {
         public IConfigurationRoot Configuration { get; private set; }
@@ -53,7 +52,7 @@ namespace SeadQueryAPI
             );
 
             /* Adds a Microsoft.AspNetCore.Routing.EndpointMiddleware middleware
-             * to the specified IApplicationBuilder with the EndpointDataSource 
+             * to the specified IApplicationBuilder with the EndpointDataSource
              * instances built from configured IEndpointRouteBuilder.
              * The Microsoft.AspNetCore.Routing.EndpointMiddleware will execute
              * the Endpoint associated with the current request.*/

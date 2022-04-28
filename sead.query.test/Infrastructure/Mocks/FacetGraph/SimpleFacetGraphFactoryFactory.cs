@@ -11,6 +11,4 @@ namespace SQT.Mocks
             return new FacetGraphFactory(mockRegistry);
         }
     }
-
-
 }

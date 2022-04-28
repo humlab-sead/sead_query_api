@@ -15,5 +15,4 @@ namespace SQT.Mocks
             return builder.Options;
         }
     }
-
 }

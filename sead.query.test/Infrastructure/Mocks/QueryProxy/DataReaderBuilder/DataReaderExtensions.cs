@@ -86,9 +86,7 @@ namespace SQT.Infrastructure
 
     //        List<MemberBinding> memberBindings = new List<MemberBinding>();
     //        foreach (var prop in typeof(T).GetProperties()) {
-
     //            if (readerColumns.Contains(prop.Name)) {
-
     //                // determine the default value of the property
     //                object defaultValue = null;
     //                if (prop.PropertyType.IsValueType)

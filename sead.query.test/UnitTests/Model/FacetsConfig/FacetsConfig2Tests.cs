@@ -108,7 +108,6 @@ namespace SQT.Model
                 return targetFacet.FacetType.ReloadAsTarget;
 
             return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(facetConfig.FacetCode);
-
         }
 
         /*
@@ -290,6 +289,5 @@ namespace SQT.Model
             // Assert
             Assert.False(facetsConfig.HasPicks());
         }
-
     }
 }

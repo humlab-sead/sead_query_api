@@ -232,7 +232,6 @@ namespace SQT.Model
 
             using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
             {
-
                 connection.Open();
 
                 var options = new DbContextOptionsBuilder<FacetContext>()
@@ -249,6 +248,5 @@ namespace SQT.Model
                 }
             }
         }
-
     }
 }

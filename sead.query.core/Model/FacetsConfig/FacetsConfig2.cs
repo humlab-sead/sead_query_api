@@ -12,7 +12,6 @@ namespace SeadQueryCore
     /// </summary>
     public class FacetsConfig2
     {
-
         public class UserPickData
         {
             public string FacetCode { get; set; }
@@ -132,7 +131,6 @@ namespace SeadQueryCore
 
             foreach (var currentCode in facetCodes)
             {
-
                 var currentConfig = GetConfig(currentCode);
                 var currentFacet = currentConfig.Facet;
 
@@ -169,7 +167,6 @@ namespace SeadQueryCore
 
         public Dictionary<string, UserPickData> CollectUserPicks(string onlyCode = "")
         {
-
             Func<FacetConfig2, bool> filter() => x => (onlyCode.IsEmpty() || onlyCode == x.FacetCode) && (x.Picks.Count > 0);
             var values = new Dictionary<string, UserPickData>();
             foreach (var config in FacetConfigs.Where(filter()))

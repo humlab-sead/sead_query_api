@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace SQT.ClassData
 {
-
     public class CompleteSetOfSingleTabularResultUriCollection : IEnumerable<object[]>
     {
-
         public IEnumerator<object[]> GetEnumerator()
         {
             foreach (var uri in UriCollections.CompleteSetOfSingleDomainFacetUrisWithNoPicks)
@@ -21,7 +19,6 @@ namespace SQT.ClassData
 
     public class CompleteSetOfSingleMapResultUriCollection : IEnumerable<object[]>
     {
-
         public IEnumerator<object[]> GetEnumerator()
         {
             foreach (var uri in UriCollections.CompleteSetOfSingleDomainFacetUrisWithNoPicks)

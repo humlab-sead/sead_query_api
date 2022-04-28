@@ -86,7 +86,6 @@ namespace SeadQueryCore
 
     public class FacetsGraph : IFacetsGraph
     {
-
         public GraphNodes<Table> NodeContainer { get; private set; }
         public GraphEdges<TableRelation> EdgeContaniner { get; private set; }
         public IEnumerable<FacetTable> AliasedFacetTables { get; private set; }

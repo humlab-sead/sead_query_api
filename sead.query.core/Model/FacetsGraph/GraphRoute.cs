@@ -6,7 +6,6 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-
     public class GraphRoute
     {
         public List<TableRelation> Items { get; set; } = new List<TableRelation>();

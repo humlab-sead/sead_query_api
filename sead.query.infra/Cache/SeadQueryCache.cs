@@ -5,7 +5,6 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class SeadQueryCache : ISeadQueryCache
     {
         const int defaultCacheDurationMinutes = 60 * 24 * 30;

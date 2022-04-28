@@ -84,7 +84,6 @@ namespace SQT.Services
             Assert.NotEmpty(result.Data.DataCollection);
             Assert.Equal(testItemCount, result.Data.DataCollection.Count);
             Assert.Equal("#RETURN-SQL#", result.Query);
-
         }
     }
 }

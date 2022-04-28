@@ -14,7 +14,6 @@ namespace SQT.Model
     [Collection("SeadJsonFacetContextFixture")]
     public class FacetTests : DisposableFacetContextContainer
     {
-
         public FacetTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
@@ -137,7 +136,6 @@ namespace SQT.Model
             Assert.Equal("A = 1 AND B = 2", result);
         }
 
-
         [Fact]
         public void AliasName_WhenFacetHasNoAlias_IsEmpty()
         {
@@ -192,6 +190,5 @@ namespace SQT.Model
 
             Assert.Single(result);
         }
-
     }
 }

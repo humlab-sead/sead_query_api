@@ -8,7 +8,6 @@ using System.Text;
 
 namespace SQT.Infrastructure
 {
-
     public class MockTypedQueryProxyFactory
     {
         public Mock<ITypedQueryProxy> Create<B, T>(int numberOfRows)

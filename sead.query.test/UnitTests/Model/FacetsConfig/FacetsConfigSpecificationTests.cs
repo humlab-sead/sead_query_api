@@ -61,7 +61,6 @@ namespace SQT.Model
             Assert.Throws<QuerySeadException>(
                 () => facetsConfigSpecification.IsSatisfiedBy(facetsConfig)
             );
-
         }
     }
 }

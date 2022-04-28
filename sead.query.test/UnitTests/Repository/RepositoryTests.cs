@@ -18,7 +18,6 @@ namespace SQT.Infrastructure.Repository
         {
         }
 
-
         [Fact]
         public void TestResolveUnitOfWork()
         {

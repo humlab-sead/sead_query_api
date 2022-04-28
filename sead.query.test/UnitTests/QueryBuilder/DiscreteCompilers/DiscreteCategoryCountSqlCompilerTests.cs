@@ -36,7 +36,6 @@ namespace SQT.SqlCompilers
             var match = matcher.Match(sqlQuery.Squeeze());
 
             Assert.True(match.Success);
-
         }
     }
 }

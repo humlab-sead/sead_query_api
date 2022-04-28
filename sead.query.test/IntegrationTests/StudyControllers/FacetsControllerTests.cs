@@ -10,10 +10,8 @@ using Xunit;
 
 namespace IntegrationTests.StudyDb
 {
-
     public class FacetsControllerHostWithContainer : TestHostFixture<Startup<StudyDependencyService>>
     {
-
     }
 
     public class FacetsControllerTests : ControllerTest<FacetsControllerHostWithContainer>, IClassFixture<FacetsControllerHostWithContainer>

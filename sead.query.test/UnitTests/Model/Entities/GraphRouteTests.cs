@@ -15,19 +15,17 @@ namespace SQT.Model
         public GraphRouteTests()
         {
             FacetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
-
         }
 
         private GraphRoute CreateGraphRoute()
         {
-            GraphRoute testRoute = new GraphRoute(
+            return new GraphRoute(
                 new List<TableRelation>() {
                     FacetsGraph.EdgeContaniner.GetEdge("A", "B"),
                     FacetsGraph.EdgeContaniner.GetEdge("B", "F"),
                     FacetsGraph.EdgeContaniner.GetEdge("F", "H")
                 }
             );
-            return testRoute;
         }
 
         [Fact]
@@ -61,7 +59,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            List<GraphRoute> routes = new List<GraphRoute>() {
+            List<GraphRoute> routes = new() {
                 new GraphRoute(
                     new List<TableRelation>() {
                         FacetsGraph.EdgeContaniner.GetEdge("F", "H")
@@ -105,6 +103,5 @@ namespace SQT.Model
             // Assert
             Assert.Equal(expected, result);
         }
-
     }
 }

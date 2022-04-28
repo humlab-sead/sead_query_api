@@ -9,15 +9,13 @@ using System;
 
 namespace SQT.Infrastructure
 {
-
     public class UtilityTests
     {
-
         [Fact]
         public void InsertAt_EmptyList_ThrowsException()
         {
-            var items = new List<string>() { };
-            var item = "A";
+            var items = new List<string>();
+            const string item = "A";
             Assert.Throws<ArgumentException>(() => items.InsertAt(itemToFind: "B", itemToInsert: item));
         }
 

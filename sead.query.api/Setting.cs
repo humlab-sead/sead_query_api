@@ -7,7 +7,6 @@ using SeadQueryCore;
 
 namespace SeadQueryAPI
 {
-
     public interface ISettingFactory
     {
         ISetting Create(IConfigurationRoot env);
@@ -15,7 +14,6 @@ namespace SeadQueryAPI
 
     public class SettingFactory : ISettingFactory
     {
-
         public ISetting Create(IConfigurationRoot configuration)
         {
             //var builder = new ConfigurationBuilder()

@@ -7,7 +7,6 @@ namespace SeadQueryCore
 {
     public class FacetConfigPick
     {
-
         private static CultureInfo cultureInfo = new CultureInfo("en-US");
 
         public EPickType PickType { get; set; }

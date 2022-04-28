@@ -15,10 +15,8 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
-
     public class ResultTestHostWithContainer : TestHostFixture<FacetDependencyService>
     {
-
     }
 
     [Collection("SeadJsonFacetContextFixture")]
@@ -156,7 +154,6 @@ namespace IntegrationTests.Sead
             Assert.True(match.Success);
             Assert.True(match.InnerSelect.Success);
             Assert.NotEmpty(match.InnerSelect.Tables);
-
         }
 
         /// <summary>
@@ -189,7 +186,7 @@ namespace IntegrationTests.Sead
             Assert.NotNull(result.Data.DataCollection);
             Assert.NotNull(result.Meta);
             Assert.NotNull(result.Meta.Columns);
-            Assert.True(result.Meta.Columns.Any());
+            Assert.True(result.Meta.Columns.Count > 0);
             Assert.NotEmpty(result.Query);
 
             var sqlQuery = result.Query.Squeeze();
@@ -198,7 +195,6 @@ namespace IntegrationTests.Sead
             var match = matcher.Match(sqlQuery);
 
             Assert.True(match.Success);
-
         }
     }
 }

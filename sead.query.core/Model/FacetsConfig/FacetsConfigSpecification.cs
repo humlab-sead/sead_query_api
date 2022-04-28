@@ -5,7 +5,6 @@ namespace SeadQueryCore
 {
     public class FacetsConfigSpecification : QuerySeadSpecification<FacetsConfig2>
     {
-
         public override bool IsSatisfiedBy(FacetsConfig2 facetsConfig)
         {
             if (!this.IsSatisfiedBy(facetsConfig.FacetConfigs))

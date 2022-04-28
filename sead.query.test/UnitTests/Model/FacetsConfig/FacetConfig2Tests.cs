@@ -6,7 +6,6 @@ using Xunit;
 
 namespace SQT.Model
 {
-
     [Collection("SeadJsonFacetContextFixture")]
     public class FacetConfig2Tests : DisposableFacetContextContainer
     {

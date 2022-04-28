@@ -9,8 +9,6 @@ using System.IO;
 namespace SeadQueryCore
 {
     public static class Utility {
-
-
         public static string ToJson(object value)
         {
             var resolver = new JsonSerializerSettings

@@ -55,7 +55,6 @@ namespace SQT.SqlCompilers
             Assert.True(match.InnerSelect.Success);
 
             Assert.NotEmpty(match.InnerSelect.Tables);
-
         }
     }
 }

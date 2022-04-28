@@ -14,10 +14,8 @@ using Serilog.Events;
 
 namespace SeadQueryAPI
 {
-
     public static class Program
     {
-
         public static int Main(string[] args)
         {
             Log.Logger = Logger.CreateSerilogger();
@@ -50,9 +48,7 @@ namespace SeadQueryAPI
                         // Set properties and call methods on options
                     })
                    .UseStartup<Startup>();
-
                }).UseSerilog()
            ;
     }
 }
-

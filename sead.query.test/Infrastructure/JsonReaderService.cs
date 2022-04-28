@@ -15,7 +15,6 @@ namespace SQT.Infrastructure
 {
     //public static class JsonTextLoader
     //{
-
     //    public static object lockObject = new object();
     //    public static Dictionary<string, string> __Cache = new Dictionary<string, string>();
 
@@ -74,6 +73,5 @@ namespace SQT.Infrastructure
                 .MakeGenericMethod(type)
                 .Invoke(this, new object[] { folder });
         }
-
     }
 }

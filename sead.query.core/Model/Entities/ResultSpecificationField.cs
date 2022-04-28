@@ -1,6 +1,5 @@
 ﻿namespace SeadQueryCore
 {
-
     public class ResultSpecificationField
     {
         public int SpecificationFieldId { get; set; }

@@ -6,7 +6,6 @@ namespace SeadQueryCore
 {
     public static class IEnumerableExtensions
     {
-
         public static IEnumerable<string> AppendIf(this IEnumerable<string> array, string element)
         {
             return element.IsEmpty() ? array : array.Append(element);

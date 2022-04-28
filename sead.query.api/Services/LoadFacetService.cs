@@ -14,7 +14,6 @@ namespace SeadQueryAPI.Services
 
     public class LoadFacetService : AppServiceBase, IFacetContentReconstituteService
     {
-
         public IBogusPickService BogusPickService { get; private set; }
         public IFacetContentServiceLocator ContentServiceLocator { get; private set; }
 
@@ -35,7 +34,6 @@ namespace SeadQueryAPI.Services
 
     public class CachedLoadFacetService : LoadFacetService
     {
-
         public CachedLoadFacetService(
             ISetting config,
             IRepositoryRegistry context,
@@ -51,8 +49,8 @@ namespace SeadQueryAPI.Services
         public override FacetContent Load(FacetsConfig2 facetsConfig)
         {
             var cacheId = facetsConfig.GetCacheId();
-            var configCacheId = "config_{cacheId}";
-            var contentCacheId = "content_{cacheId}";
+            var configCacheId = $"config_{cacheId}";
+            var contentCacheId = $"content_{cacheId}";
             if (Cache.Exists(contentCacheId))
                 return Cache.Get<FacetContent>(contentCacheId);
             var facetContent = base.Load(facetsConfig);

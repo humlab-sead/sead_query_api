@@ -7,7 +7,6 @@ namespace SeadQueryCore
 {
     public class TabularResultSqlCompiler : IResultSqlCompiler
     {
-
         public string Compile(QueryBuilder.QuerySetup querySetup, Facet notUsed, IEnumerable<ResultSpecificationField> fields)
         {
             string sql = $@"

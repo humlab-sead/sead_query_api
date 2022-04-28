@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-
     /// <summary>
     /// Gives the number of occurrences (Count) of a category determined by given extent
     /// The extent is a single value for discrete facets (the category ID) and an interval (lower, upper) for range facets
     /// </summary>
     public class CategoryCountItem
     {
-
         public string Category { get; set; }
         public int? Count { get; set; }
         public List<decimal> Extent { get; set; }

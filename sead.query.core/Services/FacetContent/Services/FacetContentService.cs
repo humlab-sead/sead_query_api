@@ -11,7 +11,6 @@ namespace SeadQueryCore
 {
     public class FacetContentService : QueryServiceBase, IFacetContentService
     {
-
         public ICategoryCountService CategoryCountService { get; set; }
         public IFacetSetting Config { get; }
         public ITypedQueryProxy QueryProxy { get; }

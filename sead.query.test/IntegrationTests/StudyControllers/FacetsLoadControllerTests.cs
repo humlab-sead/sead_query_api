@@ -15,9 +15,7 @@ namespace IntegrationTests.StudyDb
 {
     public class TestHostWithContainer : TestHostFixture<StartupWithContainer>
     {
-
     }
-
 
     [Collection("StudyJsonSeededFacetContext")]
     public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
@@ -86,7 +84,5 @@ namespace IntegrationTests.StudyDb
             Assert.NotEmpty(match.InnerSelect.Tables);
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
-
-
     }
 }

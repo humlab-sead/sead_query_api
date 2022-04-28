@@ -33,14 +33,12 @@ namespace SQT.Infrastructure
 
     public class MyController : IMyController
     {
-
         public IDependent Dependent { get; set; }
 
         public void CallMyDependent()
         {
             Dependent.DoSomeThingNice();
         }
-
     }
 
     public class MyController2 : MyController
@@ -53,7 +51,6 @@ namespace SQT.Infrastructure
 
     public class DependencyInjectionTests
     {
-
         private IContainer CreateDependencyContainer()
         {
             var folder = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
@@ -143,7 +140,6 @@ namespace SQT.Infrastructure
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
-
                 var locator = scope.Resolve<IResultSqlCompilerLocator>();
 
                 Assert.NotNull(locator);
@@ -152,7 +148,6 @@ namespace SQT.Infrastructure
                 Assert.NotNull(locator.Locate("map"));
 
                 Assert.Throws<ComponentNotRegisteredException>(() => locator.Locate("flaejl"));
-
             }
         }
 
@@ -162,9 +157,7 @@ namespace SQT.Infrastructure
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
-
                 Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
-
             }
         }
     }

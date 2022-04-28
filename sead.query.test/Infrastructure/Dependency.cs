@@ -45,7 +45,6 @@ namespace SQT.Infrastructure
 
             if (FacetContext is null)
             {
-
                 Debug.Print("Warning: Falling back to default online DB connection for test");
 
                 // builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
@@ -57,7 +56,6 @@ namespace SQT.Infrastructure
                 builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
                     .As<IFacetContext>()
                     .InstancePerLifetimeScope();
-
             }
             else
             {
@@ -144,6 +142,4 @@ namespace SQT.Infrastructure
             return builder.Build();
         }
     }
-
-
 }

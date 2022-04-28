@@ -15,10 +15,8 @@ using Xunit;
 
 namespace IntegrationTests.StudyDb
 {
-
     public class ResultTestHostWithContainer : TestHostFixture<StudyDependencyService>
     {
-
     }
 
     [Collection("StudyJsonSeededFacetContext")]
@@ -106,6 +104,5 @@ namespace IntegrationTests.StudyDb
 
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
-
     }
 }

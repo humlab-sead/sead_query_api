@@ -10,7 +10,6 @@ namespace SQT.Infrastructure
 {
     public static class DataTableUtility
     {
-
         public static DataTable CreateDataTable(List<(string Name, Type Type)> fields, object[,] values)
         {
             var dt = new DataTable();
@@ -29,6 +28,5 @@ namespace SQT.Infrastructure
             }
             return dt;
         }
-
     }
 }

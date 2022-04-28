@@ -31,6 +31,5 @@ namespace SQT.Infrastructure.Repository
         //    Assert.True(result.Any());
         //}
 
-
     }
 }

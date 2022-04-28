@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace SeadQueryInfra
 {
-
     public class ResultSpecificationRepository : Repository<ResultSpecification, int>, IResultSpecificationRepository
     {
         public ResultSpecificationRepository(IFacetContext context) : base(context)

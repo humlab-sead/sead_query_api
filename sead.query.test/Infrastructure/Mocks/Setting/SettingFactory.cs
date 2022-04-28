@@ -19,7 +19,6 @@ namespace SQT
     /// </summary>
     internal class SettingFactory
     {
-
         private readonly Setting defaultOptions;
 
         public SettingFactory(Dictionary<string, string> memorySettings = null)
@@ -63,6 +62,5 @@ namespace SQT
             options.Setup(o => o.Value).Returns(defaultOptions);
             return options.Object;
         }
-
     }
 }

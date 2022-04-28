@@ -9,7 +9,6 @@ using System.Text;
 
 namespace SeadQueryAPI.DTO
 {
-
     public class ResultConfigDTO
     {
         public string RequestId { get; set; }

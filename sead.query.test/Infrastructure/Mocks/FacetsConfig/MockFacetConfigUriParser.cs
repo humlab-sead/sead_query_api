@@ -10,11 +10,8 @@ namespace SQT.Mocks
 {
     /// <summary>
     /// Parses a URI that specifies a facetsConfig setup.
-    ///
     /// The URI must be of format:
-    ///
     ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
-    ///
     /// </summary>
     internal class MockFacetConfigUriParser
     {
@@ -24,7 +21,6 @@ namespace SQT.Mocks
         /// Placeholder for parsed URI of format:
         ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
         /// </summary>
-
         public class UriData
         {
             public string Domain { get; set; }
@@ -85,7 +81,6 @@ namespace SQT.Mocks
 
             if (m.Success && m.Groups.Count == 3)
             {
-
                 var lower = Decimal.Parse(m.Groups[1].Value, NumberStyles.Any, cultureInfo);
                 var upper = Decimal.Parse(m.Groups[2].Value, NumberStyles.Any, cultureInfo);
 

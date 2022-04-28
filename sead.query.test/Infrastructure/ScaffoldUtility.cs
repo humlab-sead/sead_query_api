@@ -103,6 +103,5 @@ namespace SQT.Infrastructure
                 return g;
             }
         }
-
     }
 }

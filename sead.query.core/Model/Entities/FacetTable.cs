@@ -11,7 +11,6 @@ namespace SeadQueryCore
     /// </summary>
     public class FacetTable
     {
-
         public int FacetTableId { get; set; }
         public int FacetId { get; set; }
         public virtual int SequenceId { get; set; }

@@ -5,7 +5,6 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class NullCache : ISeadQueryCache
     {
         public string KeyPrefix { get => ""; set { } }

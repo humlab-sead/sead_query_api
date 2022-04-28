@@ -7,7 +7,6 @@ namespace SeadQueryCore
 {
     public class RangeCategoryCountService : CategoryCountService
     {
-
         public RangeCategoryCountService(
             IFacetSetting config,
             IRepositoryRegistry context,

@@ -11,7 +11,6 @@ using System.Linq;
 
 namespace Microsoft.EntityFrameworkCore
 {
-
     public static class RDFacadeExtensions
     {
         public static RelationalDataReader ExecuteSqlQuery(this DatabaseFacade databaseFacade, string sql,
@@ -63,5 +62,4 @@ namespace Microsoft.EntityFrameworkCore
             }
         }
     }
-
 }

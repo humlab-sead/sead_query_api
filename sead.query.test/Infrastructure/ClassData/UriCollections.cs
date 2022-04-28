@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace SQT.ClassData
 {
-
     public static class UriCollections
     {
         public static List<string> CompleteSetOfSingleDomainFacetUrisWithNoPicks = new List<string> {

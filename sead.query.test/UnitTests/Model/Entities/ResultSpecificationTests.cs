@@ -61,7 +61,6 @@ namespace SQT.Model
             Assert.Equal(2, result.Count());
         }
 
-
         [Fact]
         public void GetResultFields_WithTwoFields_ReturnsTwoResultFields()
         {

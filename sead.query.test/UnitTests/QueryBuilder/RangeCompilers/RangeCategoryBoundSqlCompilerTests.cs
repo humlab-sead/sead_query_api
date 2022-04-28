@@ -11,7 +11,6 @@ namespace SQT.SqlCompilers
     [Collection("SeadJsonFacetContextFixture")]
     public class RangeCategoryBoundSqlCompilerTests : DisposableFacetContextContainer
     {
-
         public RangeCategoryBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
@@ -37,5 +36,4 @@ namespace SQT.SqlCompilers
             Assert.Matches(expectedSql.Squeeze(), result.Squeeze());
         }
     }
-
 }

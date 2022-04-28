@@ -10,7 +10,6 @@ using System.Text;
 
 namespace SQT.Infrastructure
 {
-
     public class JsonWriterService
     {
         public JsonWriterService(JsonSerializer serializer)

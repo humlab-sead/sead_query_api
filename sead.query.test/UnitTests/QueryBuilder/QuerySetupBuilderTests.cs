@@ -13,7 +13,6 @@ using Xunit.Abstractions;
 
 namespace SQT.QueryBuilder
 {
-
     [Collection("SeadJsonFacetContextFixture")]
     public class QuerySetupBuilderTests : DisposableFacetContextContainer
     {
@@ -144,7 +143,6 @@ namespace SQT.QueryBuilder
 
         //private int ExpectedCriteriaCount(FacetsConfig2 facetsConfig)
         //{
-
         //    var expectedCount = 0;
         //    var involvedConfigs = facetsConfig.GetConfigsThatAffectsTarget(facetsConfig.TargetCode, facetsConfig.GetFacetCodes());
 

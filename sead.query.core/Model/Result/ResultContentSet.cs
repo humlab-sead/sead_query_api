@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace SeadQueryCore.Model
 {
-
     public class ResultContentSet // : IDisposable
     {
         public class ResultColumn

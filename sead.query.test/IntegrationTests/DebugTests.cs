@@ -14,11 +14,10 @@ using System.Collections.Generic;
 
 namespace IntegrationTests.Debug
 {
-
     [Collection("SeadJsonFacetContextFixture")]
     public class DebugTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
-        string jsonThatFails = @"{
+        readonly string jsonThatFails = @"{
                 ""facetsConfig"": {
                     ""requestId"": 3,
                     ""requestType"": ""populate"",
@@ -97,7 +96,7 @@ namespace IntegrationTests.Debug
             Assert.NotNull(result.Data.DataCollection);
             Assert.NotNull(result.Meta);
             Assert.NotNull(result.Meta.Columns);
-            Assert.True(result.Meta.Columns.Any());
+            Assert.True(result.Meta.Columns.Count > 0);
             Assert.NotEmpty(result.Query);
 
             var sqlQuery = result.Query.Squeeze();
@@ -106,16 +105,14 @@ namespace IntegrationTests.Debug
             var match = matcher.Match(sqlQuery);
 
             Assert.True(match.Success);
-
         }
 
         [Fact]
         public async Task BuggTest()
         {
-
-            string resultFacetCode = "map_result";
-            string specificationKey = "site_level";
-            string viewType = "map";
+            const string resultFacetCode = "map_result";
+            const string specificationKey = "site_level";
+            const string viewType = "map";
 
             var facetsConfig2 = new FacetsConfig2
             {
@@ -168,7 +165,7 @@ namespace IntegrationTests.Debug
             Assert.NotNull(result.Data.DataCollection);
             Assert.NotNull(result.Meta);
             Assert.NotNull(result.Meta.Columns);
-            Assert.True(result.Meta.Columns.Any());
+            Assert.True(result.Meta.Columns.Count > 0);
             Assert.NotEmpty(result.Query);
 
             var sqlQuery = result.Query.Squeeze();
@@ -177,7 +174,6 @@ namespace IntegrationTests.Debug
             var match = matcher.Match(sqlQuery);
 
             Assert.True(match.Success);
-
         }
     }
 }

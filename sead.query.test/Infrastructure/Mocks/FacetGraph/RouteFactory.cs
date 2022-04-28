@@ -6,7 +6,6 @@ namespace SQT.Mocks
 {
     public static class RouteFactory
     {
-
         public static List<string> ToPairs(List<string> trail)
         {
             return trail.Take(trail.Count - 1).Select((e, i) => e + "/" + trail[i + 1]).ToList();
@@ -16,6 +15,5 @@ namespace SQT.Mocks
         {
             return ToPairs(trail.ToList());
         }
-
     }
 }

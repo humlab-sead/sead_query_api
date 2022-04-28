@@ -27,7 +27,5 @@ namespace SQT.SQL.Matcher
         public override string ExpectedSql { get; } = OuterSqlRegExpr;
 
         public override GenericSelectSqlMatcher InnerSqlMatcher { get; } = new InnerSelectClauseMatcher();
-
     }
-
 }

@@ -42,7 +42,6 @@ namespace SQT.Mocks
             Database.ExecuteSqlRaw(schema_sql);
 
             return this;
-
         }
 
         private static string GetFileContent(string filename) => filename.EndsWith(".gz") ? ReadGZip(filename) : File.ReadAllText(filename);

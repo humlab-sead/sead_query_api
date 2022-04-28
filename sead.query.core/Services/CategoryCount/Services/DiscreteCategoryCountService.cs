@@ -8,7 +8,6 @@ namespace SeadQueryCore
 {
     public class DiscreteCategoryCountService : CategoryCountService, IDiscreteCategoryCountService
     {
-
         public DiscreteCategoryCountService(
             IFacetSetting config,
             IRepositoryRegistry registry,

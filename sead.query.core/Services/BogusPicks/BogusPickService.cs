@@ -5,10 +5,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     public class BogusPickService : QueryServiceBase, IBogusPickService
     {
-
         public BogusPickService(
             IRepositoryRegistry registry,
             IQuerySetupBuilder builder,
@@ -34,7 +32,6 @@ namespace SeadQueryCore
         {
             foreach (string facetCode in facetsConfig.GetFacetCodes())
             {
-
                 var config = facetsConfig.GetConfig(facetCode);
 
                 if (config.Facet.FacetTypeId != EFacetType.Discrete || config.Picks.Count == 0)

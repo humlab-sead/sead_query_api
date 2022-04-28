@@ -18,6 +18,5 @@ namespace SQT.SQL.Matcher
             GROUP BY (?<GroupByFields>.*)(?= ORDER)(?: ORDER BY (?<OrderByFields>.*))?";
 
         public override GenericSelectSqlMatcher InnerSqlMatcher { get; } = new ResultInnerSqlMatcher();
-
     }
 }

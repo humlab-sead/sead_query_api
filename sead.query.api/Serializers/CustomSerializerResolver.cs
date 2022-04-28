@@ -69,8 +69,8 @@ namespace SeadQueryAPI.Serializers
             {
                 property.Ignored = true;
 
-                property.ShouldSerialize = i => false;
-                property.ShouldDeserialize = i => false;
+                property.ShouldSerialize = _ => false;
+                property.ShouldDeserialize = _ => false;
             }
 
             if (IsRenamed(property.DeclaringType, property.PropertyName, out var newJsonPropertyName))

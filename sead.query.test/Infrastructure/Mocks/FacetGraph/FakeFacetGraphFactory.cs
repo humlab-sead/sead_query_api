@@ -78,6 +78,5 @@ namespace SQT.Mocks
             );
             return facetsGraph;
         }
-
     }
 }

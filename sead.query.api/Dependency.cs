@@ -29,7 +29,6 @@ namespace SeadQueryAPI
 
         protected override void Load(ContainerBuilder builder)
         {
-
             builder.RegisterInstance<ISetting>(Options).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();

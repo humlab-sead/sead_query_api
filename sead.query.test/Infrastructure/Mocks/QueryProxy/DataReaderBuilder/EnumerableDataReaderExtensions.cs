@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace SQT.Infrastructure
 {
-
     public static class EnumerableDataReaderExtensions
     {
         /// <summary>
@@ -41,7 +40,6 @@ namespace SQT.Infrastructure
 
             foreach (IDictionary<string, object> item in items)
             {
-
                 if (table.Columns.Count == 0)
                 {
                     foreach (var key in item.Keys)

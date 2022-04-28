@@ -7,7 +7,6 @@ namespace SeadQueryCore
 {
     public class FacetContent
     {
-
         public class IntervalQueryInfo
         {
             [JsonIgnore]
@@ -57,7 +56,6 @@ namespace SeadQueryCore
         [JsonConstructor]
         public FacetContent()
         {
-
         }
 
         public FacetContent(

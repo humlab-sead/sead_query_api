@@ -11,7 +11,6 @@ namespace SQT.TestInfrastructure
 {
     public class ScaffoldJsonFixtures
     {
-
         private static DefaultContractResolver DefaultResolver()
         {
             var resolver = new IgnoreJsonAttributesResolver();

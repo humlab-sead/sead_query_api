@@ -28,7 +28,7 @@ namespace SQT.SqlCompilers
             var result = rangeOuterBoundSqlCompiler.Compile(null /* fakeQuerySetup not used */, fakeQuerySetup.Facet);
 
             // Assert
-            var expectedSql = @"SELECT.*MIN.*MAX.*FROM.*";
+            const string expectedSql = "SELECT.*MIN.*MAX.*FROM.*";
             Assert.Matches(expectedSql, result.Squeeze());
         }
     }

@@ -60,7 +60,6 @@ namespace SQT.Infrastructure.Repository
 
             Assert.NotNull(facet);
             Assert.True(facet.Tables.Exists(z => z.HasAlias));
-
         }
 
         //    [Fact]

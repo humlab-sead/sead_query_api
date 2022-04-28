@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SQT.Mocks
 {
-
     public class MockFacetsConfigFactory
     {
         public IFacetRepository Repository { get; private set; }
@@ -83,6 +82,5 @@ namespace SQT.Mocks
                 config.Domain
             );
         }
-
     }
 }

@@ -5,8 +5,6 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-
-
     [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteContentSqlCompilerTests : DisposableFacetContextContainer
     {
@@ -21,7 +19,6 @@ namespace SQT.SqlCompilers
         [InlineData("sites:country@57/sites@3")]
         public void Compile_DiscreteContent_Matches(string uri)
         {
-
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);

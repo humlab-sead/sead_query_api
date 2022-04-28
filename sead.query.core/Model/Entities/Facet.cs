@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     /// <summary>
     /// Enum for supported facet types
     /// </summary>

@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     public class CategoryCountService : QueryServiceBase, ICategoryCountService
     {
-
         public ITypedQueryProxy QueryProxy { get; }
 
         public class CategoryCountData

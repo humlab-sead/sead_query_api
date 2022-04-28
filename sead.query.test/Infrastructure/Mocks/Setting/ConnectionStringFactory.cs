@@ -19,7 +19,5 @@ namespace SQT
                 Pooling = false
             }.ConnectionString;
         }
-
-
     }
 }

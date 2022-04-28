@@ -48,7 +48,7 @@ namespace SQT
             => JsonSeededFacetContextFactory.Create(DbContextOptions, Fixture);
 
         public virtual RepositoryRegistry CreateRepositoryRegistry()
-            => new RepositoryRegistry(FacetContext);
+            => new(FacetContext);
 
         public DisposableFacetContextContainer(JsonFacetContextFixture fixture)
         {
@@ -97,7 +97,7 @@ namespace SQT
             FacetGroup g,
             bool is_applicable = true
         ) =>
-            new Facet
+            new()
             {
                 FacetCode = facetCode,
                 CategoryIdExpr = Guid.NewGuid().ToString(),
@@ -218,7 +218,7 @@ namespace SQT
                         It.IsAny<Facet>(),
                         It.IsAny<List<string>>(),
                         It.IsAny<List<string>>()
-                    )).Returns(querySetup ?? new QuerySetup { });
+                    )).Returns(querySetup ?? new QuerySetup());
             return mockQuerySetupBuilder;
         }
 
@@ -373,8 +373,8 @@ namespace SQT
 
             return new TableRelation
             {
-                SourceTable = new Table { TableId = sourceName.GetHashCode(), TableOrUdfName = sourceName, IsUdf = sourceName.Contains("("), PrimaryKeyName = "X" },
-                TargetTable = new Table { TableId = targetName.GetHashCode(), TableOrUdfName = targetName, IsUdf = targetName.Contains("("), PrimaryKeyName = "X" },
+                SourceTable = new Table { TableId = sourceName.GetHashCode(), TableOrUdfName = sourceName, IsUdf = sourceName.Contains('('), PrimaryKeyName = "X" },
+                TargetTable = new Table { TableId = targetName.GetHashCode(), TableOrUdfName = targetName, IsUdf = targetName.Contains('('), PrimaryKeyName = "X" },
                 SourceColumName = sourceName + "_id",
                 TargetColumnName = targetName + "_id",
                 Weight = 20
@@ -470,7 +470,7 @@ namespace SQT
 
         public static bool AreEqualByProperty(object object1, object object2)
         {
-            CompareLogic compareLogic = new CompareLogic();
+            CompareLogic compareLogic = new();
             ComparisonResult result = compareLogic.Compare(object1, object2);
 
             return result.AreEqual;
@@ -482,7 +482,7 @@ namespace SQT
             expando.Uri = uri;
             expando.ValueType = value.GetType().Name;
             expando.Value = value;
-            ScaffoldUtility.Dump(expando, $@"C:\TEMP\{value.GetType().Name}_{uri.Replace(":", "#").Replace("/", "+")}.cs"); ;
+            ScaffoldUtility.Dump(expando, $@"C:\TEMP\{value.GetType().Name}_{uri.Replace(":", "#").Replace("/", "+")}.cs");
         }
     }
 }

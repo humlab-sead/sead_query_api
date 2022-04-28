@@ -10,7 +10,6 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
-
     public class FacetsControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public FacetsControllerTests(TestHostWithContainer fixture) : base(fixture)

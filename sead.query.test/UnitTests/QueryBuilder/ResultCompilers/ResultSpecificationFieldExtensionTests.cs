@@ -396,7 +396,6 @@ namespace SQT.QueryBuilder.ResultCompilers
             }
         }.ToDictionary(z => z.ResultFieldId);
 
-
         public static Dictionary<string, ResultFieldType> ResultFieldTypes = new List<ResultFieldType> {
             new ResultFieldType
             {

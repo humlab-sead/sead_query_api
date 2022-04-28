@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-
     public interface IFacetsGraph
     {
-
         public GraphNodes<Table> NodeContainer { get; }
         public GraphEdges<TableRelation> EdgeContaniner { get; }
 

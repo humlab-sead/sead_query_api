@@ -5,7 +5,6 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class MemoryCacheFactory
     {
         public ISeadQueryCache Create()

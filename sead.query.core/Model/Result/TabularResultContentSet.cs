@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace SeadQueryCore.Model
 {
-
     public class TabularResultContentSet : ResultContentSet
     {
         public TabularResultContentSet(ResultConfig resultConfig, List<ResultSpecificationField> resultFields, IDataReader reader) : base()

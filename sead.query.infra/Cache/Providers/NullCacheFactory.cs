@@ -5,7 +5,6 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class NullCacheFactory
     {
         public ISeadQueryCache Create()
@@ -13,5 +12,4 @@ namespace SeadQueryInfra
             return new NullCache();
         }
     }
-
 }

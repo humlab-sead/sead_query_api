@@ -17,7 +17,6 @@ namespace SQT.Infrastructure
             ignores = new Dictionary<string, HashSet<string>> {
                 { typeof(Facet).FullName, new HashSet<string> { "FacetGroupKey", "FacetTypeKey" } }
             };
-
         }
 
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)

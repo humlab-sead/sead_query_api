@@ -9,7 +9,6 @@ using System.Text;
 
 namespace SeadQueryCore.Model
 {
-
     public class ResultConfig
     {
         public string RequestId { get; set; }

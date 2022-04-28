@@ -5,7 +5,6 @@ using Xunit;
 
 namespace SQT.Infrastructure
 {
-
     public class SeadJsonFacetContextFixture : JsonFacetContextFixture
     {
         public SeadJsonFacetContextFixture() : base(Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json"))
@@ -20,5 +19,4 @@ namespace SQT.Infrastructure
         // to be the place to apply [CollectionDefinition] and all the
         // ICollectionFixture<> interfaces.
     }
-
 }

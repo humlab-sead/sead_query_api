@@ -7,7 +7,6 @@ namespace SeadQueryAPI.Services
 {
     public class LoadResultService : AppServiceBase, ILoadResultService
     {
-
         public IResultService ResultService { get; private set; }
         private readonly IBogusPickService BogusPickService;
 
@@ -34,7 +33,6 @@ namespace SeadQueryAPI.Services
 
     public class CachedLoadResultService : LoadResultService
     {
-
         public CachedLoadResultService(
             ISetting config,
             IRepositoryRegistry context,

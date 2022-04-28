@@ -33,7 +33,6 @@ namespace SQT.SqlCompilers
 
             if (facetConfig.HasPicks())
             {
-
                 var picks = facetConfig.Picks;
                 var sqlEqualExpected = (picks[0].PickValue == picks[1].PickValue) ?
                         @"\(floor\(.+\) = [\d+-,]+\)" : @"\(.+ >= [\d+-,]+ and .+ <= [\d+-,]+\)";
@@ -41,15 +40,11 @@ namespace SQT.SqlCompilers
                 var sqlExpected = $@"{sqlEqualExpected}\s?{sqlWhere}";
 
                 Assert.Matches(sqlExpected, result.Squeeze());
-
             }
             else
             {
-
                 Assert.Matches("", result.Squeeze());
-
             }
-
         }
     }
 }

@@ -9,5 +9,4 @@ namespace SeadQueryAPI.Services
     {
         ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig);
     }
-
 }

@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace SeadQueryInfra
 {
-
     public class TableRepository : Repository<Table, int>, ITableRepository
     {
         public TableRepository(IFacetContext context) : base(context)
@@ -32,7 +31,6 @@ namespace SeadQueryInfra
                     r => (r.SourceTable.TableOrUdfName == sourceName && r.TargetTable.TableOrUdfName == targetName)
                 ).FirstOrDefault();
         }
-
     }
 
     public static class EdgeRepositoryEagerBuilder

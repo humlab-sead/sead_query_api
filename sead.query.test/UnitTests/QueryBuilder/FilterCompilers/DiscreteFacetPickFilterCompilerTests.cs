@@ -10,7 +10,6 @@ namespace SQT.SqlCompilers
     [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
-
         public DiscreteFacetPickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }

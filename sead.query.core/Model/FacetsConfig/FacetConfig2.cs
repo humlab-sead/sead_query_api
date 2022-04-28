@@ -19,7 +19,6 @@ namespace SeadQueryCore
 
     public class FacetConfig2
     {
-
         public string FacetCode { get; set; } = "";
         public int Position { get; set; } = 0;
         public string TextFilter { get; set; } = "";

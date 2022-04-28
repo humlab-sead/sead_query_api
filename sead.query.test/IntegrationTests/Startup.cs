@@ -61,7 +61,6 @@ namespace IntegrationTests
             //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
             //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
             //#endif
-            
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

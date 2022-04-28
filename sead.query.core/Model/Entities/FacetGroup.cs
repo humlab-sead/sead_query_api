@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     /// <summary>
     /// Facet definition group type
     /// </summary>

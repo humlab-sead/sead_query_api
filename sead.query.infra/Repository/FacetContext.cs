@@ -3,7 +3,6 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class FacetContext : DbContext, IFacetContext
     {
         public ITypedQueryProxy TypedQueryProxy { get; set; }

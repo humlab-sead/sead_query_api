@@ -8,11 +8,9 @@ using Xunit;
 
 namespace SQT.Services
 {
-
     [Collection("SeadJsonFacetContextFixture")]
     public class RangeCategoryCountServiceTests : DisposableFacetContextContainer
     {
-
         public RangeCategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }

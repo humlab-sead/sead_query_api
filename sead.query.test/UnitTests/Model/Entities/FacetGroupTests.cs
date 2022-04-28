@@ -11,7 +11,7 @@ namespace SQT.Model
     [Collection("SeadJsonFacetContextFixture")]
     public class FacetGroupTests : DisposableFacetContextContainer
     {
-        public static List<object[]> TestData = new List<object[]>() {
+        public static List<object[]> TestData = new() {
             new object[] {
                 typeof(FacetGroup),
                 999,

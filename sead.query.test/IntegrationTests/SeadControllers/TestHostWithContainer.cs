@@ -2,6 +2,5 @@
 {
     public class TestHostWithContainer : TestHostFixture<StartupWithContainer>
     {
-
     }
 }

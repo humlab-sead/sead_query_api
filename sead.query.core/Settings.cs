@@ -35,7 +35,6 @@ namespace SeadQueryCore
         // https://msdn.microsoft.com/en-us/magazine/mt632279.aspx
         public Setting()
         {
-
         }
         public Setting(FacetSetting facet, StoreSetting store)
         {

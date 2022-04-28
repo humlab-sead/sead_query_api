@@ -11,7 +11,6 @@ using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-
     [Collection("SeadJsonFacetContextFixture")]
     public class TabularResultSqlCompilerTests : DisposableFacetContextContainer
     {
@@ -41,7 +40,6 @@ namespace SQT.QueryBuilder.ResultCompilers
             Assert.True(match.Success);
             Assert.True(match.InnerSelect.Success);
             Assert.NotEmpty(match.InnerSelect.Tables);
-
         }
     }
 }
