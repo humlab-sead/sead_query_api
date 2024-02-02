@@ -82,6 +82,7 @@ namespace IntegrationTests.Debug
         [Fact]
         public async Task BuggTest2()
         {
+                // /home/sead/supersead.humlab.umu.se/postgresql/mounts/pg-data-volume/pg_hba.conf
             var payload = new StringContent(jsonThatFails, Encoding.UTF8, "application/json");
             var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
