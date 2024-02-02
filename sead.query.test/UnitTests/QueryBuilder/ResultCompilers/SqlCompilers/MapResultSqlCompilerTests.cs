@@ -56,6 +56,8 @@ namespace SQT.SqlCompilers
             var match = matcher.Match(result);
 
             Assert.True(match.Success);
+
+            Assert.Equal(viewType, viewType);
         }
     }
 }
