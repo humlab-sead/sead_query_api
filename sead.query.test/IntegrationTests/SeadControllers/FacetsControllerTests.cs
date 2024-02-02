@@ -32,7 +32,7 @@ namespace IntegrationTests.Sead
             using var response = await Fixture.Client.GetAsync("api/values");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            Assert.Equal(json, @"[""hello"",""world"",""!""]");
+            Assert.Equal(@"[""hello"",""world"",""!""]", json);
         }
 
         [Fact]
