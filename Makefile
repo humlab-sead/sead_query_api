@@ -1,20 +1,12 @@
+SHELL := /bin/bash
 
+.PHONY: test clean build publish tidy
 
 test:
 	@export $(cat conf/.env | xargs) \
-		&& dotnet test --settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
-
-win-test:
-	@for /f "eol=# tokens=*" %%i in (conf\.env) do set %%i
-	@dotnet test
-
-kill-all:
-	@pkill -f /home/roger/bin/dotnet3.1/dotnet
-
-# @taskkill /IM "dotnet.exe" /F
-# @taskkill /IM "testhost.exe" /F
-
-.PHONY: kill-all test
+		&& dotnet test 
+		
+#--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
 
 clean:
 	@dotnet clean
@@ -29,5 +21,3 @@ publish:
 
 tidy:
 	dotnet format
-
-.PHONY: test clean build publish
