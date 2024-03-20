@@ -363,3 +363,7 @@ sead.query.test/RequestsRFC2616/format.json
 users.sql
 sead_staging_devdocker.sql*
 deprecated
+
+sead_query_api.code-workspace
+.vscode/settings.json
+.mono

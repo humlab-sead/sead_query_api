@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0-bullseye-slim AS repo
+FROM mcr.microsoft.com/dotnet/core/aspnet:8.0-bullseye-slim AS repo
 
 RUN apt-get update && apt-get install -y \
   git
@@ -28,7 +28,7 @@ RUN cd sead.query.api \
     && dotnet publish sead.query.api.csproj -c Release -o /src/app --no-restore
     #dotnet test    "sead.query.api.csproj" -c Release -o /src/app --no-build --no-restore
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0-bullseye-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:8.0-bullseye-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 

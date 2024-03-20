@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
-using Npgsql.Logging;
 using SeadQueryAPI.Controllers;
 using SeadQueryCore;
 using SQT.Infrastructure;

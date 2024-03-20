@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>SeadQueryCore</RootNamespace>
     <AssemblyName>sead.query.core</AssemblyName>
     <!-- <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> -->
@@ -30,11 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.16" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
-    <PackageReference Include="ObjectDumper.NET" Version="3.3.13" />
+    <PackageReference Include="ObjectDumper.NET" Version="4.1.15" />
   </ItemGroup>
 
 </Project>

@@ -37,7 +37,7 @@ namespace IntegrationTests.StudyDb
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             // Assert.Matches(@"\[""\d{4}"",""\d{2}""\]", json);
-            Assert.Equal(json, @"[""hello"",""world"",""!""]");
+            Assert.Equal(@"[""hello"",""world"",""!""]", json);
         }
 
         [Fact]

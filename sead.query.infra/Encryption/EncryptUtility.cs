@@ -10,10 +10,10 @@ namespace SeadQueryInfra.Encryption
     {
         public static string Encrypt(string text, string encryptKey)
         {
-            DESCryptoServiceProvider cryptoService = new DESCryptoServiceProvider();
+            Aes cryptoService = Aes.Create();
 
-            cryptoService.Key = (Encoding.ASCII.GetBytes(encryptKey));
-            cryptoService.IV = (Encoding.ASCII.GetBytes(encryptKey));
+            cryptoService.Key = Encoding.ASCII.GetBytes(encryptKey);
+            cryptoService.IV = Encoding.ASCII.GetBytes(encryptKey);
 
             MemoryStream memoryStream = new MemoryStream();
             CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoService.CreateEncryptor(), CryptoStreamMode.Write);
@@ -28,7 +28,7 @@ namespace SeadQueryInfra.Encryption
 
         public static string Decrypt(string text, string decryptKey)
         {
-            DESCryptoServiceProvider cryptoService = new DESCryptoServiceProvider();
+            Aes cryptoService = Aes.Create();
 
             cryptoService.Key = (Encoding.ASCII.GetBytes(decryptKey));
             cryptoService.IV = (Encoding.ASCII.GetBytes(decryptKey));
