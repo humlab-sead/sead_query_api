@@ -1,51 +1,74 @@
 {
 	"editor.minimap.enabled": false,
-	"files.exclude": {
-		"**/.classpath": true,
-		"**/.project": true,
-		"**/.settings": true,
-		"**/.factorypath": true
-	},
-	"[csharp]": {
-		"editor.defaultFormatter": "ms-dotnettools.csharp"
-	},
-	"files.watcherExclude": {
-		"**/bin/**": true,
-		"**/obj/**": true,
-		"**/.git/objects/**": true,
-		"**/.git/subtree-cache/**": true,
-		"**/node_modules/*/**": true
-	},
+	"rest-client.environmentVariables": {
+		"$shared": {
+			"version": "v1",
+			"prodToken": "foo",
+			"nonProdToken": "bar",
+			"protocol": "https"
+		},
+		// "visual.studio.debug": {
+		// 	"protocol" : "http",
+		// 	"host": "localhost",
+		// 	"port": "53052",
+		// },
+		// "seadserv.humlab.umu.se": {
+		// 	"protocol" : "https",
+		// 	"host": "seadserv.humlab.umu.se",
+		// 	"port": "8089",
+		// },
+		// "supersead.humlab.umu.se": {
+		// 	"protocol" : "https",
+		// 	"host": "supersead.humlab.umu.se",
+		// 	"port": "8089",
+		// },
+		// "browser.sead.se": {
+		// 	"protocol" : "https",
+		// 	"host": "browser.sead.se",
+		// 	"port": "8089",
+		// },
+		"staging": {
+			"host": "supersead.humlab.umu.se",
+			"protocol": "https",
+			"port": "443",
+		},
+		"production": {
+			"host": "humlabseadserv.srv.its.umu.se",
+			"protocol": "https",
+			"port": "443",
+		}
+    },
     "workbench.colorCustomizations": {
-		"activityBar.activeBackground": "#2a76cf",
-		"activityBar.activeBorder": "#afbcd0",
-		"activityBar.background": "#2a76cf",
+		"activityBar.background": "#b41706",
+		"activityBar.activeBackground": "#b41706",
+		"activityBar.activeBorder": "#c93686",
 		"activityBar.foreground": "#e7e7e7",
 		"activityBar.inactiveForeground": "#e7e7e799",
-		"activityBarBadge.background": "#841b4c",
+		"activityBarBadge.background": "#011f04",
 		"activityBarBadge.foreground": "#e7e7e7",
-		"statusBar.background": "#215ea5",
-		"statusBar.foreground": "#e7e7e7",
-		"statusBarItem.hoverBackground": "#2a76cf",
-		"titleBar.activeBackground": "#215ea5",
+		"titleBar.activeBackground": "#831104",
+		"titleBar.inactiveBackground": "#83110499",
 		"titleBar.activeForeground": "#e7e7e7",
-		"titleBar.inactiveBackground": "#215ea599",
 		"titleBar.inactiveForeground": "#e7e7e799",
-		"commandCenter.border": "#e7e7e799",
-		"sash.hoverBorder": "#2a76cf",
-		"statusBarItem.remoteBackground": "#215ea5",
+		"statusBar.background": "#831104",
+		"statusBarItem.hoverBackground": "#b41706",
+		"statusBar.foreground": "#e7e7e7",
+		"sash.hoverBorder": "#b41706",
+		"statusBarItem.remoteBackground": "#831104",
 		"statusBarItem.remoteForeground": "#e7e7e7",
-		"editor.background": "#000000",
-		"tab.activeBackground": "#455a0b",
-		"sideBar.background": "#000000",
-		"gitDecoration.ignoredResourceForeground": "#7f7a7a",
-		"terminal.background": "#000000",
-		"outputView.background": "#000000",
-		"scrollbarSlider.activeBackground": "#287545",
-		"scrollbarSlider.hoverBackground": "#198e3c",
-		"scrollbarSlider.background": "#515a54"
+		"commandCenter.border": "#e7e7e799"
 	},
-	"peacock.remoteColor": "#215ea5",
-	"json.schemaDownload.enable": true,
-	"testing.defaultGutterClickAction": "debug"
+    "peacock.color": "#64a2d5",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "dotnet-test-explorer.enableTelemetry": false,
+    "dotnet-test-explorer.runInParallel": true,
+    "dotnet-test-explorer.showCodeLens": false,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    }
 }

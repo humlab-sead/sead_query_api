@@ -4,7 +4,7 @@
 ### REST configs:
 
 ### Gives count 5 for span 1034 => 1036
-POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -37,7 +37,7 @@ Content-Type: application/json; charset=UTF-8
 
 
 ### Gives count 5 for spans 1034 => 1035 and 1035 => 1036 (total count: 10)
-POST {{protocol}}://{{host}}:{{port}}/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
