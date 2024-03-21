@@ -48,12 +48,12 @@ namespace SQT.Infrastructure
             if (!prop.Writable)
                 return true;
 
-            if (!ignores.ContainsKey(type.Name))
+            if (!ignores.TryGetValue(type.Name, out HashSet<string> value))
             {
                 return false;
             }
 
-            return ignores[type.Name].Contains(prop.PropertyName);
+            return value.Contains(prop.PropertyName);
         }
     }
 }
