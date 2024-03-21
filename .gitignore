@@ -367,3 +367,4 @@ deprecated
 sead_query_api.code-workspace
 .vscode/settings.json
 .mono
+/tmp
