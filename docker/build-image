@@ -1,0 +1,30 @@
+#!/bin/bash
+
+SHELL=/bin/bash
+
+set -e
+
+rm -f Dockerfile
+
+# Add a loop over files to download
+for file in "Dockerfile" "docker-compose.yml" "docker-compose.override.yml"; do
+  if [ -f $file ]; then
+    echo "Error: $file already exists. Cannot continue."
+    exit 1
+  fi
+  wget https://raw.githubusercontent.com/humlab-sead/sead_query_api/master/$file
+done
+
+wget https://raw.githubusercontent.com/humlab-sead/sead_query_api/master/Dockerfile
+
+if [ ! -d "./conf" ]; then
+  echo "Error: ./conf not found. Cannot continue."
+  exit 1
+fi
+
+if [ ! -f "./conf/appsettings.Production.json" ]; then
+  echo "Error: ./conf not found. Can not continue."
+  exit 1
+fi
+
+docker build --rm -f "Dockerfile" -t sead_query_api:latest ./conf
