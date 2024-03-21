@@ -71,7 +71,7 @@ namespace SQT.Infrastructure
 
         public static ICollection<Type> GetModelTypes()
         {
-            return new List<Type>() {
+            return [
                     typeof(ResultFieldType),
                     typeof(ResultField),
                     typeof(ResultViewType),
@@ -81,12 +81,12 @@ namespace SQT.Infrastructure
                     typeof(FacetClause),
                     typeof(FacetChild),
                     typeof(FacetTable),
-                    typeof(Facet),
                     typeof(TableRelation),
                     typeof(ResultSpecificationField),
                     typeof(ResultSpecification),
-                    typeof(ViewState)
-                };
+                    typeof(ViewState),
+                    typeof(Facet)
+                ];
         }
 
         public static IFacetsGraph DefaultFacetsGraph(IRepositoryRegistry registry)

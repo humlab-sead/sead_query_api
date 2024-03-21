@@ -33,5 +33,24 @@ namespace SQT.SqlCompilers
             var match = matcher.Match(result);
             Assert.True(match.Success);
         }
+
+        [Theory]
+        [InlineData("construction_type:construction_type")]
+        public void Compile_ConstructionType_Matches(string uri)
+        {
+            // Arrange
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
+            var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(fakeFacetsConfig.TargetCode);
+            const string textFilter = "";
+
+            // Act
+            var result = new DiscreteContentSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
+
+            // Assert
+            var matcher = new DiscreteContentSqlCompilerMatcher();
+            var match = matcher.Match(result);
+            Assert.True(match.Success);
+        }
     }
 }

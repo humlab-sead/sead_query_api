@@ -20,8 +20,7 @@
                "processExit": false,
                "threadExit": false
            }
-        },
-        {
+        }, {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
@@ -47,7 +46,7 @@
                 }
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
             },
             "envFile": "${workspaceFolder}/conf/.env",
             "sourceFileMap": {
@@ -60,15 +59,16 @@
             }
         },
         {
-            "name": ".NET Core Attach",
+            "name": ".NET Core Launch (test)",
             "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}",
-            "logging": {
-                "moduleLoad": false,
-                "processExit": false,
-                "threadExit": false
-            }
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/<insert-target-framework-here>/<insert-project-name-here>.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "envFile": "${workspaceFolder}/conf/.env",
+            "externalConsole": false
         }
     ]
 }
