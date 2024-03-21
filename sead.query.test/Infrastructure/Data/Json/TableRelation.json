@@ -168,22 +168,6 @@
     "TargetColumnName": "method_id"
   },
   {
-    "TableRelationId": 22,
-    "SourceTableId": 59,
-    "TargetTableId": 147,
-    "Weight": 20,
-    "SourceColumName": "chron_control_type_id",
-    "TargetColumnName": "chron_control_type_id"
-  },
-  {
-    "TableRelationId": 23,
-    "SourceTableId": 59,
-    "TargetTableId": 117,
-    "Weight": 20,
-    "SourceColumName": "chronology_id",
-    "TargetColumnName": "chronology_id"
-  },
-  {
     "TableRelationId": 24,
     "SourceTableId": 117,
     "TargetTableId": 29,
