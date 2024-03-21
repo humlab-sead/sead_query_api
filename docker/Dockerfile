@@ -10,7 +10,7 @@ WORKDIR /repo
 RUN echo "info: using tag $BRANCH" \
     && git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
-FROM mcr.microsoft.com/dotnet/core/sdk:6.0-bullseye-slim AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:8.0-bullseye-slim AS build
 
 WORKDIR /src
 
