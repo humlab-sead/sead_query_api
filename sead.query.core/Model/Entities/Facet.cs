@@ -19,9 +19,9 @@ namespace SeadQueryCore
     {
         public Facet()
         {
-            Clauses = [];
-            Tables = [];
-            Children = [];
+            Clauses = new List<FacetClause>();
+            Tables = new List<FacetTable>();
+            Children = new List<FacetChild>();
         }
 
         public int FacetId { get; set; }
