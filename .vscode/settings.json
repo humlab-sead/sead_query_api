@@ -39,24 +39,23 @@
 		}
 	},
 	"workbench.colorCustomizations": {
-		"activityBar.background": "#b41706",
 		"activityBar.activeBackground": "#b41706",
-		"activityBar.activeBorder": "#c93686",
+		"activityBar.background": "#b41706",
 		"activityBar.foreground": "#e7e7e7",
 		"activityBar.inactiveForeground": "#e7e7e799",
 		"activityBarBadge.background": "#011f04",
 		"activityBarBadge.foreground": "#e7e7e7",
-		"titleBar.activeBackground": "#831104",
-		"titleBar.inactiveBackground": "#83110499",
-		"titleBar.activeForeground": "#e7e7e7",
-		"titleBar.inactiveForeground": "#e7e7e799",
-		"statusBar.background": "#831104",
-		"statusBarItem.hoverBackground": "#b41706",
-		"statusBar.foreground": "#e7e7e7",
+		"commandCenter.border": "#e7e7e799",
 		"sash.hoverBorder": "#b41706",
+		"statusBar.background": "#831104",
+		"statusBar.foreground": "#e7e7e7",
+		"statusBarItem.hoverBackground": "#b41706",
 		"statusBarItem.remoteBackground": "#831104",
 		"statusBarItem.remoteForeground": "#e7e7e7",
-		"commandCenter.border": "#e7e7e799"
+		"titleBar.activeBackground": "#831104",
+		"titleBar.activeForeground": "#e7e7e7",
+		"titleBar.inactiveBackground": "#83110499",
+		"titleBar.inactiveForeground": "#e7e7e799"
 	},
 	"peacock.color": "#64a2d5",
 	"files.exclude": {
@@ -75,6 +74,13 @@
 	"csharp.debug.justMyCode": true,
 	"csharp.suppressDotnetRestoreNotification": true,
 	"csharp.suppressBuildAssetsNotification": true,
+	"csharp.suppressDotnetInstallWarning": false,
 	"editor.formatOnSave": true,
 	"editor.hover.delay": 600,
+	"explorer.compactFolders": true,
+	"csharp.semanticHighlighting.enabled": true,
+	// "explorer.sortOrder": "modified",
+	"explorer.sortOrderLexicographicOptions": "lower",
+	"workbench.editor.highlightModifiedTabs": true,
+	
 }
