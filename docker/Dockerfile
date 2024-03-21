@@ -8,7 +8,7 @@ ARG BRANCH
 WORKDIR /repo
 
 RUN echo "info: using tag $BRANCH" \
-    &&git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
+    && git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
 FROM mcr.microsoft.com/dotnet/core/sdk:6.0-bullseye-slim AS build
 
@@ -26,7 +26,6 @@ COPY conf /src/conf
 RUN cd sead.query.api \
     && dotnet build   sead.query.api.csproj -c Release \
     && dotnet publish sead.query.api.csproj -c Release -o /src/app --no-restore
-    #dotnet test    "sead.query.api.csproj" -c Release -o /src/app --no-build --no-restore
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:8.0-bullseye-slim
 
