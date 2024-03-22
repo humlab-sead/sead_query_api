@@ -19,11 +19,10 @@ namespace SeadQueryAPI
 
         public Startup()
         {
-            var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER") ?? ".";
-            var appSettingsPath = Path.Combine(appSettingsFolder, "appsettings.json");
+            var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER");
+            var appSettingsPath = string.IsNullOrEmpty(appSettingsFolder) ? "appsettings.json" : Path.Combine(appSettingsFolder, "appsettings.json");
 
             Configuration = new ConfigurationBuilder()
-                // .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
@@ -37,18 +36,13 @@ namespace SeadQueryAPI
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
             //Configure application's request pipeline.
-
             //#if DEBUG
             //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
             //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
             //#endif
 
-            /* Add a Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware middleware
-             * to the IApplicationBuilder. */
             app.UseRouting();
 
-            /* Adds a CORS middleware to application pipeline
-             * to allow cross domain requests. */
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
@@ -56,11 +50,6 @@ namespace SeadQueryAPI
                 .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
             );
 
-            /* Adds a Microsoft.AspNetCore.Routing.EndpointMiddleware middleware
-             * to the specified IApplicationBuilder with the EndpointDataSource
-             * instances built from configured IEndpointRouteBuilder.
-             * The Microsoft.AspNetCore.Routing.EndpointMiddleware will execute
-             * the Endpoint associated with the current request.*/
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -69,8 +58,6 @@ namespace SeadQueryAPI
 
             if (env.IsDevelopment())
             {
-                /* Captures synchronous and asynchronous axceptions from the pipeline
-                * and generates HTML error responses.*/
                 app.UseDeveloperExceptionPage();
             }
 
