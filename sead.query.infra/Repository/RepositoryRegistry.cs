@@ -57,7 +57,7 @@ namespace SeadQueryInfra
         //        .FirstOrDefault();
         //}
 
-        public T GetRepository<T>() where T: IRepository2
+        public T GetRepository<T>() where T : IRepository2
         {
             return (T)GetRepository(typeof(T));
         }
@@ -69,30 +69,29 @@ namespace SeadQueryInfra
             return (IRepository2)Repositories[type];
         }
 
-        public virtual IFacetRepository Facets                      => GetRepository<IFacetRepository>();
-        public virtual ITableRelationRepository TableRelations      => GetRepository<ITableRelationRepository>();
-        public virtual ITableRepository Tables                      => GetRepository<ITableRepository>();
-        public virtual IResultSpecificationRepository Results                    => GetRepository<IResultSpecificationRepository>();
-        public virtual IFacetGroupRepository FacetGroups            => GetRepository<IFacetGroupRepository>();
-        public virtual IFacetTypeRepository FacetTypes              => GetRepository<IFacetTypeRepository>();
-        public virtual IViewStateRepository ViewStates              => GetRepository<IViewStateRepository>();
-        public virtual IFacetTableRepository FacetTables            => GetRepository<IFacetTableRepository>();
+        public virtual IFacetRepository Facets => GetRepository<IFacetRepository>();
+        public virtual ITableRelationRepository TableRelations => GetRepository<ITableRelationRepository>();
+        public virtual ITableRepository Tables => GetRepository<ITableRepository>();
+        public virtual IResultSpecificationRepository Results => GetRepository<IResultSpecificationRepository>();
+        public virtual IFacetGroupRepository FacetGroups => GetRepository<IFacetGroupRepository>();
+        public virtual IFacetTypeRepository FacetTypes => GetRepository<IFacetTypeRepository>();
+        public virtual IViewStateRepository ViewStates => GetRepository<IViewStateRepository>();
+        public virtual IFacetTableRepository FacetTables => GetRepository<IFacetTableRepository>();
 
         public int Commit() => Context.SaveChanges();
         public void Dispose() => Context.Dispose();
-
     }
 
-    public static class QueryDynamicExt {
-
+    public static class QueryDynamicExt
+    {
         public static IEnumerable<T> Populate<T>(this DbDataReader dr) where T : class
         {
-            var results = new List<T>();
-            var properties = typeof(T).GetProperties();
-            while (dr.Read()) {
+            while (dr.Read())
+            {
                 var item = Activator.CreateInstance<T>();
                 var index = 0;
-                foreach (var property in typeof(T).GetProperties()) {
+                foreach (var property in typeof(T).GetProperties())
+                {
                     Type convertTo = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
                     property.SetValue(item, Convert.ChangeType(dr.GetValue(index), convertTo), null);
                     index++;
@@ -103,11 +102,11 @@ namespace SeadQueryInfra
 
         public static T Populate2<T>(this DbDataReader dr, T instance) where T : class
         {
-            var results = new List<T>();
-            var properties = typeof(T).GetProperties();
             var item = Activator.CreateInstance<T>();
-            foreach (var property in typeof(T).GetProperties()) {
-                if (!dr.IsDBNull(dr.GetOrdinal(property.Name))) {
+            foreach (var property in typeof(T).GetProperties())
+            {
+                if (!dr.IsDBNull(dr.GetOrdinal(property.Name)))
+                {
                     Type convertTo = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
                     property.SetValue(item, Convert.ChangeType(dr[property.Name], convertTo), null);
                 }
@@ -117,13 +116,16 @@ namespace SeadQueryInfra
 
         public static IEnumerable<dynamic> QueryDynamic2(this DbContext dbContext, string Sql, Dictionary<string, object> Parameters)
         {
-            using (var cmd = dbContext.Database.GetDbConnection().CreateCommand()) {
+            using (var cmd = dbContext.Database.GetDbConnection().CreateCommand())
+            {
                 cmd.CommandText = Sql;
                 if (cmd.Connection.State != ConnectionState.Open)
                     cmd.Connection.Open();
                 AssignParams(Parameters, cmd);
-                using (var dataReader = cmd.ExecuteReader()) {
-                    while (dataReader.Read()) {
+                using (var dataReader = cmd.ExecuteReader())
+                {
+                    while (dataReader.Read())
+                    {
                         var dataRow = GetDataRow(dataReader);
                         yield return dataRow;
                     }
@@ -133,7 +135,8 @@ namespace SeadQueryInfra
 
         private static void AssignParams(Dictionary<string, object> Parameters, DbCommand cmd)
         {
-            foreach (KeyValuePair<string, object> param in Parameters) {
+            foreach (KeyValuePair<string, object> param in Parameters)
+            {
                 DbParameter dbParameter = cmd.CreateParameter();
                 dbParameter.ParameterName = param.Key;
                 dbParameter.Value = param.Value;

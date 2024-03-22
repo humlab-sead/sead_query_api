@@ -1,18 +1,18 @@
 
 ### Get all facets
-GET {{protocol}}://{{host}}:{{port}}/api/facets
+GET https://{{host}}/query/api/facets
 content-type: application/json
 mode: cors
 accept: application/json
 
 ### Get all domain facets
-GET {{protocol}}://{{host}}:{{port}}/api/facets/domain
+GET {{protocol}}://{{host}}:{{port}}/query/api/facets/domain
 content-type: application/json
 mode: cors
 accept: application/json
 
 ### Get domain facet's children
-GET {{protocol}}://{{host}}:{{port}}/api/facets/domain/palaeoentomology
+GET {{protocol}}://{{host}}:{{port}}/query/api/facets/domain/palaeoentomology
 content-type: application/json
 mode: cors
 accept: application/json

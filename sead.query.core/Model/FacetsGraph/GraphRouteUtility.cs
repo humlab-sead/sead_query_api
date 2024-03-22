@@ -27,7 +27,7 @@ namespace SeadQueryCore
 
         public static string ToString(List<GraphRoute> routes)
         {
-            return String.Join("\n", routes.Select(z => $"{routes.IndexOf(z)};{z.ToString()}"));
+            return String.Join("\n", routes.Select(z => $"{routes.IndexOf(z)};{z}"));
         }
     }
 }

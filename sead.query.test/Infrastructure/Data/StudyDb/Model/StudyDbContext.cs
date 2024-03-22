@@ -8,7 +8,6 @@ namespace SeadQueryTest.Infrastructure.Data.StudyModel.Model
 {
     public partial class StudyDbContext : JsonSeededFacetContext
     {
-
         public StudyDbContext(DbContextOptions<StudyDbContext> options, JsonFacetContextFixture fixture)
             : base(options, fixture)
         {

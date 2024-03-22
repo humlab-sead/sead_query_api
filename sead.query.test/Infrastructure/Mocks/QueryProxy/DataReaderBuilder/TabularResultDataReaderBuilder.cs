@@ -10,7 +10,6 @@ using SeadQueryCore.Model.Ext;
 
 namespace SQT.Infrastructure
 {
-
     public class TabularResultDataReaderBuilder : DataReaderBuilder
     {
         private readonly ResultSpecification ResultSpecification;

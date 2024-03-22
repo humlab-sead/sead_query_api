@@ -7,6 +7,5 @@ namespace SQT.Model
 {
     public class ResultContentSetTests
     {
-
     }
 }

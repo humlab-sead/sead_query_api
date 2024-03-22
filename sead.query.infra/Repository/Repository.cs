@@ -8,7 +8,6 @@ using System.Linq.Expressions;
 
 namespace SeadQueryInfra
 {
-
     // FIXME DbSet implements Repository pattern - so why invent it again...?
     public class Repository<TEntity, K> : IRepository<TEntity, K> where TEntity : class
     {

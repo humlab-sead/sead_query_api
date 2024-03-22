@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace SQT.ClassData
 {
-
     public static class UriCollections
     {
         public static List<string> CompleteSetOfSingleDomainFacetUrisWithNoPicks = new List<string> {
@@ -108,6 +107,5 @@ namespace SQT.ClassData
                 "isotope://data_types:data_types",
                 "isotope://sample_group_sampling_contexts:sample_group_sampling_contexts"
             };
-
     }
 }

@@ -8,8 +8,8 @@ using SeadQueryCore.Model;
 
 namespace SeadQueryAPI.Services
 {
-    public class AppServiceBase {
-
+    public class AppServiceBase
+    {
         public IFacetSetting Config { get; set; }
         public IRepositoryRegistry Context { get; set; }
 
@@ -18,6 +18,5 @@ namespace SeadQueryAPI.Services
             Config = config.Facet;
             Context = context;
         }
-
     }
 }

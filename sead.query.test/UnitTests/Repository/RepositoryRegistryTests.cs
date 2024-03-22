@@ -11,10 +11,10 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RepositoryRegistryTests : DisposableFacetContextContainer
-        {
-        public RepositoryRegistryTests(JsonFacetContextFixture fixture) : base(fixture)
+    {
+        public RepositoryRegistryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -30,7 +30,6 @@ namespace SQT.Infrastructure.Repository
         //    Assert.NotNull(result);
         //    Assert.True(result.Any());
         //}
-
 
     }
 }

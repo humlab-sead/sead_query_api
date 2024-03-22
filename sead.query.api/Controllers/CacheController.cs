@@ -11,14 +11,13 @@ namespace query_sead_net.Controllers
         public CacheController(ISeadQueryCache cache)
         {
             this.cache = cache;
-
         }
+
         [HttpGet("clear")]
         public string Clear()
         {
             cache.Clear();
             return "OK";
         }
-
     }
 }

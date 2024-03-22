@@ -18,7 +18,8 @@ namespace SeadQueryCore
         public RangeExtent FullExtent { get; set; }
     };
 
-    public class RangeFacetContentService : FacetContentService {
+    public class RangeFacetContentService : FacetContentService
+    {
         public RangeFacetContentService(
             IFacetSetting config,
             IRepositoryRegistry context,
@@ -53,7 +54,7 @@ namespace SeadQueryCore
             return null;
         }
 
-        protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count=120)
+        protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count = 120)
         {
             var facetConfig = facetsConfig.GetConfig(facetCode);
             var fullExtent = OuterBoundExtentService.GetExtent(facetConfig, default_interval_count);

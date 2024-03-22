@@ -7,8 +7,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
-    public class ResultSpecification {
+    public class ResultSpecification
+    {
         public ResultSpecification()
         {
             Fields = new HashSet<ResultSpecificationField>();
@@ -28,7 +28,7 @@ namespace SeadQueryCore
         public IEnumerable<ResultSpecificationField> GetResultFields()
             => GetSortedFields()
                 .Where(z => z.FieldType.IsResultValue);
- 
+
         public IEnumerable<(string Name, Type Type)> GetResultFieldTypes()
         {
             return GetResultFields()

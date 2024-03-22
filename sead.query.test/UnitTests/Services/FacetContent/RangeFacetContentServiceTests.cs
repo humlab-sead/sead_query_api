@@ -9,11 +9,10 @@ using Xunit;
 
 namespace SQT.Services
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeFacetContentServiceTests : DisposableFacetContextContainer
     {
-
-        public RangeFacetContentServiceTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RangeFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -34,7 +33,7 @@ namespace SQT.Services
             /* GetExtent generates an extent */
             rangeOuterBoundExtentService
                 .Setup(z => z.GetExtent(It.IsAny<FacetConfig2>(), It.IsAny<int>()))
-                .Returns(new RangeExtent{Lower = lower, Upper = upper, Count = count });
+                .Returns(new RangeExtent { Lower = lower, Upper = upper, Count = count });
 
             /* GetUpperLowerBounds hits the database */
             rangeOuterBoundExtentService

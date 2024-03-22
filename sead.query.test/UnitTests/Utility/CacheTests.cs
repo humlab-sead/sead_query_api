@@ -8,10 +8,8 @@ using Moq;
 
 namespace SQT.Infrastructure
 {
-
     public class CacheTests
     {
-
         protected virtual ISeadQueryCache GetCache()
         {
             //try {
@@ -40,7 +38,7 @@ namespace SQT.Infrastructure
             var cache = GetCache();
 
             var expectedValue = new { A = 1, B = 2 };
-            var testKey = "a test key";
+            const string testKey = "a test key";
             cache.Set(testKey, expectedValue);
             dynamic retrievedValue = cache.Get<object>(testKey);
             Assert.Equal(expectedValue.A, retrievedValue.A);
@@ -54,11 +52,10 @@ namespace SQT.Infrastructure
             settingsMock.Setup(x => x.Facet).Returns(new FacetSetting());
             settingsMock.Setup(x => x.Store).Returns(new StoreSetting());
             using (var container = DependencyService.CreateContainer(null, ScaffoldUtility.JsonDataFolder(), settingsMock.Object))
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
             }
         }
-
-
     }
 }

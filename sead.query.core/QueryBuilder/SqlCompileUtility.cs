@@ -9,7 +9,7 @@ namespace SeadQueryCore
         // LikeExpr(Facet.CategoryNameExpr, TextFilter)
         public static string LikeExpr(string expr, string filter)
         {
-            return (filter == "") ? "" : $" AND {expr} ILIKE '{filter}' ";
+            return (filter?.Length == 0) ? "" : $" AND {expr} ILIKE '{filter}' ";
         }
 
         public static string InExpr(string expr, List<decimal> values)

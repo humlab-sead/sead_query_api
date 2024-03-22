@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class ViewStateRepositoryTests : DisposableFacetContextContainer
     {
-        public ViewStateRepositoryTests(JsonFacetContextFixture fixture) : base(fixture)
+        public ViewStateRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -24,8 +24,8 @@ namespace SQT.Infrastructure.Repository
         {
             // Arrange
             var repository = this.CreateRepository();
-            var key = "key";
-            var data = "data";
+            const string key = "key";
+            const string data = "data";
 
             repository.Add(new ViewState() { Key = key, Data = data });
 

@@ -7,8 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryAPI.DTO {
-
+namespace SeadQueryAPI.DTO
+{
     public class ResultConfigDTO
     {
         public string RequestId { get; set; }

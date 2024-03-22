@@ -8,7 +8,7 @@ namespace SQT.SqlCompilers
 {
     public class RangeIntervalSqlCompilerTests
     {
-        private string removeWhiteSpace(string str)
+        private string RemoveWhiteSpace(string str)
         {
             return new String((from c in str where !char.IsWhiteSpace(c) select c).ToArray()).ToLower();
         }
@@ -26,7 +26,7 @@ namespace SQT.SqlCompilers
 
             // Assert
             var expected = $"generate_series({min},{max},{interval})";
-            Assert.Contains(expected, removeWhiteSpace(result));
+            Assert.Contains(expected, RemoveWhiteSpace(result));
         }
     }
 }

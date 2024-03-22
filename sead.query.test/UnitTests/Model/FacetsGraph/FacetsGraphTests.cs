@@ -16,10 +16,10 @@ using System.IO;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsGraphTests : DisposableFacetContextContainer
     {
-        public FacetsGraphTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetsGraphTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -34,7 +34,7 @@ namespace SQT.Model
             var container = DependencyService.CreateContainer(FacetContext, folder, null);
             return container;
         }
- 
+
         [Fact]
         public void GetEdge_ByNodeNames_WhenEdgeExists_ReturnsEdge()
         {
@@ -128,7 +128,7 @@ namespace SQT.Model
             List<string> destination_tables = new List<string>() { "H" };
 
             // Act
-            var result = facetsGraph.Find(start_table,destination_tables);
+            var result = facetsGraph.Find(start_table, destination_tables);
 
             // Assert
             Assert.Single(result);
@@ -177,7 +177,8 @@ namespace SQT.Model
         public void Build_WhenResolvedByIoC_HasExpectedEdges()
         {
             using (var container = CreateDependencyContainer())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 var service = scope.Resolve<IFacetsGraph>();
                 Assert.True(service.EdgeContaniner.Edges.Any());
             }
@@ -187,7 +188,8 @@ namespace SQT.Model
         public void Find_WhenStartAndStopsAreNeighbours_IsSingleStep()
         {
             using (var container = CreateDependencyContainer())
-            using (var scope = container.BeginLifetimeScope()) {
+            using (var scope = container.BeginLifetimeScope())
+            {
                 // Arrange
                 var graph = scope.Resolve<IFacetsGraph>();
                 // Act
@@ -228,15 +230,16 @@ namespace SQT.Model
         {
             var folder = ScaffoldUtility.JsonDataFolder();
 
-            using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False")) {
-
+            using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
+            {
                 connection.Open();
 
                 var options = new DbContextOptionsBuilder<FacetContext>()
                     .UseSqlite(connection) // Set the connection explicitly, so it won't be closed automatically by EF
                     .Options;
 
-                using (var context = JsonSeededFacetContextFactory.Create(options, Fixture)) {
+                using (var context = JsonSeededFacetContextFactory.Create(options, Fixture))
+                {
                     var count = await context.FacetGroups.CountAsync();
                     Assert.True(count > 0);
                     var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
@@ -245,6 +248,5 @@ namespace SQT.Model
                 }
             }
         }
-
     }
 }

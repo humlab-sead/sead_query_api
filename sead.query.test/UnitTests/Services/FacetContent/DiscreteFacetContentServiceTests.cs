@@ -8,10 +8,10 @@ using Xunit;
 
 namespace SQT.Services
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteFacetContentServiceTests : DisposableFacetContextContainer
     {
-        public DiscreteFacetContentServiceTests(JsonFacetContextFixture fixture) : base(fixture)
+        public DiscreteFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -45,9 +45,9 @@ namespace SQT.Services
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Items.Any());
+            Assert.True(result.Items.Count > 0);
             Assert.Equal(fakeValues.Count, result.Items.Count);
-            Assert.Equal(hasPicks, result.Picks.Any());
+            Assert.Equal(hasPicks, result.Picks.Count > 0);
         }
     }
 }

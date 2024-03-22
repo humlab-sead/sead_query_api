@@ -14,10 +14,13 @@ namespace SeadQueryAPI
 
         public virtual ISeadQueryCache GetCache(StoreSetting settings)
         {
-            try {
+            try
+            {
                 if (settings?.UseRedisCache == true)
                     return new RedisCacheFactory().Create(settings.CacheHost, settings.CachePort);
-            } catch (InvalidOperationException) {
+            }
+            catch (InvalidOperationException)
+            {
                 Console.WriteLine("Failed to connect to Redis!");
             }
             Console.WriteLine("Warning: Using in memory cache provider!");
@@ -26,7 +29,6 @@ namespace SeadQueryAPI
 
         protected override void Load(ContainerBuilder builder)
         {
-
             builder.RegisterInstance<ISetting>(Options).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
@@ -74,7 +76,7 @@ namespace SeadQueryAPI
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
             builder.RegisterType<JoinsClauseCompiler>().As<IJoinsClauseCompiler>();
-            
+
             builder.RegisterType<DiscreteContentSqlCompiler>().As<IDiscreteContentSqlCompiler>();
             builder.RegisterType<DiscreteCategoryCountSqlCompiler>().As<IDiscreteCategoryCountQueryCompiler>();
             builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
@@ -84,7 +86,7 @@ namespace SeadQueryAPI
             builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
             builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
             builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
-            
+
             builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
             builder.RegisterType<ResultService>().As<IResultService>();
@@ -98,10 +100,13 @@ namespace SeadQueryAPI
             builder.RegisterType<ResultSqlCompilerLocator>().As<IResultSqlCompilerLocator>();
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
-            if (Options.Store.UseRedisCache) {
+            if (Options.Store.UseRedisCache)
+            {
                 builder.RegisterType<Services.CachedLoadFacetService>().As<Services.IFacetContentReconstituteService>();
                 builder.RegisterType<Services.CachedLoadResultService>().As<Services.ILoadResultService>();
-            } else {
+            }
+            else
+            {
                 builder.RegisterType<Services.LoadFacetService>().As<Services.IFacetContentReconstituteService>();
                 builder.RegisterType<Services.LoadResultService>().As<Services.ILoadResultService>();
             }

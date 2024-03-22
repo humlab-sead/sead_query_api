@@ -5,7 +5,6 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class NullCache : ISeadQueryCache
     {
         public string KeyPrefix { get => ""; set { } }
@@ -13,7 +12,7 @@ namespace SeadQueryInfra
         public void Clear() { }
         public bool Exists(string key) => false;
 
-        public T Get<T>(string key) => default(T);
+        public T Get<T>(string key) => default;
 
         public void Remove(string key) { }
         public void Set<T>(string key, T value) { }

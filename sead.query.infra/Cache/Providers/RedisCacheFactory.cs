@@ -29,5 +29,4 @@ namespace SeadQueryInfra
             return manager;
         }
     }
-
 }

@@ -13,12 +13,12 @@ using static SeadQueryCore.FacetsConfig2;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsConfig2Tests : DisposableFacetContextContainer
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;
 
-        public FacetsConfig2Tests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetsConfig2Tests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
@@ -98,7 +98,8 @@ namespace SQT.Model
 
         public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
         {
-            if (!facetConfig.HasConstraints()) {
+            if (!facetConfig.HasConstraints())
+            {
                 // FIXME Is this a relevant condition?
                 return false;
             }
@@ -107,7 +108,6 @@ namespace SQT.Model
                 return targetFacet.FacetType.ReloadAsTarget;
 
             return facetCodes.IndexOf(targetFacet.FacetCode) > facetCodes.IndexOf(facetConfig.FacetCode);
-
         }
 
         /*
@@ -276,7 +276,7 @@ namespace SQT.Model
         [Theory]
         [InlineData("sites:sites@1", true)]
         [InlineData("ecocode:sites/ecocode", false)]
-        [InlineData("sites:sites@1,2/ecocode@2",  true)]
+        [InlineData("sites:sites@1,2/ecocode@2", true)]
         public void ClearPicks_HasOrHasNotPicks_ExpectedBehavior(string uri, bool hasPicks)
         {
             // Arrange
@@ -289,6 +289,5 @@ namespace SQT.Model
             // Assert
             Assert.False(facetsConfig.HasPicks());
         }
-
     }
 }

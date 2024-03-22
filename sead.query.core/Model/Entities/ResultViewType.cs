@@ -7,7 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryCore {
+namespace SeadQueryCore
+{
     public class ResultViewType
     {
         public string ViewTypeId { get; set; }

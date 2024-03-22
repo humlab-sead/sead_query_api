@@ -10,8 +10,8 @@ namespace SeadQueryCore
     /// <summary>
     /// Contains client data sent to server upon facet load content and load result requests.
     /// </summary>
-    public class FacetsConfig2 {
-
+    public class FacetsConfig2
+    {
         public class UserPickData
         {
             public string FacetCode { get; set; }
@@ -46,10 +46,12 @@ namespace SeadQueryCore
         private List<FacetConfig2> facetConfigs;
         public List<FacetConfig2> FacetConfigs
         {                                                                               // Current client facet configurations
-            get {
+            get
+            {
                 return facetConfigs;
             }
-            set {
+            set
+            {
                 facetConfigs = value?.OrderBy(z => z.Position).ToList();
             }
         }
@@ -68,18 +70,19 @@ namespace SeadQueryCore
             get => GetConfig(TargetCode);
         }
 
-        public FacetConfig2 GetConfig(string facetCode)                 => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
-        public FacetConfig2 GetConfig(Facet facet)                      => GetConfig(facet.FacetCode);
+        public FacetConfig2 GetConfig(string facetCode) => FacetConfigs.FirstOrDefault(x => x.FacetCode == facetCode);
+        public FacetConfig2 GetConfig(Facet facet) => GetConfig(facet.FacetCode);
 
-        public List<FacetConfig2> GetConfigs(List<string> facetCodes)   => FacetConfigs.Where(c => facetCodes.Contains(c.FacetCode)).ToList();
+        public List<FacetConfig2> GetConfigs(List<string> facetCodes) => FacetConfigs.Where(c => facetCodes.Contains(c.FacetCode)).ToList();
 
-        public List<string> GetFacetCodes()                             => FacetConfigs.Select(x => x.FacetCode).ToList();
+        public List<string> GetFacetCodes() => FacetConfigs.Select(x => x.FacetCode).ToList();
 
-        public List<FacetConfig2> GetFacetConfigsWithPicks()            => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
+        public List<FacetConfig2> GetFacetConfigsWithPicks() => FacetConfigs.Where(x => x.Picks.Count > 0).ToList();
 
         public bool IsPriorTo(FacetConfig2 facetConfig, List<string> facetCodes, Facet targetFacet)
         {
-            if (!facetConfig.HasConstraints()) {
+            if (!facetConfig.HasConstraints())
+            {
                 // FIXME Is this a relevant condition?
                 return false;
             }
@@ -99,15 +102,15 @@ namespace SeadQueryCore
                     .ToList();
         }
 
-        public List<FacetConfig2> GetInvolvedConfigs(Facet facet, List<string> facetCodes=null)
+        public List<FacetConfig2> GetInvolvedConfigs(Facet facet, List<string> facetCodes = null)
             => GetFacetConfigsAffectedBy(facet, facetCodes);
 
-        public List<Facet> GetInvolvedFacets(Facet facet, List<string> facetCodes=null)
+        public List<Facet> GetInvolvedFacets(Facet facet, List<string> facetCodes = null)
             => GetInvolvedConfigs(facet, facetCodes)
                 .Facets().AddUnion(facet)
                     .ToList();
 
-        public List<string> GetInvolvedTables(Facet facet, List<string> facetCodes=null, List<string> extraTables=null)
+        public List<string> GetInvolvedTables(Facet facet, List<string> facetCodes = null, List<string> extraTables = null)
             => GetInvolvedFacets(facet, facetCodes)
                 .TableNames().NullableUnion(extraTables)
                         .Distinct().ToList();
@@ -126,23 +129,28 @@ namespace SeadQueryCore
 
             List<FacetConfig2> configs = new List<FacetConfig2>();
 
-            foreach (var currentCode in facetCodes) {
-
+            foreach (var currentCode in facetCodes)
+            {
                 var currentConfig = GetConfig(currentCode);
                 var currentFacet = currentConfig.Facet;
 
-                if (! (currentConfig.HasPicks() || currentConfig.HasEnforcedConstraints())) {
+                if (!(currentConfig.HasPicks() || currentConfig.HasEnforcedConstraints()))
+                {
                     /* If the facet doesn't have constraints then it cannot affect the target facet */
                     continue;
                 }
 
-                if (facetCodes.IndexOf(currentCode) < facetCodes.IndexOf(targetCode)) {
+                if (facetCodes.IndexOf(currentCode) < facetCodes.IndexOf(targetCode))
+                {
                     /* Has constraints and preceeds in chain */
                     configs.Add(currentConfig);
-                } else
-                if (currentCode == targetCode) {
+                }
+                else
+                if (currentCode == targetCode)
+                {
                     /* Range facets also affects themselves */
-                    if (currentFacet.FacetType.ReloadAsTarget) {
+                    if (currentFacet.FacetType.ReloadAsTarget)
+                    {
                         configs.Add(currentConfig);
                     }
                 }
@@ -159,11 +167,12 @@ namespace SeadQueryCore
 
         public Dictionary<string, UserPickData> CollectUserPicks(string onlyCode = "")
         {
-
             Func<FacetConfig2, bool> filter() => x => (onlyCode.IsEmpty() || onlyCode == x.FacetCode) && (x.Picks.Count > 0);
             var values = new Dictionary<string, UserPickData>();
-            foreach (var config in FacetConfigs.Where(filter())) {
-                values[config.FacetCode] = new UserPickData() {
+            foreach (var config in FacetConfigs.Where(filter()))
+            {
+                values[config.FacetCode] = new UserPickData()
+                {
                     FacetCode = config.FacetCode,
                     PickValues = config.GetPickValues(),
                     FacetType = config.Facet.FacetTypeId,
@@ -181,7 +190,8 @@ namespace SeadQueryCore
         public string GetPicksCacheId()
         {
             StringBuilder key = new StringBuilder("");
-            foreach (var x in this.GetFacetConfigsWithPicks()) {
+            foreach (var x in this.GetFacetConfigsWithPicks())
+            {
                 key.AppendFormat("{0}_{1}", x.FacetCode, string.Join("_", x.GetPickValues(true).ToArray()));
             }
             return key.ToString();
@@ -202,8 +212,10 @@ namespace SeadQueryCore
 
         public FacetTable GetFacetTable(string name)
         {
-            foreach (var facetConfig in FacetConfigs) {
-                if (facetConfig.GetFacetTable(name) != default(FacetTable)) {
+            foreach (var facetConfig in FacetConfigs)
+            {
+                if (facetConfig.GetFacetTable(name) != default(FacetTable))
+                {
                     return facetConfig.GetFacetTable(name);
                 }
             }

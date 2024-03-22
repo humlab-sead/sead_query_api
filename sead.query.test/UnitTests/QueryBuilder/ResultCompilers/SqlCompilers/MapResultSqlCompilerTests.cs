@@ -5,12 +5,14 @@ using SQT.SQL.Matcher;
 using System.Collections.Generic;
 using Xunit;
 
+#pragma warning disable RCS1163, IDE0060
+
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class MapResultSqlCompilerTests : DisposableFacetContextContainer
     {
-        public MapResultSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public MapResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -18,7 +20,7 @@ namespace SQT.SqlCompilers
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level")]
         [InlineData("sites:sites", "result_facet", "site_level")]
         [InlineData("sites:country/sites", "result_facet", "site_level")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string specificationKey)
+        public void Compile_MapResult_Matches(string uri, string resultFacetCode, string specificationKey)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
@@ -38,7 +40,7 @@ namespace SQT.SqlCompilers
 
         [Theory]
         [ClassData(typeof(SQT.ClassData.CompleteSetOfSingleTabularResultUriCollection))]
-        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string _)
+        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string viewType)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
@@ -54,6 +56,8 @@ namespace SQT.SqlCompilers
             var match = matcher.Match(result);
 
             Assert.True(match.Success);
+
+            Assert.Equal(viewType, viewType);
         }
     }
 }

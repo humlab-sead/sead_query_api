@@ -1,86 +1,92 @@
 [
   {
-    "FacetClauseId": 1,
+    "FacetClauseId": 15,
     "FacetId": 32,
     "Clause": "facet.view_abundance.abundance is not null",
-    "EnforceConstraint": false
+    "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 2,
+    "FacetClauseId": 16,
     "FacetId": 21,
     "Clause": "countries.location_type_id=1",
-    "EnforceConstraint": false
+    "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 3,
+    "FacetClauseId": 17,
     "FacetId": 25,
     "Clause": "tbl_sites.site_id is not null",
-    "EnforceConstraint": false
+    "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 4,
+    "FacetClauseId": 18,
     "FacetId": 33,
     "Clause": "facet.view_abundance.abundance is not null",
-    "EnforceConstraint": false
+    "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 5,
+    "FacetClauseId": 19,
     "FacetId": 36,
     "Clause": "facet.view_sample_group_references.biblio_id is not null",
-    "EnforceConstraint": false
+    "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 6,
+    "FacetClauseId": 20,
     "FacetId": 37,
     "Clause": "facet.view_site_references.biblio_id is not null",
-    "EnforceConstraint": false
+    "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 35,
+    "FacetClauseId": 21,
+    "FacetId": 41,
+    "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 22,
     "FacetId": 1001,
     "Clause": "tbl_datasets.method_id in (3, 6)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 36,
+    "FacetClauseId": 23,
     "FacetId": 1002,
     "Clause": "tbl_datasets.method_id in (4, 8)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 37,
+    "FacetClauseId": 24,
     "FacetId": 1003,
     "Clause": "tbl_datasets.method_id in (14, 15, 21)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 38,
+    "FacetClauseId": 25,
     "FacetId": 1004,
     "Clause": "tbl_datasets.method_id in (32, 33, 35, 36, 37, 94, 106)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 39,
+    "FacetClauseId": 26,
     "FacetId": 1005,
     "Clause": "tbl_datasets.method_id in (10)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 40,
+    "FacetClauseId": 27,
     "FacetId": 1006,
     "Clause": "tbl_datasets.method_id in (172, 171)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 41,
+    "FacetClauseId": 28,
     "FacetId": 1007,
     "Clause": "tbl_datasets.method_id in (175)",
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 44,
-    "FacetId": 41,
-    "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
+    "FacetClauseId": 29,
+    "FacetId": 48,
+    "Clause": "tbl_sample_group_descriptions.sample_group_description_type_id=60",
     "EnforceConstraint": true
   }
 ]

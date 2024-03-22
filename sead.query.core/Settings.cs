@@ -12,12 +12,14 @@ namespace SeadQueryCore
     //     bool UseRedisCache { get; set; }
     // }
 
-    public class FacetSetting : IFacetSetting {
+    public class FacetSetting : IFacetSetting
+    {
         public string CountTable { get; set; }
         public string CountColumn { get; set; }
     }
 
-    public class StoreSetting /*: IStoreSetting*/ {
+    public class StoreSetting /*: IStoreSetting*/
+    {
         public string Host { get; set; }
         public string Database { get; set; }
         public string Port { get; set; }
@@ -28,11 +30,11 @@ namespace SeadQueryCore
         public int CachePort { get; set; } = 0;
     }
 
-    public class Setting: ISetting {
+    public class Setting : ISetting
+    {
         // https://msdn.microsoft.com/en-us/magazine/mt632279.aspx
         public Setting()
         {
-
         }
         public Setting(FacetSetting facet, StoreSetting store)
         {

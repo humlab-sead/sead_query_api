@@ -8,24 +8,25 @@ using System.Diagnostics;
 
 namespace SQT.Infrastructure
 {
-        class IgnoreJsonAttributesResolver : PropertyRenameAndIgnoreSerializerContractResolver
+    class IgnoreJsonAttributesResolver : PropertyRenameAndIgnoreSerializerContractResolver
     {
-        private Dictionary<string, HashSet<string>> ignores = new Dictionary<string, HashSet<string>>();
+        private readonly Dictionary<string, HashSet<string>> ignores = new Dictionary<string, HashSet<string>>();
 
         public IgnoreJsonAttributesResolver()
         {
             ignores = new Dictionary<string, HashSet<string>> {
                 { typeof(Facet).FullName, new HashSet<string> { "FacetGroupKey", "FacetTypeKey" } }
             };
-
         }
 
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
-            foreach (var prop in props) {
-                if (IsIgnored(prop)) {
-                    prop.ShouldSerialize = obj => false;
+            foreach (var prop in props)
+            {
+                if (IsIgnored(prop))
+                {
+                    prop.ShouldSerialize = _ => false;
                     prop.Ignored = true;
                     continue;
                 }
@@ -47,11 +48,12 @@ namespace SQT.Infrastructure
             if (!prop.Writable)
                 return true;
 
-            if (!ignores.ContainsKey(type.Name)) {
+            if (!ignores.TryGetValue(type.Name, out HashSet<string> value))
+            {
                 return false;
             }
 
-            return ignores[type.Name].Contains(prop.PropertyName);
+            return value.Contains(prop.PropertyName);
         }
     }
 }

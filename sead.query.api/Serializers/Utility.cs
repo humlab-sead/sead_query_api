@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SeadQueryAPI.Serializers
 {
-    public static class JsonExtensions {
-
+    public static class JsonExtensions
+    {
         //public static void SerializeToStream(object value, System.Web.HttpResponse response, JsonSerializerSettings settings = null)
         //{
         //    if (response == null)
@@ -19,7 +19,7 @@ namespace SeadQueryAPI.Serializers
         public static void SerializeToStream(object value, TextWriter writer, JsonSerializerSettings settings = null)
         {
             if (writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
             var serializer = JsonSerializer.CreateDefault(settings);
             serializer.Serialize(writer, value);
         }
@@ -27,8 +27,9 @@ namespace SeadQueryAPI.Serializers
         public static void SerializeToStream(object value, Stream stream, JsonSerializerSettings settings = null)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
-            using (var writer = new StreamWriter(stream)) {
+                throw new ArgumentNullException(nameof(stream));
+            using (var writer = new StreamWriter(stream))
+            {
                 SerializeToStream(value, writer, settings);
             }
         }

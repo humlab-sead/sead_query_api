@@ -5,9 +5,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
-    public class BogusPickService : QueryServiceBase, IBogusPickService {
-
+    public class BogusPickService : QueryServiceBase, IBogusPickService
+    {
         public BogusPickService(
             IRepositoryRegistry registry,
             IQuerySetupBuilder builder,
@@ -31,15 +30,17 @@ namespace SeadQueryCore
         /// <returns></returns>
         public FacetsConfig2 Update(FacetsConfig2 facetsConfig)
         {
-            foreach (string facetCode in facetsConfig.GetFacetCodes()) {
-
+            foreach (string facetCode in facetsConfig.GetFacetCodes())
+            {
                 var config = facetsConfig.GetConfig(facetCode);
 
-                if (config.Facet.FacetTypeId != EFacetType.Discrete || config.Picks.Count == 0) {
+                if (config.Facet.FacetTypeId != EFacetType.Discrete || config.Picks.Count == 0)
+                {
                     continue;
                 }
 
-                if (!config.HasPicks()) {
+                if (!config.HasPicks())
+                {
                     continue;
                 }
 

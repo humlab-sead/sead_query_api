@@ -6,11 +6,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
-    /// <summary>
-    /// Enum for supported facet types
-    /// </summary>
-    public enum EFacetType {
+    public enum EFacetType
+    {
         Unknown = 0,
         Discrete = 1,
         Range = 2,
@@ -18,7 +15,8 @@ namespace SeadQueryCore
     }
 
     [JsonObject(MemberSerialization.OptOut)]
-    public class Facet {
+    public class Facet
+    {
         public Facet()
         {
             Clauses = new List<FacetClause>();
@@ -26,47 +24,26 @@ namespace SeadQueryCore
             Children = new List<FacetChild>();
         }
 
-        /// <summary>
-        /// System ID
-        /// </summary>
         public int FacetId { get; set; }
 
-        /// <summary>
-        /// Domain key / ID
-        /// </summary>
         public virtual string FacetCode { get; set; }
 
-        /// <summary>
-        /// Display text
-        /// </summary>
         public string DisplayTitle { get; set; }
         public string Description { get; set; } = "";
 
-        /// <summary>
-        /// Group facet belongs to
-        /// </summary>
         [JsonIgnore]
         public int FacetGroupId { get; set; }
 
-        public string FacetGroupKey { get { return FacetGroup?.FacetGroupKey ?? "unknown";  } }
+        public string FacetGroupKey { get { return FacetGroup?.FacetGroupKey ?? "unknown"; } }
 
-        /// <summary>
-        /// Facet type ID
-        /// </summary>
         [JsonIgnore]
         public EFacetType FacetTypeId { get; set; }
 
         public string FacetTypeKey { get { return FacetType?.FacetTypeName ?? "unknown"; } }
 
-        /// <summary>
-        /// Query (SQL) expression that specifies ID for facet category values
-        /// </summary>
         [JsonIgnore]
         public string CategoryIdExpr { get; set; }
 
-        /// <summary>
-        /// Query (SQL) expression that specifies descriptive name facet category values
-        /// </summary>
         [JsonIgnore]
         public string CategoryNameExpr { get; set; }
 

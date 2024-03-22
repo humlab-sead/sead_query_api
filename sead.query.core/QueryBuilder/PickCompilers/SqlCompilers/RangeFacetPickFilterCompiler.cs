@@ -2,8 +2,8 @@
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public class RangeFacetPickFilterCompiler : IPickFilterCompiler {
-
+    public class RangeFacetPickFilterCompiler : IPickFilterCompiler
+    {
         public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
         {
             if (!config.HasPicks())

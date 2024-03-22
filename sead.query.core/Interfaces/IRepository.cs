@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq.Expressions;
 
-namespace SeadQueryCore {
-    public interface IRepository2 {
+namespace SeadQueryCore
+{
+    public interface IRepository2
+    {
     }
 
     public interface IRepository<TEntity, K> : IRepository2 where TEntity : class

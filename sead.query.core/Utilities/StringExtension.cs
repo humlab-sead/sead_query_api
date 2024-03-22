@@ -6,7 +6,7 @@ namespace SeadQueryCore
     public static class StringExtension
     {
         public static bool IsEmpty(this string x) => (x ?? "").Equals("");
-        public static bool IsNotEmpty(this string x) => ! (x ?? "").Equals("");
+        public static bool IsNotEmpty(this string x) => !(x ?? "").Equals("");
 
         public static string Prepend(this string text, string prefix, string glue = "", bool preserveEmpty = true)
         {

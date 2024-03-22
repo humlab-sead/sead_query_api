@@ -3,8 +3,8 @@ using System.Linq;
 
 namespace SeadQueryCore.Model.Ext
 {
-     public static class ResultFieldExtensions
-     {
+    public static class ResultFieldExtensions
+    {
         public static IEnumerable<ResultField> GetResultFields(this IEnumerable<ResultSpecificationField> fields)
              => fields.Select(z => z.ResultField);
 

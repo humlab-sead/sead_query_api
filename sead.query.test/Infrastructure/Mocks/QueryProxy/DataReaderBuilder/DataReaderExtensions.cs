@@ -33,14 +33,16 @@ namespace SQT.Infrastructure
             var dbNullExp = Expression.Field(null, dbNullValue);
             List<MemberBinding> memberBindings = new List<MemberBinding>();
 
-            foreach (var prop in typeof(T).GetProperties()) {
+            foreach (var prop in typeof(T).GetProperties())
+            {
                 object defaultValue = null;
 
                 if (prop.PropertyType.IsValueType)
                     defaultValue = Activator.CreateInstance(prop.PropertyType);
                 else if (prop.PropertyType.Name.ToLower().Equals("string"))
                     defaultValue = string.Empty;
-                if (readerColumns.Contains(prop.Name)) {
+                if (readerColumns.Contains(prop.Name))
+                {
                     var indexExpression = Expression.Constant(reader.GetOrdinal(prop.Name));
                     var getValueExp = Expression.Call(readerParam, readerGetValue, new Expression[] { indexExpression });
                     var testExp = Expression.NotEqual(dbNullExp, getValueExp);
@@ -57,7 +59,6 @@ namespace SQT.Infrastructure
             var lambda = Expression.Lambda<Func<DataTableReader, T>>(memberInit, new ParameterExpression[] { readerParam });
             resDelegate = lambda.Compile();
             return (Func<DataTableReader, T>)resDelegate;
-
         }
     }
 
@@ -84,9 +85,7 @@ namespace SQT.Infrastructure
 
     //        List<MemberBinding> memberBindings = new List<MemberBinding>();
     //        foreach (var prop in typeof(T).GetProperties()) {
-
     //            if (readerColumns.Contains(prop.Name)) {
-
     //                // determine the default value of the property
     //                object defaultValue = null;
     //                if (prop.PropertyType.IsValueType)

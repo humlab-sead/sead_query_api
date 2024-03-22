@@ -22,6 +22,7 @@ namespace SQT.Infrastructure
         {
             Fixture = fixture;
             MockService = new DisposableFacetContextContainer(Fixture);
+            // FacetContext = MockService.FacetContext;
         }
 
         public void Dispose()
@@ -42,8 +43,8 @@ namespace SQT.Infrastructure
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
 
-            if (FacetContext is null) {
-
+            if (FacetContext is null)
+            {
                 Debug.Print("Warning: Falling back to default online DB connection for test");
 
                 // builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
@@ -55,8 +56,9 @@ namespace SQT.Infrastructure
                 builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
                     .As<IFacetContext>()
                     .InstancePerLifetimeScope();
-
-            } else {
+            }
+            else
+            {
                 builder.RegisterInstance(FacetContext).SingleInstance().ExternallyOwned();
             }
 
@@ -119,10 +121,13 @@ namespace SQT.Infrastructure
             builder.RegisterType<ResultSqlCompilerLocator>().As<IResultSqlCompilerLocator>();
 
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
-            if (Options.Store.UseRedisCache) {
+            if (Options.Store.UseRedisCache)
+            {
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.IFacetContentReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.CachedLoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
-            } else {
+            }
+            else
+            {
                 builder.RegisterType<SeadQueryAPI.Services.LoadFacetService>().As<SeadQueryAPI.Services.IFacetContentReconstituteService>();
                 builder.RegisterType<SeadQueryAPI.Services.LoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
@@ -137,6 +142,4 @@ namespace SQT.Infrastructure
             return builder.Build();
         }
     }
-
-
 }

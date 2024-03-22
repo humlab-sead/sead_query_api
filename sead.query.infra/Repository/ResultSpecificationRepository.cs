@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace SeadQueryInfra
 {
-
     public class ResultSpecificationRepository : Repository<ResultSpecification, int>, IResultSpecificationRepository
     {
         public ResultSpecificationRepository(IFacetContext context) : base(context)
@@ -62,7 +61,8 @@ namespace SeadQueryInfra
         }
     }
 
-    public static class ResultDefinitionRepositoryEagerBuilder {
+    public static class ResultDefinitionRepositoryEagerBuilder
+    {
         public static IQueryable<ResultSpecification> BuildEntity(this IQueryable<ResultSpecification> query)
         {
             return query.Include(x => x.Fields)

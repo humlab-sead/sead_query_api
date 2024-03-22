@@ -1,13 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>sead.query.api</AssemblyName>
     <RootNamespace>SeadQueryAPI</RootNamespace>
     <!-- <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> -->
     <UserSecretsId>ce0f2374-2571-4e88-ac08-603c414fa867</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+	  <VersionPrefix>2022.04.15</VersionPrefix>
+	  <Company>Humlab, Umeå universitet</Company>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,20 +18,20 @@
     <NoWarn>1701;1702;1705;1591;CS1591;NU1603</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Folder Include="wwwroot\" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
 
-    <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Autofac.Extras.AggregateService" Version="5.0.0" />
+    <PackageReference Include="Autofac" Version="8.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
     <!-- <PackageReference Include="FluentValidation" Version="8.6.0" /> -->
 
     <!-- <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" /> -->
 
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.3" />
 
     <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" /> -->
     <!-- <PackageReference Include="Microsoft.AspNetCore.Buffering" Version="0.2.2" /> -->
@@ -39,23 +42,22 @@
     </PackageReference> -->
 
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.4.0" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
-    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <!-- <PackageReference Include="System.ValueTuple" Version="4.5.0" /> -->
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +71,7 @@
     <ProjectReference Include="..\sead.query.core\sead.query.core.csproj" />
     <ProjectReference Include="..\sead.query.infra\sead.query.infra.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <!-- <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ContentWithTargetPath Include="../conf/appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
@@ -80,11 +82,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>
-  </ItemGroup>
+  </ItemGroup> -->
   <ItemGroup>
       <ContentWithTargetPath Include="./logging.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>logging.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
+  <!-- <ItemGroup>
+      <ContentWithTargetPath Include="../conf/.env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>.env</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup> -->
 </Project>

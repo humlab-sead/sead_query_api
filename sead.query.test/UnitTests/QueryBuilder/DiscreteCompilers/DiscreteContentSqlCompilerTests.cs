@@ -5,12 +5,10 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-
-
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteContentSqlCompilerTests : DisposableFacetContextContainer
     {
-        public DiscreteContentSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public DiscreteContentSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -19,14 +17,13 @@ namespace SQT.SqlCompilers
         [InlineData("sites:sites")]
         [InlineData("country:country/sites")]
         [InlineData("sites:country@57/sites@3")]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri)
+        public void Compile_DiscreteContent_Matches(string uri)
         {
-
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(fakeFacetsConfig.TargetCode);
-            string textFilter = "";
+            const string textFilter = "";
 
             // Act
             var result = new DiscreteContentSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
@@ -35,7 +32,25 @@ namespace SQT.SqlCompilers
             var matcher = new DiscreteContentSqlCompilerMatcher();
             var match = matcher.Match(result);
             Assert.True(match.Success);
+        }
 
+        [Theory]
+        [InlineData("construction_type:construction_type")]
+        public void Compile_ConstructionType_Matches(string uri)
+        {
+            // Arrange
+            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
+            var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(fakeFacetsConfig.TargetCode);
+            const string textFilter = "";
+
+            // Act
+            var result = new DiscreteContentSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
+
+            // Assert
+            var matcher = new DiscreteContentSqlCompilerMatcher();
+            var match = matcher.Match(result);
+            Assert.True(match.Success);
         }
     }
 }

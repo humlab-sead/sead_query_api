@@ -32,16 +32,13 @@ namespace SeadQueryAPI.Controllers
         [Produces("application/json", Type = typeof(IEnumerable<Facet>))]
         public ViewState Get(string id)
         {
-            var value = Context.ViewStates.Get(id);
-            if (value == null)
-                return new ViewState() { Key = id, Data = null };
-            return value;
+            return Context.ViewStates.Get(id) ?? new ViewState() { Key = id, Data = null };
         }
 
         [HttpPost("")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        public ViewState Store([FromBody]ViewState viewstate)
+        public ViewState Store([FromBody] ViewState viewstate)
         {
             Context.ViewStates.Add(viewstate);
             Context.Commit();

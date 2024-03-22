@@ -12,8 +12,7 @@ namespace SQT.Infrastructure
         /// <summary>
         /// Reads Json Facet Schema entities and stores them in a dictionary
         /// </summary>
-
-        private Lazy<ItemsDictionary> LazyItems;
+        private readonly Lazy<ItemsDictionary> LazyItems;
         public ItemsDictionary Items => LazyItems.Value;
         public string Folder { get; }
         public ICollection<Type> Types { get; }
@@ -31,7 +30,8 @@ namespace SQT.Infrastructure
             Console.WriteLine("INFO: JsonSeededFacetContextFixture");
             var reader = new JsonReaderService(new IgnoreJsonAttributesResolver());
             var items = new ItemsDictionary();
-            foreach (var type in Types) {
+            foreach (var type in Types)
+            {
                 var entities = reader.Deserialize(type, Folder).ToArray();
                 items.Add(type, entities);
             }
@@ -42,7 +42,5 @@ namespace SQT.Infrastructure
         {
             // ... clean up test data...
         }
-
     }
-
 }

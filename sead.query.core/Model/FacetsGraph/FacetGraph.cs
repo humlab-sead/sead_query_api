@@ -11,7 +11,7 @@ namespace SeadQueryCore
     using EdgeKey = Tuple<string, string>;
     using EdgeIdKey = Tuple<int, int>;
 
-    public class GraphNodes<T> : IEnumerable where T: IGraphNode
+    public class GraphNodes<T> : IEnumerable where T : IGraphNode
     {
         public GraphNodes(IEnumerable<T> nodes)
         {
@@ -26,13 +26,15 @@ namespace SeadQueryCore
 
         public T this[int index]
         {
-            get {
+            get
+            {
                 return Id2Node[index];
             }
         }
         public T this[string name]
         {
-            get {
+            get
+            {
                 return Name2Node[name];
             }
         }
@@ -43,14 +45,15 @@ namespace SeadQueryCore
         }
     }
 
-    public class GraphEdges<T> : IEnumerable where T: IGraphEdge
+    public class GraphEdges<T> : IEnumerable where T : IGraphEdge
     {
         public Dictionary<EdgeKey, T> KeyLookup { get; private set; }
         public Dictionary<EdgeIdKey, T> IdKeyLookup { get; private set; }
         public IEnumerable<T> Edges { get; private set; }
-        public GraphEdges(IEnumerable<T> edges, bool bidirectional=true)
+        public GraphEdges(IEnumerable<T> edges, bool bidirectional = true)
         {
-            if (bidirectional) {
+            if (bidirectional)
+            {
                 edges = edges.Concat(ReversedEdges(edges));
             }
             Edges = edges;
@@ -81,27 +84,28 @@ namespace SeadQueryCore
          .ToDictionary(x => x.SourceId, y => y.TargetWeights);
     }
 
-    public class FacetsGraph : IFacetsGraph {
-
+    public class FacetsGraph : IFacetsGraph
+    {
         public GraphNodes<Table> NodeContainer { get; private set; }
         public GraphEdges<TableRelation> EdgeContaniner { get; private set; }
         public IEnumerable<FacetTable> AliasedFacetTables { get; private set; }
 
-        public FacetsGraph(IEnumerable<Table> nodes, IEnumerable<TableRelation> edges, IEnumerable<FacetTable> aliases, bool bidirectional=true)
+        public FacetsGraph(IEnumerable<Table> nodes, IEnumerable<TableRelation> edges, IEnumerable<FacetTable> aliases, bool bidirectional = true)
         {
             NodeContainer = new GraphNodes<Table>(nodes);
             EdgeContaniner = new GraphEdges<TableRelation>(edges, bidirectional);
             AliasedFacetTables = aliases;
         }
 
-        public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce=true)
+        public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce = true)
         {
             // Make sure that start table doesn't exists in list of destination tables...
             destination_tables = destination_tables.Where(z => z != start_table).ToList();
 
             var routes = destination_tables.Select(z => Find(start_table, z)).ToList();
 
-            if (reduce) {
+            if (reduce)
+            {
                 return GraphRouteUtility.Reduce(routes);
             }
 

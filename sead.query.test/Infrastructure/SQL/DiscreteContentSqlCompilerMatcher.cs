@@ -15,6 +15,5 @@ namespace SQT.SQL.Matcher
                 GROUP BY(?<GroupBySql> 1, 2(?:.*?(?= ORDER BY|\s?$)))?\s? ORDER BY(?<OrderBySql>.+$)?";
 
         public override string ExpectedSql { get; } = SqlRegExpr;
-
     }
 }

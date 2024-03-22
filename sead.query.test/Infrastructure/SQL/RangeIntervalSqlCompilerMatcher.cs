@@ -15,6 +15,5 @@ namespace SQT.SQL.Matcher
             \)".Squeeze();
 
         public override string ExpectedSql => SqlRegExpr;
-
     }
 }

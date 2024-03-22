@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
-    public class ViewState {
+    public class ViewState
+    {
         public string Key { get; set; }
         public string Data { get; set; }
     }

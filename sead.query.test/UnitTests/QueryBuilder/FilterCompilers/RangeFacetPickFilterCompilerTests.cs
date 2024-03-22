@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeFacetPickFilterCompilerTests : DisposableFacetContextContainer
     {
-        public RangeFacetPickFilterCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RangeFacetPickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -31,22 +31,20 @@ namespace SQT.SqlCompilers
 
             // Assert
 
-            if (facetConfig.HasPicks()) {
-
+            if (facetConfig.HasPicks())
+            {
                 var picks = facetConfig.Picks;
                 var sqlEqualExpected = (picks[0].PickValue == picks[1].PickValue) ?
-                        @"\(floor\(.+\) = [\d+-,]+\)" :  @"\(.+ >= [\d+-,]+ and .+ <= [\d+-,]+\)";
+                        @"\(floor\(.+\) = [\d+-,]+\)" : @"\(.+ >= [\d+-,]+ and .+ <= [\d+-,]+\)";
                 var sqlWhere = facetConfig.HasCriterias() ? "AND .+" : "";
                 var sqlExpected = $@"{sqlEqualExpected}\s?{sqlWhere}";
 
                 Assert.Matches(sqlExpected, result.Squeeze());
-
-            } else {
-
-                Assert.Matches("", result.Squeeze());
-
             }
-
+            else
+            {
+                Assert.Matches("", result.Squeeze());
+            }
         }
     }
 }

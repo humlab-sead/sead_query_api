@@ -9,23 +9,25 @@ namespace SQT.SqlCompilers
 {
     public class JoinSqlCompilerTests
     {
-        private JoinSqlCompiler CreateEdgeSqlCompiler()
-        {
-            return new JoinSqlCompiler();
-        }
-        private static Mock<IFacetsGraph> MockFacetGraph()
-        {
-            var facetGraphMock = new Mock<IFacetsGraph>();
-            facetGraphMock.Setup(x => x.AliasedFacetTables).Returns(new List<FacetTable>());
-            return facetGraphMock;
-        }
+        // private JoinSqlCompiler CreateEdgeSqlCompiler()
+        // {
+        //     return new JoinSqlCompiler();
+        // }
+
+        // private static Mock<IFacetsGraph> MockFacetGraph()
+        // {
+        //     var facetGraphMock = new Mock<IFacetsGraph>();
+        //     facetGraphMock.Setup(x => x.AliasedFacetTables).Returns(new List<FacetTable>());
+        //     return facetGraphMock;
+        // }
 
         [Fact]
         public void Compile_WithSingleEdge_ReturnSingleJoin()
         {
             // Arrange
 
-            TableRelation edge = new TableRelation() {
+            TableRelation edge = new TableRelation()
+            {
                 TableRelationId = -2151,
                 SourceTableId = 46,
                 TargetTableId = 113,
@@ -36,7 +38,8 @@ namespace SQT.SqlCompilers
                 TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations" }
             };
 
-            FacetTable facetTable = new FacetTable {
+            FacetTable facetTable = new FacetTable
+            {
                 FacetTableId = 1,
                 FacetId = 1,
                 SequenceId = 1,
@@ -51,7 +54,7 @@ namespace SQT.SqlCompilers
             var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
-            var expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
+            const string expected = "left join tbl_site_locations on tbl_site_locations.\"location_id\" = countries.\"location_id\"";
             Assert.Equal(expected, result.ToLower().Trim());
         }
 
@@ -60,16 +63,18 @@ namespace SQT.SqlCompilers
         {
             // Arrange
 
-            TableRelation edge = new TableRelation() {
+            TableRelation edge = new TableRelation()
+            {
                 TableRelationId = -2151,
                 Weight = 5,
                 SourceColumName = "a",
                 TargetColumnName = "a",
-                SourceTable = new Table() { TableId = 1, TableOrUdfName = "A"},
-                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B"}
+                SourceTable = new Table() { TableId = 1, TableOrUdfName = "A" },
+                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B" }
             };
 
-            FacetTable facetTable = new FacetTable {
+            FacetTable facetTable = new FacetTable
+            {
                 FacetTableId = 1,
                 FacetId = 1,
                 SequenceId = 1,
@@ -84,7 +89,7 @@ namespace SQT.SqlCompilers
             var result = edgeSqlCompiler.Compile(edge, facetTable, false);
 
             // Assert
-            var expected = @"\s*left\s+join\s+b\s+on\s+b\.""a""\s+=\s+a\.""a""\s*";
+            const string expected = @"\s*left\s+join\s+b\s+on\s+b\.""a""\s+=\s+a\.""a""\s*";
             Assert.Matches(expected, result.ToLower());
         }
     }

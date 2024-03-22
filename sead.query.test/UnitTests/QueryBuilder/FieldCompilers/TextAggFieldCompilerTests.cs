@@ -8,7 +8,7 @@ namespace SQT.SqlCompilers
     public class TextAggFieldCompilerTests
     {
         [Fact]
-        public void Compile_StateUnderTest_ExpectedBehavior()
+        public void Compile_TextAggregateField_Matches()
         {
             var fieldType = new Mock<ResultFieldType>();
             fieldType.Setup(z => z.SqlTemplate).Returns("X{0}Z");

@@ -13,10 +13,10 @@ using Xunit;
 
 namespace SQT.Services
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class ResultServiceTests : DisposableFacetContextContainer
     {
-        public ResultServiceTests(JsonFacetContextFixture fixture) : base(fixture)
+        public ResultServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -84,7 +84,6 @@ namespace SQT.Services
             Assert.NotEmpty(result.Data.DataCollection);
             Assert.Equal(testItemCount, result.Data.DataCollection.Count);
             Assert.Equal("#RETURN-SQL#", result.Query);
-
         }
     }
 }

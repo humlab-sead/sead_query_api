@@ -18,8 +18,11 @@ namespace SQT.Infrastructure
 
             var values = new object[nRows, fields.Count];
             for (var i = 0; i < nRows; i++)
+            {
                 for (var j = 0; j < fields.Count; j++)
                     values[i, j] = ctx.Resolve(fields[j].Type);
+            }
+
             return values;
         }
 

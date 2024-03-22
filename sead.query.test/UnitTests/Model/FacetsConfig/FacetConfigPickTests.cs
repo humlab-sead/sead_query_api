@@ -7,12 +7,11 @@ namespace SQT.Model
 {
     public class FacetConfigPickTests
     {
-
         [Fact]
         public void ToDecimal_WhenDecimalValue_ConvertedValue()
         {
             // Arrange
-            decimal pickValue = 19.1M;
+            const decimal pickValue = 19.1M;
             var facetConfigPick = new FacetConfigPick(EPickType.discrete, pickValue);
 
             // Act
@@ -26,7 +25,7 @@ namespace SQT.Model
         public void ToInt_DiscreteIntegerStringPick_ConvertedToCorrespondingInt()
         {
             // Arrange
-            var pickValue = "19";
+            const string pickValue = "19";
             var facetConfigPick = new FacetConfigPick(EPickType.discrete, pickValue);
             // Act
             var result = facetConfigPick.ToInt();
@@ -39,8 +38,8 @@ namespace SQT.Model
         public void CreateLowerUpper_LowerUpper_ListOfTwoPicks()
         {
             // Arrange
-            decimal lower = 5;
-            decimal upper = 10;
+            const decimal lower = 5;
+            const decimal upper = 10;
 
             // Act
             var result = FacetConfigPick.CreateLowerUpper(lower, upper);

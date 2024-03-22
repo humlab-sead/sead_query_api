@@ -22,7 +22,7 @@ namespace SeadQueryCore
         private ISqlFieldCompiler __compiler = null;
 
         [JsonIgnore]
-        public ISqlFieldCompiler Compiler => __compiler ?? (__compiler = CreateCompiler());
+        public ISqlFieldCompiler Compiler => __compiler ??= CreateCompiler();
 
         private ISqlFieldCompiler CreateCompiler()
         {

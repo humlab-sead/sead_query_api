@@ -7,6 +7,5 @@ namespace SQT.Fixtures
 {
     public static class ResultConfigFixtures
     {
-
     }
 }

@@ -5,8 +5,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public class FacetContent {
-
+    public class FacetContent
+    {
         public class IntervalQueryInfo
         {
             [JsonIgnore]
@@ -56,7 +56,6 @@ namespace SeadQueryCore
         [JsonConstructor]
         public FacetContent()
         {
-
         }
 
         public FacetContent(

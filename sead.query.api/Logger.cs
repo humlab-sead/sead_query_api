@@ -7,6 +7,7 @@ namespace SeadQueryAPI
     {
         public static Serilog.ILogger CreateSerilogger()
         {
+            // FIXME: Move settings to appsettings
             return new LoggerConfiguration()
                 .ReadFrom.Configuration(new ConfigurationBuilder()
                     .AddJsonFile("logging.json", true)
@@ -17,7 +18,5 @@ namespace SeadQueryAPI
                 //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
                 .CreateLogger();
         }
-
     }
 }
-

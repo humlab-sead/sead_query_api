@@ -6,7 +6,6 @@ namespace SeadQueryCore
 {
     public static class IEnumerableExtensions
     {
-
         public static IEnumerable<string> AppendIf(this IEnumerable<string> array, string element)
         {
             return element.IsEmpty() ? array : array.Append(element);
@@ -20,7 +19,8 @@ namespace SeadQueryCore
 
         public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
-            foreach (T item in enumeration) {
+            foreach (T item in enumeration)
+            {
                 action(item);
             }
         }

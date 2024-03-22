@@ -11,24 +11,18 @@ using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class TabularResultSqlCompilerTests : DisposableFacetContextContainer
     {
-        public TabularResultSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public TabularResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
         [Theory]
         [InlineData("sites:sites", "result_facet", "site_level", "tabular")]
         [InlineData("sites:country@10/sites", "result_facet", "site_level", "tabular")]
-        [InlineData("palaeoentomology://rdb_systems:rdb_systems", "result_facet", "site_level", "tabular")]
-        [InlineData("palaeoentomology://rdb_codes:rdb_codes", "result_facet", "site_level", "tabular")]
-        [InlineData("palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts", "result_facet", "site_level", "tabular")]
-        [InlineData("palaeoentomology://data_types:data_types", "result_facet", "site_level", "tabular")]
-        [InlineData("archaeobotany://ecocode:ecocode", "result_facet", "site_level", "tabular")]
         [ClassData(typeof(CompleteSetOfSingleTabularResultUriCollection))]
-        public void Compile_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string specificationKey, string viewType)
+        public void Compile_TabularResult_Matches(string uri, string resultFacetCode, string specificationKey, string viewType)
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
@@ -46,7 +40,6 @@ namespace SQT.QueryBuilder.ResultCompilers
             Assert.True(match.Success);
             Assert.True(match.InnerSelect.Success);
             Assert.NotEmpty(match.InnerSelect.Tables);
-
         }
     }
 }

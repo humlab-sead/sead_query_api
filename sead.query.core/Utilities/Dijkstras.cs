@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SeadQueryCore {
+namespace SeadQueryCore
+{
     public class DijkstrasGraph<N>
     {
         public Dictionary<N, Dictionary<N, int>> Vertices { get; set; } = new Dictionary<N, Dictionary<N, int>>();
@@ -29,38 +30,48 @@ namespace SeadQueryCore {
 
             List<N> path = null;
 
-            foreach (var vertex in Vertices) {
-                if (vertex.Key.Equals(start)) {
+            foreach (var vertex in Vertices)
+            {
+                if (vertex.Key.Equals(start))
+                {
                     distances[vertex.Key] = 0;
-                } else {
+                }
+                else
+                {
                     distances[vertex.Key] = int.MaxValue;
                 }
 
                 nodes.Add(vertex.Key);
             }
 
-            while (nodes.Count != 0) {
+            while (nodes.Count != 0)
+            {
                 nodes.Sort((x, y) => distances[x] - distances[y]);
 
                 var smallest = nodes[0];
                 nodes.Remove(smallest);
 
-                if (smallest.Equals(finish)) {
+                if (smallest.Equals(finish))
+                {
                     path = new List<N>();
-                    while (previous.ContainsKey(smallest)) {
+                    while (previous.ContainsKey(smallest))
+                    {
                         path.Add(smallest);
                         smallest = previous[smallest];
                     }
                     break;
                 }
 
-                if (distances[smallest] == int.MaxValue) {
+                if (distances[smallest] == int.MaxValue)
+                {
                     break;
                 }
 
-                foreach (var neighbor in Vertices[smallest]) {
+                foreach (var neighbor in Vertices[smallest])
+                {
                     var alt = distances[smallest] + neighbor.Value;
-                    if (alt < distances[neighbor.Key]) {
+                    if (alt < distances[neighbor.Key])
+                    {
                         distances[neighbor.Key] = alt;
                         previous[neighbor.Key] = smallest;
                     }

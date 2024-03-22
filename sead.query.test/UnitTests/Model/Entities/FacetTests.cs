@@ -11,11 +11,10 @@ using Xunit;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetTests : DisposableFacetContextContainer
     {
-
-        public FacetTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -32,7 +31,8 @@ namespace SQT.Model
                 FacetCode = facetCode,
                 DisplayTitle = "Dummy title",
                 FacetGroupId = 1,
-                FacetGroup = new FacetGroup {
+                FacetGroup = new FacetGroup
+                {
                     FacetGroupId = 1,
                     FacetGroupKey = "1",
                     Description = "Dummy group",
@@ -41,7 +41,8 @@ namespace SQT.Model
                     IsDefault = true
                 },
                 FacetTypeId = facetType,
-                FacetType = new FacetType {
+                FacetType = new FacetType
+                {
                     FacetTypeId = facetType,
                     FacetTypeName = "Dummy type",
                     ReloadAsTarget = facetType == EFacetType.Range
@@ -66,7 +67,8 @@ namespace SQT.Model
             // FIXME: Remove (dummy test)
             // Arrange
             var facet = CreateFacet("result_facet");
-            var expected = new Facet() {
+            var expected = new Facet()
+            {
                 FacetId = 1,
                 FacetCode = "result_facet",
                 DisplayTitle = "Analysis entities",
@@ -134,7 +136,6 @@ namespace SQT.Model
             Assert.Equal("A = 1 AND B = 2", result);
         }
 
-
         [Fact]
         public void AliasName_WhenFacetHasNoAlias_IsEmpty()
         {
@@ -189,6 +190,5 @@ namespace SQT.Model
 
             Assert.Single(result);
         }
-
     }
 }

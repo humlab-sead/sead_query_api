@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
-
     public class ValidPicksSqCompiler : IValidPicksSqlCompiler
     {
         public string Compile(QueryBuilder.QuerySetup query, List<int> picks)

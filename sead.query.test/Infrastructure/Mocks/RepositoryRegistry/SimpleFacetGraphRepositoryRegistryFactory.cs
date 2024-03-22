@@ -34,7 +34,6 @@ namespace SQT.Mocks
 
         public static IRepositoryRegistry CreateMockRegistry()
         {
-
             var mockRegistry = new Mock<IRepositoryRegistry>();
 
             mockRegistry.Setup(x => x.Tables.GetAll())
@@ -49,6 +48,4 @@ namespace SQT.Mocks
             return mockRegistry.Object;
         }
     }
-
-
 }

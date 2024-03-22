@@ -1,0 +1,48 @@
+version: '3.4'
+
+services:
+
+  sead.query.api:
+    container_name: sead_query_api
+    image: sead_query_api:latest
+    restart: always
+    depends_on:
+      - redis.cache
+    #volumes:
+    #    - appsettings.Production.json:/app/appsettings.json
+    networks:
+      sead_query_net:
+        ipv4_address: 172.31.128.1
+    expose:
+      - "8090"
+    ports:
+      - "8090:8089"
+    env_file: conf/.env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:8089
+
+  redis.cache:
+    image: "${REDIS_DOCKER_TAG:-redis:5-alpine}"
+    container_name: redis_cache
+    command: [ "redis-server", "--appendonly", "yes" ]
+    hostname: redis
+    restart: always
+    volumes:
+      - ${REDIS_DATA_DIR:-/tmp}:/data:rw
+      # - ${REDIS_DATA_DIR:-/tmp}:/data
+      - /var/log:/var/log
+      #- ${REDIS_CONF_FILE}:/etc/redis.conf:ro
+    networks:
+      sead_query_net:
+        ipv4_address: 172.31.128.2
+    # environment:
+    #   - REDIS_DATA_DIR=/tmp
+    expose:
+      - "6379/tcp"
+
+networks:
+  sead_query_net:
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16

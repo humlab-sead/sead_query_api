@@ -13,8 +13,7 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
-
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public JsonFacetContextFixture FacetContextFixture { get; }
@@ -59,7 +58,8 @@ namespace IntegrationTests.Sead
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -89,7 +89,6 @@ namespace IntegrationTests.Sead
             Assert.NotEmpty(match.InnerSelect.Tables);
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
-
 
         /* SQL to generate the inline data
             with facet_tables as (
@@ -219,12 +218,12 @@ namespace IntegrationTests.Sead
         [InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "tbl_sample_group_sampling_contexts", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         public async Task Load_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
-            
             var facetsConfig = MockService.FakeFacetsConfig(uri);
             var json = JsonConvert.SerializeObject(facetsConfig);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
 
-            /* using */ var response = await Fixture.Client.PostAsync("api/facets/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/facets/load", payload);
 
             response.EnsureSuccessStatusCode();
 
@@ -235,7 +234,7 @@ namespace IntegrationTests.Sead
             Assert.NotNull(facetContent);
             // Assert.NotEmpty(facetContent.Items);
 
-            CompareLogic compare = new CompareLogic();
+            CompareLogic compare = new();
             compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet", "Text" });
 
             var areEqual = compare.Compare(facetsConfig, facetContent.FacetsConfig).AreEqual; // Will fail if bogus picks are removed

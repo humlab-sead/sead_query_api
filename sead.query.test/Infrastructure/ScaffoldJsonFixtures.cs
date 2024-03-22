@@ -6,12 +6,14 @@ using SQT.Fixtures;
 using SQT.Mocks;
 using SeadQueryInfra;
 using SQT.Infrastructure;
+using System;
+using System.Collections;
+using System.Linq;
 
 namespace SQT.TestInfrastructure
 {
     public class ScaffoldJsonFixtures
     {
-
         private static DefaultContractResolver DefaultResolver()
         {
             var resolver = new IgnoreJsonAttributesResolver();
@@ -20,7 +22,8 @@ namespace SQT.TestInfrastructure
 
         private static JsonSerializer CreateSerializer()
         {
-            var serializer = new JsonSerializer {
+            var serializer = new JsonSerializer
+            {
                 // serializer.Converters.Add(new JavaScriptDateTimeConverter());
                 NullValueHandling = NullValueHandling.Ignore,
                 Formatting = Formatting.Indented,
@@ -41,17 +44,17 @@ namespace SQT.TestInfrastructure
         /// </summary>
         /// <param name="updateTheModel">Set to true if you want to update fixture</param>
         [Theory]
-        [InlineData(true, "127.0.0.1", "fitness", "Infrastructure/Data/fitness/Json")]
-        [InlineData(false, "127.0.0.1", "sead_staging", "Infrastructure/Data/Json")]
-        public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string hostName, string databaseName, string folder)
+        [InlineData(true, "Infrastructure/Data/Json")]
+        public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string folder)
         {
             if (!updateTheModel)
                 return;
-
+            var options = SettingFactory.GetSettings();
             var serializer = CreateSerializer();
             var path = Path.Combine(ScaffoldUtility.GetRootFolder(), folder);
 
-            using (var context = CreateContext(hostName, databaseName)) {
+            using (var context = CreateContext(options.Store.Host, options.Store.Database))
+            {
                 new JsonWriterService(serializer).SerializeTypesToPath(context, ScaffoldUtility.GetModelTypes(), path);
             }
         }

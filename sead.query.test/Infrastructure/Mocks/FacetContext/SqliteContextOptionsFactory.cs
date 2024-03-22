@@ -5,7 +5,6 @@ using SeadQueryInfra;
 
 namespace SQT.Mocks
 {
-
     internal static class SqliteContextOptionsFactory
     {
         public static DbContextOptions Create(DbConnection connection)
@@ -17,5 +16,4 @@ namespace SQT.Mocks
             return builder.Options;
         }
     }
-
 }

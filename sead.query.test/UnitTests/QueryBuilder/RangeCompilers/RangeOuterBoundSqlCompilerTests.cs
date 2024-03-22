@@ -8,10 +8,10 @@ using SQT.Infrastructure;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer
     {
-        public RangeOuterBoundSqlCompilerTests(JsonFacetContextFixture fixture) : base(fixture)
+        public RangeOuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -28,7 +28,7 @@ namespace SQT.SqlCompilers
             var result = rangeOuterBoundSqlCompiler.Compile(null /* fakeQuerySetup not used */, fakeQuerySetup.Facet);
 
             // Assert
-            var expectedSql = @"SELECT.*MIN.*MAX.*FROM.*";
+            const string expectedSql = "SELECT.*MIN.*MAX.*FROM.*";
             Assert.Matches(expectedSql, result.Squeeze());
         }
     }

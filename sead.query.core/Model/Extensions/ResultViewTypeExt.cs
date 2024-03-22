@@ -7,7 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryCore {
+namespace SeadQueryCore
+{
     public static class ResultViewTypeExt
     {
         public static IResultSqlCompiler GetSqlCompiler(this ResultViewType viewType)

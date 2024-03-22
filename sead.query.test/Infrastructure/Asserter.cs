@@ -18,7 +18,8 @@ namespace SQT.Infrastructure
 
         public static bool EqualByDictionary(Type type, Dictionary<string, object> expected, object entity)
         {
-            foreach (KeyValuePair<string, object> entry in expected) {
+            foreach (KeyValuePair<string, object> entry in expected)
+            {
                 PropertyInfo targetProperty = type.GetProperty(entry.Key, BindingFlags.Public | BindingFlags.Instance);
                 Assert.NotNull(targetProperty);
                 Assert.Equal(entry.Value, targetProperty.GetValue(entity));
@@ -30,7 +31,6 @@ namespace SQT.Infrastructure
         {
             EqualByDictionary(entity.GetType(), expected, entity);
         }
-
     }
 
     // protected MethodInfo GetGenericMethodForType<T>(string name, Type type)

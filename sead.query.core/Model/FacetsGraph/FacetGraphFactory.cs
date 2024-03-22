@@ -4,7 +4,7 @@ using System.Linq;
 namespace SeadQueryCore
 {
     using NodesDictS = Dictionary<string, Table>;
-    public class FacetGraphFactory: IFacetGraphFactory
+    public class FacetGraphFactory : IFacetGraphFactory
     {
         public FacetGraphFactory(IRepositoryRegistry registry)
         {
@@ -29,7 +29,8 @@ namespace SeadQueryCore
         {
             // ...project all FacetTable items that has an alias to a new Table item
             var aliasNodes = aliases
-                .Select((x, id) => new Table {
+                .Select((x, id) => new Table
+                {
                     TableId = 10000 + id,
                     TableOrUdfName = x.Alias
                 });
@@ -43,8 +44,8 @@ namespace SeadQueryCore
             var tableLookup = tables.ToDictionary(x => x.TableOrUdfName);
 
             // Copy target tables relations for each alias...
-            foreach (var facetTable in aliases) {
-
+            foreach (var facetTable in aliases)
+            {
                 // ...fetch all relations where target is a node...
                 var targetEdges = edges.Where(x => x.SourceName == facetTable.TableOrUdfName || x.TargetName == facetTable.TableOrUdfName);
 

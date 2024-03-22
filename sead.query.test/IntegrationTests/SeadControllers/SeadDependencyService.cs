@@ -15,6 +15,4 @@ namespace IntegrationTests.Sead
         {
         }
     }
-
-
 }

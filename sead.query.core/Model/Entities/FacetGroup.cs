@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     /// <summary>
     /// Facet definition group type
     /// </summary>
-    public class FacetGroup {
+    public class FacetGroup
+    {
         public FacetGroup()
         {
             //Facets = new HashSet<Facet>();

@@ -7,8 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace SeadQueryCore.Model {
-
+namespace SeadQueryCore.Model
+{
     public class ResultConfig
     {
         public string RequestId { get; set; }
@@ -22,7 +22,7 @@ namespace SeadQueryCore.Model {
 
         public string GetCacheId(FacetsConfig2 facetsConfig)
         {
-            return  $"{ViewTypeId}_{facetsConfig.GetPicksCacheId()}_{String.Join("", SpecificationKeys)}_{facetsConfig.DomainCode}";
+            return $"{ViewTypeId}_{facetsConfig.GetPicksCacheId()}_{String.Join("", SpecificationKeys)}_{facetsConfig.DomainCode}";
         }
 
         [JsonIgnore] public bool IsEmpty => (SpecificationKeys?.Count ?? 0) == 0;

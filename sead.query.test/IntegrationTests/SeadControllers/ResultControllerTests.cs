@@ -15,19 +15,17 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
-
     public class ResultTestHostWithContainer : TestHostFixture<FacetDependencyService>
     {
-
     }
 
-    [Collection("JsonSeededFacetContext")]
-    public class ResultControllerTests : ControllerTest<ResultTestHostWithContainer>, IClassFixture<ResultTestHostWithContainer>
+    [Collection("SeadJsonFacetContextFixture")]
+    public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public JsonFacetContextFixture FacetContextFixture { get; }
         public DisposableFacetContextContainer MockService { get; }
 
-        public ResultControllerTests(ResultTestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(TestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
             MockService = new DisposableFacetContextContainer(facetContextFixture);
@@ -36,17 +34,19 @@ namespace IntegrationTests.Sead
         [Fact]
         public async Task API_GET_Server_IsAwake()
         {
-            using (var response = await Fixture.Client.GetAsync("api/values")) {
+            using (var response = await Fixture.Client.GetAsync("api/values"))
+            {
                 response.EnsureSuccessStatusCode();
                 Assert.NotEmpty(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public class LoadPayload {
-            #pragma warning disable IDE1006 // Naming Styles
+        public class LoadPayload
+        {
+#pragma warning disable IDE1006 // Naming Styles
             public FacetsConfig2 facetsConfig { get; set; }
             public ResultConfig resultConfig { get; set; }
-            #pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore IDE1006 // Naming Styles
         }
 
         protected StringContent FakeLoadResultPayload(string uri, string resultFacetCode, string specificationKey, string viewType)
@@ -129,7 +129,8 @@ namespace IntegrationTests.Sead
             var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/result/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -153,7 +154,6 @@ namespace IntegrationTests.Sead
             Assert.True(match.Success);
             Assert.True(match.InnerSelect.Success);
             Assert.NotEmpty(match.InnerSelect.Tables);
-
         }
 
         /// <summary>
@@ -171,7 +171,8 @@ namespace IntegrationTests.Sead
             var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
 
             // Act
-            /* using */ var response = await Fixture.Client.PostAsync("api/result/load", payload);
+            /* using */
+            var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -185,7 +186,7 @@ namespace IntegrationTests.Sead
             Assert.NotNull(result.Data.DataCollection);
             Assert.NotNull(result.Meta);
             Assert.NotNull(result.Meta.Columns);
-            Assert.True(result.Meta.Columns.Any());
+            Assert.True(result.Meta.Columns.Count > 0);
             Assert.NotEmpty(result.Query);
 
             var sqlQuery = result.Query.Squeeze();
@@ -194,7 +195,6 @@ namespace IntegrationTests.Sead
             var match = matcher.Match(sqlQuery);
 
             Assert.True(match.Success);
-
         }
     }
 }

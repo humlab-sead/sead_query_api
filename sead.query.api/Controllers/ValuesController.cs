@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
+#pragma warning disable RCS1163, IDE0060
+
 namespace query_sead_net.Controllers
 {
     [Route("api/[controller]")]
@@ -9,22 +11,22 @@ namespace query_sead_net.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "2020", "03" };
+            return new string[] { "hello", "world", "!" };
         }
 
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return $"Hello {id}!";
         }
 
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string _)
         {
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 

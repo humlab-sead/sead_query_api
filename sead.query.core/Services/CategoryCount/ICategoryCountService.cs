@@ -2,7 +2,8 @@
 
 namespace SeadQueryCore
 {
-    public interface ICategoryCountService {
+    public interface ICategoryCountService
+    {
         CategoryCountService.CategoryCountData Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
     }
 

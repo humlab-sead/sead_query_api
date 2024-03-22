@@ -5,19 +5,20 @@ using SeadQueryCore.Services.Result;
 
 namespace SeadQueryAPI.Services
 {
-    public class LoadResultService : AppServiceBase, ILoadResultService {
-
+    public class LoadResultService : AppServiceBase, ILoadResultService
+    {
         public IResultService ResultService { get; private set; }
         private readonly IBogusPickService BogusPickService;
 
         public LoadResultService(
             ISetting config,
             IRepositoryRegistry context,
-            #pragma warning disable IDE0060
+#pragma warning disable IDE0060, RCS1163
             ISeadQueryCache cache,
-            #pragma warning restore IDE0060
+#pragma warning restore IDE0060, RCS1163
             IResultService service,
-            IBogusPickService bogusPickService) : base(config, context) {
+            IBogusPickService bogusPickService) : base(config, context)
+        {
             ResultService = service;
             BogusPickService = bogusPickService;
         }
@@ -27,12 +28,10 @@ namespace SeadQueryAPI.Services
             BogusPickService.Update(facetsConfig);
             return ResultService.Load(facetsConfig, resultConfig);
         }
-
     }
 
     public class CachedLoadResultService : LoadResultService
     {
-
         public CachedLoadResultService(
             ISetting config,
             IRepositoryRegistry context,
@@ -61,5 +60,4 @@ namespace SeadQueryAPI.Services
             return result;
         }
     }
-
 }

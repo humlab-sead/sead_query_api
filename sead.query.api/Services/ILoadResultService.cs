@@ -5,8 +5,8 @@ using SeadQueryCore.Services.Result;
 
 namespace SeadQueryAPI.Services
 {
-    public interface ILoadResultService {
+    public interface ILoadResultService
+    {
         ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig);
     }
-
 }

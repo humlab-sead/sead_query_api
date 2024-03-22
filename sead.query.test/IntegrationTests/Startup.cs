@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
-using Npgsql.Logging;
 using SeadQueryAPI.Controllers;
 using SeadQueryCore;
 using SQT.Infrastructure;
@@ -12,7 +11,7 @@ using System.Configuration;
 
 namespace IntegrationTests
 {
-    public class Startup<T> where T: DependencyService, new()
+    public class Startup<T> where T : DependencyService, new()
     {
         public Startup()
         {
@@ -57,7 +56,10 @@ namespace IntegrationTests
         /// <param name="app"></param>
         public void Configure(IApplicationBuilder app)
         {
-            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Trace, true, true);
+            //#if DEBUG
+            //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+            //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            //#endif
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

@@ -3,13 +3,13 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-
     public class FacetContext : DbContext, IFacetContext
     {
         public ITypedQueryProxy TypedQueryProxy { get; set; }
         public IDynamicQueryProxy DynamicQueryProxy { get; set; }
 
-        public FacetContext(DbContextOptions options) : base(options) {
+        public FacetContext(DbContextOptions options) : base(options)
+        {
             TypedQueryProxy = new DatabaseQueryProxy(this);
             DynamicQueryProxy = new DatabaseQueryProxy(this);
         }
@@ -88,7 +88,6 @@ namespace SeadQueryInfra
                     .WithMany(p => p.Children)
                     .HasPrincipalKey(p => p.FacetCode)
                     .HasForeignKey(d => d.FacetCode);
-
             });
 
             builder.Entity<Facet>(entity =>
@@ -214,13 +213,11 @@ namespace SeadQueryInfra
             });
 
             base.OnModelCreating(builder);
-
         }
 
         public override void Dispose()
         {
             base.Dispose();
         }
-
     }
 }

@@ -114,18 +114,6 @@
     "IsUdf": false
   },
   {
-    "TableId": 59,
-    "TableOrUdfName": "tbl_chron_controls",
-    "PrimaryKeyName": "chron_control_id",
-    "IsUdf": false
-  },
-  {
-    "TableId": 147,
-    "TableOrUdfName": "tbl_chron_control_types",
-    "PrimaryKeyName": "chron_control_type_id",
-    "IsUdf": false
-  },
-  {
     "TableId": 117,
     "TableOrUdfName": "tbl_chronologies",
     "PrimaryKeyName": "chronology_id",

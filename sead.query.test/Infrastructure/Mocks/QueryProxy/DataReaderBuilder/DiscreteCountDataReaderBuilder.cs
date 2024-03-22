@@ -14,7 +14,7 @@ namespace SQT.Infrastructure
         {
         }
 
-        public override  DataReaderBuilder CreateNewTable()
+        public override DataReaderBuilder CreateNewTable()
         {
             DataTable = new DataTable("CategoryCount")
             {

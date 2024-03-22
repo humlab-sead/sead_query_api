@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetsConfigSpecificationTests : DisposableFacetContextContainer
     {
-        public FacetsConfigSpecificationTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetsConfigSpecificationTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
@@ -29,7 +29,7 @@ namespace SQT.Model
             // Act
             var result = facetsConfigSpecification.IsSatisfiedBy(facetsConfig);
 
-           // Assert
+            // Assert
             Assert.True(result);
         }
 
@@ -61,7 +61,6 @@ namespace SQT.Model
             Assert.Throws<QuerySeadException>(
                 () => facetsConfigSpecification.IsSatisfiedBy(facetsConfig)
             );
-
         }
     }
 }

@@ -10,13 +10,12 @@ using SQT.Infrastructure;
 
 namespace SQT.Model
 {
-    [Collection("JsonSeededFacetContext")]
+    [Collection("SeadJsonFacetContextFixture")]
     public class FacetGraphFactoryTests : DisposableFacetContextContainer
     {
-        public FacetGraphFactoryTests(JsonFacetContextFixture fixture) : base(fixture)
+        public FacetGraphFactoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
-
 
         [Fact]
         public void Build_WhenSuccessfullyCalled_HasExpectedNodesAndEdges()
@@ -46,7 +45,7 @@ namespace SQT.Model
 
             var nodes = CreateTables(nodeNames);
             var edges = CreateTableRelations(uniedges, nodes);
-            var aliases = new List<FacetTable> { };
+            var aliases = new List<FacetTable>();
 
             Mock<RepositoryRegistry> mockRepository = MockRepositoryRegistry(nodes, edges, aliases);
 
@@ -58,7 +57,6 @@ namespace SQT.Model
             // Assert
             Assert.Equal(nodes.Count, result.NodeContainer.Nodes.Count());
             Assert.Equal(2 * uniedges.Count, result.EdgeContaniner.Edges.Count());
-
         }
 
         private static Mock<RepositoryRegistry> MockRepositoryRegistry(List<Table> nodes, IEnumerable<TableRelation> edges, List<FacetTable> aliases)

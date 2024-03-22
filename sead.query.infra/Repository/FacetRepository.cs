@@ -32,7 +32,6 @@ namespace SeadQueryInfra
         {
             return set.Include(x => x.Table);
         }
-
     }
 
     public class FacetRepository : Repository<Facet, int>, IFacetRepository
@@ -55,7 +54,7 @@ namespace SeadQueryInfra
 
         public Dictionary<string, Facet> ToDictionary()
         {
-            return hash ?? (hash = GetAll().ToDictionary(x => x.FacetCode));
+            return hash ??= GetAll().ToDictionary(x => x.FacetCode);
         }
 
         public Facet GetByCode(string facetCode)
@@ -76,7 +75,8 @@ namespace SeadQueryInfra
 
         public IEnumerable<Facet> Children(string facetCode)
         {
-            if (facetCode.IsEmpty() || facetCode.ToLower().Equals("general")) {
+            if (facetCode.IsEmpty() || facetCode.ToLower().Equals("general"))
+            {
                 return GetAllUserFacets();
             }
             var children = GetSet()
@@ -93,11 +93,11 @@ namespace SeadQueryInfra
             => Find(z => z.FacetTypeId == type);
 
         public IEnumerable<Facet> GetAllUserFacets()
-            => GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable == true).ToList();
-
+            => GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable).ToList();
     }
 
-    public static class FacetRepositoryEagerBuilder {
+    public static class FacetRepositoryEagerBuilder
+    {
         public static IQueryable<Facet> BuildFacetDefinition(this IQueryable<Facet> query)
         {
             return query.Include(x => x.FacetGroup)

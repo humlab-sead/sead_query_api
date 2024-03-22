@@ -2,17 +2,17 @@
   {
     "ViewTypeId": "tabular",
     "ViewName": "Tabular",
-    "ResultFacetCode": "",
-    "SqlCompiler": "",
-    "SpecificationKey": "",
+    "ResultFacetCode": "result_facet",
+    "SqlCompiler": "TabularResultSqlCompiler",
+    "SpecificationKey": "site_level",
     "IsCachable": true
   },
   {
     "ViewTypeId": "map",
     "ViewName": "Map",
-    "ResultFacetCode": "",
-    "SqlCompiler": "",
-    "SpecificationKey": "",
+    "ResultFacetCode": "map_result",
+    "SqlCompiler": "MapResultSqlCompiler",
+    "SpecificationKey": "map_result",
     "IsCachable": false
   }
 ]

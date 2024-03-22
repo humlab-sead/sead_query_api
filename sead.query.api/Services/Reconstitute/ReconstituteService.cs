@@ -18,7 +18,8 @@ namespace SeadQueryAPI.Serializers
         public ReconstituteService(IRepositoryRegistry registry)
         {
             Registry = registry;
-            SerializerSettings = new JsonSerializerSettings {
+            SerializerSettings = new JsonSerializerSettings
+            {
                 Error = (sender, errorArgs) =>
                 {
                     var currentError = errorArgs.ErrorContext.Error.Message;
@@ -34,6 +35,5 @@ namespace SeadQueryAPI.Serializers
 
             return Registry.Facets.GetByCode(facetCode);
         }
-
     }
 }
