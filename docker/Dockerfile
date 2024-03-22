@@ -1,39 +1,36 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:8.0-bullseye-slim AS repo
+# Base image for cloning the repository
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS repo
 
-RUN apt-get update && apt-get install -y \
-  git
-
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 ARG BRANCH
-
 WORKDIR /repo
+RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
-RUN echo "info: using tag $BRANCH" \
-    && git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
-
-FROM mcr.microsoft.com/dotnet/core/sdk:8.0-bullseye-slim AS build
-
+# SDK image for building the project
+FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
 WORKDIR /src
 
-COPY --from=repo ["/repo/sead_query_api/sead.query.api/sead.query.api.csproj", "sead.query.api/"]
-COPY --from=repo ["/repo/sead_query_api/sead.query.core/sead.query.core.csproj", "sead.query.core/"]
-COPY --from=repo ["/repo/sead_query_api/sead.query.infra/sead.query.infra.csproj", "sead.query.infra/"]
+ARG BUILD_MODE=Release
 
+# Copying only csproj files and doing dotnet restore separately to take advantage of Docker cache
+COPY --from=repo /repo/sead_query_api/sead.query.api/sead.query.api.csproj sead.query.api/
+COPY --from=repo /repo/sead_query_api/sead.query.core/sead.query.core.csproj sead.query.core/
+COPY --from=repo /repo/sead_query_api/sead.query.infra/sead.query.infra.csproj sead.query.infra/
 RUN dotnet restore "sead.query.api/sead.query.api.csproj"
-
 COPY --from=repo /repo/sead_query_api .
-COPY conf /src/conf
 
-RUN cd sead.query.api \
-    && dotnet build   sead.query.api.csproj -c Release \
-    && dotnet publish sead.query.api.csproj -c Release -o /src/app --no-restore
+RUN dotnet publish "sead.query.api/sead.query.api.csproj" -c $BUILD_MODE -o /app/publish --no-restore
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:8.0-bullseye-slim
+# RUN cd sead.query.api \
+#     && dotnet build   sead.query.api.csproj -c $BUILD_MODE \
+#     && dotnet publish sead.query.api.csproj -c $BUILD_MODE -o /src/app --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
-WORKDIR /data
+RUN mkdir -p /data /app /app/logs /app/config
+
 WORKDIR /app
-
-COPY --from=build /src/app .
-
-ENTRYPOINT ["dotnet", "sead.query.api.dll"]
+COPY --from=build /app/publish .
+ENTRYPOINT ["sh", "-c", "dotnet", "sead.query.api.dll"]

@@ -23,6 +23,7 @@ image:
 	@echo "Building image using $(SEAD_QUERY_API_TAG)..."
 	@docker build \
 		--build-arg BRANCH=$(SEAD_QUERY_API_TAG) \
+		--build-arg BUILD_MODE=$(BUILD_MODE) \
         -t $(IMAGE_NAME):$(IMAGE_TAG) \
         -t $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) \
 		-f ./Dockerfile .
