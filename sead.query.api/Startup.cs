@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using SeadQueryCore;
 using System;
+using System.IO;
 
 namespace SeadQueryAPI
 {
@@ -18,8 +19,12 @@ namespace SeadQueryAPI
 
         public Startup()
         {
+            var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER") ?? ".";
+            var appSettingsPath = Path.Combine(appSettingsFolder, "appsettings.json");
+
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                // .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
         }
