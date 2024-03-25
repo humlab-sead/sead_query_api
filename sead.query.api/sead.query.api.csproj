@@ -83,12 +83,12 @@
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup> -->
-  <ItemGroup>
+  <!-- <ItemGroup>
       <ContentWithTargetPath Include="./logging.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>logging.json</TargetPath>
     </ContentWithTargetPath>
-  </ItemGroup>
+  </ItemGroup> -->
   <!-- <ItemGroup>
       <ContentWithTargetPath Include="../conf/.env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
