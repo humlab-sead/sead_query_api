@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+include docker/.env
+
 .PHONY: test clean build publish tidy
 
 test:
@@ -21,3 +23,14 @@ publish:
 
 tidy:
 	dotnet format
+
+tag:
+	@echo "info: adding annotated release tag $(SEAD_QUERY_API_TAG)..."
+	@git tag -a $(SEAD_QUERY_API_TAG) -m "Release $(SEAD_QUERY_API_TAG)"
+	@git push origin $(SEAD_QUERY_API_TAG)
+
+.PHONY: release-pr
+release-pr:
+	@echo "info: creating pull request..."
+	@gh pr create --base main  --title "Release $(SEAD_QUERY_API_TAG)" --body "Release $(SEAD_QUERY_API_TAG)" --assignee @me 
+	
