@@ -33,4 +33,4 @@ RUN mkdir -p /data /app /app/logs /app/config
 
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["sh", "-c", "dotnet", "sead.query.api.dll"]
+ENTRYPOINT ["dotnet", "sead.query.api.dll"]

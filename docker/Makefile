@@ -27,3 +27,16 @@ image:
         -t $(IMAGE_NAME):$(IMAGE_TAG) \
         -t $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) \
 		-f ./Dockerfile .
+
+image-host-compiled:
+	@echo "Building image using $(SEAD_QUERY_API_TAG) and binaries from ./publish ..."
+	@rm -rf ./publish
+	@dotnet publish "../sead.query.api/sead.query.api.csproj" -c $(BUILD_MODE) -o ./publish --no-restore
+	@docker build \
+		--build-arg BRANCH=$(SEAD_QUERY_API_TAG) \
+		--build-arg BUILD_MODE=$(BUILD_MODE) \
+		--no-cache \
+		-t $(IMAGE_NAME):$(IMAGE_TAG) \
+		-t $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) \
+		-f ./Dockerfile.compiled .
+	@rm -rf ./publish

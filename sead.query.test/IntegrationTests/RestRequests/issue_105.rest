@@ -1,0 +1,56 @@
+
+POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"construction_type",
+    "FacetConfigs":[ {
+        "FacetCode":"construction_type",
+        "Position":1,
+        "Picks":[],
+        "TextFilter":""
+    }]
+}
+
+###
+
+POST https://browser.sead.se/query/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"construction_type",
+    "FacetConfigs":[ {
+        "FacetCode":"construction_type",
+        "Position":1,
+        "Picks":[],
+        "TextFilter":""
+    }]
+}
+
+
+###
+
+POST https://supersead.humlab.umu.se/query/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"construction_type",
+    "FacetConfigs":[ {
+        "FacetCode":"construction_type",
+        "Position":1,
+        "Picks":[],
+        "TextFilter":""
+    }]
+}
