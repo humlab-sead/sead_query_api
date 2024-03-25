@@ -14,9 +14,9 @@ namespace SeadQueryCore
             string sql = $@"
             SELECT DISTINCT pick_id, {query.Facet.CategoryNameExpr} AS name
             FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
+              {query.Joins.Combine("")}
             JOIN (VALUES {picks_clause}) AS x(pick_id)
               ON x.pick_id = {query.Facet.CategoryIdExpr}::text
-              {query.Joins.Combine("")}
             WHERE 1 = 1
               {" AND ".GlueTo(query.Criterias.Combine(" AND "))}
         ";
