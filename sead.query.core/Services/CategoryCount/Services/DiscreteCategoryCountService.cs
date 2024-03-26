@@ -44,8 +44,11 @@ namespace SeadQueryCore
 
         private string Category2String(IDataReader x, int ordinal)
         {
-            if (x.GetDataTypeName(ordinal) == "numeric")
+            var type_name = x.GetDataTypeName(ordinal);
+            if (type_name == "numeric")
                 return String.Format("{0:0.####}", x.GetDecimal(ordinal));
+            if (type_name == "text")
+                return x.GetString(ordinal);
             return x.GetInt32(ordinal).ToString();
         }
 
