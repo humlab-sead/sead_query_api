@@ -1,21 +1,8 @@
 ﻿using Autofac;
-using Microsoft.Extensions.Configuration;
-using Moq;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.Services.Result;
-using SeadQueryInfra;
-using SQLitePCL;
-using SQT.Infrastructure;
-using SQT.SQL.Matcher;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
 using Xunit;
-using SQT.Infrastructure;
 using SQT.Mocks;
 
 namespace SQT.LiveServices
