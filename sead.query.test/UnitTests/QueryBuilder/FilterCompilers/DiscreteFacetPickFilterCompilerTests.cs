@@ -24,7 +24,7 @@ namespace SQT.SqlCompilers
                 targetFacet,
                 1,
                 "A = B",
-                FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
+                FacetConfigPick.CreateByList(new List<int>() { 1, 2, 3 })
             );
 
             var result = discreteFacetPickFilterCompiler.Compile(targetFacet, currentFacet, config);
@@ -43,7 +43,7 @@ namespace SQT.SqlCompilers
                 targetFacet,
                 1,
                 "",
-                FacetConfigPick.CreateDiscrete(new List<int>())
+                FacetConfigPick.CreateByList(new List<int>())
             );
 
             // Act
@@ -61,7 +61,7 @@ namespace SQT.SqlCompilers
             var picks = new List<int>() { 1, 2, 3 };
             Facet targetFacet = Registry.Facets.GetByCode("sites");
             Facet currentFacet = Registry.Facets.GetByCode("country");
-            FacetConfig2 config = new FacetConfig2(targetFacet, 1, "", FacetConfigPick.CreateDiscrete(picks));
+            FacetConfig2 config = new FacetConfig2(targetFacet, 1, "", FacetConfigPick.CreateByList(picks));
 
             // Act
             var result = discreteFacetPickFilterCompiler.Compile(targetFacet, currentFacet, config);

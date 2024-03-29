@@ -84,10 +84,13 @@ namespace SQT.Mocks
                 var lower = Decimal.Parse(m.Groups[1].Value, NumberStyles.Any, cultureInfo);
                 var upper = Decimal.Parse(m.Groups[2].Value, NumberStyles.Any, cultureInfo);
 
-                return FacetConfigPick.CreateLowerUpper(lower, upper);
+                return [
+                new FacetConfigPick(lower),
+                new FacetConfigPick(upper)
+                ];
             }
 
-            return data.Split(",").Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
+            return data.Split(",").Select(z => new FacetConfigPick(z)).ToList();
         }
     }
 }

@@ -131,7 +131,7 @@ namespace IntegrationTests.Debug
                         TextFilter = "",
                         Picks = new List<FacetConfigPick>
                         {
-                            new FacetConfigPick { PickType=EPickType.discrete, PickValue="36", Text="36"}
+                            new FacetConfigPick { PickValue="36", Text="36"}
                         }
                     }
                 }

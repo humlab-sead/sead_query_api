@@ -9,7 +9,6 @@ namespace SeadQueryCore
     {
         private static CultureInfo cultureInfo = new CultureInfo("en-US");
 
-        public EPickType PickType { get; set; }
         public string PickValue { get; set; }
         public string Text { get; set; }
 
@@ -18,23 +17,22 @@ namespace SeadQueryCore
         }
 
         [JsonConstructor]
-        public FacetConfigPick(EPickType type, string value, string text)
+        public FacetConfigPick(string value, string text)
         {
-            PickType = type;
             PickValue = value;
             Text = text;
         }
 
-        public FacetConfigPick(EPickType type, string value) : this(type, value, value)
+        public FacetConfigPick(string value) : this(value, value)
         {
         }
 
-        public FacetConfigPick(EPickType type, int value) : this(type, value.ToString(), value.ToString())
+        public FacetConfigPick(int value) : this(value.ToString(), value.ToString())
         {
         }
 
-        public FacetConfigPick(EPickType type, decimal value)
-            : this(type, value.ToString(cultureInfo), value.ToString(cultureInfo))
+        public FacetConfigPick(decimal value)
+            : this(value.ToString(cultureInfo), value.ToString(cultureInfo))
         {
         }
 
@@ -49,17 +47,10 @@ namespace SeadQueryCore
             return int.Parse(PickValue);
         }
 
-        public static List<FacetConfigPick> CreateDiscrete(List<int> ids)
+        public static List<FacetConfigPick> CreateByList(List<int> ids)
         {
-            return ids.Select(z => new FacetConfigPick(EPickType.discrete, z)).ToList();
+            return ids.Select(z => new FacetConfigPick(z)).ToList();
         }
 
-        public static List<FacetConfigPick> CreateLowerUpper(decimal lower, decimal upper)
-        {
-            return new List<FacetConfigPick>() {
-                new FacetConfigPick(EPickType.lower, lower),
-                new FacetConfigPick(EPickType.upper, upper)
-            };
-        }
     }
 }

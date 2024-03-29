@@ -49,7 +49,7 @@ namespace SeadQueryCore
                         QuerySetupBuilder.Build(facetsConfig, config.Facet, null, null),
                         config.GetIntegerPickValues()
                     ),
-                    x => new FacetConfigPick(EPickType.discrete, x.GetString(0), x.GetString(1))
+                    x => new FacetConfigPick(x.GetString(0), x.GetString(1))
                 );
             }
             return facetsConfig;
