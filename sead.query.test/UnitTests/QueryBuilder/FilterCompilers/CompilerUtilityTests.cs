@@ -23,7 +23,7 @@ namespace SQT.SqlCompilers
             SqlCompileUtility.InExpr("A", new List<decimal>() { 1.1M, 2.2M, 3.3M }).Equals("A in (1.1, 2.2, 3.3)");
             SqlCompileUtility.InExpr("A", new List<decimal>() { 1.1M }).Equals("A in (1.1)");
             SqlCompileUtility.InExpr("A", new List<decimal>() { }).Equals("A in ()");
-            
+
         }
 
         [Fact]
@@ -55,20 +55,28 @@ namespace SQT.SqlCompilers
         //         new PostGisCoordinate(3.3M, 4.4M),
         //         new PostGisCoordinate(5.5M, 6.6M)
         //     };
-        //     SqlCompileUtility.WithinExpr(coordinate, polygon).Equals("ST_Within(ST_MakePoint(1.1, 2.2), ST_MakePolygon(ST_MakeLine(ARRAY[ST_MakePoint(1.1, 2.2), ST_MakePoint(3.3, 4.4), ST_MakePoint(5.5, 6.6)]))");
+        //     SqlCompileUtility.WithinPolygonExpr(coordinate, polygon).Equals("ST_Within(ST_MakePoint(1.1, 2.2), ST_MakePolygon(ST_MakeLine(ARRAY[ST_MakePoint(1.1, 2.2), ST_MakePoint(3.3, 4.4), ST_MakePoint(5.5, 6.6)]))");
         // }
 
         [Fact]
-        public void SqlCompileWithinExprTests2()
-        {            
+        public void SqlCompileWithinPolygonExprTests()
+        {
             List<decimal> coordinate = [1.1M, 2.2M];
             List<decimal> polygon = [
                 1.1M, 2.2M,
                 3.3M, 4.4M,
                 5.5M, 6.6M
             ];
-            SqlCompileUtility.WithinExpr(coordinate, polygon).Equals("ST_Within(ST_MakePoint(1.1, 2.2), ST_MakePolygon(ST_MakeLine(ARRAY[ST_MakePoint(1.1, 2.2), ST_MakePoint(3.3, 4.4), ST_MakePoint(5.5, 6.6)]))");
+            string coordinateExpr = $"ST_MakePoint({coordinate[0]}, {coordinate[1]})";
+            SqlCompileUtility.WithinPolygonExpr(coordinateExpr, polygon).Equals("ST_Within(ST_MakePoint(1.1, 2.2), ST_MakePolygon(ST_MakeLine(ARRAY[ST_MakePoint(1.1, 2.2), ST_MakePoint(3.3, 4.4), ST_MakePoint(5.5, 6.6)]))");
         }
 
+        [Fact]
+        public void SqlCompileRangeIntersectsExprTests2()
+        {
+            var intersectExpr = "numrange(low, high, '[]')";
+            List<decimal> interval = [1.1M, 2.2M];
+            SqlCompileUtility.RangeIntersectExpr(intersectExpr, interval).Equals($"{intersectExpr} && numrange(1.1, 2.2, '[]')");
+        }
     }
 }

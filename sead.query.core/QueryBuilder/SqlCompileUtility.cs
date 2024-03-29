@@ -39,56 +39,37 @@ namespace SeadQueryCore
         /// <summary>
         /// Returns a SQL expression that checks if a GIS coordinate is within a polygon using PostGIS UDF call.
         /// </summary>
-        /// <param name="coordinate"></param>
+        /// <param name="pointExpr">"ST_MakePoint(latitude_dd, longitude_dd)"</param>
         /// <param name="polygon"></param>
         /// <returns></returns>
-        // public static string WithinExpr(PostGisCoordinate coordinate, List<PostGisCoordinate> polygon)
-        // {
-        //     var c = CultureInfo.GetCultureInfo("en-US");
-        //     // Create PostGIS points out of a list of polygon coordinates where coordinates are pairs of lat/long values
-        //     var points = new List<string>();
-        //     for (int i = 0; i < polygon.Count; i++)
-        //         points.Add($"ST_MakePoint({polygon[i].Latitude.ToString(c)}, {polygon[i].Longitude.ToString(c)})");
-        //     // Create a PostGIS polygon out of the points
-        //     var polygonExpr = $"ST_MakePolygon(ST_MakeLine(ARRAY[{String.Join(", ", points)}]))";
-        //     // Create a PostGIS point out of the target coordinate
-        //     var pointExpr = $"ST_MakePoint({coordinate})";
-        //     // Return the PostGIS UDF call
-        //     return $"ST_Within({pointExpr}, {polygonExpr})";
-        // }
-
-        public static string WithinExpr(List<decimal> coordinate, List<decimal> polygon)
+        public static string WithinPolygonExpr(string pointExpr, List<decimal> polygon)
         {
             var c = CultureInfo.GetCultureInfo("en-US");
-            if (coordinate.Count != 2 || polygon.Count % 2 != 0 || polygon.Count < 6)
-                throw new ArgumentException("Invalid coordinate or polygon sizes");
+            if (polygon.Count % 2 != 0 || polygon.Count < 6)
+                throw new ArgumentException("Invalid polygon sizes");
             // Create PostGIS points out of a list of polygon coordinates where coordinates are pairs of lat/long values
             var points = new List<string>();
             for (int i = 0; i < polygon.Count; i += 2)
-                points.Add($"ST_MakePoint({polygon[i].ToString(c)}, {polygon[i+1].ToString(c)})");
+                points.Add($"ST_MakePoint({polygon[i].ToString(c)}, {polygon[i + 1].ToString(c)})");
             // Create a PostGIS polygon out of the points
             var polygonExpr = $"ST_MakePolygon(ST_MakeLine(ARRAY[{String.Join(", ", points)}]))";
-            // Create a PostGIS point out of the target coordinate
-            var pointExpr = $"ST_MakePoint({coordinate})";
             // Return the PostGIS UDF call
             return $"ST_Within({pointExpr}, {polygonExpr})";
         }
+
+        /// <summary>
+        /// Returns a SQL expression that checks if a numrangeexpr is within given buounds
+        /// </summary>
+        /// <param name="numRangeExpr">numrange(age_younger, age_older, '[]')</param>
+        /// <param name="bounds"></param>
+        public static string RangeIntersectExpr(string numRangeExpr, List<decimal> bounds)
+        {
+            var c = CultureInfo.GetCultureInfo("en-US");
+            if (bounds.Count != 2)
+                throw new ArgumentException("Invalid bounds size");
+            return $"{numRangeExpr} && numrange({bounds[0].ToString(c)}, {bounds[1].ToString(c)}, '[]')";
+        }
+
     }
 
-    // // Create a class that represents a PostGIS coordinate
-    // public class PostGisCoordinate(decimal latitude, decimal longitude)
-    // {
-    //     public decimal Latitude { get; set; } = latitude;
-    //     public decimal Longitude { get; set; } = longitude;
-
-    //     public string ToString(CultureInfo cultureInfo)
-    //     {
-    //         return $"{Latitude.ToString(cultureInfo)}, {Longitude.ToString(cultureInfo)}";
-    //     }
-
-    //     public override string ToString()
-    //     {
-    //         return ToString(CultureInfo.GetCultureInfo("en-US"));
-    //     }
-    // }
 }
