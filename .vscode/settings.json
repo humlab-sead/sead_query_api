@@ -69,6 +69,7 @@
 	// "dotnet-test-explorer.showCodeLens": false,
 	"[csharp]": {
 		"editor.defaultFormatter": "ms-dotnettools.csharp",
+		// "editor.defaultFormatter": "csharpier.csharpier-vscode"
 	},
 	"workbench.tree.indent": 10,
 	"csharp.debug.justMyCode": true,
@@ -82,5 +83,4 @@
 	// "explorer.sortOrder": "modified",
 	"explorer.sortOrderLexicographicOptions": "lower",
 	"workbench.editor.highlightModifiedTabs": true,
-	
 }
