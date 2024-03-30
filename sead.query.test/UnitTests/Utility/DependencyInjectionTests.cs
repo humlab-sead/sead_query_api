@@ -157,7 +157,7 @@ namespace SQT.Infrastructure
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
-                Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.Geo));
+                Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.GeoPolygon));
             }
         }
     }
