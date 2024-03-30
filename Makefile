@@ -34,3 +34,8 @@ release-pr:
 	@echo "info: creating pull request..."
 	@gh pr create --base main  --title "Release $(SEAD_QUERY_API_TAG)" --body "Release $(SEAD_QUERY_API_TAG)" --assignee @me 
 	
+.PHONY: tools
+tools:
+	@dotnet tool install csharpier --global
+	@cat 'add_folder_to_path "$$HOME/.dotnet/tools"' >> ~/.bashrc'
+	@echo "info: csharpier installed, see https://csharpier.com/docs/About for more information"
