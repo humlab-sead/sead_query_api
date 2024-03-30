@@ -82,10 +82,11 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<RangeOuterBoundExtentService>().As<IRangeOuterBoundExtentService>();
 
-            builder.RegisterType<UndefinedFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
+            builder.RegisterType<UndefinedPickFilterCompiler>().Keyed<IPickFilterCompiler>(0);
             builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(1);
             builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(2);
-            builder.RegisterType<GeoFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(3);
+            builder.RegisterType<GeoPolygonPickFilterCompiler>().Keyed<IPickFilterCompiler>(3);
+            builder.RegisterType<RangesIntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(4);
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
             builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
 
