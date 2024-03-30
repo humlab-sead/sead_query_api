@@ -1,19 +1,16 @@
-﻿using System.Globalization;
-
-namespace SeadQueryCore.QueryBuilder
+﻿
+namespace SeadQueryCore.QueryBuilder;
+public class RangeFacetPickFilterCompiler : IPickFilterCompiler
 {
-    public class RangeFacetPickFilterCompiler : IPickFilterCompiler
+    public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {
-        public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
-        {
-            if (!config.HasPicks())
-                return currentFacet.Criteria;
+        if (!config.HasPicks())
+            return currentFacet.Criteria;
 
-            var picks = config.GetPickValues(true);
+        var picks = config.GetPickValues(true);
 
-            return SqlCompileUtility.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
-                .GlueIf(currentFacet.Criteria, " AND ");
+        return SqlCompileUtility.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
+            .GlueIf(currentFacet.Criteria, " AND ");
 
-        }
     }
 }

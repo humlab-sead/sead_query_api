@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace SeadQueryCore.QueryBuilder
+namespace SeadQueryCore.QueryBuilder;
+public class UndefinedPickFilterCompiler : IPickFilterCompiler
 {
-    public class UndefinedFacetPickFilterCompiler : IPickFilterCompiler
+    public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {
-        public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
-        {
-            throw new ArgumentException();
-        }
+        throw new ArgumentException();
     }
 }
