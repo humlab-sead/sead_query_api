@@ -29,11 +29,11 @@ namespace SQT.SqlCompilers
         [Fact]
         public void SqlCompileBetweenExprTests()
         {
-            SqlCompileUtility.BetweenExpr("A", 1, 2).Equals("A between 1 and 2");
-            SqlCompileUtility.BetweenExpr("A", 1.1M, 2.2M).Equals("A between 1.1 and 2.2");
+            SqlCompileUtility.BetweenExpr("A", [1, 2]).Equals("A between 1 and 2");
+            SqlCompileUtility.BetweenExpr("A", [1.1M, 2.2M]).Equals("A between 1.1 and 2.2");
 
-            SqlCompileUtility.BetweenExpr("A", 1, 1).Equals("A between 1 and 1");
-            SqlCompileUtility.BetweenExpr("A", 1.1M, 1.1M).Equals("A between 1.1 and 1.1");
+            SqlCompileUtility.BetweenExpr("A", [1, 1]).Equals("A between 1 and 1");
+            SqlCompileUtility.BetweenExpr("A", [1.1M, 1.1M]).Equals("A between 1.1 and 1.1");
 
         }
 
@@ -76,7 +76,7 @@ namespace SQT.SqlCompilers
         {
             var intersectExpr = "numrange(low, high, '[]')";
             List<decimal> interval = [1.1M, 2.2M];
-            SqlCompileUtility.RangeIntersectExpr(intersectExpr, interval).Equals($"{intersectExpr} && numrange(1.1, 2.2, '[]')");
+            SqlCompileUtility.RangesIntersectExpr(intersectExpr, interval).Equals($"{intersectExpr} && numrange(1.1, 2.2, '[]')");
         }
     }
 }
