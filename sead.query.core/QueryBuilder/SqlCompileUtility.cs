@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Schema;
+using Autofac.Core.Activators.Reflection;
 
 namespace SeadQueryCore
 {
@@ -29,8 +30,10 @@ namespace SeadQueryCore
             return $" ({expr}::text in (" + String.Join(", ", values.ConvertAll(z => $"'{z}'")) + ")) ";
         }
 
-        public static string BetweenExpr(string expr, decimal lower, decimal upper)
+        public static string BetweenExpr(string expr, List<decimal> bound)
         {
+            decimal lower = bound[0];
+            decimal upper = bound[1];
             var c = CultureInfo.GetCultureInfo("en-US");
             return (lower == upper) ? $" (floor({expr}) = {lower.ToString(c)})"
                 : $" ({expr} >= {lower.ToString(c)} and {expr} <= {upper.ToString(c)})";
@@ -62,7 +65,13 @@ namespace SeadQueryCore
         /// </summary>
         /// <param name="numRangeExpr">numrange(age_younger, age_older, '[]')</param>
         /// <param name="bounds"></param>
-        public static string RangeIntersectExpr(string numRangeExpr, List<decimal> bounds)
+        /// Create a integer version of this method
+        public static string RangesIntersectExpr(string numRangeExpr, List<int> bounds)
+        {
+            return RangesIntersectExpr(numRangeExpr, bounds.ConvertAll(z => (decimal)z));
+        }
+
+        public static string RangesIntersectExpr(string numRangeExpr, List<decimal> bounds)
         {
             var c = CultureInfo.GetCultureInfo("en-US");
             if (bounds.Count != 2)
