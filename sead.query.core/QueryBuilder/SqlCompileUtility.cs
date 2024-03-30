@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Xml.Schema;
-using Autofac.Core.Activators.Reflection;
 
 namespace SeadQueryCore
 {
