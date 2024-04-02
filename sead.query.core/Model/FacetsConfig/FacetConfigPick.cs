@@ -7,7 +7,7 @@ namespace SeadQueryCore
 {
     public class FacetConfigPick
     {
-        private static CultureInfo cultureInfo = new CultureInfo("en-US");
+        private static readonly CultureInfo cultureInfo = new CultureInfo("en-US");
 
         public string PickValue { get; set; }
         public string Text { get; set; }
@@ -46,6 +46,7 @@ namespace SeadQueryCore
         {
             return int.Parse(PickValue);
         }
+
 
         public static List<FacetConfigPick> CreateByList(List<int> ids)
         {
