@@ -1,6 +1,76 @@
 [
   {
     "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "country",
+    "Position": 14
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "country",
+    "Position": 14
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "country",
+    "Position": 14
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "country",
+    "Position": 8
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "country",
+    "Position": 10
+  },
+  {
+    "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "location_types",
+    "Position": 22
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "location_types",
+    "Position": 24
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "location_types",
+    "Position": 24
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "location_types",
+    "Position": 16
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "location_types",
+    "Position": 23
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "location_types",
+    "Position": 22
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "location_types",
+    "Position": 22
+  },
+  {
+    "FacetCode": "palaeoentomology",
     "ChildFacetCode": "geochronology",
     "Position": 4
   },
@@ -18,11 +88,6 @@
     "FacetCode": "palaeoentomology",
     "ChildFacetCode": "sites",
     "Position": 15
-  },
-  {
-    "FacetCode": "palaeoentomology",
-    "ChildFacetCode": "country",
-    "Position": 14
   },
   {
     "FacetCode": "palaeoentomology",
@@ -116,11 +181,6 @@
   },
   {
     "FacetCode": "archaeobotany",
-    "ChildFacetCode": "country",
-    "Position": 14
-  },
-  {
-    "FacetCode": "archaeobotany",
     "ChildFacetCode": "ecocode",
     "Position": 2
   },
@@ -208,11 +268,6 @@
     "FacetCode": "pollen",
     "ChildFacetCode": "sites",
     "Position": 15
-  },
-  {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "country",
-    "Position": 14
   },
   {
     "FacetCode": "pollen",
@@ -321,11 +376,6 @@
   },
   {
     "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "country",
-    "Position": 8
-  },
-  {
-    "FacetCode": "geoarchaeology",
     "ChildFacetCode": "feature_type",
     "Position": 5
   },
@@ -363,11 +413,6 @@
     "FacetCode": "dendrochronology",
     "ChildFacetCode": "sites",
     "Position": 11
-  },
-  {
-    "FacetCode": "dendrochronology",
-    "ChildFacetCode": "country",
-    "Position": 10
   },
   {
     "FacetCode": "dendrochronology",
@@ -431,11 +476,6 @@
   },
   {
     "FacetCode": "ceramic",
-    "ChildFacetCode": "country",
-    "Position": 10
-  },
-  {
-    "FacetCode": "ceramic",
     "ChildFacetCode": "feature_type",
     "Position": 7
   },
@@ -468,11 +508,6 @@
     "FacetCode": "isotope",
     "ChildFacetCode": "sites",
     "Position": 11
-  },
-  {
-    "FacetCode": "isotope",
-    "ChildFacetCode": "country",
-    "Position": 10
   },
   {
     "FacetCode": "isotope",
