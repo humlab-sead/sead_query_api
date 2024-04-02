@@ -1,5 +1,4 @@
 ﻿using SeadQueryCore.QueryBuilder;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -42,18 +41,8 @@ namespace SeadQueryCore
                     .Distinct().ToList();
         }
 
-        private string Category2String(IDataReader x, int ordinal)
-        {
-            var type_name = x.GetDataTypeName(ordinal);
-            if (type_name == "numeric")
-                return String.Format("{0:0.####}", x.GetDecimal(ordinal));
-            if (type_name == "text")
-                return x.GetString(ordinal);
-            return x.GetInt32(ordinal).ToString();
-        }
-
         protected override string GetCategory(IDataReader x)
-            => x.IsDBNull(0) ? null : Category2String(x, 0);
+            => x.IsDBNull(0) ? null : x.Category2String(0);
 
         protected override int GetCount(IDataReader x)
             => x.IsDBNull(1) ? 0 : x.GetInt32(1);
