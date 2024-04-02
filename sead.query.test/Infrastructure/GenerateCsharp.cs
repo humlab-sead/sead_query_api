@@ -10,15 +10,8 @@ using Xunit;
 namespace SQT.Infrastructure.Scaffolding
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class GenerateCSharpFixures : DisposableFacetContextContainer
+    public class GenerateCSharp(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        private readonly Setting mockQueryBuilderSetting;
-
-        public GenerateCSharpFixures(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-            mockQueryBuilderSetting = new SQT.SettingFactory().Create().Value;
-        }
-
         private string DataFolder()
         {
             string root = ScaffoldUtility.GetRootFolder();

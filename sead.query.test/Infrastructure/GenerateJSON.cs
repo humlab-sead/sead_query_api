@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace SQT.TestInfrastructure
 {
-    public class ScaffoldJsonFixtures
+    public class GenerateJSON
     {
         private static DefaultContractResolver DefaultResolver()
         {
@@ -47,8 +47,10 @@ namespace SQT.TestInfrastructure
         [InlineData(true, "Infrastructure/Data/Json")]
         public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string folder)
         {
-            if (!updateTheModel)
+            if (!updateTheModel){
+                System.Diagnostics.Debug.WriteLine("Skipping update of JSON fixtures");
                 return;
+            }
             var options = SettingFactory.GetSettings();
             var serializer = CreateSerializer();
             var path = Path.Combine(ScaffoldUtility.GetRootFolder(), folder);
