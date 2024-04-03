@@ -35,7 +35,7 @@ namespace SeadQueryCore
         /// <param name="array"></param>
         /// <param name="itemToFind"></param>
         /// <param name="itemToInsert"></param>
-        public static void InsertAt<T>(this List<T> array, T itemToFind, T itemToInsert)
+        public static List<T> InsertAt<T>(this List<T> array, T itemToFind, T itemToInsert)
         {
             var idx = array.IndexOf(itemToFind);
 
@@ -43,6 +43,8 @@ namespace SeadQueryCore
                 throw new ArgumentException($"List<T>.InsertAt: {itemToFind} to found");
 
             array.Insert(idx, itemToInsert);
+
+            return array;
         }
     }
 }
