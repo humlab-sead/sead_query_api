@@ -9,7 +9,7 @@ public class RangeFacetPickFilterCompiler : IPickFilterCompiler
 
         var picks = config.GetPickValues(true);
 
-        return SqlCompileUtility.BetweenExpr(currentFacet.CategoryIdExpr, picks[0], picks[1])
+        return SqlCompileUtility.BetweenExpr(currentFacet.CategoryIdExpr, picks)
             .GlueIf(currentFacet.Criteria, " AND ");
 
     }
