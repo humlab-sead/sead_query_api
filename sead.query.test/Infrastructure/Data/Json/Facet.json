@@ -240,22 +240,6 @@
     "SortExpr": "tbl_ecocode_definitions.name"
   },
   {
-    "FacetId": 23,
-    "FacetCode": "family",
-    "DisplayTitle": "Family",
-    "Description": "Taxonomic family",
-    "FacetGroupId": 6,
-    "FacetTypeId": 1,
-    "CategoryIdExpr": "tbl_taxa_tree_families.family_id",
-    "CategoryNameExpr": "tbl_taxa_tree_families.family_name ",
-    "IsApplicable": true,
-    "IsDefault": false,
-    "AggregateType": "count",
-    "AggregateTitle": "Number of samples",
-    "AggregateFacetId": 1,
-    "SortExpr": "tbl_taxa_tree_families.family_name "
-  },
-  {
     "FacetId": 24,
     "FacetCode": "genus",
     "DisplayTitle": "Genus",
@@ -766,5 +750,21 @@
     "AggregateTitle": "Number of samples",
     "AggregateFacetId": 1,
     "SortExpr": "1"
+  },
+  {
+    "FacetId": 23,
+    "FacetCode": "family",
+    "DisplayTitle": "Family",
+    "Description": "Taxonomic family",
+    "FacetGroupId": 6,
+    "FacetTypeId": 1,
+    "CategoryIdExpr": "facet.family_taxon_shortcut.family_id",
+    "CategoryNameExpr": "facet.family_taxon_shortcut.family_name",
+    "IsApplicable": true,
+    "IsDefault": false,
+    "AggregateType": "count",
+    "AggregateTitle": "Number of samples",
+    "AggregateFacetId": 1,
+    "SortExpr": "facet.family_taxon_shortcut.family_name"
   }
 ]

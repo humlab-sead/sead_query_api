@@ -26,6 +26,12 @@
     "TableId": 119
   },
   {
+    "FacetTableId": 186,
+    "FacetId": 23,
+    "SequenceId": 1,
+    "TableId": 175
+  },
+  {
     "FacetTableId": 66,
     "FacetId": 1,
     "SequenceId": 1,
@@ -136,18 +142,6 @@
     "FacetId": 22,
     "SequenceId": 1,
     "TableId": 62
-  },
-  {
-    "FacetTableId": 86,
-    "FacetId": 23,
-    "SequenceId": 2,
-    "TableId": 36
-  },
-  {
-    "FacetTableId": 87,
-    "FacetId": 23,
-    "SequenceId": 1,
-    "TableId": 36
   },
   {
     "FacetTableId": 88,

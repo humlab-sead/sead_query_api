@@ -36,6 +36,41 @@
   },
   {
     "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "family",
+    "Position": 7
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "family",
+    "Position": 7
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "family",
+    "Position": 7
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "family",
+    "Position": 3
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "family",
+    "Position": 17
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "family",
+    "Position": 23
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "family",
+    "Position": 23
+  },
+  {
+    "FacetCode": "palaeoentomology",
     "ChildFacetCode": "location_types",
     "Position": 22
   },
@@ -93,11 +128,6 @@
     "FacetCode": "palaeoentomology",
     "ChildFacetCode": "ecocode",
     "Position": 2
-  },
-  {
-    "FacetCode": "palaeoentomology",
-    "ChildFacetCode": "family",
-    "Position": 7
   },
   {
     "FacetCode": "palaeoentomology",
@@ -186,11 +216,6 @@
   },
   {
     "FacetCode": "archaeobotany",
-    "ChildFacetCode": "family",
-    "Position": 7
-  },
-  {
-    "FacetCode": "archaeobotany",
     "ChildFacetCode": "genus",
     "Position": 8
   },
@@ -273,11 +298,6 @@
     "FacetCode": "pollen",
     "ChildFacetCode": "ecocode",
     "Position": 2
-  },
-  {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "family",
-    "Position": 7
   },
   {
     "FacetCode": "pollen",
@@ -413,11 +433,6 @@
     "FacetCode": "dendrochronology",
     "ChildFacetCode": "sites",
     "Position": 11
-  },
-  {
-    "FacetCode": "dendrochronology",
-    "ChildFacetCode": "family",
-    "Position": 3
   },
   {
     "FacetCode": "dendrochronology",

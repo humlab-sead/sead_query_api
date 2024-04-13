@@ -952,5 +952,11 @@
     "TableOrUdfName": "facet.site_location_shortcut",
     "PrimaryKeyName": "xxxx",
     "IsUdf": false
+  },
+  {
+    "TableId": 175,
+    "TableOrUdfName": "facet.family_taxon_shortcut",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
   }
 ]
