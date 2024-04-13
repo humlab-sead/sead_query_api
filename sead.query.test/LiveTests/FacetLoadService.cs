@@ -37,7 +37,7 @@ namespace SQT.LiveServices
         public void Load_VariousConfigs_Success(string uri)
         {
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var service = this.Container.Resolve<IFacetContentReconstituteService>();
+            var service = this.Container.Resolve<ILoadFacetService>();
 
             var data = service.Load(fakeFacetsConfig);
 
