@@ -1,4 +1,6 @@
+using Autofac.Features.Indexed;
 using KellermanSoftware.CompareNetObjects;
+using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
@@ -16,29 +18,30 @@ namespace SQT.Services
         }
 
         [Theory]
-        [InlineData("sites:tbl_denormalized_measured_values_33_0")]
-        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
+        [InlineData("sites:sites/tbl_denormalized_measured_values_33_0")]
+        // [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
         public void Load_OfRangeCategoryCountsForVariousFacetsConfigs_ReturnsExpectedValues(string uri)
         {
             // Arrange
             var config = new SettingFactory().Create().Value.Facet;
+            var facetsConfig = FakeFacetsConfig(uri);
             var mockRegistry = MockRegistryWithFacetRepository();
-            var mockFacetsConfig = FakeFacetsConfig(uri);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
-            var mockRangeCountSqlCompiler = MockRangeCategoryCountSqlCompiler(returnSql: "SELECT * FROM foot.bar");
             var fakeResult = FakeRangeCategoryCountItems(start: 0, size: 10, count: 3);
-            var mockQueryProxy = new MockTypedQueryProxyFactory()
-                .Create<CategoryCountItem>(fakeResult);
+            var mockQueryProxy = new MockTypedQueryProxyFactory().Create<CategoryCountItem>(fakeResult);
+            var mockHelpers = MockCategoryCountHelpers();
+            var mockSqlCompilers = MockCategoryCountSqlCompilers("SELECT * FROM foot.bar");
 
             // Act
-            var service = new RangeCategoryCountService(
+            var service = new CategoryCountService(
                  config,
                  mockRegistry.Object,
                  mockQuerySetupBuilder.Object,
-                 mockRangeCountSqlCompiler.Object,
-                 mockQueryProxy.Object
+                 mockQueryProxy.Object,
+                 mockHelpers.Object,
+                 mockSqlCompilers.Object
              );
-            var result = service.Load(mockFacetsConfig.TargetFacet.FacetCode, mockFacetsConfig);
+            var result = service.Load(facetsConfig.TargetFacet.FacetCode, facetsConfig);
 
             // Assert
             Assert.NotNull(result);

@@ -1,4 +1,5 @@
-﻿using KellermanSoftware.CompareNetObjects;
+﻿using Autofac.Features.Indexed;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using SeadQueryCore;
@@ -144,7 +145,7 @@ namespace SQT
         protected virtual List<string> FakeJoinsClause(int nCount)
             => Enumerable.Range(0, nCount)
                 .Select(i => (L: Convert.ToChar('A' + (char)i), R: Convert.ToChar('A' + (char)(i + 1))))
-                .Select(x => $" INNER JOIN {x.L} as {x.L}.{x.L.ToString().ToLower()}_id = {x.R}.{x.R.ToString().ToLower()}_id ")
+                .Select(x => $" INNER JOIN {x.L} ON {x.L}.{x.L.ToString().ToLower()}_id = {x.R}.{x.R.ToString().ToLower()}_id ")
                 .ToList();
 
         public virtual Mock<IJoinSqlCompiler> MockJoinSqlCompiler(string returnValue)
@@ -278,8 +279,7 @@ namespace SQT
             mockCategoryCountSqlCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),
-                It.IsAny<string>(),
-                It.IsAny<string>()
+                It.IsAny<CompilePayload>()
             )).Returns(
                 returnSql
             );
@@ -291,18 +291,39 @@ namespace SQT
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        public virtual Mock<IDiscreteCategoryCountQueryCompiler> MockDiscreteCategoryCountSqlCompiler(string returnSql)
+        public virtual Mock<IDiscreteCategoryCountSqlCompiler> MockDiscreteCategoryCountSqlCompiler(string returnSql)
         {
-            var mockCategoryCountSqlCompiler = new Mock<IDiscreteCategoryCountQueryCompiler>();
+            var mockCategoryCountSqlCompiler = new Mock<IDiscreteCategoryCountSqlCompiler>();
             mockCategoryCountSqlCompiler.Setup(c => c.Compile(
                 It.IsAny<QuerySetup>(),
                 It.IsAny<Facet>(),
-                It.IsAny<Facet>(),
-                It.IsAny<string>()
+                It.IsAny<CompilePayload>()
             )).Returns(
                 returnSql
             );
             return mockCategoryCountSqlCompiler;
+        }
+
+        public virtual Mock<IIndex<EFacetType, ICategoryCountHelper>> MockCategoryCountHelpers()
+        {
+            var config = new SettingFactory().Create().Value.Facet;
+            var mockHelpers = new Mock<IIndex<EFacetType, ICategoryCountHelper>>();
+            mockHelpers.Setup(x => x[EFacetType.Range])
+                .Returns(new RangeCategoryCountHelper(config));
+            mockHelpers.Setup(x => x[EFacetType.Discrete])
+                .Returns(new DiscreteCategoryCountHelper());
+            return mockHelpers;
+        }
+
+        public virtual Mock<IIndex<EFacetType, ICategoryCountSqlCompiler>> MockCategoryCountSqlCompilers(string returnSql)
+        {
+            var mockRangeCountSqlCompiler = MockRangeCategoryCountSqlCompiler(returnSql: returnSql);
+            var mockDiscreteCountSqlCompiler = MockDiscreteCategoryCountSqlCompiler(returnSql: returnSql);
+            var mockSqlCompilers = new Mock<IIndex<EFacetType, ICategoryCountSqlCompiler>>();
+            mockSqlCompilers.Setup(x => x[EFacetType.Range]).Returns(mockRangeCountSqlCompiler.Object);
+            mockSqlCompilers.Setup(x => x[EFacetType.Discrete]).Returns(mockDiscreteCountSqlCompiler.Object);
+
+            return mockSqlCompilers;
         }
 
         public virtual Mock<IPickFilterCompilerLocator> MockPickCompilerLocator(string returnValue = "")
@@ -431,7 +452,7 @@ namespace SQT
         {
             var mockCategoryCountService = new Mock<ICategoryCountService>();
             mockCategoryCountService.Setup(
-                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>())
+                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>(), EFacetType.Unknown)
             ).Returns(
                 new CategoryCountService.CategoryCountData
                 {
@@ -442,18 +463,18 @@ namespace SQT
             return mockCategoryCountService;
         }
 
-        protected Mock<ICategoryCountServiceLocator> MockCategoryCountServiceLocator(List<CategoryCountItem> fakeCategoryCountItems)
-        {
-            var mockCategoryCountService = MockCategoryCountService(fakeCategoryCountItems);
+        // protected Mock<ICategoryCountServiceLocator> MockCategoryCountServiceLocator(List<CategoryCountItem> fakeCategoryCountItems)
+        // {
+        //     var mockCategoryCountService = MockCategoryCountService(fakeCategoryCountItems);
 
-            var mockCategoryCountServiceLocator = new Mock<ICategoryCountServiceLocator>();
-            mockCategoryCountServiceLocator
-                .Setup(z => z.Locate(It.IsAny<EFacetType>()))
-                .Returns(
-                    mockCategoryCountService.Object
-                );
-            return mockCategoryCountServiceLocator;
-        }
+        //     var mockCategoryCountServiceLocator = new Mock<ICategoryCountServiceLocator>();
+        //     mockCategoryCountServiceLocator
+        //         .Setup(z => z.Locate(It.IsAny<EFacetType>()))
+        //         .Returns(
+        //             mockCategoryCountService.Object
+        //         );
+        //     return mockCategoryCountServiceLocator;
+        // }
 
         public static class RouteHelper
         {

@@ -1,3 +1,5 @@
+using Autofac.Features.Indexed;
+using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
@@ -22,17 +24,20 @@ namespace SQT.Services
             var fakeRegistry = FakeRegistry();
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
-            var mockCategoryCountSqlCompiler = MockDiscreteCategoryCountSqlCompiler(returnSql: "SELECT * FROM foo.bar");
             var fakeCategoryCountItems = FakeDiscreteCategoryCountItems(nCount);
             var queryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
 
+            var mockHelpers = MockCategoryCountHelpers();
+            var mockSqlCompilers = MockCategoryCountSqlCompilers("SELECT * FROM foot.bar");
+
             // Act
-            var service = new DiscreteCategoryCountService(
+            var service = new CategoryCountService(
                 fakeSettings,
                 fakeRegistry,
                 mockQuerySetupBuilder.Object,
-                mockCategoryCountSqlCompiler.Object,
-                queryProxy.Object
+                queryProxy.Object,
+                mockHelpers.Object,
+                mockSqlCompilers.Object
             );
 
             var result = service.Load(fakeFacetsConfig.TargetCode, fakeFacetsConfig);

@@ -39,10 +39,10 @@ namespace SQT.LiveServices
         // [InlineData("sites:country@5/sites@4,5", "result_facet", "site_level", "map", 10)]
         // [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "map", 10)]
         // [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular", 10)]
-        public void Load_VariousConfigs_Success(string uri, string resultCode, string specificationKey, string viewType)
+        public void Load_VariousConfigs_Success(string uri, string resultCode, string aggregateCode, string viewType)
         {
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeResultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
+            var fakeResultConfig = FakeResultConfig(resultCode, aggregateCode, viewType);
             var service = this.Container.Resolve<ILoadResultService>();
             var data = service.Load(fakeFacetsConfig, fakeResultConfig);
             Assert.NotNull(data);

@@ -70,8 +70,8 @@ namespace IntegrationTests.Sead
         [InlineData("genus:dataset_master@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
         [InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
         [InlineData("dataset_master:dataset_master@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
-        [InlineData("country:country@10", "tbl_analysis_entities", "tbl_locations")]
-        [InlineData("country:country", "tbl_analysis_entities", "tbl_locations", "tbl_sites")]
+        [InlineData("country:country@10", "tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "facet.site_location_shortcut", "tbl_datasets", "tbl_methods", "tbl_record_types")]
+        [InlineData("country:country", "tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "facet.site_location_shortcut", "tbl_datasets", "tbl_methods", "tbl_record_types")]
         [InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
@@ -114,8 +114,9 @@ namespace IntegrationTests.Sead
             Assert.NotEmpty(match.InnerSelect.Tables);
 
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
+            
         }
-
+        
         /// <summary>
         /// Tests all domain facets
         /// </summary>

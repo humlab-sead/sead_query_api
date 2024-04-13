@@ -27,8 +27,14 @@ namespace SQT.SqlCompilers
 
             // Act
 
+            CompilePayload compilePayload = new CompilePayload()
+            {
+                AggregateType = aggType,
+                AggregateFacet = countFacet,
+                TargetFacet = facet
+            };
             var discreteCategoryCountSqlCompiler = new DiscreteCategoryCountSqlCompiler();
-            var sqlQuery = discreteCategoryCountSqlCompiler.Compile(fakeQuerySetup, facet, countFacet, aggType);
+            var sqlQuery = discreteCategoryCountSqlCompiler.Compile(fakeQuerySetup, facet, compilePayload);
 
             // Assert
 

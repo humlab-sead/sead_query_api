@@ -41,9 +41,17 @@ namespace SQT.SqlCompilers
             const string intervalQuery = "( #INTERVAL-QUERY# )";
             const string countColumn = "dummy_column";
 
+            CompilePayload compilePayload = new CompilePayload()
+            {
+                IntervalQuery = intervalQuery,
+                CountColumn = countColumn,
+                AggregateType = null,
+                AggregateFacet = null,
+                TargetFacet = null
+            };
             // Act
             var rangeCategoryCountSqlCompiler = new RangeCategoryCountSqlCompiler();
-            var result = rangeCategoryCountSqlCompiler.Compile(fakeQuerySetup, facet, intervalQuery, countColumn);
+            var result = rangeCategoryCountSqlCompiler.Compile(fakeQuerySetup, facet, compilePayload);
 
             // Assert
             result = result.Squeeze();

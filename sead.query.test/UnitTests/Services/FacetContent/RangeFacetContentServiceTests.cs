@@ -53,7 +53,7 @@ namespace SQT.Services
             var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var fakeCategoryCountItems = FakeRangeCategoryCountItems(1, 10, 10);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
-            var mockCountServiceLocator = MockCategoryCountServiceLocator(fakeCategoryCountItems);
+            var mockCountService = MockCategoryCountService(fakeCategoryCountItems);
             var mockRangeIntervalSqlCompiler = MockRangeIntervalSqlCompiler("#SQL#");
             var mockQueryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
             var mockRangeOuterBoundExtentService = MockRangeOuterBoundExtentService(0M, 100M, 100);
@@ -63,7 +63,7 @@ namespace SQT.Services
                 fakeSettings,
                 Registry,
                 mockQuerySetupBuilder.Object,
-                mockCountServiceLocator.Object,
+                mockCountService.Object,
                 mockRangeIntervalSqlCompiler.Object,
                 mockRangeOuterBoundExtentService.Object,
                 mockQueryProxy.Object

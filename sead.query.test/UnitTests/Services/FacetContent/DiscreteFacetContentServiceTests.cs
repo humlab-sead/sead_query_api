@@ -29,14 +29,14 @@ namespace SQT.Services
             var fakeValues = FakeDiscreteCategoryCountItems(5);
             var mockDiscreteContentSqlCompiler = MockDiscreteContentSqlCompiler("#SQL-QUERY#");
             var mockQueryProxy = MockTypedQueryProxy(fakeValues);
-            var mockCategoryCountServicesLocator = MockCategoryCountServiceLocator(fakeValues);
+            var mockCategoryCountService = MockCategoryCountService(fakeValues);
 
             // Act
             var service = new DiscreteFacetContentService(
                 fakeSettings,
                 fakeRegistry,
                 mockQuerySetupBuilder.Object,
-                mockCategoryCountServicesLocator.Object,
+                mockCategoryCountService.Object,
                 mockDiscreteContentSqlCompiler.Object,
                 mockQueryProxy.Object
              );
