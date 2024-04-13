@@ -40,7 +40,7 @@ namespace SeadQueryCore
             var idx = array.IndexOf(itemToFind);
 
             if (idx < 0)
-                throw new ArgumentException($"List<T>.InsertAt: {itemToFind} to found");
+                throw new ArgumentException($"List<T>.InsertAt: {itemToFind} not found");
 
             array.Insert(idx, itemToInsert);
 

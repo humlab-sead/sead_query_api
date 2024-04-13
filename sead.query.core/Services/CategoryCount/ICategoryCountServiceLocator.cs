@@ -1,7 +1,7 @@
 ﻿namespace SeadQueryCore
 {
-    public interface ICategoryCountServiceLocator
-    {
-        ICategoryCountService Locate(EFacetType facetType);
-    }
+    // public interface ICategoryCountServiceLocator
+    // {
+    //     ICategoryCountService Locate(EFacetType facetType);
+    // }
 }

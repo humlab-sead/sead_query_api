@@ -24,13 +24,13 @@ namespace SeadQueryCore
             IFacetSetting config,
             IRepositoryRegistry context,
             IQuerySetupBuilder builder,
-            ICategoryCountServiceLocator categoryCountServiceLocator,
+            ICategoryCountService categoryCountService,
             IRangeIntervalSqlCompiler rangeIntervalSqlCompiler,
             IRangeOuterBoundExtentService outerBoundExtentService,
             ITypedQueryProxy queryProxy
         ) : base(config, context, builder, queryProxy)
         {
-            CategoryCountService = categoryCountServiceLocator.Locate(EFacetType.Range);
+            CategoryCountService = categoryCountService;
             RangeIntervalSqlCompiler = rangeIntervalSqlCompiler;
             OuterBoundExtentService = outerBoundExtentService;
         }

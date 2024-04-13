@@ -1,13 +1,13 @@
-﻿using Autofac.Features.Indexed;
+﻿// using Autofac.Features.Indexed;
 
-namespace SeadQueryCore;
+// namespace SeadQueryCore;
 
-public class CategoryCountServiceLocator(IIndex<EFacetType, ICategoryCountService> services) : ICategoryCountServiceLocator
-{
-    public IIndex<EFacetType, ICategoryCountService> Services { get; } = services;
+// public class CategoryCountServiceLocator(IIndex<EFacetType, ICategoryCountService> services) : ICategoryCountServiceLocator
+// {
+//     public IIndex<EFacetType, ICategoryCountService> Services { get; } = services;
 
-    public virtual ICategoryCountService Locate(EFacetType facetType)
-    {
-        return Services[facetType];
-    }
-}
+//     public virtual ICategoryCountService Locate(EFacetType facetType)
+//     {
+//         return Services[facetType];
+//     }
+// }

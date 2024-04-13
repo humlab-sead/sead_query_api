@@ -8,14 +8,14 @@ namespace SeadQueryCore.Services.Result
     {
         public ICategoryCountService CategoryCountService { get; set; }
 
-        public CategoryCountPayloadService(IDiscreteCategoryCountService categoryCountService)
+        public CategoryCountPayloadService(ICategoryCountService categoryCountService)
         {
             CategoryCountService = categoryCountService;
         }
 
         private CategoryCountService.CategoryCountData GetCategoryCounts(FacetsConfig2 facetsConfig, string resultFacetCode)
         {
-            return CategoryCountService.Load(resultFacetCode, facetsConfig, null);
+            return CategoryCountService.Load(resultFacetCode, facetsConfig, null, EFacetType.Discrete);
         }
 
         public dynamic GetExtraPayload(FacetsConfig2 facetsConfig, string resultFacetCode)

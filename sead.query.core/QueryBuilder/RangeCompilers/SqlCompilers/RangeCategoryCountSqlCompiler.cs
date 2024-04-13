@@ -3,12 +3,12 @@ namespace SeadQueryCore
 {
     public class RangeCategoryCountSqlCompiler : IRangeCategoryCountSqlCompiler
     {
-        public string Compile(QueryBuilder.QuerySetup query, Facet facet, string intervalQuery, string countColumn)
+        public string Compile(QueryBuilder.QuerySetup query, Facet facet, CompilePayload payload)
         {
             string sql = $@"
 
             WITH categories(category, lower, upper) AS (
-                {intervalQuery}
+                {payload.IntervalQuery}
             ), outerbounds(lower, upper) AS (
                 SELECT MIN(lower), MAX(upper)
                 FROM categories
@@ -16,7 +16,7 @@ namespace SeadQueryCore
                 SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column
                 FROM categories c
                 LEFT JOIN (
-                    SELECT category, COUNT(DISTINCT {countColumn}) AS count_column
+                    SELECT category, COUNT(DISTINCT {payload.CountColumn}) AS count_column
                     FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                     CROSS JOIN outerbounds
                     JOIN categories
