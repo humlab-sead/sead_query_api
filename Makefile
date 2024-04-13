@@ -15,8 +15,13 @@ clean:
 	@dotnet clean -c Release
 	@dotnet nuget locals --clear all
 
-build:
+.PHONY: clean release debug publish tidy test tag
+
+release:
 	dotnet build -c Release
+
+debug:
+	dotnet build -c Debug
 
 publish:
 	dotnet publish -c Release
