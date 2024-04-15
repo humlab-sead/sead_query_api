@@ -1,10 +1,10 @@
-﻿using SeadQueryCore.QueryBuilder;
+﻿// using SeadQueryCore.QueryBuilder;
 
-namespace SeadQueryCore
-{
-    public interface ICategoryBoundSqlCompiler : ISqlCompiler
-    {
-        string Compile(QuerySetup query, Facet facet, string facetCode);
-    }
+// namespace SeadQueryCore
+// {
+//     public interface ICategoryBoundSqlCompiler : ISqlCompiler
+//     {
+//         string Compile(QuerySetup query, Facet facet, string facetCode);
+//     }
 
-}
+// }
