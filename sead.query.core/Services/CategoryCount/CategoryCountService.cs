@@ -32,6 +32,10 @@ namespace SeadQueryCore
 
         public CategoryCountData Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery = null, EFacetType facetTypeOverride = EFacetType.Unknown)
         {
+            // Note:
+            //  Facet load: Facet is same as target facet
+            // Result load: Facet is result facet
+
             var facet = Facets.GetByCode(facetCode);
             var aggregateFacet = Facets.Get(facet.AggregateFacetId);
             var targetFacet = Facets.GetByCode(facetsConfig.TargetCode); // facetsConfig.TargetFacet;
