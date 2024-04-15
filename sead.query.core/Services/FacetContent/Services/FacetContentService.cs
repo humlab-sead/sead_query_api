@@ -52,6 +52,13 @@ namespace SeadQueryCore
             return facetContent;
         }
 
+        /// <summary>
+        /// Compile Sql query that returns the categories
+        /// </summary>
+        /// <param name="facetsConfig"></param>
+        /// <param name="facetCode"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
         protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval = 120) => new IntervalQueryInfo();
 
         private CategoryCountService.CategoryCountData QueryCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
@@ -60,6 +67,12 @@ namespace SeadQueryCore
             return categoryCounts;
         }
 
+        /// <summary>
+        /// Compute counts for full set of categories
+        /// </summary>
+        /// <param name="intervalQuery"></param>
+        /// <param name="categoryCounts"></param>
+        /// <returns></returns>
         protected List<CategoryCountItem> QueryOuterCategoryCounts(string intervalQuery, Dictionary<string, CategoryCountItem> categoryCounts)
         {
             var outerCategoryCounts = QueryProxy.QueryRows(intervalQuery, dr => CreateItem(dr, categoryCounts)).ToList();
