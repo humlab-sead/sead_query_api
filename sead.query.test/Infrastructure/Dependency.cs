@@ -123,7 +123,8 @@ namespace SQT.Infrastructure
             // builder.RegisterType<RangesIntersectFacetContentService>().Keyed<IFacetContentService>(EFacetType.RangesIntersect);
             builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
 
-            builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
+            // Not used:
+            // builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
 
             builder.RegisterType<ResultService>().As<IResultService>();
 
