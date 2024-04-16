@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.Common;
-using Autofac.Features.Indexed;
 using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
