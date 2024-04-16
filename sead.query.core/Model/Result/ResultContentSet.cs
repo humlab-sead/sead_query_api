@@ -16,11 +16,13 @@ namespace SeadQueryCore.Model
 
             public static List<ResultColumn> Map(List<ResultSpecificationField> resultFields, List<SourceColumnType> dataColumns)
             {
+                var dataTypeCounts = dataColumns.Count;
                 return resultFields.Select((z, i) => new ResultColumn()
                 {
                     FieldKey = z.ResultField.ResultFieldKey,
                     DisplayText = z.ResultField.DisplayText,
-                    Type = dataColumns[i].NetType
+                    // Type = dataColumns[i].NetType
+                    Type = i < dataTypeCounts ? dataColumns[i].NetType : null
                 }).ToList();
             }
         }
