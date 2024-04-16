@@ -9,6 +9,8 @@ public static class IDataReaderExtensions
 
     public static string Category2String(this IDataReader x, int ordinal)
     {
+        if (x.IsDBNull(ordinal))
+            return null;
         var type_name = x.GetDataTypeName(ordinal);
         if (type_name == "numeric")
             return String.Format("{0:0.####}", x.GetDecimal(ordinal));
