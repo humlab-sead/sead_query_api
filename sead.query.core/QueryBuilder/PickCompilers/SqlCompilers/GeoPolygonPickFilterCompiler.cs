@@ -12,7 +12,7 @@ public class GeoPolygonPickFilterCompiler : IPickFilterCompiler
         var polygon = config.GetPickValues(false);
 
         if (polygon.Count % 2 != 0 || polygon.Count < 6)
-            throw new ArgumentException("Invalid polygon sizes");
+            throw new ArgumentException($"Invalid polygon sizes {polygon.Count}");
 
         if (polygon[0] != polygon[^2] || polygon[1] != polygon[^1])
             polygon.AddRange([polygon[0], polygon[1]]);
