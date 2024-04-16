@@ -28,14 +28,14 @@ namespace SeadQueryCore
 
         public FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            /* Compile Interval Sql and number of categories */
-            var intervalInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
+            /* Compile SQL for fetching all possible (unfiltered) categories */
+            var categoryInfo = CompileIntervalQuery(facetsConfig, facetsConfig.TargetCode);
 
             /* Compute (filtered) category counts */
-            var categoryCounts = QueryCategoryCounts(facetsConfig, intervalInfo.Query);
+            var categoryCounts = QueryCategoryCounts(facetsConfig, categoryInfo.Query);
 
             /* Compile counts for full set of categories */
-            var outerCategoryCounts = QueryOuterCategoryCounts(intervalInfo.Query, categoryCounts.CategoryCounts).ToList();
+            var outerCategoryCounts = QueryOuterCategoryCounts(categoryInfo.Query, categoryCounts.CategoryCounts).ToList();
 
             /* Collect user picks */
             var userPicks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
@@ -45,7 +45,7 @@ namespace SeadQueryCore
                 FacetsConfig = facetsConfig,
                 Items = outerCategoryCounts.Where(z => z.Count != null).ToList(), /* add empty categories then remove, hmmm...? */
                 Distribution = categoryCounts.CategoryCounts,
-                IntervalInfo = intervalInfo,
+                IntervalInfo = categoryInfo,
                 SqlQuery = categoryCounts.SqlQuery,
                 Picks = userPicks ?? new Dictionary<string, FacetsConfig2.UserPickData>()
             };
@@ -59,7 +59,7 @@ namespace SeadQueryCore
         /// <param name="facetCode"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        protected virtual IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval = 120) => new IntervalQueryInfo();
+        protected virtual CategoryInfoQuery CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int interval = 120) => new CategoryInfoQuery();
 
         private CategoryCountService.CategoryCountData QueryCategoryCounts(FacetsConfig2 facetsConfig, string intervalQuery)
         {

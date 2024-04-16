@@ -13,7 +13,7 @@ namespace SeadQueryCore
         public int Count { get; set; }
     }
 
-    public class RangeIntervalQueryInfo : FacetContent.IntervalQueryInfo
+    public class RangeCategoryInfoQuery : FacetContent.CategoryInfoQuery
     {
         public RangeExtent FullExtent { get; set; }
     };
@@ -54,7 +54,7 @@ namespace SeadQueryCore
             return null;
         }
 
-        protected override FacetContent.IntervalQueryInfo CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count = 120)
+        protected override FacetContent.CategoryInfoQuery CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count = 120)
         {
             var facetConfig = facetsConfig.GetConfig(facetCode);
             var fullExtent = OuterBoundExtentService.GetExtent(facetConfig, default_interval_count);
@@ -66,7 +66,7 @@ namespace SeadQueryCore
 
             string sql = RangeIntervalSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
 
-            return new RangeIntervalQueryInfo
+            return new RangeCategoryInfoQuery
             {
                 Count = interval,
                 Query = sql,

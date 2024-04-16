@@ -7,7 +7,7 @@ namespace SeadQueryCore
 {
     public class FacetContent
     {
-        public class IntervalQueryInfo
+        public class CategoryInfoQuery
         {
             [JsonIgnore]
             public int Count { get; set; } = 0;
@@ -49,7 +49,7 @@ namespace SeadQueryCore
 
         public string SqlQuery { get; set; }
 
-        public IntervalQueryInfo IntervalInfo { get; set; }
+        public CategoryInfoQuery IntervalInfo { get; set; }
 
         public int CountOfSelections { get; set; } = 0;
 
@@ -64,7 +64,7 @@ namespace SeadQueryCore
             Dictionary<string, CategoryCountItem> categoryCounts,
             string categoryCountSqlQuery,
             Dictionary<string, FacetsConfig2.UserPickData> picks,
-            IntervalQueryInfo intervalInfo
+            CategoryInfoQuery intervalInfo
         )
         {
             FacetsConfig = facetsConfig;
