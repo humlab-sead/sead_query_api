@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Data;
-using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {
+    // FIXME: Make FacetContent.CategoryInfo more generic using e.g. a dictionary
+    // Also similar to CategeryItem
     public class RangeExtent
     {
         public decimal Lower { get; set; }
@@ -11,30 +11,26 @@ namespace SeadQueryCore
         public int Count { get; set; }
     }
 
-    public class RangeCategoryInfoQuery : FacetContent.CategoryInfoQuery
+    public class RangeCategoryInfo : FacetContent.CategoryInfo
     {
         public RangeExtent FullExtent { get; set; }
     };
 
-    public class RangeFacetContentService : FacetContentService
+    public class RangeCategoryInfoService : ICategoryInfoService
     {
-        public RangeFacetContentService(
-            IFacetSetting config,
-            IRepositoryRegistry context,
-            IQuerySetupBuilder builder,
-            ICategoryCountService categoryCountService,
-            IRangeIntervalSqlCompiler rangeIntervalSqlCompiler,
-            IRangeOuterBoundExtentService outerBoundExtentService,
-            ITypedQueryProxy queryProxy
-        ) : base(config, context, builder, queryProxy)
+        public RangeCategoryInfoService(
+            IRangeCategoryInfoSqlCompiler rangeIntervalSqlCompiler,
+            IRangeOuterBoundExtentService outerBoundExtentService
+        )
         {
-            CategoryCountService = categoryCountService;
             RangeIntervalSqlCompiler = rangeIntervalSqlCompiler;
             OuterBoundExtentService = outerBoundExtentService;
         }
 
-        public IRangeIntervalSqlCompiler RangeIntervalSqlCompiler { get; }
+        public IRangeCategoryInfoSqlCompiler RangeIntervalSqlCompiler { get; }
         public IRangeOuterBoundExtentService OuterBoundExtentService { get; }
+
+        public ICategoryInfoSqlCompiler SqlCompiler => RangeIntervalSqlCompiler;
 
         private RangeExtent GetPickExtent(FacetConfig2 config, int default_interval_count = 120)
         {
@@ -52,7 +48,7 @@ namespace SeadQueryCore
             return null;
         }
 
-        protected override FacetContent.CategoryInfoQuery CompileIntervalQuery(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count = 120)
+        public FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count = 120)
         {
             var facetConfig = facetsConfig.GetConfig(facetCode);
             var fullExtent = OuterBoundExtentService.GetExtent(facetConfig, default_interval_count);
@@ -64,17 +60,12 @@ namespace SeadQueryCore
 
             string sql = RangeIntervalSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
 
-            return new RangeCategoryInfoQuery
+            return new RangeCategoryInfo
             {
                 Count = interval,
                 Query = sql,
                 FullExtent = fullExtent
             };
-        }
-
-        protected override string GetName(IDataReader dr)
-        {
-            return $"{dr.GetInt32(1)} to {dr.GetInt32(2)}";
         }
     }
 }

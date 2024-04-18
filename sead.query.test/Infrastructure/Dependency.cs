@@ -82,46 +82,47 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<RangeOuterBoundExtentService>().As<IRangeOuterBoundExtentService>();
 
+            // These compilers are registered both by interface and keyed by EFacetType below
+            // This is a temporary solution until a more elegant solution is found
+            builder.RegisterType<DiscreteCategoryCountSqlCompiler>().As<IDiscreteCategoryCountSqlCompiler>();
+            builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
+
             builder.RegisterType<UndefinedPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Unknown);
+
+            builder.RegisterType<DiscreteCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Discrete);
             builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Discrete);
-            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
-            builder.RegisterType<GeoPolygonPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.GeoPolygon);
-            builder.RegisterType<RangesIntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.RangesIntersect);
-            builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
-            
-            builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
-            
             builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Discrete);
+            builder.RegisterType<DiscreteCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Discrete);
+
+
+            builder.RegisterType<RangeCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Range);
+            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
             builder.RegisterType<RangeCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Range);
-            // builder.RegisterType<GeoPolygonCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.GeoPolygon);
-            // builder.RegisterType<RangesIntersectCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.RangesIntersect);
+            builder.RegisterType<RangeCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Range);
+
+            builder.RegisterType<GeoPolygonCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.GeoPolygon);
+            builder.RegisterType<GeoPolygonPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.GeoPolygon);
+            builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.GeoPolygon);
+            builder.RegisterType<DiscreteCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.GeoPolygon);
+
+            builder.RegisterType<RangesIntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.RangesIntersect);
+
+            builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
+
+            builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
+
             builder.RegisterType<CategoryCountService>().As<ICategoryCountService>();
-            // builder.RegisterType<CategoryCountServiceLocator>().As<ICategoryCountServiceLocator>();
 
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
             builder.RegisterType<JoinsClauseCompiler>().As<IJoinsClauseCompiler>();
 
-            builder.RegisterType<DiscreteContentSqlCompiler>().As<IDiscreteContentSqlCompiler>();
+            builder.RegisterType<DiscreteCategoryInfoSqlCompiler>().As<IDiscreteCategoryInfoSqlCompiler>();
 
-            // These compilers are registered both by interface and keyed by EFacetType
-            // This is a temporary solution until a more elegant solution is found
-            builder.RegisterType<DiscreteCategoryCountSqlCompiler>().As<IDiscreteCategoryCountSqlCompiler>();
-            builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
-
-            builder.RegisterType<DiscreteCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Discrete);
-            builder.RegisterType<RangeCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Range);
-            // builder.RegisterType<GeoPolygonCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.GeoPolygon);
-            // builder.RegisterType<RangesIntersecctCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.RangesIntersect);
-
-            builder.RegisterType<RangeIntervalSqlCompiler>().As<IRangeIntervalSqlCompiler>();
+            builder.RegisterType<RangeCategoryInfoSqlCompiler>().As<IRangeCategoryInfoSqlCompiler>();
             builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
 
-            builder.RegisterType<RangeFacetContentService>().Keyed<IFacetContentService>(EFacetType.Range);
-            builder.RegisterType<DiscreteFacetContentService>().Keyed<IFacetContentService>(EFacetType.Discrete);
-            // builder.RegisterType<GeoPolygonFacetContentService>().Keyed<IFacetContentService>(EFacetType.GeoPolygon);
-            // builder.RegisterType<RangesIntersectFacetContentService>().Keyed<IFacetContentService>(EFacetType.RangesIntersect);
-            builder.RegisterType<FacetContentServiceLocator>().As<IFacetContentServiceLocator>();
+            builder.RegisterType<FacetContentService>().As<IFacetContentService>();
 
             // Not used:
             // builder.RegisterType<RangeCategoryBoundSqlCompiler>().Keyed<ICategoryBoundSqlCompiler>(EFacetType.Range);
@@ -139,8 +140,8 @@ namespace SQT.Infrastructure
             builder.Register(_ => GetCache(Options?.Store)).SingleInstance().ExternallyOwned();
             if (Options.Store.UseRedisCache)
             {
-                builder.RegisterType<SeadQueryAPI.Services.CachedLoadFacetService>().As<SeadQueryAPI.Services.ILoadFacetService>();
-                builder.RegisterType<SeadQueryAPI.Services.CachedLoadResultService>().As<SeadQueryAPI.Services.ILoadResultService>();
+                builder.RegisterType<SeadQueryAPI.Services.LoadFacetWithCachingService>().As<SeadQueryAPI.Services.ILoadFacetService>();
+                builder.RegisterType<SeadQueryAPI.Services.LoadResultWithCachingService>().As<SeadQueryAPI.Services.ILoadResultService>();
             }
             else
             {
