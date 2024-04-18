@@ -7,12 +7,15 @@ namespace SeadQueryCore
 {
     public class FacetContent
     {
-        public class CategoryInfoQuery
+        public class CategoryInfo
         {
             [JsonIgnore]
             public int Count { get; set; } = 0;
             [JsonIgnore]
             public string Query { get; set; } = "";
+            [JsonIgnore]
+            public List<decimal> Extent { get; set; }
+
         }
 
         /// <summary>
@@ -23,12 +26,12 @@ namespace SeadQueryCore
         /// <summary>
         /// List of items loaded for facet, one for each category in the filtered data
         /// </summary>
-        public List<CategoryCountItem> Items { get; set; } = new List<CategoryCountItem>();
+        public List<CategoryItem> Items { get; set; } = new List<CategoryItem>();
 
         /// <summary>
         /// Distribution (category counts) of result set filtered by facet configurationa and user picks
         /// </summary>
-        public Dictionary<string, CategoryCountItem> Distribution { get; set; }
+        public Dictionary<string, CategoryItem> Distribution { get; set; }
 
         /// <summary>
         /// List of user picks, including bogus-picks filtered out by a preceeding facet
@@ -49,7 +52,7 @@ namespace SeadQueryCore
 
         public string SqlQuery { get; set; }
 
-        public CategoryInfoQuery IntervalInfo { get; set; }
+        public CategoryInfo IntervalInfo { get; set; }
 
         public int CountOfSelections { get; set; } = 0;
 
@@ -60,11 +63,11 @@ namespace SeadQueryCore
 
         public FacetContent(
             FacetsConfig2 facetsConfig,
-            List<CategoryCountItem> contentCategoryCounts,
-            Dictionary<string, CategoryCountItem> categoryCounts,
+            List<CategoryItem> contentCategoryCounts,
+            Dictionary<string, CategoryItem> categoryCounts,
             string categoryCountSqlQuery,
             Dictionary<string, FacetsConfig2.UserPickData> picks,
-            CategoryInfoQuery intervalInfo
+            CategoryInfo intervalInfo
         )
         {
             FacetsConfig = facetsConfig;
@@ -72,7 +75,7 @@ namespace SeadQueryCore
             Distribution = categoryCounts;
             IntervalInfo = intervalInfo;
             SqlQuery = categoryCountSqlQuery;
-            Picks = picks ?? new Dictionary<string, FacetsConfig2.UserPickData>();
+            Picks = picks ?? [];
         }
     }
 }
