@@ -1,9 +1,4 @@
 ﻿using SeadQueryCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac.Features.Indexed;
 
 namespace SeadQueryAPI.Services
 {
@@ -12,39 +7,28 @@ namespace SeadQueryAPI.Services
         FacetContent Load(FacetsConfig2 facetsConfig);
     }
 
-    public class LoadFacetService : AppServiceBase, ILoadFacetService
+    public class LoadFacetService(ISetting config, IRepositoryRegistry context,
+        IBogusPickService bogusService, IFacetContentService contentService) : AppServiceBase(config, context), ILoadFacetService
     {
-        public IBogusPickService BogusPickService { get; private set; }
-        public IFacetContentServiceLocator ContentServiceLocator { get; private set; }
-
-        public LoadFacetService(ISetting config, IRepositoryRegistry context, ISeadQueryCache cache,
-            IBogusPickService bogusService, IFacetContentServiceLocator contentServiceLocator) : base(config, context)
-        {
-            BogusPickService = bogusService;
-            ContentServiceLocator = contentServiceLocator;
-        }
+        public IBogusPickService BogusPickService { get; private set; } = bogusService;
+        public IFacetContentService ContentService { get; private set; } = contentService;
 
         public virtual FacetContent Load(FacetsConfig2 facetsConfig)
         {
             facetsConfig = BogusPickService.Update(facetsConfig);
-            var facetContent = ContentServiceLocator.Locate(facetsConfig.TargetFacet.FacetTypeId).Load(facetsConfig);
+            var facetContent = ContentService.Load(facetsConfig);
             return facetContent;
         }
     }
 
-    public class CachedLoadFacetService : LoadFacetService
+    public class LoadFacetWithCachingService(
+        ISetting config,
+        IRepositoryRegistry context,
+        ISeadQueryCache cache,
+        IBogusPickService bogusService,
+        IFacetContentService contentService) : LoadFacetService(config, context, bogusService, contentService)
     {
-        public CachedLoadFacetService(
-            ISetting config,
-            IRepositoryRegistry context,
-            ISeadQueryCache cache,
-            IBogusPickService bogusService,
-            IFacetContentServiceLocator contentServiceLocator) : base(config, context, cache, bogusService, contentServiceLocator)
-        {
-            Cache = cache;
-        }
-
-        public ISeadQueryCache Cache { get; }
+        public ISeadQueryCache Cache { get; } = cache;
 
         public override FacetContent Load(FacetsConfig2 facetsConfig)
         {
