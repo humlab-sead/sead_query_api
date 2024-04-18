@@ -1,4 +1,5 @@
-﻿using Autofac.Features.Indexed;
+﻿using Autofac.Features.GeneratedFactories;
+using Autofac.Features.Indexed;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -228,12 +229,12 @@ namespace SQT
         /// </summary>
         /// <param name="fakeResult"></param>
         /// <returns></returns>
-        public virtual Mock<ITypedQueryProxy> MockTypedQueryProxy(List<CategoryCountItem> fakeCategoryCountItems)
+        public virtual Mock<ITypedQueryProxy> MockTypedQueryProxy(List<CategoryItem> fakeCategoryCountItems)
         {
             var mockQueryProxy = new Mock<ITypedQueryProxy>();
-            mockQueryProxy.Setup(foo => foo.QueryRows<CategoryCountItem>(
+            mockQueryProxy.Setup(foo => foo.QueryRows<CategoryItem>(
                         It.IsAny<string>(),
-                        It.IsAny<Func<IDataReader, CategoryCountItem>>()
+                        It.IsAny<Func<IDataReader, CategoryItem>>()
                 )).Returns(
                     fakeCategoryCountItems
                 );
@@ -245,12 +246,12 @@ namespace SQT
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        public virtual List<CategoryCountItem> FakeDiscreteCategoryCountItems(int count)
+        public virtual List<CategoryItem> FakeDiscreteCategoryCountItems(int count)
         {
             var fakeResult = new DiscreteCountDataReaderBuilder()
                 .CreateNewTable()
                 .GenerateBogusRows(count)
-                .ToItems<CategoryCountItem>().ToList();
+                .ToItems<CategoryItem>().ToList();
             return fakeResult;
         }
 
@@ -259,12 +260,12 @@ namespace SQT
         /// </summary>
         /// <param name="returnSql"></param>
         /// <returns></returns>
-        public virtual List<CategoryCountItem> FakeRangeCategoryCountItems(int start, int size, int count)
+        public virtual List<CategoryItem> FakeRangeCategoryCountItems(int start, int size, int count)
         {
             var fakeResult = new RangeCountDataReaderBuilder(start, size)
                 .CreateNewTable()
                 .GenerateBogusRows(count)
-                .ToItems<CategoryCountItem>().ToList();
+                .ToItems<CategoryItem>().ToList();
             return fakeResult;
         }
 
@@ -313,6 +314,48 @@ namespace SQT
             mockHelpers.Setup(x => x[EFacetType.Discrete])
                 .Returns(new DiscreteCategoryCountHelper());
             return mockHelpers;
+        }
+
+        public virtual Mock<IIndex<EFacetType, ICategoryInfoService>> MockCategoryInfoServices()
+        {
+            var mockServices = new Mock<IIndex<EFacetType, ICategoryInfoService>>();
+            var mockRangeCategoryInfoService = new Mock<ICategoryInfoService>();
+            mockRangeCategoryInfoService.Setup(c => c.GetCategoryInfo(
+                It.IsAny<FacetsConfig2>(),
+                It.IsAny<string>(),
+                It.IsAny<int>()
+            )).Returns(
+                new RangeCategoryInfo
+                {
+                    Count = 99,
+                    Query = "dumy-sql",
+                    FullExtent = new RangeExtent { Lower = 1, Upper = 100 }
+                }
+            );
+            mockRangeCategoryInfoService.Setup(c => c.SqlCompiler).Returns(
+                new Mock<ICategoryInfoSqlCompiler>().Object
+            );
+
+            var mockDiscreteCategoryInfoService = new Mock<ICategoryInfoService>();
+            mockDiscreteCategoryInfoService.Setup(c => c.GetCategoryInfo(
+                It.IsAny<FacetsConfig2>(),
+                It.IsAny<string>(),
+                It.IsAny<int>()
+            )).Returns(
+                new FacetContent.CategoryInfo
+                {
+                    Count = 88,
+                    Query = "dumy-sql",
+                }
+            );
+            mockDiscreteCategoryInfoService.Setup(c => c.SqlCompiler).Returns(
+                new Mock<ICategoryInfoSqlCompiler>().Object
+            );
+            mockServices.Setup(x => x[EFacetType.Range])
+                .Returns(mockRangeCategoryInfoService.Object);
+            mockServices.Setup(x => x[EFacetType.Discrete])
+                .Returns(mockDiscreteCategoryInfoService.Object);
+            return mockServices;
         }
 
         public virtual Mock<IIndex<EFacetType, ICategoryCountSqlCompiler>> MockCategoryCountSqlCompilers(string returnSql)
@@ -439,24 +482,30 @@ namespace SQT
         public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
             => ResultConfigFactory.Create(Facets.GetByCode(facetCode), Results.GetByKey(specificationKey), viewTypeId);
 
-        protected virtual Mock<DiscreteContentSqlCompiler> MockDiscreteContentSqlCompiler(string returnSql)
+        protected virtual Mock<DiscreteCategoryInfoSqlCompiler> MockDiscreteContentSqlCompiler(string returnSql)
         {
-            var mock = new Mock<DiscreteContentSqlCompiler>();
+            var mock = new Mock<DiscreteCategoryInfoSqlCompiler>();
             mock.Setup(
                 x => x.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<string>())
             ).Returns(returnSql);
             return mock;
         }
 
-        protected Mock<ICategoryCountService> MockCategoryCountService(List<CategoryCountItem> fakeCategoryCountItems)
+        protected Mock<ICategoryCountService> MockCategoryCountService(List<CategoryItem> fakeCategoryCountItems)
         {
             var mockCategoryCountService = new Mock<ICategoryCountService>();
             mockCategoryCountService.Setup(
-                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), It.IsAny<string>(), EFacetType.Unknown)
+                x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), EFacetType.Unknown)
             ).Returns(
                 new CategoryCountService.CategoryCountData
                 {
+                    CategoryInfo = new FacetContent.CategoryInfo
+                    {
+                        Count = fakeCategoryCountItems.Count,
+                        Query = "all-categories-sql"
+                    },
                     CategoryCounts = fakeCategoryCountItems.ToDictionary(z => z.Category),
+                    OuterCategoryCounts = fakeCategoryCountItems,
                     SqlQuery = "SELECT * FROM bla.bla"
                 }
             );
