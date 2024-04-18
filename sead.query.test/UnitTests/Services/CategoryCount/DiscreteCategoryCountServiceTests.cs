@@ -29,7 +29,7 @@ namespace SQT.Services
 
             var mockHelpers = MockCategoryCountHelpers();
             var mockSqlCompilers = MockCategoryCountSqlCompilers("SELECT * FROM foot.bar");
-
+            var mockCategoryInfoServices = MockCategoryInfoServices();
             // Act
             var service = new CategoryCountService(
                 fakeSettings,
@@ -37,7 +37,8 @@ namespace SQT.Services
                 mockQuerySetupBuilder.Object,
                 queryProxy.Object,
                 mockHelpers.Object,
-                mockSqlCompilers.Object
+                mockSqlCompilers.Object,
+                mockCategoryInfoServices.Object
             );
 
             var result = service.Load(fakeFacetsConfig.TargetCode, fakeFacetsConfig);

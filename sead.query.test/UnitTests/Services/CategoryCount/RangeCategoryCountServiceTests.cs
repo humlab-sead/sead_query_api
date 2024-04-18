@@ -28,9 +28,10 @@ namespace SQT.Services
             var mockRegistry = MockRegistryWithFacetRepository();
             var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
             var fakeResult = FakeRangeCategoryCountItems(start: 0, size: 10, count: 3);
-            var mockQueryProxy = new MockTypedQueryProxyFactory().Create<CategoryCountItem>(fakeResult);
+            var mockQueryProxy = new MockTypedQueryProxyFactory().Create<CategoryItem>(fakeResult);
             var mockHelpers = MockCategoryCountHelpers();
             var mockSqlCompilers = MockCategoryCountSqlCompilers("SELECT * FROM foot.bar");
+            var mockInfoServices = MockCategoryInfoServices();
 
             // Act
             var service = new CategoryCountService(
@@ -39,7 +40,8 @@ namespace SQT.Services
                  mockQuerySetupBuilder.Object,
                  mockQueryProxy.Object,
                  mockHelpers.Object,
-                 mockSqlCompilers.Object
+                 mockSqlCompilers.Object,
+                 mockInfoServices.Object
              );
             var result = service.Load(facetsConfig.TargetFacet.FacetCode, facetsConfig);
 

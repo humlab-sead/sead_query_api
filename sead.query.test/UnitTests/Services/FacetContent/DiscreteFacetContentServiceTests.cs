@@ -27,18 +27,16 @@ namespace SQT.Services
             var fakeQuerySetup = FakeCountOrContentQuerySetup(facetsConfig);
             var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var fakeValues = FakeDiscreteCategoryCountItems(5);
-            var mockDiscreteContentSqlCompiler = MockDiscreteContentSqlCompiler("#SQL-QUERY#");
             var mockQueryProxy = MockTypedQueryProxy(fakeValues);
             var mockCategoryCountService = MockCategoryCountService(fakeValues);
 
             // Act
-            var service = new DiscreteFacetContentService(
+            var service = new FacetContentService(
                 fakeSettings,
                 fakeRegistry,
                 mockQuerySetupBuilder.Object,
-                mockCategoryCountService.Object,
-                mockDiscreteContentSqlCompiler.Object,
-                mockQueryProxy.Object
+                mockQueryProxy.Object,
+                mockCategoryCountService.Object
              );
 
             var result = service.Load(facetsConfig);
