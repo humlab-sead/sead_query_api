@@ -19,7 +19,7 @@ namespace SQT.SqlCompilers
         public void Compile_Interval_ContainsGenerateSeries(int interval, int min, int max, int interval_count)
         {
             // Arrange
-            var compiler = new RangeIntervalSqlCompiler();
+            var compiler = new RangeCategoryInfoSqlCompiler();
 
             // Act
             var result = compiler.Compile(interval, min, max, interval_count);
