@@ -7,21 +7,16 @@ namespace SeadQueryCore;
 public interface IFacetTypePlugin
 {
     void Register(ContainerBuilder builder);
-    
+    ICategoryCountHelper CategoryCountHelper { get; }
     ICategoryCountSqlCompiler CategoryCountSqlCompiler { get; }
+    ICategoryInfoService CategoryInfoService { get; }
     ICategoryCountService CategoryCountService { get; }
-    IFacetContentService FacetContentService { get; }
     IPickFilterCompiler PickFilterCompiler { get; }
-    
 }
 
 public interface ICategoryCountHelper
 {
-    public string GetCategory(IDataReader x);
-    public int GetCount(IDataReader x);
-    public List<decimal> GetExtent(IDataReader x);
-
-    public List<string> GetTables(FacetsConfig2 facetsConfig, CompilePayload payload);
+    public List<string> GetTables(CompilePayload payload);
     public List<string> GetFacetCodes(FacetsConfig2 facetsConfig, CompilePayload payload);
-    
+
 }
