@@ -58,6 +58,12 @@ namespace SeadQueryCore
             return $"ST_Within({pointExpr}, {polygonExpr})";
         }
 
+        public static string WithinPolygonExpr(string latitude_column, string longitude_column, List<decimal> polygon)
+        {
+            var pointExpr = $"ST_MakePoint({latitude_column}, {longitude_column})";
+            return WithinPolygonExpr(pointExpr, polygon);
+        }
+
         /// <summary>
         /// Returns a SQL expression that checks if a numrangeexpr is within given buounds
         /// </summary>
