@@ -1,7 +1,6 @@
 
 using System;
 using System.Data;
-
 namespace SeadQueryCore;
 
 public static class IDataReaderExtensions
@@ -14,9 +13,14 @@ public static class IDataReaderExtensions
         var type_name = x.GetDataTypeName(ordinal);
         if (type_name == "numeric")
             return String.Format("{0:0.####}", x.GetDecimal(ordinal));
-        if (type_name == "text")
+        if (type_name.StartsWith("text") || type_name.StartsWith("varchar") || type_name.StartsWith("char"))
             return x.GetString(ordinal);
-        return x.GetInt32(ordinal).ToString();
+        // if (type_name.Contains("geometry")){
+        //     var geometry = x.GetFieldValue<PostgisGeometry>(ordinal);
+        //     return geometry.AsText();
+        // }
+
+        return x.GetInt64(ordinal).ToString();
     }
 }
 
