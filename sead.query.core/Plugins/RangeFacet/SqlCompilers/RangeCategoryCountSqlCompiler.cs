@@ -1,4 +1,6 @@
 ﻿
+using System.Data;
+
 namespace SeadQueryCore
 {
     public class RangeCategoryCountSqlCompiler : IRangeCategoryCountSqlCompiler
@@ -32,6 +34,17 @@ namespace SeadQueryCore
                 ORDER BY c.lower";
 
             return sql;
+        }
+
+        public CategoryItem ToItem(IDataReader dr)
+        {
+            return new CategoryItem()
+            {
+                Category = dr.IsDBNull(0) ? "(null)" : dr.GetString(0),
+                Count = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
+                Extent = [dr.IsDBNull(1) ? 0 : dr.GetInt32(1), dr.IsDBNull(2) ? 0 : dr.GetInt32(2)],
+                Name = $"{dr.GetInt32(1)} to {dr.GetInt32(2)}",
+            };
         }
     }
 }

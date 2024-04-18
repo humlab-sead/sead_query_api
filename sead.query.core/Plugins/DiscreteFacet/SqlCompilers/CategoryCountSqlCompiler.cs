@@ -1,4 +1,6 @@
 ﻿
+using System.Data;
+
 namespace SeadQueryCore
 {
     public class DiscreteCategoryCountSqlCompiler : IDiscreteCategoryCountSqlCompiler
@@ -19,5 +21,16 @@ namespace SeadQueryCore
         ";
             return sql;
         }
+
+        public CategoryItem ToItem(IDataReader dr)
+        {
+            return new CategoryItem() {
+                Category = dr.Category2String(0),
+                Count = dr.GetInt32(1),
+                Extent =  [dr.GetInt32(1)],
+                Name=dr.Category2String(0),
+            };
+        }
+        
     }
 }

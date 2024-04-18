@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
@@ -29,6 +30,7 @@ namespace SeadQueryCore
     public interface ICategoryCountSqlCompiler : ISqlCompiler
     {
         string Compile(QuerySetup query, Facet facet, CompilePayload payload);
+        CategoryItem ToItem(IDataReader dr);
     }
 
 }
