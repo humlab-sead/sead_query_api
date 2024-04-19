@@ -1,5 +1,5 @@
 using SeadQueryCore;
-using SQT.Fixtures;
+using SeadQueryCore.Plugin;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using Xunit;

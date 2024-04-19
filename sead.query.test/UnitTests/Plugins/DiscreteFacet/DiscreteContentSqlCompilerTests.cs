@@ -1,4 +1,4 @@
-using SeadQueryCore;
+using SeadQueryCore.Plugin;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using Xunit;

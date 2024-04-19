@@ -1,13 +1,12 @@
-﻿using Autofac.Features.GeneratedFactories;
-using Autofac.Features.Indexed;
+﻿using Autofac.Features.Indexed;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Plugin;
 using SeadQueryInfra;
-using SQT.Fixtures;
 using SQT.Infrastructure;
 using SQT.Mocks;
 using System;
@@ -16,7 +15,6 @@ using System.Data;
 using System.Data.Common;
 using System.Dynamic;
 using System.Linq;
-using Xunit;
 
 namespace SQT
 {

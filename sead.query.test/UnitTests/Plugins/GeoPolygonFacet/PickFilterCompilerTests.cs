@@ -1,9 +1,8 @@
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Plugin;
 using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SQT.SqlCompilers
