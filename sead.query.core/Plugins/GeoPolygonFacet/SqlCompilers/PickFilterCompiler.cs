@@ -17,7 +17,8 @@ public class GeoPolygonPickFilterCompiler : IPickFilterCompiler
         if (polygon[0] != polygon[^2] || polygon[1] != polygon[^1])
             polygon.AddRange([polygon[0], polygon[1]]);
 
-        return SqlCompileUtility.WithinPolygonExpr(currentFacet.CategoryIdExpr, polygon)
+        var dotName = currentFacet.TargetTable.ResolvedAliasOrTableOrUdfName;
+        return SqlCompileUtility.WithinPolygonExpr($"{dotName}.latitude_dd", $"{dotName}.longitude_dd", polygon)
             .GlueIf(currentFacet.Criteria, " AND ");
 
     }
