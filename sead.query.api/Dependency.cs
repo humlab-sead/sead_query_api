@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
+using SeadQueryCore.Plugin;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
@@ -102,6 +103,7 @@ namespace SeadQueryAPI
             builder.RegisterType<JoinsClauseCompiler>().As<IJoinsClauseCompiler>();
 
             builder.RegisterType<DiscreteCategoryInfoSqlCompiler>().As<IDiscreteCategoryInfoSqlCompiler>();
+            builder.RegisterType<GeoPolygonCategoryInfoSqlCompiler>().As<IGeoPolygonCategoryInfoSqlCompiler>();
 
             builder.RegisterType<RangeCategoryInfoSqlCompiler>().As<IRangeCategoryInfoSqlCompiler>();
             builder.RegisterType<RangeOuterBoundSqlCompiler>().As<IRangeOuterBoundSqlCompiler>();
