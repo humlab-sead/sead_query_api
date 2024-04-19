@@ -19,8 +19,8 @@ namespace SQT.Services
         public virtual Mock<RangeCategoryInfoSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
         {
             var mock = new Mock<RangeCategoryInfoSqlCompiler>();
-            mock.Setup(z => z.Compile(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(returnSql);
+            dynamic payload = new { Interval = It.IsAny<int>(), Lower = It.IsAny<int>(), Upper = It.IsAny<int>(), IntervalCount = It.IsAny<int>() };
+            mock.Setup(z => z.Compile(null, null, new { Interval = It.IsAny<int>(), Lower = It.IsAny<int>(), Upper = It.IsAny<int>(), IntervalCount = It.IsAny<int>() })).Returns(returnSql);
             return mock;
         }
 

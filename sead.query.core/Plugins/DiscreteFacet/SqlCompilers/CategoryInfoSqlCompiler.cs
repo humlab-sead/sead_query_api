@@ -5,11 +5,12 @@ namespace SeadQueryCore
 {
     public class DiscreteCategoryInfoSqlCompiler : IDiscreteCategoryInfoSqlCompiler
     {
-        public virtual string Compile(QueryBuilder.QuerySetup query, Facet facet, string categoryNameFilter)
+        public virtual string Compile(QueryBuilder.QuerySetup query, Facet facet, dynamic payload)
         {
+            var categoryNameFilter = (string)payload ?? "";
             var targetName = query.Facet.TargetTable.ResolvedSqlJoinName;
             string sql = $@"
-            SELECT cast({facet.CategoryIdExpr} AS varchar) AS category 
+            SELECT cast({facet.CategoryIdExpr} AS varchar) AS category, {facet.CategoryNameExpr} AS name  
             FROM {targetName}
                  {query.Joins.Combine("")}
             WHERE 1 = 1

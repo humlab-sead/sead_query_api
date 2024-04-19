@@ -2,24 +2,12 @@
 
 namespace SeadQueryCore
 {
-    public class DiscreteCategoryInfoService : ICategoryInfoService
+    public class DiscreteCategoryInfoService(IQuerySetupBuilder builder, IDiscreteCategoryInfoSqlCompiler contentSqlCompiler
+        ) : ICategoryInfoService
     {
-        public DiscreteCategoryInfoService(
-            IFacetSetting config,
-            IRepositoryRegistry context,
-            IQuerySetupBuilder builder,
-            ICategoryCountService categoryCountService,
-            IDiscreteCategoryInfoSqlCompiler contentSqlCompiler,
-            ITypedQueryProxy queryProxy
-            )
-        {
-            QuerySetupBuilder = builder;
-            SqlCompiler = contentSqlCompiler;
-        }
+        IQuerySetupBuilder QuerySetupBuilder { get; } = builder;
 
-        IQuerySetupBuilder QuerySetupBuilder { get; }
-
-        public IDiscreteCategoryInfoSqlCompiler SqlCompiler { get; }
+        public IDiscreteCategoryInfoSqlCompiler SqlCompiler { get; } = contentSqlCompiler;
 
         ICategoryInfoSqlCompiler ICategoryInfoService.SqlCompiler => SqlCompiler;
 

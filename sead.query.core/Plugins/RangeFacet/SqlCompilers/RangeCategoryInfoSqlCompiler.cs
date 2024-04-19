@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SeadQueryCore
 {
     public class RangeCategoryInfoSqlCompiler : IRangeCategoryInfoSqlCompiler
     {
-        public virtual string Compile(int interval, int min, int max, int interval_count)
+        public virtual string Compile(QueryBuilder.QuerySetup query, Facet facet, dynamic payload)
         {
+            var (min, max, interval) = (Tuple<int,int,int>)payload;
             string sql = $@"
             (
                 SELECT n::text || ' => ' || (n + {interval})::text, n, n + {interval}

@@ -14,15 +14,17 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [InlineData(10, 0, 120, 0)]
-        [InlineData(10, 0, 500, 0)]
-        public void Compile_Interval_ContainsGenerateSeries(int interval, int min, int max, int interval_count)
+        [InlineData(10, 0, 120)]
+        [InlineData(10, 0, 500)]
+        public void Compile_Interval_ContainsGenerateSeries(int interval, int min, int max)
         {
             // Arrange
             var compiler = new RangeCategoryInfoSqlCompiler();
 
+            Tuple<int, int, int> payload = new Tuple<int, int, int>(min, max, interval);
+
             // Act
-            var result = compiler.Compile(interval, min, max, interval_count);
+            var result = compiler.Compile(null, null, payload);
 
             // Assert
             var expected = $"generate_series({min},{max},{interval})";

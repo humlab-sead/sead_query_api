@@ -19,18 +19,18 @@ namespace SeadQueryCore
     public class RangeCategoryInfoService : ICategoryInfoService
     {
         public RangeCategoryInfoService(
-            IRangeCategoryInfoSqlCompiler rangeIntervalSqlCompiler,
+            IRangeCategoryInfoSqlCompiler categoryInfoSqlCompiler,
             IRangeOuterBoundExtentService outerBoundExtentService
         )
         {
-            RangeIntervalSqlCompiler = rangeIntervalSqlCompiler;
+            CategoryInfoSqlCompiler = categoryInfoSqlCompiler;
             OuterBoundExtentService = outerBoundExtentService;
         }
 
-        public IRangeCategoryInfoSqlCompiler RangeIntervalSqlCompiler { get; }
+        public IRangeCategoryInfoSqlCompiler CategoryInfoSqlCompiler { get; }
         public IRangeOuterBoundExtentService OuterBoundExtentService { get; }
 
-        public ICategoryInfoSqlCompiler SqlCompiler => RangeIntervalSqlCompiler;
+        public ICategoryInfoSqlCompiler SqlCompiler => CategoryInfoSqlCompiler;
 
         private RangeExtent GetPickExtent(FacetConfig2 config, int default_interval_count = 120)
         {
@@ -55,10 +55,17 @@ namespace SeadQueryCore
             var pickExtent = GetPickExtent(facetConfig, default_interval_count) ?? fullExtent;
 
             var (lower, upper, interval_count) = (pickExtent.Lower, pickExtent.Upper, pickExtent.Count);
-
             int interval = Math.Max((int)Math.Floor((upper - lower) / interval_count), 1);
 
-            string sql = RangeIntervalSqlCompiler.Compile(interval, (int)lower, (int)upper, interval_count);
+            dynamic payload = new
+            {
+                Lower = pickExtent.Lower,
+                Upper = pickExtent.Upper,
+                Interval = Math.Max((int)Math.Floor((pickExtent.Upper - pickExtent.Lower) / pickExtent.Count), 1),
+                IntervalCount = pickExtent.Count
+            };
+
+            string sql = CategoryInfoSqlCompiler.Compile(null, null, payload);
 
             return new RangeCategoryInfo
             {
