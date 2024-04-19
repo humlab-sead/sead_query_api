@@ -1,9 +1,5 @@
-﻿using System.Data;
-using SeadQueryCore.QueryBuilder;
+﻿namespace SeadQueryCore.Plugin;
 
-namespace SeadQueryCore
+public interface IDiscreteCategoryInfoSqlCompiler : ICategoryInfoSqlCompiler
 {
-    public interface IDiscreteCategoryInfoSqlCompiler : ICategoryInfoSqlCompiler
-    {
-    }
 }

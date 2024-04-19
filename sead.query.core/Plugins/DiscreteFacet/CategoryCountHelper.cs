@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
-namespace SeadQueryCore;
+namespace SeadQueryCore.Plugin;
 
 
 public class DiscreteCategoryCountHelper : ICategoryCountHelper

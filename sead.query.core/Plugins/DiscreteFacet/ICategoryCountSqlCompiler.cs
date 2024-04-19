@@ -1,6 +1,5 @@
-﻿namespace SeadQueryCore
+﻿namespace SeadQueryCore.Plugin;
+
+public interface IDiscreteCategoryCountSqlCompiler : ICategoryCountSqlCompiler
 {
-    public interface IDiscreteCategoryCountSqlCompiler : ICategoryCountSqlCompiler
-    {
-    }
 }

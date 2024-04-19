@@ -1,25 +1,7 @@
 ﻿using SeadQueryCore.QueryBuilder;
 
-namespace SeadQueryCore
+namespace SeadQueryCore.Plugin;
+
+public class DiscreteCategoryInfoService(IQuerySetupBuilder builder, IDiscreteCategoryInfoSqlCompiler compiler) : Plugin.Common.CategoryInfoService(builder, compiler)
 {
-    public class DiscreteCategoryInfoService(IQuerySetupBuilder builder, IDiscreteCategoryInfoSqlCompiler contentSqlCompiler
-        ) : ICategoryInfoService
-    {
-        IQuerySetupBuilder QuerySetupBuilder { get; } = builder;
-
-        public IDiscreteCategoryInfoSqlCompiler SqlCompiler { get; } = contentSqlCompiler;
-
-        ICategoryInfoSqlCompiler ICategoryInfoService.SqlCompiler => SqlCompiler;
-
-        public FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, dynamic payload = null)
-        {
-            var querySetup = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, null, null);
-            var sql = SqlCompiler.Compile(querySetup, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
-            return new FacetContent.CategoryInfo
-            {
-                Count = 1,
-                Query = sql
-            };
-        }
-    }
 }
