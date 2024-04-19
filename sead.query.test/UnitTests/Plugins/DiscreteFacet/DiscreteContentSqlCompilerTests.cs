@@ -7,9 +7,9 @@ using System.Diagnostics;
 namespace SQT.SqlCompilers
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class DiscreteContentSqlCompilerTests : DisposableFacetContextContainer
+    public class DiscreteCategoryInfoSqlCompilerTests : DisposableFacetContextContainer
     {
-        public DiscreteContentSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public DiscreteCategoryInfoSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
         }
 
