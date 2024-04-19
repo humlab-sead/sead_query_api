@@ -720,22 +720,6 @@
     "SortExpr": "region.location_name"
   },
   {
-    "FacetId": 51,
-    "FacetCode": "sites_polygon",
-    "DisplayTitle": "Site (map)",
-    "Description": "General name for the excavation or sampling location",
-    "FacetGroupId": 2,
-    "FacetTypeId": 3,
-    "CategoryIdExpr": "ST_MakePoint(tbl_sites.latitude_dd, tbl_sites.longitude_dd)",
-    "CategoryNameExpr": "tbl_sites.site_name",
-    "IsApplicable": true,
-    "IsDefault": true,
-    "AggregateType": "count",
-    "AggregateTitle": "Number of samples",
-    "AggregateFacetId": 1,
-    "SortExpr": "ST_MakePoint(tbl_sites.latitude_dd, tbl_sites.longitude_dd)"
-  },
-  {
     "FacetId": 52,
     "FacetCode": "analysis_entity_ages",
     "DisplayTitle": "Site (map)",
@@ -766,5 +750,21 @@
     "AggregateTitle": "Number of samples",
     "AggregateFacetId": 1,
     "SortExpr": "facet.family_taxon_shortcut.family_name"
+  },
+  {
+    "FacetId": 51,
+    "FacetCode": "sites_polygon",
+    "DisplayTitle": "Site (map)",
+    "Description": "General name for the excavation or sampling location",
+    "FacetGroupId": 2,
+    "FacetTypeId": 3,
+    "CategoryIdExpr": "tbl_sites.site_id",
+    "CategoryNameExpr": "tbl_sites.site_name",
+    "IsApplicable": true,
+    "IsDefault": true,
+    "AggregateType": "count",
+    "AggregateTitle": "Number of samples",
+    "AggregateFacetId": 1,
+    "SortExpr": "tbl_sites.site_name"
   }
 ]
