@@ -13,7 +13,7 @@ public interface ICategoryInfoSqlCompiler : ISqlCompiler
 
 public interface ICategoryInfoService
 {
-    FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, int default_interval_count = 120);
+    FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, dynamic payload = null);
 
     ICategoryInfoSqlCompiler SqlCompiler { get; }
 

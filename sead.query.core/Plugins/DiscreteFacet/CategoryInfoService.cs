@@ -11,7 +11,7 @@ namespace SeadQueryCore
 
         ICategoryInfoSqlCompiler ICategoryInfoService.SqlCompiler => SqlCompiler;
 
-        public FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, int count = 0)
+        public FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, dynamic payload = null)
         {
             var querySetup = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, null, null);
             var sql = SqlCompiler.Compile(querySetup, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
