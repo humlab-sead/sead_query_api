@@ -2,14 +2,9 @@
 
 namespace SeadQueryCore
 {
-    public class RangeOuterBoundExtentService : IRangeOuterBoundExtentService
+    public class RangeOuterBoundExtentService(ITypedQueryProxy queryProxy) : IRangeOuterBoundExtentService
     {
-        public ITypedQueryProxy QueryProxy { get; }
-
-        public RangeOuterBoundExtentService(ITypedQueryProxy queryProxy)
-        {
-            QueryProxy = queryProxy;
-        }
+        public ITypedQueryProxy QueryProxy { get; } = queryProxy;
 
         public (decimal, decimal) GetUpperLowerBounds(Facet facet)
         {
