@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore.Plugin.Common
 {
-    public class CategoryInfoService(IQuerySetupBuilder builder, ICategoryInfoSqlCompiler compiler) : ICategoryInfoService
+    public abstract class CategoryInfoService(IQuerySetupBuilder builder, ICategoryInfoSqlCompiler compiler) : ICategoryInfoService
     {
         IQuerySetupBuilder QuerySetupBuilder { get; } = builder;
 
