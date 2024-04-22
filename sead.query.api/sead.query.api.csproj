@@ -18,29 +18,11 @@
     <NoWarn>1701;1702;1705;1591;CS1591;NU1603</NoWarn>
   </PropertyGroup>
 
-  <!--<ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>-->
-
   <ItemGroup>
-
     <PackageReference Include="Autofac" Version="8.0.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
-    <!-- <PackageReference Include="FluentValidation" Version="8.6.0" /> -->
-
-    <!-- <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" /> -->
-
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.3" />
-
-    <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" /> -->
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Buffering" Version="0.2.2" /> -->
-
-    <!-- <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference> -->
-
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
@@ -55,10 +37,8 @@
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
-    <!-- <PackageReference Include="System.ValueTuple" Version="4.5.0" /> -->
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
