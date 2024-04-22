@@ -25,15 +25,15 @@ namespace SQT.Services
         }
 
         public virtual Mock<IRangeOuterBoundExtentService> MockRangeOuterBoundExtentService(
-            decimal lower, decimal upper, int count = 0
+            decimal lower, decimal upper
         )
         {
             var rangeOuterBoundExtentService = new Mock<IRangeOuterBoundExtentService>();
 
             /* GetExtent generates an extent */
             rangeOuterBoundExtentService
-                .Setup(z => z.GetExtent(It.IsAny<FacetConfig2>(), It.IsAny<int>()))
-                .Returns(new RangeExtent { Lower = lower, Upper = upper, Count = count });
+                .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
+                .Returns((lower,upper));
 
             /* GetUpperLowerBounds hits the database */
             rangeOuterBoundExtentService

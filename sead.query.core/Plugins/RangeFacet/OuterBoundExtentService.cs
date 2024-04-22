@@ -16,16 +16,5 @@ namespace SeadQueryCore
             });
             return item == null ? (0, 0) : (item.lower, item.upper);
         }
-
-        public RangeExtent GetExtent(FacetConfig2 config, int default_interval_count = 120)
-        {
-            var (lower, upper) = GetUpperLowerBounds(config.Facet);   // Fetch from database
-            return new RangeExtent
-            {
-                Lower = lower,
-                Upper = upper,
-                Count = default_interval_count
-            };
-        }
     }
 }
