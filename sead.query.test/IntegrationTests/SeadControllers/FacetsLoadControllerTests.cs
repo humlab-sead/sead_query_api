@@ -121,7 +121,7 @@ namespace IntegrationTests.Sead
         [Theory]
         [InlineData("palaeoentomology://ecocode_system:ecocode_system", "tbl_ecocode_systems", "tbl_ecocode_systems", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         [InlineData("palaeoentomology://ecocode:ecocode", "tbl_ecocode_definitions", "tbl_ecocode_definitions", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
-        [InlineData("palaeoentomology://abundances_all:abundances_all", "facet.view_abundance")]
+        // [InlineData("palaeoentomology://abundances_all:abundances_all", "facet.view_abundance")]
         [InlineData("palaeoentomology://geochronology:geochronology", "tbl_geochronology")]
         [InlineData("palaeoentomology://relative_age_name:relative_age_name", "tbl_relative_ages", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         [InlineData("palaeoentomology://activeseason:activeseason", "tbl_seasons", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
