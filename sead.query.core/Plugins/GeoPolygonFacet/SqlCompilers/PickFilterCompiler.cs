@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SeadQueryCore.QueryBuilder;
+namespace SeadQueryCore.Plugin;
 
 public class GeoPolygonPickFilterCompiler : IPickFilterCompiler
 {
@@ -20,7 +20,5 @@ public class GeoPolygonPickFilterCompiler : IPickFilterCompiler
         var dotName = currentFacet.TargetTable.ResolvedAliasOrTableOrUdfName;
         return SqlCompileUtility.WithinPolygonExpr($"{dotName}.latitude_dd", $"{dotName}.longitude_dd", polygon)
             .GlueIf(currentFacet.Criteria, " AND ");
-
     }
-
 }
