@@ -51,7 +51,7 @@ namespace SeadQueryCore
             var compiler = SqlCompilers[facetType];
             var infoService = CategoryInfoServices[facetType];
 
-            var categoryInfo = infoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode, null);
+            var categoryInfo = infoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
 
             CompilePayload compilePayload = new CompilePayload()
             {
@@ -70,7 +70,6 @@ namespace SeadQueryCore
             var sqlQuery = compiler.Compile(querySetup, facet, compilePayload);
 
             var categoryCounts = QueryProxy.QueryRows(sqlQuery, compiler.ToItem).ToDictionary(z => z.Category ?? "(null)");
-
             var outerCategoryCounts = QueryProxy.QueryRows(categoryInfo.Query, infoService.SqlCompiler.ToItem).ToList<CategoryItem>();
 
             foreach (var item in outerCategoryCounts)
