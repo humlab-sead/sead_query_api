@@ -51,7 +51,7 @@ namespace SeadQueryCore
             var compiler = SqlCompilers[facetType];
             var infoService = CategoryInfoServices[facetType];
 
-            var categoryInfo = infoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
+            var categoryInfo = infoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode, null);
 
             CompilePayload compilePayload = new CompilePayload()
             {
