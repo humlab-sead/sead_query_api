@@ -19,16 +19,18 @@ namespace SQT.SqlCompilers
         public void Compile_GeoPolygon_Matches(string uri)
         {
             // Arrange
-            var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
-            var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(fakeFacetsConfig.TargetCode);
-            const string textFilter = "";
+            var facetsConfig = FakeFacetsConfig(uri);
+            var facetConfig = facetsConfig.TargetConfig;
+            var facet = MockRegistryWithFacetRepository().Object.Facets.GetByCode(facetsConfig.TargetCode);
+            var pickCriteria = new GeoPolygonPickFilterCompiler().Compile(facet, facet, facetConfig);
+
+            var fakeQuerySetup = FakeCountOrContentQuerySetup(facetsConfig, pickCriteria);
 
             // Act
-            var result = new DiscreteCategoryInfoSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
+            var result = new GeoPolygonCategoryInfoSqlCompiler().Compile(fakeQuerySetup, facet, null);
 
             // Assert
-            var matcher = new DiscreteContentSqlCompilerMatcher();
+            var matcher = new GeoPolygonCategoryCountSqlCompilerMatcher();
             var match = matcher.Match(result);
             Assert.True(match.Success);
         }

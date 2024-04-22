@@ -65,7 +65,7 @@ namespace SQT.SqlCompilers
             const string textFilter = "";
 
             // Act
-            var result = new GeoPolygonCategoryInfoSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
+            var result = new DiscreteCategoryInfoSqlCompiler().Compile(fakeQuerySetup, facet, textFilter);
 
             // Assert
             var matcher = new DiscreteContentSqlCompilerMatcher();

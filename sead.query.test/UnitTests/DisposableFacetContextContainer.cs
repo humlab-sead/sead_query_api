@@ -167,11 +167,11 @@ namespace SQT
             return mock;
         }
 
-        public QuerySetup FakeCountOrContentQuerySetup(FacetsConfig2 facetsConfig)
+        public QuerySetup FakeCountOrContentQuerySetup(FacetsConfig2 facetsConfig, string pickCriteria = null)
         {
             List<string> fakeJoins = FakeJoinsClause(5);
             var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
-            var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
+            var fakePickCriteria = new List<string> {  pickCriteria ?? "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
             var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
 
@@ -321,13 +321,13 @@ namespace SQT
             mockRangeCategoryInfoService.Setup(c => c.GetCategoryInfo(
                 It.IsAny<FacetsConfig2>(),
                 It.IsAny<string>(),
-                It.IsAny<int>()
+                It.IsAny<object>()
             )).Returns(
-                new RangeCategoryInfo
+                new FacetContent.CategoryInfo
                 {
                     Count = 99,
                     Query = "dumy-sql",
-                    FullExtent = new RangeExtent { Lower = 1, Upper = 100 }
+                    Extent = [1, 100]
                 }
             );
             mockRangeCategoryInfoService.Setup(c => c.SqlCompiler).Returns(
@@ -338,12 +338,13 @@ namespace SQT
             mockDiscreteCategoryInfoService.Setup(c => c.GetCategoryInfo(
                 It.IsAny<FacetsConfig2>(),
                 It.IsAny<string>(),
-                It.IsAny<int>()
+                It.IsAny<object>()
             )).Returns(
                 new FacetContent.CategoryInfo
                 {
                     Count = 88,
                     Query = "dumy-sql",
+                    Extent = [1]
                 }
             );
             mockDiscreteCategoryInfoService.Setup(c => c.SqlCompiler).Returns(
