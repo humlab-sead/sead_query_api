@@ -52,6 +52,7 @@ namespace IntegrationTests.Sead
         [InlineData("sites:sites", true, "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("pollen://sites:sites", true, "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("ceramic://sites:sites", true, "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
+        [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738", false)]
         public async Task Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri, bool checkNotEmpty, params string[] expectedJoins)
         {
             // Arrange
@@ -92,26 +93,8 @@ namespace IntegrationTests.Sead
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
         }
 
-        /* SQL to generate the inline data
-            with facet_tables as (
-             select f.facet_id, f.facet_code, string_agg('"' || t.table_or_udf_name || '"', ', ') as tables
-             from facet.facet f
-             join facet.facet_table ft using (facet_id)
-             join facet.table t using (table_id)
-             group by f.facet_id, f.facet_code
-            )
-            select '[InlineData("' || d.facet_code || '://' || c.facet_code || ':' || c.facet_code ||'", ' || t.tables || coalesce(', ' || a.tables, '') || ')]'
-            from facet.facet d
-            join facet.facet_children r
-            on r.facet_code = d.facet_code
-            join facet.facet c
-            on c.facet_code = r.child_facet_code
-            join facet_tables as t
-            on t.facet_code = c.facet_code
-            left join facet_tables as a
-            on a.facet_id = c.aggregate_facet_id
-            and c.facet_type_id = 1 -- aggregate facet only used for discrete facets
-             */
+
+
         /// <summary>
         /// Tests all domain facets
         /// </summary>
