@@ -10,7 +10,7 @@ public class GeoPolygonCategoryCountSqlCompiler : IGeoPolygonCategoryCountSqlCom
         var dotName = query.Facet.TargetTable.ResolvedAliasOrTableOrUdfName;
 
         string sql = $@"
-            SELECT {facet.CategoryIdExpr} AS category, 1 as count, {dotName}.longitude_dd, {dotName}.latitude_dd
+            SELECT {facet.CategoryIdExpr} AS category, 1 as count, COALESCE({dotName}.longitude_dd,0), COALESCE({dotName}.latitude_dd,0)
             FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                     {query.Joins.Combine("\t\t\t\t\t\n")}
             WHERE 1 = 1
