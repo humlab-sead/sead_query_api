@@ -24,6 +24,8 @@ namespace SeadQueryAPI.Serializers
 
         public FacetsConfig2 Reconstitute(FacetsConfig2 facetsConfig)
         {
+            ArgumentNullException.ThrowIfNull(facetsConfig);
+
             Debug.Assert(facetsConfig.TargetCode != null);
             if (facetsConfig.TriggerCode.IsEmpty())
             {
