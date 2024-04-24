@@ -33,7 +33,8 @@ namespace SQT.LiveServices
         [Theory]
         // [InlineData("genus:genus")]
         // [InlineData("abundance_classification:abundance_classification")]
-        [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738")]
+        // [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738")]
+        [InlineData("sites_polygon:sites_polygon")]
         public void Load_VariousConfigs_Success(string uri)
         {
             var fakeFacetsConfig = FakeFacetsConfig(uri);
@@ -42,8 +43,6 @@ namespace SQT.LiveServices
             var data = service.Load(fakeFacetsConfig);
 
             Assert.NotNull(data);
-
-
         }
     }
 }
