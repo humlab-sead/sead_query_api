@@ -1,5 +1,3 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +5,8 @@ using System.Data.Common;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
@@ -64,9 +64,9 @@ namespace SeadQueryInfra
 
         public IRepository2 GetRepository(Type type)
         {
-            if (!Repositories.ContainsKey(type))
+            if (!Repositories.TryGetValue(type, out var value))
                 throw new KeyNotFoundException(type.Name);
-            return (IRepository2)Repositories[type];
+            return (IRepository2)value;
         }
 
         public virtual IFacetRepository Facets => GetRepository<IFacetRepository>();

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeadQueryInfra
 {
@@ -7,7 +7,7 @@ namespace SeadQueryInfra
     {
         public static object SetEx(this DbContext context, Type type)
         {
-            return typeof(DbContext).GetMethod("Set", Type.EmptyTypes).MakeGenericMethod(new[] { type }).Invoke(context, Array.Empty<object>());
+            return typeof(DbContext).GetMethod("Set", Type.EmptyTypes).MakeGenericMethod(new[] { type }).Invoke(context, []);
         }
     }
 }

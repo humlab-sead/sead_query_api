@@ -1,20 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class DatabaseQueryProxy : ITypedQueryProxy, IDynamicQueryProxy
+    public class DatabaseQueryProxy(DbContext context) : ITypedQueryProxy, IDynamicQueryProxy
     {
-        public DbContext Context { get; }
-
-        public DatabaseQueryProxy(DbContext context)
-        {
-            Context = context;
-        }
+        public DbContext Context { get; } = context;
 
         public T QueryRow<T>(string sql, Func<IDataReader, T> selector = null)
         {

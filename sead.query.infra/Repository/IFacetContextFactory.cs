@@ -1,4 +1,4 @@
-﻿using SeadQueryCore;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {

@@ -5,14 +5,9 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class FacetContextFactory : IFacetContextFactory
+    public class FacetContextFactory(StoreSetting settings) : IFacetContextFactory
     {
-        public StoreSetting Settings { get; }
-
-        public FacetContextFactory(StoreSetting settings)
-        {
-            Settings = settings;
-        }
+        public StoreSetting Settings { get; } = settings;
 
         public IFacetContext GetInstance()
         {
