@@ -2,7 +2,7 @@
 ### Type:   discrete
 ### Chain:  sites
 ### Picks:  (none)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
 accept: application/json
@@ -21,7 +21,7 @@ accept: application/json
 ### Type:   discrete
 ### Chain:  tbl_biblio_modern
 ### Picks:  (none)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
 accept: application/json
@@ -40,7 +40,7 @@ accept: application/json
 ### Type:   discrete
 ### Chain:  tbl_biblio_sample_groups
 ### Picks:  (none)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
 accept: application/json
@@ -60,7 +60,7 @@ accept: application/json
 ### Type:   range
 ### Chain:  tbl_denormalized_measured_values_33_0
 ### Picks:  (none)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
 accept: application/json
@@ -82,7 +82,7 @@ accept: application/json
 ### Type:   range
 ### Chain:  tbl_denormalized_measured_values_32
 ### Picks: (50, 100)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
 accept: application/json
@@ -107,7 +107,7 @@ accept: application/json
 ### Type:   range
 ### Chain:  tbl_denormalized_measured_values_33_0
 ### Picks: (50, 100)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -148,7 +148,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:   range
 ### Chain:  tbl_denormalized_measured_values_33_0
 ### Picks: (50, 100)
-GET {{protocol}}://{{host}}:{{port}}/query/api/facets
+GET {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -157,7 +157,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:   range
 ### Chain:  tbl_denormalized_measured_values_33_0
 ### Picks: (50, 100)
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -180,7 +180,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:  discrete
 ### Chain: dataset_master
 ### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -203,7 +203,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:  discrete
 ### Chain: sites / country
 ### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -239,7 +239,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:  discrete
 ### Chain: sites / palaeoentomology [ parent facet]
 ### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -269,7 +269,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:  discrete
 ### Chain: palaeoentomology / sites
 ### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
@@ -299,7 +299,7 @@ Content-Type: application/json; charset=UTF-8
 ### Type:  discrete
 ### Chain: palaeoentomology
 ### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/query/api/facets/load
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
 Accept: application/json, text/javascript, /; q=0.01
