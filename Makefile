@@ -15,7 +15,12 @@ clean:
 	@dotnet clean -c Release
 	@dotnet nuget locals --clear all
 
-.PHONY: clean release debug publish tidy test tag
+.PHONY: clean release debug publish tidy test tag serve
+
+serve: debug
+	@cp -f conf/appsettings.Development.json sead.query.api/bin/Debug/net8.0/appsettings.json
+	@cp -f conf/.env sead.query.api/bin/Debug/net8.0/.env
+	@dotnet run --project sead.query.api/sead.query.api.csproj
 
 release:
 	dotnet build -c Release
