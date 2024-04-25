@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,9 +34,10 @@ public static class Program
 
     private static ILogger CreateSerilogger()
     {
+        var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER");
+        var appSettingsPath = string.IsNullOrEmpty(appSettingsFolder) ? "appsettings.json" : Path.Combine(appSettingsFolder, "appsettings.json");
         var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile("logging.json", true)
+                .AddJsonFile(appSettingsPath, true)
                 .Build();
 
         return new LoggerConfiguration()
