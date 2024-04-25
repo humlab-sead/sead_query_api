@@ -2,6 +2,7 @@ SHELL:=/bin/bash
 
 .DEFAULT_GOAL=info
 
+DEPLOY_CLUSTER=/home/sead/supersead.humlab.umu.se
 
 # ifeq (,$(wildcard ./conf/appsettings.Production.json))
 #     $(error ./conf/appsettings.Production.json does not exist!)
@@ -17,7 +18,7 @@ ifndef SEAD_QUERY_API_TAG
 	$(error SEAD_QUERY_API_TAG is undefined)
 endif
 
-.PHONY: image
+.PHONY: image bash
 
 image:
 	@echo "Building image using $(SEAD_QUERY_API_TAG)..."
@@ -40,3 +41,24 @@ image-host-compiled:
 		-t $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) \
 		-f ./Dockerfile.compiled .
 	@rm -rf ./publish
+
+
+bash:
+	@docker run --rm -it \
+		-v "./conf:/app/config" \
+		--env-file ./conf/.env \
+			$(IMAGE_NAME):$(IMAGE_TAG) /bin/bash
+
+jump-into-docker-compose-container:
+	@pushd . \
+		&& cd $(DEPLOY_CLUSTER) \
+		&& sudo docker-compose run --rm --entrypoint /bin/bash sead_query_api \
+		&& popd
+
+restart-docker-compose-cluster:
+	@pushd . \
+		&& cd $(DEPLOY_CLUSTER) \
+		&& sudo docker-compose down \
+		&& sudo docker-compose up -d \
+		&& popd
+	
