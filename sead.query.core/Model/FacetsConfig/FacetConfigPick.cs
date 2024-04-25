@@ -10,14 +10,14 @@ namespace SeadQueryCore
         private static readonly CultureInfo cultureInfo = new CultureInfo("en-US");
 
         public string PickValue { get; set; }
-        public string Text { get; set; }
+        public string Text { get; set; } = "";
 
         public FacetConfigPick()
         {
         }
 
         [JsonConstructor]
-        public FacetConfigPick(string value, string text)
+        public FacetConfigPick(string value, string text = "")
         {
             PickValue = value;
             Text = text;
