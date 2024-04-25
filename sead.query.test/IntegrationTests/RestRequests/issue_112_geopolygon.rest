@@ -17,7 +17,7 @@ accept: application/json
 }
 
 ###
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load2
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
 accept: application/json
