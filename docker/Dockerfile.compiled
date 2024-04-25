@@ -4,8 +4,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
 RUN mkdir -p /data /app /app/logs /app/config
+COPY ./publish/. /app/
 
 WORKDIR /app
-COPY ./publish/. .
 
 ENTRYPOINT ["dotnet", "sead.query.api.dll"]
