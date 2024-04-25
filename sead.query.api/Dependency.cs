@@ -115,7 +115,7 @@ namespace SeadQueryAPI
 
             builder.RegisterType<ResultService>().As<IResultService>();
 
-            builder.RegisterType<CategoryCountPayloadService>().Keyed<IResultPayloadService>("map");
+            builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("map");
             builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("tabular");
             builder.RegisterType<ResultPayloadServiceLocator>().As<IResultPayloadServiceLocator>();
 
