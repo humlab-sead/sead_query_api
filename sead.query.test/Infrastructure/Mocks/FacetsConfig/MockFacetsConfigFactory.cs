@@ -45,10 +45,9 @@ namespace SQT.Mocks
         {
             return Create(
                 facetCode,
-                facetCode,
-                new List<FacetConfig2>() {
+                [
                     MockFacetConfigFactory.Create(Repository.GetByCode(facetCode), 0, new List<FacetConfigPick>())
-                }
+                ]
             );
         }
 
@@ -74,7 +73,6 @@ namespace SQT.Mocks
                 .ToList();
 
             return Create(
-                config.TargetCode,
                 config.TargetCode,
                 facetConfigs,
                 "populate",
