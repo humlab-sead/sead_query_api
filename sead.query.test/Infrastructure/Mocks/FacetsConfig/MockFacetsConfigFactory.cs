@@ -27,7 +27,7 @@ namespace SQT.Mocks
             return Repository.GetByCode(facetCode);
         }
 
-        public FacetsConfig2 Create(string targetCode, string triggerCode, List<FacetConfig2> facetConfigs, string requestType = "populate", string domainCode = "")
+        public FacetsConfig2 Create(string targetCode, List<FacetConfig2> facetConfigs, string requestType = "populate", string domainCode = "")
         {
             return new FacetsConfig2()
             {
@@ -35,7 +35,6 @@ namespace SQT.Mocks
                 DomainFacet = domainCode.IsNotEmpty() ? GetFacet(domainCode) : null,
                 TargetCode = targetCode,
                 TargetFacet = GetFacet(targetCode),
-                TriggerCode = triggerCode,
                 RequestId = "1",
                 RequestType = requestType,
                 FacetConfigs = facetConfigs

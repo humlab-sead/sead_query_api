@@ -26,7 +26,6 @@ namespace SQT.Mocks
             public string Domain { get; set; }
             public string Uri { get; set; }
             public string TargetCode { get; set; }
-            public string TriggerCode { get; set; }
             public Dictionary<string, List<FacetConfigPick>> FacetCodes { get; set; }
         }
 
@@ -50,7 +49,7 @@ namespace SQT.Mocks
             var parts = uri.Split(':').ToList();
             var codes = parts[0].Split("@");
             var targetCode = codes[0];
-            var triggerCode = codes.Length > 1 ? codes[1] : targetCode;
+            // var triggerCode = codes.Length > 1 ? codes[1] : targetCode;
             var facetConfigCodes = parts.Count > 1 ? parts[1] : targetCode;
 
             var facetCodes = facetConfigCodes
@@ -68,7 +67,6 @@ namespace SQT.Mocks
                 Domain = domain,
                 Uri = uri,
                 TargetCode = targetCode,
-                TriggerCode = triggerCode,
                 FacetCodes = facetCodes
             };
         }

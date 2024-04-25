@@ -9,13 +9,11 @@ var querySetup = new QuerySetup
 		{
 			new FacetConfigPick
 			{
-				PickType = SeadQueryCore.EPickType.lower,
 				PickValue = "110",
 				Text = "110"
 			},
 			new FacetConfigPick
 			{
-				PickType = SeadQueryCore.EPickType.upper,
 				PickValue = "2904",
 				Text = "2904"
 			}

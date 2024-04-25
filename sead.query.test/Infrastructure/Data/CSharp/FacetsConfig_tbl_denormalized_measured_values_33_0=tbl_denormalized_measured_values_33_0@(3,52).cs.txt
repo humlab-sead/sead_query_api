@@ -3,7 +3,6 @@ var facetsConfig2 = new FacetsConfig2
 	RequestId = "1",
 	RequestType = "populate",
 	TargetCode = "tbl_denormalized_measured_values_33_0",
-	TriggerCode = "tbl_denormalized_measured_values_33_0",
 	FacetConfigs = new List<FacetConfig2>
 	{
 		new FacetConfig2
@@ -15,13 +14,11 @@ var facetsConfig2 = new FacetsConfig2
 			{
 				new FacetConfigPick
 				{
-					PickType = SeadQueryCore.EPickType.lower,
 					PickValue = "3",
 					Text = "3"
 				},
 				new FacetConfigPick
 				{
-					PickType = SeadQueryCore.EPickType.upper,
 					PickValue = "52",
 					Text = "52"
 				}
@@ -37,13 +34,11 @@ var facetsConfig2 = new FacetsConfig2
 		{
 			new FacetConfigPick
 			{
-				PickType = SeadQueryCore.EPickType.lower,
 				PickValue = "3",
 				Text = "3"
 			},
 			new FacetConfigPick
 			{
-				PickType = SeadQueryCore.EPickType.upper,
 				PickValue = "52",
 				Text = "52"
 			}

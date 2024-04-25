@@ -27,10 +27,6 @@ namespace SeadQueryAPI.Serializers
             ArgumentNullException.ThrowIfNull(facetsConfig);
 
             Debug.Assert(facetsConfig.TargetCode != null);
-            if (facetsConfig.TriggerCode.IsEmpty())
-            {
-                facetsConfig.TriggerCode = facetsConfig.TargetCode;
-            }
             facetsConfig.DomainFacet = GetFacetByCode(facetsConfig.DomainCode);
             facetsConfig.TargetFacet = GetFacetByCode(facetsConfig.TargetCode);
 

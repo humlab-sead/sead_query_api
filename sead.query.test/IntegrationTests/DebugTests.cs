@@ -23,7 +23,6 @@ namespace IntegrationTests.Debug
                     ""requestType"": ""populate"",
                     ""domainCode"": """",
                     ""targetCode"": ""ecocode"",
-                    ""triggerCode"": ""ecocode"",
                     ""facetConfigs"": [
                         {
                             ""facetCode"": ""ecocode"",
@@ -121,7 +120,6 @@ namespace IntegrationTests.Debug
                 RequestType = "populate",
                 DomainCode = "",
                 TargetCode = "ecocode",
-                TriggerCode = "ecocode",
                 FacetConfigs = new List<FacetConfig2>
                 {
                     new FacetConfig2
