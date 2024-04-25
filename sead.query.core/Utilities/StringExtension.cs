@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SeadQueryCore
 {
-    public static class StringExtension
+    public static partial class StringExtension
     {
         public static bool IsEmpty(this string x) => (x ?? "").Equals("");
         public static bool IsNotEmpty(this string x) => !(x ?? "").Equals("");
@@ -45,7 +45,7 @@ namespace SeadQueryCore
         /// <returns></returns>
         public static string Squeeze(this string text)
         {
-            return Regex.Replace(text ?? "", @"\s+", " ").Trim();
+            return MyRegex().Replace(text ?? "", " ").Trim();
         }
 
         /// <summary>
@@ -56,8 +56,11 @@ namespace SeadQueryCore
         public static List<string> WrapToList(this string text)
         {
             if (text == null)
-                return new List<string>();
-            return new List<string> { text };
+                return [];
+            return [text];
         }
+
+        [GeneratedRegex(@"\s+")]
+        private static partial Regex MyRegex();
     }
 }

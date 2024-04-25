@@ -47,6 +47,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
+                "SEAD_QUERY_API_PROJECT_ROOT": "${workspaceRoot}",
             },
             "envFile": "${workspaceFolder}/conf/.env",
             "sourceFileMap": {
@@ -68,6 +69,9 @@
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "envFile": "${workspaceFolder}/conf/.env",
+            "env": {
+                "SEAD_QUERY_API_PROJECT_ROOT": "${workspaceRoot}",
+            },
             "externalConsole": false
         }
     ]

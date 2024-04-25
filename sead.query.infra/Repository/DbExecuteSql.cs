@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace Microsoft.EntityFrameworkCore
@@ -17,7 +17,8 @@ namespace Microsoft.EntityFrameworkCore
         public static RelationalDataReader ExecuteSqlQuery(this DatabaseFacade databaseFacade, string sql,
             params object[] parameters)
         {
-            try {
+            try
+            {
                 var concurrencyDetector = databaseFacade.GetService<IConcurrencyDetector>();
                 using (concurrencyDetector.EnterCriticalSection())
                 {
@@ -32,7 +33,9 @@ namespace Microsoft.EntityFrameworkCore
                                 null, null)
                         );
                 }
-            } catch (System.Exception ex) {
+            }
+            catch (System.Exception ex)
+            {
                 Log.Logger.Error(ex, $"Error executing SQL: {sql}");
                 throw;
             }
@@ -43,8 +46,9 @@ namespace Microsoft.EntityFrameworkCore
             CancellationToken cancellationToken = default,
             params object[] parameters)
         {
-            try {
-            var concurrencyDetector = databaseFacade.GetService<IConcurrencyDetector>();
+            try
+            {
+                var concurrencyDetector = databaseFacade.GetService<IConcurrencyDetector>();
                 Log.Logger.Information($"Executing SQL: {sql}");
 
                 using (concurrencyDetector.EnterCriticalSection())
@@ -60,7 +64,9 @@ namespace Microsoft.EntityFrameworkCore
                                 null, null),
                             cancellationToken: cancellationToken);
                 }
-            } catch (System.Exception ex) {
+            }
+            catch (System.Exception ex)
+            {
                 Log.Logger.Error(ex, $"Error executing SQL: {sql}");
                 throw;
             }

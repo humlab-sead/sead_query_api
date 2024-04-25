@@ -52,7 +52,6 @@ namespace SeadQueryCore.QueryBuilder
                 involvedConfigs.Insert(0, facetsConfig.CreateDomainConfig());
 
             var pickCriterias = PicksCompiler.Compile(targetFacet, involvedConfigs);
-
             var involvedFacets = involvedConfigs.Facets().AddUnion(targetFacet).ToList();
             var involvedTables = involvedFacets.TableNames().NullableUnion(extraTables).Distinct().ToList();
             var involvedJoins = JoinCompiler.Compile(facetsConfig, targetFacet, involvedTables);

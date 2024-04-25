@@ -16,7 +16,12 @@
   },
   {
     "FacetTypeId": 3,
-    "FacetTypeName": "geo",
+    "FacetTypeName": "geopolygon",
+    "ReloadAsTarget": true
+  },
+  {
+    "FacetTypeId": 4,
+    "FacetTypeName": "rangesintersect",
     "ReloadAsTarget": true
   }
 ]

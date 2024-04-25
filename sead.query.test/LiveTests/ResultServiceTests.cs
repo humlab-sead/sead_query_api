@@ -1,21 +1,8 @@
 using Autofac;
-using Microsoft.Extensions.Configuration;
-using Moq;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.Services.Result;
-using SeadQueryInfra;
-using SQLitePCL;
-using SQT.Infrastructure;
-using SQT.SQL.Matcher;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
 using Xunit;
-using SQT.Infrastructure;
 using SQT.Mocks;
 
 namespace SQT.LiveServices
@@ -45,15 +32,17 @@ namespace SQT.LiveServices
 
         
         [Theory]
-        [InlineData("abundance_classification:abundance_classification", "result_facet", "site_level", "tabular")]
+        // [InlineData("abundance_classification:abundance_classification", "result_facet", "site_level", "tabular")]
+        // [InlineData("isotope://sites:sites", "result_facet", "site_level", "tabular")]
+        [InlineData("isotope://sites:sites", "result_facet", "map_result", "map")]
         // [InlineData("genus:genus", "result_facet", "site_level", "tabular")]
         // [InlineData("sites:country@5/sites@4,5", "result_facet", "site_level", "map", 10)]
         // [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "map", 10)]
         // [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular", 10)]
-        public void Load_VariousConfigs_Success(string uri, string resultCode, string specificationKey, string viewType)
+        public void Load_VariousConfigs_Success(string uri, string resultCode, string aggregateCode, string viewType)
         {
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeResultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
+            var fakeResultConfig = FakeResultConfig(resultCode, aggregateCode, viewType);
             var service = this.Container.Resolve<ILoadResultService>();
             var data = service.Load(fakeFacetsConfig, fakeResultConfig);
             Assert.NotNull(data);

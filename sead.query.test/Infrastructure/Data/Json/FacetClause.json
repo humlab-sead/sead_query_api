@@ -6,12 +6,6 @@
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 16,
-    "FacetId": 21,
-    "Clause": "countries.location_type_id=1",
-    "EnforceConstraint": true
-  },
-  {
     "FacetClauseId": 17,
     "FacetId": 25,
     "Clause": "tbl_sites.site_id is not null",
@@ -33,12 +27,6 @@
     "FacetClauseId": 20,
     "FacetId": 37,
     "Clause": "facet.view_site_references.biblio_id is not null",
-    "EnforceConstraint": true
-  },
-  {
-    "FacetClauseId": 21,
-    "FacetId": 41,
-    "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
     "EnforceConstraint": true
   },
   {
@@ -84,9 +72,21 @@
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 29,
+    "FacetClauseId": 33,
     "FacetId": 48,
     "Clause": "tbl_sample_group_descriptions.sample_group_description_type_id=60",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 48,
+    "FacetId": 21,
+    "Clause": "countries.location_type_id=1",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 49,
+    "FacetId": 41,
+    "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
     "EnforceConstraint": true
   }
 ]

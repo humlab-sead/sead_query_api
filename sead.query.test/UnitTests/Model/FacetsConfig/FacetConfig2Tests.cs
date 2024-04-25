@@ -16,18 +16,15 @@ namespace SQT.Model
         [Fact]
         public void HasPicks_WhenRangeFacetHasPicks_IsTrue()
         {
-            // Arrange
             var facetConfig2 = new FacetConfig2
             {
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
-                Picks = FacetConfigPick.CreateLowerUpper(3M, 52M)
+                Picks = [new FacetConfigPick(3M), new FacetConfigPick(52M)]
             };
-            // Act
             var result = facetConfig2.HasPicks();
 
-            // Assert
             Assert.True(result);
         }
 
@@ -58,7 +55,7 @@ namespace SQT.Model
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
-                Picks = FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
+                Picks = FacetConfigPick.CreateByList(new List<int>() { 1, 2, 3 })
             };
             // Act
             var result = facetConfig2.HasPicks();
@@ -76,7 +73,7 @@ namespace SQT.Model
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
-                Picks = FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
+                Picks = FacetConfigPick.CreateByList(new List<int>() { 1, 2, 3 })
             };
 
             // Act
@@ -95,7 +92,7 @@ namespace SQT.Model
                 FacetCode = "dummy_code",
                 Facet = new Mock<Facet>().Object,
                 Position = 0,
-                Picks = FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
+                Picks = FacetConfigPick.CreateByList(new List<int>() { 1, 2, 3 })
             };
             const bool sort = false;
 
@@ -119,7 +116,7 @@ namespace SQT.Model
                 FacetCode = "result_facet",
                 Facet = facet,
                 Position = 0,
-                Picks = FacetConfigPick.CreateDiscrete(new List<int>() { 1, 2, 3 })
+                Picks = FacetConfigPick.CreateByList([1, 2, 3])
             };
             // Act
             var result = facetConfig2.GetJoinTables();

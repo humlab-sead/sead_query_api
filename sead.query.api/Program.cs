@@ -1,46 +1,56 @@
 ﻿using System;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace SeadQueryAPI
+namespace SeadQueryAPI;
+
+public static class Program
 {
-    public static class Program
+    public static int Main(string[] args)
     {
-        public static int Main(string[] args)
+        Log.Logger = CreateSerilogger();
+
+        Log.Information("Starting web host");
+
+        try
         {
-            Log.Logger = Logger.CreateSerilogger();
-
-            try
-            {
-                Log.Information("Starting web host");
-                var host = CreateHostBuilder(args).Build();
-                host.Run();
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Host terminated unexpectedly");
-                return 1;
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            CreateHostBuilder(args).Run();
+            return 0;
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-           Host.CreateDefaultBuilder(args)
-               .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-               .ConfigureWebHostDefaults(webBuilder =>
-               {
-                   webBuilder.ConfigureKestrel(_ =>
-                   {
-                        // Set properties and call methods on options
-                    })
-                   .UseStartup<Startup>();
-               }).UseSerilog()
-           ;
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Host terminated unexpectedly");
+            return 1;
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
+
+    private static ILogger CreateSerilogger()
+    {
+        var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("logging.json", true)
+                .Build();
+
+        return new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
+    }
+
+    public static IHost CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .ConfigureWebHostDefaults(
+                webBuilder => {
+                    webBuilder.ConfigureKestrel(_ => { })
+                    .UseStartup<Startup>();
+                })
+            .UseSerilog()
+            .Build();
 }

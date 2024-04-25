@@ -12,30 +12,18 @@
 		// 	"host": "localhost",
 		// 	"port": "53052",
 		// },
-		// "seadserv.humlab.umu.se": {
-		// 	"protocol" : "https",
-		// 	"host": "seadserv.humlab.umu.se",
-		// 	"port": "8089",
-		// },
-		// "supersead.humlab.umu.se": {
-		// 	"protocol" : "https",
-		// 	"host": "supersead.humlab.umu.se",
-		// 	"port": "8089",
-		// },
-		// "browser.sead.se": {
-		// 	"protocol" : "https",
-		// 	"host": "browser.sead.se",
-		// 	"port": "8089",
-		// },
-		"staging": {
-			"host": "supersead.humlab.umu.se",
-			"protocol": "https",
-			"port": "443",
 		},
-		"production": {
-			"host": "humlabseadserv.srv.its.umu.se",
+		"xproduction": {
+			"host": "seadserv-name",
 			"protocol": "https",
 			"port": "443",
+			"baseurl": "query/api",
+		},
+		"xdevelopment": {
+			"host": "localhost",
+			"protocol": "http",
+			"port": "53053",
+			"baseurl": "api",
 		}
 	},
 	"workbench.colorCustomizations": {
@@ -55,7 +43,12 @@
 		"titleBar.activeBackground": "#831104",
 		"titleBar.activeForeground": "#e7e7e7",
 		"titleBar.inactiveBackground": "#83110499",
-		"titleBar.inactiveForeground": "#e7e7e799"
+		"titleBar.inactiveForeground": "#e7e7e799",
+        // "diffEditorGutter.insertedLineBackground": "#ff0000",
+        // "diffEditorGutter.removedLineBackground": "#ff0000",
+        // "diffEditorOverview.insertedForeground": "#ff0000",
+        // "diffEditorOverview.removedForeground": "#ff0000",
+
 	},
 	"peacock.color": "#64a2d5",
 	"files.exclude": {
@@ -69,6 +62,7 @@
 	// "dotnet-test-explorer.showCodeLens": false,
 	"[csharp]": {
 		"editor.defaultFormatter": "ms-dotnettools.csharp",
+		// "editor.defaultFormatter": "csharpier.csharpier-vscode"
 	},
 	"workbench.tree.indent": 10,
 	"csharp.debug.justMyCode": true,
@@ -82,5 +76,4 @@
 	// "explorer.sortOrder": "modified",
 	"explorer.sortOrderLexicographicOptions": "lower",
 	"workbench.editor.highlightModifiedTabs": true,
-	
 }

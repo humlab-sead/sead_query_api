@@ -1,21 +1,8 @@
 ﻿using Autofac;
-using Microsoft.Extensions.Configuration;
-using Moq;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.Services.Result;
-using SeadQueryInfra;
-using SQLitePCL;
-using SQT.Infrastructure;
-using SQT.SQL.Matcher;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Linq;
 using Xunit;
-using SQT.Infrastructure;
 using SQT.Mocks;
 
 namespace SQT.LiveServices
@@ -43,20 +30,19 @@ namespace SQT.LiveServices
         public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
             => ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
 
-
         [Theory]
         // [InlineData("genus:genus")]
-        [InlineData("abundance_classification:abundance_classification")]
+        // [InlineData("abundance_classification:abundance_classification")]
+        [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738")]
+        // [InlineData("sites_polygon:sites_polygon")]
         public void Load_VariousConfigs_Success(string uri)
         {
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var service = this.Container.Resolve<IFacetContentReconstituteService>();
+            var service = this.Container.Resolve<ILoadFacetService>();
 
             var data = service.Load(fakeFacetsConfig);
 
             Assert.NotNull(data);
-
-
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using SeadQueryCore.QueryBuilder;
-using SeadQueryCore.Model.Ext;
+﻿using SeadQueryCore.Model.Ext;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +6,8 @@ namespace SeadQueryCore
 {
     public class TabularResultSqlCompiler : IResultSqlCompiler
     {
+        string IResultSqlCompiler.ViewTypeId => "tabular";
+        
         public string Compile(QueryBuilder.QuerySetup querySetup, Facet notUsed, IEnumerable<ResultSpecificationField> fields)
         {
             string sql = $@"

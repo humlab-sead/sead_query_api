@@ -1,23 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class TableRepository : Repository<Table, int>, ITableRepository
+    public class TableRepository(IFacetContext context) : Repository<Table, int>(context), ITableRepository
     {
-        public TableRepository(IFacetContext context) : base(context)
-        {
-        }
     }
 
-    public class TableRelationRepository : Repository<TableRelation, int>, ITableRelationRepository
+    public class TableRelationRepository(IFacetContext context) : Repository<TableRelation, int>(context), ITableRelationRepository
     {
-        public TableRelationRepository(IFacetContext context) : base(context)
-        {
-        }
-
         public override IEnumerable<TableRelation> GetAll()
         {
             return Context.Set<TableRelation>().BuildEntity().ToList();
@@ -25,7 +18,7 @@ namespace SeadQueryInfra
 
         public TableRelation FindByName(string sourceName, string targetName)
         {
-            string[] names = { sourceName, targetName };
+            string[] names = [sourceName, targetName];
             return Context.Set<TableRelation>().BuildEntity()
                 .Where(
                     r => (r.SourceTable.TableOrUdfName == sourceName && r.TargetTable.TableOrUdfName == targetName)

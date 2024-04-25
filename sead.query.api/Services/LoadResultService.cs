@@ -30,9 +30,9 @@ namespace SeadQueryAPI.Services
         }
     }
 
-    public class CachedLoadResultService : LoadResultService
+    public class LoadResultWithCachingService : LoadResultService
     {
-        public CachedLoadResultService(
+        public LoadResultWithCachingService(
             ISetting config,
             IRepositoryRegistry context,
             ISeadQueryCache cache,

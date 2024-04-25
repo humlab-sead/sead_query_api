@@ -1,29 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class FacetTypeRepository : Repository<FacetType, int>, IFacetTypeRepository
+    public class FacetTypeRepository(IFacetContext context) : Repository<FacetType, int>(context), IFacetTypeRepository
     {
-        public FacetTypeRepository(IFacetContext context) : base(context)
-        {
-        }
     }
 
-    public class FacetGroupRepository : Repository<FacetGroup, int>, IFacetGroupRepository
+    public class FacetGroupRepository(IFacetContext context) : Repository<FacetGroup, int>(context), IFacetGroupRepository
     {
-        public FacetGroupRepository(IFacetContext context) : base(context)
-        {
-        }
     }
-    public class FacetTableRepository : Repository<FacetTable, int>, IFacetTableRepository
+    public class FacetTableRepository(IFacetContext context) : Repository<FacetTable, int>(context), IFacetTableRepository
     {
-        public FacetTableRepository(IFacetContext context) : base(context)
-        {
-        }
-
         public IEnumerable<FacetTable> FindThoseWithAlias()
         {
             return GetAll().Where(p => p.HasAlias);
@@ -34,15 +24,11 @@ namespace SeadQueryInfra
         }
     }
 
-    public class FacetRepository : Repository<Facet, int>, IFacetRepository
+    public class FacetRepository(IFacetContext context) : Repository<Facet, int>(context), IFacetRepository
     {
         public static int DOMAIN_FACET_GROUP_ID = 999;
 
         private Dictionary<string, Facet> hash = null;
-
-        public FacetRepository(IFacetContext context) : base(context)
-        {
-        }
 
         protected override IQueryable<Facet> GetInclude(IQueryable<Facet> set)
         {

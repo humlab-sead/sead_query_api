@@ -12,16 +12,16 @@ namespace SeadQueryCore.QueryBuilder
 
     public class PickFilterCompilerLocator : IPickFilterCompilerLocator
     {
-        public PickFilterCompilerLocator(IIndex<int, IPickFilterCompiler> pickCompilers)
+        public PickFilterCompilerLocator(IIndex<EFacetType, IPickFilterCompiler> pickCompilers)
         {
             PickCompilers = pickCompilers;
         }
 
-        public IIndex<int, IPickFilterCompiler> PickCompilers { get; }
+        public IIndex<EFacetType, IPickFilterCompiler> PickCompilers { get; }
 
         public virtual IPickFilterCompiler Locate(EFacetType facetType)
         {
-            return PickCompilers[(int)facetType];
+            return PickCompilers[facetType];
         }
 
     }

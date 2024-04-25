@@ -23,7 +23,7 @@ namespace SeadQueryCore
         public int Position { get; set; } = 0;
         public string TextFilter { get; set; } = "";
 
-        public List<FacetConfigPick> Picks { get; set; }
+        public List<FacetConfigPick> Picks { get; set; } = [];
 
         [JsonIgnore]
         public Facet Facet { get; set; }
@@ -33,20 +33,39 @@ namespace SeadQueryCore
         {
         }
 
+        [JsonProperty]
+        public List<decimal> PickValues
+        {
+            set
+            {
+                Picks = value.Select(x => new FacetConfigPick(x)).ToList();
+            }
+        }
+
+        [JsonProperty]
+        public List<List<decimal>> Coordinates
+        {
+            set
+            {
+                Picks = value.SelectMany(coords => coords.Select(x => new FacetConfigPick(x))).ToList();
+            }
+        }
+
+
         public FacetConfig2(Facet facet, int position, string filter, List<FacetConfigPick> picks)
         {
             FacetCode = facet.FacetCode;
             Facet = facet;
             Position = position;
             TextFilter = filter;
-            Picks = picks ?? new List<FacetConfigPick>();
+            Picks = picks ?? [];
         }
 
         public bool HasPicks() => (Picks?.Count ?? 0) > 0;
         public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
-        public bool HasConstraints() => (HasPicks() || HasCriterias());
+        public bool HasConstraints() => HasPicks() || HasCriterias();
         public bool HasEnforcedConstraints()
-            => (Facet?.Clauses?.Where(x => x.EnforceConstraint).Any() ?? false);
+            => Facet?.Clauses?.Where(x => x.EnforceConstraint).Any() ?? false;
 
         public void ClearPicks() => Picks.Clear();
 
