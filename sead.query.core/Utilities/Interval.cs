@@ -1,48 +1,58 @@
 
-using System;
-using System.Collections.Generic;
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
 
-namespace SeadQueryCore;
+// namespace SeadQueryCore;
 
-public class Interval(decimal lower, decimal upper, int segmentCount = 120)
-{
-    public Interval(List<decimal> values) : this(values[0], values[1])
-    {
-        if (values.Count > 2 && values[2] > 0)
-            SegmentCount = (int)values[2];
-    }
+// public class Interval
+// {
+//     public Interval(decimal lower, decimal upper, int segmentCount = 80, decimal width = 0, bool adjust = true, int precision = 4)
+//     {
 
-    public decimal Lower { get; set; } = lower <= upper ? lower : upper;
-    public decimal Upper { get; set; } = upper >= lower ? upper : lower;
-    public int SegmentCount { get; set; } = segmentCount;
-    public decimal DecimalWidth => (Upper - Lower) / SegmentCount;
-    public int IntegerWidth => Math.Max((int)Math.Floor((Lower - Upper) / SegmentCount), 1);
+//         Lower = Math.Round(lower <= upper ? lower : upper, precision);
+//         Upper = Math.Round(upper >= lower ? upper : lower, precision);
 
-    public int Count => SegmentCount;
-    public int Width => IntegerWidth;
+//         Precision = precision;
+//         if (adjust || precision == 0)
+//         {
+//             Lower = Math.Floor(Lower);
+//             Upper = Math.Ceiling(Upper);
+//         }
 
-    public override string ToString()
-    {
-        return $"[{Lower}, {Upper}, {Count}]";
-    }
+//         if (width > 0)
+//             SegmentCount = (int)Math.Ceiling((Upper - Lower) / width);
+//         else
+//             SegmentCount = segmentCount;
+//     }
 
-    public List<decimal> ToList()
-    {
-        return [Lower, Upper, Count];
-    }
+//     public Interval(List<decimal> values, decimal width = 0, bool adjust = true, int precision = 4) : this(values[0], values[1], (int)values.ElementAtOrDefault(2), width, adjust, precision)
+//     {
+//     }
 
-    public static Interval Create(List<decimal> values)
-    {
-        if (values.Count < 2)
-            return null;
-        return new Interval(values);
-    }
+//     public decimal Lower { get; set; }
+//     public decimal Upper { get; set; }
+//     public int SegmentCount { get; set; }
+//     public int Precision { get; set; }
 
-    public Type GetRangeType()
-    {
-        if (Lower % 1 == 0 && Upper % 1 == 0 && DecimalWidth % 1 == 0)
-            return typeof(int);
-        return typeof(decimal);
-    }
+//     public decimal Width => Math.Round((Upper - Lower) / SegmentCount, Precision);
 
-}
+
+//     public override string ToString()
+//     {
+//         return $"[{Lower}, {Upper}, {SegmentCount}]";
+//     }
+
+//     public List<decimal> ToList()
+//     {
+//         return [Lower, Upper, SegmentCount];
+//     }
+
+//     public static Interval Create(List<decimal> values, decimal width = 0, bool adjust = true, int precision = 4)
+//     {
+//         if (values.Count < 2)
+//             return null;
+//         return new Interval(values, width, adjust, precision);
+//     }
+
+// }
