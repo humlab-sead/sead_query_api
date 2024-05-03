@@ -8,12 +8,13 @@ namespace SeadQueryCore
     {
         public virtual string Compile(QueryBuilder.QuerySetup query, Facet facet, dynamic payload)
         {
-            var range = (Interval)payload;
+            TickerInfo tickerInfo = (TickerInfo)payload;
+            var categoryType = facet?.CategoryIdType ?? "integer";
             string sql = $@"
             (
-                SELECT n::text || ' => ' || (n + {range.Width})::text, n, n + {range.Width}
-                FROM generate_series({range.Lower}, {range.Upper}, {range.Width}) as a(n)
-                WHERE n < {range.Upper}
+                SELECT n::text || ' to ' || (n + {tickerInfo.Interval})::{categoryType}::text, n, (n + {tickerInfo.Interval})::{categoryType}
+                FROM generate_series({tickerInfo.OuterLow}::{categoryType}, {tickerInfo.OuterHigh}::{categoryType}, {tickerInfo.Interval}::{categoryType}) as a(n)
+                WHERE n < {tickerInfo.OuterHigh}::{categoryType}
             )";
 
             return sql;

@@ -29,12 +29,10 @@ namespace IntegrationTests.Debug
                             ""position"": 1,
                             ""picks"": [
                                 {
-                                    ""pickType"": 1,
                                     ""pickValue"": 36,
                                     ""text"": 36
                                 }
-                            ],
-                            ""textFilter"": """"
+                            ]
                         }
                     ]
                 },

@@ -14,12 +14,6 @@
     "Alias": "region"
   },
   {
-    "FacetTableId": 185,
-    "FacetId": 52,
-    "SequenceId": 1,
-    "TableId": 119
-  },
-  {
     "FacetTableId": 186,
     "FacetId": 23,
     "SequenceId": 1,
@@ -28,6 +22,12 @@
   {
     "FacetTableId": 189,
     "FacetId": 51,
+    "SequenceId": 1,
+    "TableId": 119
+  },
+  {
+    "FacetTableId": 190,
+    "FacetId": 52,
     "SequenceId": 1,
     "TableId": 119
   },

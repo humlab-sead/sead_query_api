@@ -61,7 +61,8 @@ namespace SeadQueryCore
             Picks = picks ?? [];
         }
 
-        public bool HasPicks() => (Picks?.Count ?? 0) > 0;
+        public int GetPickCount() => Picks?.Count ?? 0;
+        public bool HasPicks() => GetPickCount() > 0;
         public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
         public bool HasConstraints() => HasPicks() || HasCriterias();
         public bool HasEnforcedConstraints()
@@ -75,6 +76,14 @@ namespace SeadQueryCore
             if (sort)
                 values.Sort();
             return values;
+        }
+
+        public decimal? GetPickValue(int idx)
+        {
+            if (idx < 0 || idx >= Picks.Count)
+                return null;
+
+            return Picks[idx].ToDecimal();
         }
 
         public List<int> GetIntegerPickValues() => Picks.Select(x => x.ToInt()).ToList();

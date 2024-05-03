@@ -46,6 +46,9 @@ namespace SeadQueryCore
         public string CategoryIdExpr { get; set; }
 
         [JsonIgnore]
+        public string CategoryIdType { get; set; }
+
+        [JsonIgnore]
         public string CategoryNameExpr { get; set; }
 
         public bool IsApplicable { get; set; }

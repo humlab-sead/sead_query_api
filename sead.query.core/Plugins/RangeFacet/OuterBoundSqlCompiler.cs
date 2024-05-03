@@ -6,7 +6,7 @@ namespace SeadQueryCore
         public string Compile(QueryBuilder.QuerySetup querySetup, Facet facet)
         {
             string sql = $@"
-          SELECT MIN({facet.CategoryIdExpr}) AS lower, MAX({facet.CategoryIdExpr}) AS upper
+          SELECT MIN({facet.CategoryIdExpr}::{facet.CategoryIdType}) AS lower, MAX({facet.CategoryIdExpr}::{facet.CategoryIdType}) AS upper
           FROM {facet.TargetTable.ResolvedSqlJoinName}
         ";
             return sql;

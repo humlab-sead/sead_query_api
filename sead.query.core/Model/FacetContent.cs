@@ -15,6 +15,8 @@ namespace SeadQueryCore
             public string Query { get; set; } = "";
             [JsonIgnore]
             public List<decimal> Extent { get; set; }
+            public TickerInfo? FullExtent { get; set; } = null;
+            public TickerInfo? PickExtent { get; set; } = null;
 
         }
 
@@ -54,7 +56,6 @@ namespace SeadQueryCore
 
         public CategoryInfo IntervalInfo { get; set; }
 
-        public int CountOfSelections { get; set; } = 0;
 
         [JsonConstructor]
         public FacetContent()

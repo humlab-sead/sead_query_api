@@ -30,8 +30,7 @@ namespace SQT.Infrastructure
                     {
                     ""facetCode"": ""sites"",
                     ""position"": 1,
-                    ""picks"": [],
-                    ""textFilter"": """"
+                    ""picks"": []
                     }
                 ]
             }

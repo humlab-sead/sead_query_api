@@ -4,13 +4,14 @@ namespace SQT.SQL.Matcher
 {
     public class RangeCategoryCountSqlCompilerMatcher : CategoryCountSqlCompilerMatcher
     {
-        public static string DP = @"-?[0-9]+(\.[0-9]+)?";
+        public static string NumberExpr = @"-?[0-9]+(\.[0-9]+)?";
+        public static string TypeExpr = @"\w+(\(\d+,\d+\))*";
 
         public static string OuterSqlRegExpr { get; } =
             $@"WITH categories\(category, lower, upper\) AS \( \((?:\s+\#INTERVAL-QUERY\#\s+|
-                    SELECT .*::text, n, n \+ {DP}
-                    FROM generate_series\({DP}, {DP}, {DP}\) as a\(n\)
-                    WHERE n < {DP}
+                    SELECT n::text \|\| ' to ' \|\| \(n \+ [\d\.]+\)::{TypeExpr}::text, n, \(n \+ {NumberExpr}\)::{TypeExpr}
+                    FROM generate_series\({NumberExpr}::{TypeExpr}, {NumberExpr}::{TypeExpr}, {NumberExpr}::{TypeExpr}\) as a\(n\)
+                    WHERE n < {NumberExpr}::{TypeExpr}
                 )\) \), outerbounds\(lower, upper\) AS \(
                     SELECT MIN\(lower\), MAX\(upper\)
                     FROM categories

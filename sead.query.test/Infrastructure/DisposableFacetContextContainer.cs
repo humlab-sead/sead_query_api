@@ -101,6 +101,7 @@ namespace SQT
             {
                 FacetCode = facetCode,
                 CategoryIdExpr = Guid.NewGuid().ToString(),
+                CategoryIdType = "integer",
                 CategoryNameExpr = Guid.NewGuid().ToString(),
                 Description = Guid.NewGuid().ToString(),
                 DisplayTitle = Guid.NewGuid().ToString(),

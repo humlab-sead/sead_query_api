@@ -1,10 +1,6 @@
 using Moq;
 using SeadQueryCore;
-using SQT;
 using SQT.Infrastructure;
-using SQT.Mocks;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SQT.Services
@@ -20,7 +16,18 @@ namespace SQT.Services
         {
             var mock = new Mock<RangeCategoryInfoSqlCompiler>();
             dynamic payload = new { Interval = It.IsAny<int>(), Lower = It.IsAny<int>(), Upper = It.IsAny<int>(), IntervalCount = It.IsAny<int>() };
-            mock.Setup(z => z.Compile(null, null, new { Interval = It.IsAny<int>(), Lower = It.IsAny<int>(), Upper = It.IsAny<int>(), IntervalCount = It.IsAny<int>() })).Returns(returnSql);
+            mock.Setup(z => z.Compile(null, null, new {
+                DataLow = It.IsAny<decimal>(),
+                DataHigh = It.IsAny<decimal>(),
+                TickLow = It.IsAny<decimal>(),
+                TickHigh = It.IsAny<decimal>(),
+                OuterLow = It.IsAny<decimal>(),
+                OuterHigh = It.IsAny<decimal>(),
+                StartFactor = It.IsAny<int>(),
+                EndFactor = It.IsAny<int>(),
+                IntervalCount = It.IsAny<int>(),
+                Interval = It.IsAny<decimal>()
+            })).Returns(returnSql);
             return mock;
         }
 

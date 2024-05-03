@@ -22,9 +22,9 @@ namespace SeadQueryCore
                     FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                     CROSS JOIN outerbounds
                     JOIN categories
-		              ON categories.lower <= cast({facet.CategoryIdExpr} as decimal(15, 6))
-		             AND categories.upper >= cast({facet.CategoryIdExpr} as decimal(15, 6))
-		             AND (NOT (categories.upper < outerbounds.upper AND cast({facet.CategoryIdExpr} as decimal(15, 6)) = categories.upper))
+		              ON categories.lower <= {facet.CategoryIdExpr}::{facet.CategoryIdType}
+		             AND categories.upper >= {facet.CategoryIdExpr}::{facet.CategoryIdType}
+		             AND (NOT (categories.upper < outerbounds.upper AND {facet.CategoryIdExpr}::{facet.CategoryIdType} = categories.upper))
                     {query.Joins.Combine("\n\t\t\t\t\t")}
                     WHERE TRUE
                       { "AND ".GlueTo(query.Criterias.Combine(" AND ")) }
@@ -42,8 +42,8 @@ namespace SeadQueryCore
             {
                 Category = dr.IsDBNull(0) ? "(null)" : dr.GetString(0),
                 Count = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
-                Extent = [dr.IsDBNull(1) ? 0 : dr.GetInt32(1), dr.IsDBNull(2) ? 0 : dr.GetInt32(2)],
-                Name = $"{dr.GetInt32(1)} to {dr.GetInt32(2)}",
+                Extent = [dr.IsDBNull(1) ? 0 : dr.GetDecimal(1), dr.IsDBNull(2) ? 0 : dr.GetDecimal(2)],
+                Name = dr.GetString(0) ?? "",
             };
         }
     }
