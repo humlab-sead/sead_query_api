@@ -60,6 +60,7 @@ accept: application/json
 ### Type:   range
 ### Chain:  tbl_denormalized_measured_values_33_0
 ### Picks:  (none)
+### POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
 mode: cors
@@ -73,8 +74,7 @@ accept: application/json
     "facetConfigs":[ {
         "facetCode":"tbl_denormalized_measured_values_33_0",
         "position":1,
-        "picks":[],
-        "textFilter":""
+        "picks":[]
     }
     ]
 }
@@ -96,17 +96,37 @@ accept: application/json
         "facetCode":"tbl_denormalized_measured_values_32",
         "position":1,
         "picks":[
-            { "pickType": 2, "pickValue": "50", "text": "50"},
-            { "pickType": 3, "pickValue": "100", "text": "100"}
-        ],
-        "textFilter":""
+            { "pickValue": "50", "text": "50"},
+            { "pickValue": "100", "text": "100"}
+        ]
     }
     ]
 }
-
 ### Type:   range
-### Chain:  tbl_denormalized_measured_values_33_0
+### Chain:  tbl_denormalized_measured_values_32
 ### Picks: (50, 100)
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"tbl_denormalized_measured_values_32",
+    "triggerCode":"tbl_denormalized_measured_values_32",
+    "facetConfigs":[ {
+        "facetCode":"tbl_denormalized_measured_values_32",
+        "position":1,
+        "picks":[
+            { "pickValue": "50", "text": "50"},
+            { "pickValue": "100", "text": "100"}
+        ]
+    }
+    ]
+}
+### Type:   range
+### /facets/load: sites:tbl_denormalized_measured_values_33_0@100,200/sites
 POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 Sec-Fetch-Mode: cors
 mode: cors
@@ -123,31 +143,25 @@ Content-Type: application/json; charset=UTF-8
       "position": 1,
       "picks": [
         {
-          "pickType": 2,
           "pickValue": 100,
           "text": 100
         },
         {
-          "pickType": 3,
           "pickValue": 200,
           "text": 200
         }
-      ],
-      "textFilter": ""
+      ]
     },
     {
       "facetCode": "sites",
       "position": 2,
-      "picks": [],
-      "textFilter": ""
+      "picks": []
     }
   ]
 }
 
 
-### Type:   range
-### Chain:  tbl_denormalized_measured_values_33_0
-### Picks: (50, 100)
+### /facets
 GET {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets
 Sec-Fetch-Mode: cors
 mode: cors
@@ -171,8 +185,7 @@ Content-Type: application/json; charset=UTF-8
     {
       "facetCode": "tbl_denormalized_measured_values_33_0",
       "position": 1,
-      "picks": [],
-      "textFilter": ""
+      "picks": []
     }
   ]
 }
@@ -194,8 +207,7 @@ Content-Type: application/json; charset=UTF-8
     {
       "facetCode": "dataset_master",
       "position": 1,
-      "picks": [],
-      "textFilter": ""
+      "picks": []
     }
   ]
 }
@@ -220,18 +232,15 @@ Content-Type: application/json; charset=UTF-8
         "position":1,
         "picks":[
             {
-                "pickType":1,
                 "pickValue":"38",
                 "text":"38"
             }
         ],
-        "textFilter":""
     },
     {
         "facetCode": "sites",
         "position": 2,
         "picks": [],
-        "textFilter": ""
     }
   ]
 }
@@ -254,14 +263,12 @@ Content-Type: application/json; charset=UTF-8
         {
             "facetCode": "sites",
             "position": 1,
-            "picks": [],
-            "textFilter": ""
+            "picks": []
         },
         {
             "facetCode":"palaeoentomology",
             "position":2,
-            "picks":[  ],
-            "textFilter":""
+            "picks":[  ]
         }
   ]
 }
@@ -284,14 +291,12 @@ Content-Type: application/json; charset=UTF-8
         {
             "facetCode": "palaeoentomology",
             "position": 1,
-            "picks": [],
-            "textFilter": ""
+            "picks": []
         },
         {
             "facetCode":"sites",
             "position":2,
-            "picks":[  ],
-            "textFilter":""
+            "picks":[  ]
         }
   ]
 }
@@ -314,8 +319,7 @@ Content-Type: application/json; charset=UTF-8
     {
       "facetCode": "sites",
       "position": 1,
-      "picks": [],
-      "textFilter": ""
+      "picks": []
     }
   ]
 }
