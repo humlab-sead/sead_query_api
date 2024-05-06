@@ -7,13 +7,8 @@ using System.Diagnostics;
 namespace SQT.Plugins.GeoPolygon
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class GeoPolygonContentSqlCompilerTests : DisposableFacetContextContainer
+    public class CategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public GeoPolygonContentSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
-
         [Theory]
         [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738")]
         public void Compile_GeoPolygon_Matches(string uri)

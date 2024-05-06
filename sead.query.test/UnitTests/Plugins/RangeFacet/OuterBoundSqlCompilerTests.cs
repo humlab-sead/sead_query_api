@@ -6,12 +6,8 @@ using SQT.Infrastructure;
 namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer
+    public class RangeOuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public RangeOuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
         public void Compile_VariousConfigs_ExpectedBehavior(string uri)

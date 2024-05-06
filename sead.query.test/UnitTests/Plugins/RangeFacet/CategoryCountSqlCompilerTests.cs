@@ -7,12 +7,8 @@ using Xunit;
 namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class RangeCategoryCountSqlCompilerTests : DisposableFacetContextContainer
+    public class CategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public RangeCategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]
         [InlineData("palaeoentomology://geochronology:geochronology")]

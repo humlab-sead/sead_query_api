@@ -7,12 +7,8 @@ using Xunit;
 namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class DiscreteCategoryCountSqlCompilerTests : DisposableFacetContextContainer
+    public class CategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public DiscreteCategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("sites:sites", "sites", "count")]
         [InlineData("country:sites", "sites", "count")]

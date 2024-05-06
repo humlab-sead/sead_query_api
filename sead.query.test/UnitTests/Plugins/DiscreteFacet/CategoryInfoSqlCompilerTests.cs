@@ -7,12 +7,8 @@ using System.Diagnostics;
 namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class DiscreteCategoryInfoSqlCompilerTests : DisposableFacetContextContainer
+    public class CategoryInfoSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public DiscreteCategoryInfoSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("dataset_methods:dataset_methods")]
         [InlineData("sites:sites")]

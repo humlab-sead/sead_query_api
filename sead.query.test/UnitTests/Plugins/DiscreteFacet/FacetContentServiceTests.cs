@@ -9,12 +9,8 @@ using Xunit;
 namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class DiscreteFacetContentServiceTests : DisposableFacetContextContainer
+    public class DiscreteFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public DiscreteFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("sites:sites", false)]
         [InlineData("dataset_methods:dataset_methods", false)]

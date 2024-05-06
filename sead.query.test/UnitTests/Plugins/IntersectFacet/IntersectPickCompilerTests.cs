@@ -8,12 +8,8 @@ using Xunit;
 namespace SQT.Plugins.Intersect
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class RangesIntersectPickCompilerTests : DisposableFacetContextContainer
+    public class PickCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public RangesIntersectPickCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()
         {

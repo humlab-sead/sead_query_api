@@ -11,12 +11,8 @@ using Xunit;
 namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class RangeCategoryCountServiceTests : DisposableFacetContextContainer
+    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public RangeCategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("sites:sites/tbl_denormalized_measured_values_33_0")]
         // [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]

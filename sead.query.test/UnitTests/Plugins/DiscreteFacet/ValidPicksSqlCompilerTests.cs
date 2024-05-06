@@ -6,12 +6,8 @@ using Xunit;
 namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class ValidPicksSqlQueryCompilerTests : DisposableFacetContextContainer
+    public class ValidPicksSqlQueryCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public ValidPicksSqlQueryCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Theory]
         [InlineData("sites:sites@5")]
         [InlineData("sites:country@57/sites@3")]
