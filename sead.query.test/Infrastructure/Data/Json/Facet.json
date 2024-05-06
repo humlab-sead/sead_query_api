@@ -782,23 +782,6 @@
     "SortExpr": "tbl_sites.site_name"
   },
   {
-    "FacetId": 52,
-    "FacetCode": "analysis_entity_ages",
-    "DisplayTitle": "Analysis entity ages",
-    "Description": "Analysis entity ages (under development)",
-    "FacetGroupId": 2,
-    "FacetTypeId": 4,
-    "CategoryIdExpr": "numrange(age_younger, age_older, '[]')",
-    "CategoryIdType": "integer",
-    "CategoryNameExpr": "tbl_sites.site_name",
-    "IsApplicable": true,
-    "IsDefault": true,
-    "AggregateType": "count",
-    "AggregateTitle": "Number of samples",
-    "AggregateFacetId": 1,
-    "SortExpr": "1"
-  },
-  {
     "FacetId": 31,
     "FacetCode": "abundance_classification",
     "DisplayTitle": "abundance classification",
@@ -814,5 +797,22 @@
     "AggregateTitle": "Number of samples",
     "AggregateFacetId": 1,
     "SortExpr": "facet.view_abundance.elements_part_mod "
+  },
+  {
+    "FacetId": 52,
+    "FacetCode": "analysis_entity_ages",
+    "DisplayTitle": "Analysis entity ages",
+    "Description": "Analysis entity ages (under development)",
+    "FacetGroupId": 2,
+    "FacetTypeId": 4,
+    "CategoryIdExpr": "age_range",
+    "CategoryIdType": "integer",
+    "CategoryNameExpr": "age_range",
+    "IsApplicable": true,
+    "IsDefault": true,
+    "AggregateType": "count",
+    "AggregateTitle": "Number of samples",
+    "AggregateFacetId": 1,
+    "SortExpr": "1"
   }
 ]
