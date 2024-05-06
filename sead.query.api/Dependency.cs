@@ -1,7 +1,10 @@
 ﻿using Autofac;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
-using SeadQueryCore.Plugin;
+using SeadQueryCore.Plugin.Intersect;
+using SeadQueryCore.Plugin.Range;
+using SeadQueryCore.Plugin.Discrete;
+using SeadQueryCore.Plugin.GeoPolygon;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
@@ -60,7 +63,7 @@ namespace SeadQueryAPI
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
 
-            builder.RegisterType<RangeOuterBoundExtentService>().As<IRangeOuterBoundExtentService>();
+            builder.RegisterType<RangeOuterBoundService>().As<IRangeOuterBoundService>();
 
 
             // builder.RegisterType<DiscretePlugin>().Keyed<IServicesPlugin>(EFacetType.Range);
@@ -79,7 +82,7 @@ namespace SeadQueryAPI
             builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Discrete);
             builder.RegisterType<DiscreteCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Discrete);
 
-
+            // Range Facet
             builder.RegisterType<RangeCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Range);
             builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
             builder.RegisterType<RangeCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Range);
@@ -90,7 +93,8 @@ namespace SeadQueryAPI
             builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.GeoPolygon);
             builder.RegisterType<GeoPolygonCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.GeoPolygon);
 
-            builder.RegisterType<RangesIntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.RangesIntersect);
+            builder.RegisterType<IntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Intersect);
+            builder.RegisterType<IntersectCategoryInfoService>().Keyed<ICategoryCountService>(EFacetType.Intersect);
 
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
 
