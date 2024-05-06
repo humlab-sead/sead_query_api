@@ -1,9 +1,8 @@
 ﻿using System.Data;
-using System.Data.Common;
 
 namespace SeadQueryCore.Plugin.Intersect;
 
-public class RangeIntersectCategoryInfoSqlCompiler : IRangeCategoryInfoSqlCompiler
+public class IntersectCategoryInfoSqlCompiler : IIntersectCategoryInfoSqlCompiler
 {
     public virtual string Compile(QueryBuilder.QuerySetup query, Facet facet, dynamic payload)
     {

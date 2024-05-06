@@ -1,6 +1,6 @@
 ﻿using SeadQueryCore.QueryBuilder;
 
-namespace SeadQueryCore;
+namespace SeadQueryCore.Plugin.Intersect;
 
 public interface IIntersectOuterBoundSqlCompiler : ISqlCompiler
 {
