@@ -12,7 +12,7 @@ namespace SeadQueryCore
         Discrete = 1,
         Range = 2,
         GeoPolygon = 3,
-        RangesIntersect = 4
+        Intersect = 4
     }
 
     [JsonObject(MemberSerialization.OptOut)]
