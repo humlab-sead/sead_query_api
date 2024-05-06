@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SeadQueryCore.Plugin;
+namespace SeadQueryCore.Plugin.GeoPolygon;
 
 public class GeoPolygonPickFilterCompiler : IPickFilterCompiler
 {

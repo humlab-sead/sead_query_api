@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace SeadQueryCore.Plugin;
+namespace SeadQueryCore.Plugin.GeoPolygon;
 
 public class GeoPolygonCategoryCountSqlCompiler : IGeoPolygonCategoryCountSqlCompiler
 {

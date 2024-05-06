@@ -1,4 +1,4 @@
-﻿namespace SeadQueryCore.Plugin;
+﻿namespace SeadQueryCore.Plugin.GeoPolygon;
 
 public class GeoPolygonCategoryInfoSqlCompiler : GeoPolygonCategoryCountSqlCompiler, IGeoPolygonCategoryInfoSqlCompiler
 {
