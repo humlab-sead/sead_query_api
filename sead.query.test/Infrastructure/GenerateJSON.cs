@@ -44,7 +44,7 @@ namespace SQT.TestInfrastructure
         /// </summary>
         /// <param name="updateTheModel">Set to true if you want to update fixture</param>
         [Theory]
-        [InlineData(true, "Infrastructure/Data/Json")]
+        [InlineData(false, "Infrastructure/Data/Json")]
         public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string folder)
         {
             if (!updateTheModel){
