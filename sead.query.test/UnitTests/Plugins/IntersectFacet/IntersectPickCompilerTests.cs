@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.Intersect
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class RangesIntersectPickCompilerTests : DisposableFacetContextContainer

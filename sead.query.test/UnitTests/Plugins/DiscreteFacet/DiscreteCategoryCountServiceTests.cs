@@ -6,7 +6,7 @@ using SQT.Infrastructure;
 using SQT.Mocks;
 using Xunit;
 
-namespace SQT.Services
+namespace SQT.Services.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class CategoryCountServiceTests : DisposableFacetContextContainer

@@ -3,7 +3,7 @@ using SeadQueryCore.Plugin.Range;
 using Xunit;
 using SQT.Infrastructure;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class RangeOuterBoundSqlCompilerTests : DisposableFacetContextContainer

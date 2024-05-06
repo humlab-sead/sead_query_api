@@ -4,7 +4,7 @@ using SQT.SQL.Matcher;
 using Xunit;
 using System.Diagnostics;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.GeoPolygon
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class GeoPolygonContentSqlCompilerTests : DisposableFacetContextContainer

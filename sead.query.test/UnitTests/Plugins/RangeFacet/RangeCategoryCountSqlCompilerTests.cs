@@ -4,7 +4,7 @@ using SQT.SQL.Matcher;
 using SQT.Infrastructure;
 using Xunit;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class RangeCategoryCountSqlCompilerTests : DisposableFacetContextContainer

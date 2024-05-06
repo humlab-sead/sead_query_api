@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.GeoPolygon
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class GeoPolygonPickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)

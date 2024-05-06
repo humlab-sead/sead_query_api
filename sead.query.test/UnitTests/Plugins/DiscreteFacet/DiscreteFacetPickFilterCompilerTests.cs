@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteFacetPickFilterCompilerTests : DisposableFacetContextContainer
@@ -71,11 +71,4 @@ namespace SQT.SqlCompilers
         }
     }
 
-    public static class IEnumerableExtensions
-    {
-        public static string BuildString<T>(this IEnumerable<T> self, string delim = ",", string apos = "")
-        {
-            return string.Join(delim, self.Select(x => $"{apos}{x}{apos}"));
-        }
-    }
 }

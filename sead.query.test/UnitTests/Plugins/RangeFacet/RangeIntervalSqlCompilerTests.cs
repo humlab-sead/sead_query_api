@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.Range
 {
     public class RangeIntervalSqlCompilerTests
     {

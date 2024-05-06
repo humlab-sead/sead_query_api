@@ -8,7 +8,7 @@ using SQT.Mocks;
 using System.Linq;
 using Xunit;
 
-namespace SQT.Services
+namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class RangeCategoryCountServiceTests : DisposableFacetContextContainer

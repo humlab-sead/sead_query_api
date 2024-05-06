@@ -4,7 +4,7 @@ using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using Xunit;
 
-namespace SQT.SqlCompilers
+namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class DiscreteCategoryCountSqlCompilerTests : DisposableFacetContextContainer

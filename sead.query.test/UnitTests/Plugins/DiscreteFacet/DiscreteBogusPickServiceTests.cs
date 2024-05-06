@@ -4,7 +4,7 @@ using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using System.Collections.Generic;
 
-namespace SQT.Services
+namespace SQT.Plugins.Discrete
 {
     public class DeleteBogusPickServiceTests : DisposableFacetContextContainer
     {
