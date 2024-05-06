@@ -1,9 +1,8 @@
 ﻿using SeadQueryCore.QueryBuilder;
 
-namespace SeadQueryCore
+namespace SeadQueryCore.Plugin.Range;
+
+public interface IRangeOuterBoundSqlCompiler : ISqlCompiler
 {
-    public interface IRangeOuterBoundSqlCompiler : ISqlCompiler
-    {
-        string Compile(QuerySetup query, Facet facet);
-    }
+    string Compile(QuerySetup query, Facet facet);
 }
