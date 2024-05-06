@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace SeadQueryCore.Plugin;
+namespace SeadQueryCore.Plugin.Discrete;
 
 public class DiscreteCategoryCountSqlCompiler : IDiscreteCategoryCountSqlCompiler
 {

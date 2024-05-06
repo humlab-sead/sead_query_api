@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SeadQueryCore.Plugin;
+namespace SeadQueryCore.Plugin.Discrete;
 
 public class ValidPicksSqCompiler : IValidPicksSqlCompiler
 {
