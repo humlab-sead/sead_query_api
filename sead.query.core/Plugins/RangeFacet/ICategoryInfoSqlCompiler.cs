@@ -1,6 +1,5 @@
-﻿namespace SeadQueryCore
+﻿namespace SeadQueryCore.Plugin.Range;
+
+public interface IRangeCategoryInfoSqlCompiler : ICategoryInfoSqlCompiler
 {
-    public interface IRangeCategoryInfoSqlCompiler : ICategoryInfoSqlCompiler
-    {
-    }
 }

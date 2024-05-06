@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Data;
 
-namespace SeadQueryCore;
+namespace SeadQueryCore.Plugin.Range;
 
 public class RangeCategoryCountHelper(IFacetSetting config) : ICategoryCountHelper
 {
@@ -12,5 +11,3 @@ public class RangeCategoryCountHelper(IFacetSetting config) : ICategoryCountHelp
     public List<string> GetFacetCodes(FacetsConfig2 facetsConfig, CompilePayload payload) => facetsConfig.GetFacetCodes();
 
 }
-
-

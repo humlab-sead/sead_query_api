@@ -1,8 +1,5 @@
-﻿using System.Data;
+﻿namespace SeadQueryCore.Plugin.Range;
 
-namespace SeadQueryCore
+public interface IRangeCategoryCountSqlCompiler : ICategoryCountSqlCompiler
 {
-    public interface IRangeCategoryCountSqlCompiler : ICategoryCountSqlCompiler
-    {
-    }
 }
