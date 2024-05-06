@@ -1,9 +1,6 @@
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SQT.Mocks;
-using System.Collections.Generic;
+using SeadQueryCore.Plugin.Range;
 using Xunit;
-using SQT.Fixtures;
 using SQT.Infrastructure;
 
 namespace SQT.SqlCompilers

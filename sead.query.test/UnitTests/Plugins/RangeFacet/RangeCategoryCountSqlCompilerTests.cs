@@ -1,12 +1,8 @@
-using Moq;
 using SeadQueryCore;
+using SeadQueryCore.Plugin.Range;
 using SQT.SQL.Matcher;
-using SQT.Fixtures;
 using SQT.Infrastructure;
-using System;
-using System.Text.RegularExpressions;
 using Xunit;
-using System.Linq;
 
 namespace SQT.SqlCompilers
 {

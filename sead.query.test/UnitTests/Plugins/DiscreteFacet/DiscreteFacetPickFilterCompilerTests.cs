@@ -1,5 +1,5 @@
 using SeadQueryCore;
-using SeadQueryCore.Plugin;
+using SeadQueryCore.Plugin.Discrete;
 using SQT.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;

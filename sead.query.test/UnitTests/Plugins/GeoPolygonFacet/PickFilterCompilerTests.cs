@@ -1,5 +1,5 @@
 using SeadQueryCore;
-using SeadQueryCore.Plugin;
+using SeadQueryCore.Plugin.GeoPolygon;
 using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;

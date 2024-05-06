@@ -1,5 +1,6 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryCore.Plugin.Range;
 using SQT.Infrastructure;
 using Xunit;
 
@@ -31,23 +32,23 @@ namespace SQT.Services
             return mock;
         }
 
-        public virtual Mock<IRangeOuterBoundExtentService> MockRangeOuterBoundExtentService(
+        public virtual Mock<IRangeOuterBoundService> MockRangeOuterBoundExtentService(
             decimal lower, decimal upper
         )
         {
-            var rangeOuterBoundExtentService = new Mock<IRangeOuterBoundExtentService>();
+            var rangeOuterBoundService = new Mock<IRangeOuterBoundService>();
 
             /* GetExtent generates an extent */
-            rangeOuterBoundExtentService
+            rangeOuterBoundService
                 .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
                 .Returns((lower,upper));
 
             /* GetUpperLowerBounds hits the database */
-            rangeOuterBoundExtentService
+            rangeOuterBoundService
                 .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
                 .Returns((lower, upper));
 
-            return rangeOuterBoundExtentService;
+            return rangeOuterBoundService;
         }
 
         [Theory]

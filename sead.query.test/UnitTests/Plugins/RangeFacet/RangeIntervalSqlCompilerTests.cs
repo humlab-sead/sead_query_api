@@ -1,5 +1,6 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryCore.Plugin.Range;
 using System;
 using System.Linq;
 using Xunit;
