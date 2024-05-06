@@ -6,12 +6,8 @@ using System.Collections.Generic;
 
 namespace SQT.Plugins.Discrete
 {
-    public class DeleteBogusPickServiceTests : DisposableFacetContextContainer
+    public class DeleteBogusPickServiceTests(JsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public DeleteBogusPickServiceTests(JsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         protected virtual Mock<IValidPicksSqlCompiler> MockValidPickCompiler(string returnSql)
         {
             var mockCompiler = new Mock<IValidPicksSqlCompiler>();
