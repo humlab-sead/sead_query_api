@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 using SeadQueryCore;
+using System.Threading.Tasks;
 
 namespace SeadQueryInfra
 {
@@ -17,6 +20,19 @@ namespace SeadQueryInfra
             {
                 return reader.Select(selector).Take(1).FirstOrDefault();
             }
+        }
+
+        public List<T> QueryScalars<T>(string scalarSql)
+        {
+            using (var dr = Context.Database.ExecuteSqlQuery(scalarSql).DbDataReader)
+            {
+                if (dr.Read())
+                {
+                    return Enumerable.Range(0, dr.FieldCount)
+                        .Select(i => dr.IsDBNull(i) ? default : dr.GetFieldValue<T>(i)).ToList();
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -35,6 +51,7 @@ namespace SeadQueryInfra
             using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
             {
                 return reader.Select(selector).ToList();
+
             }
         }
 
@@ -56,5 +73,15 @@ namespace SeadQueryInfra
                 }
             }
         }
+
+        public static async Task<(T, T)> GetRange<T>(IDataReader dr, int index)
+        {
+            var datareader = (DbDataReader)dr;
+            NpgsqlRange<T> range = await datareader.GetFieldValueAsync<NpgsqlRange<T>>(index);
+            if (range.IsEmpty)
+                return (default(T), default(T));
+            return (range.LowerBound, range.UpperBound);
+        }
+
     }
 }
