@@ -2,7 +2,6 @@
 
 public class IntersectPickFilterCompiler : IPickFilterCompiler
 {
-
     public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {
         if (!config.HasPicks())
