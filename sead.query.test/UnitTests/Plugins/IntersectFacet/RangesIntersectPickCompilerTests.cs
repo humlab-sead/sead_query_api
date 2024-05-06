@@ -1,9 +1,8 @@
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.Plugin.Intersect;
 using SQT.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SQT.SqlCompilers
@@ -18,7 +17,7 @@ namespace SQT.SqlCompilers
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()
         {
-            var compiler = new RangesIntersectPickFilterCompiler();
+            var compiler = new IntersectPickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             var config = new FacetConfig2(targetFacet, 1, "A = B", []);
             var result = compiler.Compile(targetFacet, targetFacet, config);
@@ -28,7 +27,7 @@ namespace SQT.SqlCompilers
         [Fact]
         public void Compile_WhenNoPicks_ReturnsFacetCriteria()
         {
-            var compiler = new RangesIntersectPickFilterCompiler();
+            var compiler = new IntersectPickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             Facet currentFacet = Registry.Facets.GetByCode("country");
             var config = new FacetConfig2(targetFacet, 1, "", []);
@@ -39,7 +38,7 @@ namespace SQT.SqlCompilers
         [Fact]
         public void Compile_InvalidBound_RaisesArgumentException()
         {
-            var compiler = new RangesIntersectPickFilterCompiler();
+            var compiler = new IntersectPickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             Assert.Throws<ArgumentException>(() =>
             {
@@ -52,7 +51,7 @@ namespace SQT.SqlCompilers
         [Fact]
         public void Compile_WhenHasPicks_ReturnsCriteria()
         {
-            var compiler = new RangesIntersectPickFilterCompiler();
+            var compiler = new IntersectPickFilterCompiler();
             var picks = new List<int>() { 1, 2 };
             Facet targetFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             FacetConfig2 config = new FacetConfig2(targetFacet, 1, "", FacetConfigPick.CreateByList(picks));
@@ -63,7 +62,7 @@ namespace SQT.SqlCompilers
         [Fact]
         public void Compile_OtherTarget()
         {
-            var compiler = new RangesIntersectPickFilterCompiler();
+            var compiler = new IntersectPickFilterCompiler();
             Facet currentFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             Facet targetFacet = Registry.Facets.GetByCode("country");
 
