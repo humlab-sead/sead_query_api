@@ -1,5 +1,22 @@
 [
   {
+    "FacetId": 52,
+    "FacetCode": "analysis_entity_ages",
+    "DisplayTitle": "Analysis entity ages",
+    "Description": "Analysis entity ages (under development)",
+    "FacetGroupId": 2,
+    "FacetTypeId": 4,
+    "CategoryIdExpr": "age_range",
+    "CategoryIdType": "int4range",
+    "CategoryNameExpr": "age_range",
+    "IsApplicable": true,
+    "IsDefault": true,
+    "AggregateType": "count",
+    "AggregateTitle": "Number of samples",
+    "AggregateFacetId": 1,
+    "SortExpr": "1"
+  },
+  {
     "FacetId": 5,
     "FacetCode": "tbl_denormalized_measured_values_32",
     "DisplayTitle": "Loss on Ignition",
@@ -797,22 +814,5 @@
     "AggregateTitle": "Number of samples",
     "AggregateFacetId": 1,
     "SortExpr": "facet.view_abundance.elements_part_mod "
-  },
-  {
-    "FacetId": 52,
-    "FacetCode": "analysis_entity_ages",
-    "DisplayTitle": "Analysis entity ages",
-    "Description": "Analysis entity ages (under development)",
-    "FacetGroupId": 2,
-    "FacetTypeId": 4,
-    "CategoryIdExpr": "age_range",
-    "CategoryIdType": "integer",
-    "CategoryNameExpr": "age_range",
-    "IsApplicable": true,
-    "IsDefault": true,
-    "AggregateType": "count",
-    "AggregateTitle": "Number of samples",
-    "AggregateFacetId": 1,
-    "SortExpr": "1"
   }
 ]
