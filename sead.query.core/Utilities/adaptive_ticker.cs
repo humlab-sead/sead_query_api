@@ -32,14 +32,16 @@ THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeadQueryCore;
 
-public readonly struct TickerInfo(decimal dataLow, decimal dataHigh, decimal interval)
+public readonly struct TickerInfo(decimal dataLow, decimal dataHigh, decimal interval, int precision = 2)
 {
     public decimal DataLow { get; } = dataLow;
     public decimal DataHigh { get; } = dataHigh;
     public decimal Interval { get; } = interval;
+    public int Precision { get; } = precision;
 
     public int StartFactor => (int)Math.Floor(DataLow / Interval);
     public int EndFactor => (int)Math.Floor(DataHigh / Interval);
