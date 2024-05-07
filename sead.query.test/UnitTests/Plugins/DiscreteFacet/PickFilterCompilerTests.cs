@@ -13,7 +13,7 @@ namespace SQT.Plugins.Discrete
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()
         {
-            var discreteFacetPickFilterCompiler = new DiscreteFacetPickFilterCompiler();
+            var discreteFacetPickFilterCompiler = new DiscretePickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("sites");
             Facet currentFacet = targetFacet;
             var config = new FacetConfig2(
@@ -32,7 +32,7 @@ namespace SQT.Plugins.Discrete
         public void Compile_WhenNoPicks_ReturnsEmptyString()
         {
             // Arrange
-            var discreteFacetPickFilterCompiler = new DiscreteFacetPickFilterCompiler();
+            var discreteFacetPickFilterCompiler = new DiscretePickFilterCompiler();
             Facet targetFacet = Registry.Facets.GetByCode("sites");
             Facet currentFacet = Registry.Facets.GetByCode("country");
             var config = new FacetConfig2(
@@ -53,7 +53,7 @@ namespace SQT.Plugins.Discrete
         public void Compile_WhenHasPicksAndTargetAndCurrentFacetAreNotTheSame_ReturnsCriteria()
         {
             // Arrange
-            var discreteFacetPickFilterCompiler = new DiscreteFacetPickFilterCompiler();
+            var discreteFacetPickFilterCompiler = new DiscretePickFilterCompiler();
             var picks = new List<int>() { 1, 2, 3 };
             Facet targetFacet = Registry.Facets.GetByCode("sites");
             Facet currentFacet = Registry.Facets.GetByCode("country");

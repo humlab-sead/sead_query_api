@@ -1,5 +1,6 @@
 using Moq;
 using SeadQueryCore;
+using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using System;
@@ -22,7 +23,7 @@ namespace SQT.Plugins.Range
             var facet = facetConfig.Facet;
 
             // Act
-            var rangeFacetPickFilterCompiler = new RangeFacetPickFilterCompiler();
+            var rangeFacetPickFilterCompiler = new RangePickFilterCompiler();
             var result = rangeFacetPickFilterCompiler.Compile(null, facet, facetConfig);
 
             // Assert
