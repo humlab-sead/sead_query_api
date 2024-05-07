@@ -2,6 +2,6 @@ using SeadQueryCore.Plugin.Discrete;
 
 namespace SeadQueryCore.Plugin.GeoPolygon;
 
-public class GeoPolygonCategoryCountHelper : DiscreteCategoryCountHelper
+public class GeoPolygonCategoryCountHelper : DiscreteCategoryCountHelper, IGeoPolygonCategoryCountHelper
 {
 }

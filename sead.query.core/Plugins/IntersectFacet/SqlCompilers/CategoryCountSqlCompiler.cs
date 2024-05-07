@@ -9,29 +9,23 @@ public class IntersectCategoryCountSqlCompiler : IIntersectCategoryCountSqlCompi
     {
         string sql = $@"
 
-        WITH categories(category, lower, upper) AS (
+        WITH categories(category, category_range) AS (
             {payload.IntervalQuery}
-        ), outerbounds(lower, upper) AS (
-            SELECT MIN(lower), MAX(upper)
-            FROM categories
         )
             SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column
             FROM categories c
             LEFT JOIN (
                 SELECT category, COUNT(DISTINCT {payload.CountColumn}) AS count_column
                 FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
-                CROSS JOIN outerbounds
                 JOIN categories
-                    ON categories.lower <= {facet.CategoryIdExpr}::{facet.CategoryIdType}
-                    AND categories.upper >= {facet.CategoryIdExpr}::{facet.CategoryIdType}
-                    AND (NOT (categories.upper < outerbounds.upper AND {facet.CategoryIdExpr}::{facet.CategoryIdType} = categories.upper))
+                    ON categories.category_range && {facet.CategoryIdExpr}::{facet.CategoryIdType}
                 {query.Joins.Combine("\n\t\t\t\t\t")}
                 WHERE TRUE
                     { "AND ".GlueTo(query.Criterias.Combine(" AND ")) }
                 GROUP BY category
             ) AS r
                 ON r.category = c.category
-            ORDER BY c.lower";
+            ORDER BY c.category_range";
 
         return sql;
     }

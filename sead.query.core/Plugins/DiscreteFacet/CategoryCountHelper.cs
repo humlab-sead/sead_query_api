@@ -4,7 +4,7 @@ using System.Linq;
 namespace SeadQueryCore.Plugin.Discrete;
 
 
-public class DiscreteCategoryCountHelper : ICategoryCountHelper
+public class DiscreteCategoryCountHelper : IDiscreteCategoryCountHelper
 {
     public List<string> GetFacetCodes(FacetsConfig2 facetsConfig, CompilePayload payload)
     {

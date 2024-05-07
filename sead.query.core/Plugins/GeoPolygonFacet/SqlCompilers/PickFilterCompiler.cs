@@ -2,7 +2,7 @@
 
 namespace SeadQueryCore.Plugin.GeoPolygon;
 
-public class GeoPolygonPickFilterCompiler : IPickFilterCompiler
+public class GeoPolygonPickFilterCompiler : IGeoPolygonPickFilterCompiler
 {
     public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {

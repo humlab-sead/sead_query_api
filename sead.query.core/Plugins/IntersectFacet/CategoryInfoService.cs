@@ -1,9 +1,10 @@
 ﻿namespace SeadQueryCore.Plugin.Intersect;
 
+
 public class IntersectCategoryInfoService(
     IIntersectCategoryInfoSqlCompiler categoryInfoSqlCompiler,
     IIntersectOuterBoundService outerBoundService
-) : ICategoryInfoService
+) : IIntersectCategoryInfoService
 {
     public IIntersectCategoryInfoSqlCompiler CategoryInfoSqlCompiler { get; } = categoryInfoSqlCompiler;
     public IIntersectOuterBoundService OuterBoundService { get; } = outerBoundService;
@@ -33,7 +34,7 @@ public class IntersectCategoryInfoService(
         {
             Count = pickExtent.IntervalCount,
             Query = sql,
-            Extent = [ fullExtent.OuterLow, fullExtent.OuterLow, fullExtent.IntervalCount ],
+            Extent = [fullExtent.OuterLow, fullExtent.OuterLow, fullExtent.IntervalCount],
             FullExtent = fullExtent,
             PickExtent = pickExtent,
         };

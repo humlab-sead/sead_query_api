@@ -3,7 +3,7 @@
 public class RangeCategoryInfoService(
     IRangeCategoryInfoSqlCompiler categoryInfoSqlCompiler,
     IRangeOuterBoundService outerBoundEService
-) : ICategoryInfoService
+) : IRangeCategoryInfoService
 {
     public IRangeCategoryInfoSqlCompiler CategoryInfoSqlCompiler { get; } = categoryInfoSqlCompiler;
     public IRangeOuterBoundService OuterBoundEService { get; } = outerBoundEService;

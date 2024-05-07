@@ -8,12 +8,13 @@ public class IntersectCategoryInfoSqlCompiler : IIntersectCategoryInfoSqlCompile
     {
         TickerInfo tickerInfo = (TickerInfo)payload;
         var categoryType = facet?.CategoryIdType ?? "int4range";
+        var precision = categoryType.StartsWith("int") ? 0 : tickerInfo.Precision;
+        var rangeType = categoryType.StartsWith("int") ? "integer" : $"decimal(20, {precision})";
         string sql = $@"
-        (
-            SELECT n::text || ' to ' || (n + {tickerInfo.Interval})::{categoryType}::text, {categoryType}(n, (n + {tickerInfo.Interval}))
-            FROM generate_series({tickerInfo.OuterLow}::{categoryType}, {tickerInfo.OuterHigh}::{categoryType}, {tickerInfo.Interval}::{categoryType}) as a(n)
-            WHERE n < {tickerInfo.OuterHigh}::{categoryType}
-        )";
+            SELECT n::text || ' to ' || (n + {tickerInfo.Interval})::text, {categoryType}(n, (n + {tickerInfo.Interval}))
+            FROM generate_series({tickerInfo.OuterLow}::{rangeType}, {tickerInfo.OuterHigh}::{rangeType}, {tickerInfo.Interval}::{rangeType}) as a(n)
+            WHERE n < {tickerInfo.OuterHigh}
+        ";
 
         return sql;
     }

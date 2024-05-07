@@ -1,6 +1,6 @@
 ﻿
-namespace SeadQueryCore.QueryBuilder;
-public class RangeFacetPickFilterCompiler : IPickFilterCompiler
+namespace SeadQueryCore.Plugin.Range;
+public class RangePickFilterCompiler : IRangePickFilterCompiler
 {
     public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {

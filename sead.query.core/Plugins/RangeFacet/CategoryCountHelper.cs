@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace SeadQueryCore.Plugin.Range;
 
-public class RangeCategoryCountHelper(IFacetSetting config) : ICategoryCountHelper
+
+public class RangeCategoryCountHelper(IFacetSetting config) : IRangeCategoryCountHelper
 {
     public IFacetSetting Config { get; } = config;
 

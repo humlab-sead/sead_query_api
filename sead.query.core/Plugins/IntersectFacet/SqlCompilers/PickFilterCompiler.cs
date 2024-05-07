@@ -1,6 +1,6 @@
 ﻿namespace SeadQueryCore.Plugin.Intersect;
 
-public class IntersectPickFilterCompiler : IPickFilterCompiler
+public class IntersectPickFilterCompiler : IIntersectPickFilterCompiler
 {
     public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {

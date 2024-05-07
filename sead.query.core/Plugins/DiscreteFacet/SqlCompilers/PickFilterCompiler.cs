@@ -1,6 +1,6 @@
 ﻿namespace SeadQueryCore.Plugin.Discrete;
 
-public class DiscreteFacetPickFilterCompiler : IPickFilterCompiler
+public class DiscretePickFilterCompiler : IDiscretePickFilterCompiler
 {
     public string Compile(Facet targetFacet, Facet currentFacet, FacetConfig2 config)
     {
