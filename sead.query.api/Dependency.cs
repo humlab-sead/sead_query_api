@@ -63,9 +63,6 @@ namespace SeadQueryAPI
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
 
-            builder.RegisterType<RangeOuterBoundService>().As<IRangeOuterBoundService>();
-
-
             // builder.RegisterType<DiscretePlugin>().Keyed<IServicesPlugin>(EFacetType.Range);
             // builder.RegisterType<RangePlugin>().Keyed<IServicesPlugin>(EFacetType.Discrete);
             // etc
@@ -77,24 +74,26 @@ namespace SeadQueryAPI
 
             builder.RegisterType<UndefinedPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Unknown);
 
-            builder.RegisterType<DiscreteCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Discrete);
-            builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Discrete);
             builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Discrete);
+            builder.RegisterType<DiscreteCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Discrete);
             builder.RegisterType<DiscreteCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Discrete);
-
-            // Range Facet
-            builder.RegisterType<RangeCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Range);
-            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
-            builder.RegisterType<RangeCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Range);
-            builder.RegisterType<RangeCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Range);
+            builder.RegisterType<DiscreteFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Discrete);
 
             builder.RegisterType<GeoPolygonCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.GeoPolygon);
             builder.RegisterType<GeoPolygonPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.GeoPolygon);
             builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.GeoPolygon);
             builder.RegisterType<GeoPolygonCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.GeoPolygon);
 
+            builder.RegisterType<RangeCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Range);
+            builder.RegisterType<RangeCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Range);
+            builder.RegisterType<RangeCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Range);
+            builder.RegisterType<RangeFacetPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
+            builder.RegisterType<RangeOuterBoundService>().As<IRangeOuterBoundService>();
+
+            builder.RegisterType<IntersectCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Intersect);
+            builder.RegisterType<IntersectCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Intersect);
             builder.RegisterType<IntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Intersect);
-            builder.RegisterType<IntersectCategoryInfoService>().Keyed<ICategoryCountService>(EFacetType.Intersect);
+            builder.RegisterType<IntersectOuterBoundService>().As<IIntersectOuterBoundService>();
 
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
 
