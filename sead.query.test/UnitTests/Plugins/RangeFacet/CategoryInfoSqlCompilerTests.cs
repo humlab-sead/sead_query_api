@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    public class RangeIntervalSqlCompilerTests
+    public class CategoryInfoSqlCompilerTests
     {
         private string RemoveWhiteSpace(string str)
         {
