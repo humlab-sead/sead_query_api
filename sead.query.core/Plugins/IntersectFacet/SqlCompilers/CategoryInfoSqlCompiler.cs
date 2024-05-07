@@ -10,13 +10,14 @@ public class IntersectCategoryInfoSqlCompiler : IIntersectCategoryInfoSqlCompile
         var categoryType = facet?.CategoryIdType ?? "int4range";
         var precision = categoryType.StartsWith("int") ? 0 : tickerInfo.Precision;
         var rangeType = categoryType.StartsWith("int") ? "integer" : $"decimal(20, {precision})";
+
         string sql = $@"
-            SELECT n::text || ' to ' || (n + {tickerInfo.Interval})::text, {categoryType}(n, (n + {tickerInfo.Interval}))
+            SELECT n::text || ' to ' || (n + {tickerInfo.Interval}::{rangeType})::text, {categoryType}(n, (n + {tickerInfo.Interval}::{rangeType}))
             FROM generate_series({tickerInfo.OuterLow}::{rangeType}, {tickerInfo.OuterHigh}::{rangeType}, {tickerInfo.Interval}::{rangeType}) as a(n)
             WHERE n < {tickerInfo.OuterHigh}
         ";
 
-        return sql;
+        return sql.Trim();
     }
 
     public CategoryItem ToItem(IDataReader dr)

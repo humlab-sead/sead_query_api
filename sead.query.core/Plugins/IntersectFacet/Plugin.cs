@@ -25,7 +25,7 @@ public class IntersectFacetPlugin(
 
     public static void RegisterPlugin(ContainerBuilder builder)
     {
-        builder.RegisterType<RangeCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Intersect);
+        builder.RegisterType<IntersectCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Intersect);
         builder.RegisterType<IntersectCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Intersect);
         builder.RegisterType<IntersectCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Intersect);
         builder.RegisterType<IntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Intersect);
@@ -35,11 +35,12 @@ public class IntersectFacetPlugin(
 
         // Needed by Plugin
         builder.RegisterType<IntersectCategoryCountSqlCompiler>().As<IIntersectCategoryCountSqlCompiler>();
+        builder.RegisterType<IntersectCategoryCountHelper>().As<IIntersectCategoryCountHelper>();
         builder.RegisterType<IntersectCategoryInfoService>().As<IIntersectCategoryInfoService>();
         builder.RegisterType<IntersectPickFilterCompiler>().As<IIntersectPickFilterCompiler>();
 
         builder.RegisterType<IntersectFacetPlugin>().As<IIntersectFacetPlugin>();
-        builder.RegisterType<IntersectFacetPlugin>().Keyed<IIntersectFacetPlugin>(EFacetType.Intersect);
+        builder.RegisterType<IntersectFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.Intersect);
 
     }
 }

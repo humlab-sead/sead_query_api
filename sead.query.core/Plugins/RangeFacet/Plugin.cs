@@ -35,11 +35,12 @@ public class RangeFacetPlugin(
 
         // Needed by Plugin
         builder.RegisterType<RangeCategoryCountSqlCompiler>().As<IRangeCategoryCountSqlCompiler>();
+        builder.RegisterType<RangeCategoryCountHelper>().As<IRangeCategoryCountHelper>();
         builder.RegisterType<RangeCategoryInfoService>().As<IRangeCategoryInfoService>();
         builder.RegisterType<RangePickFilterCompiler>().As<IRangePickFilterCompiler>();
 
         builder.RegisterType<RangeFacetPlugin>().As<IRangeFacetPlugin>();
-        builder.RegisterType<RangeFacetPlugin>().Keyed<IRangeFacetPlugin>(EFacetType.Intersect);
+        builder.RegisterType<RangeFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.Range);
 
     }
 }

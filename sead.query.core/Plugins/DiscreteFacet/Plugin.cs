@@ -30,12 +30,13 @@ public class DiscreteFacetPlugin(
         builder.RegisterType<DiscretePickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Discrete);
 
         builder.RegisterType<DiscreteCategoryInfoSqlCompiler>().As<IDiscreteCategoryInfoSqlCompiler>();
+        builder.RegisterType<DiscreteCategoryCountHelper>().As<IDiscreteCategoryCountHelper>();
         builder.RegisterType<DiscreteCategoryCountSqlCompiler>().As<IDiscreteCategoryCountSqlCompiler>();
         builder.RegisterType<DiscreteCategoryInfoService>().As<IDiscreteCategoryInfoService>();
         builder.RegisterType<DiscretePickFilterCompiler>().As<IDiscretePickFilterCompiler>();
 
         builder.RegisterType<DiscreteFacetPlugin>().As<IDiscreteFacetPlugin>();
-        builder.RegisterType<DiscreteFacetPlugin>().Keyed<IDiscreteFacetPlugin>(EFacetType.Discrete);
+        builder.RegisterType<DiscreteFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.Discrete);
 
     }
 }

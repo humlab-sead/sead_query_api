@@ -12,13 +12,13 @@ public class IntersectCategoryCountSqlCompiler : IIntersectCategoryCountSqlCompi
         WITH categories(category, category_range) AS (
             {payload.IntervalQuery}
         )
-            SELECT c.category, c.lower, c.upper, COALESCE(r.count_column, 0) as count_column
+            SELECT c.category, lower(c.category_range), upper(c.category_range), COALESCE(r.count_column, 0) as count_column
             FROM categories c
             LEFT JOIN (
                 SELECT category, COUNT(DISTINCT {payload.CountColumn}) AS count_column
                 FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                 JOIN categories
-                    ON categories.category_range && {facet.CategoryIdExpr}::{facet.CategoryIdType}
+                  ON categories.category_range && {facet.CategoryIdExpr}::{facet.CategoryIdType}
                 {query.Joins.Combine("\n\t\t\t\t\t")}
                 WHERE TRUE
                     { "AND ".GlueTo(query.Criterias.Combine(" AND ")) }

@@ -30,12 +30,13 @@ public class GeoPolygonFacetPlugin(
         builder.RegisterType<GeoPolygonPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.GeoPolygon);
 
         builder.RegisterType<GeoPolygonCategoryInfoSqlCompiler>().As<IGeoPolygonCategoryInfoSqlCompiler>();
+        builder.RegisterType<GeoPolygonCategoryCountHelper>().As<IGeoPolygonCategoryCountHelper>();
         builder.RegisterType<GeoPolygonCategoryCountSqlCompiler>().As<IGeoPolygonCategoryCountSqlCompiler>();
         builder.RegisterType<GeoPolygonCategoryInfoService>().As<IGeoPolygonCategoryInfoService>();
         builder.RegisterType<GeoPolygonPickFilterCompiler>().As<IGeoPolygonPickFilterCompiler>();
 
         builder.RegisterType<GeoPolygonFacetPlugin>().As<IGeoPolygonFacetPlugin>();
-        builder.RegisterType<GeoPolygonFacetPlugin>().Keyed<IGeoPolygonFacetPlugin>(EFacetType.GeoPolygon);
+        builder.RegisterType<GeoPolygonFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.GeoPolygon);
 
     }
 }
