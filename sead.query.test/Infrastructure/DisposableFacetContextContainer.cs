@@ -173,7 +173,7 @@ namespace SQT
         {
             List<string> fakeJoins = FakeJoinsClause(5);
             var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
-            var fakePickCriteria = new List<string> {  pickCriteria ?? "ID IN (1,2,3)" };
+            var fakePickCriteria = new List<string> { pickCriteria ?? "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
             var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
 
@@ -309,54 +309,70 @@ namespace SQT
         {
             var config = new SettingFactory().Create().Value.Facet;
             var mockHelpers = new Mock<IIndex<EFacetType, ICategoryCountHelper>>();
+
             mockHelpers.Setup(x => x[EFacetType.Range])
                 .Returns(new RangeCategoryCountHelper(config));
+            mockHelpers.Setup(x => x[EFacetType.Intersect])
+                .Returns(new RangeCategoryCountHelper(config));
+
             mockHelpers.Setup(x => x[EFacetType.Discrete])
                 .Returns(new DiscreteCategoryCountHelper());
+            mockHelpers.Setup(x => x[EFacetType.GeoPolygon])
+                .Returns(new DiscreteCategoryCountHelper());
+
             return mockHelpers;
         }
 
         public virtual Mock<IIndex<EFacetType, ICategoryInfoService>> MockCategoryInfoServices()
         {
-            var mockServices = new Mock<IIndex<EFacetType, ICategoryInfoService>>();
-            var mockRangeCategoryInfoService = new Mock<ICategoryInfoService>();
-            mockRangeCategoryInfoService.Setup(c => c.GetCategoryInfo(
-                It.IsAny<FacetsConfig2>(),
-                It.IsAny<string>(),
-                It.IsAny<object>()
-            )).Returns(
-                new FacetContent.CategoryInfo
+            var services = new Mock<IIndex<EFacetType, ICategoryInfoService>>();
+            services.Setup(x => x[EFacetType.Range]).Returns(
+                MockCategoryInfoService(new FacetContent.CategoryInfo
                 {
-                    Count = 99,
-                    Query = "dumy-sql",
-                    Extent = [1, 100]
+                    Count = 10,
+                    Query = "dummy-range-sql",
+                    Extent = [1, 10]
                 }
-            );
-            mockRangeCategoryInfoService.Setup(c => c.SqlCompiler).Returns(
-                new Mock<ICategoryInfoSqlCompiler>().Object
-            );
-
-            var mockDiscreteCategoryInfoService = new Mock<ICategoryInfoService>();
-            mockDiscreteCategoryInfoService.Setup(c => c.GetCategoryInfo(
-                It.IsAny<FacetsConfig2>(),
-                It.IsAny<string>(),
-                It.IsAny<object>()
-            )).Returns(
-                new FacetContent.CategoryInfo
+            ).Object);
+            services.Setup(x => x[EFacetType.Discrete]).Returns(
+                MockCategoryInfoService(new FacetContent.CategoryInfo
+                {
+                    Count = 5,
+                    Query = "dummy-discrete-sql",
+                    Extent = [1, 2, 3, 4, 5]
+                }
+            ).Object);
+            services.Setup(x => x[EFacetType.Intersect]).Returns(
+                MockCategoryInfoService(new FacetContent.CategoryInfo
+                {
+                    Count = 20,
+                    Query = "dummy-intersect-sql",
+                    Extent = [1, 2]
+                }
+            ).Object);
+            services.Setup(x => x[EFacetType.GeoPolygon]).Returns(
+                MockCategoryInfoService(new FacetContent.CategoryInfo
                 {
                     Count = 88,
-                    Query = "dumy-sql",
-                    Extent = [1]
+                    Query = "dummy-geo-polygon-sql",
+                    Extent = [1, 1, 2, 1, 2, 2, 1, 1]
                 }
-            );
-            mockDiscreteCategoryInfoService.Setup(c => c.SqlCompiler).Returns(
+            ).Object);
+            return services;
+        }
+
+        private static Mock<ICategoryInfoService> MockCategoryInfoService(FacetContent.CategoryInfo returnValue)
+        {
+            var service = new Mock<ICategoryInfoService>();
+            service.Setup(c => c.GetCategoryInfo(
+                It.IsAny<FacetsConfig2>(),
+                It.IsAny<string>(),
+                It.IsAny<object>()
+            )).Returns(returnValue);
+            service.Setup(c => c.SqlCompiler).Returns(
                 new Mock<ICategoryInfoSqlCompiler>().Object
             );
-            mockServices.Setup(x => x[EFacetType.Range])
-                .Returns(mockRangeCategoryInfoService.Object);
-            mockServices.Setup(x => x[EFacetType.Discrete])
-                .Returns(mockDiscreteCategoryInfoService.Object);
-            return mockServices;
+            return service;
         }
 
         public virtual Mock<IIndex<EFacetType, ICategoryCountSqlCompiler>> MockCategoryCountSqlCompilers(string returnSql)
