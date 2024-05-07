@@ -1,10 +1,9 @@
 
 using System.Collections.Generic;
-using System.Data;
 using Autofac;
 
 namespace SeadQueryCore;
-public interface IFacetTypePlugin
+public interface IFacetPlugin
 {
     void Register(ContainerBuilder builder);
     ICategoryCountHelper CategoryCountHelper { get; }
