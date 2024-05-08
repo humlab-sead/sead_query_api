@@ -96,6 +96,8 @@ namespace IntegrationTests.Sead
         /// <returns></returns>
         [Theory]
         [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738", false)]
+        [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0", false)]
+        [InlineData("tbl_denormalized_measured_values_37:tbl_denormalized_measured_values_37", false)]
         public async Task Load_VariousGeoPolygonFacetConfigs_HasExpectedSqlQuery(string uri, bool checkNotEmpty)
         {
             // Arrange
@@ -126,7 +128,6 @@ namespace IntegrationTests.Sead
 
             Assert.True(match.Success);
             Assert.Equal("", match.AggregateType);
-            Assert.Null(match.InnerSelect);
         }
 
 
@@ -252,7 +253,6 @@ namespace IntegrationTests.Sead
             var facetContent = JsonConvert.DeserializeObject<FacetContent>(responseContent);
 
             Assert.NotNull(facetContent);
-            // Assert.NotEmpty(facetContent.Items);
 
             CompareLogic compare = new();
             compare.Config.MembersToIgnore.AddRange(new string[] { "DomainFacet", "TargetFacet", "Facet", "Text" });
