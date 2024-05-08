@@ -38,7 +38,7 @@ namespace SQT.Plugins.Intersect
             Facet targetFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             Assert.Throws<ArgumentException>(() =>
             {
-                var picks = new List<int>() { 1, 2, 3 };
+                var picks = new List<int>() { 1 };
                 FacetConfig2 config = new FacetConfig2(targetFacet, 1, "", FacetConfigPick.CreateByList(picks));
                 var result = compiler.Compile(targetFacet, targetFacet, config);
             });
@@ -52,7 +52,7 @@ namespace SQT.Plugins.Intersect
             Facet targetFacet = Registry.Facets.GetByCode("analysis_entity_ages");
             FacetConfig2 config = new FacetConfig2(targetFacet, 1, "", FacetConfigPick.CreateByList(picks));
             var result = compiler.Compile(targetFacet, targetFacet, config);
-            Assert.Equal($"{targetFacet.CategoryIdExpr} && numrange({picks.BuildString<int>(", ", "")}, '[]')", result);
+            Assert.Equal($"{targetFacet.CategoryIdExpr} && int4range({picks.BuildString<int>(", ", "")}, '[]')", result);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace SQT.Plugins.Intersect
             var picks = new List<int>() { 1, 2 };
             FacetConfig2 config = new FacetConfig2(targetFacet, 1, "", FacetConfigPick.CreateByList(picks));
             var result = compiler.Compile(targetFacet, currentFacet, config);
-            Assert.Equal($"{currentFacet.CategoryIdExpr} && numrange({picks.BuildString<int>(", ", "")}, '[]')", result);
+            Assert.Equal($"{currentFacet.CategoryIdExpr} && int4range({picks.BuildString<int>(", ", "")}, '[]')", result);
 
         }
 
