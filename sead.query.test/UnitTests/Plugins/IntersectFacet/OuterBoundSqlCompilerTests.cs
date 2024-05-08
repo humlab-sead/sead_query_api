@@ -9,7 +9,7 @@ namespace SQT.Plugins.Range
     public class OuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
         [Theory]
-        [InlineData("analysis_ages:analysis_ages")]
+        [InlineData("analysis_entity_ages:analysis_entity_ages")]
         public void Compile_OuterBound_Succeeds(string uri)
         {
             // Arrange
@@ -21,8 +21,8 @@ namespace SQT.Plugins.Range
             var result = sqlCompiler.Compile(null /* fakeQuerySetup not used */, fakeQuerySetup.Facet);
 
             // Assert
-            const string expectedSql = "SELECT.*MIN.*MAX.*FROM.*";
-            Assert.Matches(expectedSql, result.Squeeze());
+            const string expectedSql = @"select min\(lower\(.+\)\)::.+ as lower, max\(upper\(.+\)\)::.+ as upper from .+";
+            Assert.Matches(expectedSql, result.Squeeze().ToLower());
         }
     }
 }
