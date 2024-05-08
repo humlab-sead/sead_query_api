@@ -14,7 +14,19 @@ namespace SQT.SqlCompilers
             var fieldType = new Mock<ResultFieldType>();
             var fieldCompiler = new CountFieldCompiler(fieldType.Object);
             var result = fieldCompiler.Compile(expr);
-            Assert.Contains("COUNT", result);
+            Assert.Contains("COUNT(A)", result);
+        }
+
+        [Theory]
+        [InlineData("A")]
+        public void Compile_DistinctExpression_Success(string expr)
+        {
+            var fieldType = new Mock<ResultFieldType>();
+            var fieldCompiler = new CountDistinctFieldCompiler(fieldType.Object);
+            var result = fieldCompiler.Compile(expr);
+            Assert.Contains("COUNT(DISTINCT A)", result);
         }
     }
+
+
 }
