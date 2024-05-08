@@ -45,6 +45,8 @@ namespace SQT.SQL.Matcher
         {
             if (facetType == EFacetType.Range)
                 return new RangeCategoryCountSqlCompilerMatcher();
+            if (facetType == EFacetType.Intersect)
+                return new IntersectCategoryCountSqlCompilerMatcher();
             if (facetType == EFacetType.GeoPolygon)
                 return new GeoPolygonCategoryCountSqlCompilerMatcher();
             return new DiscreteCategoryCountSqlCompilerMatcher();
