@@ -8,12 +8,12 @@ namespace SQT.SQL.Matcher
         public static string TypeExpr = @"[\w\d]+(\(\d+,\d+\))*";
 
         public static string OuterSqlRegExpr { get; } =
-            $@"WITH categories\(category, category_range\) AS \((?:\s*\#INTERVAL-QUERY\#|
+            $@"WITH categories\(category, category_range\) AS \((?:\s*\#INTERVAL-QUERY\#\s*|
                     SELECT n::text \|\| ' to ' \|\| \(n \+ {NumberExpr}::{TypeExpr}\)::text, {TypeExpr}\(n, \(n \+ {NumberExpr}::{TypeExpr}\)\)
                     FROM generate_series\({NumberExpr}::{TypeExpr}, {NumberExpr}::{TypeExpr}, {NumberExpr}::{TypeExpr}\) as a\(n\)
                     WHERE n < {NumberExpr}
                 )\)
-                    SELECT c.category, lower\(c.category_range\), upper\(c.category_range\), COALESCE\(r.count_column, 0\) as count_column
+                    SELECT c.category, lower\(c.category_range\)::{TypeExpr}, upper\(c.category_range\)::{TypeExpr}, COALESCE\(r.count_column, 0\) as count_column
                     FROM categories c
                     LEFT JOIN \((?<InnerSql>.*)\) AS r
                       ON r.category = c.category
