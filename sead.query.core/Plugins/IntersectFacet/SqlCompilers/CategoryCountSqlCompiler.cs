@@ -8,7 +8,6 @@ public class IntersectCategoryCountSqlCompiler : IIntersectCategoryCountSqlCompi
     public string Compile(QueryBuilder.QuerySetup query, Facet facet, CompilePayload payload)
     {
         string sql = $@"
-
         WITH categories(category, category_range) AS (
             {payload.IntervalQuery}
         )
@@ -18,7 +17,7 @@ public class IntersectCategoryCountSqlCompiler : IIntersectCategoryCountSqlCompi
                 SELECT category, COUNT(DISTINCT {payload.CountColumn}) AS count_column
                 FROM {query.Facet.TargetTable.ResolvedSqlJoinName}
                 JOIN categories
-                  ON categories.category_range && {facet.CategoryIdExpr}::{facet.CategoryIdType}
+                  ON categories.category_range {facet.CategoryIdOperator} {facet.CategoryIdExpr}::{facet.CategoryIdType}
                 {query.Joins.Combine("\n\t\t\t\t\t")}
                 WHERE TRUE
                     { "AND ".GlueTo(query.Criterias.Combine(" AND ")) }

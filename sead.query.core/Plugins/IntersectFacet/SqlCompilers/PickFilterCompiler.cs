@@ -1,4 +1,7 @@
-﻿namespace SeadQueryCore.Plugin.Intersect;
+﻿using System;
+using System.Collections.Generic;
+
+namespace SeadQueryCore.Plugin.Intersect;
 
 public class IntersectPickFilterCompiler : IIntersectPickFilterCompiler
 {
@@ -7,9 +10,16 @@ public class IntersectPickFilterCompiler : IIntersectPickFilterCompiler
         if (!config.HasPicks())
             return currentFacet.Criteria;
 
-        var picks = config.GetPickValues(true);
+        if (config.GetPickCount() < 2)
+            throw new ArgumentException("Invalid bounds size");
 
-        return SqlCompileUtility.RangesIntersectExpr(currentFacet.CategoryIdExpr, picks)
+        return CompileExpr(currentFacet, config.GetPickValues(true))
             .GlueIf(currentFacet.Criteria, " AND ");
     }
+
+    public string CompileExpr(Facet facet, List<decimal> bounds)
+    {
+        return SqlCompileUtility.RangeExpr(facet.CategoryIdExpr, facet.CategoryIdType, facet.CategoryIdOperator, bounds);
+    }
 }
+

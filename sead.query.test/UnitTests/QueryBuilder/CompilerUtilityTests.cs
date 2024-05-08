@@ -71,12 +71,13 @@ namespace SQT.SqlCompilers
             SqlCompileUtility.WithinPolygonExpr(coordinateExpr, polygon).Equals("ST_Within(ST_MakePoint(1.1, 2.2), ST_MakePolygon(ST_MakeLine(ARRAY[ST_MakePoint(1.1, 2.2), ST_MakePoint(3.3, 4.4), ST_MakePoint(5.5, 6.6)]))");
         }
 
-        [Fact]
-        public void SqlCompileRangeIntersectsExprTests2()
+        [Theory]
+        [InlineData("numrange(low, high, '[]')", "numrange", "&&")]
+        // [InlineData("numrange(low, high, '[]')", "int4range", "&&")]
+        public void SqlCompileRangeIntersectsExprTests2(string intersectExpr, string rangeType, string rangeOperator)
         {
-            var intersectExpr = "numrange(low, high, '[]')";
             List<decimal> interval = [1.1M, 2.2M];
-            SqlCompileUtility.RangesIntersectExpr(intersectExpr, interval).Equals($"{intersectExpr} && numrange(1.1, 2.2, '[]')");
+            SqlCompileUtility.RangeExpr(intersectExpr, rangeType, rangeOperator , interval).Equals($"{intersectExpr} && {rangeType}(1.1, 2.2, '[]')");
         }
     }
 }

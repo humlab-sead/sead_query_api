@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace SeadQueryCore
@@ -62,5 +63,14 @@ namespace SeadQueryCore
 
         [GeneratedRegex(@"\s+")]
         private static partial Regex MyRegex();
+
     }
+
+    public static class DecimalExtension
+    {
+        public static string ToStringEn(this decimal value)
+        {
+            return value.ToString(CultureInfo.GetCultureInfo("en-US"));
+        }
+    }   
 }

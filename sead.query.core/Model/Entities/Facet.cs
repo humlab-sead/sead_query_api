@@ -20,9 +20,9 @@ namespace SeadQueryCore
     {
         public Facet()
         {
-            Clauses = new List<FacetClause>();
-            Tables = new List<FacetTable>();
-            Children = new List<FacetChild>();
+            Clauses = [];
+            Tables = [];
+            Children = [];
         }
 
         public int FacetId { get; set; }
@@ -47,6 +47,9 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         public string CategoryIdType { get; set; }
+        
+        [JsonIgnore]
+        public string CategoryIdOperator{ get; set; } = "=";
 
         [JsonIgnore]
         public string CategoryNameExpr { get; set; }

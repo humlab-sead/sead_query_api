@@ -67,22 +67,19 @@ namespace SeadQueryCore
         /// <summary>
         /// Returns a SQL expression that checks if a numrangeexpr is within given buounds
         /// </summary>
-        /// <param name="numRangeExpr">numrange(age_younger, age_older, '[]')</param>
+        /// <param name="rangeExpr">numrange(age_younger, age_older, '[]')</param>
+        /// <param name="rangeOperator"></param>
+        /// <param name="rangeType"></param>
         /// <param name="bounds"></param>
         /// Create a integer version of this method
-        public static string RangesIntersectExpr(string numRangeExpr, List<int> bounds)
+        public static string RangeExpr(string rangeExpr, string rangeType, string rangeOperator, List<int> bounds)
         {
-            return RangesIntersectExpr(numRangeExpr, bounds.ConvertAll(z => (decimal)z));
+            return $"{rangeExpr} {rangeOperator} {rangeType}({bounds[0]}, {bounds[1]}, '[]')";
         }
 
-        public static string RangesIntersectExpr(string numRangeExpr, List<decimal> bounds)
+        public static string RangeExpr(string rangeExpr, string rangeType, string rangeOperator, List<decimal> bounds)
         {
-            var c = CultureInfo.GetCultureInfo("en-US");
-            if (bounds.Count != 2)
-                throw new ArgumentException("Invalid bounds size");
-            return $"{numRangeExpr} && numrange({bounds[0].ToString(c)}, {bounds[1].ToString(c)}, '[]')";
+            return $"{rangeExpr} {rangeOperator} {rangeType}({bounds[0].ToStringEn()}, {bounds[1].ToStringEn()}, '[]')";
         }
-
     }
-
 }
