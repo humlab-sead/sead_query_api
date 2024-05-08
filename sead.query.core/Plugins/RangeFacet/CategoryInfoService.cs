@@ -11,7 +11,7 @@ public class RangeCategoryInfoService(
 
     public FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, dynamic payload = null)
     {
-        var intervalCount = (int)(payload ?? 80);
+        var intervalCount = (int)(payload ?? 50);
 
         var facetConfig = facetsConfig.GetConfig(facetCode);
         // var precision = facet.CategoryIdType == "integer" ? 0 : 2;
