@@ -409,11 +409,11 @@ namespace SQT
             var mockLocator = new Mock<IPickFilterCompilerLocator>();
             mockLocator
                 .Setup(x => x.Locate(EFacetType.Discrete))
-                .Returns(new DiscreteFacetPickFilterCompiler());
+                .Returns(new DiscretePickFilterCompiler());
 
             mockLocator
                 .Setup(x => x.Locate(EFacetType.Range))
-                .Returns(new RangeFacetPickFilterCompiler());
+                .Returns(new RangePickFilterCompiler());
 
             return mockLocator;
         }
