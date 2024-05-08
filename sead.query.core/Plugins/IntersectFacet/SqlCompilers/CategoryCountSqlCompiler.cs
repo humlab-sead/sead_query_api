@@ -7,11 +7,12 @@ public class IntersectCategoryCountSqlCompiler : IIntersectCategoryCountSqlCompi
 {
     public string Compile(QueryBuilder.QuerySetup query, Facet facet, CompilePayload payload)
     {
+        string typeCast = facet.CategoryIdType.StartsWith("int") ? "::integer" : "";
         string sql = $@"
         WITH categories(category, category_range) AS (
             {payload.IntervalQuery}
         )
-            SELECT c.category, lower(c.category_range), upper(c.category_range), COALESCE(r.count_column, 0) as count_column
+            SELECT c.category, lower(c.category_range){typeCast}, upper(c.category_range){typeCast}, COALESCE(r.count_column, 0) as count_column
             FROM categories c
             LEFT JOIN (
                 SELECT category, COUNT(DISTINCT {payload.CountColumn}) AS count_column
