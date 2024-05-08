@@ -85,7 +85,7 @@ Trigger: country add
   "targetCode": "country",
   "domainCode": "",
   "facetConfigs": [
-    { "facetCode": "country", "position": 1, "picks": [], "textFilter": "" }
+    { "facetCode": "country", "position": 1, "picks": [] }
   ]
 }
 ```
@@ -106,8 +106,7 @@ Trigger: country pick value
       {
         "facetCode": "country",
         "position": 1,
-        "picks": [{ "pickType": 1, "pickValue": 205, "text": 205 }],
-        "textFilter": ""
+        "picks": [{ "pickValue": 205, "text": 205 }]
       }
     ]
   },
@@ -135,10 +134,9 @@ Trigger: site add
     {
       "facetCode": "country",
       "position": 1,
-      "picks": [{ "pickType": 1, "pickValue": 205, "text": 205 }],
-      "textFilter": ""
+      "picks": [{ "pickValue": 205, "text": 205 }],
     },
-    { "facetCode": "sites", "position": 2, "picks": [], "textFilter": "" }
+    { "facetCode": "sites", "position": 2, "picks": [] }
   ]
 }
 ```
@@ -159,14 +157,12 @@ Trigger: site pick value
       {
         "facetCode": "country",
         "position": 1,
-        "picks": [{ "pickType": 1, "pickValue": 205, "text": 205 }],
-        "textFilter": ""
+        "picks": [{ "pickValue": 205, "text": 205 }],
       },
       {
         "facetCode": "sites",
         "position": 2,
-        "picks": [{ "pickType": 1, "pickValue": 3826, "text": 3826 }],
-        "textFilter": ""
+        "picks": [{ "pickValue": 3826, "text": 3826 }],
       }
     ]
   },
@@ -200,16 +196,14 @@ TODO: Check usage of triggerCode
       "facetCode": "country",
       "position": 1,
       "picks": [
-        { "pickType": 1, "pickValue": 205, "text": 205 },
-        { "pickType": 1, "pickValue": 224, "text": 224 }
-      ],
-      "textFilter": ""
+        { "pickValue": 205, "text": 205 },
+        { "pickValue": 224, "text": 224 }
+      ]
     },
     {
       "facetCode": "sites",
       "position": 2,
-      "picks": [{ "pickType": 1, "pickValue": 3826, "text": 3826 }],
-      "textFilter": ""
+      "picks": [{ "pickValue": 3826, "text": 3826 }]
     }
   ]
 }
@@ -230,16 +224,14 @@ Result load
         "facetCode": "country",
         "position": 1,
         "picks": [
-          { "pickType": 1, "pickValue": 205, "text": 205 },
-          { "pickType": 1, "pickValue": 224, "text": 224 }
-        ],
-        "textFilter": ""
+          { "pickValue": 205, "text": 205 },
+          { "pickValue": 224, "text": 224 }
+        ]
       },
       {
         "facetCode": "sites",
         "position": 2,
-        "picks": [{ "pickType": 1, "pickValue": 3826, "text": 3826 }],
-        "textFilter": ""
+        "picks": [{ "pickValue": 3826, "text": 3826 }]
       }
     ]
   },
@@ -271,19 +263,17 @@ Facet load [sites]
         "facetCode": "country",
         "position": 1,
         "picks": [
-          { "pickType": 1, "pickValue": 205, "text": 205 },
-          { "pickType": 1, "pickValue": 224, "text": 224 }
-        ],
-        "textFilter": ""
+          { "pickValue": 205, "text": 205 },
+          { "pickValue": 224, "text": 224 }
+        ]
       },
       {
         "facetCode": "sites",
         "position": 2,
         "picks": [
-          { "pickType": 1, "pickValue": 3826, "text": 3826 },
-          { "pickType": 1, "pickValue": 3830, "text": 3830 }
-        ],
-        "textFilter": ""
+          { "pickValue": 3826, "text": 3826 },
+          { "pickValue": 3830, "text": 3830 }
+        ]
       }
     ]
   },
@@ -314,22 +304,20 @@ Facet load #1 [sites]
       "facetCode": "country",
       "position": 1,
       "picks": [
-        { "pickType": 1, "pickValue": 205, "text": 205 },
-        { "pickType": 1, "pickValue": 224, "text": 224 }
-      ],
-      "textFilter": ""
+        { "pickValue": 205, "text": 205 },
+        { "pickValue": 224, "text": 224 }
+      ]
     },
     {
       "facetCode": "genus",
       "position": 2,
       "picks": [
-        { "pickType": 1, "pickValue": 12974, "text": 12974 },
-        { "pickType": 1, "pickValue": 12793, "text": 12793 },
-        { "pickType": 1, "pickValue": 12932, "text": 12932 }
-      ],
-      "textFilter": ""
+        { "pickValue": 12974, "text": 12974 },
+        { "pickValue": 12793, "text": 12793 },
+        { "pickValue": 12932, "text": 12932 }
+      ]
     },
-    { "facetCode": "sites", "position": 3, "picks": [], "textFilter": "" }
+    { "facetCode": "sites", "position": 3, "picks": [] }
   ]
 }
 ```
@@ -348,22 +336,20 @@ Facet load #2 [genus]
       "facetCode": "country",
       "position": 1,
       "picks": [
-        { "pickType": 1, "pickValue": 205, "text": 205 },
-        { "pickType": 1, "pickValue": 224, "text": 224 }
-      ],
-      "textFilter": ""
+        { "pickValue": 205, "text": 205 },
+        { "pickValue": 224, "text": 224 }
+      ]
     },
     {
       "facetCode": "genus",
       "position": 2,
       "picks": [
-        { "pickType": 1, "pickValue": 12974, "text": 12974 },
-        { "pickType": 1, "pickValue": 12793, "text": 12793 },
-        { "pickType": 1, "pickValue": 12932, "text": 12932 }
-      ],
-      "textFilter": ""
+        { "pickValue": 12974, "text": 12974 },
+        { "pickValue": 12793, "text": 12793 },
+        { "pickValue": 12932, "text": 12932 }
+      ]
     },
-    { "facetCode": "sites", "position": 3, "picks": [], "textFilter": "" }
+    { "facetCode": "sites", "position": 3, "picks": [] }
   ]
 }
 ```
@@ -383,22 +369,20 @@ Result load
         "facetCode": "country",
         "position": 1,
         "picks": [
-          { "pickType": 1, "pickValue": 205, "text": 205 },
-          { "pickType": 1, "pickValue": 224, "text": 224 }
-        ],
-        "textFilter": ""
+          { "pickValue": 205, "text": 205 },
+          { "pickValue": 224, "text": 224 }
+        ]
       },
       {
         "facetCode": "genus",
         "position": 2,
         "picks": [
-          { "pickType": 1, "pickValue": 12974, "text": 12974 },
-          { "pickType": 1, "pickValue": 12793, "text": 12793 },
-          { "pickType": 1, "pickValue": 12932, "text": 12932 }
-        ],
-        "textFilter": ""
+          { "pickValue": 12974, "text": 12974 },
+          { "pickValue": 12793, "text": 12793 },
+          { "pickValue": 12932, "text": 12932 }
+        ]
       },
-      { "facetCode": "sites", "position": 3, "picks": [], "textFilter": "" }
+      { "facetCode": "sites", "position": 3, "picks": [] }
     ]
   },
   "resultConfig": {
