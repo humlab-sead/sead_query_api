@@ -21,12 +21,12 @@ namespace SQT.Plugins.Intersect
             var facet = new Facet() { CategoryIdType = typeName };
             var compiler = new IntersectCategoryInfoSqlCompiler();
             var payload = new TickerInfo(dataLow, dataHigh, desiredCount);
-
+            var rangeType = typeName.StartsWith("int") ? "integer" : "decimal(20,2)";
             // Act
             var result = compiler.Compile(null, facet, payload);
 
             // Assert
-            var expected = $"generate_series({dataLow}::{typeName},{dataHigh}::{typeName},{payload.Interval}::{typeName})";
+            var expected = $"generate_series({dataLow}::{rangeType},{dataHigh}::{rangeType},{payload.Interval}::{rangeType})";
             Assert.Contains(expected, RemoveWhiteSpace(result));
         }
     }

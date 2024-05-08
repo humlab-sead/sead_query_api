@@ -17,7 +17,7 @@ namespace SQT.Plugins.Intersect
             var fakeFacetsConfig = FakeFacetsConfig(uri);
             var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var facet = fakeQuerySetup.Facet;
-            const string intervalQuery = "( #INTERVAL-QUERY# )";
+            const string intervalQuery = "#INTERVAL-QUERY#";
             const string countColumn = "dummy_column";
 
             CompilePayload compilePayload = new CompilePayload()
