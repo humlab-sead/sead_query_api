@@ -49,7 +49,7 @@ namespace SeadQueryCore
         public string CategoryIdType { get; set; }
         
         [JsonIgnore]
-        public string CategoryIdOperator{ get; set; } = "=";
+        public string CategoryIdOperator{ get; set; }
 
         [JsonIgnore]
         public string CategoryNameExpr { get; set; }
@@ -78,7 +78,7 @@ namespace SeadQueryCore
         public virtual List<FacetClause> Clauses { get; set; }
 
         [JsonIgnore]
-        public virtual IEnumerable<FacetChild> Children { get; set; }
+        public virtual List<FacetChild> Children { get; set; }
 
         [JsonIgnore]
         [NotMapped]
