@@ -45,12 +45,6 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#64a2d5",
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    },
     // "dotnet-test-explorer.enableTelemetry": false,
     // "dotnet-test-explorer.runInParallel": true,
     // "dotnet-test-explorer.showCodeLens": false,
