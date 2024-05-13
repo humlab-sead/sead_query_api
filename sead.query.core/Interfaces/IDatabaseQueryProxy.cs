@@ -13,6 +13,9 @@ namespace SeadQueryCore
         T QueryRow<T>(string sql, Func<IDataReader, T> selector = null);
         List<T> QueryScalars<T>(string sql);
         List<T> QueryRows<T>(string sql, Func<IDataReader, T> selector);
+
+        (T, T) GetRange<T>(IDataReader dr, int index);
+        
     }
 
     public interface IDynamicQueryProxy

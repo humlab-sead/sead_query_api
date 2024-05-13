@@ -74,7 +74,7 @@ namespace SeadQueryInfra
             }
         }
 
-        public static async Task<(T, T)> GetRange<T>(IDataReader dr, int index)
+        public static async Task<(T, T)> GetRangeAsync<T>(IDataReader dr, int index)
         {
             var datareader = (DbDataReader)dr;
             NpgsqlRange<T> range = await datareader.GetFieldValueAsync<NpgsqlRange<T>>(index);
@@ -82,6 +82,17 @@ namespace SeadQueryInfra
                 return (default(T), default(T));
             return (range.LowerBound, range.UpperBound);
         }
+
+
+        public (T, T) GetRange<T>(IDataReader dr, int index)
+        {
+            var datareader = (DbDataReader)dr;
+            NpgsqlRange<T> range = datareader.GetFieldValue<NpgsqlRange<T>>(index);
+            if (range.IsEmpty)
+                return (default, default);
+            return (range.LowerBound, range.UpperBound);
+        }
+
 
     }
 }
