@@ -1,4 +1,7 @@
+using System.Net.Http;
+using System.Text;
 using Autofac;
+using Newtonsoft.Json;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Intersect;
 using SQT.Infrastructure;
@@ -78,50 +81,6 @@ namespace SQT.Plugins.Intersect
             Assert.NotEmpty(match.InnerSelect.Tables);
         }
 
-        // [Theory]
-        // [InlineData("analysis_entity_ages:analysis_entity_ages")]
-        // public void Compile_VariousConfigs_ExpectedBehavior(string uri)
-        // {
-        //     var (dataLow, dataHigh, desiredCount) = (1.0m, 10.0m, 3);
 
-        //     // Arrange
-        //     var facetsConfig = FakeFacetsConfig(uri);
-        //     var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
-        //     var queryFields = resultConfig.GetSortedFields();
-
-        //     var querySetup = QuerySetupBuilder
-        //         .Build(facetsConfig, resultConfig.Facet, queryFields);
-
-        //     var facet = querySetup.Facet;
-
-        //     var infoService = Container.ResolveKeyed<ICategoryInfoService>(facet.FacetTypeId);
-
-        //     var payload = new TickerInfo(dataLow, dataHigh, desiredCount);
-
-        //     var categoryInfo = infoService.GetCategoryInfo(facetsConfig, facet.FacetCode, payload);
-        //     // Act
-        //     var sqlCompiler = new IntersectCategoryCountSqlCompiler();
-
-        //     var compilePayload = new CompilePayload {
-        //         IntervalQuery = categoryInfo.Query,
-        //         ResultFacet = resultConfig.Facet,
-        //         TargetFacet = facet,
-        //         AggregateFacet = null,
-        //         AggregateType = null,
-        //         CountColumn = null
-        //     };
-        //     var result = sqlCompiler.Compile(querySetup, facet, compilePayload);
-
-        //     // Assert
-        //     result = result.Squeeze();
-        //     var match = CategoryCountSqlCompilerMatcher
-        //         .Create(facet.FacetTypeId).Match(result);
-
-        //     Assert.True(match.Success);
-
-        //     Assert.True(match.InnerSelect.Success);
-
-        //     Assert.NotEmpty(match.InnerSelect.Tables);
-        // }
     }
 }

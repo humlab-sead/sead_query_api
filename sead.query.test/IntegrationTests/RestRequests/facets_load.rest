@@ -1,4 +1,26 @@
 
+### Picks:  (none)
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+      "requestId": 1,
+      "requestType": "populate",
+      "domainCode": "dendrochronology",
+      "targetCode": "sites",
+      "triggerCode": "sites",
+      "facetConfigs": [
+          {
+              "facetCode": "sites",
+              "position": 1,
+              "picks": [],
+              "textFilter": ""
+          }
+      ]
+}
+'
 ### Type:   discrete
 ### Chain:  sites
 ### Picks:  (none)
@@ -101,227 +123,6 @@ accept: application/json
         ]
     }
     ]
-}
-### Type:   range
-### Chain:  tbl_denormalized_measured_values_32
-### Picks: (50, 100)
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-content-type: application/json
-mode: cors
-accept: application/json
-
-{
-    "requestId":1,
-    "requestType":"populate",
-    "targetCode":"tbl_denormalized_measured_values_32",
-    "triggerCode":"tbl_denormalized_measured_values_32",
-    "facetConfigs":[ {
-        "facetCode":"tbl_denormalized_measured_values_32",
-        "position":1,
-        "picks":[
-            { "pickValue": "50", "text": "50"},
-            { "pickValue": "100", "text": "100"}
-        ]
-    }
-    ]
-}
-### Type:   range
-### /facets/load: sites:tbl_denormalized_measured_values_33_0@100,200/sites
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "sites",
-  "facetConfigs": [
-    {
-      "facetCode": "tbl_denormalized_measured_values_33_0",
-      "position": 1,
-      "picks": [
-        {
-          "pickValue": 100,
-          "text": 100
-        },
-        {
-          "pickValue": 200,
-          "text": 200
-        }
-      ]
-    },
-    {
-      "facetCode": "sites",
-      "position": 2,
-      "picks": []
-    }
-  ]
-}
-
-
-### /facets
-GET {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-### Type:   range
-### Chain:  tbl_denormalized_measured_values_33_0
-### Picks: (50, 100)
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "tbl_denormalized_measured_values_33_0",
-  "facetConfigs": [
-    {
-      "facetCode": "tbl_denormalized_measured_values_33_0",
-      "position": 1,
-      "picks": []
-    }
-  ]
-}
-
-### Type:  discrete
-### Chain: dataset_master
-### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "dataset_master",
-  "facetConfigs": [
-    {
-      "facetCode": "dataset_master",
-      "position": 1,
-      "picks": []
-    }
-  ]
-}
-
-### Type:  discrete
-### Chain: sites / country
-### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "sites",
-  "domainCode": "",
-  "facetConfigs": [
-    {
-        "facetCode":"country",
-        "position":1,
-        "picks":[
-            {
-                "pickValue":"38",
-                "text":"38"
-            }
-        ],
-    },
-    {
-        "facetCode": "sites",
-        "position": 2,
-        "picks": [],
-    }
-  ]
-}
-
-### Type:  discrete
-### Chain: sites / palaeoentomology [ parent facet]
-### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "palaeoentomology",
-  "domainCode": "",
-  "facetConfigs": [
-        {
-            "facetCode": "sites",
-            "position": 1,
-            "picks": []
-        },
-        {
-            "facetCode":"palaeoentomology",
-            "position":2,
-            "picks":[  ]
-        }
-  ]
-}
-
-### Type:  discrete
-### Chain: palaeoentomology / sites
-### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "sites",
-  "domainCode": "",
-  "facetConfigs": [
-        {
-            "facetCode": "palaeoentomology",
-            "position": 1,
-            "picks": []
-        },
-        {
-            "facetCode":"sites",
-            "position":2,
-            "picks":[  ]
-        }
-  ]
-}
-
-### Type:  discrete
-### Chain: palaeoentomology
-### Picks: None
-POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
-Sec-Fetch-Mode: cors
-mode: cors
-Accept: application/json, text/javascript, /; q=0.01
-Content-Type: application/json; charset=UTF-8
-
-{
-  "requestId": 1,
-  "requestType": "populate",
-  "targetCode": "sites",
-  "domainCode": "palaeoentomology",
-  "facetConfigs": [
-    {
-      "facetCode": "sites",
-      "position": 1,
-      "picks": []
-    }
-  ]
 }
 
 
