@@ -24,7 +24,7 @@ namespace SQT.LiveServices
             Registry = Container.Resolve<IRepositoryRegistry>();
         }
 
-        public FacetsConfig2 FakeFacetsConfig(string uri)
+        public FacetsConfig2 UriToFacetsConfig(string uri)
             => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
         public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
@@ -38,12 +38,25 @@ namespace SQT.LiveServices
         [InlineData("sites:sites/tbl_denormalized_measured_values_33_0")]
         public void Load_VariousConfigs_Success(string uri)
         {
-            var fakeFacetsConfig = FakeFacetsConfig(uri);
+            var fakeFacetsConfig = UriToFacetsConfig(uri);
             var service = this.Container.Resolve<ILoadFacetService>();
 
             var data = service.Load(fakeFacetsConfig);
 
             Assert.NotNull(data);
         }
+
+        [Theory]
+        [InlineData("analysis_entity_ages:analysis_entity_ages")]
+        public void Load_Intersect_Facets(string uri)
+        {
+            var facetsConfig = UriToFacetsConfig(uri);
+            var service = this.Container.Resolve<ILoadFacetService>();
+
+            var data = service.Load(facetsConfig);
+
+            Assert.NotNull(data);
+        }
+
     }
 }
