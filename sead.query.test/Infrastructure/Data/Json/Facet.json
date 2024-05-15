@@ -1,5 +1,23 @@
 [
   {
+    "FacetId": 13,
+    "FacetCode": "sample_groups",
+    "DisplayTitle": "Sample groups",
+    "Description": "A collection of samples, usually defined by the excavator or collector",
+    "FacetGroupId": 2,
+    "FacetTypeId": 1,
+    "CategoryIdExpr": "tbl_sample_groups.sample_group_id",
+    "CategoryIdType": "integer",
+    "CategoryIdOperator": "=",
+    "CategoryNameExpr": "tbl_sample_groups.sample_group_name",
+    "IsApplicable": true,
+    "IsDefault": true,
+    "AggregateType": "count",
+    "AggregateTitle": "Number of samples",
+    "AggregateFacetId": 1,
+    "SortExpr": "tbl_sample_groups.sample_group_name"
+  },
+  {
     "FacetId": 52,
     "FacetCode": "analysis_entity_ages",
     "DisplayTitle": "Analysis entity ages",
@@ -26,7 +44,7 @@
     "FacetTypeId": 4,
     "CategoryIdExpr": "tbl_dendro_dates.age_range",
     "CategoryIdType": "int4range",
-    "CategoryIdOperator": "<@",
+    "CategoryIdOperator": "@>",
     "CategoryNameExpr": "tbl_dendro_dates.age_range",
     "IsApplicable": true,
     "IsDefault": true,
@@ -232,24 +250,6 @@
     "AggregateTitle": "Number of samples",
     "AggregateFacetId": 1,
     "SortExpr": "tbl_record_types.record_type_name"
-  },
-  {
-    "FacetId": 13,
-    "FacetCode": "sample_groups",
-    "DisplayTitle": "Sample groups",
-    "Description": "A collection of samples, usually defined by the excavator or collector",
-    "FacetGroupId": 2,
-    "FacetTypeId": 1,
-    "CategoryIdExpr": "tbl_sample_groups.sample_group_id",
-    "CategoryIdType": "integer",
-    "CategoryIdOperator": "=",
-    "CategoryNameExpr": "tbl_sample_groups.sample_group_name",
-    "IsApplicable": true,
-    "IsDefault": true,
-    "AggregateType": "count",
-    "AggregateTitle": "Number of samples",
-    "AggregateFacetId": 1,
-    "SortExpr": "tbl_sample_groups.sample_group_name"
   },
   {
     "FacetId": 18,

@@ -26,13 +26,25 @@
     "TableId": 119
   },
   {
-    "FacetTableId": 199,
+    "FacetTableId": 205,
+    "FacetId": 13,
+    "SequenceId": 1,
+    "TableId": 91
+  },
+  {
+    "FacetTableId": 206,
+    "FacetId": 13,
+    "SequenceId": 2,
+    "TableId": 119
+  },
+  {
+    "FacetTableId": 207,
     "FacetId": 52,
     "SequenceId": 1,
     "TableId": 96
   },
   {
-    "FacetTableId": 200,
+    "FacetTableId": 208,
     "FacetId": 53,
     "SequenceId": 1,
     "TableId": 138
@@ -124,12 +136,6 @@
     "FacetId": 12,
     "SequenceId": 1,
     "TableId": 110
-  },
-  {
-    "FacetTableId": 80,
-    "FacetId": 13,
-    "SequenceId": 1,
-    "TableId": 91
   },
   {
     "FacetTableId": 81,

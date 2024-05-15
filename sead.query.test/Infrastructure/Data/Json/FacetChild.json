@@ -71,6 +71,41 @@
   },
   {
     "FacetCode": "palaeoentomology",
+    "ChildFacetCode": "sample_groups",
+    "Position": 16
+  },
+  {
+    "FacetCode": "archaeobotany",
+    "ChildFacetCode": "sample_groups",
+    "Position": 16
+  },
+  {
+    "FacetCode": "pollen",
+    "ChildFacetCode": "sample_groups",
+    "Position": 16
+  },
+  {
+    "FacetCode": "geoarchaeology",
+    "ChildFacetCode": "sample_groups",
+    "Position": 10
+  },
+  {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "ceramic",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "isotope",
+    "ChildFacetCode": "sample_groups",
+    "Position": 12
+  },
+  {
+    "FacetCode": "palaeoentomology",
     "ChildFacetCode": "location_types",
     "Position": 22
   },
@@ -105,6 +140,11 @@
     "Position": 22
   },
   {
+    "FacetCode": "dendrochronology",
+    "ChildFacetCode": "dendro_age_contained_by",
+    "Position": 24
+  },
+  {
     "FacetCode": "palaeoentomology",
     "ChildFacetCode": "geochronology",
     "Position": 4
@@ -113,11 +153,6 @@
     "FacetCode": "palaeoentomology",
     "ChildFacetCode": "relative_age_name",
     "Position": 5
-  },
-  {
-    "FacetCode": "palaeoentomology",
-    "ChildFacetCode": "sample_groups",
-    "Position": 16
   },
   {
     "FacetCode": "palaeoentomology",
@@ -201,11 +236,6 @@
   },
   {
     "FacetCode": "archaeobotany",
-    "ChildFacetCode": "sample_groups",
-    "Position": 16
-  },
-  {
-    "FacetCode": "archaeobotany",
     "ChildFacetCode": "sites",
     "Position": 15
   },
@@ -283,11 +313,6 @@
     "FacetCode": "pollen",
     "ChildFacetCode": "relative_age_name",
     "Position": 5
-  },
-  {
-    "FacetCode": "pollen",
-    "ChildFacetCode": "sample_groups",
-    "Position": 16
   },
   {
     "FacetCode": "pollen",
@@ -386,11 +411,6 @@
   },
   {
     "FacetCode": "geoarchaeology",
-    "ChildFacetCode": "sample_groups",
-    "Position": 10
-  },
-  {
-    "FacetCode": "geoarchaeology",
     "ChildFacetCode": "sites",
     "Position": 9
   },
@@ -423,11 +443,6 @@
     "FacetCode": "dendrochronology",
     "ChildFacetCode": "relative_age_name",
     "Position": 2
-  },
-  {
-    "FacetCode": "dendrochronology",
-    "ChildFacetCode": "sample_groups",
-    "Position": 12
   },
   {
     "FacetCode": "dendrochronology",
@@ -481,11 +496,6 @@
   },
   {
     "FacetCode": "ceramic",
-    "ChildFacetCode": "sample_groups",
-    "Position": 12
-  },
-  {
-    "FacetCode": "ceramic",
     "ChildFacetCode": "sites",
     "Position": 11
   },
@@ -513,11 +523,6 @@
     "FacetCode": "isotope",
     "ChildFacetCode": "relative_age_name",
     "Position": 2
-  },
-  {
-    "FacetCode": "isotope",
-    "ChildFacetCode": "sample_groups",
-    "Position": 12
   },
   {
     "FacetCode": "isotope",
