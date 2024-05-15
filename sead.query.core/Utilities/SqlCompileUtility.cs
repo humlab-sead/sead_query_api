@@ -79,7 +79,7 @@ namespace SeadQueryCore
 
         public static string RangeExpr(string rangeExpr, string rangeType, string rangeOperator, List<decimal> bounds)
         {
-            return $"{rangeExpr} {rangeOperator} {rangeType}({bounds[0].ToStringEn()}, {bounds[1].ToStringEn()}, '[]')";
+            return $"{rangeType}({bounds[0].ToStringEn()}, {bounds[1].ToStringEn()}, '[]') {rangeOperator} {rangeExpr}";
         }
     }
 }
