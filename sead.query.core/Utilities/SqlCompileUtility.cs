@@ -74,7 +74,7 @@ namespace SeadQueryCore
         /// Create a integer version of this method
         public static string RangeExpr(string rangeExpr, string rangeType, string rangeOperator, List<int> bounds)
         {
-            return $"{rangeExpr} {rangeOperator} {rangeType}({bounds[0]}, {bounds[1]}, '[]')";
+            return $"{rangeType}({bounds[0]}, {bounds[1]}, '[]') {rangeOperator} {rangeExpr}";
         }
 
         public static string RangeExpr(string rangeExpr, string rangeType, string rangeOperator, List<decimal> bounds)
