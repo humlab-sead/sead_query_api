@@ -14,7 +14,7 @@ namespace SeadQueryCore
 
         public DijkstrasGraph(Dictionary<N, Dictionary<N, int>> weights)
         {
-            this.Vertices = weights;
+            Vertices = weights;
         }
 
         public void add_vertex(N name, Dictionary<N, int> edges)
