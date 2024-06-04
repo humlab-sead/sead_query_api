@@ -125,7 +125,7 @@ namespace SeadQueryCore
             if (trail == null)
                 throw new ArgumentOutOfRangeException($"No route found between {startId} and {destId}");
 
-            return ToGraphRoute(trail.Concat(new[] { startId }));
+            return ToGraphRoute(trail.Concat([startId]));
         }
 
         private GraphRoute ToGraphRoute(IEnumerable<int> trail)
