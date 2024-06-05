@@ -39,7 +39,7 @@ namespace SeadQueryCore
 
         private IEnumerable<TableRelation> GetAliasTableRelations(IEnumerable<FacetTable> aliases, IEnumerable<TableRelation> edges, IEnumerable<Table> tables)
         {
-            List<TableRelation> aliasEdges = new List<TableRelation>();
+            List<TableRelation> aliasEdges = [];
 
             var tableLookup = tables.ToDictionary(x => x.TableOrUdfName);
 
