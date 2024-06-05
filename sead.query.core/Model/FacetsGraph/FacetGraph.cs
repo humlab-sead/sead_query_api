@@ -11,18 +11,11 @@ namespace SeadQueryCore
     using EdgeKey = Tuple<string, string>;
     using EdgeIdKey = Tuple<int, int>;
 
-    public class GraphNodes<T> : IEnumerable where T : IGraphNode
+    public class NodesContainer<T>(IEnumerable<T> nodes) : IEnumerable where T : IGraphNode
     {
-        public GraphNodes(IEnumerable<T> nodes)
-        {
-            Nodes = nodes;
-            Name2Node = nodes.ToDictionary(x => x.GetName());
-            Id2Node = nodes.ToDictionary(x => x.GetId());
-        }
-
-        public IEnumerable<T> Nodes { get; private set; }
-        public Dictionary<string, T> Name2Node { get; private set; }
-        public Dictionary<int, T> Id2Node { get; private set; }
+        public IEnumerable<T> Nodes { get; private set; } = nodes;
+        public Dictionary<string, T> Name2Node { get; private set; } = nodes.ToDictionary(x => x.GetName());
+        public Dictionary<int, T> Id2Node { get; private set; } = nodes.ToDictionary(x => x.GetId());
 
         public T this[int index]
         {
@@ -45,12 +38,12 @@ namespace SeadQueryCore
         }
     }
 
-    public class GraphEdges<T> : IEnumerable where T : IGraphEdge
+    public class EdgesContainer<T> : IEnumerable where T : IGraphEdge
     {
         public Dictionary<EdgeKey, T> KeyLookup { get; private set; }
         public Dictionary<EdgeIdKey, T> IdKeyLookup { get; private set; }
         public IEnumerable<T> Edges { get; private set; }
-        public GraphEdges(IEnumerable<T> edges, bool bidirectional = true)
+        public EdgesContainer(IEnumerable<T> edges, bool bidirectional = true)
         {
             if (bidirectional)
             {
@@ -86,14 +79,14 @@ namespace SeadQueryCore
 
     public class FacetsGraph : IFacetsGraph
     {
-        public GraphNodes<Table> NodeContainer { get; private set; }
-        public GraphEdges<TableRelation> EdgeContaniner { get; private set; }
+        public NodesContainer<Table> NodeContainer { get; private set; }
+        public EdgesContainer<TableRelation> EdgeContaniner { get; private set; }
         public IEnumerable<FacetTable> AliasedFacetTables { get; private set; }
 
         public FacetsGraph(IEnumerable<Table> nodes, IEnumerable<TableRelation> edges, IEnumerable<FacetTable> aliases, bool bidirectional = true)
         {
-            NodeContainer = new GraphNodes<Table>(nodes);
-            EdgeContaniner = new GraphEdges<TableRelation>(edges, bidirectional);
+            NodeContainer = new NodesContainer<Table>(nodes);
+            EdgeContaniner = new EdgesContainer<TableRelation>(edges, bidirectional);
             AliasedFacetTables = aliases;
         }
 
