@@ -13,8 +13,8 @@ using EdgeIdKey = Tuple<int, int>;
 public class NodesContainer<T>(IEnumerable<T> nodes) : IEnumerable where T : IGraphNode
 {
     public IEnumerable<T> Nodes { get; private set; } = nodes;
-    public Dictionary<string, T> Name2Node { get; private set; } = nodes.ToDictionary(x => x.GetName());
-    public Dictionary<int, T> Id2Node { get; private set; } = nodes.ToDictionary(x => x.GetId());
+    public Dictionary<string, T> Name2Node { get; private set; } = nodes.ToDictionary(x => x.Name);
+    public Dictionary<int, T> Id2Node { get; private set; } = nodes.ToDictionary(x => x.Id);
 
     public T this[int index]
     {

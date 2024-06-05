@@ -1,9 +1,11 @@
-﻿namespace SeadQueryCore;
+﻿using System.Text.Json.Serialization;
+
+namespace SeadQueryCore;
 
 public interface IGraphNode
 {
-    public int GetId();
-    public string GetName();
+    public int Id { get; }
+    public string Name { get; }
 }
 
 public class Table : IGraphNode
@@ -12,6 +14,10 @@ public class Table : IGraphNode
     public string TableOrUdfName { get; set; }
     public string PrimaryKeyName { get; set; }
     public bool IsUdf { get; set; }
+    public bool IsGated { get; set; }
+
+    [JsonIgnore] public int Id { get { return TableId; } }
+    [JsonIgnore] public string Name { get { return TableOrUdfName; } }
 
     public override bool Equals(object obj)
     {
@@ -28,13 +34,4 @@ public class Table : IGraphNode
         return TableOrUdfName.GetHashCode();
     }
 
-    public int GetId()
-    {
-        return TableId;
-    }
-
-    public string GetName()
-    {
-        return TableOrUdfName;
-    }
 }

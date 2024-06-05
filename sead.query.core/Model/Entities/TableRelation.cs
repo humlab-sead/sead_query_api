@@ -29,8 +29,8 @@ namespace SeadQueryCore
         public string SourceColumName { get; set; }
         public string TargetColumnName { get; set; }
 
-        public int SourceId { get { return SourceTableId; } }
-        public int TargetId { get { return TargetTableId; } }
+        [JsonIgnore] public int SourceId { get { return SourceTableId; } }
+        [JsonIgnore] public int TargetId { get { return TargetTableId; } }
 
         [JsonIgnore] private Table _SourceTable, _TargetTable;
 
@@ -92,7 +92,6 @@ namespace SeadQueryCore
         {
             return Key.GetHashCode();
         }
-
 
         public override bool Equals(object x)
         {
