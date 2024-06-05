@@ -8,11 +8,13 @@ namespace SeadQueryCore
 {
     public interface IGraphEdge
     {
-        int GetSourceId();
-        int GetTargetId();
-        int GetWeight();
-        Tuple<string, string> GetKey();
-        Tuple<int, int> GetIdKey();
+        public int SourceId { get; }
+        public int TargetId { get; }
+        public int Weight { get; }
+
+        Tuple<string, string> Key { get; }
+        Tuple<int, int> IdKey { get; }
+
         IGraphEdge Reverse();
     }
 
@@ -26,6 +28,9 @@ namespace SeadQueryCore
 
         public string SourceColumName { get; set; }
         public string TargetColumnName { get; set; }
+
+        public int SourceId { get { return SourceTableId; } }
+        public int TargetId { get { return TargetTableId; } }
 
         [JsonIgnore] private Table _SourceTable, _TargetTable;
 
@@ -70,8 +75,8 @@ namespace SeadQueryCore
             return x;
         }
 
-        public Tuple<string, string> Key => new Tuple<string, string>(SourceName, TargetName);
-        public Tuple<int, int> IdKey => new Tuple<int, int>(SourceTableId, TargetTableId);
+        public Tuple<string, string> Key => new(SourceName, TargetName);
+        public Tuple<int, int> IdKey => new(SourceTableId, TargetTableId);
 
         public bool IsOf(TableRelation x)
         {
@@ -85,23 +90,23 @@ namespace SeadQueryCore
 
         public override int GetHashCode()
         {
-            return this.Key.GetHashCode();
+            return Key.GetHashCode();
         }
 
-        public string ToStringPair()
-        {
-            return $"{SourceName}/{TargetName}";
-        }
-
-        public int GetSourceId() => SourceTableId;
-        public int GetTargetId() => TargetTableId;
-        public int GetWeight() => Weight;
-        public Tuple<string, string> GetKey() => Key;
-        public Tuple<int, int> GetIdKey() => IdKey;
 
         public override bool Equals(object x)
         {
             return IsOf(x as TableRelation);
+        }
+
+        public bool InvolvesAny(int[] tableIds)
+        {
+            return tableIds.Contains(SourceTableId) || tableIds.Contains(TargetTableId);
+        }
+
+        public bool IsGated()
+        {
+            return SourceTable.IsGated || TargetTable.IsGated;
         }
     }
 }

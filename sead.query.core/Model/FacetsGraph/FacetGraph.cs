@@ -49,8 +49,8 @@ public class EdgesContainer<T> : IEnumerable where T : IGraphEdge
             edges = edges.Concat(ReversedEdges(edges));
         }
         Edges = edges;
-        KeyLookup = edges.ToDictionary(z => z.GetKey());
-        IdKeyLookup = edges.ToDictionary(z => z.GetIdKey());
+        KeyLookup = edges.ToDictionary(z => z.Key);
+        IdKeyLookup = edges.ToDictionary(z => z.IdKey);
     }
 
     public T GetEdge(string source, string target)
@@ -66,13 +66,13 @@ public class EdgesContainer<T> : IEnumerable where T : IGraphEdge
     public IEnumerable<T> ReversedEdges(IEnumerable<T> edges)
     {
         return edges
-            .Where(z => z.GetSourceId() != z.GetTargetId())
+            .Where(z => z.SourceId != z.TargetId)
             .Select(x => (T)x.Reverse())
             .Where(z => !edges.Any(w => w.Equals(z)));
     }
 
     public WeightDictionary ToWeightGraph() => Edges
-        .GroupBy(p => p.GetSourceId(), (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.GetTargetId(), x => x.GetWeight())))
+        .GroupBy(p => p.SourceId, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.TargetId, x => x.Weight)))
         .ToDictionary(x => x.SourceId, y => y.TargetWeights);
 }
 

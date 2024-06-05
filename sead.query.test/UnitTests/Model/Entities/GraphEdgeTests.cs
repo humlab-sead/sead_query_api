@@ -84,17 +84,5 @@ namespace SQT.Model
             Assert.True(result);
         }
 
-        [Fact]
-        public void ToStringPair_OfAnyEdge_ReturnsPair()
-        {
-            // Arrange
-            var graphEdge = CreateGraphEdge();
-
-            // Act
-            var result = graphEdge.ToStringPair();
-
-            // Assert
-            Assert.Equal($"{graphEdge.SourceName}/{graphEdge.TargetName}", result);
-        }
     }
 }
