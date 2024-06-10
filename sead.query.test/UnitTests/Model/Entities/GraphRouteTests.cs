@@ -21,9 +21,9 @@ namespace SQT.Model
         {
             return new GraphRoute(
                 new List<TableRelation>() {
-                    FacetsGraph.EdgeContaniner.GetEdge("A", "B"),
-                    FacetsGraph.EdgeContaniner.GetEdge("B", "F"),
-                    FacetsGraph.EdgeContaniner.GetEdge("F", "H")
+                    FacetsGraph.RelationLookup.GetEdge("A", "B"),
+                    FacetsGraph.RelationLookup.GetEdge("B", "F"),
+                    FacetsGraph.RelationLookup.GetEdge("F", "H")
                 }
             );
         }
@@ -33,7 +33,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = FacetsGraph.EdgeContaniner.GetEdge("A", "B");
+            TableRelation item = FacetsGraph.RelationLookup.GetEdge("A", "B");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -46,7 +46,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = FacetsGraph.EdgeContaniner.GetEdge("C", "F");
+            TableRelation item = FacetsGraph.RelationLookup.GetEdge("C", "F");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -62,7 +62,7 @@ namespace SQT.Model
             List<GraphRoute> routes = new() {
                 new GraphRoute(
                     new List<TableRelation>() {
-                        FacetsGraph.EdgeContaniner.GetEdge("F", "H")
+                        FacetsGraph.RelationLookup.GetEdge("F", "H")
                     }
                 )
             };
@@ -73,8 +73,8 @@ namespace SQT.Model
 
             // Assert
             Assert.Equal(2, result.Items.Count);
-            Assert.True(graphRoute.Contains(FacetsGraph.EdgeContaniner.GetEdge("A", "B")));
-            Assert.True(graphRoute.Contains(FacetsGraph.EdgeContaniner.GetEdge("B", "F")));
+            Assert.True(graphRoute.Contains(FacetsGraph.RelationLookup.GetEdge("A", "B")));
+            Assert.True(graphRoute.Contains(FacetsGraph.RelationLookup.GetEdge("B", "F")));
         }
 
         [Fact]

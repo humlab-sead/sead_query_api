@@ -55,8 +55,8 @@ namespace SQT.Model
             var result = factory.Build();
 
             // Assert
-            Assert.Equal(nodes.Count, result.NodeContainer.Nodes.Count());
-            Assert.Equal(2 * uniedges.Count, result.EdgeContaniner.Edges.Count());
+            Assert.Equal(nodes.Count, result.Tables.Count());
+            Assert.Equal(2 * uniedges.Count, result.RelationLookup.Edges.Count());
         }
 
         private static Mock<RepositoryRegistry> MockRepositoryRegistry(List<Table> nodes, IEnumerable<TableRelation> edges, List<FacetTable> aliases)

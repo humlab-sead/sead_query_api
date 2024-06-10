@@ -72,8 +72,8 @@ namespace SQT.Mocks
             generator.Add("G", new Dictionary<string, int> { { "C", 4 }, { "F", 9 } });
             generator.Add("H", new Dictionary<string, int> { { "E", 1 }, { "F", 3 } });
             var facetsGraph = new FacetsGraph(
-                nodes: generator.Nodes,
-                edges: generator.Edges,
+                tables: generator.Nodes,
+                relations: generator.Edges,
                 aliases: new List<FacetTable>()
             );
             return facetsGraph;

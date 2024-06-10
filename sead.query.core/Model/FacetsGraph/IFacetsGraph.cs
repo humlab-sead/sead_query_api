@@ -5,8 +5,11 @@ namespace SeadQueryCore
 {
     public interface IFacetsGraph
     {
-        public NodesContainer<Table> NodeContainer { get; }
-        public EdgesContainer<TableRelation> EdgeContaniner { get; }
+        public IEnumerable<Table> Tables { get; }
+        public IEnumerable<TableRelation> Relations { get; }
+
+        public TableLookup TableLookup { get; }
+        public RelationLookup RelationLookup { get; }
 
         GraphRoute Find(string startTable, string destinationTable);
         List<GraphRoute> Find(string startTable, List<string> destinationTable, bool reduce = true);

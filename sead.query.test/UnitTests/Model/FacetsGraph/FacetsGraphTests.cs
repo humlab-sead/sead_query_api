@@ -45,7 +45,7 @@ namespace SQT.Model
             const string target = "F";
 
             // Act
-            var result = facetsGraph.EdgeContaniner.GetEdge(source, target);
+            var result = facetsGraph.RelationLookup.GetEdge(source, target);
 
             // Assert
             Assert.Equal(source, result.SourceName);
@@ -63,7 +63,7 @@ namespace SQT.Model
             const int targetId = 6;
 
             // Act
-            var result = facetsGraph.EdgeContaniner.GetEdge(sourceId, targetId);
+            var result = facetsGraph.RelationLookup.GetEdge(sourceId, targetId);
 
             // Assert
             Assert.NotNull(result);
@@ -180,7 +180,7 @@ namespace SQT.Model
             using (var scope = container.BeginLifetimeScope())
             {
                 var service = scope.Resolve<IFacetsGraph>();
-                Assert.True(service.EdgeContaniner.Edges.Any());
+                Assert.True(service.RelationLookup.Edges.Any());
             }
         }
 
