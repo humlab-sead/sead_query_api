@@ -195,7 +195,7 @@ Content-Type: application/json; charset=UTF-8
     "triggerCode": "genus",
     "facetConfigs": [
       {
-        "facetCode": "dataset_master",
+        "facetCode": "dataset_provider",
         "position": 1,
         "picks": [{ "pickValue": 10, "text": 10 }]
       },
