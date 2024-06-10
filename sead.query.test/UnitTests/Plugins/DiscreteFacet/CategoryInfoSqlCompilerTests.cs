@@ -51,7 +51,7 @@ namespace SQT.Plugins.Discrete
         }
 
         [Theory]
-        [InlineData("construction_type:construction_type")]
+        [InlineData("constructions:constructions")]
         public void Compile_ConstructionType_Matches(string uri)
         {
             // Arrange

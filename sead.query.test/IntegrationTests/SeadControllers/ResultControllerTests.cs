@@ -66,7 +66,7 @@ namespace IntegrationTests.Sead
         /// <param name="expectedJoinCount">Basically the number of tables involved in the join i.e. unique routes returned from Graoh.Find</param>
         /// <returns></returns>
         [Theory]
-        [InlineData("construction_type:construction_type")]
+        [InlineData("constructions:constructions")]
         [InlineData("genus:dataset_provider@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
         [InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
         [InlineData("dataset_provider:dataset_provider@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]

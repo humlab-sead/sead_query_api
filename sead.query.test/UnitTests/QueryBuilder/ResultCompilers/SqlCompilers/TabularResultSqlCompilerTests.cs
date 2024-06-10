@@ -19,7 +19,7 @@ namespace SQT.QueryBuilder.ResultCompilers
         }
 
         [Theory]
-        [InlineData("construction_type:construction_type", "result_facet", "site_level", "tabular")]
+        [InlineData("constructions:constructions", "result_facet", "site_level", "tabular")]
         [InlineData("sites:sites", "result_facet", "site_level", "tabular")]
         [InlineData("sites:country@10/sites", "result_facet", "site_level", "tabular")]
         [ClassData(typeof(CompleteSetOfSingleTabularResultUriCollection))]
