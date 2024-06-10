@@ -152,22 +152,6 @@
     "TargetColumnName": "analysis_entity_id"
   },
   {
-    "TableRelationId": 20,
-    "SourceTableId": 139,
-    "TargetTableId": 97,
-    "Weight": 20,
-    "SourceColumName": "ceramics_measurement_id",
-    "TargetColumnName": "ceramics_measurement_id"
-  },
-  {
-    "TableRelationId": 21,
-    "SourceTableId": 97,
-    "TargetTableId": 89,
-    "Weight": 20,
-    "SourceColumName": "method_id",
-    "TargetColumnName": "method_id"
-  },
-  {
     "TableRelationId": 24,
     "SourceTableId": 117,
     "TargetTableId": 29,
@@ -344,14 +328,6 @@
     "TargetColumnName": "analysis_entity_id"
   },
   {
-    "TableRelationId": 46,
-    "SourceTableId": 69,
-    "TargetTableId": 100,
-    "Weight": 20,
-    "SourceColumName": "dendro_measurement_id",
-    "TargetColumnName": "dendro_measurement_id"
-  },
-  {
     "TableRelationId": 47,
     "SourceTableId": 127,
     "TargetTableId": 138,
@@ -382,14 +358,6 @@
     "Weight": 20,
     "SourceColumName": "years_type_id",
     "TargetColumnName": "years_type_id"
-  },
-  {
-    "TableRelationId": 51,
-    "SourceTableId": 100,
-    "TargetTableId": 89,
-    "Weight": 20,
-    "SourceColumName": "method_id",
-    "TargetColumnName": "method_id"
   },
   {
     "TableRelationId": 52,
@@ -1088,14 +1056,6 @@
     "TargetColumnName": "biblio_id"
   },
   {
-    "TableRelationId": 140,
-    "SourceTableId": 143,
-    "TargetTableId": 35,
-    "Weight": 150,
-    "SourceColumName": "location_id",
-    "TargetColumnName": "location_id"
-  },
-  {
     "TableRelationId": 141,
     "SourceTableId": 68,
     "TargetTableId": 84,
@@ -1104,18 +1064,18 @@
     "TargetColumnName": "biblio_id"
   },
   {
+    "TableRelationId": 140,
+    "SourceTableId": 143,
+    "TargetTableId": 35,
+    "Weight": 25,
+    "SourceColumName": "location_id",
+    "TargetColumnName": "location_id"
+  },
+  {
     "TableRelationId": 142,
     "SourceTableId": 55,
     "TargetTableId": 89,
     "Weight": 70,
-    "SourceColumName": "method_id",
-    "TargetColumnName": "method_id"
-  },
-  {
-    "TableRelationId": 143,
-    "SourceTableId": 116,
-    "TargetTableId": 89,
-    "Weight": 150,
     "SourceColumName": "method_id",
     "TargetColumnName": "method_id"
   },
@@ -1814,5 +1774,37 @@
     "Weight": 50,
     "SourceColumName": "taxon_id",
     "TargetColumnName": "taxon_id"
+  },
+  {
+    "TableRelationId": 235,
+    "SourceTableId": 176,
+    "TargetTableId": 109,
+    "Weight": 25,
+    "SourceColumName": "taxon_id",
+    "TargetColumnName": "taxon_id"
+  },
+  {
+    "TableRelationId": 236,
+    "SourceTableId": 176,
+    "TargetTableId": 4,
+    "Weight": 25,
+    "SourceColumName": "analysis_entity_id",
+    "TargetColumnName": "analysis_entity_id"
+  },
+  {
+    "TableRelationId": 237,
+    "SourceTableId": 130,
+    "TargetTableId": 177,
+    "Weight": 25,
+    "SourceColumName": "group_description",
+    "TargetColumnName": "purpose"
+  },
+  {
+    "TableRelationId": 143,
+    "SourceTableId": 116,
+    "TargetTableId": 89,
+    "Weight": 25,
+    "SourceColumName": "method_id",
+    "TargetColumnName": "method_id"
   }
 ]

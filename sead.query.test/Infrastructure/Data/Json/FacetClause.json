@@ -6,27 +6,9 @@
     "EnforceConstraint": true
   },
   {
-    "FacetClauseId": 17,
-    "FacetId": 25,
-    "Clause": "tbl_sites.site_id is not null",
-    "EnforceConstraint": true
-  },
-  {
     "FacetClauseId": 18,
     "FacetId": 33,
     "Clause": "facet.view_abundance.abundance is not null",
-    "EnforceConstraint": true
-  },
-  {
-    "FacetClauseId": 19,
-    "FacetId": 36,
-    "Clause": "facet.view_sample_group_references.biblio_id is not null",
-    "EnforceConstraint": true
-  },
-  {
-    "FacetClauseId": 20,
-    "FacetId": 37,
-    "Clause": "facet.view_site_references.biblio_id is not null",
     "EnforceConstraint": true
   },
   {
@@ -87,6 +69,36 @@
     "FacetClauseId": 49,
     "FacetId": 41,
     "Clause": "region.location_type_id in (2, 7, 14, 16, 18)",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 54,
+    "FacetId": 25,
+    "Clause": "tbl_sites.site_id is not null",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 57,
+    "FacetId": 55,
+    "Clause": "tbl_dendro_lookup.dendro_lookup_id = 134",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 58,
+    "FacetId": 56,
+    "Clause": "tbl_dendro_lookup.dendro_lookup_id = 137",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 59,
+    "FacetId": 36,
+    "Clause": "facet.view_sample_group_references.biblio_id is not null",
+    "EnforceConstraint": true
+  },
+  {
+    "FacetClauseId": 60,
+    "FacetId": 37,
+    "Clause": "facet.view_site_references.biblio_id is not null",
     "EnforceConstraint": true
   }
 ]

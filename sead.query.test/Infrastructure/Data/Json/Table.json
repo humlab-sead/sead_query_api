@@ -108,12 +108,6 @@
     "IsUdf": false
   },
   {
-    "TableId": 97,
-    "TableOrUdfName": "tbl_ceramics_measurements",
-    "PrimaryKeyName": "ceramics_measurement_id",
-    "IsUdf": false
-  },
-  {
     "TableId": 117,
     "TableOrUdfName": "tbl_chronologies",
     "PrimaryKeyName": "chronology_id",
@@ -231,12 +225,6 @@
     "TableId": 163,
     "TableOrUdfName": "tbl_dendro_lookup",
     "PrimaryKeyName": "dendro_lookup_id",
-    "IsUdf": false
-  },
-  {
-    "TableId": 100,
-    "TableOrUdfName": "tbl_dendro_measurements",
-    "PrimaryKeyName": "dendro_measurement_id",
     "IsUdf": false
   },
   {
@@ -957,6 +945,18 @@
     "TableId": 175,
     "TableOrUdfName": "facet.family_taxon_shortcut",
     "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 176,
+    "TableOrUdfName": "facet.abundance_taxon_shortcut",
+    "PrimaryKeyName": "xxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 177,
+    "TableOrUdfName": "facet.sample_group_construction_purposes",
+    "PrimaryKeyName": "purpose",
     "IsUdf": false
   }
 ]
