@@ -7,6 +7,8 @@ using System.Text;
 
 namespace SeadQueryCore;
 
+using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
+
 public class FacetsGraph : IFacetsGraph
 {
     public IEnumerable<Table> Tables { get; private set; }
@@ -25,6 +27,10 @@ public class FacetsGraph : IFacetsGraph
         RelationLookup = new RelationLookup(relations, bidirectional);
         AliasedFacetTables = aliases;
     }
+
+    public WeightDictionary ToWeightGraph() => Relations
+        .GroupBy(p => p.SourceId, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.TargetId, x => x.Weight)))
+        .ToDictionary(x => x.SourceId, y => y.TargetWeights);
 
     public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce = true)
     {
@@ -48,7 +54,7 @@ public class FacetsGraph : IFacetsGraph
 
     public GraphRoute Find(int startId, int destId)
     {
-        IEnumerable<int> trail = new DijkstrasGraph<int>(RelationLookup.ToWeightGraph())
+        IEnumerable<int> trail = new DijkstrasGraph<int>(ToWeightGraph())
             .shortest_path(startId, destId);
 
         if (trail == null)

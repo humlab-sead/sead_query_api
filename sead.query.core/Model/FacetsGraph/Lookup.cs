@@ -8,7 +8,6 @@ namespace SeadQueryCore;
 
 using EdgeKey = Tuple<string, string>;
 using EdgeIdKey = Tuple<int, int>;
-using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
 
 public class TableLookup(IEnumerable<Table> tables)
 {
@@ -58,7 +57,4 @@ public class RelationLookup : IEnumerable
         return Edges.GetEnumerator();
     }
 
-    public WeightDictionary ToWeightGraph() => Edges
-        .GroupBy(p => p.SourceId, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.TargetId, x => x.Weight)))
-        .ToDictionary(x => x.SourceId, y => y.TargetWeights);
 }
