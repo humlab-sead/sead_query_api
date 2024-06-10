@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-    public static class GraphRouteUtility
+    public static class GraphUtility
     {
         public static bool ExistsAny(List<GraphRoute> routes, TableRelation item)
         {

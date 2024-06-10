@@ -26,7 +26,7 @@ namespace SeadQueryCore
 
         public GraphRoute ReduceBy(List<GraphRoute> routes)
         {
-            return new GraphRoute(Items.Where(z => !GraphRouteUtility.ExistsAny(routes, z)).ToList());
+            return new GraphRoute(Items.Where(z => !GraphUtility.ExistsAny(routes, z)).ToList());
         }
 
         public override string ToString()

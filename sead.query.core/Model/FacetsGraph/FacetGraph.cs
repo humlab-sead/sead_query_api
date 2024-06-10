@@ -98,7 +98,7 @@ public class FacetsGraph : IFacetsGraph
 
         if (reduce)
         {
-            return GraphRouteUtility.Reduce(routes);
+            return GraphUtility.Reduce(routes);
         }
 
         return routes;
