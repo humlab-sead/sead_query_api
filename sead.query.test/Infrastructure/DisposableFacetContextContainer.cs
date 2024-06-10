@@ -397,7 +397,8 @@ namespace SQT
                 { EFacetType.Range, typeof(RangePickFilterCompiler) }
             };
             var mockLocator = new Mock<IPickFilterCompilerLocator>();
-            foreach (var item in data) {
+            foreach (var item in data)
+            {
                 mockLocator
                     .Setup(x => x.Locate(item.Key))
                     .Returns(Activator.CreateInstance(item.Value) as IPickFilterCompiler);
@@ -406,9 +407,9 @@ namespace SQT
             return mockLocator;
         }
 
-        public virtual Mock<IFacetsGraph> MockFacetsGraph(List<GraphRoute> returnRoutes)
+        public virtual Mock<IRouteFinder> MockFacetsGraph(List<GraphRoute> returnRoutes)
         {
-            var mockFacetsGraph = new Mock<IFacetsGraph>();
+            var mockFacetsGraph = new Mock<IRouteFinder>();
 
             mockFacetsGraph
                 .Setup(x => x.Find(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<bool>()))
