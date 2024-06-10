@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 
 namespace SeadQueryCore;
 
 using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
 
-public class RouteFinder(IRepositoryRegistry registry) : IRouteFinder
+public class RouteFinder(IRepositoryRegistry registry, IEnumerable<TableRelation> edges = null) : IRouteFinder
 {
     public IRepositoryRegistry Registry { get; private set; } = registry;
+    public IEnumerable<TableRelation> Edges { get; private set; } = edges;
 
     public WeightDictionary ToWeightGraph()
     {
-        return Registry.Relations.GetEdges()
+        return (Edges ?? Registry.Relations.GetEdges())
             .GroupBy(p => p.SourceId, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.TargetId, x => x.Weight)))
                 .ToDictionary(x => x.SourceId, y => y.TargetWeights);
     }
@@ -40,15 +42,15 @@ public class RouteFinder(IRepositoryRegistry registry) : IRouteFinder
         );
     }
 
-    public GraphRoute Find(int startId, int destId)
+    public GraphRoute Find(int source, int destination)
     {
         IEnumerable<int> trail = new DijkstrasGraph<int>(ToWeightGraph())
-            .shortest_path(startId, destId);
+            .shortest_path(source, destination);
 
         if (trail == null)
-            throw new ArgumentOutOfRangeException($"No route found between {startId} and {destId}");
+            throw new ArgumentOutOfRangeException($"No route found between {source} and {destination}");
 
-        return Registry.Relations.ToRoute(trail.Concat([startId]));
+        return Registry.Relations.ToRoute(trail.Concat([source]));
     }
 
     public FacetTable GetAliasTable(string aliasName) => Registry.FacetTables.GetByAlias(aliasName);

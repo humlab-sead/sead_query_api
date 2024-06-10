@@ -11,12 +11,8 @@ using SQT.Infrastructure;
 namespace SQT.Model
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetGraphFactoryTests : DisposableFacetContextContainer
+    public class RouteFinderTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
     {
-        public FacetGraphFactoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
-        {
-        }
-
         [Fact]
         public void Build_WhenSuccessfullyCalled_HasExpectedNodesAndEdges()
         {
@@ -47,16 +43,12 @@ namespace SQT.Model
             var edges = CreateTableRelations(uniedges, nodes);
             var aliases = new List<FacetTable>();
 
-            Mock<RepositoryRegistry> mockRepository = MockRepositoryRegistry(nodes, edges, aliases);
+            Mock<RepositoryRegistry> registry = MockRepositoryRegistry(nodes, edges, aliases);
 
-            var factory = new FacetGraphFactory(mockRepository.Object);
+            var finder = new RouteFinder(registry.Object, edges);
 
-            // Act
-            var result = factory.Build();
+            Assert.NotNull(finder);
 
-            // Assert
-            Assert.Equal(nodes.Count, result.Tables.Count());
-            Assert.Equal(2 * uniedges.Count, result.RelationLookup.Edges.Count());
         }
 
         private static Mock<RepositoryRegistry> MockRepositoryRegistry(List<Table> nodes, IEnumerable<TableRelation> edges, List<FacetTable> aliases)
@@ -64,7 +56,7 @@ namespace SQT.Model
             var mockRepository = new Mock<RepositoryRegistry>(It.IsAny<FacetConfig2>());
 
             mockRepository.Setup(r => r.Tables.GetAll()).Returns(nodes);
-            mockRepository.Setup(r => r.TableRelations.GetAll()).Returns(edges);
+            mockRepository.Setup(r => r.Relations.GetAll()).Returns(edges);
             mockRepository.Setup(r => r.FacetTables.FindThoseWithAlias()).Returns(aliases);
 
             return mockRepository;

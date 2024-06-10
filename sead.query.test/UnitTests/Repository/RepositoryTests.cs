@@ -45,7 +45,7 @@ namespace SQT.Infrastructure.Repository
         public void Get_ExpectedBehavior(int id)
         {
             // Arrange
-            var repository = new Repository<Facet, int>(FacetContext);
+            var repository = new Repository<Facet, int>(null);
 
             // Act
             var result = repository.Get(id);

@@ -3,12 +3,12 @@ using SeadQueryCore;
 
 namespace SQT.Mocks
 {
-    internal static class SimpleFacetGraphFactoryFactory
+    internal static class SimpleRouteFinderFactory
     {
-        public static FacetGraphFactory Create()
+        public static RouteFinder Create()
         {
             IRepositoryRegistry mockRegistry = SimpleFacetGraphRepositoryRegistryFactory.CreateMockRegistry();
-            return new FacetGraphFactory(mockRegistry);
+            return new RouteFinder(mockRegistry);
         }
     }
 }

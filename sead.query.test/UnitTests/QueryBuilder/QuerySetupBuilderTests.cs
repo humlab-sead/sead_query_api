@@ -29,8 +29,8 @@ namespace SQT.QueryBuilder
             string[] trail = { "tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions" };
             var pairs = RouteHelper.ToPairs(trail);
             var splits = pairs.Select(x => x.Split("/")).Select(z => new { Source = z[0], Target = z[1] }).ToList();
-            var relations = splits.Select(z => Registry.TableRelations.FindByName(z.Source, z.Target) ??
-                                 (TableRelation)Registry.TableRelations.FindByName(z.Target, z.Source).Reverse()).ToList();
+            var relations = splits.Select(z => Registry.Relations.FindByName(z.Source, z.Target) ??
+                                 (TableRelation)Registry.Relations.FindByName(z.Target, z.Source).Reverse()).ToList();
             Assert.True(true);
         }
 

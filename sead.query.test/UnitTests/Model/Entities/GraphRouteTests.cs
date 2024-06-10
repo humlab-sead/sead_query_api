@@ -10,20 +10,20 @@ namespace SQT.Model
 {
     public class GraphRouteTests
     {
-        public IFacetsGraph FacetsGraph { get; private set; }
+        public IRouteFinder RouteFinder { get; private set; }
 
         public GraphRouteTests()
         {
-            FacetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
+            RouteFinder = FakeFacetGraphFactory.CreateSimpleFinder();
         }
 
         private GraphRoute CreateGraphRoute()
         {
             return new GraphRoute(
                 new List<TableRelation>() {
-                    FacetsGraph.RelationLookup.GetEdge("A", "B"),
-                    FacetsGraph.RelationLookup.GetEdge("B", "F"),
-                    FacetsGraph.RelationLookup.GetEdge("F", "H")
+                    RouteFinder.RelationLookup.GetRelation("A", "B"),
+                    RouteFinder.RelationLookup.GetRelation("B", "F"),
+                    RouteFinder.RelationLookup.GetRelation("F", "H")
                 }
             );
         }
@@ -33,7 +33,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = FacetsGraph.RelationLookup.GetEdge("A", "B");
+            TableRelation item = RouteFinder.RelationLookup.GetRelation("A", "B");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -46,7 +46,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = FacetsGraph.RelationLookup.GetEdge("C", "F");
+            TableRelation item = RouteFinder.RelationLookup.GetRelation("C", "F");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -62,19 +62,18 @@ namespace SQT.Model
             List<GraphRoute> routes = new() {
                 new GraphRoute(
                     new List<TableRelation>() {
-                        FacetsGraph.RelationLookup.GetEdge("F", "H")
+                        RouteFinder.RelationLookup.GetRelation("F", "H")
                     }
                 )
             };
 
             // Act
-            var result = graphRoute.ReduceBy(
-                routes);
+            var result = graphRoute.ReduceBy(routes);
 
             // Assert
             Assert.Equal(2, result.Items.Count);
-            Assert.True(graphRoute.Contains(FacetsGraph.RelationLookup.GetEdge("A", "B")));
-            Assert.True(graphRoute.Contains(FacetsGraph.RelationLookup.GetEdge("B", "F")));
+            Assert.True(graphRoute.Contains(RouteFinder.RelationLookup.GetRelation("A", "B")));
+            Assert.True(graphRoute.Contains(RouteFinder.RelationLookup.GetRelation("B", "F")));
         }
 
         [Fact]

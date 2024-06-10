@@ -23,9 +23,9 @@ namespace SQT.Model
         {
         }
 
-        private IFacetsGraph CreateFacetsGraphByFakeContext(IFacetContext testContext)
+        private IRouteFinder CreateFacetsGraphByFakeContext(IFacetContext testContext)
         {
-            return ScaffoldUtility.DefaultFacetsGraph(testContext);
+            return ScaffoldUtility.DefaultRouteFinder(testContext);
         }
 
         private IContainer CreateDependencyContainer()
@@ -39,13 +39,13 @@ namespace SQT.Model
         public void GetEdge_ByNodeNames_WhenEdgeExists_ReturnsEdge()
         {
             // Arrange
-            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleFinder();
 
             const string source = "D";
             const string target = "F";
 
             // Act
-            var result = facetsGraph.RelationLookup.GetEdge(source, target);
+            var result = facetsGraph.RelationLookup.GetRelation(source, target);
 
             // Assert
             Assert.Equal(source, result.SourceName);
@@ -57,13 +57,13 @@ namespace SQT.Model
         public void GetEdge_ByNodeId_WhenEdgeExists_ReturnsEdge()
         {
             // Arrange
-            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleFinder();
 
             const int sourceId = 4;
             const int targetId = 6;
 
             // Act
-            var result = facetsGraph.RelationLookup.GetEdge(sourceId, targetId);
+            var result = facetsGraph.RelationLookup.GetRelation(sourceId, targetId);
 
             // Assert
             Assert.NotNull(result);
@@ -122,7 +122,7 @@ namespace SQT.Model
         public void Find_WhenStartHasPathToStop_ShouldBeShortestPath()
         {
             // Arrange
-            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleFinder();
 
             const string start_table = "A";
             List<string> destination_tables = new List<string>() { "H" };
@@ -142,7 +142,7 @@ namespace SQT.Model
         public void Find_WhenStartAndStopAreSwitched_ShouldBeReversedPath()
         {
             // Arrange
-            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleFinder();
 
             const string startTable = "H";
             const string destinationTable = "A";
@@ -163,10 +163,10 @@ namespace SQT.Model
         public void ToCSV_AnyState_ShouldBeStringOfDelimitedLines()
         {
             // Arrange
-            var facetsGraph = FakeFacetGraphFactory.CreateSimpleGraph();
+            var facetsGraph = FakeFacetGraphFactory.CreateSimpleFinder();
 
             // Act
-            var result = facetsGraph.ToCSV();
+            var result = Gra.ToCSV();
 
             // Assert
             const string expected = "A;B;7\nA;C;8\nB;A;7\nB;F;2\nC;A;8\nC;F;6\nC;G;4\nD;F;8\nE;H;1\nF;B;2\nF;C;6\nF;D;8\nF;G;9\nF;H;3\nG;C;4\nG;F;9\nH;E;1\nH;F;3\n";
@@ -179,8 +179,8 @@ namespace SQT.Model
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
-                var service = scope.Resolve<IFacetsGraph>();
-                Assert.True(service.RelationLookup.Edges.Any());
+                var service = scope.Resolve<IRouteFinder>();
+                Assert.True(service.Registry.Relations.GetEdges().Any());
             }
         }
 
@@ -191,7 +191,7 @@ namespace SQT.Model
             using (var scope = container.BeginLifetimeScope())
             {
                 // Arrange
-                var graph = scope.Resolve<IFacetsGraph>();
+                var graph = scope.Resolve<IRouteFinder>();
                 // Act
                 GraphRoute route = graph.Find("tbl_locations", "tbl_site_locations");
                 // Assert
