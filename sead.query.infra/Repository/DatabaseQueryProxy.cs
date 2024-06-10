@@ -1,20 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
+using SeadQueryCore;
+using System.Threading.Tasks;
 
 namespace SeadQueryInfra
 {
-    public class DatabaseQueryProxy : ITypedQueryProxy, IDynamicQueryProxy
+    public class DatabaseQueryProxy(DbContext context) : ITypedQueryProxy, IDynamicQueryProxy
     {
-        public DbContext Context { get; }
-
-        public DatabaseQueryProxy(DbContext context)
-        {
-            Context = context;
-        }
+        public DbContext Context { get; } = context;
 
         public T QueryRow<T>(string sql, Func<IDataReader, T> selector = null)
         {
@@ -22,6 +20,19 @@ namespace SeadQueryInfra
             {
                 return reader.Select(selector).Take(1).FirstOrDefault();
             }
+        }
+
+        public List<T> QueryScalars<T>(string scalarSql)
+        {
+            using (var dr = Context.Database.ExecuteSqlQuery(scalarSql).DbDataReader)
+            {
+                if (dr.Read())
+                {
+                    return Enumerable.Range(0, dr.FieldCount)
+                        .Select(i => dr.IsDBNull(i) ? default : dr.GetFieldValue<T>(i)).ToList();
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -40,6 +51,7 @@ namespace SeadQueryInfra
             using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
             {
                 return reader.Select(selector).ToList();
+
             }
         }
 
@@ -61,5 +73,26 @@ namespace SeadQueryInfra
                 }
             }
         }
+
+        public static async Task<(T, T)> GetRangeAsync<T>(IDataReader dr, int index)
+        {
+            var datareader = (DbDataReader)dr;
+            NpgsqlRange<T> range = await datareader.GetFieldValueAsync<NpgsqlRange<T>>(index);
+            if (range.IsEmpty)
+                return (default(T), default(T));
+            return (range.LowerBound, range.UpperBound);
+        }
+
+
+        public (T, T) GetRange<T>(IDataReader dr, int index)
+        {
+            var datareader = (DbDataReader)dr;
+            NpgsqlRange<T> range = datareader.GetFieldValue<NpgsqlRange<T>>(index);
+            if (range.IsEmpty)
+                return (default, default);
+            return (range.LowerBound, range.UpperBound);
+        }
+
+
     }
 }

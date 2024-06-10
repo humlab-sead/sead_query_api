@@ -1,0 +1,41 @@
+
+### Chain:  analysis_entity_ages
+
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"analysis_entity_ages",
+    "facetConfigs":[ {
+        "facetCode":"analysis_entity_ages",
+        "position":1,
+        "picks":[
+        ]
+    }
+    ]
+}
+
+###
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"analysis_entity_ages",
+    "facetConfigs":[ {
+        "facetCode":"analysis_entity_ages",
+        "position":1,
+        "picks":[
+            { "pickValue": 50, "text": "50"},
+            { "pickValue": 100, "text": "100"}
+        ]
+    }
+    ]
+}

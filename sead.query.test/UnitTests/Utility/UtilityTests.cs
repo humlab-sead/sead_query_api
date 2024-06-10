@@ -30,9 +30,11 @@ namespace SQT.Infrastructure
         [Fact]
         public void InsertAt_Item_IsOk()
         {
-            var items = new List<string>() { "A", "B", "C", "E", "F" };
-            items.InsertAt(itemToFind: "E", itemToInsert: "D");
-            Assert.Equal(new List<string>() { "A", "B", "C", "D", "E", "F" }, items);
+            List<string> items = ["A", "B", "C", "E", "F"];
+            var items2 = items.InsertAt(itemToFind: "E", itemToInsert: "D");
+            Assert.Equal(["A", "B", "C", "D", "E", "F"], items);
+            Assert.Same(items2, items);
         }
+
     }
 }

@@ -934,5 +934,29 @@
     "TableOrUdfName": "countries",
     "PrimaryKeyName": "location_id",
     "IsUdf": false
+  },
+  {
+    "TableId": 172,
+    "TableOrUdfName": "countries_locations",
+    "PrimaryKeyName": "location_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 173,
+    "TableOrUdfName": "region_locations",
+    "PrimaryKeyName": "location_id",
+    "IsUdf": false
+  },
+  {
+    "TableId": 174,
+    "TableOrUdfName": "facet.site_location_shortcut",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
+  },
+  {
+    "TableId": 175,
+    "TableOrUdfName": "facet.family_taxon_shortcut",
+    "PrimaryKeyName": "xxxx",
+    "IsUdf": false
   }
 ]

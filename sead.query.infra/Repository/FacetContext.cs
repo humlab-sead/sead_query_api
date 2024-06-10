@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
 
 namespace SeadQueryInfra
@@ -101,6 +101,8 @@ namespace SeadQueryInfra
                 entity.Property(b => b.FacetGroupId).HasColumnName("facet_group_id").IsRequired();
                 entity.Property(b => b.FacetTypeId).HasColumnName("facet_type_id").IsRequired();
                 entity.Property(b => b.CategoryIdExpr).HasColumnName("category_id_expr").IsRequired();
+                entity.Property(b => b.CategoryIdOperator).HasColumnName("category_id_operator").IsRequired();
+                entity.Property(b => b.CategoryIdType).HasColumnName("category_id_type").IsRequired();
                 entity.Property(b => b.CategoryNameExpr).HasColumnName("category_name_expr").IsRequired();
                 entity.Property(b => b.SortExpr).HasColumnName("sort_expr").IsRequired();
                 entity.Property(b => b.IsApplicable).HasColumnName("is_applicable").IsRequired();

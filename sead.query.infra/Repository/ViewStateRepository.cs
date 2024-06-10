@@ -2,10 +2,7 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class ViewStateRepository : Repository<ViewState, string>, IViewStateRepository
+    public class ViewStateRepository(IFacetContext context) : Repository<ViewState, string>(context), IViewStateRepository
     {
-        public ViewStateRepository(IFacetContext context) : base(context)
-        {
-        }
     }
 }

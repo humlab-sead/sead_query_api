@@ -11,7 +11,11 @@ namespace SeadQueryCore
 
         List<Key2Value<K, V>> QueryKeyValues2<K, V>(string sql, int keyIndex = 0, int valueIndex1 = 1, int valueIndex2 = 2);
         T QueryRow<T>(string sql, Func<IDataReader, T> selector = null);
+        List<T> QueryScalars<T>(string sql);
         List<T> QueryRows<T>(string sql, Func<IDataReader, T> selector);
+
+        (T, T) GetRange<T>(IDataReader dr, int index);
+        
     }
 
     public interface IDynamicQueryProxy

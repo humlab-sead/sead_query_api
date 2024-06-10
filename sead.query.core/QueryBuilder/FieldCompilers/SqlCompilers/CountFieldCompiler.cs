@@ -1,8 +1,13 @@
 ﻿namespace SeadQueryCore
 {
-    public class CountFieldCompiler : SqlFieldCompiler
+    public class CountFieldCompiler(ResultFieldType fieldType) : SqlFieldCompiler(fieldType)
     {
-        public CountFieldCompiler(ResultFieldType fieldType) : base(fieldType) { }
         public override string Compile(string expr) { return $"COUNT({expr}) AS count_of_{expr}"; }
     }
+
+    public class CountDistinctFieldCompiler(ResultFieldType fieldType) : SqlFieldCompiler(fieldType)
+    {
+        public override string Compile(string expr) { return $"COUNT(DISTINCT {expr}) AS count_of_{expr}"; }
+    }
+
 }

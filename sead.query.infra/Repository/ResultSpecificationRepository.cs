@@ -1,16 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class ResultSpecificationRepository : Repository<ResultSpecification, int>, IResultSpecificationRepository
+    public class ResultSpecificationRepository(IFacetContext context) : Repository<ResultSpecification, int>(context), IResultSpecificationRepository
     {
-        public ResultSpecificationRepository(IFacetContext context) : base(context)
-        {
-        }
-
         public Dictionary<string, ResultSpecification> ToDictionary()
         {
             return GetAll().ToDictionary(x => x.SpecificationKey);
@@ -33,7 +29,7 @@ namespace SeadQueryInfra
 
         public List<ResultViewType> GetViewTypes()
         {
-            return Context.Set<ResultViewType>().ToList();
+            return [.. Context.Set<ResultViewType>()];
         }
 
         public ResultViewType GetViewType(string viewTypeId)
@@ -48,7 +44,7 @@ namespace SeadQueryInfra
 
         public List<ResultSpecification> GetByKeys(List<string> keys)
         {
-            return (keys ?? new List<string>()).Select(key => GetByKey(key)).ToList();
+            return (keys ?? []).Select(key => GetByKey(key)).ToList();
         }
 
         public List<ResultSpecificationField> GetFieldsByKeys(List<string> keys)

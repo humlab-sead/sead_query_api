@@ -9,7 +9,6 @@ var querySetup = new QuerySetup
 		{
 			new FacetConfigPick
 			{
-				PickType = SeadQueryCore.EPickType.discrete,
 				PickValue = "1",
 				Text = "1"
 			}

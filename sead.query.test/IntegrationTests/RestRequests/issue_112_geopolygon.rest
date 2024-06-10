@@ -1,0 +1,193 @@
+### FACET LOAD
+
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"sites_polygon",
+    "FacetConfigs":[ {
+        "FacetCode":"sites_polygon",
+        "Position":1,
+        "Picks":[ ]
+    }]
+}
+
+###
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"sites_polygon",
+    "facetConfigs":[ {
+        "facetCode":"sites_polygon",
+        "position":1,
+        "picks": [
+          { "pickValue": "63.872484"},
+          { "pickValue": "20.093291"},
+          { "pickValue": "63.947006"},
+          { "pickValue": "20.501316"},
+          { "pickValue": "63.878949"},
+          { "pickValue": "20.673213"},
+          { "pickValue": "63.748021"},
+          { "pickValue": "20.252953"},
+          { "pickValue": "63.793983"},
+          { "pickValue": "20.095738"}
+        ]
+    }]
+}
+
+###
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load2
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"sites_polygon",
+    "facetConfigs":[ {
+        "facetCode":"sites_polygon",
+        "position":1,
+        "PickValues": [
+          63.872484,
+          20.093291,
+          63.947006,
+          20.501316,
+          63.878949,
+          20.673213,
+          63.748021,
+          20.252953,
+          63.793983,
+          20.095738
+        ]
+    }]
+}
+
+
+###
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load2
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"sites_polygon",
+    "facetConfigs":[ {
+        "facetCode":"sites_polygon",
+        "position":1,
+        "PickValues": [
+          "63.872484",
+          "20.093291",
+          "63.947006",
+          "20.501316",
+          "63.878949",
+          "20.673213",
+          "63.748021",
+          "20.252953",
+          "63.793983",
+          "20.095738"
+        ]
+    }]
+}
+
+###
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load2
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"sites_polygon",
+    "facetConfigs":[ {
+        "facetCode":"sites_polygon",
+        "position":1,
+        "coordinates": [
+          [63.872484, 20.093291],
+          [63.947006, 20.501316],
+          [63.878949, 20.673213],
+          [63.748021, 20.252953],
+          [63.793983, 20.095738]
+        ]
+    }]
+}
+
+###
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+  "requestId": 1,
+  "requestType": "populate",
+  "targetCode": "sites_polygon",
+  "domainCode": "",
+  "facetConfigs": [
+      {
+          "facetCode": "palaeoentomology",
+          "position": 1,
+      },
+      {
+          "facetCode":"sites_polygon",
+          "position":2,
+          "coordinates": [
+              [63.872484, 20.093291],
+              [63.947006, 20.501316],
+              [63.878949, 20.673213],
+              [63.748021, 20.252953],
+              [63.793983, 20.095738]
+          ]
+      }
+  ]
+}
+
+### RESULT LOAD
+
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+    "facetsConfig": {
+        "requestId": 1,
+        "requestType": "populate",
+        "targetCode": "sites_polygon",
+        "facetConfigs": [
+          {
+              "facetCode":"sites_polygon",
+              "position":1,
+              "coordinates": [
+                  [63.872484, 20.093291],
+                  [63.947006, 20.501316],
+                  [63.878949, 20.673213],
+                  [63.748021, 20.252953],
+                  [63.793983, 20.095738]
+              ]
+          }
+        ]
+    },
+    "resultConfig": {
+        "requestId": 3,
+        "sessionId": "1",
+        "viewTypeId": "tabular",
+        "aggregateKeys": [
+            "site_level"
+        ]
+    }
+}

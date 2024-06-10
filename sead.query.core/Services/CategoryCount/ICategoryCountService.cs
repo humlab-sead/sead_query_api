@@ -1,11 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System.Data;
+using SeadQueryCore.QueryBuilder;
 
-namespace SeadQueryCore
+namespace SeadQueryCore;
+
+
+public interface ICategoryInfoSqlCompiler : ISqlCompiler
 {
-    public interface ICategoryCountService
-    {
-        CategoryCountService.CategoryCountData Load(string facetCode, FacetsConfig2 facetsConfig, string intervalQuery);
-    }
+    CategoryItem ToItem(IDataReader dr);
+    string Compile(QuerySetup query, Facet facet, dynamic payload);
 
-    public interface IDiscreteCategoryCountService : ICategoryCountService { }
 }
+
+public interface ICategoryInfoService
+{
+    FacetContent.CategoryInfo GetCategoryInfo(FacetsConfig2 facetsConfig, string facetCode, dynamic payload = null);
+
+    ICategoryInfoSqlCompiler SqlCompiler { get; }
+
+}
+
+public interface ICategoryCountService
+{
+    CategoryCountService.CategoryCountData Load(string facetCode, FacetsConfig2 facetsConfig, EFacetType facetTypeOverride = EFacetType.Unknown);
+
+}
+

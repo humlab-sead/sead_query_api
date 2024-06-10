@@ -48,6 +48,7 @@ namespace SQT.Model
                     ReloadAsTarget = facetType == EFacetType.Range
                 },
                 CategoryIdExpr = "A.a_id",
+                CategoryIdType = "integer",
                 CategoryNameExpr = "A.a_name",
                 SortExpr = "A.a_name",
                 IsApplicable = true,
@@ -75,6 +76,7 @@ namespace SQT.Model
                 FacetGroupId = 999,
                 FacetTypeId = (EFacetType)1,
                 CategoryIdExpr = "tbl_analysis_entities.analysis_entity_id",
+                CategoryIdType = "integer",
                 CategoryNameExpr = "tbl_physical_samples.sample_name||' '||tbl_datasets.dataset_name",
                 SortExpr = "tbl_datasets.dataset_name",
                 IsApplicable = false,

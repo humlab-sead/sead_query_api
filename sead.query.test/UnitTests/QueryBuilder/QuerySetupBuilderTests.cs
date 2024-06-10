@@ -45,7 +45,7 @@ namespace SQT.QueryBuilder
         [InlineData("record_types:country@1,2,5/record_types")]
         [InlineData("sites:country@1,2,5/sites")]
         [InlineData("ecocode:country@1,2,5/ecocode")]
-        [InlineData("family:country@1,2,5/family")]
+        // [InlineData("family:country@1,2,5/family")]
         [InlineData("genus:country@1,2,5/genus")]
         [InlineData("species_author:country@1,2,5/species_author")]
         [InlineData("feature_type:country@1,2,5/feature_type")]

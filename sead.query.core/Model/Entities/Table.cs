@@ -1,46 +1,37 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text.Json.Serialization;
 
-namespace SeadQueryCore
+namespace SeadQueryCore;
+
+public interface IGraphNode
 {
-    public interface IGraphNode
+    public int Id { get; }
+    public string Name { get; }
+}
+
+public class Table : IGraphNode
+{
+    public int TableId { get; set; }
+    public string TableOrUdfName { get; set; }
+    public string PrimaryKeyName { get; set; }
+    public bool IsUdf { get; set; }
+    public bool IsGated { get; set; }
+
+    [JsonIgnore] public int Id { get { return TableId; } }
+    [JsonIgnore] public string Name { get { return TableOrUdfName; } }
+
+    public override bool Equals(object obj)
     {
-        public int GetId();
-        public string GetName();
+        return Equals(obj as Table);
     }
 
-    public class Table : IGraphNode
+    public bool Equals(Table obj)
     {
-        public int TableId { get; set; }
-        public string TableOrUdfName { get; set; }
-        public string PrimaryKeyName { get; set; }
-        public bool IsUdf { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Table);
-        }
-
-        public bool Equals(Table obj)
-        {
-            return obj != null && TableOrUdfName == obj.TableOrUdfName;
-        }
-        public override int GetHashCode()
-        {
-            return TableOrUdfName.GetHashCode();
-        }
-
-        public int GetId()
-        {
-            return TableId;
-        }
-
-        public string GetName()
-        {
-            return TableOrUdfName;
-        }
+        return obj != null && TableOrUdfName == obj.TableOrUdfName;
     }
+
+    public override int GetHashCode()
+    {
+        return TableOrUdfName.GetHashCode();
+    }
+
 }

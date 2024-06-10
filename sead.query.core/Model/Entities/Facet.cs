@@ -11,7 +11,8 @@ namespace SeadQueryCore
         Unknown = 0,
         Discrete = 1,
         Range = 2,
-        Geo = 3
+        GeoPolygon = 3,
+        Intersect = 4
     }
 
     [JsonObject(MemberSerialization.OptOut)]
@@ -19,9 +20,9 @@ namespace SeadQueryCore
     {
         public Facet()
         {
-            Clauses = new List<FacetClause>();
-            Tables = new List<FacetTable>();
-            Children = new List<FacetChild>();
+            Clauses = [];
+            Tables = [];
+            Children = [];
         }
 
         public int FacetId { get; set; }
@@ -43,6 +44,12 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         public string CategoryIdExpr { get; set; }
+
+        [JsonIgnore]
+        public string CategoryIdType { get; set; }
+        
+        [JsonIgnore]
+        public string CategoryIdOperator{ get; set; }
 
         [JsonIgnore]
         public string CategoryNameExpr { get; set; }
@@ -71,7 +78,7 @@ namespace SeadQueryCore
         public virtual List<FacetClause> Clauses { get; set; }
 
         [JsonIgnore]
-        public virtual IEnumerable<FacetChild> Children { get; set; }
+        public virtual List<FacetChild> Children { get; set; }
 
         [JsonIgnore]
         [NotMapped]

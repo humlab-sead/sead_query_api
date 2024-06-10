@@ -23,19 +23,16 @@ namespace IntegrationTests.Debug
                     ""requestType"": ""populate"",
                     ""domainCode"": """",
                     ""targetCode"": ""ecocode"",
-                    ""triggerCode"": ""ecocode"",
                     ""facetConfigs"": [
                         {
                             ""facetCode"": ""ecocode"",
                             ""position"": 1,
                             ""picks"": [
                                 {
-                                    ""pickType"": 1,
                                     ""pickValue"": 36,
                                     ""text"": 36
                                 }
-                            ],
-                            ""textFilter"": """"
+                            ]
                         }
                     ]
                 },
@@ -121,7 +118,6 @@ namespace IntegrationTests.Debug
                 RequestType = "populate",
                 DomainCode = "",
                 TargetCode = "ecocode",
-                TriggerCode = "ecocode",
                 FacetConfigs = new List<FacetConfig2>
                 {
                     new FacetConfig2
@@ -131,7 +127,7 @@ namespace IntegrationTests.Debug
                         TextFilter = "",
                         Picks = new List<FacetConfigPick>
                         {
-                            new FacetConfigPick { PickType=EPickType.discrete, PickValue="36", Text="36"}
+                            new FacetConfigPick { PickValue="36", Text="36"}
                         }
                     }
                 }

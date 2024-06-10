@@ -12,12 +12,13 @@ namespace SQT.Mocks
 
         public static FacetConfig2 Create(Facet facet, int position, List<int> ids, string filter = "")
         {
-            return new FacetConfig2(facet, position, filter, FacetConfigPick.CreateDiscrete(ids));
+            return new FacetConfig2(facet, position, filter, FacetConfigPick.CreateByList(ids));
         }
 
         public static FacetConfig2 Create(Facet facet, int position, decimal lower, decimal upper, string filter = "")
         {
-            return new FacetConfig2(facet, position, filter, FacetConfigPick.CreateLowerUpper(lower, upper));
+            return new FacetConfig2(facet, position, filter, [new FacetConfigPick(lower), new FacetConfigPick(upper)]
+            );
         }
     }
 }

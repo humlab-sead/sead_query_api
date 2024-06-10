@@ -12,7 +12,7 @@ namespace SQT.SQL.Matcher
         {
             sqlQuery = sqlQuery.Squeeze();
             expectedOuterSql = expectedOuterSql.Squeeze();
-            var rx = Regex.Match(sqlQuery.Squeeze(), expectedOuterSql.Squeeze());
+            var rx = Regex.Match(sqlQuery, expectedOuterSql);
 
             OuterSelectMatch result = new OuterSelectMatch
             {
@@ -32,7 +32,8 @@ namespace SQT.SQL.Matcher
             result.InnerSql = rx.Groups["InnerSql"].Value.Squeeze();
             result.AggregateType = rx.Groups?["AggregateType"]?.Value?.Squeeze() ?? "";
 
-            result.InnerSelect = InnerSqlMatcher.Match(result.InnerSql);
+            if (InnerSqlMatcher != null)
+                result.InnerSelect = InnerSqlMatcher.Match(result.InnerSql);
         }
 
         public OuterSelectMatch Match(string sqlQuery)
@@ -44,6 +45,10 @@ namespace SQT.SQL.Matcher
         {
             if (facetType == EFacetType.Range)
                 return new RangeCategoryCountSqlCompilerMatcher();
+            if (facetType == EFacetType.Intersect)
+                return new IntersectCategoryCountSqlCompilerMatcher();
+            if (facetType == EFacetType.GeoPolygon)
+                return new GeoPolygonCategoryCountSqlCompilerMatcher();
             return new DiscreteCategoryCountSqlCompilerMatcher();
         }
     }

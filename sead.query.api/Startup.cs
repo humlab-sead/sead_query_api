@@ -9,77 +9,81 @@ using SeadQueryCore;
 using System;
 using System.IO;
 
-namespace SeadQueryAPI
+namespace SeadQueryAPI;
+
+public class Startup
 {
-    public class Startup
+    public IConfigurationRoot Configuration { get; private set; }
+
+    public Autofac.IContainer Container { get; private set; }
+
+    public Startup()
     {
-        public IConfigurationRoot Configuration { get; private set; }
+        var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER");
+        var appSettingsPath = string.IsNullOrEmpty(appSettingsFolder) ? "appsettings.json" : Path.Combine(appSettingsFolder, "appsettings.json");
 
-        public Autofac.IContainer Container { get; private set; }
+        Configuration = new ConfigurationBuilder()
+            .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .Build();
+    }
 
-        public Startup()
+    private Setting GetOptions()
+    {
+        return Configuration.GetSection("QueryBuilderSetting").Get<Setting>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
+    {
+        //Configure application's request pipeline.
+        //#if DEBUG
+        //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
+        //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+        //#endif
+
+        app.UseRouting();
+
+        if (env.IsDevelopment())
         {
-            var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER");
-            var appSettingsPath = string.IsNullOrEmpty(appSettingsFolder) ? "appsettings.json" : Path.Combine(appSettingsFolder, "appsettings.json");
-
-            Configuration = new ConfigurationBuilder()
-                .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
+            app.UseMiddleware<RequestLoggingMiddleware>();
         }
 
-        private Setting GetOptions()
+        app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
+        );
+
+        app.UseEndpoints(endpoints =>
         {
-            return Configuration.GetSection("QueryBuilderSetting").Get<Setting>();
+            endpoints.MapControllers();
+            endpoints.MapDefaultControllerRoute();
+        });
+
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
-        {
-            //Configure application's request pipeline.
-            //#if DEBUG
-            //            NpgsqlLogManager.Provider = new ConsoleLoggingProvider(NpgsqlLogLevel.Debug);
-            //            NpgsqlLogManager.IsParameterLoggingEnabled = true;
-            //#endif
+        appLifetime.ApplicationStopped.Register(() => this.Container.Dispose());
+    }
 
-            app.UseRouting();
-
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
-            );
-
-            app.UseEndpoints(endpoints =>
+    public void ConfigureServices(IServiceCollection services)
+    {
+        _ = services
+            .AddOptions()
+            .AddCors()
+            .AddControllers()
+            .AddNewtonsoftJson(options =>
             {
-                endpoints.MapControllers();
-                endpoints.MapDefaultControllerRoute();
+                var resolver = new Serializers.SeadQueryResolver();
+                options.SerializerSettings.ContractResolver = resolver as DefaultContractResolver;
             });
+    }
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            appLifetime.ApplicationStopped.Register(() => this.Container.Dispose());
-        }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            _ = services
-                .AddOptions()
-                .AddCors()
-                .AddControllers()
-                .AddNewtonsoftJson(options =>
-                {
-                    var resolver = new Serializers.SeadQueryResolver();
-                    options.SerializerSettings.ContractResolver = resolver as DefaultContractResolver;
-                });
-        }
-
-        public void ConfigureContainer(Autofac.ContainerBuilder builder)
-        {
-            builder.RegisterModule(new DependencyService() { Options = GetOptions() });
-        }
+    public void ConfigureContainer(Autofac.ContainerBuilder builder)
+    {
+        builder.RegisterModule(new DependencyService() { Options = GetOptions() });
     }
 }

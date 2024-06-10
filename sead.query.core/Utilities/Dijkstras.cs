@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +6,7 @@ namespace SeadQueryCore
 {
     public class DijkstrasGraph<N>
     {
-        public Dictionary<N, Dictionary<N, int>> Vertices { get; set; } = new Dictionary<N, Dictionary<N, int>>();
+        public Dictionary<N, Dictionary<N, int>> Vertices { get; set; } = [];
 
         public DijkstrasGraph()
         {
@@ -14,7 +14,7 @@ namespace SeadQueryCore
 
         public DijkstrasGraph(Dictionary<N, Dictionary<N, int>> weights)
         {
-            this.Vertices = weights;
+            Vertices = weights;
         }
 
         public void add_vertex(N name, Dictionary<N, int> edges)
@@ -53,7 +53,7 @@ namespace SeadQueryCore
 
                 if (smallest.Equals(finish))
                 {
-                    path = new List<N>();
+                    path = [];
                     while (previous.ContainsKey(smallest))
                     {
                         path.Add(smallest);

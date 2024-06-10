@@ -23,6 +23,28 @@ namespace SQT.Model
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }
 
+        [Theory]
+        [InlineData("country:country", "country:country.json")]
+        [InlineData("country:country@1", "country:country@1.json")]
+        public void UriToJSON(string uri, string filename)
+        {
+            var reconstituter = new FacetConfigReconstituteService(Registry);
+            FacetsConfig2 facetsConfig = FacetsConfigFactory.Create(uri);
+            // Serialize to JSON with formatting:
+            facetsConfig.TargetFacet = null;
+            string json = JsonConvert.SerializeObject(facetsConfig, Formatting.Indented);
+
+            // string json = JsonConvert.SerializeObject(facetsConfig);
+            // string tmpFolder = Environment.GetEnvironmentVariable("SEAD_QUERY_API_PROJECT_ROOT") + "/tmp";
+
+            // Comine folder and filename:
+            string path = System.IO.Path.Combine("/home/roger/source/sead_query_api/tmp", filename);
+
+            // Write string json to text file:
+            System.IO.File.WriteAllText(path, json);
+
+        }
+
         [Fact]
         public void Reconstitute_SingleFacetsConfigWithoutPicks_IsEqual()
         {
@@ -36,6 +58,7 @@ namespace SQT.Model
             // Assert
             Assert.Equal(json1, json2);
         }
+
 
         [Theory]
         [InlineData("sites:sites", "sites")]
@@ -208,7 +231,7 @@ namespace SQT.Model
             "country"
          )]
         [InlineData(
-            "sites:country/sites@1013,957,958/species/ecocode@28,12/"
+            "sites:country/sites@1013,957,958/species/ecocode@28,12/", "country"
          )]
         public void GetConfigsThatAffectsTarget_StateUnderTest_ExpectedBehavior(string uri, params string[] expectedInvolvedCodes)
         {

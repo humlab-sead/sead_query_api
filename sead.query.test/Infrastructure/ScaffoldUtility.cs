@@ -10,6 +10,15 @@ using System.Linq;
 
 namespace SQT.Infrastructure
 {
+    
+    public static class IEnumerableExtensions
+    {
+        public static string BuildString<T>(this IEnumerable<T> self, string delim = ",", string apos = "")
+        {
+            return string.Join(delim, self.Select(x => $"{apos}{x}{apos}"));
+        }
+    }
+    
     public static class ScaffoldUtility
     {
         public static DumpOptions GetDefaultDumpOptions() => new DumpOptions()

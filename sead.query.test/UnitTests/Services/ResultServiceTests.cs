@@ -1,13 +1,7 @@
 using Moq;
 using SeadQueryCore;
-using SeadQueryCore.Model;
 using SeadQueryCore.Services.Result;
-using SQLitePCL;
 using SQT.Infrastructure;
-using SQT.SQL.Matcher;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
 using System.Linq;
 using Xunit;
 

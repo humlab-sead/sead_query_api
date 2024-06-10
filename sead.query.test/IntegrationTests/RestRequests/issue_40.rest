@@ -20,17 +20,14 @@ Content-Type: application/json; charset=UTF-8
       "position": 1,
       "picks": [
         {
-          "pickType": 2,
           "pickValue": 900,
           "text": 900
         },
         {
-          "pickType": 3,
           "pickValue": 1200,
           "text": 1200
         }
-      ],
-      "textFilter": ""
+      ]
     }
   ]
 }
@@ -53,17 +50,14 @@ Content-Type: application/json; charset=UTF-8
       "position": 1,
       "picks": [
         {
-          "pickType": 2,
           "pickValue": 1030,
           "text": 1030
         },
         {
-          "pickType": 3,
           "pickValue": 1037,
           "text": 1037
         }
-      ],
-      "textFilter": ""
+      ]
     }
   ]
 }

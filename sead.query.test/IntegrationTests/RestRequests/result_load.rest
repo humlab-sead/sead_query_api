@@ -19,12 +19,10 @@ Content-Type: application/json; charset=UTF-8
                 "position": 1,
                 "picks": [
                     {
-                        "pickType": 1,
                         "pickValue": 36,
                         "text": 36
                     }
-                ],
-                "textFilter": ""
+                ]
             }
         ]
     },
@@ -59,12 +57,10 @@ Content-Type: application/json; charset=UTF-8
                 "position":1,
                 "picks":[
                     {
-                        "pickType":1,
                         "pickValue":64,
                         "text":64
                     }
-                ],
-                "textFilter":""
+                ]
             }
         ]
     },
@@ -94,11 +90,7 @@ Content-Type: application/json; charset=UTF-8
 		"facetConfigs":[{
 			"facetCode":"sample_groups",
 			"position":1,
-			"picks":[{
-				"pickType":1,
-				"pickValue":510,
-				"text":510}],
-				"textFilter":""
+			"picks":[{ "pickValue":510, "text":510}],
 			}
 	]},
 	"resultConfig":{
@@ -130,19 +122,17 @@ Content-Type: application/json; charset=UTF-8
         "facetCode": "country",
         "position": 1,
         "picks": [
-          { "pickType": 1, "pickValue": 162, "text": 162 },
-          { "pickType": 1, "pickValue": 205, "text": 205 }
-        ],
-        "textFilter": ""
+          { "pickValue": 162, "text": 162 },
+          { "pickValue": 205, "text": 205 }
+        ]
       },
       {
         "facetCode": "tbl_denormalized_measured_values_32",
         "position": 2,
         "picks": [
-          { "pickType": 2, "pickValue": 0.2, "text": 0.2 },
-          { "pickType": 3, "pickValue": 8.2, "text": 8.2 }
-        ],
-        "textFilter": ""
+          { "pickValue": 0.2, "text": 0.2 },
+          { "pickValue": 8.2, "text": 8.2 }
+        ]
       }
     ]
   },
@@ -175,8 +165,7 @@ Content-Type: application/json; charset=UTF-8
       {
         "facetCode": "sites",
         "position": 1,
-        "picks": [],
-        "textFilter": ""
+        "picks": []
       }
     ]
   },
@@ -208,29 +197,26 @@ Content-Type: application/json; charset=UTF-8
       {
         "facetCode": "dataset_master",
         "position": 1,
-        "picks": [{ "pickType": 1, "pickValue": 10, "text": 10 }],
-        "textFilter": ""
+        "picks": [{ "pickValue": 10, "text": 10 }]
       },
       {
         "facetCode": "sites",
         "position": 2,
         "picks": [
-          { "pickType": 1, "pickValue": 1985, "text": 1985 },
-          { "pickType": 1, "pickValue": 2044, "text": 2044 },
-          { "pickType": 1, "pickValue": 2046, "text": 2046 },
-          { "pickType": 1, "pickValue": 2017, "text": 2017 },
-          { "pickType": 1, "pickValue": 2045, "text": 2045 }
-        ],
-        "textFilter": ""
+          { "pickValue": 1985, "text": 1985 },
+          { "pickValue": 2044, "text": 2044 },
+          { "pickValue": 2046, "text": 2046 },
+          { "pickValue": 2017, "text": 2017 },
+          { "pickValue": 2045, "text": 2045 }
+        ]
       },
       {
         "facetCode": "genus",
         "position": 3,
         "picks": [
-          { "pickType": 1, "pickValue": 764, "text": 764 },
-          { "pickType": 1, "pickValue": 551, "text": 551 }
-        ],
-        "textFilter": ""
+          { "pickValue": 764, "text": 764 },
+          { "pickValue": 551, "text": 551 }
+        ]
       }
     ]
   },

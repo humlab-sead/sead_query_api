@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using SeadQueryCore;
 using SeadQueryInfra;
 using SQT.Fixtures;
 using System;
@@ -23,6 +24,8 @@ namespace SQT.Infrastructure
         {
             foreach (var type in types)
             {
+                // This line prevents serialization to fail:
+                var _ = context.Set<Facet>();
                 object entities = context.SetEx(type);
                 SerializeToFile(type, entities, path);
             }
