@@ -14,7 +14,6 @@ public class Table : IGraphNode
     public string TableOrUdfName { get; set; }
     public string PrimaryKeyName { get; set; }
     public bool IsUdf { get; set; }
-    public bool IsGated { get; set; }
 
     [JsonIgnore] public int Id { get { return TableId; } }
     [JsonIgnore] public string Name { get { return TableOrUdfName; } }

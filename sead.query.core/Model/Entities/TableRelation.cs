@@ -102,10 +102,5 @@ namespace SeadQueryCore
         {
             return tableIds.Contains(SourceTableId) || tableIds.Contains(TargetTableId);
         }
-
-        public bool IsGated()
-        {
-            return SourceTable.IsGated || TargetTable.IsGated;
-        }
     }
 }
