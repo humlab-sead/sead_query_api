@@ -5,7 +5,7 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class ResultSpecificationRepository(IFacetContext context) : Repository<ResultSpecification, int>(context), IResultSpecificationRepository
+    public class ResultSpecificationRepository(IRepositoryRegistry registry) : Repository<ResultSpecification, int>(registry), IResultSpecificationRepository
     {
         public Dictionary<string, ResultSpecification> ToDictionary()
         {

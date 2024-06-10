@@ -2,7 +2,7 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class ViewStateRepository(IFacetContext context) : Repository<ViewState, string>(context), IViewStateRepository
+    public class ViewStateRepository(IRepositoryRegistry registry) : Repository<ViewState, string>(registry), IViewStateRepository
     {
     }
 }

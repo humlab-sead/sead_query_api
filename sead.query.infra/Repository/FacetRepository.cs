@@ -5,14 +5,15 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class FacetTypeRepository(IFacetContext context) : Repository<FacetType, int>(context), IFacetTypeRepository
+    public class FacetTypeRepository(RepositoryRegistry registry) : Repository<FacetType, int>(registry), IFacetTypeRepository
     {
     }
 
-    public class FacetGroupRepository(IFacetContext context) : Repository<FacetGroup, int>(context), IFacetGroupRepository
+    public class FacetGroupRepository(RepositoryRegistry registry) : Repository<FacetGroup, int>(registry), IFacetGroupRepository
     {
     }
-    public class FacetTableRepository(IFacetContext context) : Repository<FacetTable, int>(context), IFacetTableRepository
+
+    public class FacetTableRepository(RepositoryRegistry registry) : Repository<FacetTable, int>(registry), IFacetTableRepository
     {
         public IEnumerable<FacetTable> FindThoseWithAlias()
         {
@@ -22,9 +23,11 @@ namespace SeadQueryInfra
         {
             return set.Include(x => x.Table);
         }
+
+
     }
 
-    public class FacetRepository(IFacetContext context) : Repository<Facet, int>(context), IFacetRepository
+    public class FacetRepository(RepositoryRegistry registry) : Repository<Facet, int>(registry), IFacetRepository
     {
         public static int DOMAIN_FACET_GROUP_ID = 999;
 
