@@ -15,16 +15,17 @@ namespace SeadQueryInfra
 
     public class FacetTableRepository(RepositoryRegistry registry) : Repository<FacetTable, int>(registry), IFacetTableRepository
     {
+        private IEnumerable<FacetTable> __aliasTables = null;
         public IEnumerable<FacetTable> FindThoseWithAlias()
         {
-            return GetAll().Where(p => p.HasAlias);
+            return __aliasTables ??= GetAll().Where(p => p.HasAlias);
         }
         protected override IQueryable<FacetTable> GetInclude(IQueryable<FacetTable> set)
         {
             return set.Include(x => x.Table);
         }
 
-
+        public FacetTable GetByAlias(string aliasName) => FindThoseWithAlias().Where(x => x.Alias == aliasName).FirstOrDefault();
     }
 
     public class FacetRepository(RepositoryRegistry registry) : Repository<Facet, int>(registry), IFacetRepository
@@ -83,6 +84,7 @@ namespace SeadQueryInfra
 
         public IEnumerable<Facet> GetAllUserFacets()
             => GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable).ToList();
+
     }
 
     public static class FacetRepositoryEagerBuilder
