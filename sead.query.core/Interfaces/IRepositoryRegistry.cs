@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Text;
 
-namespace SeadQueryCore
+namespace SeadQueryCore;
+
+public interface IRepositoryRegistry : IDisposable
 {
-    public interface IRepositoryRegistry : IDisposable
-    {
-        ITableRelationRepository TableRelations { get; }
-        IFacetRepository Facets { get; }
-        ITableRepository Tables { get; }
-        IResultSpecificationRepository Results { get; }
-        IFacetGroupRepository FacetGroups { get; }
-        IFacetTypeRepository FacetTypes { get; }
-        IFacetTableRepository FacetTables { get; }
-        IViewStateRepository ViewStates { get; }
+    IFacetContext Context { get; }
+    IEdgeRepository Relations { get; }
+    IFacetRepository Facets { get; }
+    INodeRepository Tables { get; }
+    IResultSpecificationRepository Results { get; }
+    IFacetGroupRepository FacetGroups { get; }
+    IFacetTypeRepository FacetTypes { get; }
+    IFacetTableRepository FacetTables { get; }
+    IViewStateRepository ViewStates { get; }
 
-        int Commit();
-
-    }
+    int Commit();
 
 }
