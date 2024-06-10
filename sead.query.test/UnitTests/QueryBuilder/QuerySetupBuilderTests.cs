@@ -56,7 +56,7 @@ namespace SQT.QueryBuilder
         [InlineData("tbl_biblio_modern:country@1,2,5/tbl_biblio_modern")]
         [InlineData("tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups")]
         [InlineData("tbl_biblio_sites:country@1,2,5/tbl_biblio_sites")]
-        [InlineData("dataset_master:country@1,2,5/dataset_master")]
+        [InlineData("dataset_provider:country@1,2,5/dataset_provider")]
         [InlineData("dataset_methods:country@1,2,5/dataset_methods")]
         [InlineData("region:country@1,2,5/region")]
         [InlineData("tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0")]

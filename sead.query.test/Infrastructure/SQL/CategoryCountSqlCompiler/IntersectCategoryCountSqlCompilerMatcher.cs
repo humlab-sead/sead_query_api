@@ -9,7 +9,7 @@ namespace SQT.SQL.Matcher
 
         public static string OuterSqlRegExpr { get; } =
             $@"WITH categories\(category, category_range\) AS \((?:\s*\#INTERVAL-QUERY\#\s*|
-                    SELECT n::text \|\| ' to ' \|\| \(n \+ {NumberExpr}::{TypeExpr}\)::text, {TypeExpr}\(n, \(n \+ {NumberExpr}::{TypeExpr}\)\)
+                    SELECT n::text \|\| ' to ' \|\| \(n \+ {NumberExpr}::{TypeExpr}\)::text, {TypeExpr}\(n, \(n \+ {NumberExpr}::{TypeExpr}\)\), n as lower, \(n \+ -?[0-9]+(\.[0-9]+)?::[\w\d]+\) as upper
                     FROM generate_series\({NumberExpr}::{TypeExpr}, {NumberExpr}::{TypeExpr}, {NumberExpr}::{TypeExpr}\) as a\(n\)
                     WHERE n < {NumberExpr}
                 )\)
@@ -19,7 +19,7 @@ namespace SQT.SQL.Matcher
                       ON r.category = c.category
                     ORDER BY c.category_range
             ".Squeeze();
-
+            
         public static string InnerSqlRegExpr { get; } =
             @"SELECT (?<CategoryExpr>category), COUNT\(DISTINCT (?<ValueExpr>[\w\."",\(\)]+)\) AS count_column
               FROM (?<TargetSql>[\w\."",\(\)]+)(?: AS \w*)?(?<JoinSql>.*)?

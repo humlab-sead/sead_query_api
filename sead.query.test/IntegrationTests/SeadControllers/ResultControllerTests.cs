@@ -67,9 +67,9 @@ namespace IntegrationTests.Sead
         /// <returns></returns>
         [Theory]
         [InlineData("construction_type:construction_type")]
-        [InlineData("genus:dataset_master@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
+        [InlineData("genus:dataset_provider@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
         [InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
-        [InlineData("dataset_master:dataset_master@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
+        [InlineData("dataset_provider:dataset_provider@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
         [InlineData("country:country@10", "tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "facet.site_location_shortcut", "tbl_datasets", "tbl_methods", "tbl_record_types")]
         [InlineData("country:country", "tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "facet.site_location_shortcut", "tbl_datasets", "tbl_methods", "tbl_record_types")]
         [InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]

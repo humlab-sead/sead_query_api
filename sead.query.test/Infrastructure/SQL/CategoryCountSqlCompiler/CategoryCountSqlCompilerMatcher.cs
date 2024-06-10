@@ -1,6 +1,5 @@
 ﻿using SeadQueryCore;
 using System.Text.RegularExpressions;
-
 namespace SQT.SQL.Matcher
 {
     public class CategoryCountSqlCompilerMatcher
