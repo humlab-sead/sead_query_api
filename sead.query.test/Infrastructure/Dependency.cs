@@ -75,9 +75,7 @@ namespace SQT.Infrastructure
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
-
-            builder.RegisterType<FacetGraphFactory>().As<IFacetGraphFactory>().InstancePerLifetimeScope();
-            builder.Register<IFacetsGraph>(c => c.Resolve<IFacetGraphFactory>().Build()).SingleInstance();
+            builder.RegisterType<RouteFinder>().As<IRouteFinder>().InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();

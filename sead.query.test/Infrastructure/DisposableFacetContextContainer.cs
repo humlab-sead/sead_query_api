@@ -177,7 +177,7 @@ namespace SQT
             var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { pickCriteria ?? "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+            var facetsGraph = ScaffoldUtility.DefaultRouteFinder(Registry);
 
             // FIXME: Should be mocked
             var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinsCompiler.Object);
@@ -199,7 +199,7 @@ namespace SQT
             var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+            var facetsGraph = ScaffoldUtility.DefaultRouteFinder(Registry);
             var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
 
             // FIXME: Should be mocked

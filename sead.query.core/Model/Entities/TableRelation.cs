@@ -6,19 +6,8 @@ using System.Text;
 
 namespace SeadQueryCore
 {
-    public interface IGraphEdge
-    {
-        public int SourceId { get; }
-        public int TargetId { get; }
-        public int Weight { get; }
 
-        Tuple<string, string> Key { get; }
-        Tuple<int, int> IdKey { get; }
-
-        IGraphEdge Reverse();
-    }
-
-    public class TableRelation : IGraphEdge
+    public class TableRelation
     {
         public int TableRelationId { get; set; }
         public int SourceTableId { get; set; }
@@ -55,7 +44,7 @@ namespace SeadQueryCore
             };
         }
 
-        public IGraphEdge Reverse()
+        public TableRelation Reverse()
         {
             var x = Clone();
             x.TableRelationId = -x.TableRelationId;

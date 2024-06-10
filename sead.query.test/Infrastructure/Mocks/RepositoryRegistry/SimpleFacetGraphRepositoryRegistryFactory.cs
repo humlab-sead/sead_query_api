@@ -39,7 +39,7 @@ namespace SQT.Mocks
             mockRegistry.Setup(x => x.Tables.GetAll())
                 .Returns(Nodes);
 
-            mockRegistry.Setup(x => x.TableRelations.GetAll())
+            mockRegistry.Setup(x => x.Relations.GetAll())
                 .Returns(Edges);
 
             mockRegistry.Setup(x => x.FacetTables.FindThoseWithAlias())

@@ -7,11 +7,11 @@ namespace SeadQueryCore.QueryBuilder
 {
     public class QuerySetupBuilder : IQuerySetupBuilder
     {
-        public IFacetsGraph FacetsGraph { get; set; }
+        public IRouteFinder FacetsGraph { get; set; }
         public IPicksFilterCompiler PicksCompiler { get; set; }
         public IJoinsClauseCompiler JoinCompiler { get; }
 
-        public QuerySetupBuilder(IFacetsGraph graph, IPicksFilterCompiler picksCompiler, IJoinsClauseCompiler joinCompiler)
+        public QuerySetupBuilder(IRouteFinder graph, IPicksFilterCompiler picksCompiler, IJoinsClauseCompiler joinCompiler)
         {
             FacetsGraph = graph;
             PicksCompiler = picksCompiler;

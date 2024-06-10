@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace SeadQueryCore.QueryBuilder
 {
-    public class JoinsClauseCompiler(IFacetsGraph graph, IJoinSqlCompiler joinCompiler) : IJoinsClauseCompiler
+    public class JoinsClauseCompiler(IRouteFinder graph, IJoinSqlCompiler joinCompiler) : IJoinsClauseCompiler
     {
         public IJoinSqlCompiler JoinCompiler { get; } = joinCompiler;
-        public IFacetsGraph FacetsGraph { get; set; } = graph;
+        public IRouteFinder FacetsGraph { get; set; } = graph;
 
         private FacetTable GetFacetTableByNameOrAlias(FacetsConfig2 facetsConfig, TableRelation edge)
             => facetsConfig.GetFacetTable(edge.TargetName) ?? FacetsGraph.GetAliasedFacetTable(edge.TargetName);
