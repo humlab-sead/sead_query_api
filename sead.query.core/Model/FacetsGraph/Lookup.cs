@@ -36,15 +36,15 @@ public class RelationLookup : IEnumerable
     public Dictionary<EdgeKey, TableRelation> KeyLookup { get; private set; }
     public Dictionary<EdgeIdKey, TableRelation> IdKeyLookup { get; private set; }
     public IEnumerable<TableRelation> Edges { get; private set; }
-    public RelationLookup(IEnumerable<TableRelation> edges, bool bidirectional = true)
+    public RelationLookup(IEnumerable<TableRelation> relation, bool bidirectional = true)
     {
         if (bidirectional)
         {
-            edges = edges.Concat(ReversedEdges(edges));
+            relation = relation.Concat(GraphUtility.Reverse(relation));
         }
-        Edges = edges;
-        KeyLookup = edges.ToDictionary(z => z.Key);
-        IdKeyLookup = edges.ToDictionary(z => z.IdKey);
+        Edges = relation;
+        KeyLookup = relation.ToDictionary(z => z.Key);
+        IdKeyLookup = relation.ToDictionary(z => z.IdKey);
     }
 
     public TableRelation GetEdge(string source, string target)
@@ -56,13 +56,6 @@ public class RelationLookup : IEnumerable
     IEnumerator IEnumerable.GetEnumerator()
     {
         return Edges.GetEnumerator();
-    }
-    public IEnumerable<TableRelation> ReversedEdges(IEnumerable<TableRelation> edges)
-    {
-        return edges
-            .Where(z => z.SourceId != z.TargetId)
-            .Select(x => (TableRelation)x.Reverse())
-            .Where(z => !edges.Any(w => w.Equals(z)));
     }
 
     public WeightDictionary ToWeightGraph() => Edges

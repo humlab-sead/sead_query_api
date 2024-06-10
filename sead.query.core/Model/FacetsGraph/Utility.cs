@@ -29,5 +29,15 @@ namespace SeadQueryCore
         {
             return String.Join("\n", routes.Select(z => $"{routes.IndexOf(z)};{z}"));
         }
+
+        public static IEnumerable<TableRelation> Reverse(IEnumerable<TableRelation> relations)
+        {
+            return relations
+                .Where(z => z.SourceId != z.TargetId)
+                .Select(x => (TableRelation)x.Reverse())
+                .Where(z => !relations.Any(w => w.Equals(z)));
+        }
+
     }
+    
 }
