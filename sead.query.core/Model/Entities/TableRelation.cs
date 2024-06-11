@@ -6,6 +6,18 @@ using System.Text;
 
 namespace SeadQueryCore
 {
+    public static class EdgesExtension
+    {
+        public static TableRelation GetEdge(this IEnumerable<TableRelation> edges, string sourceTable, string targetTable)
+        {
+            return edges.FirstOrDefault(x => x.SourceName == sourceTable && x.TargetName == targetTable);
+        }
+
+        public static TableRelation GetEdge(this IEnumerable<TableRelation> edges, int sourceTableId, int targetTableId)
+        {
+            return edges.FirstOrDefault(x => x.SourceTableId == sourceTableId && x.TargetTableId == targetTableId);
+        }
+    }
 
     public class TableRelation
     {
