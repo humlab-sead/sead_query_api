@@ -17,6 +17,12 @@ namespace SeadQueryCore
         {
             return edges.FirstOrDefault(x => x.SourceTableId == sourceTableId && x.TargetTableId == targetTableId);
         }
+
+        public static IEnumerable<Tuple<int, int, int>> ToTuples(this IEnumerable<TableRelation> edges)
+        {
+            return edges.Select(x => Tuple.Create(x.SourceId, x.TargetId, x.Weight)).ToList();
+        }
+
     }
 
     public class TableRelation
