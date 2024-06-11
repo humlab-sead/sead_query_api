@@ -10,21 +10,21 @@ namespace SQT.Model
 {
     public class GraphRouteTests
     {
-        public IRouteFinder RouteFinder { get; private set; }
+        public IEnumerable<TableRelation> Edges { get; private set; }
 
         public GraphRouteTests()
         {
-            RouteFinder = FakeFacetGraphFactory.CreateSimpleFinder();
+            Edges = FakeGraphFactory.CreateSimpleGraph();
         }
 
         private GraphRoute CreateGraphRoute()
         {
             return new GraphRoute(
-                new List<TableRelation>() {
-                    RouteFinder.RelationLookup.GetRelation("A", "B"),
-                    RouteFinder.RelationLookup.GetRelation("B", "F"),
-                    RouteFinder.RelationLookup.GetRelation("F", "H")
-                }
+                [
+                    Edges.GetEdge("A", "B"),
+                    Edges.GetEdge("B", "F"),
+                    Edges.GetEdge("F", "H")
+                ]
             );
         }
 
@@ -33,7 +33,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = RouteFinder.RelationLookup.GetRelation("A", "B");
+            TableRelation item = Edges.GetEdge("A", "B");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -46,7 +46,7 @@ namespace SQT.Model
         {
             // Arrange
             var graphRoute = this.CreateGraphRoute();
-            TableRelation item = RouteFinder.RelationLookup.GetRelation("C", "F");
+            TableRelation item = Edges.GetEdge("C", "F");
 
             // Act
             var result = graphRoute.Contains(item);
@@ -62,7 +62,7 @@ namespace SQT.Model
             List<GraphRoute> routes = new() {
                 new GraphRoute(
                     new List<TableRelation>() {
-                        RouteFinder.RelationLookup.GetRelation("F", "H")
+                        Edges.GetEdge("F", "H")
                     }
                 )
             };
@@ -72,8 +72,8 @@ namespace SQT.Model
 
             // Assert
             Assert.Equal(2, result.Items.Count);
-            Assert.True(graphRoute.Contains(RouteFinder.RelationLookup.GetRelation("A", "B")));
-            Assert.True(graphRoute.Contains(RouteFinder.RelationLookup.GetRelation("B", "F")));
+            Assert.True(graphRoute.Contains(Edges.GetEdge("A", "B")));
+            Assert.True(graphRoute.Contains(Edges.GetEdge("B", "F")));
         }
 
         [Fact]

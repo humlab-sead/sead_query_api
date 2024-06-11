@@ -6,7 +6,7 @@ using SeadQueryCore;
 
 namespace SQT.Mocks
 {
-    public static class FakeFacetGraphFactory
+    public static class FakeGraphFactory
     {
         public class FakeGraphGenerator
         {
@@ -60,7 +60,7 @@ namespace SQT.Mocks
             }
         }
 
-        public static IRouteFinder CreateSimpleFinder()
+        public static List<TableRelation> CreateSimpleGraph()
         {
             var generator = new FakeGraphGenerator(8);
             generator.Add("A", new Dictionary<string, int> { { "B", 7 }, { "C", 8 } });
@@ -71,8 +71,7 @@ namespace SQT.Mocks
             generator.Add("F", new Dictionary<string, int> { { "B", 2 }, { "C", 6 }, { "D", 8 }, { "G", 9 }, { "H", 3 } });
             generator.Add("G", new Dictionary<string, int> { { "C", 4 }, { "F", 9 } });
             generator.Add("H", new Dictionary<string, int> { { "E", 1 }, { "F", 3 } });
-            var finder = new RouteFinder(null, generator.Edges);
-            return finder;
+            return generator.Edges;
         }
     }
 }

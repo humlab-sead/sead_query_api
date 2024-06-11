@@ -17,7 +17,7 @@ namespace SQT.Infrastructure.Repository
 
         private NodeRepository CreateRepository()
         {
-            return new EdgeRepository(FacetContext);
+            return new NodeRepository(Registry);
         }
 
         [Fact]

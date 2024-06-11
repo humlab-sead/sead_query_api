@@ -19,7 +19,7 @@ namespace SQT.Infrastructure.Repository
 
         private ResultSpecificationRepository MockResultRepository()
         {
-            return new ResultSpecificationRepository(FacetContext);
+            return new ResultSpecificationRepository(Registry);
         }
 
         [Fact]

@@ -26,7 +26,7 @@ namespace SQT.Infrastructure.Repository
         public void Find_WhenCalleWithExistingId_ReturnsType(EFacetType facetType)
         {
             // Arrange
-            var repository = new Repository<FacetType, EFacetType>(FacetContext);
+            var repository = new Repository<FacetType, EFacetType>(Registry);
 
             // Act
             var result = repository.Get(facetType);
