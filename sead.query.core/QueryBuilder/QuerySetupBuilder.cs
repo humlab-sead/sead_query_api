@@ -9,13 +9,13 @@ using Route = List<TableRelation>;
 
 public class QuerySetupBuilder : IQuerySetupBuilder
 {
-    public IRouteFinder RouteFinder { get; set; }
+    public IPathFinder PathFinder { get; set; }
     public IPicksFilterCompiler PicksCompiler { get; set; }
     public IJoinsClauseCompiler JoinCompiler { get; }
 
-    public QuerySetupBuilder(IRouteFinder graph, IPicksFilterCompiler picksCompiler, IJoinsClauseCompiler joinCompiler)
+    public QuerySetupBuilder(IPathFinder pathFinder, IPicksFilterCompiler picksCompiler, IJoinsClauseCompiler joinCompiler)
     {
-        RouteFinder = graph;
+        PathFinder = pathFinder;
         PicksCompiler = picksCompiler;
         JoinCompiler = joinCompiler;
     }
@@ -74,13 +74,13 @@ public class QuerySetupBuilder : IQuerySetupBuilder
 
     private List<Route> GetRoutes(Facet targetFacet, List<string> involvedTables)
     {
-        return RouteFinder.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, involvedTables, true);
+        return PathFinder.Find(targetFacet.TargetTable.ResolvedAliasOrTableOrUdfName, involvedTables, true);
     }
 
     public QuerySetup Build(FacetsConfig2 facetsConfig, Facet resultFacet, IEnumerable<ResultSpecificationField> resultFields)
     {
         if (!resultFields?.Any() ?? false)
-            throw new ArgumentNullException($"ResultConfig is null or is missing specification keys!");
+            throw new ArgumentNullException("ResultConfig is null or is missing specification keys!");
 
         /* All tables referenced by the result fields must be included in query */
         return Build(

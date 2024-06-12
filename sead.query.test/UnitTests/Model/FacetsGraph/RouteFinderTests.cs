@@ -24,7 +24,7 @@ namespace SQT.Model
         {
         }
 
-        private IRouteFinder CreateFacetsGraphByFakeContext(IFacetContext testContext)
+        private IPathFinder CreateFacetsGraphByFakeContext(IFacetContext testContext)
         {
             return ScaffoldUtility.DefaultRouteFinder(testContext);
         }
@@ -104,7 +104,7 @@ namespace SQT.Model
 
             Mock<RepositoryRegistry> registry = FakeRegistryFactory.MockRepositoryRegistry(nodes, edges, aliases);
 
-            var finder = new RouteFinder(registry.Object, edges);
+            var finder = new PathFinder(edges);
 
             Assert.NotNull(finder);
 
@@ -114,7 +114,7 @@ namespace SQT.Model
         public void Find_WhenStartHasPathToStop_ShouldBeShortestPath()
         {
             // Arrange
-            var finder = new RouteFinder(null, FakeGraphFactory.CreateSimpleGraph());
+            var finder = new PathFinder(FakeGraphFactory.CreateSimpleGraph());
 
             const string start_table = "A";
             List<string> destination_tables = new List<string>() { "H" };
@@ -134,7 +134,7 @@ namespace SQT.Model
         public void Find_WhenStartAndStopAreSwitched_ShouldBeReversedPath()
         {
             // Arrange
-            var finder = new RouteFinder(null, FakeGraphFactory.CreateSimpleGraph());
+            var finder = new PathFinder(FakeGraphFactory.CreateSimpleGraph());
 
             const string startTable = "H";
             const string destinationTable = "A";
@@ -155,25 +155,14 @@ namespace SQT.Model
         public void ToCSV_AnyState_ShouldBeStringOfDelimitedLines()
         {
             // Arrange
-            var finder = new RouteFinder(null, FakeGraphFactory.CreateSimpleGraph());
+            var finder = new PathFinder(FakeGraphFactory.CreateSimpleGraph());
 
             // Act
-            var result = finder.Edges.ToCSV();
+            var result = finder.Graph.ToCSV();
 
             // Assert
             const string expected = "A;B;7\nA;C;8\nB;A;7\nB;F;2\nC;A;8\nC;F;6\nC;G;4\nD;F;8\nE;H;1\nF;B;2\nF;C;6\nF;D;8\nF;G;9\nF;H;3\nG;C;4\nG;F;9\nH;E;1\nH;F;3\n";
             Assert.Equal(expected, result);
-        }
-
-        [Fact]
-        public void Build_WhenResolvedByIoC_HasExpectedEdges()
-        {
-            using (var container = CreateDependencyContainer())
-            using (var scope = container.BeginLifetimeScope())
-            {
-                var service = scope.Resolve<IRouteFinder>();
-                Assert.True(service.Registry.Relations.GetEdges().Any());
-            }
         }
 
         [Fact]
@@ -183,7 +172,7 @@ namespace SQT.Model
             using (var scope = container.BeginLifetimeScope())
             {
                 // Arrange
-                var graph = scope.Resolve<IRouteFinder>();
+                var graph = scope.Resolve<IPathFinder>();
                 // Act
                 Route route = graph.Find("tbl_locations", "tbl_site_locations");
                 // Assert

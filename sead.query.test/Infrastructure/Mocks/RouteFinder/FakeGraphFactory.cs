@@ -47,7 +47,7 @@ public static class FakeGraphFactory
             { 'H', new Dictionary<char, int>() { { 'E', 1 }, { 'F', 3 } } }
         };
     }
-    
+
     public static List<TableRelation> CreateSimpleGraph()
     {
         var generator = new FakeGraphGenerator(8);
@@ -80,7 +80,7 @@ public static class FakeGraphFactory
     }).ToList();
 
 
-    public static RouteFinder FakeSimpleRouteFinder()
+    public static PathFinder FakeSimpleRouteFinder()
     {
         var uniedges = new List<(string, string, int)> {
             ("A", "B", 7),
@@ -97,11 +97,7 @@ public static class FakeGraphFactory
 
         var nodes = FakeNodes(nodeNames);
         var edges = FakeRoute(uniedges, nodes);
-        var aliases = new List<FacetTable>();
-
-        Mock<RepositoryRegistry> registry = FakeRegistryFactory.MockRepositoryRegistry(nodes, edges, aliases);
-
-        var finder = new RouteFinder(registry.Object, edges);
+        var finder = new PathFinder(edges);
 
         return finder;
 

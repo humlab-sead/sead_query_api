@@ -20,14 +20,14 @@ namespace SeadQueryCore
             return edges.FirstOrDefault(x => x.SourceTableId == sourceTableId && x.TargetTableId == targetTableId);
         }
 
-        public static bool HasEdge(this Route Items, TableRelation item)
+        public static bool HasEdge(this Route route, TableRelation item)
         {
-            return Items.Any(x => x.SourceTableId == item.SourceTableId && x.TargetTableId == item.TargetTableId);
+            return route.Any(x => x.SourceTableId == item.SourceTableId && x.TargetTableId == item.TargetTableId);
         }
 
-        public static bool HasEdge(this Route Items, string sourceName, string targetName)
+        public static bool HasEdge(this Route route, string sourceName, string targetName)
         {
-            return Items.Any(x => x.SourceName == sourceName && x.TargetName == targetName);
+            return route.Any(x => x.SourceName == sourceName && x.TargetName == targetName);
         }
 
         public static bool HasEdge(this List<Route> routes, TableRelation item)
@@ -35,9 +35,9 @@ namespace SeadQueryCore
             return routes.Any(x => x.HasEdge(item));
         }
 
-        public static Route ReduceEdges(this Route Items, List<Route> routes)
+        public static Route ReduceEdges(this Route route, List<Route> routes)
         {
-            return Items.Where(z => !routes.HasEdge(z)).ToList();
+            return route.Where(z => !routes.HasEdge(z)).ToList();
         }
 
         public static List<Route> ReduceEdges(this List<Route> routes)
@@ -77,9 +77,9 @@ namespace SeadQueryCore
             return edges.Select(x => (x.SourceId, x.TargetId, x.Weight)).ToList();
         }
 
-        public static string ToEdgeString(this Route Items)
+        public static string ToEdgeString(this Route route)
         {
-            return string.Join("\n", Items.Select(z => $"{z.SourceName};{z.TargetName};{z.Weight}"));
+            return string.Join("\n", route.Select(z => $"{z.SourceName};{z.TargetName};{z.Weight}"));
         }
 
         public static string ToEdgeString(this List<Route> routes)
@@ -87,11 +87,11 @@ namespace SeadQueryCore
             return string.Join("\n", routes.Select(z => $"{z.ToEdgeString()}"));
         }
 
-        public static List<string> ToTrail(this Route Items)
+        public static List<string> ToTrail(this Route route)
         {
-            if (Items.Count > 0)
+            if (route.Count > 0)
             {
-                return Items.Select(z => z.TargetName).Prepend(Items[0].SourceName).ToList();
+                return route.Select(z => z.TargetName).Prepend(route[0].SourceName).ToList();
             }
             return [];
         }
@@ -104,18 +104,44 @@ namespace SeadQueryCore
             return sb.ToString();
         }
 
-        public static TableRelation Find(this Route Items, string sourceName, string targetName)
+        public static TableRelation Find(this Route route, string sourceName, string targetName)
         {
-            return Items.FirstOrDefault(x => x.SourceName == sourceName && x.TargetName == targetName);
+            return route.FirstOrDefault(x => x.SourceName == sourceName && x.TargetName == targetName);
         }
 
-        public static TableRelation Find(this Route Items, int sourceId, int targetId)
+        public static TableRelation Find(this Route route, int sourceId, int targetId)
         {
-            return Items.FirstOrDefault(x => x.SourceTableId == sourceId && x.TargetTableId == targetId);
+            return route.FirstOrDefault(x => x.SourceTableId == sourceId && x.TargetTableId == targetId);
         }
+
         public static Route ToEdges(this Route route, IEnumerable<int> trail)
             => trail.PairWise(route.Find).ToList();
 
+        public static Table FindNode(this Route route, string nodeName)
+        {
+            foreach (var edge in route)
+            {
+                if (edge.SourceTable?.TableOrUdfName == nodeName)
+                    return edge.SourceTable;
+                if (edge.TargetTable?.TableOrUdfName == nodeName)
+                    return edge.TargetTable;
+            }
+            return null;
+        }
+
+        public static Dictionary<string, Table> GetNodes(this Route route)
+        {
+            var nodes = new Dictionary<string, Table>();
+            foreach (var edge in route)
+            {
+                if (!nodes.ContainsKey(edge.SourceName))
+                    nodes[edge.SourceName] = edge.SourceTable;
+                if (!nodes.ContainsKey(edge.TargetName))
+                    nodes[edge.TargetName] = edge.TargetTable;
+            }
+            return nodes;
+        }
+        
     }
 
     public class TableRelation

@@ -175,10 +175,10 @@ namespace SQT
             var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { pickCriteria ?? "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var facetsGraph = ScaffoldUtility.DefaultRouteFinder(Registry);
+            var pathFinder = ScaffoldUtility.DefaultRouteFinder(Registry);
 
             // FIXME: Should be mocked
-            var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinsCompiler.Object);
+            var compiler = new QuerySetupBuilder(pathFinder, mockPicksCompiler.Object, joinsCompiler.Object);
 
             var querySetup = compiler.Build(
                 facetsConfig,
@@ -197,11 +197,11 @@ namespace SQT
             var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var facetsGraph = ScaffoldUtility.DefaultRouteFinder(Registry);
+            var pathFinder = ScaffoldUtility.DefaultRouteFinder(Registry);
             var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
 
             // FIXME: Should be mocked
-            var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinCompiler.Object);
+            var compiler = new QuerySetupBuilder(pathFinder, mockPicksCompiler.Object, joinCompiler.Object);
             var querySetup = compiler.Build(facetsConfig, resultFacet, resultFields);
 
             return querySetup;
@@ -405,9 +405,9 @@ namespace SQT
             return mockLocator;
         }
 
-        public virtual Mock<IRouteFinder> MockFacetsGraph(List<Route> returnRoutes)
+        public virtual Mock<IPathFinder> MockFacetsGraph(List<Route> returnRoutes)
         {
-            var mockFacetsGraph = new Mock<IRouteFinder>();
+            var mockFacetsGraph = new Mock<IPathFinder>();
 
             mockFacetsGraph
                 .Setup(x => x.Find(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<bool>()))
@@ -431,7 +431,7 @@ namespace SQT
 
         public Route FakeRoute(string[] nodePairs)
         {
-            var graphRoute = 
+            var graphRoute =
                 nodePairs.Select(x => x.Split("/"))
                     .Select(z => new { Source = z[0], Target = z[1] })
                     .Select(z => FakeTableRelation(z.Source, z.Target))

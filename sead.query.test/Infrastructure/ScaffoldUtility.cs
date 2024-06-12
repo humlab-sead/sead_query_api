@@ -98,11 +98,11 @@ namespace SQT.Infrastructure
                 ];
         }
 
-        public static IRouteFinder DefaultRouteFinder(IRepositoryRegistry registry)
+        public static IPathFinder DefaultRouteFinder(IRepositoryRegistry registry)
         {
-            return new RouteFinder(registry);
+            return new PathFinder(registry.Relations.GetEdges());
         }
-        public static IRouteFinder DefaultRouteFinder(IFacetContext testContext)
+        public static IPathFinder DefaultRouteFinder(IFacetContext testContext)
         {
             using (var registry = new RepositoryRegistry(testContext))
             {
