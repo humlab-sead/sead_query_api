@@ -2,17 +2,16 @@
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
-using SQT.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace SQT.QueryBuilder
 {
+    using Route = List<TableRelation>;
+
     [Collection("SeadJsonFacetContextFixture")]
     public class QuerySetupBuilderTests : DisposableFacetContextContainer
     {
@@ -22,17 +21,6 @@ namespace SQT.QueryBuilder
         }
 
         private readonly ITestOutputHelper Output;
-
-        [Fact]
-        public void SkitTest()
-        {
-            string[] trail = { "tbl_analysis_entities", "tbl_abundances", "tbl_taxa_tree_master", "tbl_ecocodes", "tbl_ecocode_definitions" };
-            var pairs = RouteHelper.ToPairs(trail);
-            var splits = pairs.Select(x => x.Split("/")).Select(z => new { Source = z[0], Target = z[1] }).ToList();
-            var relations = splits.Select(z => Registry.Relations.FindByName(z.Source, z.Target) ??
-                                 (TableRelation)Registry.Relations.FindByName(z.Target, z.Source).Reverse()).ToList();
-            Assert.True(true);
-        }
 
         [Theory]
         [InlineData("sites:sites")]
@@ -79,7 +67,7 @@ namespace SQT.QueryBuilder
             var mockPicksCompiler = MockPicksFilterCompiler(pickCriterias ?? new List<string>());
             var fakeJoins = FakeJoinsClause(5);
             var mockJoinCompiler = MockJoinsClauseCompiler(fakeJoins);
-            var mockRoutes = new List<GraphRoute> {
+            var mockRoutes = new List<Route> {
                 FakeRoute2( "A", "B", "C", "D"),
                 FakeRoute2( "E", "K")
             };
@@ -121,7 +109,7 @@ namespace SQT.QueryBuilder
             var mockPicksCompiler = MockPicksFilterCompiler(pickCriterias ?? new List<string>());
             var fakeJoins = FakeJoinsClause(5);
             var mockJoinCompiler = MockJoinsClauseCompiler(fakeJoins);
-            var mockRoutes = new List<GraphRoute> {
+            var mockRoutes = new List<Route> {
                 FakeRoute2( "A", "B", "C", "D"),
                 FakeRoute2( "E", "K")
             };

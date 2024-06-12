@@ -6,22 +6,115 @@ using System.Text;
 
 namespace SeadQueryCore
 {
+    using Route = List<TableRelation>;
+
     public static class EdgesExtension
     {
-        public static TableRelation GetEdge(this IEnumerable<TableRelation> edges, string sourceTable, string targetTable)
+        public static TableRelation GetEdge(this Route edges, string sourceTable, string targetTable)
         {
             return edges.FirstOrDefault(x => x.SourceName == sourceTable && x.TargetName == targetTable);
         }
 
-        public static TableRelation GetEdge(this IEnumerable<TableRelation> edges, int sourceTableId, int targetTableId)
+        public static TableRelation GetEdge(this Route edges, int sourceTableId, int targetTableId)
         {
             return edges.FirstOrDefault(x => x.SourceTableId == sourceTableId && x.TargetTableId == targetTableId);
         }
 
-        public static IEnumerable<Tuple<int, int, int>> ToTuples(this IEnumerable<TableRelation> edges)
+        public static bool HasEdge(this Route Items, TableRelation item)
+        {
+            return Items.Any(x => x.SourceTableId == item.SourceTableId && x.TargetTableId == item.TargetTableId);
+        }
+
+        public static bool HasEdge(this Route Items, string sourceName, string targetName)
+        {
+            return Items.Any(x => x.SourceName == sourceName && x.TargetName == targetName);
+        }
+
+        public static bool HasEdge(this List<Route> routes, TableRelation item)
+        {
+            return routes.Any(x => x.HasEdge(item));
+        }
+
+        public static Route ReduceEdges(this Route Items, List<Route> routes)
+        {
+            return Items.Where(z => !routes.HasEdge(z)).ToList();
+        }
+
+        public static List<Route> ReduceEdges(this List<Route> routes)
+        {
+            List<Route> reduced_routes = [];
+            foreach (var route in routes)
+            {
+                Route reduced_route = route.ReduceEdges(reduced_routes);
+                if (reduced_route.Count > 0)
+                {
+                    reduced_routes.Add(reduced_route);
+                }
+            }
+            return reduced_routes;
+        }
+
+        public static Route ReversedEdges(this Route route)
+        {
+            return route
+                .Where(z => z.SourceId != z.TargetId)
+                .Select(x => x.Reverse())
+                .Where(z => !route.Any(w => w.Equals(z))).ToList();
+        }
+
+
+        public static Route GetFlattenEdges(this List<Route> routes)
+            => [.. routes.SelectMany(route => route).OrderByDescending(z => z.TargetTable.IsUdf)];
+
+
+        public static List<Tuple<int, int, int>> ToTuples(this Route edges)
         {
             return edges.Select(x => Tuple.Create(x.SourceId, x.TargetId, x.Weight)).ToList();
         }
+
+        public static List<(int, int, int)> ToValueTuples(this Route edges)
+        {
+            return edges.Select(x => (x.SourceId, x.TargetId, x.Weight)).ToList();
+        }
+
+        public static string ToEdgeString(this Route Items)
+        {
+            return string.Join("\n", Items.Select(z => $"{z.SourceName};{z.TargetName};{z.Weight}"));
+        }
+
+        public static string ToEdgeString(this List<Route> routes)
+        {
+            return string.Join("\n", routes.Select(z => $"{z.ToEdgeString()}"));
+        }
+
+        public static List<string> ToTrail(this Route Items)
+        {
+            if (Items.Count > 0)
+            {
+                return Items.Select(z => z.TargetName).Prepend(Items[0].SourceName).ToList();
+            }
+            return [];
+        }
+
+        public static string ToCSV(this Route relations)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (TableRelation relation in relations)
+                sb.Append($"{relation.SourceName};{relation.TargetName};{relation.Weight}\n");
+            return sb.ToString();
+        }
+
+        public static TableRelation Find(this Route Items, string sourceName, string targetName)
+        {
+            return Items.FirstOrDefault(x => x.SourceName == sourceName && x.TargetName == targetName);
+        }
+
+        public static TableRelation Find(this Route Items, int sourceId, int targetId)
+        {
+            return Items.FirstOrDefault(x => x.SourceTableId == sourceId && x.TargetTableId == targetId);
+        }
+        public static Route ToEdges(this Route route, IEnumerable<int> trail)
+            => trail.PairWise(route.Find).ToList();
 
     }
 

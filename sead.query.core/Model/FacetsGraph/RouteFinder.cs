@@ -1,57 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Formats.Asn1;
 using System.Linq;
 
 namespace SeadQueryCore;
 
-using WeightDictionary = Dictionary<int, Dictionary<int, int>>;
+using Route = List<TableRelation>;
 
-public class RouteFinder(IRepositoryRegistry registry, IEnumerable<TableRelation> edges = null) : IRouteFinder
+public class RouteFinder : IRouteFinder
 {
-    public IRepositoryRegistry Registry { get; private set; } = registry;
-    public IEnumerable<TableRelation> Edges { get; private set; } = edges;
+    public IRepositoryRegistry Registry { get; private set; }
+    public Route Edges { get; set; }
 
-    public WeightDictionary ToWeightGraph()
+    public RouteFinder(IRepositoryRegistry registry, Route edges = null)
     {
-        return (Edges ?? Registry.Relations.GetEdges())
-            .GroupBy(p => p.SourceId, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.TargetId, x => x.Weight)))
-                .ToDictionary(x => x.SourceId, y => y.TargetWeights);
+        Registry = registry;
+        Edges = edges ?? Registry.Relations.GetEdges();
     }
 
-    public List<GraphRoute> Find(string start_table, List<string> destination_tables, bool reduce = true)
+    public List<Route> Find(string start, List<string> destinations, bool reduce = true)
     {
-        // Make sure that start table doesn't exists in list of destination tables...
-        destination_tables = destination_tables.Where(z => z != start_table).ToList();
 
-        var routes = destination_tables.Select(z => Find(start_table, z)).ToList();
+        var routes = destinations.Where(z => z != start).Select(z => Find(start, z)).ToList();
 
         if (reduce)
         {
-            return GraphUtility.Reduce(routes);
+            return routes.ReduceEdges();
         }
 
         return routes;
     }
 
-    public GraphRoute Find(string source, string destination)
+    public Route Find(string source, string destination)
     {
-        return Find(
-            Registry.Tables.GetNode(source).TableId,
-            Registry.Tables.GetNode(destination).TableId
-        );
+        var sourceNode = Registry.Tables.GetNode(source);
+        var destinationNode = Registry.Tables.GetNode(destination);
+        var route = Find(sourceNode.TableId, destinationNode.TableId);
+        return route;
     }
 
-    public GraphRoute Find(int source, int destination)
+    public Route Find(int source, int destination)
     {
-        IEnumerable<int> trail = new DijkstrasGraph<int>(ToWeightGraph())
-            .shortest_path(source, destination);
+        IEnumerable<int> trail = new DijkstrasGraph<int>(Edges.ToValueTuples()).FindShortestPath(source, destination);
 
         if (trail == null)
             throw new ArgumentOutOfRangeException($"No route found between {source} and {destination}");
 
-        return Registry.Relations.ToRoute(trail.Concat([source]));
+        var route = ToEdges(trail);
+        return route;
     }
 
-    public FacetTable GetAliasTable(string aliasName) => Registry.FacetTables.GetByAlias(aliasName);
+    public List<int> Find2(int source, int destination)
+    {
+        return new DijkstrasGraph<int>(Edges.ToValueTuples()).FindShortestPath(source, destination);
+    }
+
+    public Route ToRoute(IEnumerable<int> trail) => ToEdges(trail);
+
+    public Route ToEdges(IEnumerable<int> trail)
+        => trail.PairWise((a, b) => Edges.Find(a, b)).ToList();
+            // .Select(x => Registry.Tables.GetNode(x))
+
 }

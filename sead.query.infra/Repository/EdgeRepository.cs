@@ -7,11 +7,12 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
+    using Route = List<TableRelation>;
 
     public class EdgeRepository(IRepositoryRegistry registry) : Repository<TableRelation, int>(registry), IEdgeRepository
     {
 
-        public class EdgesLookup(IEnumerable<TableRelation> edges)
+        public class EdgesLookup(Route edges)
         {
             public Dictionary<Tuple<string, string>, TableRelation> NameLookup { get; private set; } = edges.ToDictionary(z => z.Key);
             public Dictionary<Tuple<int, int>, TableRelation> IdLookup { get; private set; } = edges.ToDictionary(z => z.IdKey);
@@ -19,23 +20,23 @@ namespace SeadQueryInfra
             public TableRelation GetEdge(int sourceId, int targetId) => IdLookup[Tuple.Create(sourceId, targetId)];
         }
 
-        private IEnumerable<TableRelation> __edges = null;
+        private Route __edges = null;
         public EdgesLookup __Lookup { get; private set; }
 
 
-        public IEnumerable<TableRelation> GetEdges(bool bidirectional = true)
+        public Route GetEdges(bool bidirectional = true)
         {
             if (__edges == null)
             {
-                var edges = GetAll();
-                var aliases = Registry.FacetTables.FindThoseWithAlias();
-
-                edges = edges.Concat(GetAliasedEdges(aliases, edges));
+                var edges = GetAll().ToList();
 
                 if (bidirectional)
                 {
-                    edges = edges.Concat(GraphUtility.Reverse(edges));
+                    edges.AddRange(edges.ReversedEdges());
                 }
+                var aliasNodes = Registry.FacetTables.FindThoseWithAlias();
+                var aliasEdges = GetAliasedEdges(aliasNodes, edges);
+                edges.AddRange(aliasEdges);
 
                 __edges = edges;
             }
@@ -51,25 +52,25 @@ namespace SeadQueryInfra
             return __Lookup;
         }
 
-        public override IEnumerable<TableRelation> GetAll()
+        public override Route GetAll()
         {
-            return Context.Set<TableRelation>().BuildEntity().ToList();
+            return [.. Context.Set<TableRelation>().BuildEntity()];
         }
 
-        public TableRelation FindByName(string sourceName, string targetName)
-        {
-            string[] names = [sourceName, targetName];
-            return Context.Set<TableRelation>().BuildEntity()
-                .Where(
-                    r => r.SourceTable.TableOrUdfName == sourceName && r.TargetTable.TableOrUdfName == targetName
-                ).FirstOrDefault();
-        }
+        // public TableRelation FindByName(string sourceName, string targetName)
+        // {
+        //     string[] names = [sourceName, targetName];
+        //     return Context.Set<TableRelation>().BuildEntity()
+        //         .Where(
+        //             r => r.SourceName == sourceName && r.TargetName == targetName
+        //         ).FirstOrDefault();
+        // }
 
-        private IEnumerable<TableRelation> GetAliasedEdges(IEnumerable<FacetTable> aliases, IEnumerable<TableRelation> edges)
+        private Route GetAliasedEdges(IEnumerable<FacetTable> aliases, Route edges)
         {
             var nodes = Registry.Tables.GetNodes();
 
-            List<TableRelation> aliasEdges = [];
+            Route aliasEdges = [];
 
             var tableLookup = nodes.ToDictionary(x => x.TableOrUdfName);
 
@@ -85,15 +86,15 @@ namespace SeadQueryInfra
                 );
 
             }
-            return aliasEdges.Where(x => !edges.Contains(x)).Distinct();
+            return aliasEdges.Where(x => !edges.Contains(x)).Distinct().ToList();
         }
 
-        public GraphRoute ToRoute(IEnumerable<int> trail) => new GraphRoute(ToEdges(trail.Reverse()));
+        // public Route ToRoute(IEnumerable<int> trail) => ToEdges(trail);
 
-        public IEnumerable<TableRelation> ToEdges(IEnumerable<int> trail)
-            => trail
-                .Select(x => Registry.Tables.GetNode(x))
-                .PairWise((a, b) => FindByName(a.TableOrUdfName, b.TableOrUdfName));
+        // public Route ToEdges(IEnumerable<int> trail)
+        //     => trail
+        //         .Select(x => Registry.Tables.GetNode(x))
+        //         .PairWise((a, b) => FindByName(a.TableOrUdfName, b.TableOrUdfName)).ToList();
 
     }
 

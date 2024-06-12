@@ -12,13 +12,22 @@ namespace SeadQueryInfra
     public class FacetGroupRepository(RepositoryRegistry registry) : Repository<FacetGroup, int>(registry), IFacetGroupRepository
     {
     }
-
+    // "editor.semanticTokenColorCustomizations": {
+    //     "[Visual Studio Dark]": {
+    //         "rules": {
+    //             "templateType": {
+    //                 "foreground": "#ff0000",
+    //                 "fontStyle": "italic bold underline"
+    //             }
+    //         }
+    //     }
+    // }
     public class FacetTableRepository(RepositoryRegistry registry) : Repository<FacetTable, int>(registry), IFacetTableRepository
     {
-        private IEnumerable<FacetTable> __aliasTables = null;
-        public IEnumerable<FacetTable> FindThoseWithAlias()
+        private List<FacetTable> __aliasTables = null;
+        public List<FacetTable> FindThoseWithAlias()
         {
-            return __aliasTables ??= GetAll().Where(p => p.HasAlias);
+            return __aliasTables ??= GetAll().Where(p => p.HasAlias).ToList();
         }
         protected override IQueryable<FacetTable> GetInclude(IQueryable<FacetTable> set)
         {

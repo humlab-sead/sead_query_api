@@ -1,65 +1,90 @@
 using SeadQueryCore;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using Xunit;
+using FluentAssertions;
+using SQT.Mocks;
 
 namespace SQT.Infrastructure
 {
     public class DijkstrasGraphTests
     {
-        private DijkstrasGraph<char> CreateDijkstrasGraph()
-        {
-            var g = new DijkstrasGraph<char>();
-            return g;
-        }
 
         public static IEnumerable<object[]> TestGraphData()
         {
-            var g = new DijkstrasGraph<char>();
-            g.add_vertex('A', new Dictionary<char, int>() { { 'B', 7 }, { 'C', 8 } });
-            g.add_vertex('B', new Dictionary<char, int>() { { 'A', 7 }, { 'F', 2 } });
-            g.add_vertex('C', new Dictionary<char, int>() { { 'A', 8 }, { 'F', 6 }, { 'G', 4 } });
-            g.add_vertex('D', new Dictionary<char, int>() { { 'F', 8 } });
-            g.add_vertex('E', new Dictionary<char, int>() { { 'H', 1 } });
-            g.add_vertex('F', new Dictionary<char, int>() { { 'B', 2 }, { 'C', 6 }, { 'D', 8 }, { 'G', 9 }, { 'H', 3 } });
-            g.add_vertex('G', new Dictionary<char, int>() { { 'C', 4 }, { 'F', 9 } });
-            g.add_vertex('H', new Dictionary<char, int>() { { 'E', 1 }, { 'F', 3 } });
-            return new[] {
-                new object[] { g, 'A', 'H', 3 }
-            };
+            var g1 = new DijkstrasGraph<char>(FakeGraphFactory.EdgesAsValueTuples());
+            var g2 = new DijkstrasGraph<char>(FakeGraphFactory.EdgesAsDictionary());
+            return [
+                [g1, 'A', 'H', new List<char> {'A', 'B', 'F', 'H'}, true, true],
+                [g1, 'E', 'H', new List<char> {'E', 'H'}, true, true],
+                [g2, 'A', 'H', new List<char> {'A', 'B', 'F', 'H'}, true, true],
+                [g2, 'E', 'H', new List<char> {'E', 'H'}, true, true],
+                [g2, 'A', 'A', new List<char> {'A'}, true, true],
+                [g1, 'A', 'Z', null, true, false],
+                [g1, 'A', 'H', new List<char> {'H', 'F', 'B', 'A'}, false, true],
+                [g1, 'A', 'A', new List<char> {'A'}, false, true],
+
+            ];
         }
 
         [Theory]
         [MemberData(nameof(TestGraphData))]
-        public void TestDijkstras(SeadQueryCore.DijkstrasGraph<char> g, char start, char stop, int expected)
+        public void TestDijkstrasWithVariousSetups(DijkstrasGraph<char> g, char start, char stop, List<char> expected, bool reverse, bool onNotFoundThrow)
         {
-            List<char> route = g.shortest_path(start, stop);
-            Assert.Equal<int>(expected, route.Count);
-            route.ForEach(x => Debug.Write(x));
+            List<char> route = g.FindShortestPath(start, stop, reverse: reverse, onNotFoundThrow: onNotFoundThrow);
+
+            if (route is null)
+                Assert.True(expected is null);
+            else
+                Assert.True(route.SequenceEqual(expected));
+        }
+
+
+        [Fact]
+        public void TestDijkstrasNoRouterThrowsException()
+        {
+            var g = new DijkstrasGraph<char>(FakeGraphFactory.EdgesAsValueTuples());
+            var exception = Assert.Throws<NoRouteFoundException>(() => g.FindShortestPath('A', 'Z'));
+        }
+
+        [Fact]
+        public void TestDijkstrasEmptyGraphThrowsException()
+        {
+            var g = new DijkstrasGraph<char>();
+            var exception = Assert.Throws<EmptyGraphException>(() => g.FindShortestPath('A', 'B'));
+        }
+
+
+        [Fact]
+        public void TestDijkstrasFindShortestPaths()
+        {
+            var g = new DijkstrasGraph<char>(FakeGraphFactory.EdgesAsValueTuples());
+            var routes = g.FindShortestPaths('A', ['A', 'H'], true, true);
+
+            var expected = new List<List<char>>() {
+                new List<char> {'A'},
+                new List<char> {'A', 'B', 'F', 'H'}
+            };
+            Assert.True(routes.Count == expected.Count);
+            routes.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
         public void TestAddVertex()
         {
-            var dijkstrasGraph = this.CreateDijkstrasGraph();
+            var dijkstrasGraph = new DijkstrasGraph<char>();
 
             const char source = 'A';
             var neighbours = new Dictionary<char, int>() { { 'B', 7 }, { 'C', 8 } };
             dijkstrasGraph.add_vertex(source, neighbours);
 
-            var storedNeighbours = dijkstrasGraph.Vertices.GetValueOrDefault(source);
+            var storedNeighbours = dijkstrasGraph.EdgeDict.GetValueOrDefault(source);
 
             Assert.NotNull(storedNeighbours);
             Assert.Equal(7, storedNeighbours.GetValueOrDefault('B'));
             Assert.Equal(8, storedNeighbours.GetValueOrDefault('C'));
         }
 
-        [Theory]
-        [MemberData(nameof(TestGraphData))]
-        public void TestShortestPath(DijkstrasGraph<char> g, char start, char stop, int expected)
-        {
-            var result = g.shortest_path(start, stop);
-            Assert.Equal<int>(expected, result.Count);
-        }
     }
 }

@@ -21,6 +21,8 @@ using SeadQueryCore.Plugin.GeoPolygon;
 
 namespace SQT
 {
+    using Route = List<TableRelation>;
+
     public class DisposableFacetContextContainer : IDisposable
     {
         private readonly JsonFacetContextFixture __fixture;
@@ -163,11 +165,7 @@ namespace SQT
         protected virtual Mock<IJoinsClauseCompiler> MockJoinsClauseCompiler(List<string> fakeJoins)
         {
             var mock = new Mock<IJoinsClauseCompiler>();
-            mock.Setup(x => x.Compile(
-                It.IsAny<FacetsConfig2>(),
-                It.IsAny<Facet>(),
-                It.IsAny<List<string>>())
-            ).Returns(fakeJoins);
+            mock.Setup(x => x.Compile(It.IsAny<List<Route>>(), It.IsAny<FacetsConfig2>())).Returns(fakeJoins);
             return mock;
         }
 
@@ -407,7 +405,7 @@ namespace SQT
             return mockLocator;
         }
 
-        public virtual Mock<IRouteFinder> MockFacetsGraph(List<GraphRoute> returnRoutes)
+        public virtual Mock<IRouteFinder> MockFacetsGraph(List<Route> returnRoutes)
         {
             var mockFacetsGraph = new Mock<IRouteFinder>();
 
@@ -431,22 +429,23 @@ namespace SQT
             };
         }
 
-        public GraphRoute FakeRoute(string[] nodePairs)
+        public Route FakeRoute(string[] nodePairs)
         {
-            var graphRoute = new GraphRoute(
+            var graphRoute = 
                 nodePairs.Select(x => x.Split("/"))
                     .Select(z => new { Source = z[0], Target = z[1] })
                     .Select(z => FakeTableRelation(z.Source, z.Target))
-            );
+                    .ToList()
+            ;
             return graphRoute;
         }
 
-        public GraphRoute FakeRoute2(params string[] trail)
+        public Route FakeRoute2(params string[] trail)
         {
             return FakeRoute(RouteHelper.ToPairs(trail));
         }
 
-        public List<GraphRoute> FakeRoutes(List<string[]> nodePairs)
+        public List<Route> FakeRoutes(List<string[]> nodePairs)
         {
             var graphRoutes = nodePairs.Select(z => FakeRoute(z)).ToList();
             return graphRoutes;
