@@ -44,6 +44,22 @@
         "titleBar.inactiveBackground": "#83110499",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
+    "editor.semanticTokenColorCustomizations": {
+        "[Monokai]": {
+            "rules": {
+                "class": "#A6E22E",
+                "interface": "#A6E22E",
+                // "property": "#FFBF80",
+                // "parameter": "#c8c8c8",
+                // "namespace": "#4ec9b0",
+                "method": "#66D9EF",
+                "function": "#66D9EF",
+                // "method.static": "#FF8080",
+                // "variable.global": "#fcacac",
+                // "property.static": "#fcacac"
+            }
+        }
+    },
     "peacock.color": "#64a2d5",
     // "dotnet-test-explorer.enableTelemetry": false,
     // "dotnet-test-explorer.runInParallel": true,
