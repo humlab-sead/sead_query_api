@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace SQT.Infrastructure
 {
-    
+
     public static class IEnumerableExtensions
     {
         public static string BuildString<T>(this IEnumerable<T> self, string delim = ",", string apos = "")
@@ -18,7 +18,7 @@ namespace SQT.Infrastructure
             return string.Join(delim, self.Select(x => $"{apos}{x}{apos}"));
         }
     }
-    
+
     public static class ScaffoldUtility
     {
         public static DumpOptions GetDefaultDumpOptions() => new DumpOptions()
@@ -98,17 +98,15 @@ namespace SQT.Infrastructure
                 ];
         }
 
-        public static IFacetsGraph DefaultFacetsGraph(IRepositoryRegistry registry)
+        public static IPathFinder DefaultRouteFinder(IRepositoryRegistry registry)
         {
-            var factory = new FacetGraphFactory(registry);
-            var g = factory.Build();
-            return g;
+            return new PathFinder(registry.Relations.GetEdges());
         }
-        public static IFacetsGraph DefaultFacetsGraph(IFacetContext testContext)
+        public static IPathFinder DefaultRouteFinder(IFacetContext testContext)
         {
             using (var registry = new RepositoryRegistry(testContext))
             {
-                var g = DefaultFacetsGraph(registry);
+                var g = DefaultRouteFinder(registry);
                 return g;
             }
         }

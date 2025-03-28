@@ -9,9 +9,10 @@ using SeadQueryCore;
 namespace SeadQueryInfra
 {
     // FIXME DbSet implements Repository pattern - so why invent it again...?
-    public class Repository<TEntity, K>(IFacetContext context) : IRepository<TEntity, K> where TEntity : class
+    public class Repository<TEntity, K>(IRepositoryRegistry registry) : IRepository<TEntity, K> where TEntity : class
     {
-        public readonly IFacetContext Context = context;
+        public IFacetContext Context  { get {return Registry.Context;} }
+        public readonly IRepositoryRegistry Registry = registry;
 
         public virtual FacetContext FacetContext
         {

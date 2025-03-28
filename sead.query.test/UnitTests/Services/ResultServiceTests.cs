@@ -45,7 +45,7 @@ namespace SQT.Services
         }
 
         [Theory]
-        [InlineData("construction_type:construction_type", "result_facet", "site_level", "map", 10)]
+        [InlineData("constructions:constructions", "result_facet", "site_level", "map", 10)]
         [InlineData("sites:country@5/sites@4,5", "result_facet", "site_level", "map", 10)]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "map", 10)]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level", "tabular", 10)]

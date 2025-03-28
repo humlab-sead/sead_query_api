@@ -1,12 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace SeadQueryCore
 {
+
+    public class NoRouteFoundException : ArgumentOutOfRangeException
+    {
+        public NoRouteFoundException(string message) : base(message) { }
+    }
+    public class EmptyGraphException : ArgumentOutOfRangeException
+    {
+        public EmptyGraphException(string message) : base(message) { }
+    }
+
+    public static class GraphHelper
+    {
+        public static Dictionary<N, Dictionary<N, int>> ToWeightGraph<N>(IEnumerable<Tuple<N, N, int>> edges)
+        {
+            return ToWeightGraph(edges.Select(x => (x.Item1, x.Item2, x.Item3)));
+        }
+
+        public static Dictionary<N, Dictionary<N, int>> ToWeightGraph<N>(IEnumerable<(N, N, int)> edges)
+        {
+            return edges.GroupBy(p => p.Item1, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.Item2, x => x.Item3)))
+                .ToDictionary(x => x.SourceId, y => y.TargetWeights);
+        }
+    }
+
     public class DijkstrasGraph<N>
     {
-        public Dictionary<N, Dictionary<N, int>> Vertices { get; set; } = [];
+        public Dictionary<N, Dictionary<N, int>> EdgeDict { get; set; } = [];
 
         public DijkstrasGraph()
         {
@@ -14,23 +38,36 @@ namespace SeadQueryCore
 
         public DijkstrasGraph(Dictionary<N, Dictionary<N, int>> weights)
         {
-            Vertices = weights;
+            EdgeDict = weights;
+        }
+
+        public DijkstrasGraph(IEnumerable<(N, N, int)> edges)
+        {
+            EdgeDict = GraphHelper.ToWeightGraph(edges);
+        }
+
+        public DijkstrasGraph(IEnumerable<Tuple<N, N, int>> edges)
+        {
+            EdgeDict = GraphHelper.ToWeightGraph(edges);
         }
 
         public void add_vertex(N name, Dictionary<N, int> edges)
         {
-            Vertices[name] = edges;
+            EdgeDict[name] = edges;
         }
 
-        public List<N> shortest_path(N start, N finish)
+        public List<N> FindShortestPath(N start, N finish, bool onNotFoundThrow = true, bool reverse = true)
         {
             var previous = new Dictionary<N, N>();
             var distances = new Dictionary<N, int>();
             var nodes = new List<N>();
 
+            if (EdgeDict.Count == 0)
+                throw new EmptyGraphException("Graph is empty");
+
             List<N> path = null;
 
-            foreach (var vertex in Vertices)
+            foreach (var vertex in EdgeDict)
             {
                 if (vertex.Key.Equals(start))
                 {
@@ -67,7 +104,7 @@ namespace SeadQueryCore
                     break;
                 }
 
-                foreach (var neighbor in Vertices[smallest])
+                foreach (var neighbor in EdgeDict[smallest])
                 {
                     var alt = distances[smallest] + neighbor.Value;
                     if (alt < distances[neighbor.Key])
@@ -78,7 +115,25 @@ namespace SeadQueryCore
                 }
             }
 
+            if (path == null)
+            {
+                if (onNotFoundThrow)
+                    throw new NoRouteFoundException($"No route found between {start} and {finish}");
+                return null;
+            }
+
+            path.Add(start);
+
+            if (reverse)
+                path.Reverse();
+
             return path;
         }
+
+        public List<List<N>> FindShortestPaths(N start, List<N> destinations, bool onNotFoundThrow = true, bool reverse = true)
+        {
+            return destinations.Select(d => FindShortestPath(start, d, onNotFoundThrow, reverse)).ToList();
+        }
+
     }
 }

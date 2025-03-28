@@ -5,26 +5,39 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class FacetTypeRepository(IFacetContext context) : Repository<FacetType, int>(context), IFacetTypeRepository
+    public class FacetTypeRepository(RepositoryRegistry registry) : Repository<FacetType, int>(registry), IFacetTypeRepository
     {
     }
 
-    public class FacetGroupRepository(IFacetContext context) : Repository<FacetGroup, int>(context), IFacetGroupRepository
+    public class FacetGroupRepository(RepositoryRegistry registry) : Repository<FacetGroup, int>(registry), IFacetGroupRepository
     {
     }
-    public class FacetTableRepository(IFacetContext context) : Repository<FacetTable, int>(context), IFacetTableRepository
+    // "editor.semanticTokenColorCustomizations": {
+    //     "[Visual Studio Dark]": {
+    //         "rules": {
+    //             "templateType": {
+    //                 "foreground": "#ff0000",
+    //                 "fontStyle": "italic bold underline"
+    //             }
+    //         }
+    //     }
+    // }
+    public class FacetTableRepository(RepositoryRegistry registry) : Repository<FacetTable, int>(registry), IFacetTableRepository
     {
-        public IEnumerable<FacetTable> FindThoseWithAlias()
+        private List<FacetTable> __aliasTables = null;
+        public List<FacetTable> FindThoseWithAlias()
         {
-            return GetAll().Where(p => p.HasAlias);
+            return __aliasTables ??= GetAll().Where(p => p.HasAlias).ToList();
         }
         protected override IQueryable<FacetTable> GetInclude(IQueryable<FacetTable> set)
         {
             return set.Include(x => x.Table);
         }
+
+        public FacetTable GetByAlias(string aliasName) => FindThoseWithAlias().Where(x => x.Alias == aliasName).FirstOrDefault();
     }
 
-    public class FacetRepository(IFacetContext context) : Repository<Facet, int>(context), IFacetRepository
+    public class FacetRepository(RepositoryRegistry registry) : Repository<Facet, int>(registry), IFacetRepository
     {
         public static int DOMAIN_FACET_GROUP_ID = 999;
 
@@ -80,6 +93,7 @@ namespace SeadQueryInfra
 
         public IEnumerable<Facet> GetAllUserFacets()
             => GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable).ToList();
+
     }
 
     public static class FacetRepositoryEagerBuilder

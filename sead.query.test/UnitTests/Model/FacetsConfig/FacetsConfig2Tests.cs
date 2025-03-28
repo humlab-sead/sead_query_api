@@ -66,8 +66,8 @@ namespace SQT.Model
         [InlineData("country:country/sites", "country")]
         [InlineData("sites:country@5/sites", "sites")]
         [InlineData("sites:country@5/sites@4,5", "sites")]
-        [InlineData("sites:dataset_master@2/dataset_methods@10/country@44/sites@4,5/", "country")]
-        [InlineData("sites:dataset_master@2/dataset_methods@10/country@44/sites@4,5/geochronology@(0,100)", "country")]
+        [InlineData("sites:dataset_provider@2/dataset_methods@10/country@44/sites@4,5/", "country")]
+        [InlineData("sites:dataset_provider@2/dataset_methods@10/country@44/sites@4,5/geochronology@(0,100)", "country")]
         public void GetConfig_WhenConfigExists_ExpectedBehavior(string uri, string facetCode)
         {
             // Arrange
@@ -87,8 +87,8 @@ namespace SQT.Model
         [InlineData("country:country/region/sites", "country", "region", "sites")]
         [InlineData("sites:country@5/sites", "country", "sites")]
         [InlineData("sites:sites@5/country@4,5", "sites", "country")]
-        [InlineData("sites:dataset_master@2/dataset_methods@10/country@44/sites@4,5/", "dataset_master", "dataset_methods", "country", "sites")]
-        [InlineData("sites:dataset_master@2/dataset_methods@10/country@44/sites@4,5/geochronology@(0,100)", "dataset_master", "dataset_methods", "country", "sites", "geochronology")]
+        [InlineData("sites:dataset_provider@2/dataset_methods@10/country@44/sites@4,5/", "dataset_provider", "dataset_methods", "country", "sites")]
+        [InlineData("sites:dataset_provider@2/dataset_methods@10/country@44/sites@4,5/geochronology@(0,100)", "dataset_provider", "dataset_methods", "country", "sites", "geochronology")]
         public void GetFacetCodes_VariousFacetsConfig_ExpectedBehavior(string uri, params string[] facetCodes)
         {
             // Arrange
@@ -106,7 +106,7 @@ namespace SQT.Model
         [InlineData("country:country/sites")]
         [InlineData("sites:country@5/sites", "country")]
         [InlineData("sites:country@5/sites@4,5", "country", "sites")]
-        [InlineData("sites:dataset_master/dataset_methods@10/country@44/sites@4,5/", "dataset_methods", "country", "sites")]
+        [InlineData("sites:dataset_provider/dataset_methods@10/country@44/sites@4,5/", "dataset_methods", "country", "sites")]
         public void GetFacetConfigsWithPicks_VariousFacetsConfig_ExpectedBehavior(string uri, params string[] facetCodes)
         {
             // Arrange

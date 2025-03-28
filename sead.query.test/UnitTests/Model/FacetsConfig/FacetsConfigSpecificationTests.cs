@@ -19,7 +19,7 @@ namespace SQT.Model
         [InlineData("country:country/sites")]
         [InlineData("sites:country@5/sites")]
         [InlineData("sites:country@5/sites@4,5")]
-        [InlineData("sites:dataset_master/dataset_methods@10/country@44/sites@4,5/")]
+        [InlineData("sites:dataset_provider/dataset_methods@10/country@44/sites@4,5/")]
         public void IsSatisfiedBy_StateUnderTest_ExpectedBehavior(string uri)
         {
             // Arrange

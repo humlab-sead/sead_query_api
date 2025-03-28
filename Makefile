@@ -6,7 +6,7 @@ include docker/.env
 
 test:
 	@export $(cat conf/.env | xargs) \
-		&& dotnet test 
+		&& dotnet test -l "console;verbosity=detailed"
 		
 #--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
 

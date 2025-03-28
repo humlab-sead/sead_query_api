@@ -15,9 +15,9 @@ namespace SQT.Infrastructure.Repository
         {
         }
 
-        private TableRepository CreateRepository()
+        private NodeRepository CreateRepository()
         {
-            return new TableRepository(FacetContext);
+            return new NodeRepository(Registry);
         }
 
         [Fact]

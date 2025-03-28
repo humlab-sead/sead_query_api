@@ -21,6 +21,8 @@ using SeadQueryCore.Plugin.GeoPolygon;
 
 namespace SQT
 {
+    using Route = List<TableRelation>;
+
     public class DisposableFacetContextContainer : IDisposable
     {
         private readonly JsonFacetContextFixture __fixture;
@@ -163,11 +165,7 @@ namespace SQT
         protected virtual Mock<IJoinsClauseCompiler> MockJoinsClauseCompiler(List<string> fakeJoins)
         {
             var mock = new Mock<IJoinsClauseCompiler>();
-            mock.Setup(x => x.Compile(
-                It.IsAny<FacetsConfig2>(),
-                It.IsAny<Facet>(),
-                It.IsAny<List<string>>())
-            ).Returns(fakeJoins);
+            mock.Setup(x => x.Compile(It.IsAny<List<Route>>(), It.IsAny<FacetsConfig2>())).Returns(fakeJoins);
             return mock;
         }
 
@@ -177,10 +175,10 @@ namespace SQT
             var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { pickCriteria ?? "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+            var pathFinder = ScaffoldUtility.DefaultRouteFinder(Registry);
 
             // FIXME: Should be mocked
-            var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinsCompiler.Object);
+            var compiler = new QuerySetupBuilder(pathFinder, mockPicksCompiler.Object, joinsCompiler.Object);
 
             var querySetup = compiler.Build(
                 facetsConfig,
@@ -199,11 +197,11 @@ namespace SQT
             var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
             var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var facetsGraph = ScaffoldUtility.DefaultFacetsGraph(Registry);
+            var pathFinder = ScaffoldUtility.DefaultRouteFinder(Registry);
             var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
 
             // FIXME: Should be mocked
-            var compiler = new QuerySetupBuilder(facetsGraph, mockPicksCompiler.Object, joinCompiler.Object);
+            var compiler = new QuerySetupBuilder(pathFinder, mockPicksCompiler.Object, joinCompiler.Object);
             var querySetup = compiler.Build(facetsConfig, resultFacet, resultFields);
 
             return querySetup;
@@ -397,7 +395,8 @@ namespace SQT
                 { EFacetType.Range, typeof(RangePickFilterCompiler) }
             };
             var mockLocator = new Mock<IPickFilterCompilerLocator>();
-            foreach (var item in data) {
+            foreach (var item in data)
+            {
                 mockLocator
                     .Setup(x => x.Locate(item.Key))
                     .Returns(Activator.CreateInstance(item.Value) as IPickFilterCompiler);
@@ -406,9 +405,9 @@ namespace SQT
             return mockLocator;
         }
 
-        public virtual Mock<IFacetsGraph> MockFacetsGraph(List<GraphRoute> returnRoutes)
+        public virtual Mock<IPathFinder> MockFacetsGraph(List<Route> returnRoutes)
         {
-            var mockFacetsGraph = new Mock<IFacetsGraph>();
+            var mockFacetsGraph = new Mock<IPathFinder>();
 
             mockFacetsGraph
                 .Setup(x => x.Find(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<bool>()))
@@ -430,22 +429,23 @@ namespace SQT
             };
         }
 
-        public GraphRoute FakeRoute(string[] nodePairs)
+        public Route FakeRoute(string[] nodePairs)
         {
-            var graphRoute = new GraphRoute(
+            var graphRoute =
                 nodePairs.Select(x => x.Split("/"))
                     .Select(z => new { Source = z[0], Target = z[1] })
                     .Select(z => FakeTableRelation(z.Source, z.Target))
-            );
+                    .ToList()
+            ;
             return graphRoute;
         }
 
-        public GraphRoute FakeRoute2(params string[] trail)
+        public Route FakeRoute2(params string[] trail)
         {
             return FakeRoute(RouteHelper.ToPairs(trail));
         }
 
-        public List<GraphRoute> FakeRoutes(List<string[]> nodePairs)
+        public List<Route> FakeRoutes(List<string[]> nodePairs)
         {
             var graphRoutes = nodePairs.Select(z => FakeRoute(z)).ToList();
             return graphRoutes;

@@ -29,7 +29,7 @@ namespace SeadQueryCore.Services.Result
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
             var queryFields = resultConfig.GetSortedFields();
-
+            var pathFinder = new PathFinder(Registry.Relations.GetEdges());
             var querySetup = QuerySetupBuilder
                 .Build(facetsConfig, resultConfig.Facet, queryFields);
 

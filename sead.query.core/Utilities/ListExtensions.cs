@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
+
+
     public static class ListExtensions
     {
         public static List<string> AddIfMissing(this List<string> array, string element)

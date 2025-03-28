@@ -12,7 +12,8 @@ namespace SeadQueryInfra
 {
     public class RepositoryRegistry : IRepositoryRegistry
     {
-        public FacetContext Context { get; private set; }
+        public IFacetContext Context { get; }
+
         protected Dictionary<Type, IRepository2> Repositories { get; private set; }
 
         public RepositoryRegistry(IFacetContext _context)
@@ -25,14 +26,14 @@ namespace SeadQueryInfra
         {
             var repositories = new Dictionary<Type, IRepository2>()
             {
-                { typeof(IFacetRepository),         new FacetRepository(Context) },
-                { typeof(ITableRelationRepository), new TableRelationRepository(Context) },
-                { typeof(ITableRepository),         new TableRepository(Context) },
-                { typeof(IResultSpecificationRepository),        new ResultSpecificationRepository(Context) },
-                { typeof(IFacetGroupRepository),    new FacetGroupRepository(Context) },
-                { typeof(IFacetTypeRepository),     new FacetTypeRepository(Context) },
-                { typeof(IFacetTableRepository),    new FacetTableRepository(Context) },
-                { typeof(IViewStateRepository),     new ViewStateRepository(Context) }
+                { typeof(IFacetRepository),               new FacetRepository(this) },
+                { typeof(IEdgeRepository),                new EdgeRepository(this) },
+                { typeof(INodeRepository),               new NodeRepository(this) },
+                { typeof(IResultSpecificationRepository), new ResultSpecificationRepository(this) },
+                { typeof(IFacetGroupRepository),          new FacetGroupRepository(this) },
+                { typeof(IFacetTypeRepository),           new FacetTypeRepository(this) },
+                { typeof(IFacetTableRepository),          new FacetTableRepository(this) },
+                { typeof(IViewStateRepository),           new ViewStateRepository(this) }
             };
             return repositories;
         }
@@ -70,8 +71,8 @@ namespace SeadQueryInfra
         }
 
         public virtual IFacetRepository Facets => GetRepository<IFacetRepository>();
-        public virtual ITableRelationRepository TableRelations => GetRepository<ITableRelationRepository>();
-        public virtual ITableRepository Tables => GetRepository<ITableRepository>();
+        public virtual IEdgeRepository Relations => GetRepository<IEdgeRepository>();
+        public virtual INodeRepository Tables => GetRepository<INodeRepository>();
         public virtual IResultSpecificationRepository Results => GetRepository<IResultSpecificationRepository>();
         public virtual IFacetGroupRepository FacetGroups => GetRepository<IFacetGroupRepository>();
         public virtual IFacetTypeRepository FacetTypes => GetRepository<IFacetTypeRepository>();

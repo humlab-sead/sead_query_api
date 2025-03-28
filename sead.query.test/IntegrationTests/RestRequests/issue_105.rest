@@ -7,9 +7,9 @@ accept: application/json
 {
     "RequestId":1,
     "RequestType":"populate",
-    "TargetCode":"construction_type",
+    "TargetCode":"constructions",
     "FacetConfigs":[ {
-        "FacetCode":"construction_type",
+        "FacetCode":"constructions",
         "Position":1,
         "Picks":[],
         "TextFilter":""
@@ -26,9 +26,9 @@ accept: application/json
 {
     "RequestId":1,
     "RequestType":"populate",
-    "TargetCode":"construction_type",
+    "TargetCode":"constructions",
     "FacetConfigs":[ {
-        "FacetCode":"construction_type",
+        "FacetCode":"constructions",
         "Position":1,
         "Picks":[],
         "TextFilter":""
@@ -46,9 +46,9 @@ accept: application/json
 {
     "RequestId":1,
     "RequestType":"populate",
-    "TargetCode":"construction_type",
+    "TargetCode":"constructions",
     "FacetConfigs":[ {
-        "FacetCode":"construction_type",
+        "FacetCode":"constructions",
         "Position":1,
         "Picks":[],
         "TextFilter":""

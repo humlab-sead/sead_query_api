@@ -16,7 +16,7 @@ namespace SQT.Infrastructure.Repository
 
         private ViewStateRepository CreateRepository()
         {
-            return new ViewStateRepository(FacetContext);
+            return new ViewStateRepository(Registry);
         }
 
         [Fact]

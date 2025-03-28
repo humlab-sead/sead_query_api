@@ -17,9 +17,6 @@ namespace SeadQueryCore.QueryBuilder
         public static IEnumerable<string> Criterias(this IEnumerable<FacetConfig2> configs)
             => configs.Facets().Criterias();
 
-        public static IEnumerable<TableRelation> Edges(this IEnumerable<GraphRoute> routes)
-            => routes.SelectMany(route => route.Items).OrderByDescending(z => z.TargetTable.IsUdf);
-
         public static IEnumerable<FacetTable> Tables(this IEnumerable<Facet> facets)
             => facets.SelectMany(z => z.Tables);
 
