@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf version="1.2" xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http:///www.gexf.net/1.1draft/viz">
+  <meta>
+    <title>simple_graph.gexf</title>
+  </meta>
+  <graph defaultedgetype="undirected">
+    <attributes class="edge">
+      <attribute id="rawWeight" title="rawWeight" type="integer"/>
+    </attributes>
+    <nodes>
+      <node id="A" label="A">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="-17.663538137252395" y="15.915315175358256"/>
+      </node>
+      <node id="B" label="B">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="0.8466317653656006" y="8.976430541215205"/>
+      </node>
+      <node id="C" label="C">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="-24.661650062836333" y="3.000605695952756"/>
+      </node>
+      <node id="D" label="D">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="16.92345108445158" y="0.8756072544015869"/>
+      </node>
+      <node id="E" label="E">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="16.227263991365724" y="-13.505241054934377"/>
+      </node>
+      <node id="F" label="F">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="-4.492094227948133" y="-3.0510382869712793"/>
+      </node>
+      <node id="G" label="G">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="-22.12455155349681" y="-15.788121234698465"/>
+      </node>
+      <node id="H" label="H">
+        <viz:color r="144" g="19" b="254"/>
+        <viz:size value="0"/>
+        <viz:position x="-0.585263293223683" y="-17.562671384273667"/>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="geid_246_0" source="A" target="B" weight="1" label="7">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_1" source="A" target="C" weight="1" label="8">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_2" source="B" target="A" weight="1" label="7">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_3" source="B" target="F" weight="1" label="2">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_4" source="C" target="A" weight="1" label="8">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_5" source="C" target="F" weight="1" label="6">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_6" source="C" target="G" weight="1" label="4">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_7" source="D" target="F" weight="1" label="8">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_8" source="E" target="H" weight="1" label="1">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_9" source="F" target="B" weight="1" label="2">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_10" source="F" target="C" weight="1" label="6">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_11" source="F" target="D" weight="1" label="8">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_12" source="F" target="G" weight="1" label="9">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_13" source="F" target="H" weight="1" label="3">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_14" source="G" target="C" weight="1" label="4">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_15" source="G" target="F" weight="1" label="9">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_16" source="H" target="E" weight="1" label="1">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+      <edge id="geid_246_17" source="H" target="F" weight="1" label="3">
+        <attvalues>
+          <attvalue for="rawWeight" value="1"/>
+        </attvalues>
+        <viz:color r="139" g="87" b="42"/>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
