@@ -1,7 +1,111 @@
 
 # Changelog
 
-## Release @2020.04 (v1.2.0)
+## Release @2024.05
+
+### Enhancement
+
+-  The SEAD backend now supports map facets (#94, #112)
+A "geopolygon_sites"
+-   and intersecting ranges facets.
+- New improved adaptive range interval calculator.
+  
+Closed issues:
+
+- Upgrade to dotnet8	maintenance (#128) CLOSED	
+- Map facet	new feature (#112)
+- Geographic/map filter	new feature (#94)
+- Regression in range facets after Geo Facet deploy	bug (#132)
+- Disable FullCategoryCounts in result Load for "map" results	enhancement (#130)
+- Incorrect amount of analysis_entities returned for facet query (#129)
+- Wrong number of analysis entities returned for a site? (#113)
+
+	Add number of samples to result load	enhancement (#133) OPEN	
+	Can't use Region and Country filter in combination	data-error (#127) CLOSED	
+	Genus filter innehåller 'null'-poster	 (#122) OPEN	
+	Geochronology för dendro	dendro (#118) OPEN	
+	Mer avancerat region filter?	enhancement, dendro (#117) CLOSED	
+	No sites for tabular view within isotope domain	bug (#116) OPEN	
+	Filter for tbl_analysis_entity_ages	important (#115) OPEN	
+	Taxa filter is hiding sp. and spp. taxa	bug (#114) OPEN	
+	Filtret "Region" beter sig på ett oväntat sätt	data-error (#111) CLOSED	
+	Problem with "FullExtent" values returned for range filter	 (#107) CLOSED	
+	Abundance classification filter: nothing is retrieved	supersead (#106) OPEN	
+	Construction types filter har många dubbletter, plus output saknas	dendro (#105) CLOSED	
+	Bibliography filters display empty rows	 (#104) OPEN	
+	Countries and Region facets fails when used together	 (#103) OPEN	
+	Region facet provides non-unique ID's	bug (#102) OPEN	
+	API returns an empty list for domain facets	data-error (#100) CLOSED	
+	500 Internal Server Error	 (#98) CLOSED	
+	SEAD Query API service goes down intermittently	bug (#91) CLOSED	
+	Upgrade to dotnet 6.0	maintenance (#90) CLOSED	
+	Taxonomy + dating queries not working	bug (#89) OPEN	
+	Test should not call online database	bug (#88) CLOSED	
+	Faulty facet: Restricted facet with non-enforced constraint	bug, investigation, data-error (#87) CLOSED	
+	Facet group data inte tillgänlig	enhancement (#86) CLOSED	
+	Facet "Dataset methods" fails to load	data-error (#85) CLOSED	
+	Facet "abundance classification" fails to load	bug, help wanted, data-error (#81) OPEN	
+	Error in REST API call: NpgsqlOperationInProgressException	bug (#80) CLOSED	
+	NullReference in REST API call	bug (#79) CLOSED	
+	Outdated repositories in Dockerfile	bug (#78) CLOSED	
+	Expose version of API	new feature (#77) CLOSED	
+	Quality Check: Examine facet graph relations	investigation (#74) CLOSED	
+	Integration Test: syntax error at or near "AND"'	bug (#70) CLOSED	
+	Deprecate API fields	documentation (#69) CLOSED	
+	Domain facets API returns empty set	bug (#68) CLOSED	
+	Domain facet children API call returns empty set	bug (#67) CLOSED	
+	Domain facets are ignored in facet chain query compile	bug, enhancement (#66) CLOSED	
+	Facet that has a table with alias equal to NULL raises exception	bug (#65) CLOSED	
+	Facet filter criteria not included in compiled SQL query	bug (#64) CLOSED	
+	Add optional additional join criteria in facet graph	enhancement (#63) CLOSED	
+	Result load of "tabular" isotope data fails	data-error (#62) CLOSED	
+	Deploy SEAD Query API @2020-03	maintenance (#60) CLOSED	
+	Incorrect data points showing when selecting Master datasets second time	bug (#59) CLOSED	
+	Guide: How to create new facets	process, documentation (#57) CLOSED	
+	Upgrade to .net core 3.1	enhancement (#56) CLOSED	
+	Ability to switch backend	enhancement (#55) CLOSED	
+	Add filter descriptions	enhancement (#54) CLOSED	
+	Facet groups needs titles	enhancement (#53) CLOSED	
+	Very poor performance for multi-select discrete facets	bug (#52) CLOSED	
+	Use inner joins as default in query builder	enhancement, policy change (#51) CLOSED	
+	Syntax error in aggregated SQL Query	bug (#50) CLOSED	
+	Server failure on multi-country filter select + LOI result load	bug (#49) CLOSED	
+	Inclusion of data spans with zero data?	bug (#48) CLOSED	
+	Verify that Redis cache works as expected.	investigation (#47) CLOSED	
+	docker-compose throws "Segmentation fault" at startup	bug (#46) CLOSED	
+	Add volume binding to log folder	enhancement (#45) CLOSED	
+	Redis data folder is missing	bug (#44) CLOSED	
+	Missing time data	duplicate (#42) CLOSED	
+	Result load fails	bug (#41) CLOSED	
+	Iconsistent counts for value spans	bug, question (#40) CLOSED	
+	Multiple facets having same alias causes exception	bug (#39) CLOSED	
+	MS filter with picks + Site filter results in error	bug (#37) CLOSED	
+	MS filter internal server error	bug, duplicate, wontfix (#36) CLOSED	
+	Sample group filter error	bug (#35) CLOSED	
+	Country filter error	bug (#34) CLOSED	
+	Allow multiple instances of a filter	enhancement (#33) OPEN	
+	Add bibliography filters	enhancement (#32) OPEN	
+	Raä-IDn	enhancement (#31) CLOSED	
+	Internal server error on LOI-filter request with picks	wontfix (#30) CLOSED	
+	Internal server error (500) on load of MS facet	bug (#29) CLOSED	
+	Reconstitute of FacetsConfig fails if TriggerCode when null.	bug (#28) CLOSED	
+	Reconstitute of facet configuration fails when /load is called	bug (#27) CLOSED	
+	Improve application logging	enhancement (#26) CLOSED	
+	Error on facet load	bug (#25) CLOSED	
+	Update measured values facets to use UDF.	enhancement (#24) CLOSED	
+	Missing data in biblio	duplicate, data-error (#23) CLOSED	
+	Result load returns 500.	bug (#22) CLOSED	
+	404 on OPTIONS request	SLA (#21) CLOSED	
+	Facet table is assigned wrong alias.	bug (#19) CLOSED	
+	Graph search returns faulty routes	bug (#18) CLOSED	
+	Facets with alias name give erroneous SQL query	bug, duplicate (#17) CLOSED	
+	Add support to use UDF in facet specification	enhancement (#14) CLOSED	
+	Stöd för metod-filtrerade filter	enhancement (#13) CLOSED	
+	Adapt to schema changes (up to SEAD CCS v0.1)	enhancement (#10) CLOSED	
+
+
+## Release @2023.12
+
 
 ## Release @2020.03 (v1.1.0)
 
