@@ -1,0 +1,39 @@
+POST http://localhost:8090/api/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"construction_types",
+    "FacetConfigs":[ {
+        "FacetCode":"construction_types",
+        "Position":1,
+        "Picks":[],
+        "TextFilter":""
+    }]
+}
+
+### Hello World
+
+GET http://localhost:8090/api/values
+content-type: application/json
+mode: cors
+accept: application/json
+
+### Hello World 1
+GET http://localhost:8090/api/values/1
+content-type: application/json
+mode: cors
+accept: application/json
+
+
+### Version
+
+GET http://localhost:8090/api/version
+content-type: application/json
+mode: cors
+accept: application/json
+
+
