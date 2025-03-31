@@ -38,7 +38,7 @@ namespace SQT.Model
             // string tmpFolder = Environment.GetEnvironmentVariable("SEAD_QUERY_API_PROJECT_ROOT") + "/tmp";
 
             // Comine folder and filename:
-            string path = System.IO.Path.Combine("/home/roger/source/sead_query_api/tmp", filename);
+            string path = System.IO.Path.Combine("/tmp", filename);
 
             // Write string json to text file:
             System.IO.File.WriteAllText(path, json);
