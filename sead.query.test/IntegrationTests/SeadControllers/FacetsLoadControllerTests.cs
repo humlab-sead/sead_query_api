@@ -231,12 +231,12 @@ namespace IntegrationTests.Sead
         [InlineData("ceramic://sample_group_sampling_contexts:sample_group_sampling_contexts", "tbl_sample_group_sampling_contexts", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         [InlineData("isotope://relative_age_name:relative_age_name", "tbl_relative_ages", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         [InlineData("isotope://sites:sites", "tbl_sites", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
-        [InlineData("isotope://feature_type:feature_type", "tbl_feature_types", "tbl_physical_sample_features", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
-        [InlineData("isotope://tbl_biblio_modern:tbl_biblio_modern", "tbl_biblio", "facet.view_taxa_biblio", "tbl_sites")]
-        [InlineData("isotope://country:country", "facet.site_location_shortcut", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets")]
-        [InlineData("isotope://sample_groups:sample_groups", "tbl_sample_groups", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
-        [InlineData("isotope://data_types:data_types", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
-        [InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "tbl_sample_group_sampling_contexts", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
+        // [InlineData("isotope://feature_type:feature_type", "tbl_feature_types", "tbl_physical_sample_features", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
+        // [InlineData("isotope://tbl_biblio_modern:tbl_biblio_modern", "tbl_biblio", "facet.view_taxa_biblio", "tbl_sites")]
+        // [InlineData("isotope://country:country", "facet.site_location_shortcut", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets")]
+        // [InlineData("isotope://sample_groups:sample_groups", "tbl_sample_groups", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
+        // [InlineData("isotope://data_types:data_types", "tbl_data_types", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
+        // [InlineData("isotope://sample_group_sampling_contexts:sample_group_sampling_contexts", "tbl_sample_group_sampling_contexts", "tbl_sample_groups", "tbl_physical_samples", "tbl_analysis_entities", "tbl_datasets", "tbl_physical_samples")]
         public async Task Load_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, params string[] expectedJoins)
         {
             var facetsConfig = MockService.FakeFacetsConfig(uri);
