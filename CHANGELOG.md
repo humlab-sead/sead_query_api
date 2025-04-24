@@ -12,7 +12,7 @@ A "geopolygon_sites"
   
 Closed issues:
 
-- Upgrade to dotnet8	maintenance (#128) CLOSED	
+- Upgrade to dotnet8 maintenance (#128) CLOSED	
 - Map facet	new feature (#112)
 - Geographic/map filter	new feature (#94)
 - Regression in range facets after Geo Facet deploy	bug (#132)
@@ -20,92 +20,8 @@ Closed issues:
 - Incorrect amount of analysis_entities returned for facet query (#129)
 - Wrong number of analysis entities returned for a site? (#113)
 
-	Add number of samples to result load	enhancement (#133) OPEN	
-	Can't use Region and Country filter in combination	data-error (#127) CLOSED	
-	Genus filter innehåller 'null'-poster	 (#122) OPEN	
-	Geochronology för dendro	dendro (#118) OPEN	
-	Mer avancerat region filter?	enhancement, dendro (#117) CLOSED	
-	No sites for tabular view within isotope domain	bug (#116) OPEN	
-	Filter for tbl_analysis_entity_ages	important (#115) OPEN	
-	Taxa filter is hiding sp. and spp. taxa	bug (#114) OPEN	
-	Filtret "Region" beter sig på ett oväntat sätt	data-error (#111) CLOSED	
-	Problem with "FullExtent" values returned for range filter	 (#107) CLOSED	
-	Abundance classification filter: nothing is retrieved	supersead (#106) OPEN	
-	Construction types filter har många dubbletter, plus output saknas	dendro (#105) CLOSED	
-	Bibliography filters display empty rows	 (#104) OPEN	
-	Countries and Region facets fails when used together	 (#103) OPEN	
-	Region facet provides non-unique ID's	bug (#102) OPEN	
-	API returns an empty list for domain facets	data-error (#100) CLOSED	
-	500 Internal Server Error	 (#98) CLOSED	
-	SEAD Query API service goes down intermittently	bug (#91) CLOSED	
-	Upgrade to dotnet 6.0	maintenance (#90) CLOSED	
-	Taxonomy + dating queries not working	bug (#89) OPEN	
-	Test should not call online database	bug (#88) CLOSED	
-	Faulty facet: Restricted facet with non-enforced constraint	bug, investigation, data-error (#87) CLOSED	
-	Facet group data inte tillgänlig	enhancement (#86) CLOSED	
-	Facet "Dataset methods" fails to load	data-error (#85) CLOSED	
-	Facet "abundance classification" fails to load	bug, help wanted, data-error (#81) OPEN	
-	Error in REST API call: NpgsqlOperationInProgressException	bug (#80) CLOSED	
-	NullReference in REST API call	bug (#79) CLOSED	
-	Outdated repositories in Dockerfile	bug (#78) CLOSED	
-	Expose version of API	new feature (#77) CLOSED	
-	Quality Check: Examine facet graph relations	investigation (#74) CLOSED	
-	Integration Test: syntax error at or near "AND"'	bug (#70) CLOSED	
-	Deprecate API fields	documentation (#69) CLOSED	
-	Domain facets API returns empty set	bug (#68) CLOSED	
-	Domain facet children API call returns empty set	bug (#67) CLOSED	
-	Domain facets are ignored in facet chain query compile	bug, enhancement (#66) CLOSED	
-	Facet that has a table with alias equal to NULL raises exception	bug (#65) CLOSED	
-	Facet filter criteria not included in compiled SQL query	bug (#64) CLOSED	
-	Add optional additional join criteria in facet graph	enhancement (#63) CLOSED	
-	Result load of "tabular" isotope data fails	data-error (#62) CLOSED	
-	Deploy SEAD Query API @2020-03	maintenance (#60) CLOSED	
-	Incorrect data points showing when selecting Master datasets second time	bug (#59) CLOSED	
-	Guide: How to create new facets	process, documentation (#57) CLOSED	
-	Upgrade to .net core 3.1	enhancement (#56) CLOSED	
-	Ability to switch backend	enhancement (#55) CLOSED	
-	Add filter descriptions	enhancement (#54) CLOSED	
-	Facet groups needs titles	enhancement (#53) CLOSED	
-	Very poor performance for multi-select discrete facets	bug (#52) CLOSED	
-	Use inner joins as default in query builder	enhancement, policy change (#51) CLOSED	
-	Syntax error in aggregated SQL Query	bug (#50) CLOSED	
-	Server failure on multi-country filter select + LOI result load	bug (#49) CLOSED	
-	Inclusion of data spans with zero data?	bug (#48) CLOSED	
-	Verify that Redis cache works as expected.	investigation (#47) CLOSED	
-	docker-compose throws "Segmentation fault" at startup	bug (#46) CLOSED	
-	Add volume binding to log folder	enhancement (#45) CLOSED	
-	Redis data folder is missing	bug (#44) CLOSED	
-	Missing time data	duplicate (#42) CLOSED	
-	Result load fails	bug (#41) CLOSED	
-	Iconsistent counts for value spans	bug, question (#40) CLOSED	
-	Multiple facets having same alias causes exception	bug (#39) CLOSED	
-	MS filter with picks + Site filter results in error	bug (#37) CLOSED	
-	MS filter internal server error	bug, duplicate, wontfix (#36) CLOSED	
-	Sample group filter error	bug (#35) CLOSED	
-	Country filter error	bug (#34) CLOSED	
-	Allow multiple instances of a filter	enhancement (#33) OPEN	
-	Add bibliography filters	enhancement (#32) OPEN	
-	Raä-IDn	enhancement (#31) CLOSED	
-	Internal server error on LOI-filter request with picks	wontfix (#30) CLOSED	
-	Internal server error (500) on load of MS facet	bug (#29) CLOSED	
-	Reconstitute of FacetsConfig fails if TriggerCode when null.	bug (#28) CLOSED	
-	Reconstitute of facet configuration fails when /load is called	bug (#27) CLOSED	
-	Improve application logging	enhancement (#26) CLOSED	
-	Error on facet load	bug (#25) CLOSED	
-	Update measured values facets to use UDF.	enhancement (#24) CLOSED	
-	Missing data in biblio	duplicate, data-error (#23) CLOSED	
-	Result load returns 500.	bug (#22) CLOSED	
-	404 on OPTIONS request	SLA (#21) CLOSED	
-	Facet table is assigned wrong alias.	bug (#19) CLOSED	
-	Graph search returns faulty routes	bug (#18) CLOSED	
-	Facets with alias name give erroneous SQL query	bug, duplicate (#17) CLOSED	
-	Add support to use UDF in facet specification	enhancement (#14) CLOSED	
-	Stöd för metod-filtrerade filter	enhancement (#13) CLOSED	
-	Adapt to schema changes (up to SEAD CCS v0.1)	enhancement (#10) CLOSED	
-
 
 ## Release @2023.12
-
 
 ## Release @2020.03 (v1.1.0)
 
@@ -316,3 +232,238 @@ These facets have not been assoiciated to any domain facet, although, they are r
 - dataset_master
 - dataset_methods
 - region
+
+# git-chlog -o FILENAME
+
+<a name="@2024-05"></a>
+## [@2024-05](https://github.com/humlab-sead/sead_query_api/compare/2024.02.RC1...@2024-05) (2025-03-28)
+
+### Chore
+
+* added test files
+
+### Refactor
+
+* moved interface file
+* renamed folder
+* renamed files
+* Moved file
+* disentangled Graph/Registry dependency from PathFinder
+* update editor semantic token colors
+* improve dotnet test verbosity in Makefile
+* consolidated and simplified path find logic
+* remove unused RepositoryTests class
+* improve Dijkstra's graph representation and path finding with additional constructors
+* add ToTuples extension method to TableRelation class
+* expose Edges
+* Add GetEdges method and ToRoute method to IEdgeRepository
+* major route finder refactoring
+* renamed facet code
+* added methods
+* renamed repository, add medthod
+* renamed repositories, expose context
+* renames & simplifications
+* Renamed and simplified interface
+* Update repository constructors to use RepositoryRegistry instead of IFacetContext
+* moved methods
+* renamed parameter, moved property
+* mobed lookup to seperate file
+* Update IGraphNode interface and related classes
+* simplified IEdge interface
+* simplify list initialization
+* reduce indentation
+* Update FacetGraph class to use container naming convention
+* Simplify DijkstrasGraph constructor
+* Update JoinsClauseCompiler to use primary constructor
+* switch range operators
+* switch operande in range expression
+* Add facet_load_intersect.rest integration test and update QueryBuilderTests
+* Add GetRangeAsync method to DatabaseQueryProxy
+* Update FacetLoadService to use UriToFacetsConfig for loading facets
+* Remove unnecessary usings and update test data
+* Remove unnecessary usings
+* Remove unnecessary files.exclude settings in .vscode/settings.json
+* Update facet configurations to remove unnecessary "textFilter" property
+* Update CountFieldCompilerTests.cs to include distinct expression test case
+* Update FacetLoadService.cs to include missing test cases
+* Update intervalCount default value to 50 in CategoryInfoService.cs
+
+### Pull Requests
+
+* Merge pull request [#149](https://github.com/humlab-sead/sead_query_api/issues/149) from humlab-sead:dev
+* Merge pull request [#126](https://github.com/humlab-sead/sead_query_api/issues/126) from humlab-sead/dev
+* Merge pull request [#124](https://github.com/humlab-sead/sead_query_api/issues/124) from humlab-sead:dev
+* Merge pull request [#123](https://github.com/humlab-sead/sead_query_api/issues/123) from humlab-sead:dev
+
+
+<a name="2024.02.RC1"></a>
+## [2024.02.RC1](https://github.com/humlab-sead/sead_query_api/compare/2023.12...2024.02.RC1) (2024-04-25)
+
+### Pull Requests
+
+* Merge pull request [#131](https://github.com/humlab-sead/sead_query_api/issues/131) from humlab-sead:geo-facets
+* Merge pull request [#125](https://github.com/humlab-sead/sead_query_api/issues/125) from humlab-sead:issue-106
+
+
+<a name="2023.12"></a>
+## [2023.12](https://github.com/humlab-sead/sead_query_api/compare/@2023.12...2023.12) (2024-03-22)
+
+### Pull Requests
+
+* Merge pull request [#123](https://github.com/humlab-sead/sead_query_api/issues/123) from humlab-sead:dev
+
+
+<a name="@2023.12"></a>
+## [@2023.12](https://github.com/humlab-sead/sead_query_api/compare/2023.12.rc1...@2023.12) (2024-03-22)
+
+
+<a name="2023.12.rc1"></a>
+## [2023.12.rc1](https://github.com/humlab-sead/sead_query_api/compare/2022.04.16.dotnet5...2023.12.rc1) (2024-03-21)
+
+### Pull Requests
+
+* Merge pull request [#121](https://github.com/humlab-sead/sead_query_api/issues/121) from humlab-sead/bugg-106
+* Merge pull request [#120](https://github.com/humlab-sead/sead_query_api/issues/120) from humlab-sead:fix-rest-test-calls
+* Merge pull request [#119](https://github.com/humlab-sead/sead_query_api/issues/119) from humlab-sead/net6.to.net8
+
+
+<a name="2022.04.16.dotnet5"></a>
+## [2022.04.16.dotnet5](https://github.com/humlab-sead/sead_query_api/compare/2022.04.16...2022.04.16.dotnet5) (2022-04-16)
+
+
+<a name="2022.04.16"></a>
+## [2022.04.16](https://github.com/humlab-sead/sead_query_api/compare/2022.04.14.rc3...2022.04.16) (2022-04-16)
+
+
+<a name="2022.04.14.rc3"></a>
+## [2022.04.14.rc3](https://github.com/humlab-sead/sead_query_api/compare/2022.04.14.rc2...2022.04.14.rc3) (2022-04-14)
+
+
+<a name="2022.04.14.rc2"></a>
+## [2022.04.14.rc2](https://github.com/humlab-sead/sead_query_api/compare/2022.04.14.rc1...2022.04.14.rc2) (2022-04-14)
+
+
+<a name="2022.04.14.rc1"></a>
+## [2022.04.14.rc1](https://github.com/humlab-sead/sead_query_api/compare/v1.1.0.RC.02...2022.04.14.rc1) (2022-04-14)
+
+### Refactor
+
+* minor cleanups
+
+
+<a name="v1.1.0.RC.02"></a>
+## [v1.1.0.RC.02](https://github.com/humlab-sead/sead_query_api/compare/v1.1.0.RC.01...v1.1.0.RC.02) (2020-05-08)
+
+### Refactor
+
+* renames and code cleanups
+* renames
+* Simplified ResultService Removed inheritance hiearchy
+* class to file, cleanups
+* moved interface
+* Improved result services
+* minor cleanups
+* moved logic to class
+* renamed items
+* review/cleanup
+* rename
+* rename+shortcut
+* ranmed extension method
+* Renamed property
+* test code cleanups
+* Renames
+
+
+<a name="v1.1.0.RC.01"></a>
+## [v1.1.0.RC.01](https://github.com/humlab-sead/sead_query_api/compare/v1.0.0...v1.1.0.RC.01) (2020-04-23)
+
+### Docker
+
+* Dotnet core base image update
+
+### EntityFramework
+
+* Adapted to API changes
+
+### Refactor
+
+* namespace cleanup/rename
+* namespace cleanup/rename
+* namespace cleanup/rename
+* rename, file sorting
+* Filename / Folder structure cleanup
+* renamed variable
+* Simplified FacetGraph logic
+* RepositoryRegistry
+* class name change
+* Name change
+* Split into class files
+* renamed file
+* Split into separate files
+* name changes, variable removal
+* Name change
+* changed method/variable names etc
+* changed method name
+* name changes
+* name change
+* renamed namespace
+* Removed unused API elements
+* Removed unused API elements
+* renamed namespace
+* removed private method
+* Removed deprecated code
+* minor cleanups
+* Code cleanup if FacetContext
+* class/interface name change
+* Moved logger init code to separate file
+* changed folder structure
+
+### Test
+
+* Scaffold script updates
+
+### Pull Requests
+
+* Merge pull request [#76](https://github.com/humlab-sead/sead_query_api/issues/76) from humlab-sead/2.2-to-3.1
+
+
+<a name="v1.0.0"></a>
+## v1.0.0 (2020-04-23)
+
+### Refacorings
+
+* Rename of config elements (Settings)
+
+### Refactor
+
+* Schema change (relation to Table)
+* IFacetGraphFactory + class names changes
+* name change to Table, TableRelation
+* Name change ObjectName => TableOrUdfName
+* Rename DeletePick to ClearPick
+* Test refactorings and improvements
+* Name changes (*Builder => *Compiler) + Some small code tidy ups...
+* Moved interfaces to individual files
+
+### Refactoring
+
+* Renamed Graph entities property names to more appropriate, less confusing names
+* Renamed FacetDefinitions -> Facets (IFacetContect)
+
+### Refactorings
+
+* Tests adapted to changes
+* More consistent class naming scheme
+* One class per file, removed static classes
+* Name changes facet attributes
+* Renamed file GraphTableRelations.cs -> GraphEdge.cs
+* Renamed GraphTableRelation -> GraphEdge
+* Renamed file GraphTable.cs -> GraphNode.cs
+* Renamed GraphTable -> GraphNode
+* setting given more appropriate names
+* Class renames (Facet, IFacetContext, GraphEdge etc)
+
+### Pull Requests
+
+* Merge pull request [#20](https://github.com/humlab-sead/sead_query_api/issues/20) from humlab-sead/adapt-to-ccs-v0.1
+

@@ -49,3 +49,7 @@ tools:
 	@dotnet tool install csharpier --global
 	@cat 'add_folder_to_path "$$HOME/.dotnet/tools"' >> ~/.bashrc'
 	@echo "info: csharpier installed, see https://csharpier.com/docs/About for more information"
+
+changelog-tools:
+	@go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
+	@echo "info: git-chglog installed, see https://github.com/git-chglog/git-chglog"
