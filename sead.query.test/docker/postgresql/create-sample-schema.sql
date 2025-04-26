@@ -4,6 +4,15 @@
 drop schema if exists sample cascade;
 create schema sample;
 
+
+/* Physical sample determines subsetting */
+
+create view sample.tbl_physical_samples as
+    select *
+    from public.tbl_physical_samples
+    where TRUE
+    limit 100;
+
 /* Empty tables */
 create view sample.tbl_aggregate_datasets as select * from public.tbl_aggregate_datasets where FALSE;
 create view sample.tbl_aggregate_order_types as select * from public.tbl_aggregate_order_types where FALSE;
@@ -98,14 +107,6 @@ create view sample.tbl_value_qualifiers as select * from public.tbl_value_qualif
 create view sample.tbl_value_type_items as select * from public.tbl_value_type_items;
 create view sample.tbl_value_types as select * from public.tbl_value_types;
 create view sample.tbl_years_types as select * from public.tbl_years_types;
-
-/* Physical sample determines subsetting */
-
-create view sample.tbl_physical_samples as
-    select *
-    from public.tbl_physical_samples
-    where TRUE
-    limit 1000;
 
 /* Subsetted tables */
 
@@ -348,32 +349,28 @@ create view sample.tbl_contacts as
         select contact_id from sample.tbl_site_preservation_status union all
         select contact_id from sample.tbl_taxa_reference_specimens
     );
-create view sample.tbl_locations as
-    select *
-    from public.tbl_locations
-    where location_id in (
-        select location_id from sample.tbl_sample_locations
-        union all
-        select location_id from sample.tbl_sample_group_coordinates
-        union all
-        select location_id from sample.tbl_site_locations
-        union all
-        select location_id from sample.tbl_contacts
-        union all
-        -- select location_id from sample.tbl_rdb
-        -- union all
-        select location_id from sample.tbl_rdb_systems
-        union all
-        select location_id from sample.tbl_relative_ages
-        -- union all
-        -- select location_id from sample.tbl_taxa_seasonality
-    );
+
+create view sample.tbl_locations (location_id, location_name, location_type_id, default_lat_dd, default_long_dd, date_updated) as
+	select *
+	from public.tbl_locations
+	where location_id in (
+		select location_id from sample.tbl_sample_locations
+		union all
+		select location_id from sample.tbl_sample_group_coordinates
+		union all
+		select location_id from sample.tbl_site_locations
+		union all
+		select location_id from sample.tbl_contacts
+		union all
+		select location_id from sample.tbl_rdb_systems
+		union all
+		select location_id from sample.tbl_relative_ages
+ );
 
 create view sample.tbl_rdb as
     select x.*
     from public.tbl_rdb x
     join sample.tbl_locations y using (location_id);
-
 
 create view sample.tbl_taxa_tree_master as
     select *
@@ -387,12 +384,21 @@ create view sample.tbl_taxa_tree_master as
         union all
         select taxon_id from sample.tbl_ecocodes
         union all
-        --select taxon_id from sample.tbl_species_associations
-        --union all
         select taxon_id from sample.tbl_rdb
     );
-	
 
+create view sample.tbl_taxa_seasonality as
+    select x.*
+    from public.tbl_taxa_seasonality x
+    join sample.tbl_taxa_tree_master t using (taxon_id)
+    join sample.tbl_locations s using (location_id);
+
+create view sample.tbl_species_associations as
+    select x.*
+    from public.tbl_species_associations x
+    join sample.tbl_taxa_tree_master t1 on x.associated_taxon_id = t1.taxon_id
+    join sample.tbl_taxa_tree_master t2 on x.taxon_id = t1.taxon_id;
+	
 create view sample.tbl_relative_age_refs as
     select x.*
     from public.tbl_relative_age_refs x
@@ -407,12 +413,6 @@ create view sample.tbl_taxa_measured_attributes as
     select x.*
     from public.tbl_taxa_measured_attributes x
     join sample.tbl_taxa_tree_master t using (taxon_id);
-
-create view sample.tbl_taxa_seasonality as
-    select x.*
-    from public.tbl_taxa_seasonality x
-    join sample.tbl_taxa_tree_master t using (taxon_id)
-    join sample.tbl_locations s using (location_id);
 
 create view sample.tbl_taxonomic_order as
     select x.*
@@ -459,12 +459,6 @@ create view sample.tbl_text_identification_keys as
     from public.tbl_text_identification_keys x
     join sample.tbl_taxa_tree_master t using (taxon_id);
 
-create view sample.tbl_species_associations as
-    select x.*
-    from public.tbl_species_associations x
-    join sample.tbl_taxa_tree_master t1 on x.associated_taxon_id = t1.taxon_id
-    join sample.tbl_taxa_tree_master t2 on x.taxon_id = t1.taxon_id;
-
 create view sample.tbl_abundance_ident_levels as
     select x.*
     from public.tbl_abundance_ident_levels x
@@ -485,7 +479,7 @@ create view sample.tbl_horizons as
     from public.tbl_horizons x
     join sample.tbl_sample_horizons y using (horizon_id)
     join sample.tbl_physical_samples z using (physical_sample_id);
-    ;
+
 create view sample.tbl_biblio as
     select *
     from public.tbl_biblio
