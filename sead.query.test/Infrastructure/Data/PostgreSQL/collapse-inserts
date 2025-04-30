@@ -1,0 +1,24 @@
+#!/bin/bash
+
+g_script_name=$(basename $0)
+g_script_dir=$(dirname $0)
+g_script_dir=$(cd $g_script_dir; pwd)
+
+input_file=$1
+output_file=$2
+
+if [[ -z "$input_file" || -z "$output_file" ]]; then
+  echo "Usage: $0 <input_sql_file> <output_sql_file>"
+  exit 1
+fi
+
+if [[ ! -f "$input_file" ]]; then
+  echo "Error: Input file '$input_file' not found."
+  exit 1
+fi
+
+> "$output_file"
+
+gawk -f "$g_script_dir/collapse-inserts.awk" "$input_file" "$output_file"
+
+echo "Done! Written to $output_file."
