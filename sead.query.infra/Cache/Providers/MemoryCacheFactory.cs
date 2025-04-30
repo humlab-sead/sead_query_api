@@ -1,6 +1,4 @@
-﻿using System;
-using CacheManager.Core;
-using Microsoft.Extensions.Caching.Memory;
+﻿using CacheManager.Core;
 using SeadQueryCore;
 
 namespace SeadQueryInfra
@@ -9,11 +7,11 @@ namespace SeadQueryInfra
     {
         public ISeadQueryCache Create()
         {
-            var config = new CacheManager.Core.ConfigurationBuilder()
+            var config = new CacheConfigurationBuilder()
                 //.WithSystemRuntimeCacheHandle()
                 .WithDictionaryHandle()
                 .Build();
-            var cache = new CacheManager.Core.BaseCacheManager<object>(config);
+            var cache = new BaseCacheManager<object>(config);
             return new SeadQueryCache(cache);
         }
     }

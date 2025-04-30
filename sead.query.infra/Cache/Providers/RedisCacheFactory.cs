@@ -1,6 +1,5 @@
 ﻿using CacheManager.Core;
 using SeadQueryCore;
-using System;
 
 namespace SeadQueryInfra
 {
@@ -8,7 +7,7 @@ namespace SeadQueryInfra
     {
         public ISeadQueryCache Create(string hostname, int port)
         {
-            var cache = CacheFactory.FromConfiguration<object>(ConfigurationBuilder.BuildConfiguration(settings =>
+            var cache = CacheFactory.Build(settings =>
             {
                 settings
                 .WithJsonSerializer()
@@ -23,7 +22,7 @@ namespace SeadQueryInfra
                 .WithRetryTimeout(100)
                 .WithRedisBackplane("redis")
                 .WithRedisCacheHandle("redis", true);
-            }));
+            });
 
             var manager = new SeadQueryCache(cache);
             return manager;
