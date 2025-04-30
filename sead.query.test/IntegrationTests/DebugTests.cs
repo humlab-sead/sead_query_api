@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace IntegrationTests.Debug
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class DebugTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
+    public class DebugTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>, IClassFixture<PostgresTestcontainerFixture>
     {
         readonly string jsonThatFails = @"{
                 ""facetsConfig"": {
