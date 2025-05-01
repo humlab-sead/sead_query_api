@@ -10,6 +10,10 @@ test:
 		
 #--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
 
+# Creates SQL DDL/DML for a TestContainer PostgreSQL database
+test-data:
+	@./sead.query.test/Infrastructure/Data/PostgreSQL/create-sample sead_staging --port 8089 
+
 clean:
 	@dotnet clean
 	@dotnet clean -c Release
