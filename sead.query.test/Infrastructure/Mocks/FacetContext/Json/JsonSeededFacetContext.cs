@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryInfra;
 using SQT.Infrastructure;
+using SQT.Scaffolding;
 using System;
 using System.Collections.Generic;
 using System.IO;

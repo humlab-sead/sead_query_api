@@ -1,6 +1,7 @@
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Intersect;
 using SQT.Infrastructure;
+using SQT.Scaffolding;
 using System;
 using System.Collections.Generic;
 using Xunit;

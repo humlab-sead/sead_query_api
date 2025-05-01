@@ -1,4 +1,5 @@
 ﻿using SQT.Infrastructure;
+using SQT.Scaffolding;
 using System.IO;
 
 namespace IntegrationTests.Sead

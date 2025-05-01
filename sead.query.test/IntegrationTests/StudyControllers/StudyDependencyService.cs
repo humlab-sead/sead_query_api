@@ -1,17 +1,13 @@
 ﻿using SQT.Infrastructure;
-using System.IO;
+using SQT.Scaffolding;
 
 namespace IntegrationTests.StudyDb
 {
     public class StudyDependencyService : DependencyService
     {
-        public static string JsonDataFolder()
-        {
-            return Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "StudyModel", "Json");
-        }
 
         public StudyDependencyService() :
-            base(new JsonFacetContextDataFixture(JsonDataFolder()))
+            base(new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder("Json")))
         {
         }
     }

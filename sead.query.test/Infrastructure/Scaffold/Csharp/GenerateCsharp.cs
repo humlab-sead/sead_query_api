@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.EntityFrameworkCore;
 using SeadQueryCore;
-using SeadQueryInfra;
 using SQT.Mocks;
 using Xunit;
+using SQT.Infrastructure;
 
-namespace SQT.Infrastructure.Scaffolding
+namespace SQT.Scaffolding.Csharp
 {
     [Collection("SeadJsonFacetContextFixture")]
     public class GenerateCSharp(SeadJsonFacetContextFixture fixture) : JsonSeededFacetContextContainer(fixture)
     {
-        private string DataFolder()
+        private string TargetFolder()
         {
-            string root = ScaffoldUtility.GetRootFolder();
-            return Path.Combine(root, "Infrastructure", "Data", "CSharp");
+            return ScaffoldUtility.GetDataFolder("CSharp");
         }
 
         private string UriName(string uri)
@@ -65,9 +63,9 @@ namespace SQT.Infrastructure.Scaffolding
             {
                 facetsDict.Add(facet.FacetCode, facet);
             }
-            var path = Path.Join(DataFolder(), "FacetsDict.cs.txt");
+            var path = Path.Join(TargetFolder(), "FacetsDict.cs.txt");
 
-            ScaffoldUtility.Dump(facetsDict, path, options);
+            Utility.Dump(facetsDict, path, options);
         }
 
         //[Fact(Skip = "Not a test. Scaffolds FacetsConfigs from JSON seeded context")]
@@ -86,9 +84,9 @@ namespace SQT.Infrastructure.Scaffolding
             {
                 var facetsConfig = scaffolder.Create(uri);
                 var uriName = UriName(uri);
-                var path = Path.Join(DataFolder(), $"FacetsConfig_{uriName}.cs.txt");
+                var path = Path.Join(TargetFolder(), $"FacetsConfig_{uriName}.cs.txt");
 
-                ScaffoldUtility.Dump(facetsConfig, path);
+                Utility.Dump(facetsConfig, path);
             }
         }
 
@@ -128,8 +126,8 @@ namespace SQT.Infrastructure.Scaffolding
                 var facetsConfig = scaffolder.FakeFacetsConfig(uri);
                 var querySetup = scaffolder.FakeCountOrContentQuerySetup(facetsConfig);
 
-                var path = Path.Join(DataFolder(), $"QuerySetup_{UriName(uri)}.cs.txt");
-                ScaffoldUtility.Dump(querySetup, path, options);
+                var path = Path.Join(TargetFolder(), $"QuerySetup_{UriName(uri)}.cs.txt");
+                Utility.Dump(querySetup, path, options);
             }
         }
 

@@ -1,6 +1,7 @@
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Discrete;
 using SQT.Infrastructure;
+using SQT.Scaffolding;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;

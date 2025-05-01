@@ -5,6 +5,7 @@ using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
 using SQT.Infrastructure;
+using SQT.Scaffolding;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -53,7 +54,7 @@ namespace SQT.Infrastructure
     {
         private IContainer CreateDependencyContainer()
         {
-            var folder = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
+            var folder = Path.Combine(ScaffoldUtility.GetDataFolder("Json"));
             var container = DependencyService.CreateContainer(null, folder, null);
             return container;
         }

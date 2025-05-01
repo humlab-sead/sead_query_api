@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Xunit;
 using System.IO;
 using Npgsql;
-using SQT.Infrastructure;
 using SeadQueryCore;
 using System;
 using SQT;
+using SQT.Scaffolding;
 
 public class PostgresTestcontainerFixture : IAsyncLifetime
 {
@@ -38,7 +38,7 @@ public class PostgresTestcontainerFixture : IAsyncLifetime
     {
         var config = new PostgreSqlTestcontainerConfiguration
         {
-            Database = Options.Store.Database, //  "sead_staging",
+            Database = Options.Store.Database,
             Username = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"),
             Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
             Port = int.Parse(Options.Store.Port)
@@ -52,7 +52,7 @@ public class PostgresTestcontainerFixture : IAsyncLifetime
 
         await Container.StartAsync();
 
-        var schemaFilePath = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure/Data/PostgreSQL/initdb.d");
+        var schemaFilePath = Path.Combine(ScaffoldUtility.GetDataFolder("PostgreSQL"), "initdb.d");
 
         foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
         {

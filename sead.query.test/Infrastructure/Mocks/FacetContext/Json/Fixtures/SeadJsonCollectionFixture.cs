@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using SQT.Scaffolding;
 using Xunit;
 
 namespace SQT.Infrastructure
 {
     public class SeadJsonFacetContextFixture : JsonFacetContextDataFixture
     {
-        public SeadJsonFacetContextFixture() : base(Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json"))
+        public SeadJsonFacetContextFixture() : base(ScaffoldUtility.GetDataFolder("Json"))
         {
         }
     }

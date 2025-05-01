@@ -203,7 +203,7 @@ namespace SQT.Infrastructure.Repository
 
             // Assert
             Assert.NotEmpty(result);
-            Assert.Single(result.Where(z => z.FieldTypeId == expectedType));
+            Assert.Single(result, z => z.FieldTypeId == expectedType);
         }
     }
 }

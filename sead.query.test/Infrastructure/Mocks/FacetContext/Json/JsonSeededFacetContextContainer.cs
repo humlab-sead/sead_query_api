@@ -18,6 +18,7 @@ using System.Dynamic;
 using System.Linq;
 using SeadQueryCore.Plugin.Intersect;
 using SeadQueryCore.Plugin.GeoPolygon;
+using SQT.Scaffolding;
 
 namespace SQT
 {
@@ -518,13 +519,5 @@ namespace SQT
             return result.AreEqual;
         }
 
-        public static void DumpUriObject(string uri, object value)
-        {
-            dynamic expando = new ExpandoObject();
-            expando.Uri = uri;
-            expando.ValueType = value.GetType().Name;
-            expando.Value = value;
-            ScaffoldUtility.Dump(expando, $@"C:\TEMP\{value.GetType().Name}_{uri.Replace(":", "#").Replace("/", "+")}.cs");
-        }
     }
 }

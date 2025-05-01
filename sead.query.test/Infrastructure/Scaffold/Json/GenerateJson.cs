@@ -4,7 +4,8 @@ using System.IO;
 using Newtonsoft.Json.Serialization;
 using SeadQueryInfra;
 using SQT.Infrastructure;
-
+using SQT.Scaffolding.Json;
+using SQT.Scaffolding;
 namespace SQT.TestInfrastructure
 {
     public class GenerateJson
@@ -30,7 +31,7 @@ namespace SQT.TestInfrastructure
 
         private static FacetContext CreateContext(string hostName, string databaseName)
         {
-            var builder = ScaffoldUtility.GetDbContextOptionBuilder(hostName, databaseName);
+            var builder = Utility.GetDbContextOptionBuilder(hostName, databaseName);
             return new FacetContext(builder.Options);
         }
 

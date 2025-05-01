@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
+using SQT.Scaffolding;
 using Xunit;
 
 namespace SQT.Infrastructure

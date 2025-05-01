@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SeadQueryInfra;
 using SQT.Infrastructure;
 using SQT.Mocks;
+using SQT.Scaffolding;
 using Xunit;
 
 namespace IntegrationTests
@@ -19,10 +20,10 @@ namespace IntegrationTests
         [Fact]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            var folder = ScaffoldUtility.JsonDataFolder();
+            var folder = ScaffoldUtility.GetDataFolder("Json");
             var fixture = new SeadJsonFacetContextFixture();
 
-            var modelSchemaFilename = Path.Join(GetDataFolder(), "sead_staging_sqlite_schema.sql");
+            var modelSchemaFilename = Path.Join(ScaffoldUtility.GetDataFolder("Json"), "sead_staging_sqlite_schema.sql");
 
             using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
             {
@@ -50,8 +51,6 @@ namespace IntegrationTests
                 }
             }
         }
-
-        private static string GetDataFolder() => Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "PublicModel");
 
         public static FacetContext Create(DbContextOptions options, JsonFacetContextDataFixture fixture)
         {

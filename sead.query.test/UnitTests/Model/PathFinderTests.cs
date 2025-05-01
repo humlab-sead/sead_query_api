@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using System.Threading.Tasks;
 using System.IO;
+using SQT.Scaffolding;
 
 namespace SQT.Model
 {
@@ -31,7 +32,7 @@ namespace SQT.Model
 
         private IContainer CreateDependencyContainer()
         {
-            var folder = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
+            var folder = ScaffoldUtility.GetDataFolder("Json");
             var container = DependencyService.CreateContainer(FacetContext, folder, null);
             return container;
         }
@@ -209,7 +210,7 @@ namespace SQT.Model
         [Fact]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            var folder = ScaffoldUtility.JsonDataFolder();
+            var folder = ScaffoldUtility.GetDataFolder("Json");
 
             using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
             {
