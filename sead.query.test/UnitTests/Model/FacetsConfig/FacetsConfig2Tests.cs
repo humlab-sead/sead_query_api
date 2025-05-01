@@ -14,7 +14,7 @@ using static SeadQueryCore.FacetsConfig2;
 namespace SQT.Model
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetsConfig2Tests : DisposableFacetContextContainer
+    public class FacetsConfig2Tests : JsonSeededFacetContextContainer
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;
 

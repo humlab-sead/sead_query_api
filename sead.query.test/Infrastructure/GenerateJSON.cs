@@ -43,7 +43,7 @@ namespace SQT.TestInfrastructure
         public void UpdateFacetContextFixture_IfParameterIsSetToTrue(bool updateTheModel, string folder)
         {
             if (!updateTheModel){
-                System.Diagnostics.Debug.WriteLine("Skipping update of JSON fixtures");
+                Debug.WriteLine("Skipping update of JSON fixtures");
                 return;
             }
             var options = SettingFactory.GetSettings();

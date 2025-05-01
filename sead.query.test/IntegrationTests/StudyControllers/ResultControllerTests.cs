@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using SeadQueryCore;
 using SeadQueryCore.Model;
 using SQT;
-using SQT.ClassData;
+using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using System.Linq;
@@ -22,13 +22,13 @@ namespace IntegrationTests.StudyDb
     [Collection("StudyJsonSeededFacetContext")]
     public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
-        public JsonFacetContextFixture FacetContextFixture { get; }
-        public DisposableFacetContextContainer MockService { get; }
+        public JsonFacetContextDataFixture FacetContextFixture { get; }
+        public JsonSeededFacetContextContainer MockService { get; }
 
         public ResultControllerTests(TestHostWithContainer hostBuilderFixture, StudyJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
-            MockService = new DisposableFacetContextContainer(facetContextFixture);
+            MockService = new JsonSeededFacetContextContainer(facetContextFixture);
         }
 
         [Fact]

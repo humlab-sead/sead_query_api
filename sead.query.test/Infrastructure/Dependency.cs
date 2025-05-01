@@ -18,14 +18,14 @@ namespace SQT.Infrastructure
         public ISetting Options { get; set; }
 
         public IFacetContext FacetContext { get; set; } = null;
-        public JsonFacetContextFixture Fixture { get; set; } = null;
+        public JsonFacetContextDataFixture Fixture { get; set; } = null;
 
-        private readonly DisposableFacetContextContainer MockService;
+        private readonly JsonSeededFacetContextContainer MockService;
 
-        public DependencyService(JsonFacetContextFixture fixture)
+        public DependencyService(JsonFacetContextDataFixture fixture)
         {
             Fixture = fixture;
-            MockService = new DisposableFacetContextContainer(Fixture);
+            MockService = new JsonSeededFacetContextContainer(Fixture);
             // FacetContext = MockService.FacetContext;
         }
 
@@ -128,7 +128,7 @@ namespace SQT.Infrastructure
         public static IContainer CreateContainer(IFacetContext facetContext, string jsonFolder, ISetting options)
         {
             var builder = new Autofac.ContainerBuilder();
-            var fixture = new JsonFacetContextFixture(jsonFolder);
+            var fixture = new JsonFacetContextDataFixture(jsonFolder);
             var dependencyService = new DependencyService(fixture) { FacetContext = facetContext, Options = options };
             dependencyService.Load(builder);
             return builder.Build();

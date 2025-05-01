@@ -53,9 +53,10 @@ namespace IntegrationTests
 
         private static string GetDataFolder() => Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "PublicModel");
 
-        public static FacetContext Create(DbContextOptions options, JsonFacetContextFixture fixture)
+        public static FacetContext Create(DbContextOptions options, JsonFacetContextDataFixture fixture)
         {
-            using (var context = new JsonSeededFacetContext(options, fixture)) {
+            using (var context = new JsonSeededFacetContext(options, fixture))
+            {
                 context.Database.EnsureCreated();
                 context.SaveChanges();
             }

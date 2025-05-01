@@ -2,7 +2,7 @@ using KellermanSoftware.CompareNetObjects;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace SQT.ClassData
+namespace SQT.CollectionFixtures
 {
     public static class UriCollections
     {

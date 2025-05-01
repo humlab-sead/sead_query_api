@@ -12,9 +12,9 @@ namespace SQT.Mocks
 {
     public class JsonSeededFacetContext : FacetContext
     {
-        public JsonFacetContextFixture Fixture { get; }
+        public JsonFacetContextDataFixture Fixture { get; }
 
-        public JsonSeededFacetContext(DbContextOptions options, JsonFacetContextFixture fixture) : base(options)
+        public JsonSeededFacetContext(DbContextOptions options, JsonFacetContextDataFixture fixture) : base(options)
         {
             Fixture = fixture;
         }

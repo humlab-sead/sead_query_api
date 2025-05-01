@@ -11,7 +11,7 @@ using Xunit;
 namespace SQT.Plugins.Intersect
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : JsonSeededFacetContextContainer(fixture)
     {
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]

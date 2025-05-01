@@ -8,7 +8,7 @@ using Xunit;
 namespace SQT.QueryBuilder.ResultCompilers
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class ResultSpecificationFieldExtensionTests : DisposableFacetContextContainer
+    public class ResultSpecificationFieldExtensionTests : JsonSeededFacetContextContainer
     {
         public ResultSpecificationFieldExtensionTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

@@ -11,7 +11,7 @@ namespace IntegrationTests.StudyDb
         }
 
         public StudyDependencyService() :
-            base(new JsonFacetContextFixture(JsonDataFolder()))
+            base(new JsonFacetContextDataFixture(JsonDataFolder()))
         {
         }
     }

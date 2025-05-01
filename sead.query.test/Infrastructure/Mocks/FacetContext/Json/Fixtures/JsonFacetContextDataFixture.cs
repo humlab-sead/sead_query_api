@@ -7,7 +7,7 @@ namespace SQT.Infrastructure
 {
     using ItemsDictionary = Dictionary<Type, IEnumerable<object>>;
 
-    public class JsonFacetContextFixture : IDisposable
+    public class JsonFacetContextDataFixture : IDisposable
     {
         /// <summary>
         /// Reads Json Facet Schema entities and stores them in a dictionary
@@ -17,7 +17,7 @@ namespace SQT.Infrastructure
         public string Folder { get; }
         public ICollection<Type> Types { get; }
 
-        public JsonFacetContextFixture(string folder)
+        public JsonFacetContextDataFixture(string folder)
         {
             Folder = folder; // ScaffoldUtility.JsonDataFolder();
             Types = ScaffoldUtility.GetModelTypes();

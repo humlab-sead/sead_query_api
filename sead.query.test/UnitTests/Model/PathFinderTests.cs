@@ -18,7 +18,7 @@ namespace SQT.Model
     using Route = List<TableRelation>;
 
     [Collection("SeadJsonFacetContextFixture")]
-    public class RouteFinderTests : DisposableFacetContextContainer
+    public class RouteFinderTests : JsonSeededFacetContextContainer
     {
         public RouteFinderTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

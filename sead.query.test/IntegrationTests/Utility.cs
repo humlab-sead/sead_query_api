@@ -11,7 +11,7 @@ using Xunit;
 public class IntegrationTestBase
 {
     // FIXME Create base class
-    public JsonFacetContextFixture FacetContextFixture { get; }
+    public JsonFacetContextDataFixture FacetContextFixture { get; }
     public DependencyService DependencyService { get; }
     public IContainer Container { get; private set; }
     public IResultSqlCompilerLocator SqlCompilerLocator { get; private set; }

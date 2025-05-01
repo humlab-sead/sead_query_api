@@ -1,7 +1,7 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
-using SQT.ClassData;
+using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using System;
@@ -12,7 +12,7 @@ using Xunit;
 namespace SQT.QueryBuilder.ResultCompilers
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class TabularResultSqlCompilerTests : DisposableFacetContextContainer
+    public class TabularResultSqlCompilerTests : JsonSeededFacetContextContainer
     {
         public TabularResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

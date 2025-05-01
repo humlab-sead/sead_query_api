@@ -10,7 +10,7 @@ using Xunit;
 namespace SQT.Infrastructure.Scaffolding
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class GenerateCSharp(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    public class GenerateCSharp(SeadJsonFacetContextFixture fixture) : JsonSeededFacetContextContainer(fixture)
     {
         private string DataFolder()
         {
@@ -95,7 +95,7 @@ namespace SQT.Infrastructure.Scaffolding
         //[Fact(Skip = "Not a test. Scaffolds C# QuerySetup objects to file, read from a JSON seeded context")]
         public void ScaffoldCSharpQuerySetupsToFileUsingJsonSeededFacetContext()
         {
-            var scaffolder = new DisposableFacetContextContainer(Fixture);
+            var scaffolder = new JsonSeededFacetContextContainer(Fixture);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {

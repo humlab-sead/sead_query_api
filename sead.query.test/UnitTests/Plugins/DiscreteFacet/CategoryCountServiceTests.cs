@@ -9,7 +9,7 @@ using Xunit;
 namespace SQT.Services.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : JsonSeededFacetContextContainer(fixture)
     {
         [Theory]
         [InlineData("sites:sites", 5)]

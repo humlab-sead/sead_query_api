@@ -7,7 +7,7 @@ using Xunit;
 namespace SQT.Model
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetConfig2Tests : DisposableFacetContextContainer
+    public class FacetConfig2Tests : JsonSeededFacetContextContainer
     {
         public FacetConfig2Tests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

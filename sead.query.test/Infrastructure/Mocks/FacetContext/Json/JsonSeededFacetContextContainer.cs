@@ -23,9 +23,9 @@ namespace SQT
 {
     using Route = List<TableRelation>;
 
-    public class DisposableFacetContextContainer : IDisposable
+    public class JsonSeededFacetContextContainer : IDisposable
     {
-        private readonly JsonFacetContextFixture __fixture;
+        private readonly JsonFacetContextDataFixture __fixture;
 
         private readonly Lazy<DbConnection> __DbConnection;
         private readonly Lazy<DbContextOptions> __DbContextOptions;
@@ -33,7 +33,7 @@ namespace SQT
         private readonly Lazy<RepositoryRegistry> __RepositoryRegistry;
         private readonly Lazy<ISetting> __Settings;
 
-        public virtual JsonFacetContextFixture Fixture => __fixture;
+        public virtual JsonFacetContextDataFixture Fixture => __fixture;
         public virtual ISetting Settings => __Settings.Value;
         public virtual DbConnection DbConnection => __DbConnection.Value;
         public virtual DbContextOptions DbContextOptions => __DbContextOptions.Value;
@@ -55,7 +55,7 @@ namespace SQT
         public virtual RepositoryRegistry CreateRepositoryRegistry()
             => new(FacetContext);
 
-        public DisposableFacetContextContainer(JsonFacetContextFixture fixture)
+        public JsonSeededFacetContextContainer(JsonFacetContextDataFixture fixture)
         {
             __fixture = fixture;
             __DbConnection = new Lazy<DbConnection>(CreateDbConnection);
