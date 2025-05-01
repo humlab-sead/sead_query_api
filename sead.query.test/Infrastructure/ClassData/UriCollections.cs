@@ -97,15 +97,15 @@ namespace SQT.ClassData
                 "ceramic://country:country",
                 "ceramic://sample_groups:sample_groups",
                 "ceramic://data_types:data_types",
-                "ceramic://sample_group_sampling_contexts:sample_group_sampling_contexts",
-                "isotope://relative_age_name:relative_age_name",
-                "isotope://sites:sites",
-                "isotope://feature_type:feature_type",
-                "isotope://tbl_biblio_modern:tbl_biblio_modern",
-                "isotope://country:country",
-                "isotope://sample_groups:sample_groups",
-                "isotope://data_types:data_types",
-                "isotope://sample_group_sampling_contexts:sample_group_sampling_contexts"
+                "ceramic://sample_group_sampling_contexts:sample_group_sampling_contexts"
+                // "isotope://relative_age_name:relative_age_name",
+                // "isotope://sites:sites",
+                // "isotope://feature_type:feature_type",
+                // "isotope://tbl_biblio_modern:tbl_biblio_modern",
+                // "isotope://country:country",
+                // "isotope://sample_groups:sample_groups",
+                // "isotope://data_types:data_types",
+                // "isotope://sample_group_sampling_contexts:sample_group_sampling_contexts"
             };
     }
 }
