@@ -6,9 +6,20 @@ using Xunit;
 using System.IO;
 using Npgsql;
 using SQT.Infrastructure;
+using SeadQueryCore;
+using System;
+using SQT;
 
 public class PostgresTestcontainerFixture : IAsyncLifetime
 {
+    //constructor
+    public PostgresTestcontainerFixture()
+    {
+        Options = SettingFactory.GetSettings();
+    }
+    
+    public ISetting Options { get; private set; }
+    
     public PostgreSqlTestcontainer Container { get; private set; }
     public string ConnectionString => Container.ConnectionString;
 
@@ -27,9 +38,10 @@ public class PostgresTestcontainerFixture : IAsyncLifetime
     {
         var config = new PostgreSqlTestcontainerConfiguration
         {
-            Database = "sead_staging",
-            Username = "postgres",
-            Password = "password",
+            Database = Options.Store.Database, //  "sead_staging",
+            Username = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"),
+            Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
+            Port = int.Parse(Options.Store.Port)
         };
 
         Container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
@@ -52,6 +64,4 @@ public class PostgresTestcontainerFixture : IAsyncLifetime
     {
         await Container.StopAsync();
     }
-    
 }
-
