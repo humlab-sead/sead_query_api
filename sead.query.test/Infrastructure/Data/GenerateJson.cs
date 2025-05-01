@@ -7,7 +7,7 @@ using SQT.Infrastructure;
 
 namespace SQT.TestInfrastructure
 {
-    public class GenerateJSON
+    public class GenerateJson
     {
         private static DefaultContractResolver DefaultResolver()
         {
