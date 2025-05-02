@@ -12,16 +12,13 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
+    public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>, IClassFixture<PostgresSessionFixture>
     {
-        public JsonFacetContextDataFixture FacetContextFixture { get; }
         public MockerWithFacetContext MockService { get; }
 
-        public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
+        public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture) : base(hostBuilderFixture)
         {
-            FacetContextFixture = facetContextFixture;
-            MockService = new MockerWithJsonFacetContext(FacetContextFixture);
+            MockService = new MockerWithFacetContext();
         }
 
         [Fact]

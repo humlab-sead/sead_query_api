@@ -10,7 +10,7 @@ using System.Text;
 
 namespace IntegrationTests.Debug
 {
-    public class DebugTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>, IClassFixture<PostgresTestcontainerFixture>
+    public class DebugTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>, IClassFixture<PostgresSessionFixture>
     {
         readonly string jsonThatFails = @"{
                 ""facetsConfig"": {
@@ -58,7 +58,7 @@ namespace IntegrationTests.Debug
         {
             var payload = new StringContent(jsonThatFails, Encoding.UTF8, "application/json");
             var response = await Fixture.Client.PostAsync("api/result/load", payload);
-        
+
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();

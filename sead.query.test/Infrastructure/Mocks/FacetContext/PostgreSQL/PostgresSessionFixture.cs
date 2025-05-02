@@ -10,18 +10,18 @@ using System;
 using SQT;
 using SQT.Scaffolding;
 
-public class PostgresTestcontainerFixture : IAsyncLifetime
+public class PostgresSessionFixture : IAsyncLifetime
 {
     private static PostgreSqlTestcontainer _container;
-    private static bool                  _started;
-    public PostgresTestcontainerFixture()
+    private static bool _started;
+    public PostgresSessionFixture()
     {
         Options = SettingFactory.GetSettings();
     }
-    
+
     public PostgreSqlTestcontainer Container => _container;
     public ISetting Options { get; private set; }
-    
+
     public string ConnectionString => Container.ConnectionString;
 
     // FIXME: Use a Singleton pattern to avoid multiple initializations
@@ -43,12 +43,13 @@ public class PostgresTestcontainerFixture : IAsyncLifetime
     {
         if (!_started)
         {
+            int port = int.Parse(Options.Store.Port);
             var config = new PostgreSqlTestcontainerConfiguration
             {
                 Database = Options.Store.Database,
                 Username = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"),
                 Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
-                Port = int.Parse(Options.Store.Port)
+                Port = port
             };
             _container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
                 .WithDatabase(config)
@@ -56,6 +57,7 @@ public class PostgresTestcontainerFixture : IAsyncLifetime
                 .WithCleanUp(true)
                 // don't bind to a fixed host port — let it pick one
                 //.WithPortBinding(5432, assignRandomHostPort: true)
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
                 .Build();
 
             await _container.StartAsync();
