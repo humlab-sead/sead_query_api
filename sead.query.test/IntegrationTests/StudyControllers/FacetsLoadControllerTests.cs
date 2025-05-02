@@ -26,7 +26,7 @@ namespace IntegrationTests.StudyDb
         public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture, StudyJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
-            MockService = new MockerWithFacetContext(FacetContextFixture);
+            MockService = new MockerWithJsonFacetContext(FacetContextFixture);
         }
 
         [Fact]

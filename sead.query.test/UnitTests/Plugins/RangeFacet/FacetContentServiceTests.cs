@@ -7,7 +7,7 @@ using Xunit;
 namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetContentServiceTests(SeadJsonFacetContextFixture fixture) : MockerWithFacetContext(fixture)
+    public class FacetContentServiceTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
     {
         public virtual Mock<RangeCategoryInfoSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
         {

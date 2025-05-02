@@ -9,7 +9,7 @@ using Xunit;
 namespace SQT.Plugins.Range
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class PickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : MockerWithFacetContext(fixture)
+    public class PickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
     {
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]

@@ -9,7 +9,7 @@ using Xunit;
 namespace SQT.Plugins.Discrete
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class DiscreteFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : MockerWithFacetContext(fixture)
+    public class DiscreteFacetContentServiceTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
     {
         [Theory]
         [InlineData("sites:sites", false)]

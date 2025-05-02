@@ -7,7 +7,6 @@ using SQT.SQL.Matcher;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -22,7 +21,7 @@ namespace IntegrationTests.Sead
         public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
-            MockService = new MockerWithFacetContext(FacetContextFixture);
+            MockService = new MockerWithJsonFacetContext(FacetContextFixture);
         }
 
         [Fact]

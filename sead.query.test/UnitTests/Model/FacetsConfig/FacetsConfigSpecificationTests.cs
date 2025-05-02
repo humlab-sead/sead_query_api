@@ -1,14 +1,11 @@
-using Moq;
 using SeadQueryCore;
 using SQT.Infrastructure;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace SQT.Model
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetsConfigSpecificationTests : MockerWithFacetContext
+    public class FacetsConfigSpecificationTests : MockerWithJsonFacetContext
     {
         public FacetsConfigSpecificationTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

@@ -1,8 +1,6 @@
 using SeadQueryCore;
-using SeadQueryCore.Model.Ext;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
-using System.Collections.Generic;
 using Xunit;
 
 #pragma warning disable RCS1163, IDE0060
@@ -10,7 +8,7 @@ using Xunit;
 namespace SQT.SqlCompilers
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class MapResultSqlCompilerTests : MockerWithFacetContext
+    public class MapResultSqlCompilerTests : MockerWithJsonFacetContext
     {
         public MapResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

@@ -4,14 +4,12 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Autofac;
-using System.Linq;
 using SQT.Infrastructure;
 using SeadQueryInfra;
 using SQT.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using System.Threading.Tasks;
-using System.IO;
 using SQT.Scaffolding;
 
 namespace SQT.Model
@@ -19,7 +17,7 @@ namespace SQT.Model
     using Route = List<TableRelation>;
 
     [Collection("SeadJsonFacetContextFixture")]
-    public class RouteFinderTests : MockerWithFacetContext
+    public class RouteFinderTests : MockerWithJsonFacetContext
     {
         public RouteFinderTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

@@ -26,50 +26,31 @@ namespace SQT
 
     public class MockerWithFacetContext : IDisposable
     {
-        private readonly JsonFacetContextDataFixture __fixture;
-
-        private readonly Lazy<DbConnection> __DbConnection;
-        private readonly Lazy<DbContextOptions> __DbContextOptions;
-        private readonly Lazy<FacetContext> __FacetContext;
-        private readonly Lazy<RepositoryRegistry> __RepositoryRegistry;
-        private readonly Lazy<ISetting> __Settings;
-
-        public virtual JsonFacetContextDataFixture Fixture => __fixture;
+        protected readonly Lazy<IFacetContext> __FacetContext;
+        protected readonly Lazy<RepositoryRegistry> __RepositoryRegistry;
+        protected readonly Lazy<ISetting> __Settings;
         public virtual ISetting Settings => __Settings.Value;
-        public virtual DbConnection DbConnection => __DbConnection.Value;
-        public virtual DbContextOptions DbContextOptions => __DbContextOptions.Value;
-        public virtual FacetContext FacetContext => __FacetContext.Value;
+        public virtual IFacetContext FacetContext => __FacetContext.Value;
         public virtual RepositoryRegistry Registry => __RepositoryRegistry.Value;
 
         public virtual ISetting CreateSettings()
             => (ISetting)new SettingFactory().Create().Value;
 
-        public virtual DbConnection CreateDbConnection()
-            => SqliteConnectionFactory.CreateAndOpen();
-
-        public virtual DbContextOptions CreateDbContextOptions()
-            => SqliteContextOptionsFactory.Create(DbConnection);
-
-        public FacetContext CreateFacetContext()
-            => JsonSeededFacetContextFactory.Create(DbContextOptions, Fixture);
+        public virtual IFacetContext CreateFacetContext()
+            => new FacetContextFactory(Settings.Store).GetInstance();
 
         public virtual RepositoryRegistry CreateRepositoryRegistry()
             => new(FacetContext);
 
-        public MockerWithFacetContext(JsonFacetContextDataFixture fixture)
+        public MockerWithFacetContext()
         {
-            __fixture = fixture;
-            __DbConnection = new Lazy<DbConnection>(CreateDbConnection);
-            __DbContextOptions = new Lazy<DbContextOptions>(CreateDbContextOptions);
-            __FacetContext = new Lazy<FacetContext>(CreateFacetContext);
+            __FacetContext = new Lazy<IFacetContext>(CreateFacetContext);
             __RepositoryRegistry = new Lazy<RepositoryRegistry>(CreateRepositoryRegistry);
             __Settings = new Lazy<ISetting>(CreateSettings);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            if (__DbConnection.IsValueCreated)
-                DbConnection.Close();
 
             if (__FacetContext.IsValueCreated)
                 FacetContext.Dispose();
@@ -77,8 +58,6 @@ namespace SQT
             if (__RepositoryRegistry.IsValueCreated)
                 Registry.Dispose();
 
-            if (__DbConnection.IsValueCreated)
-                DbConnection.Dispose();
         }
 
         // Common mock helpers

@@ -1,6 +1,4 @@
 using SeadQueryCore;
-using SeadQueryInfra;
-using SQT.Mocks;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -8,7 +6,7 @@ using Xunit;
 namespace SQT.Infrastructure.Repository
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetRepositoryTests : MockerWithFacetContext
+    public class FacetRepositoryTests : MockerWithJsonFacetContext
     {
         public FacetRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

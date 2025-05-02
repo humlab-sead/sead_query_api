@@ -25,7 +25,7 @@ namespace SQT.Infrastructure
         public DependencyService(JsonFacetContextDataFixture fixture)
         {
             Fixture = fixture;
-            MockService = new MockerWithFacetContext(Fixture);
+            MockService = new MockerWithJsonFacetContext(Fixture);
             // FacetContext = MockService.FacetContext;
         }
 
