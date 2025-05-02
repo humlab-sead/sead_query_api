@@ -8,7 +8,7 @@ using Xunit;
 namespace SQT.Services
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class ResultServiceTests : JsonSeededFacetContextContainer
+    public class ResultServiceTests : MockerWithFacetContext
     {
         public ResultServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {

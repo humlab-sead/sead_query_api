@@ -17,12 +17,12 @@ namespace IntegrationTests.Sead
     public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public JsonFacetContextDataFixture FacetContextFixture { get; }
-        public JsonSeededFacetContextContainer MockService { get; }
+        public MockerWithFacetContext MockService { get; }
 
         public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
             FacetContextFixture = facetContextFixture;
-            MockService = new JsonSeededFacetContextContainer(FacetContextFixture);
+            MockService = new MockerWithFacetContext(FacetContextFixture);
         }
 
         [Fact]

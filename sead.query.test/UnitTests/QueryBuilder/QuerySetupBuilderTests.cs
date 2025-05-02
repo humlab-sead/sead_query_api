@@ -13,7 +13,7 @@ namespace SQT.QueryBuilder
     using Route = List<TableRelation>;
 
     [Collection("SeadJsonFacetContextFixture")]
-    public class QuerySetupBuilderTests : JsonSeededFacetContextContainer
+    public class QuerySetupBuilderTests : MockerWithFacetContext
     {
         public QuerySetupBuilderTests(SeadJsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
         {

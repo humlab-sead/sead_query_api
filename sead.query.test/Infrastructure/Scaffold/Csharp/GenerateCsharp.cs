@@ -9,7 +9,7 @@ using SQT.Infrastructure;
 namespace SQT.Scaffolding.Csharp
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class GenerateCSharp(SeadJsonFacetContextFixture fixture) : JsonSeededFacetContextContainer(fixture)
+    public class GenerateCSharp(SeadJsonFacetContextFixture fixture) : MockerWithFacetContext(fixture)
     {
         private string TargetFolder()
         {
@@ -93,7 +93,7 @@ namespace SQT.Scaffolding.Csharp
         //[Fact(Skip = "Not a test. Scaffolds C# QuerySetup objects to file, read from a JSON seeded context")]
         public void ScaffoldCSharpQuerySetupsToFileUsingJsonSeededFacetContext()
         {
-            var scaffolder = new JsonSeededFacetContextContainer(Fixture);
+            var scaffolder = new MockerWithFacetContext(Fixture);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {

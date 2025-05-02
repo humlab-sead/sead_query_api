@@ -24,7 +24,7 @@ namespace SQT
 {
     using Route = List<TableRelation>;
 
-    public class JsonSeededFacetContextContainer : IDisposable
+    public class MockerWithFacetContext : IDisposable
     {
         private readonly JsonFacetContextDataFixture __fixture;
 
@@ -56,7 +56,7 @@ namespace SQT
         public virtual RepositoryRegistry CreateRepositoryRegistry()
             => new(FacetContext);
 
-        public JsonSeededFacetContextContainer(JsonFacetContextDataFixture fixture)
+        public MockerWithFacetContext(JsonFacetContextDataFixture fixture)
         {
             __fixture = fixture;
             __DbConnection = new Lazy<DbConnection>(CreateDbConnection);

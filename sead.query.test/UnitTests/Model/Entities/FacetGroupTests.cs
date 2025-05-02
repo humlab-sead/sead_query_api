@@ -9,7 +9,7 @@ using Xunit;
 namespace SQT.Model
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class FacetGroupTests : JsonSeededFacetContextContainer
+    public class FacetGroupTests : MockerWithFacetContext
     {
         public static List<object[]> TestData = new() {
             new object[] {

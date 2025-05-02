@@ -12,7 +12,7 @@ using Xunit;
 namespace SQT.QueryBuilder.ResultCompilers
 {
     [Collection("SeadJsonFacetContextFixture")]
-    public class TabularResultSqlCompilerTests : JsonSeededFacetContextContainer
+    public class TabularResultSqlCompilerTests : MockerWithFacetContext
     {
         public TabularResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
         {
