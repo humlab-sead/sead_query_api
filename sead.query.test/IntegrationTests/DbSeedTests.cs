@@ -9,7 +9,7 @@ using SQT.Mocks;
 using SQT.Scaffolding;
 using Xunit;
 
-namespace IntegrationTests
+namespace IntegrationTests.Deprecated
 {
     public class SeedPublicTests
     {
