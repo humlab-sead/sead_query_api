@@ -8,6 +8,7 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
+    [Collection("Postgres Docker Session")]
     public class FacetsControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public FacetsControllerTests(TestHostWithContainer fixture) : base(fixture)
