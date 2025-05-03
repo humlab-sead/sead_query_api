@@ -20,13 +20,11 @@ namespace IntegrationTests.StudyDb
     [Collection("StudyJsonSeededFacetContext")]
     public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
-        public JsonFacetContextDataFixture FacetContextFixture { get; }
         public MockerWithFacetContext MockService { get; }
 
         public FacetsLoadControllerTests(TestHostWithContainer hostBuilderFixture, StudyJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
         {
-            FacetContextFixture = facetContextFixture;
-            MockService = new MockerWithJsonFacetContext(FacetContextFixture);
+            MockService = new MockerWithJsonFacetContext(facetContextFixture);
         }
 
         [Fact]

@@ -11,7 +11,6 @@ using Xunit;
 public class IntegrationTestBase
 {
     // FIXME Create base class
-    public JsonFacetContextDataFixture FacetContextFixture { get; }
     public DependencyService DependencyService { get; }
     public IContainer Container { get; private set; }
     public IResultSqlCompilerLocator SqlCompilerLocator { get; private set; }
@@ -20,8 +19,7 @@ public class IntegrationTestBase
 
     public IntegrationTestBase(SeadJsonFacetContextFixture facetContextFixture)
     {
-        FacetContextFixture = facetContextFixture;
-        DependencyService = new DependencyService(FacetContextFixture) { Options = SettingFactory.GetSettings() };
+        DependencyService = new DependencyService(facetContextFixture) { Options = SettingFactory.GetSettings() };
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();
