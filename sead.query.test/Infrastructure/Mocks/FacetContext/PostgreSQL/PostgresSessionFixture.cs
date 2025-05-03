@@ -57,7 +57,7 @@ public class PostgresSessionFixture : IAsyncLifetime
                 .WithCleanUp(true)
                 // don't bind to a fixed host port — let it pick one
                 //.WithPortBinding(5432, assignRandomHostPort: true)
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
+                //.WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
                 .Build();
 
             await _container.StartAsync();
