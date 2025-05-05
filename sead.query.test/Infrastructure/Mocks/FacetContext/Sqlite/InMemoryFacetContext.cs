@@ -74,4 +74,37 @@ namespace SQT.Mocks
             Connection?.Dispose();
         }
     }
+
+
+    public class InMemoryJsonSeededFacetContext : InMemoryFacetContext
+    {
+        public InMemoryJsonSeededFacetContext(string jsonFolder) : this(
+            new SqliteConnectionFactory().CreateDbContextOptionsAsync2().GetAwaiter().GetResult(),
+            jsonFolder
+            )
+        {
+        }
+        public InMemoryJsonSeededFacetContext((DbContextOptions options, DbConnection connection) args, string jsonFolder) : base(
+            args.options,
+            new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder)),
+            args.connection
+        )
+        {
+        }
+        public InMemoryJsonSeededFacetContext((DbContextOptions options, DbConnection connection, JsonFacetContextDataFixture fixture) args) : base(
+            args.options,
+            args.fixture,
+            args.connection
+        )
+        {
+        }
+    }
+
+    public class SqliteFacetContext : InMemoryJsonSeededFacetContext
+    {
+        public SqliteFacetContext() : base("Json")
+        {
+        }
+    }
+
 }
