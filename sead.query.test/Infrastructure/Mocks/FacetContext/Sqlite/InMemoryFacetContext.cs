@@ -2,22 +2,34 @@
 using SeadQueryInfra;
 using SQT.Infrastructure;
 using SQT.Scaffolding;
-using System;
-using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SQT.Mocks
 {
     public class JsonSeededFacetContext : FacetContext
     {
-        public JsonFacetContextDataFixture Fixture { get; }
 
-        public JsonSeededFacetContext(DbContextOptions options, JsonFacetContextDataFixture fixture) : base(options)
+        public JsonFacetContextDataFixture Fixture { get; }
+        private DbConnection Connection { get; }
+
+        public JsonSeededFacetContext(DbContextOptions options, JsonFacetContextDataFixture fixture, DbConnection connection) : base(options)
         {
             Fixture = fixture;
+            Connection = connection;
+        }
+
+        public JsonSeededFacetContext((DbContextOptions options, JsonFacetContextDataFixture fixture, DbConnection connection) args) : this(args.options, args.fixture, args.connection)
+        {
+        }
+
+        public static async Task<JsonSeededFacetContext> Create(string jsonFolder)
+        {
+            var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder));
+            var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2();
+            return new JsonSeededFacetContext(options, fixture, connection);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -54,6 +66,12 @@ namespace SQT.Mocks
             using (StreamReader reader = new StreamReader(new GZipStream(fileStream, CompressionMode.Decompress)))
                 schema_ddl = reader.ReadToEnd();
             return schema_ddl;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            Connection?.Dispose();
         }
     }
 }
