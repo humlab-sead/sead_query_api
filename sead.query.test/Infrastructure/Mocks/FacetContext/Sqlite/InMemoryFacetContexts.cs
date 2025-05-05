@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeadQueryInfra;
 using SQT.Infrastructure;
+using SQT.Mocks;
 using SQT.Scaffolding;
 using System.Data.Common;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 
-namespace SQT.Mocks
+namespace SQT.Infrastructure
 {
     public class InMemoryFacetContext : FacetContext
     {
