@@ -5,35 +5,30 @@ using SeadQueryCore;
 using SeadQueryInfra;
 using SQT.Infrastructure;
 using SQT.Scaffolding;
+using System.Data.Common;
 using System.Threading.Tasks;
 
 namespace SQT.Mocks;
 
 public class JsonSeededFacetContextFactory
 {
-    public virtual async Task<FacetContext> CreateAsync(DbContextOptions options, string jsonFolder) //, string modelSchemaFilename = null)
+    public virtual async Task<FacetContext> CreateAsync(string jsonFolder)
+    {
+        var (context, _, _) = await CreateTupleAsync(jsonFolder);
+        return context;
+    }
+    public virtual async Task<(JsonSeededFacetContext, DbConnection, JsonFacetContextDataFixture)> CreateTupleAsync(string jsonFolder)
     {
         var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder));
-        using (var context = new JsonSeededFacetContext(options, fixture))
-        {
-            await context.Database.EnsureCreatedAsync();
-            await context.SaveChangesAsync();
-            return context;
-        }
+        var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2();
+        var context = new JsonSeededFacetContext(options, fixture, connection);
+        await context.Database.EnsureCreatedAsync();
+        await context.SaveChangesAsync();
+        return (context, connection, fixture);
     }
 
-    public virtual FacetContext Create(DbContextOptions options, string jsonFolder) //, string modelSchemaFilename = null)
+    public virtual FacetContext Create(string jsonFolder)
     {
-        return CreateAsync(options, jsonFolder).GetAwaiter().GetResult();
-    }
-
-    public virtual FacetContext CreateSqlite(string jsonFolder)
-    {
-        using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
-        {
-            connection.Open();
-            var options = new DbContextOptionsBuilder<FacetContext>().UseSqlite(connection).Options;
-            return Create(options, jsonFolder);
-        }
+        return CreateAsync(jsonFolder).GetAwaiter().GetResult();
     }
 }
