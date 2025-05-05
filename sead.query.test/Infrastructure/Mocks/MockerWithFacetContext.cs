@@ -498,5 +498,12 @@ namespace SQT
             return result.AreEqual;
         }
 
+        public static Mock<ISetting> MockSettings()
+        {
+            var settingsMock = new Mock<ISetting>();
+            settingsMock.Setup(x => x.Facet).Returns(new FacetSetting());
+            settingsMock.Setup(x => x.Store).Returns(new StoreSetting());
+            return settingsMock;
+        }
     }
 }

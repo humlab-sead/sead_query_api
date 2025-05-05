@@ -49,14 +49,14 @@ namespace SQT.Infrastructure
         [Fact]
         public void Resolve_CanResolveCacheService()
         {
-            var settingsMock = new Mock<ISetting>();
-            settingsMock.Setup(x => x.Facet).Returns(new FacetSetting());
-            settingsMock.Setup(x => x.Store).Returns(new StoreSetting());
-            using (var container = DependencyService.CreateContainer(null, ScaffoldUtility.GetDataFolder("Json"), settingsMock.Object))
+            var settingsMock = MockerWithFacetContext.MockSettings();
+            var facetContext = new JsonSeededFacetContextFactory().Create("Json");
+            using (var container = DependencyService.CreateContainer(facetContext, settingsMock.Object))
             using (var scope = container.BeginLifetimeScope())
             {
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
             }
         }
+
     }
 }
