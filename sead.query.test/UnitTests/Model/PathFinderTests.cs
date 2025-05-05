@@ -30,8 +30,7 @@ namespace SQT.Model
 
         private IContainer CreateDependencyContainer()
         {
-            var folder = ScaffoldUtility.GetDataFolder("Json");
-            var container = DependencyService.CreateContainer(FacetContext, folder, null);
+            var container = DependencyService.CreateContainer(FacetContext, MockSettings().Object);
             return container;
         }
 
