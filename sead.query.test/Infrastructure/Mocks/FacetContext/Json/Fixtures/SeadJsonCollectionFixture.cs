@@ -1,4 +1,6 @@
-﻿using System.Net.NetworkInformation;
+﻿using System.Data.Common;
+using System.Net.NetworkInformation;
+using Microsoft.EntityFrameworkCore;
 using SQT.Mocks;
 using SQT.Scaffolding;
 using Xunit;
@@ -20,12 +22,33 @@ namespace SQT.Infrastructure
         // ICollectionFixture<> interfaces.
     }
 
-    public class SqliteFacetContext : JsonSeededFacetContext
+    public class SqliteJsonFacetContext : JsonSeededFacetContext
     {
-        public SqliteFacetContext() : base(
-            new SqliteConnectionFactory().CreateDbContextOptions(),
-            new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder("Json"))
+        public SqliteJsonFacetContext(string jsonFolder) : this(
+            new SqliteConnectionFactory().CreateDbContextOptionsAsync2().GetAwaiter().GetResult(),
+            jsonFolder
             )
+        {
+        }
+        public SqliteJsonFacetContext((DbContextOptions options, DbConnection connection) args, string jsonFolder) : base(
+            args.options,
+            new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder)),
+            args.connection
+        )
+        {
+        }
+        public SqliteJsonFacetContext((DbContextOptions options, DbConnection connection, JsonFacetContextDataFixture fixture) args) : base(
+            args.options,
+            args.fixture,
+            args.connection
+        )
+        {
+        }
+    }
+
+    public class SqliteFacetContext : SqliteJsonFacetContext
+    {
+        public SqliteFacetContext() : base("Json")
         {
         }
     }
@@ -37,4 +60,18 @@ namespace SQT.Infrastructure
         // to be the place to apply [CollectionDefinition] and all the
         // ICollectionFixture<> interfaces.
     }
+
+
+    public class StudyDbSqliteFacetContext : SqliteJsonFacetContext
+    {
+        public StudyDbSqliteFacetContext() : base("StudyDb/Json")
+        {
+        }
+    }
+
+    [CollectionDefinition("StudyDbSqliteFacetContext")]
+    public class StudyDbSqliteFacetContextCollection : ICollectionFixture<StudyDbSqliteFacetContext>
+    {
+    }
+
 }
