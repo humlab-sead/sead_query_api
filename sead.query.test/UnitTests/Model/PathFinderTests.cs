@@ -207,22 +207,13 @@ namespace SQT.Model
         [Fact]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
+            using (var context = new JsonSeededFacetContextFactory().Create("Json"))
             {
-                connection.Open();
-
-                var options = new DbContextOptionsBuilder<FacetContext>()
-                    .UseSqlite(connection) // Set the connection explicitly, so it won't be closed automatically by EF
-                    .Options;
-
-                using (var context = new JsonSeededFacetContextFactory().Create("Json"))
-                {
-                    var count = await context.FacetGroups.CountAsync();
-                    Assert.True(count > 0);
-                    var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
-                    Assert.NotNull(u);
-                    Assert.Equal(999, u.FacetGroupId);
-                }
+                var count = await context.FacetGroups.CountAsync();
+                Assert.True(count > 0);
+                var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
+                Assert.NotNull(u);
+                Assert.Equal(999, u.FacetGroupId);
             }
         }
     }
