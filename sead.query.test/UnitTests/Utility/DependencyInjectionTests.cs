@@ -56,7 +56,7 @@ namespace SQT.Infrastructure
     {
         private IContainer CreateDependencyContainer()
         {   var settingsMock = MockerWithFacetContext.MockSettings();
-            var facetContext = new JsonSeededFacetContextFactory().Create("Json");
+            var facetContext = new SqliteFacetContext();
             var container = DependencyService.CreateContainer(facetContext, settingsMock.Object);
             return container;
         }
