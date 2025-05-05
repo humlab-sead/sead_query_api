@@ -4,10 +4,10 @@ using Xunit;
 
 namespace SQT.Infrastructure
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetConfigReconstituteServiceTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class FacetConfigReconstituteServiceTests : MockerWithFacetContext
     {
-        public FacetConfigReconstituteServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public FacetConfigReconstituteServiceTests(SqliteFacetContext facetContext) : base(facetContext)
         {
         }
 

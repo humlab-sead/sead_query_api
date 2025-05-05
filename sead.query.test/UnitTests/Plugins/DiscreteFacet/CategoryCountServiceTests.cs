@@ -8,8 +8,8 @@ using Xunit;
 
 namespace SQT.Services.Plugins.Discrete
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
+    [Collection("SqliteFacetContext")]
+    public class CategoryCountServiceTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
     {
         [Theory]
         [InlineData("sites:sites", 5)]

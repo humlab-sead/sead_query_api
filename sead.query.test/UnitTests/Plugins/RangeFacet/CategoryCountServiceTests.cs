@@ -10,8 +10,8 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryCountServiceTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
+    [Collection("SqliteFacetContext")]
+    public class CategoryCountServiceTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
     {
         [Theory]
         [InlineData("sites:sites/tbl_denormalized_measured_values_33_0")]

@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.SqlCompilers
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class MapResultSqlCompilerTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class MapResultSqlCompilerTests : MockerWithFacetContext
     {
-        public MapResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public MapResultSqlCompilerTests(SqliteFacetContext fixture) : base(fixture)
         {
         }
 

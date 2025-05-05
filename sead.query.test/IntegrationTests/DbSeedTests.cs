@@ -21,7 +21,7 @@ namespace IntegrationTests.Deprecated
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
             var folder = ScaffoldUtility.GetDataFolder("Json");
-            var fixture = new SeadJsonFacetContextFixture();
+            var fixture = new SqliteFacetContext();
 
             var modelSchemaFilename = Path.Join(ScaffoldUtility.GetDataFolder("Json"), "sead_staging_sqlite_schema.sql");
 
@@ -31,7 +31,7 @@ namespace IntegrationTests.Deprecated
 
                 var options = new DbContextOptionsBuilder<FacetContext>().UseSqlite(connection).Options;
 
-                using (var context = JsonSeededFacetContextFactory.Create(options, fixture, modelSchemaFilename)) // new JsonSeededFacetContext(options, fixture))
+                using (var context = new JsonSeededFacetContextFactory().Create(options, "Json")) // new JsonSeededFacetContext(options, fixture))
                 {
                     // context.Database.EnsureCreated();
                     // context.SaveChanges();

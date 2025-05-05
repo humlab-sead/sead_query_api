@@ -8,8 +8,8 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class PickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
+    [Collection("SqliteFacetContext")]
+    public class PickFilterCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
     {
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()

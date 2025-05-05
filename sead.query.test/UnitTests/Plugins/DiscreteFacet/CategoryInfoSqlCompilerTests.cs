@@ -6,8 +6,8 @@ using System.Diagnostics;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryInfoSqlCompilerTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
+    [Collection("SqliteFacetContext")]
+    public class CategoryInfoSqlCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
     {
         [Theory]
         [InlineData("dataset_methods:dataset_methods")]

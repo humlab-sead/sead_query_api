@@ -1,14 +1,15 @@
 using SeadQueryCore;
+using SeadQueryInfra;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetRepositoryTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class FacetRepositoryTests : MockerWithFacetContext
     {
-        public FacetRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public FacetRepositoryTests(SqliteFacetContext facetContext) : base(facetContext)
         {
         }
 

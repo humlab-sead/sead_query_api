@@ -19,14 +19,14 @@ namespace IntegrationTests.Sead
     {
     }
 
-    [Collection("SeadJsonFacetContextFixture")]
+    [Collection("SqliteFacetContext")]
     public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public MockerWithFacetContext MockService { get; }
 
-        public ResultControllerTests(TestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(TestHostWithContainer hostBuilderFixture, SqliteFacetContext facetContextFixture) : base(hostBuilderFixture)
         {
-            MockService = new MockerWithJsonFacetContext(facetContextFixture);
+            MockService = new MockerWithFacetContext(facetContextFixture);
         }
 
         [Fact]

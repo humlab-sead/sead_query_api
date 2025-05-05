@@ -4,10 +4,10 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class ViewStateRepositoryTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class ViewStateRepositoryTests : MockerWithFacetContext
     {
-        public ViewStateRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public ViewStateRepositoryTests(SqliteFacetContext fixture) : base(fixture)
         {
         }
 

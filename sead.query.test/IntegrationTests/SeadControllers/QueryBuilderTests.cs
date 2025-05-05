@@ -15,8 +15,8 @@ using SeadQueryCore.Model;
 namespace IntegrationTests.Sead
 {
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class QueryBuilderTests(SeadJsonFacetContextFixture facetContext) : IntegrationTestBase(facetContext)
+    [Collection("SqliteFacetContext")]
+    public class QueryBuilderTests(SqliteFacetContext facetContext) : IntegrationTestBase(facetContext)
     {
 
         [Theory]

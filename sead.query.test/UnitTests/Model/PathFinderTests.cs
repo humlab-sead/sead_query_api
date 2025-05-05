@@ -16,10 +16,10 @@ namespace SQT.Model
 {
     using Route = List<TableRelation>;
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class RouteFinderTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class RouteFinderTests : MockerWithFacetContext
     {
-        public RouteFinderTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public RouteFinderTests(SqliteFacetContext facetContext) : base(facetContext)
         {
         }
 
@@ -208,8 +208,6 @@ namespace SQT.Model
         [Fact]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            var folder = ScaffoldUtility.GetDataFolder("Json");
-
             using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
             {
                 connection.Open();
@@ -218,7 +216,7 @@ namespace SQT.Model
                     .UseSqlite(connection) // Set the connection explicitly, so it won't be closed automatically by EF
                     .Options;
 
-                using (var context = JsonSeededFacetContextFactory.Create(options, Fixture))
+                using (var context = new JsonSeededFacetContextFactory().Create("Json"))
                 {
                     var count = await context.FacetGroups.CountAsync();
                     Assert.True(count > 0);

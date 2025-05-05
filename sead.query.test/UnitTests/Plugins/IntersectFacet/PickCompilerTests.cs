@@ -8,8 +8,8 @@ using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class PickCompilerTests(SeadJsonFacetContextFixture fixture) : MockerWithJsonFacetContext(fixture)
+    [Collection("SqliteFacetContext")]
+    public class PickCompilerTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
     {
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()

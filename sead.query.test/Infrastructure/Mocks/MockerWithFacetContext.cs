@@ -42,9 +42,9 @@ namespace SQT
         public virtual RepositoryRegistry CreateRepositoryRegistry()
             => new(FacetContext);
 
-        public MockerWithFacetContext()
+        public MockerWithFacetContext(FacetContext facetContext = null)
         {
-            __FacetContext = new Lazy<IFacetContext>(CreateFacetContext);
+            __FacetContext = facetContext != null ? new Lazy<IFacetContext>(() => facetContext) : new Lazy<IFacetContext>(CreateFacetContext);
             __RepositoryRegistry = new Lazy<RepositoryRegistry>(CreateRepositoryRegistry);
             __Settings = new Lazy<ISetting>(CreateSettings);
         }

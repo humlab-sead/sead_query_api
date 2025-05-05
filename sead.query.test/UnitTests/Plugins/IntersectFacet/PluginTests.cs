@@ -9,8 +9,8 @@ namespace SQT.Plugins.Intersect
 {
  
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class PluginTests(SeadJsonFacetContextFixture facetContextFixture): IntegrationTestBase(facetContextFixture)
+    [Collection("SqliteFacetContext")]
+    public class PluginTests(SqliteFacetContext facetContextFixture): IntegrationTestBase(facetContextFixture)
     {
 
         [Fact]

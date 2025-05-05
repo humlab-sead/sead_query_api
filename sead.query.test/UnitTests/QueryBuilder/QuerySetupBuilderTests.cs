@@ -9,10 +9,10 @@ namespace SQT.QueryBuilder
 {
     using Route = List<TableRelation>;
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class QuerySetupBuilderTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class QuerySetupBuilderTests : MockerWithFacetContext
     {
-        public QuerySetupBuilderTests(SeadJsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
+        public QuerySetupBuilderTests(SqliteFacetContext fixture, ITestOutputHelper output) : base(fixture)
         {
             Output = output;
         }

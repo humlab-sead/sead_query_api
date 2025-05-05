@@ -7,8 +7,8 @@ using Xunit;
 
 namespace SQT.Model
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetGroupTests : MockerWithJsonFacetContext
+    [Collection("SqliteFacetContext")]
+    public class FacetGroupTests : MockerWithFacetContext
     {
         public static List<object[]> TestData = new() {
             new object[] {
@@ -24,7 +24,7 @@ namespace SQT.Model
             }
         };
 
-        public FacetGroupTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public FacetGroupTests(SqliteFacetContext fixture) : base(fixture)
         {
         }
 
