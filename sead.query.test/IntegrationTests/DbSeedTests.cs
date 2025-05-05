@@ -20,46 +20,15 @@ namespace IntegrationTests.Deprecated
         [Fact]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            var folder = ScaffoldUtility.GetDataFolder("Json");
-            var fixture = new SqliteFacetContext();
-
-            var modelSchemaFilename = Path.Join(ScaffoldUtility.GetDataFolder("Json"), "sead_staging_sqlite_schema.sql");
-
-            using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
+            using (var context = new JsonSeededFacetContextFactory().Create("Json")) 
             {
-                connection.Open();
-
-                var options = new DbContextOptionsBuilder<FacetContext>().UseSqlite(connection).Options;
-
-                using (var context = new JsonSeededFacetContextFactory().Create(options, "Json")) // new JsonSeededFacetContext(options, fixture))
-                {
-                    // context.Database.EnsureCreated();
-                    // context.SaveChanges();
-                    // context.ExecuteRawSqlFile(modelSchemaFilename);
-                    // context.SaveChanges();
-
-                    Console.WriteLine("TEST");
-                }
-
-                using (var context = Create(options, fixture))
-                {
-                    var count = await context.FacetGroups.CountAsync();
-                    Assert.True(count > 0);
-                    var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
-                    Assert.NotNull(u);
-                    Assert.Equal(999, u.FacetGroupId);
-                }
+                var count = await context.FacetGroups.CountAsync();
+                Assert.True(count > 0);
+                var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
+                Assert.NotNull(u);
+                Assert.Equal(999, u.FacetGroupId);
             }
         }
 
-        public static FacetContext Create(DbContextOptions options, JsonFacetContextDataFixture fixture)
-        {
-            using (var context = new JsonSeededFacetContext(options, fixture))
-            {
-                context.Database.EnsureCreated();
-                context.SaveChanges();
-            }
-            return new FacetContext(options);
-        }
     }
 }
