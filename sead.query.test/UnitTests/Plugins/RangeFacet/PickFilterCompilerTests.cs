@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("Postgres Docker Session")]
+    [Collection("UsePostgresDockerSession")]
     public class PickFilterCompilerTests() : MockerWithFacetContext()
     {
         [Theory]

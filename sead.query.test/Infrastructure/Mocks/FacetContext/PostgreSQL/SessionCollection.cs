@@ -1,5 +1,5 @@
 // SessionCollection.cs
 using Xunit;
 
-[CollectionDefinition("Postgres Docker Session")]
+[CollectionDefinition("UsePostgresDockerSession")]
 public class SessionCollection : ICollectionFixture<PostgresSessionFixture> { }

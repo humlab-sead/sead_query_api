@@ -12,7 +12,9 @@ using Xunit;
 
 namespace IntegrationTests.Sead
 {
-    public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>, IClassFixture<PostgresSessionFixture>
+
+    [Collection("UsePostgresDockerSession")]
+    public class FacetsLoadControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public MockerWithFacetContext MockService { get; }
 

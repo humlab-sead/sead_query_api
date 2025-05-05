@@ -10,7 +10,7 @@ using System.Text;
 
 namespace IntegrationTests.Debug
 {
-    [Collection("Postgres Docker Session")]
+    [Collection("UsePostgresDockerSession")]
     public class DebugTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         readonly string jsonThatFails = @"{
