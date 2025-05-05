@@ -5,6 +5,7 @@ using SeadQueryCore;
 using SQT.Mocks;
 using Xunit;
 using SQT.Infrastructure;
+using SeadQueryInfra;
 
 namespace SQT.Scaffolding.Csharp
 {
@@ -93,7 +94,7 @@ namespace SQT.Scaffolding.Csharp
         //[Fact(Skip = "Not a test. Scaffolds C# QuerySetup objects to file, read from a JSON seeded context")]
         public void ScaffoldCSharpQuerySetupsToFileUsingJsonSeededFacetContext()
         {
-            var scaffolder = new MockerWithFacetContext(Fixture);
+            var scaffolder = new MockerWithFacetContext((FacetContext)FacetContext);
 
             // Uri format: "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
             var uris = new List<string>() {
