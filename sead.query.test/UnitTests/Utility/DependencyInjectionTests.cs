@@ -4,7 +4,9 @@ using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
+using SeadQueryInfra;
 using SQT.Infrastructure;
+using SQT.Mocks;
 using SQT.Scaffolding;
 using System;
 using System.Diagnostics;
@@ -53,9 +55,9 @@ namespace SQT.Infrastructure
     public class DependencyInjectionTests
     {
         private IContainer CreateDependencyContainer()
-        {
-            var folder = Path.Combine(ScaffoldUtility.GetDataFolder("Json"));
-            var container = DependencyService.CreateContainer(null, folder, null);
+        {   var settingsMock = MockerWithFacetContext.MockSettings();
+            var facetContext = new JsonSeededFacetContextFactory().Create("Json");
+            var container = DependencyService.CreateContainer(facetContext, settingsMock.Object);
             return container;
         }
 
