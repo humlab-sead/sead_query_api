@@ -22,22 +22,22 @@ namespace SQT.Infrastructure
         // ICollectionFixture<> interfaces.
     }
 
-    public class SqliteJsonFacetContext : InMemoryFacetContext
+    public class InMemoryJsonSeededFacetContext : InMemoryFacetContext
     {
-        public SqliteJsonFacetContext(string jsonFolder) : this(
+        public InMemoryJsonSeededFacetContext(string jsonFolder) : this(
             new SqliteConnectionFactory().CreateDbContextOptionsAsync2().GetAwaiter().GetResult(),
             jsonFolder
             )
         {
         }
-        public SqliteJsonFacetContext((DbContextOptions options, DbConnection connection) args, string jsonFolder) : base(
+        public InMemoryJsonSeededFacetContext((DbContextOptions options, DbConnection connection) args, string jsonFolder) : base(
             args.options,
             new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder)),
             args.connection
         )
         {
         }
-        public SqliteJsonFacetContext((DbContextOptions options, DbConnection connection, JsonFacetContextDataFixture fixture) args) : base(
+        public InMemoryJsonSeededFacetContext((DbContextOptions options, DbConnection connection, JsonFacetContextDataFixture fixture) args) : base(
             args.options,
             args.fixture,
             args.connection
@@ -46,7 +46,7 @@ namespace SQT.Infrastructure
         }
     }
 
-    public class SqliteFacetContext : SqliteJsonFacetContext
+    public class SqliteFacetContext : InMemoryJsonSeededFacetContext
     {
         public SqliteFacetContext() : base("Json")
         {
@@ -62,7 +62,7 @@ namespace SQT.Infrastructure
     }
 
 
-    public class StudyDbSqliteFacetContext : SqliteJsonFacetContext
+    public class StudyDbSqliteFacetContext : InMemoryJsonSeededFacetContext
     {
         public StudyDbSqliteFacetContext() : base("StudyDb/Json")
         {
