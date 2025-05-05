@@ -9,7 +9,7 @@ namespace SeadQueryTest.Infrastructure.Data.StudyModel.Model
     public partial class StudyDbContext : JsonSeededFacetContext
     {
         public StudyDbContext(DbContextOptions<StudyDbContext> options, JsonFacetContextDataFixture fixture)
-            : base(options, fixture)
+            : base(options, fixture, null) // FIXME!!!
         {
         }
 

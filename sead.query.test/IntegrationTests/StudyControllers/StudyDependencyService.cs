@@ -1,4 +1,5 @@
 ﻿using SQT.Infrastructure;
+using SQT.Mocks;
 using SQT.Scaffolding;
 
 namespace IntegrationTests.StudyDb
@@ -7,7 +8,7 @@ namespace IntegrationTests.StudyDb
     {
 
         public StudyDependencyService() :
-            base(new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder("Json")))
+            base(new JsonSeededFacetContextFactory().Create("Json"))
         {
         }
     }
