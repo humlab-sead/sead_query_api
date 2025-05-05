@@ -6,7 +6,7 @@ using SQT.Mocks;
 
 namespace SeadQueryTest.Infrastructure.Data.StudyModel.Model
 {
-    public partial class StudyDbContext : JsonSeededFacetContext
+    public partial class StudyDbContext : InMemoryFacetContext
     {
         public StudyDbContext(DbContextOptions<StudyDbContext> options, JsonFacetContextDataFixture fixture)
             : base(options, fixture, null) // FIXME!!!

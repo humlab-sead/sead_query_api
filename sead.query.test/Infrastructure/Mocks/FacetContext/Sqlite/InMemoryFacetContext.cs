@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace SQT.Mocks
 {
-    public class JsonSeededFacetContext : FacetContext
+    public class InMemoryFacetContext : FacetContext
     {
 
         public JsonFacetContextDataFixture Fixture { get; }
         private DbConnection Connection { get; }
 
-        public JsonSeededFacetContext(DbContextOptions options, JsonFacetContextDataFixture fixture, DbConnection connection) : base(options)
+        public InMemoryFacetContext(DbContextOptions options, JsonFacetContextDataFixture fixture, DbConnection connection) : base(options)
         {
             Fixture = fixture;
             Connection = connection;
         }
 
-        public JsonSeededFacetContext((DbContextOptions options, JsonFacetContextDataFixture fixture, DbConnection connection) args) : this(args.options, args.fixture, args.connection)
+        public InMemoryFacetContext((DbContextOptions options, JsonFacetContextDataFixture fixture, DbConnection connection) args) : this(args.options, args.fixture, args.connection)
         {
         }
 
-        public static async Task<JsonSeededFacetContext> Create(string jsonFolder)
+        public static async Task<InMemoryFacetContext> Create(string jsonFolder)
         {
             var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder));
             var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2();
-            return new JsonSeededFacetContext(options, fixture, connection);
+            return new InMemoryFacetContext(options, fixture, connection);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -45,7 +45,7 @@ namespace SQT.Mocks
         /// Create the target model of the Facet system (i.e. the public schema)
         /// </summary>
         /// <param name="filename"></param>
-        public JsonSeededFacetContext ExecuteRawSqlFile(string filename)
+        public InMemoryFacetContext ExecuteRawSqlFile(string filename)
         {
             if (!File.Exists(filename))
                 throw new FileNotFoundException(filename);

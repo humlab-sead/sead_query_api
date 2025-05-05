@@ -22,7 +22,7 @@ namespace SQT.Infrastructure
         // ICollectionFixture<> interfaces.
     }
 
-    public class SqliteJsonFacetContext : JsonSeededFacetContext
+    public class SqliteJsonFacetContext : InMemoryFacetContext
     {
         public SqliteJsonFacetContext(string jsonFolder) : this(
             new SqliteConnectionFactory().CreateDbContextOptionsAsync2().GetAwaiter().GetResult(),
