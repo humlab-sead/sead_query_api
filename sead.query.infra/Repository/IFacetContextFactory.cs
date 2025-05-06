@@ -4,6 +4,6 @@ namespace SeadQueryInfra
 {
     public interface IFacetContextFactory
     {
-        IFacetContext GetInstance();
+        FacetContext GetInstance();
     }
 }

@@ -36,17 +36,20 @@ namespace SQT
         public virtual ISetting CreateSettings()
             => (ISetting)new SettingFactory().Create().Value;
 
-        public virtual IFacetContext CreateFacetContext()
+        public virtual FacetContext CreateFacetContext()
             => new FacetContextFactory(Settings.Store).GetInstance();
 
         public virtual RepositoryRegistry CreateRepositoryRegistry()
             => new(FacetContext);
 
-        public MockerWithFacetContext(FacetContext facetContext = null)
+        public MockerWithFacetContext(FacetContext facetContext)
         {
             __FacetContext = facetContext != null ? new Lazy<IFacetContext>(() => facetContext) : new Lazy<IFacetContext>(CreateFacetContext);
             __RepositoryRegistry = new Lazy<RepositoryRegistry>(CreateRepositoryRegistry);
             __Settings = new Lazy<ISetting>(CreateSettings);
+        }
+        public MockerWithFacetContext() : this(null)
+        {
         }
 
         public virtual void Dispose()
