@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SQT.Scaffolding;
@@ -20,7 +21,7 @@ namespace SQT.Infrastructure
 
         public JsonFacetContextDataFixture(string folder)
         {
-            Folder = folder; // ScaffoldUtility.JsonDataFolder();
+            Folder = Path.Combine(ScaffoldUtility.GetDataFolder(), folder);
             Types = ScaffoldUtility.GetModelTypes();
             LazyItems = new Lazy<ItemsDictionary>(Load);
         }
