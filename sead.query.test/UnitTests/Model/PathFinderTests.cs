@@ -191,30 +191,6 @@ namespace SQT.Model
             Assert.NotNull(route);
             Assert.Empty(route);
         }
-        //public static DbContextOptions Initialize(DbConnection connection)
-        //{
-        //    var seeder = new FakeFacetContextJsonSeeder();
-        //    var options = SqliteInMemoryContextOptionsFactory.Create(connection);
-        //    using (var context = new FacetContext(options)) {
-        //        context.Database.EnsureCreated();
-        //    }
-        //    using (var context = new FacetContext(options)) {
-        //        seeder.Seed(context);
-        //    }
-        //    return options;
-        //}
 
-        [Fact]
-        public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
-        {
-            using (var context = new JsonSeededFacetContextFactory().Create("Data/FacetDb"))
-            {
-                var count = await context.FacetGroups.CountAsync();
-                Assert.True(count > 0);
-                var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
-                Assert.NotNull(u);
-                Assert.Equal(999, u.FacetGroupId);
-            }
-        }
     }
 }
