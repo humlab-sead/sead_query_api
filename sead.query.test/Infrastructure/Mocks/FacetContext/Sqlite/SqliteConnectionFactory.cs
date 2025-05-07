@@ -24,16 +24,16 @@ namespace SQT.Mocks
         /// <summary>
         /// Asynchronously build DbContextOptions by first creating/opening the connection.
         /// </summary>
-        public virtual async Task<DbContextOptions> CreateDbContextOptionsAsync()
+        public virtual async Task<DbContextOptions<T>> CreateDbContextOptionsAsync<T>() where T : DbContext
         {
-            var (options, _) = await CreateDbContextOptionsAsync2();
-            return options;
+            var (options, _) = await CreateDbContextOptionsAsync2<T>();
+            return (DbContextOptions<T>)options;
         }
 
-        public virtual async Task<(DbContextOptions, DbConnection)> CreateDbContextOptionsAsync2()
+        public virtual async Task<(DbContextOptions, DbConnection)> CreateDbContextOptionsAsync2<T>() where T : DbContext
         {
             var connection = await CreateAsync().ConfigureAwait(false);
-            var builder = new DbContextOptionsBuilder<FacetContext>()
+            var builder = new DbContextOptionsBuilder<T>()
                 .UseSqlite(connection)
                 .EnableSensitiveDataLogging(true);
             return (builder.Options, connection);
@@ -42,8 +42,8 @@ namespace SQT.Mocks
         /// <summary>
         /// Synchronous options builder (unchanged).
         /// </summary>
-        public virtual DbContextOptions CreateDbContextOptions()
-            => CreateDbContextOptionsAsync().GetAwaiter().GetResult();
+        public virtual DbContextOptions CreateDbContextOptions<T>() where T : DbContext
+            => CreateDbContextOptionsAsync<T>().GetAwaiter().GetResult();
 
         /// <summary>
         /// Asynchronously create and open an in-memory SQLite connection.
