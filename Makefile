@@ -12,7 +12,7 @@ test:
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
-	@./sead.query.test/Infrastructure/Data/PostgreSQL/create-sample sead_staging --port 8089 
+	@./sead.query.test/sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging --port 8089 
 
 clean:
 	@dotnet clean
@@ -51,7 +51,7 @@ release-pr:
 .PHONY: tools
 tools:
 	@dotnet tool install csharpier --global
-	@cat 'add_folder_to_path "$$HOME/.dotnet/tools"' >> ~/.bashrc'
+	@cat 'add_folder_to_path "$${HOME}/.dotnet/tools"' >> ~/.bashrc'
 	@echo "info: csharpier installed, see https://csharpier.com/docs/About for more information"
 
 changelog-tools:
