@@ -1,8 +1,4 @@
-﻿using AutoFixture;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using SeadQueryInfra;
+﻿using SeadQueryInfra;
 using SQT.Infrastructure;
 using SQT.Scaffolding;
 using System.Data.Common;
@@ -20,7 +16,7 @@ public class JsonSeededFacetContextFactory
     public virtual async Task<(InMemoryFacetContext, DbConnection, JsonFacetContextDataFixture)> CreateTupleAsync(string jsonFolder)
     {
         var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder));
-        var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2();
+        var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2<InMemoryFacetContext>();
         var context = new InMemoryFacetContext(options, fixture, connection);
         await context.Database.EnsureCreatedAsync();
         await context.SaveChangesAsync();
