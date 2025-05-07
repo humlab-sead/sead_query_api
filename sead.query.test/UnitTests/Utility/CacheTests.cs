@@ -50,8 +50,7 @@ namespace SQT.Infrastructure
         public void Resolve_CanResolveCacheService()
         {
             var settingsMock = MockerWithFacetContext.MockSettings();
-            var facetContext = new JsonSeededFacetContextFactory().Create("Data/FacetDb");
-            using (var container = DependencyService.CreateContainer(facetContext, settingsMock.Object))
+            using (var container = DependencyService.CreateContainer(null, settingsMock.Object))
             using (var scope = container.BeginLifetimeScope())
             {
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());

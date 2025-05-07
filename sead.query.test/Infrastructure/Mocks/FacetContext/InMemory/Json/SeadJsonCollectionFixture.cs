@@ -26,7 +26,7 @@ namespace SQT.Infrastructure
 
     public class StudyDbSqliteFacetContext : InMemoryJsonSeededFacetContext
     {
-        public StudyDbSqliteFacetContext() : base("StudyDb/Json")
+        public StudyDbSqliteFacetContext() : base(ScaffoldUtility.GetInMemoryDataFolder("StudyDb/Json"))
         {
         }
     }

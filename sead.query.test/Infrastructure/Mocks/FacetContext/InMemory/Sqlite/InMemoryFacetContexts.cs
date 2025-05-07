@@ -28,9 +28,9 @@ namespace SQT.Infrastructure
         {
         }
 
-        public static async Task<InMemoryFacetContext> Create(string jsonFolder)
+        public static async Task<InMemoryFacetContext> Create(string folder)
         {
-            var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetInMemoryDataFolder());
+            var fixture = new JsonFacetContextDataFixture(folder);
             var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2<InMemoryFacetContext>();
             return new InMemoryFacetContext(options, fixture, connection);
         }
@@ -81,16 +81,16 @@ namespace SQT.Infrastructure
 
     public class InMemoryJsonSeededFacetContext : InMemoryFacetContext
     {
-        public InMemoryJsonSeededFacetContext(string jsonFolder) : this(
+        public InMemoryJsonSeededFacetContext(string folder) : this(
             new SqliteConnectionFactory().CreateDbContextOptionsAsync2<InMemoryJsonSeededFacetContext>().GetAwaiter().GetResult(),
-            jsonFolder
+            folder
             )
         {
         }
 
-        public InMemoryJsonSeededFacetContext((DbContextOptions options, DbConnection connection) args, string jsonFolder) : base(
+        public InMemoryJsonSeededFacetContext((DbContextOptions options, DbConnection connection) args, string folder) : base(
             args.options,
-            new JsonFacetContextDataFixture(ScaffoldUtility.GetInMemoryDataFolder(jsonFolder)),
+            new JsonFacetContextDataFixture(folder),
             args.connection
         )
         {
@@ -108,7 +108,7 @@ namespace SQT.Infrastructure
     public class SqliteFacetContext : InMemoryJsonSeededFacetContext
     {
         private static bool _created;
-        public SqliteFacetContext() : base("Data/FacetDb")
+        public SqliteFacetContext() : base(ScaffoldUtility.GetInMemoryDataFolder("Data/FacetDb"))
         {
             if (!_created) {
                 Database.EnsureCreated();

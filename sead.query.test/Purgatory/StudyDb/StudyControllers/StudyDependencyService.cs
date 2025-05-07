@@ -1,5 +1,6 @@
 ﻿using SQT.Infrastructure;
 using SQT.Mocks;
+using SQT.Scaffolding;
 
 namespace Deprecated.StudyDb
 {
@@ -7,7 +8,7 @@ namespace Deprecated.StudyDb
     {
 
         public StudyDependencyService() :
-            base(new JsonSeededFacetContextFactory().Create("Data/StudyDb"))
+            base(new JsonSeededFacetContextFactory().Create(ScaffoldUtility.GetInMemoryDataFolder("Data/StudyDb")))
         {
         }
     }
