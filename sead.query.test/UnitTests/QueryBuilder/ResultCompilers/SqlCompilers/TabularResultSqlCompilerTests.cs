@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class TabularResultSqlCompilerTests : MockerWithFacetContext
     {
         public TabularResultSqlCompilerTests() : base()

@@ -6,14 +6,15 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
- 
 
-    [Collection("UsePostgresDockerSession")]
+
+    [Collection("UsePostgresFixture")]
     public class PluginTests() : IntegrationTestBase()
     {
 
         [Fact]
-        public void Plugin_CanResolve_Test() {
+        public void Plugin_CanResolve_Test()
+        {
 
             IFacetPlugin plugin = Container.Resolve<IDiscreteFacetPlugin>();
 

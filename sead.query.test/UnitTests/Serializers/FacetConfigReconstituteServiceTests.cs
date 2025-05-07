@@ -4,7 +4,7 @@ using Xunit;
 
 namespace SQT.Infrastructure
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class FacetConfigReconstituteServiceTests : MockerWithFacetContext
     {
         public FacetConfigReconstituteServiceTests() : base()

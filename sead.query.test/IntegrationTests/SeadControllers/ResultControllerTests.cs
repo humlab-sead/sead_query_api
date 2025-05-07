@@ -19,7 +19,7 @@ namespace IntegrationTests.Sead
     {
     }
 
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public MockerWithFacetContext MockService { get; }

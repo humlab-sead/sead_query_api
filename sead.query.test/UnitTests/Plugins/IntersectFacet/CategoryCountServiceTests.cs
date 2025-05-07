@@ -10,7 +10,7 @@ using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class CategoryCountServiceTests() : MockerWithFacetContext()
     {
         [Theory]

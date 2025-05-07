@@ -12,8 +12,8 @@ namespace SQT.Plugins.Intersect
 {
 
 
-    [Collection("UsePostgresDockerSession")]
-    public class QueryBuilderTests: IntegrationTestBase
+    [Collection("UsePostgresFixture")]
+    public class QueryBuilderTests : IntegrationTestBase
     {
 
         [Theory]

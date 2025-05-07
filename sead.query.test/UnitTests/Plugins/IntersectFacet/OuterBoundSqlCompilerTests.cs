@@ -5,7 +5,7 @@ using SQT.Infrastructure;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class OuterBoundSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]

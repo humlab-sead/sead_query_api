@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SQT.Plugins.GeoPolygon
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class PickFilterCompilerTests() : MockerWithFacetContext()
     {
         [Fact]

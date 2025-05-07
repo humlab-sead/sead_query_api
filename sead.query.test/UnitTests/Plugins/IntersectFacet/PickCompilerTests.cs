@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class PickCompilerTests() : MockerWithFacetContext()
     {
         [Fact]

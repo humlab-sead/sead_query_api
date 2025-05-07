@@ -16,7 +16,7 @@ namespace SQT.Model
 {
     using Route = List<TableRelation>;
 
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class RouteFinderTests : MockerWithFacetContext
     {
         public RouteFinderTests() : base()

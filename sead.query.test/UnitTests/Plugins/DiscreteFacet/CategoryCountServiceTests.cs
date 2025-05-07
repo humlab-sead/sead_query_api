@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SQT.Services.Plugins.Discrete
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class CategoryCountServiceTests() : MockerWithFacetContext()
     {
         [Theory]

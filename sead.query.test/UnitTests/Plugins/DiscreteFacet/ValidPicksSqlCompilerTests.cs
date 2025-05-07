@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class ValidPicksSqlQueryCompilerTests() : MockerWithFacetContext()
     {
         [Theory]

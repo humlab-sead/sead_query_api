@@ -7,7 +7,7 @@ using SQT.Mocks;
 
 namespace SQT.LiveServices
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class ResultLoadServiceTests
     {
         public SeadQueryAPI.DependencyService DependencyService { get; private set; }
@@ -31,7 +31,7 @@ namespace SQT.LiveServices
         public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
             => ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
 
-        
+
         [Theory]
         // [InlineData("abundance_classification:abundance_classification", "result_facet", "site_level", "tabular")]
         // [InlineData("isotope://sites:sites", "result_facet", "site_level", "tabular")]

@@ -12,7 +12,7 @@ using static SeadQueryCore.FacetsConfig2;
 
 namespace SQT.Model
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class FacetsConfig2Tests : MockerWithFacetContext
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;

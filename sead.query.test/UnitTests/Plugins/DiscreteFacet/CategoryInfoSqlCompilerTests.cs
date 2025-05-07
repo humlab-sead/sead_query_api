@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class CategoryInfoSqlCompilerTests() : MockerWithFacetContext(null)
     {
         [Theory]

@@ -15,7 +15,7 @@ using SeadQueryCore.Model;
 namespace IntegrationTests.Sead
 {
 
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class QueryBuilderTests() : IntegrationTestBase
     {
 

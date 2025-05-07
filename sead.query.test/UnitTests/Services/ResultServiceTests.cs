@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.Services
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class ResultServiceTests : MockerWithFacetContext
     {
-        public ResultServiceTests(): base()
+        public ResultServiceTests() : base()
         {
         }
 

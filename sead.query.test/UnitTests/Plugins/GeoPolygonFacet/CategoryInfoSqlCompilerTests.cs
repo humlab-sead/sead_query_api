@@ -6,8 +6,8 @@ using System.Diagnostics;
 
 namespace SQT.Plugins.GeoPolygon
 {
-    //[Collection("UsePostgresDockerSession")]
-    [Collection("UsePostgresDockerSession")]
+    //[Collection("UsePostgresFixture")]
+    [Collection("UsePostgresFixture")]
     public class CategoryCountSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]

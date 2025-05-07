@@ -10,7 +10,7 @@ using SQT.Scaffolding;
 
 namespace SQT.Deprecated
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class GenerateCSharp() : MockerWithFacetContext()
     {
         private string TargetFolder()

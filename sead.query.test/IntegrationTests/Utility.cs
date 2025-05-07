@@ -7,7 +7,7 @@ using SQT.Infrastructure;
 using SQT.Mocks;
 using Xunit;
 
-[Collection("UsePostgresDockerSession")]
+[Collection("UsePostgresFixture")]
 public class IntegrationTestBase
 {
     // FIXME Create base class

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("UsePostgresDockerSession")]
+    [Collection("UsePostgresFixture")]
     public class NodeRepositoryTests : MockerWithFacetContext
     {
         public NodeRepositoryTests() : base()

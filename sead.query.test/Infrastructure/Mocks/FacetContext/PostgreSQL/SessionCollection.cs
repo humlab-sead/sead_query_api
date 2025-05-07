@@ -3,12 +3,12 @@ using Xunit;
 
 namespace SQT.Infrastructure;
 
-[CollectionDefinition("UsePostgresDockerSession")]
+[CollectionDefinition("UsePostgresFixture")]
 public class UsePostgresFixtureCollection : ICollectionFixture<PostgresFixture> { }
 
 
 [CollectionDefinition("UseSmartPostgresFixture")]
-public class UseSmartPostgresFixtureCollection  : ICollectionFixture<SmartPostgresFixture> { }
+public class UseSmartPostgresFixtureCollection : ICollectionFixture<SmartPostgresFixture> { }
 
 
 [CollectionDefinition("UseImprovedPostgresFixture")]
