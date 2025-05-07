@@ -7,14 +7,17 @@ using System.IO;
 using Npgsql;
 using SeadQueryCore;
 using System;
-using SQT;
 using SQT.Scaffolding;
 
-public class PostgresSessionFixture : IAsyncLifetime
+namespace SQT.Infrastructure;
+
+#pragma warning disable CS1998
+
+public class PostgresFixture : IAsyncLifetime
 {
     private static PostgreSqlTestcontainer _container;
     private static bool _started;
-    public PostgresSessionFixture()
+    public PostgresFixture()
     {
         Options = SettingFactory.GetSettings();
     }
@@ -24,10 +27,6 @@ public class PostgresSessionFixture : IAsyncLifetime
 
     public string ConnectionString => Container.ConnectionString;
 
-    // FIXME: Use a Singleton pattern to avoid multiple initializations
-    // FIXME: Use a custom image with the database already set up (option)
-    // FIXME: Mount PGDATA to enable reuse (i.e. caching) of database
-    // FIXME: Use a random port to avoid conflicts
     public async Task InitializeDatabaseAsync(string connectionString, string sqlFilePath)
     {
         var sql = await File.ReadAllTextAsync(sqlFilePath);
@@ -55,15 +54,16 @@ public class PostgresSessionFixture : IAsyncLifetime
                 .WithDatabase(config)
                 .WithImage("postgres:15-alpine")
                 .WithCleanUp(true)
+                .WithExposedPort(port)
                 // don't bind to a fixed host port — let it pick one
                 //.WithPortBinding(5432, assignRandomHostPort: true)
                 //.WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
+                // .WithBindMount("/var/lib/postgresql/data", "/var/lib/postgresql/data") // Persistent data for speed
                 .Build();
 
             await _container.StartAsync();
 
             await SetupDatabase();
-
             _started = true;
         }
 
@@ -87,3 +87,5 @@ public class PostgresSessionFixture : IAsyncLifetime
     //     await Container.StopAsync();
     // }
 }
+
+#pragma warning restore CS1998
