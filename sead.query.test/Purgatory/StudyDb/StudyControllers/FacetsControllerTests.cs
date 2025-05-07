@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IntegrationTests;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SeadQueryCore;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationTests.StudyDb
+namespace Deprecated.StudyDb
 {
     public class FacetsControllerHostWithContainer : TestHostFixture<Startup<StudyDependencyService>>
     {

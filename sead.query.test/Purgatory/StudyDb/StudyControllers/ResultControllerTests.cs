@@ -1,10 +1,8 @@
-using Moq;
+using IntegrationTests;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SeadQueryCore;
 using SeadQueryCore.Model;
 using SQT;
-using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using System.Linq;
@@ -13,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationTests.StudyDb
+namespace Deprecated.StudyDb
 {
     public class ResultTestHostWithContainer : TestHostFixture<StudyDependencyService>
     {

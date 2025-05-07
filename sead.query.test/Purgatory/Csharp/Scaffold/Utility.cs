@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 
-namespace SQT.Scaffolding.Csharp;
+namespace SQT.Deprecated;
 
 
 public static class Utility

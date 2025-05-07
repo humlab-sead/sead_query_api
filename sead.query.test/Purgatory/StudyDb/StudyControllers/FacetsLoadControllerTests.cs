@@ -1,4 +1,4 @@
-using KellermanSoftware.CompareNetObjects;
+using IntegrationTests;
 using Newtonsoft.Json;
 using SeadQueryCore;
 using SQT;
@@ -7,11 +7,10 @@ using SQT.SQL.Matcher;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace IntegrationTests.StudyDb
+namespace Deprecated.StudyDb
 {
     public class TestHostWithContainer : TestHostFixture<StartupWithContainer>
     {

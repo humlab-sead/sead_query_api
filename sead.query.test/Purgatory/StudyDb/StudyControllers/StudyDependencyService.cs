@@ -1,8 +1,7 @@
 ﻿using SQT.Infrastructure;
 using SQT.Mocks;
-using SQT.Scaffolding;
 
-namespace IntegrationTests.StudyDb
+namespace Deprecated.StudyDb
 {
     public class StudyDependencyService : DependencyService
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace SeadQueryCore
+namespace SQT.Deprecated
 {
     public static class DumpUtility
     {

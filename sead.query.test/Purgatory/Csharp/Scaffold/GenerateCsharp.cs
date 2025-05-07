@@ -6,8 +6,9 @@ using SQT.Mocks;
 using Xunit;
 using SQT.Infrastructure;
 using SeadQueryInfra;
+using SQT.Scaffolding;
 
-namespace SQT.Scaffolding.Csharp
+namespace SQT.Deprecated
 {
     [Collection("UsePostgresDockerSession")]
     public class GenerateCSharp() : MockerWithFacetContext()
