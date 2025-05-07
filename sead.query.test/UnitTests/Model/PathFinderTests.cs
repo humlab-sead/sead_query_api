@@ -16,16 +16,16 @@ namespace SQT.Model
 {
     using Route = List<TableRelation>;
 
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class RouteFinderTests : MockerWithFacetContext
     {
-        public RouteFinderTests(SqliteFacetContext facetContext) : base(facetContext)
+        public RouteFinderTests() : base()
         {
         }
 
-        private IPathFinder CreateFacetsGraphByFakeContext(IFacetContext testContext)
+        private IPathFinder CreateFacetsGraphByFakeContext(IFacetContext facetContext)
         {
-            return ScaffoldUtility.DefaultRouteFinder(testContext);
+            return ScaffoldUtility.DefaultRouteFinder(facetContext);
         }
 
         private IContainer CreateDependencyContainer()

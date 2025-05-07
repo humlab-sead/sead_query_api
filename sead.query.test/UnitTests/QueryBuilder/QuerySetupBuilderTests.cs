@@ -9,10 +9,10 @@ namespace SQT.QueryBuilder
 {
     using Route = List<TableRelation>;
 
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class QuerySetupBuilderTests : MockerWithFacetContext
     {
-        public QuerySetupBuilderTests(SqliteFacetContext fixture, ITestOutputHelper output) : base(fixture)
+        public QuerySetupBuilderTests(ITestOutputHelper output) : base()
         {
             Output = output;
         }

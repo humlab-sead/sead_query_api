@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class ResultSpecificationFieldExtensionTests : MockerWithFacetContext
     {
-        public ResultSpecificationFieldExtensionTests(SqliteFacetContext fixture) : base(fixture)
+        public ResultSpecificationFieldExtensionTests() : base()
         {
         }
 

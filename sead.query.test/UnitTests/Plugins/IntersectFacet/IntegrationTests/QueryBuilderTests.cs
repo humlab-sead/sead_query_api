@@ -12,8 +12,8 @@ namespace SQT.Plugins.Intersect
 {
 
 
-    [Collection("SqliteFacetContext")]
-    public class QueryBuilderTests(SqliteFacetContext facetContextFixture) : IntegrationTestBase(facetContextFixture)
+    [Collection("UsePostgresDockerSession")]
+    public class QueryBuilderTests: IntegrationTestBase
     {
 
         [Theory]

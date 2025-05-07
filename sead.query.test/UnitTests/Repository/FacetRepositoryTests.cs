@@ -6,10 +6,10 @@ using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class FacetRepositoryTests : MockerWithFacetContext
     {
-        public FacetRepositoryTests(SqliteFacetContext facetContext) : base(facetContext)
+        public FacetRepositoryTests() : base()
         {
         }
 

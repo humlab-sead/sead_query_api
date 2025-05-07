@@ -8,8 +8,8 @@ using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("SqliteFacetContext")]
-    public class PickCompilerTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
+    [Collection("UsePostgresDockerSession")]
+    public class PickCompilerTests() : MockerWithFacetContext()
     {
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()

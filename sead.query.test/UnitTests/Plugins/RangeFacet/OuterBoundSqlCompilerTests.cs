@@ -5,8 +5,8 @@ using SQT.Infrastructure;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SqliteFacetContext")]
-    public class RangeOuterBoundSqlCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class RangeOuterBoundSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]

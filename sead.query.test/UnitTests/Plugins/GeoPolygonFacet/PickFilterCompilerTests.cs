@@ -7,8 +7,8 @@ using Xunit;
 
 namespace SQT.Plugins.GeoPolygon
 {
-    [Collection("SqliteFacetContext")]
-    public class PickFilterCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class PickFilterCompilerTests() : MockerWithFacetContext()
     {
         [Fact]
         public void Compile_WhenNoPicks_ReturnsEmptyString()

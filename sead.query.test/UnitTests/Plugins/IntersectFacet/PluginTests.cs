@@ -9,8 +9,8 @@ namespace SQT.Plugins.Intersect
 {
  
 
-    [Collection("SqliteFacetContext")]
-    public class PluginTests(SqliteFacetContext facetContextFixture): IntegrationTestBase(facetContextFixture)
+    [Collection("UsePostgresDockerSession")]
+    public class PluginTests(): IntegrationTestBase()
     {
 
         [Fact]

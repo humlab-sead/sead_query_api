@@ -9,8 +9,8 @@ using SeadQueryInfra;
 
 namespace SQT.Scaffolding.Csharp
 {
-    [Collection("SqliteFacetContext")]
-    public class GenerateCSharp(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
+    [Collection("UsePostgresDockerSession")]
+    public class GenerateCSharp() : MockerWithFacetContext()
     {
         private string TargetFolder()
         {

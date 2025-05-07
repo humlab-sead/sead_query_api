@@ -7,7 +7,7 @@ using Xunit;
 
 namespace SQT.Model
 {
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class FacetGroupTests : MockerWithFacetContext
     {
         public static List<object[]> TestData = new() {
@@ -24,7 +24,7 @@ namespace SQT.Model
             }
         };
 
-        public FacetGroupTests(SqliteFacetContext fixture) : base(fixture)
+        public FacetGroupTests() : base()
         {
         }
 

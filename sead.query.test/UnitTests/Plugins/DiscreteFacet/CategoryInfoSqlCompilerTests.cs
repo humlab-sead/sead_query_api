@@ -6,8 +6,8 @@ using System.Diagnostics;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SqliteFacetContext")]
-    public class CategoryInfoSqlCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class CategoryInfoSqlCompilerTests() : MockerWithFacetContext(null)
     {
         [Theory]
         [InlineData("dataset_methods:dataset_methods")]

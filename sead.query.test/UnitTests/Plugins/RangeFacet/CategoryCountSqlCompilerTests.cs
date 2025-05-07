@@ -6,8 +6,8 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SqliteFacetContext")]
-    public class CategoryCountSqlCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class CategoryCountSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]

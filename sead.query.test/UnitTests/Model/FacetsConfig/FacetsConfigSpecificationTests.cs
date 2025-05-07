@@ -4,10 +4,10 @@ using Xunit;
 
 namespace SQT.Model
 {
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class FacetsConfigSpecificationTests : MockerWithFacetContext
     {
-        public FacetsConfigSpecificationTests(SqliteFacetContext fixture) : base(fixture)
+        public FacetsConfigSpecificationTests() : base()
         {
         }
 

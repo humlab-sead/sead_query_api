@@ -8,8 +8,8 @@ using Xunit;
 
 namespace SQT.Services.Plugins.Discrete
 {
-    [Collection("SqliteFacetContext")]
-    public class CategoryCountServiceTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
+    [Collection("UsePostgresDockerSession")]
+    public class CategoryCountServiceTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("sites:sites", 5)]

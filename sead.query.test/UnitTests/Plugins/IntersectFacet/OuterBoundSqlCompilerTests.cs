@@ -5,8 +5,8 @@ using SQT.Infrastructure;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SqliteFacetContext")]
-    public class OuterBoundSqlCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class OuterBoundSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]

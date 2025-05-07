@@ -15,8 +15,8 @@ using SeadQueryCore.Model;
 namespace IntegrationTests.Sead
 {
 
-    [Collection("SqliteFacetContext")]
-    public class QueryBuilderTests(SqliteFacetContext facetContext) : IntegrationTestBase(facetContext)
+    [Collection("UsePostgresDockerSession")]
+    public class QueryBuilderTests() : IntegrationTestBase
     {
 
         [Theory]

@@ -19,14 +19,14 @@ namespace IntegrationTests.Sead
     {
     }
 
-    [Collection("SqliteFacetContext")]
+    [Collection("UsePostgresDockerSession")]
     public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public MockerWithFacetContext MockService { get; }
 
-        public ResultControllerTests(TestHostWithContainer hostBuilderFixture, SqliteFacetContext facetContextFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(TestHostWithContainer hostBuilderFixture) : base(hostBuilderFixture)
         {
-            MockService = new MockerWithFacetContext(facetContextFixture);
+            MockService = new MockerWithFacetContext();
         }
 
         [Fact]

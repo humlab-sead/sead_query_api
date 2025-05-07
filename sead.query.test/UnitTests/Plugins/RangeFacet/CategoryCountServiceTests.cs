@@ -10,8 +10,8 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SqliteFacetContext")]
-    public class CategoryCountServiceTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
+    [Collection("UsePostgresDockerSession")]
+    public class CategoryCountServiceTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("sites:sites/tbl_denormalized_measured_values_33_0")]

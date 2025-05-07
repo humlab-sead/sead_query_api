@@ -7,7 +7,7 @@ using SQT.Infrastructure;
 using SQT.Mocks;
 using Xunit;
 
-[Collection("SqliteFacetContext")]
+[Collection("UsePostgresDockerSession")]
 public class IntegrationTestBase
 {
     // FIXME Create base class
@@ -17,9 +17,9 @@ public class IntegrationTestBase
     public IQuerySetupBuilder QuerySetupBuilder { get; private set; }
     public IRepositoryRegistry Registry { get; private set; }
 
-    public IntegrationTestBase(SqliteFacetContext facetContextFixture)
+    public IntegrationTestBase(SqliteFacetContext facetConfig = null)
     {
-        DependencyService = new DependencyService(facetContextFixture) { Options = SettingFactory.GetSettings() };
+        DependencyService = new DependencyService(facetConfig) { Options = SettingFactory.GetSettings() };
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();

@@ -7,8 +7,8 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SqliteFacetContext")]
-    public class DeleteBogusPickServiceTests(SqliteFacetContext facetContext) : MockerWithFacetContext(facetContext)
+    [Collection("UsePostgresDockerSession")]
+    public class DeleteBogusPickServiceTests() : MockerWithFacetContext()
     {
         protected virtual Mock<IValidPicksSqlCompiler> MockValidPickCompiler(string returnSql)
         {

@@ -10,8 +10,8 @@ using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("SqliteFacetContext")]
-    public class CategoryCountServiceTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class CategoryCountServiceTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]

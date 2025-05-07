@@ -6,8 +6,8 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SqliteFacetContext")]
-    public class FacetContentServiceTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class FacetContentServiceTests() : MockerWithFacetContext()
     {
         public virtual Mock<RangeCategoryInfoSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
         {

@@ -5,8 +5,8 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SqliteFacetContext")]
-    public class ValidPicksSqlQueryCompilerTests(SqliteFacetContext fixture) : MockerWithFacetContext(fixture)
+    [Collection("UsePostgresDockerSession")]
+    public class ValidPicksSqlQueryCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("sites:sites@5")]

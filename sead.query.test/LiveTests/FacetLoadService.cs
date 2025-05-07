@@ -7,6 +7,7 @@ using SQT.Mocks;
 
 namespace SQT.LiveServices
 {
+    [Collection("UsePostgresDockerSession")]
     public class FacetLoadServiceTests
     {
         public SeadQueryAPI.DependencyService DependencyService { get; private set; }
