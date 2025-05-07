@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using SeadQueryAPI.Serializers;
-using SeadQueryCore;
-using SeadQueryInfra;
-using SQT.Fixtures;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,26 +8,7 @@ using System.Reflection;
 
 namespace SQT.Infrastructure
 {
-    //public static class JsonTextLoader
-    //{
-    //    public static object lockObject = new object();
-    //    public static Dictionary<string, string> __Cache = new Dictionary<string, string>();
 
-    //    public static string Get(string filename)
-    //    {
-    //        if (!__Cache.ContainsKey(filename)) {
-    //            lock (lockObject) {
-    //                if (!__Cache.ContainsKey(filename)) {
-    //                    using (StreamReader stream = new StreamReader(filename)) {
-    //                        var json = stream.ReadToEnd();
-    //                        __Cache.Add(filename, json);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        return __Cache[filename];
-    //    }
-    //}
 
     public class JsonReaderService
     {
