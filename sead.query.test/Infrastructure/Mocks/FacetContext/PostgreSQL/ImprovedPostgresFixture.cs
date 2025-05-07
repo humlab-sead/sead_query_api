@@ -57,7 +57,7 @@ public class ImprovedPostgresFixture : IAsyncLifetime
 
     private async Task SetupDatabase()
     {
-        var schemaFilePath = Path.Combine(ScaffoldUtility.GetDataFolder("PostgreSQL"), "initdb.d");
+        var schemaFilePath = ScaffoldUtility.GetPostgresDataFolder();
 
         foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
         {

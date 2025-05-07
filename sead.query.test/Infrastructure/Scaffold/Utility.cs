@@ -20,14 +20,17 @@ public static class IEnumerableExtensions
 public static class ScaffoldUtility
 {
 
-
-    public static string GetRootFolder()
+    public static string GetRootFolder(string subfolder = "")
     {
         string path = AppDomain.CurrentDomain.BaseDirectory;
         var parts = new List<string>(path.Split(Path.DirectorySeparatorChar));
         var pos = parts.FindLastIndex(x => string.Equals("bin", x));
-        string root = string.Join(Path.DirectorySeparatorChar.ToString(), parts.GetRange(0, pos));
-        return root;
+        string folder = string.Join(Path.DirectorySeparatorChar.ToString(), parts.GetRange(0, pos));
+        if (!string.IsNullOrEmpty(subfolder))
+        {
+            folder = Path.Combine(folder, subfolder);
+        }
+        return folder;
     }
 
     public static string GetDataFolder(string format = "")
@@ -41,6 +44,11 @@ public static class ScaffoldUtility
         {
             return Path.Combine(root, "Infrastructure", "Data", format);
         }
+    }
+
+    public static string GetPostgresDataFolder()
+    {
+        return GetRootFolder("Infrastructure/Mocks/FacetContext/PostgreSQL/Data/initdb.d");
     }
 
     public static ICollection<Type> GetModelTypes()

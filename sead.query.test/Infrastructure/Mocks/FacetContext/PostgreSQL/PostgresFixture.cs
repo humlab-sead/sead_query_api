@@ -16,7 +16,8 @@ namespace SQT.Infrastructure;
 public class PostgresFixture : IAsyncLifetime
 {
     private static PostgreSqlTestcontainer _container;
-    private static bool _started;
+    private static bool _containerInitialized;
+    private static readonly object _lock = new object();
     public PostgresFixture()
     {
         Options = SettingFactory.GetSettings();
@@ -40,8 +41,12 @@ public class PostgresFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        if (!_started)
+        if (_containerInitialized) return;
+
+        lock (_lock)
         {
+            if (_containerInitialized) return;
+
             int port = int.Parse(Options.Store.Port);
             var config = new PostgreSqlTestcontainerConfiguration
             {
@@ -61,10 +66,10 @@ public class PostgresFixture : IAsyncLifetime
                 // .WithBindMount("/var/lib/postgresql/data", "/var/lib/postgresql/data") // Persistent data for speed
                 .Build();
 
-            await _container.StartAsync();
+            _container.StartAsync().Wait();
 
-            await SetupDatabase();
-            _started = true;
+            SetupDatabase().ConfigureAwait(false).GetAwaiter().GetResult();
+            _containerInitialized = true;
         }
 
 
@@ -72,7 +77,7 @@ public class PostgresFixture : IAsyncLifetime
 
     private async Task SetupDatabase()
     {
-        var schemaFilePath = Path.Combine(ScaffoldUtility.GetDataFolder("PostgreSQL"), "initdb.d");
+        var schemaFilePath = ScaffoldUtility.GetPostgresDataFolder();
 
         foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
         {

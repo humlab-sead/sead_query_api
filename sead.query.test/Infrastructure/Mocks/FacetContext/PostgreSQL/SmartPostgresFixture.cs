@@ -6,6 +6,7 @@ using Xunit;
 using System.IO;
 using Npgsql;
 using SQT.Scaffolding;
+using System;
 
 namespace SQT.Infrastructure;
 
@@ -35,19 +36,24 @@ public class SmartPostgresFixture : IAsyncLifetime
         {
             if (_containerInitialized) return;
 
+            var options = SettingFactory.GetSettings();
+            int port = int.Parse(options.Store.Port);
+            var config = new PostgreSqlTestcontainerConfiguration
+            {
+                Database = options.Store.Database,
+                Username = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"),
+                Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
+                Port = port
+            };
             _container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
-                .WithDatabase(new PostgreSqlTestcontainerConfiguration
-                {
-                    Database = "testdb",
-                    Username = "testuser",
-                    Password = "testpassword"
-                })
+                .WithDatabase(config)
                 .WithImage("postgres:15-alpine")
+                .WithName("sead-query-test-postgres")
                 .WithCleanUp(true)
-                .WithExposedPort(5432)
-                .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
-                .WithBindMount("/var/lib/postgresql/data", "/var/lib/postgresql/data") // Optional: Persistent data
-                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+                .WithExposedPort(port)
+                // .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
+                // .WithBindMount("/var/lib/postgresql/data", "/var/lib/postgresql/data") // Optional: Persistent data
+                // .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
                 .Build();
 
             _container.StartAsync().Wait();
@@ -67,14 +73,14 @@ public class SmartPostgresFixture : IAsyncLifetime
 
         // Drop all tables (clean slate)
         var resetSql = @"
-            DO $$
-            DECLARE
-                r RECORD;
-            BEGIN
-                FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
-                    EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
-                END LOOP;
-            END $$;
+            do $$
+            declare
+                r record;
+            begin
+                for r in (select tablename from pg_tables where schemaname in ('facet', 'public')) loop
+                    execute 'drop table if exists ' || quote_ident(r.schemaname) || '.' || quote_ident(r.tablename) || ' cascade';
+                end loop;
+            end $$;
         ";
         await using var cmd = new NpgsqlCommand(resetSql, conn);
         await cmd.ExecuteNonQueryAsync();
@@ -85,7 +91,7 @@ public class SmartPostgresFixture : IAsyncLifetime
 
     private async Task SetupDatabase()
     {
-        var schemaFilePath = Path.Combine(ScaffoldUtility.GetDataFolder("PostgreSQL"), "initdb.d");
+        var schemaFilePath = ScaffoldUtility.GetPostgresDataFolder();
         foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
         {
             await InitializeDatabaseAsync(Container.ConnectionString, file);
