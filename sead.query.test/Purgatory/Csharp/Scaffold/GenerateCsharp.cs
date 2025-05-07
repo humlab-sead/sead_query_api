@@ -15,7 +15,8 @@ namespace SQT.Deprecated
     {
         private string TargetFolder()
         {
-            return ScaffoldUtility.GetDataFolder("CSharp");
+            // FIXME: CSharp is deprecated
+            return ScaffoldUtility.GetRootFolder("CSharp");
         }
 
         private string UriName(string uri)

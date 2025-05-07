@@ -207,7 +207,7 @@ namespace SQT.Model
         [Fact]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            using (var context = new JsonSeededFacetContextFactory().Create("Json"))
+            using (var context = new JsonSeededFacetContextFactory().Create("Data/FacetDb"))
             {
                 var count = await context.FacetGroups.CountAsync();
                 Assert.True(count > 0);

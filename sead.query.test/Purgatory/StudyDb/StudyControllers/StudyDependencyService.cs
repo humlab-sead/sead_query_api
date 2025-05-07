@@ -7,7 +7,7 @@ namespace Deprecated.StudyDb
     {
 
         public StudyDependencyService() :
-            base(new JsonSeededFacetContextFactory().Create("Json"))
+            base(new JsonSeededFacetContextFactory().Create("Data/StudyDb"))
         {
         }
     }

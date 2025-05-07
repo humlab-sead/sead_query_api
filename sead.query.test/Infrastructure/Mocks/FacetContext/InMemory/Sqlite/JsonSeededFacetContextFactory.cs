@@ -15,7 +15,7 @@ public class JsonSeededFacetContextFactory
     }
     public virtual async Task<(InMemoryFacetContext, DbConnection, JsonFacetContextDataFixture)> CreateTupleAsync(string jsonFolder)
     {
-        var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetDataFolder(jsonFolder));
+        var fixture = new JsonFacetContextDataFixture(ScaffoldUtility.GetInMemoryDataFolder(/*jsonFolder*/));
         var (options, connection) = await new SqliteConnectionFactory().CreateDbContextOptionsAsync2<InMemoryFacetContext>();
         var context = new InMemoryFacetContext(options, fixture, connection);
         await context.Database.EnsureCreatedAsync();

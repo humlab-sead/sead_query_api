@@ -21,7 +21,7 @@ namespace SQT.Infrastructure
 
         public JsonFacetContextDataFixture(string folder)
         {
-            Folder = Path.Combine(ScaffoldUtility.GetDataFolder(), folder);
+            Folder = ScaffoldUtility.GetInMemoryDataFolder(folder);
             Types = ScaffoldUtility.GetModelTypes();
             LazyItems = new Lazy<ItemsDictionary>(Load);
         }

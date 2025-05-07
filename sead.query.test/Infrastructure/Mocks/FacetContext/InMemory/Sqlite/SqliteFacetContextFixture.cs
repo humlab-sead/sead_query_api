@@ -15,7 +15,7 @@ public class SqliteFacetContextFixture : IDisposable
     private static DbConnection _connection;
     private static DbContextOptions<InMemoryJsonSeededFacetContext> _options;
     private static JsonFacetContextDataFixture _fixture;
-    private readonly string _jsonFolder = "Json";
+    private readonly string _jsonFolder = "Data/FacetDb";
     private bool _created = false;
 
     public SqliteFacetContextFixture()
