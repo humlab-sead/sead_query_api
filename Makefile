@@ -12,7 +12,7 @@ test:
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
-	@time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging --port 8089
+	@ time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging_202504 --port 8089 --fixed-ids ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/sample-fixture.csv
 	@sudo rm -rf ./sead.query.test/tmp//sead-query-pgdata-cache
 	@echo "info: pgdata cache of test database invalidated"
 	@echo "info: test data generation completed!"
