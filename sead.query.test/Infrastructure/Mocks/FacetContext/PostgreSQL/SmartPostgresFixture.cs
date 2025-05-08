@@ -20,8 +20,6 @@ public class SmartPostgresFixture : IAsyncLifetime
     private static PostgreSqlContainer _container;
     private static bool _containerInitialized = false;
     private static readonly object _lock = new object();
-    // private static readonly string CachedDataFolder = Path.Combine(Path.GetTempPath(), "sead-query-pgdata-cache");
-    // private static readonly string CachedDataFolder = Path.Combine(Directory.GetCurrentDirectory(), "tmp", "sead-query-pgdata-cache");
     private static readonly string CachedDataFolder = Path.Combine(ScaffoldUtility.GetProjectRoot(), "tmp", "sead-query-pgdata-cache");
 
 
@@ -49,7 +47,7 @@ public class SmartPostgresFixture : IAsyncLifetime
 
             Directory.CreateDirectory(CachedDataFolder);
 
-            bool cacheExists = Directory.Exists(Path.Combine(CachedDataFolder, "pgdata"));
+            bool useExistingDatabaseFolder = false; // Directory.Exists(Path.Combine(CachedDataFolder, "global"));
             var uid = ScaffoldUtility.GetHostUserId();
             var gid = ScaffoldUtility.GetHostGroupId();
 
@@ -59,10 +57,10 @@ public class SmartPostgresFixture : IAsyncLifetime
                 .WithUsername(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"))
                 .WithPassword(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"))
                 .WithDatabase(options.Store.Database)
-                .WithHostname("testcontainer_postgres")
+                // .WithHostname("testcontainer_postgres")
                 .WithCleanUp(true)
                 .WithPortBinding(5432, assignRandomHostPort: true)
-                .WithBindMount(CachedDataFolder, "/var/lib/postgresql/data", AccessMode.ReadWrite)
+                // .WithBindMount(CachedDataFolder, "/var/lib/postgresql/data", AccessMode.ReadWrite)
                 .Build();
 
             _container.StartAsync().Wait();
@@ -72,7 +70,7 @@ public class SmartPostgresFixture : IAsyncLifetime
             _containerInitialized = true;
 
             // Only setup database if cache is missing
-            if (!cacheExists)
+            if (!useExistingDatabaseFolder)
             {
                 Console.WriteLine("Initializing database for the first time (no cache).");
                 SetupDatabase().GetAwaiter().GetResult();
