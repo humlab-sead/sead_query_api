@@ -76,7 +76,7 @@ namespace SQT
         public IOptions<Setting> Create()
         {
             var options = new Mock<IOptions<Setting>>();
-            options.Setup(o => o.Value).Returns(defaultOptions);
+            options.Setup(o => o.Value).Returns(DefaultSettings);
             return options.Object;
         }
     }
