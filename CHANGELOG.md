@@ -4,6 +4,94 @@
 > All notable changes to this project will be documented in this file
 
 
+## [1.2.0](https://github.com/humlab-sead/sead_query_api/compare/v1.1.0...v1.2.0) (2025-05-08)
+
+### 🍕 Features
+
+* add target for creating sample data in PostgreSQL test container ([3de4129](https://github.com/humlab-sead/sead_query_api/commit/3de41293f896ae1b902eb1ad2592fee2905722d7))
+* move JsonSeededFacetContext class to Sqlite folder ([6033333](https://github.com/humlab-sead/sead_query_api/commit/6033333d99a42bc8dc6b0dceb78d5e4b9edd5948))
+* moved MockerWithFacetContext class ([ad5c749](https://github.com/humlab-sead/sead_query_api/commit/ad5c749800b3758cdfc9c2f97a5ed1277b12dcfe))
+* rename InMemoryFacetContext.cs to InMemoryFacetContexts.cs ([5e4f1fb](https://github.com/humlab-sead/sead_query_api/commit/5e4f1fbb1a7055ea09ff2116288f4a5ca3100742))
+
+### 🐛 Bug Fixes
+
+* case MockerWithFacetContext  argument ([b4c86d8](https://github.com/humlab-sead/sead_query_api/commit/b4c86d87e766bcf7351387ad53c727e8522d822a))
+* corrected fixture initialization in JsonSeededFacetContextFactory to use jsonFolder parameter ([8e22d6e](https://github.com/humlab-sead/sead_query_api/commit/8e22d6ec0d57432ec2cd2ee45b8bf3de21d0041c))
+* make study db tests work ([22dddcb](https://github.com/humlab-sead/sead_query_api/commit/22dddcb09f61ff3132c21c7f84db30980d030615))
+* problem with wrong path to JSON folder ([ffafc06](https://github.com/humlab-sead/sead_query_api/commit/ffafc066d08aee2378870c69ec7403aa0f1f7071))
+* updated changed folders to in-memory fixture data ([fd2446e](https://github.com/humlab-sead/sead_query_api/commit/fd2446ebf64494e8c317c5d0a4f6b3d9786f2ce1))
+* use facet  collection ([c974c94](https://github.com/humlab-sead/sead_query_api/commit/c974c94ae2a3367f98858c0f2f8bc76b2eda067a))
+* use generics for correct typing ([45ac1b8](https://github.com/humlab-sead/sead_query_api/commit/45ac1b880492c31d4a7f35d2e3c837baa0d582bc))
+
+### 🧑‍💻 Code Refactoring
+
+* adapt to DebugTests to TestContainers.NET ([50f7a6d](https://github.com/humlab-sead/sead_query_api/commit/50f7a6d89b6f8b08ff798e64379e940e4abbcae3))
+* add Collection attribute to FacetsControllerTests for session management ([ef4f937](https://github.com/humlab-sead/sead_query_api/commit/ef4f9371e62a828b44813fb76e980aed858e1d57))
+* add files.participants.timeout to settings ([73868e2](https://github.com/humlab-sead/sead_query_api/commit/73868e2265e9be714324fb378abb16bbb1cbb533))
+* add improved GetProjectRoot utility method ([82da17c](https://github.com/humlab-sead/sead_query_api/commit/82da17c2d35077737e148756bfdb239fddf4270a))
+* change PostgresTestcontainerFixture to singleton ([4e21b93](https://github.com/humlab-sead/sead_query_api/commit/4e21b939d2f217ecbe3c176af606544f0318e2bb))
+* comment out isotope URI ([96e2910](https://github.com/humlab-sead/sead_query_api/commit/96e2910567e83afabd6daea33990bd679d37c312))
+* consolidated (moved) Testcontainer logic ([d06ee9c](https://github.com/humlab-sead/sead_query_api/commit/d06ee9cc6a6ba04de855623b89e559650fe9d821))
+* consolidated in-memory logic and data ([14cd81d](https://github.com/humlab-sead/sead_query_api/commit/14cd81d78a671f19ee302104ecdc08d1f2ce0c40))
+* don't use factory ([1b4081f](https://github.com/humlab-sead/sead_query_api/commit/1b4081ff7e0413532870ac8eb0763e5ac6c51278))
+* improved test code quality via naming and folder structure ([3fa281e](https://github.com/humlab-sead/sead_query_api/commit/3fa281eae8c11807a01d7621f5d83735f259caca))
+* more logical naming and folder structure for tests ([9f17482](https://github.com/humlab-sead/sead_query_api/commit/9f174827db34ce43c961f54566268aab82eec757))
+* move common logic to base class ([f60b93f](https://github.com/humlab-sead/sead_query_api/commit/f60b93f18b1ce53c8939ea7267eb542ac9c3eda9))
+* move InMemoryFacetContext to SQT.Infrastructure namespace ([8ab024d](https://github.com/humlab-sead/sead_query_api/commit/8ab024dd6ee7e35e697e2563630db6d67f96eee5))
+* move InMemoryJsonSeededFacetContext and SqliteFacetContext to InMemoryFacetContext ([9987e4d](https://github.com/humlab-sead/sead_query_api/commit/9987e4d3f9768d35ddb378fdfb2acc4e5f8102f8))
+* move namespaces to Deprecated ([f5f2c11](https://github.com/humlab-sead/sead_query_api/commit/f5f2c11ea1b0e7b53d92788d42f28ae6ea959933))
+* move SeedPublicTests to Deprecated namespace ([c574bb7](https://github.com/humlab-sead/sead_query_api/commit/c574bb751e63684ac903a0db7b4d3dee452f3a5c))
+* move settings mock logic to mocker ([14067db](https://github.com/humlab-sead/sead_query_api/commit/14067db76cd8273f5f9cba14dd233d123d372754))
+* moveCSharp and Json data generation class ([3094889](https://github.com/humlab-sead/sead_query_api/commit/3094889d9f2dba72039cbc469cc4887182b45ae8))
+* moved in-memory scaffolding logic to InMemory folder ([dd1959c](https://github.com/humlab-sead/sead_query_api/commit/dd1959c8afb5e72380a25e6c4f6a59975726472b))
+* moved JSON Facet DB fixture data to a subfolder ([eccbf6c](https://github.com/humlab-sead/sead_query_api/commit/eccbf6c8cb5fff9596a4a0fbe6899131602b7cd4))
+* moved postgres session fixture and added session collection ([40a9d83](https://github.com/humlab-sead/sead_query_api/commit/40a9d830ad64acb1418eeebdfac1ebd7b1da35bc))
+* pas facet context instead of JSON fixture ([2553027](https://github.com/humlab-sead/sead_query_api/commit/2553027fc595672ce60e2d3c636f7c356f6c98da))
+* refactor code to return both options and connection ([523a9c6](https://github.com/humlab-sead/sead_query_api/commit/523a9c6ce2ff46562f48d2fb48786599fc785d44))
+* remove fixed port binding wait strategy in PostgresSessionFixture ([eda6e19](https://github.com/humlab-sead/sead_query_api/commit/eda6e19781a7f3c05edb5e59e3e1b0b719fb4b01))
+* remove InMemoryContextOptionsFactory class ([55d2667](https://github.com/humlab-sead/sead_query_api/commit/55d266787634660c4e5500568a7c2b7c52df3c66))
+* remove MockerWithJsonFacetContext class ([c3444f5](https://github.com/humlab-sead/sead_query_api/commit/c3444f5f2b3bf42a65ba25e6f43751d4e260c7f6))
+* remove obsolete sample schema SQL file ([f50032e](https://github.com/humlab-sead/sead_query_api/commit/f50032ec564ed984e3e18580994f3ec025c28c36))
+* remove SeadJsonFacetContextFixture and its collection definition ([e8732e0](https://github.com/humlab-sead/sead_query_api/commit/e8732e0de04215eae8dcd85a57dea7afbfb9a5a4))
+* remove unused method FacetContextFixture ([4b5862d](https://github.com/humlab-sead/sead_query_api/commit/4b5862dd2a9b4e04050072e826a74a85e9060a87))
+* remove unused MockService and Fixture ([5aa511c](https://github.com/humlab-sead/sead_query_api/commit/5aa511c999f69032356381c4201a7adadde06da4))
+* remove unused SqliteContextOptionsFactory class ([6be0c2f](https://github.com/humlab-sead/sead_query_api/commit/6be0c2f2573f68616a61170f798a3ccc5eb32f48))
+* remove unused usings ([7a05b5e](https://github.com/humlab-sead/sead_query_api/commit/7a05b5e17515631510a59c47b346e831eb9de799))
+* removed commented-out code and unused test method in PathFinderTests ([c3d4f0b](https://github.com/humlab-sead/sead_query_api/commit/c3d4f0b9beb9d354a6738c7a9f00ee1526f43c4f))
+* removed unused namespaces and commented-out code in JsonReaderService ([50b77aa](https://github.com/humlab-sead/sead_query_api/commit/50b77aafe7e4259ae36e5b476569e36f24d8332e))
+* rename JsonSeededFacetContext to InMemoryFacetContext ([c4e35eb](https://github.com/humlab-sead/sead_query_api/commit/c4e35eb04e416b54b634a9a20d43ec4f4e94e241))
+* renamed file to InMemoryFacetContext ([5003d90](https://github.com/humlab-sead/sead_query_api/commit/5003d90c3f9935b2d2c4094c3ca61d9a179b75da))
+* renamed fixture to UsePostgresFixture ([9baf9ff](https://github.com/humlab-sead/sead_query_api/commit/9baf9ff1d0762a36f82d03d4727d26669587b682))
+* renamed mocker class to MockerWithFacetContext ([4225b45](https://github.com/humlab-sead/sead_query_api/commit/4225b4576d41b336469e4c7b5e28d56c4ad09015))
+* simplify CreateAsync and CreateTupleAsync methods in JsonSeededFacetContextFactory ([014367e](https://github.com/humlab-sead/sead_query_api/commit/014367e81f833a408a015d1a809e417377203cde))
+* split Mocker based on backend ([07801ad](https://github.com/humlab-sead/sead_query_api/commit/07801adce325f6f25ef9fcbdb353e81832a31fc3))
+* standardize collection name to "UsePostgresDockerSession" ([7185645](https://github.com/humlab-sead/sead_query_api/commit/71856458ca84cc59f9995d4857e32e034025b958))
+* update collection attribute in PickFilterCompilerTests to use Postgres Docker Session ([dd0ec52](https://github.com/humlab-sead/sead_query_api/commit/dd0ec52ba98c4a703905f138199d247cc07d752a))
+* update collection definition name to "Postgres Docker Session" ([a593a76](https://github.com/humlab-sead/sead_query_api/commit/a593a761f691e65e8d0e7abb60b6b383b4ce6157))
+* update PostgresTestcontainerFixture to use dynamic configuration settings ([28bb2fb](https://github.com/humlab-sead/sead_query_api/commit/28bb2fb0a56f8ce53034174cd08aaf0ddeac2306))
+* use Collection attribute to enable postgres session ([a0f67a0](https://github.com/humlab-sead/sead_query_api/commit/a0f67a00231e8290f03ae66dd0658176c1c00596))
+* use mocker function ([12c0f10](https://github.com/humlab-sead/sead_query_api/commit/12c0f10a165452ced887ff4a98689dfb0bfccb10))
+
+### ✅ Tests
+
+* add optional parameter overrides ([16164a5](https://github.com/humlab-sead/sead_query_api/commit/16164a535243ace2e0636d8576e4053ebcacc78c))
+* add Postgres test container fixture for integration tests ([32cb4b5](https://github.com/humlab-sead/sead_query_api/commit/32cb4b5466b955293dd69f406b07a89f9e35bf08))
+* commented out StudyDb tests ([4b7ee47](https://github.com/humlab-sead/sead_query_api/commit/4b7ee47c818a24fa5adbe4b0ed9a2f8d8277d930))
+* disable Docker host naming (use localhost) ([485bf95](https://github.com/humlab-sead/sead_query_api/commit/485bf95fd984ef8b969e0f03f3e6b15fc33ce18b))
+* disable in-memory facet context test ([08890fb](https://github.com/humlab-sead/sead_query_api/commit/08890fb56fd5ef8fec3329f80cdb66ef78e3477f))
+* enable caching of test database ([9908871](https://github.com/humlab-sead/sead_query_api/commit/990887148dd35abae69c85575df10799121a77e8))
+* enhance test-data target with cache invalidation and completion messages ([e27f690](https://github.com/humlab-sead/sead_query_api/commit/e27f690cedfa5b57f3de89957224c4fe143c049a))
+* fixed incorrect access to default settings ([dc995ee](https://github.com/humlab-sead/sead_query_api/commit/dc995ee6284ccc38ce94a59e3e8a1fe5ff3e962e))
+* mark faulty facet definitions that generate incorrect SQL ([99350c2](https://github.com/humlab-sead/sead_query_api/commit/99350c2bf9756b701c3ce2a4a93ead6cf942e46c))
+* move StudyJsonCollectionFixture to purgatory ([172f628](https://github.com/humlab-sead/sead_query_api/commit/172f62829536a648a1241d9b12c94329188edb47))
+* moved CSharp scaffolding and test data to purgatory ([a47a3b8](https://github.com/humlab-sead/sead_query_api/commit/a47a3b84b9a30a07519c823bcda554b38d9e54d5))
+* moved StudyDb to purgatory ([2cefb3c](https://github.com/humlab-sead/sead_query_api/commit/2cefb3c921083a3b2a77296aa686330bb77bb817))
+* pass assigned random port to settings and use randomized container name ([b7fbcc4](https://github.com/humlab-sead/sead_query_api/commit/b7fbcc4999d63aa735659a058db276d78c2ad76f))
+* simplify test ([5b68598](https://github.com/humlab-sead/sead_query_api/commit/5b68598c6faec3af641a112e4e15b73d755714a4))
+* use fixed internal port ([b4a16b7](https://github.com/humlab-sead/sead_query_api/commit/b4a16b7e9399d9d740864d965982195ae0d47927))
+* use local postgresql with TestContainer for integration testing ([f3cfc3c](https://github.com/humlab-sead/sead_query_api/commit/f3cfc3c1404e8f21d817dfac769a4d0eeb1bf397))
+* use singleton settings object ([0ad8c09](https://github.com/humlab-sead/sead_query_api/commit/0ad8c0956a972756dde824920deb35a7ab55f083))
+
 ## [1.1.0](https://github.com/humlab-sead/sead_query_api/compare/v1.0.0...v1.1.0) (2025-04-30)
 
 ### 🍕 Features
