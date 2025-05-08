@@ -7,6 +7,7 @@ using System.IO;
 using Npgsql;
 using SQT.Scaffolding;
 using System;
+using System.Linq;
 
 namespace SQT.Infrastructure;
 
@@ -45,15 +46,15 @@ public class SmartPostgresFixture : IAsyncLifetime
                 Database = options.Store.Database,
                 Username = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"),
                 Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
-                Port = port
+                Port = 5432
             };
             _container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
                 .WithDatabase(config)
                 .WithImage("postgis/postgis:16-3.5-alpine")
                 .WithName($"sead-query-test-postgres-{runId}")
                 .WithCleanUp(true)
-                .WithExposedPort(port)
-                // .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
+                // .WithExposedPort(port)
+                .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
                 // .WithBindMount("/var/lib/postgresql/data", "/var/lib/postgresql/data") // Optional: Persistent data
                 // .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
                 .Build();
@@ -82,7 +83,12 @@ public class SmartPostgresFixture : IAsyncLifetime
             declare
                 r record;
             begin
-                for r in (select tablename from pg_tables where schemaname in ('facet', 'public')) loop
+                for r in (
+                    select tablename, schemaname
+                    from pg_tables
+                    where schemaname = 'facet'
+                       or (schemaname = 'public' and tablename like 'tbl_%')
+                ) loop
                     execute 'drop table if exists ' || quote_ident(r.schemaname) || '.' || quote_ident(r.tablename) || ' cascade';
                 end loop;
             end $$;
