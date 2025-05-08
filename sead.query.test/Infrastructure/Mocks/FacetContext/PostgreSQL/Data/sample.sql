@@ -4,6 +4,20 @@
 drop schema if exists sample cascade;
 create schema sample;
 
+/* Physical sample determines subsetting */
+
+create table sample.physical_samples_fixture (
+    physical_sample_id serial primary key
+);
+
+-- create table sample.physical_samples_fixture as
+--     select distinct physical_sample_id
+--     from sample.sample_per_datatype(5);
+
+-- -- Copy data from file into the table
+-- \copy sample.physical_samples (physical_sample_id)
+--     from '/Users/adam/Downloads/sample_physical_samples.csv';
+
 create or replace function sample.drop_columns_by_pattern(target_schema text, patterns text[])
 returns void as
 $$
@@ -61,16 +75,11 @@ $$
 $$;
 --select * from sample.tbl_abundances
 --select distinct * from sample.tbl_abundances
-/* Physical sample determines subsetting */
-
-create table sample.physical_sample_ids as
-	select distinct physical_sample_id
-	from sample.sample_per_datatype(5);
 
 create or replace view sample.tbl_physical_samples as
     select p.*
 	from public.tbl_physical_samples p
-	join sample.physical_sample_ids using (physical_sample_id);
+	join sample.physical_samples_fixture using (physical_sample_id);
 
 
 /* Empty tables */
