@@ -1,0 +1,23 @@
+dendro_lookup_id,method_id,name,description
+121,10,Tree species,Species name of the tree the sample came from.
+122,10,Tree rings,Number of tree rings inferred as years.
+123,10,Earlywood/Latewood,A notation on whether the outermost part of the tree grew early in the growing season or late in the growing season.
+124,10,Number of analysed radii.,Number of radius analysed.
+125,10,EW/LW measurements,Record of whether the earlywood and latewood of each ring has been measured separately.
+126,10,Sapwood (Sp),Number of sapwood rings in a sample.
+127,10,Bark (B),Whether bark was present in the sample. 
+128,10,Waney edge (W),The outermost ring immediately inside the bark. Presence of this represents the last year of growth and the exact felling year.
+129,10,Pith (P),The innermost ring of a tree stem or twig.
+130,10,Tree age ≥,The minimum estimated age of the tree.
+131,10,Tree age ≤,The maximum estimated age of the tree.
+132,10,Inferred growth year ≥,The minimum estimated growth year as inferred from the analysed tree rings.
+133,10,Inferred growth year ≤,The maximal estimated growth year as inferred from the analysed tree rings.
+134,10,Estimated felling year,The felling year as inferred from the analysed outermost tree-ring date
+135,10,Possible estimated felling year,Used for samples where dating has not been succesful but a non-statistically satisfactory dating suggestion is given.
+136,10,Provenance,"The provenance of the sampled tree, inferred by comparing the sample with others. "
+137,10,Outermost tree-ring date,The date of the outermost tree-ring
+138,10,Not dated,"Used to mark samples as not having been succesfully dated, i. e. analysed but not dated"
+139,10,Date note,Notes on  a sample not dated
+140,10,Provenance comment,Comments on the provenance of a sample
+141,10,Non-measured tree rings,Estimated number of non measured tree rings outside the outermost measured tree ring.
+142,10,Non-measured sapwood rings,Estimated number of non-measured sapwood rings outside the outermost measured tree ring.

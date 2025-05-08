@@ -1,0 +1,50 @@
+abundance_element_id,record_type_id,element_name,element_description
+37,2,Whole plant,Tree/bush/plant
+1,1,Whole arthropod,"A complete, or near complete, insect or similar individual"
+2,2,Pollen grain,Whole or partial pollen grain
+3,2,Leaf,Whole or partial leaf
+4,2,Seed grain,An individual or partial sead grain
+17,1,Aedeagus,Reproductive organ of male insect.
+5,1,MNI,Minimum Number of Individuals - an estimation of the number of whole animals represented by the collective parts found.
+6,1,Left elytron,Left wing case.
+7,1,Right elytron,Right wing case.
+8,1,Thorax,
+9,1,Head,
+10,1,Body segment (other),
+11,1,Leg,
+12,2,Flower,
+13,2,Leaf bud,
+14,4,Shell,
+15,8,Carapace,"Dorsal section of arthropod exoskeleton or shell, plus some vertebrates such as turtles."
+16,3,Spore,
+38,3,Unknown,Unidentified ~pollen sized fossil
+18,2,Needle,"Foliage element of pine, spruce and other needle bearing plants."
+19,2,Cone,Seed releasing body of coniferous plants.
+20,2,Flower bud,
+21,2,Flower,
+26,2,Ear,
+22,2,Leaf sheath,"Lower part of the leaf, sometimes surrounding the stem."
+23,2,Culm node (solid),"Place on a plant stem where a leaf is attached, solid stem part."
+24,2,Culm node (hollow),"Place on a plant stem where a leaf is attached, hollow stem part."
+25,2,Culm node (undefined),"Place on a plant stem where a leaf is attached, stem part indeterminate or both solid and hollow node parts."
+27,2,Spikelet,"Flowers of the grasses, cereals etc."
+28,2,Chaff,"Broken lemmas, glumes etc. Commonly unwanted products of threshing."
+29,2,Awn fragment,
+30,2,Spikelet fork,
+31,2,Rachis fragment,A fragment part of a segment from the main axis of the cereal/grass spike to which the spikelets are attached.
+32,2,Glume base,
+33,2,Rachis segment(S),Part(s) of the main axis of the cereal/grass spike to which the spikelets are attached.
+34,2,Palea,
+35,2,Lemma,
+36,2,Glume,
+39,2,Shell,"Hard casing of nut, fruit stone or similar"
+40,2,Berry,"Fruiting body (i.e. pulp and seed or seedless body, but not only seeds)"
+41,2,Stem,"Over ground structural component of plant (note: use other terms for woody plant twigs, branches etc)"
+42,2,Twig,Small terminal branch of woody plant
+43,2,Bark,Outermost layer of woody plant stem or root
+44,2,Wood,"Structural tissue of woody plant, e.g. wood chips or bits in soil samples (note: use twig for small branches)"
+45,2,Root,Supporting and most commonly underground structural part of plant with the function of absorbing water and nutrients from the soil. (Variation in function and relation to ground occur).
+46,2,Corm (Root bulb/root tuber),Tuber/bulb-like structure on the roots of some cultivated plants (e.g. Arrhenatherum elatius var. bulbosum)
+47,2,Cone scale,Individual plate on a cone
+48,2,Endosperm,"Internal part of seed, usually providing starch (nutrition) for the initial growth of the plant"
+49,2,Straw,Grassy cultivated plant (mainly cereal) stem(s)

@@ -1,0 +1,7 @@
+master_set_id,contact_id,biblio_id,master_name,master_notes,url
+1,,,Bugs database,"The Bugs Coleopteran Ecology Package (BugsCEP), and all earlier versions. Data imported from this system or marked as belonging to it. Quaternary fossil insects.",http://www.bugscep.com/
+10,,,The Laboratory for Wood Anatomy and Dendrochronology (Lund),,https://www.geology.lu.se/research/laboratories-equipment/the-laboratory-for-wood-anatomy-and-dendrochronology
+11,,,Archaeological Research Laboratory (Stockholm/KFL),,""
+3,,,The Laboratory for Ceramic Research (Lund/KFL),"Data created by staff at the Laboratory for Ceramic Research at Lund University, Sweden.",http://www.geology.lu.se/research/laboratories-equipment/the-laboratory-for-ceramic-research
+2,,,Environmental Archaeology Lab (Umeå)/MAL,"Data created by staff at the Environmental Archaeology Lab, Umeå University, Sweden.",https://www.umu.se/forskning/infrastruktur/mal/
+12,762,,SciLifelab Ancient DNA,,https://www.scilifelab.se/units/ancient-dna/

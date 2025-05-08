@@ -1,0 +1,28 @@
+rdb_code_id,rdb_category,rdb_definition,rdb_system_id
+2,N,Notable,2
+3,NA,Notable A,2
+4,NB,Notable B,2
+5,Not,Not Listed,2
+6,RDB1,RDB 1,2
+7,RDB2,RDB 2,2
+8,RDB3,RDB 3,2
+9,RDBI,RDB I,2
+10,RDBK,RDB K,2
+11,X,Extinct in UK,2
+12,EX,Extinct,3
+13,EW,Extinct in the Wild,3
+14,CR,Critically Endangered,3
+15,EN,Endangered,3
+16,VU,Vulnerable,3
+17,NT,Near Threatened,3
+18,LC,Least Concern,3
+19,DD,Data Deficient,3
+20,NE,Not Evaluated,3
+21,RE,Regionally Extinct (Försvunnen),4
+22,CR,Critically Endangered (Akut Hotad),4
+23,EN,Endangered (Starkt hotad),4
+24,VU,Vulnerable (Sårbar),4
+25,NT,Near Threatened (Missgynnad),4
+26,LC,Least Concern (Livskraftig),4
+27,DD,Data Deficient (Kunskapsbrist),4
+28,NE,Not Evaluated (Ej Bedömd),4

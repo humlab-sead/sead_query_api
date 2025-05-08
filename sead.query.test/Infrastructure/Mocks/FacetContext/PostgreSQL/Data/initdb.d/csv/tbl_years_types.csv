@@ -1,0 +1,5 @@
+years_type_id,name,description
+0,Unknown,Unknown years type (either to be defined or unspecified in source)
+1,Calendar,Calendar years
+2,C14,Radiocarbon years
+3,Radiometric,Radiometric years (but not C14)

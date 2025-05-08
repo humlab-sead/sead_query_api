@@ -1,0 +1,10 @@
+sample_location_type_id,location_type,location_type_description
+71,Sampled section,"A description of the sampled area. i.e. what building or what part of the building was sampled, and possibly its function. (e.g. ""western tower"", ""eastern barn"", ""chancel"")."
+72,Building level,On what floor was the sample/-s retrieved.
+73,Room,In what room of the building was the sample/-s retrieved.
+74,Construction part,"What type of construction part (e.g. wall, roof beam) was sampled."
+75,Sampled direction,"Description of what direction the sampled area is (e.g. ""eastern side"", ""northern corner"")."
+76,Sampled area,"Description of the area in the room/building that was sampled (e.g. ""door"", ""beneath stairs"", ""truss"")."
+77,Sampled object,"Description of the object, or part of object, was sampled (e.g. ""3rd log from bottom"", ""doorframe"", ""beam"")."
+78,cheramic part,Description of what part of ceramic vessel/structure were sampled
+79,sample position,Describes what substance and/or more accurate information on where on the ceramic part the sample came from (e.g. charred deposit from inside the vessel)

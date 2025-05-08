@@ -1,0 +1,7 @@
+identification_level_id,identification_level_abbrev,identification_level_name,notes
+4,,Family,Uncertainty at the family level
+5,,Genus,Uncertainty at the genus level
+6,,Species,Uncertainty at the species level
+1,,c.f. Family,Uncertainty at the family level
+2,,c.f. Genus,Uncertainty at the genus level
+3,,c.f. Species,Uncertainty at the species level

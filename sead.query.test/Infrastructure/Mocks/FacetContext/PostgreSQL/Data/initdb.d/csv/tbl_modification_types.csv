@@ -1,0 +1,11 @@
+modification_type_id,modification_type_name,modification_type_description
+1,Carbonised,"Organic matter converted to carbon, most commonly though heating."
+2,Calcified,Organic matter replaced by calcium.
+3,Eroded,"Surface of fossil has been worn away by physical processes, such as sediment abbraision."
+4,Fragmented,Fossil is not whole.
+5,Mineralised (unspecific),Organic matter replaced by unspecified mineral(s).
+6,Pyritified,Organic matter replaced by pyrite or marcasite.
+7,Discoloured (more than expected),"Expected colour of fossil, considering preservation factors, is of an unexpected colour. E.g. as a result of dying."
+8,Petrified,Organic matter converted to stone by impregnation with silica.
+9,Encased in amber,Fossil is encapsulated in a piece of amber.
+10,Corroded,Surface of fossil has been damage by chemical processes.

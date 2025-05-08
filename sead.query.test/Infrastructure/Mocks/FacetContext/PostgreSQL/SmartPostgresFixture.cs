@@ -94,11 +94,53 @@ public class SmartPostgresFixture : IAsyncLifetime
         var schemaFilePath = ScaffoldUtility.GetPostgresDataFolder();
         foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
         {
-            await InitializeDatabaseAsync(Container.ConnectionString, file);
+            await ExecuteSqlFileAsync(Container.ConnectionString, file);
+        }
+
+        // 2) bulk-load public/*.csv
+        var csvDir = Path.Combine(schemaFilePath, "csv");
+        if (Directory.Exists(csvDir))
+        {
+            await using var conn = new NpgsqlConnection(Container.ConnectionString);
+            await conn.OpenAsync();
+
+            await using var transaction = await conn.BeginTransactionAsync(); // Start transaction
+
+            // Set all constraints deferrable within the transaction
+            await using (var cmd = new NpgsqlCommand("set constraints all deferred;", conn, transaction))
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            foreach (var csvFile in Directory.EnumerateFiles(csvDir, "*.csv"))
+            {
+                var tableName = Path.GetFileNameWithoutExtension(csvFile);
+                // Note: COPY ... FROM STDIN is a server command; use BeginTextImport
+                // FIXME: read header line from CSV file and use it to specify columns in COPY statement
+                
+
+                var headerLine = File.ReadLines(csvFile).FirstOrDefault();
+                var columns = headerLine.Split(',').Select(c => c.Trim()).ToArray();
+
+                var copySql = $"COPY public.\"{tableName}\" ({string.Join(", ", columns)}) FROM STDIN (FORMAT csv, HEADER true)";
+                await using var importer = conn.BeginTextImport(copySql);
+
+                // stream file lines into the import
+                using var reader = File.OpenText(csvFile);
+                while (!reader.EndOfStream)
+                {
+                    var line = await reader.ReadLineAsync();
+                    // Npgsql importer wants exactly the line breaks
+                    await importer.WriteAsync(line + "\n");
+                }
+
+                await importer.FlushAsync();  // flush the last batch
+            }
+            await transaction.CommitAsync(); // Commit transaction, constraints are now checked
         }
     }
 
-    private async Task InitializeDatabaseAsync(string connectionString, string sqlFilePath)
+    private async Task ExecuteSqlFileAsync(string connectionString, string sqlFilePath)
     {
         var sql = await File.ReadAllTextAsync(sqlFilePath);
 
