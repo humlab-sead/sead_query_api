@@ -12,8 +12,7 @@ test:
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
-	@./sead.query.test/sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging --port 8089 
-
+	@time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging --port 8089
 clean:
 	@dotnet clean
 	@dotnet clean -c Release
