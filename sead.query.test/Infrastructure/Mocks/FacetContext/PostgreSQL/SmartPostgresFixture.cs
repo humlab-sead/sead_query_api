@@ -36,8 +36,10 @@ public class SmartPostgresFixture : IAsyncLifetime
         {
             if (_containerInitialized) return;
 
-            var options = SettingFactory.GetSettings();
-            int port = int.Parse(options.Store.Port);
+            var settingFactory = new SettingFactory();
+            var options = settingFactory.GetSettings();
+            // int port = int.Parse(options.Store.Port);
+            var runId = Guid.NewGuid().ToString("N").Substring(0, 8);
             var config = new PostgreSqlTestcontainerConfiguration
             {
                 Database = options.Store.Database,
@@ -47,8 +49,8 @@ public class SmartPostgresFixture : IAsyncLifetime
             };
             _container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
                 .WithDatabase(config)
-                .WithImage("postgres:15-alpine")
-                .WithName("sead-query-test-postgres")
+                .WithImage("postgis/postgis:16-3.5-alpine")
+                .WithName($"sead-query-test-postgres-{runId}")
                 .WithCleanUp(true)
                 .WithExposedPort(port)
                 // .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
@@ -57,6 +59,9 @@ public class SmartPostgresFixture : IAsyncLifetime
                 .Build();
 
             _container.StartAsync().Wait();
+            Environment.SetEnvironmentVariable("QueryBuilderSetting__Store__Port", _container.GetMappedPublicPort(5432).ToString());
+            SettingFactory.DefaultSettings.Store.Port =_container.GetMappedPublicPort(5432).ToString();
+
             _containerInitialized = true;
         }
     }
