@@ -1497,7 +1497,8 @@ CREATE TABLE public.tbl_sample_group_dimensions (
     date_updated timestamp with time zone DEFAULT now(),
     dimension_id integer NOT NULL,
     dimension_value numeric(20,5) NOT NULL,
-    sample_group_id integer NOT NULL
+    sample_group_id integer NOT NULL,
+    qualifier_id integer
 );
 
 
@@ -2205,70 +2206,6 @@ CREATE TABLE public.tbl_years_types (
 
 
 --
--- Name: drop_columns_by_pattern(text, text[]); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.drop_columns_by_pattern(target_schema text, patterns text[]) RETURNS void
-    LANGUAGE plpgsql
-    AS $$
-declare
-    rec record;
-    column_to_drop text;
-begin
-    for rec in
-        select table_schema, table_name, column_name
-        from information_schema.columns
-        where table_schema = target_schema
-          and (
-            -- match any of the provided patterns
-            exists (
-              select 1
-              from unnest(patterns) as pat
-              where column_name ilike pat
-            )
-          )
-    loop
-        column_to_drop := format(
-            'alter table %I.%I drop column %I cascade;',
-            rec.table_schema, rec.table_name, rec.column_name
-        );
-
-        -- raise notice 'executing: %', column_to_drop;
-        execute column_to_drop;
-    end loop;
-end;
-$$;
-
-
---
--- Name: sample_per_datatype(integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.sample_per_datatype(p_limit integer) RETURNS SETOF public.tbl_physical_samples
-    LANGUAGE sql
-    AS $$
-	with combos as (
-	  select distinct
-	    ds.master_set_id,
-	    ds.data_type_id
-	  from tbl_datasets ds
-	)
-	select distinct p.*
-	from combos c
-	cross join lateral (
-	  select p2.*
-	  from tbl_physical_samples p2
-	  join tbl_analysis_entities ae  using (physical_sample_id)
-	  join tbl_datasets ds           using (dataset_id)
-	  where ds.master_set_id = c.master_set_id
-	    and ds.data_type_id = c.data_type_id
-	  order by random()
-	  limit p_limit
-	) as p;
-$$;
-
-
---
 -- Name: table_dependency_levels(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -2358,37 +2295,72 @@ end $$;
 
 
 --
--- Name: alla_c14_230316; Type: TABLE; Schema: public; Owner: -
+-- Name: adna_analysis_values; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.alla_c14_230316 (
-    "Socken" text,
-    "By/Gård" text,
-    "RAÄ-nr" text,
-    "Fornlämningstyp" text,
-    "Fält1" text,
-    "Uppdragsnummer" text,
-    "LandId" text,
-    "Labnr" text,
-    "14Cålder" text,
-    "Stdav" text,
-    "13C" text,
-    "Modern" text,
-    "Kommentar" text,
-    "Bedömd relevant" text,
-    "Sort" text,
-    "Art 1" text,
-    "Art 2" text,
-    "Anlnr" text,
-    "Anläggning" text,
-    "Författare" text,
-    "Tryckår" double precision,
-    "Titel" text,
-    "Tidskrift" text,
-    "Förlagsort" text,
-    "Kommentar SL" text,
-    "Lst-dnr" text
-);
+CREATE VIEW public.adna_analysis_values AS
+ WITH datasets AS (
+         SELECT ds.dataset_id
+           FROM public.tbl_datasets ds
+          WHERE (true AND (ds.method_id IN ( SELECT m.method_id
+                   FROM (public.tbl_methods m
+                     JOIN public.tbl_record_types r USING (record_type_id))
+                  WHERE ((r.record_type_name)::text = 'DNA'::text))) AND (ds.project_id IN ( SELECT tbl_projects.project_id
+                   FROM public.tbl_projects
+                  WHERE ((tbl_projects.project_name)::text = 'SciLifeLab Ancient DNA Unit project 017'::text))))
+        ), analysis_entities AS (
+         SELECT ae.analysis_entity_id
+           FROM (public.tbl_analysis_entities ae
+             JOIN datasets USING (dataset_id))
+        ), analysis_values AS (
+         SELECT av.analysis_value_id,
+            av.analysis_entity_id,
+            av.value_class_id,
+            av.analysis_value,
+            vt_1.base_type
+           FROM (((public.tbl_analysis_values av
+             JOIN public.tbl_value_classes vs USING (value_class_id))
+             JOIN public.tbl_value_types vt_1 USING (value_type_id))
+             JOIN analysis_entities USING (analysis_entity_id))
+        ), typed_values AS (
+         SELECT analysis_values_1.analysis_value_id,
+                CASE
+                    WHEN (analysis_values_1.base_type = 'integer'::text) THEN
+                    CASE
+                        WHEN sead_utility.is_integer(analysis_values_1.analysis_value) THEN (analysis_values_1.analysis_value)::integer
+                        WHEN sead_utility.is_numeric(analysis_values_1.analysis_value) THEN (round((analysis_values_1.analysis_value)::numeric(20,10)))::integer
+                        ELSE NULL::integer
+                    END
+                    ELSE NULL::integer
+                END AS integer_value,
+                CASE
+                    WHEN ((analysis_values_1.base_type = 'integer'::text) AND (NOT sead_utility.is_integer(analysis_values_1.analysis_value)) AND (NOT sead_utility.is_numeric(analysis_values_1.analysis_value))) THEN true
+                    ELSE NULL::boolean
+                END AS integer_is_anomaly,
+                CASE
+                    WHEN ((analysis_values_1.base_type = 'decimal'::text) AND sead_utility.is_numeric(analysis_values_1.analysis_value)) THEN (analysis_values_1.analysis_value)::numeric(20,10)
+                    ELSE NULL::numeric
+                END AS decimal_value,
+                CASE
+                    WHEN ((analysis_values_1.base_type = 'decimal'::text) AND (NOT sead_utility.is_numeric(analysis_values_1.analysis_value))) THEN true
+                    ELSE NULL::boolean
+                END AS decimal_is_anomaly
+           FROM analysis_values analysis_values_1
+        )
+ SELECT analysis_values.analysis_value_id,
+    analysis_values.analysis_value,
+    analysis_values.value_class_id,
+    vc.name AS value_class_name,
+    vt.name AS value_type_name,
+    vt.base_type,
+    tv.decimal_value,
+    tv.decimal_is_anomaly,
+    tv.integer_value,
+    tv.integer_is_anomaly
+   FROM (((analysis_values
+     JOIN typed_values tv USING (analysis_value_id))
+     JOIN public.tbl_value_classes vc USING (value_class_id))
+     JOIN public.tbl_value_types vt USING (value_type_id));
 
 
 --
@@ -5420,45 +5392,76 @@ ALTER SEQUENCE public.tbl_years_types_years_type_id_seq OWNED BY public.tbl_year
 
 
 --
+-- Name: view_typed_analysis_tables; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.view_typed_analysis_tables AS
+ SELECT table_id,
+    table_name,
+    base_type
+   FROM ( VALUES (1,'tbl_analysis_boolean_values'::text,'boolean'::text), (2,'tbl_analysis_categorical_values'::text,'category'::text), (3,'tbl_analysis_dating_ranges'::text,'dating_range'::text), (4,'tbl_analysis_identifiers'::text,'identifier'::text), (5,'tbl_analysis_integer_ranges'::text,'integer_range'::text), (6,'tbl_analysis_integer_values'::text,'integer'::text), (7,'tbl_analysis_notes'::text,'note'::text), (8,'tbl_analysis_numerical_ranges'::text,'decimal_range'::text), (9,'tbl_analysis_numerical_values'::text,'decimal'::text), (10,'tbl_analysis_taxon_counts'::text,'taxon_count'::text), (11,'tbl_analysis_value_dimensions'::text,'dimension'::text)) t(table_id, table_name, base_type);
+
+
+--
+-- Name: view_typed_analysis_values; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.view_typed_analysis_values AS
+ SELECT 1 AS table_id,
+    tbl_analysis_boolean_values.analysis_value_id
+   FROM public.tbl_analysis_boolean_values
+UNION
+ SELECT 2 AS table_id,
+    tbl_analysis_categorical_values.analysis_value_id
+   FROM public.tbl_analysis_categorical_values
+UNION
+ SELECT 3 AS table_id,
+    tbl_analysis_dating_ranges.analysis_value_id
+   FROM public.tbl_analysis_dating_ranges
+UNION
+ SELECT 4 AS table_id,
+    tbl_analysis_identifiers.analysis_value_id
+   FROM public.tbl_analysis_identifiers
+UNION
+ SELECT 5 AS table_id,
+    tbl_analysis_integer_ranges.analysis_value_id
+   FROM public.tbl_analysis_integer_ranges
+UNION
+ SELECT 6 AS table_id,
+    tbl_analysis_integer_values.analysis_value_id
+   FROM public.tbl_analysis_integer_values
+UNION
+ SELECT 7 AS table_id,
+    tbl_analysis_notes.analysis_value_id
+   FROM public.tbl_analysis_notes
+UNION
+ SELECT 8 AS table_id,
+    tbl_analysis_numerical_ranges.analysis_value_id
+   FROM public.tbl_analysis_numerical_ranges
+UNION
+ SELECT 9 AS table_id,
+    tbl_analysis_numerical_values.analysis_value_id
+   FROM public.tbl_analysis_numerical_values
+UNION
+ SELECT 10 AS table_id,
+    tbl_analysis_taxon_counts.analysis_value_id
+   FROM public.tbl_analysis_taxon_counts
+UNION
+ SELECT 11 AS table_id,
+    tbl_analysis_value_dimensions.analysis_value_id
+   FROM public.tbl_analysis_value_dimensions;
+
+
+--
 -- Name: typed_analysis_values; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW public.typed_analysis_values AS
- SELECT tbl_analysis_numerical_values.analysis_value_id,
-    'decimal'::text AS base_type
-   FROM public.tbl_analysis_numerical_values
-UNION
- SELECT tbl_analysis_numerical_ranges.analysis_value_id,
-    'decimal_range'::text AS base_type
-   FROM public.tbl_analysis_numerical_ranges
-UNION
- SELECT tbl_analysis_integer_values.analysis_value_id,
-    'integer'::text AS base_type
-   FROM public.tbl_analysis_integer_values
-UNION
- SELECT tbl_analysis_integer_ranges.analysis_value_id,
-    'integer_range'::text AS base_type
-   FROM public.tbl_analysis_integer_ranges
-UNION
- SELECT tbl_analysis_categorical_values.analysis_value_id,
-    'category'::text AS base_type
-   FROM public.tbl_analysis_categorical_values
-UNION
- SELECT tbl_analysis_boolean_values.analysis_value_id,
-    'boolean'::text AS base_type
-   FROM public.tbl_analysis_boolean_values
-UNION
- SELECT tbl_analysis_dating_ranges.analysis_value_id,
-    'dating_range'::text AS base_type
-   FROM public.tbl_analysis_dating_ranges
-UNION
- SELECT tbl_analysis_taxon_counts.analysis_value_id,
-    'taxon_count'::text AS base_type
-   FROM public.tbl_analysis_taxon_counts
-UNION
- SELECT tbl_analysis_notes.analysis_value_id,
-    'note'::text AS base_type
-   FROM public.tbl_analysis_notes;
+ SELECT view_typed_analysis_values.analysis_value_id,
+    view_typed_analysis_tables.table_name,
+    view_typed_analysis_tables.base_type
+   FROM (public.view_typed_analysis_values
+     JOIN public.view_typed_analysis_tables USING (table_id));
 
 
 --
@@ -5589,67 +5592,6 @@ CREATE VIEW public.view_taxa_alphabetically AS
      JOIN public.tbl_taxa_tree_orders o ON ((f.order_id = o.order_id)))
      LEFT JOIN public.tbl_taxa_tree_authors a ON ((s.author_id = a.author_id)))
   ORDER BY o.order_name, f.family_name, g.genus_name, s.species;
-
-
---
--- Name: view_typed_analysis_tables; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.view_typed_analysis_tables AS
- SELECT table_id,
-    table_name,
-    base_type
-   FROM ( VALUES (1,'tbl_analysis_boolean_values'::text,'boolean'::text), (2,'tbl_analysis_categorical_values'::text,'category'::text), (3,'tbl_analysis_dating_ranges'::text,'dating_range'::text), (4,'tbl_analysis_identifiers'::text,'identifier'::text), (5,'tbl_analysis_integer_ranges'::text,'integer_range'::text), (6,'tbl_analysis_integer_values'::text,'integer'::text), (7,'tbl_analysis_notes'::text,'note'::text), (8,'tbl_analysis_numerical_ranges'::text,'decimal_range'::text), (9,'tbl_analysis_numerical_values'::text,'decimal'::text), (10,'tbl_analysis_taxon_counts'::text,'taxon_count'::text), (11,'tbl_analysis_value_dimensions'::text,'dimension'::text)) t(table_id, table_name, base_type);
-
-
---
--- Name: view_typed_analysis_values; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.view_typed_analysis_values AS
- SELECT 1 AS table_id,
-    tbl_analysis_boolean_values.analysis_value_id
-   FROM public.tbl_analysis_boolean_values
-UNION
- SELECT 2 AS table_id,
-    tbl_analysis_categorical_values.analysis_value_id
-   FROM public.tbl_analysis_categorical_values
-UNION
- SELECT 3 AS table_id,
-    tbl_analysis_dating_ranges.analysis_value_id
-   FROM public.tbl_analysis_dating_ranges
-UNION
- SELECT 4 AS table_id,
-    tbl_analysis_identifiers.analysis_value_id
-   FROM public.tbl_analysis_identifiers
-UNION
- SELECT 5 AS table_id,
-    tbl_analysis_integer_ranges.analysis_value_id
-   FROM public.tbl_analysis_integer_ranges
-UNION
- SELECT 6 AS table_id,
-    tbl_analysis_integer_values.analysis_value_id
-   FROM public.tbl_analysis_integer_values
-UNION
- SELECT 7 AS table_id,
-    tbl_analysis_notes.analysis_value_id
-   FROM public.tbl_analysis_notes
-UNION
- SELECT 8 AS table_id,
-    tbl_analysis_numerical_ranges.analysis_value_id
-   FROM public.tbl_analysis_numerical_ranges
-UNION
- SELECT 9 AS table_id,
-    tbl_analysis_numerical_values.analysis_value_id
-   FROM public.tbl_analysis_numerical_values
-UNION
- SELECT 10 AS table_id,
-    tbl_analysis_taxon_counts.analysis_value_id
-   FROM public.tbl_analysis_taxon_counts
-UNION
- SELECT 11 AS table_id,
-    tbl_analysis_value_dimensions.analysis_value_id
-   FROM public.tbl_analysis_value_dimensions;
 
 
 --
@@ -10812,7 +10754,7 @@ ALTER TABLE ONLY public.tbl_text_identification_keys
 --
 
 ALTER TABLE ONLY public.tbl_analysis_boolean_values
-    ADD CONSTRAINT tbl_analysis_boolean_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_boolean_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10820,7 +10762,7 @@ ALTER TABLE ONLY public.tbl_analysis_boolean_values
 --
 
 ALTER TABLE ONLY public.tbl_analysis_categorical_values
-    ADD CONSTRAINT tbl_analysis_categorical_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_categorical_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10844,7 +10786,7 @@ ALTER TABLE ONLY public.tbl_analysis_dating_ranges
 --
 
 ALTER TABLE ONLY public.tbl_analysis_dating_ranges
-    ADD CONSTRAINT tbl_analysis_dating_ranges_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_dating_ranges_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10884,7 +10826,7 @@ ALTER TABLE ONLY public.tbl_analysis_dating_ranges
 --
 
 ALTER TABLE ONLY public.tbl_analysis_identifiers
-    ADD CONSTRAINT tbl_analysis_identifiers_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_identifiers_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10892,7 +10834,7 @@ ALTER TABLE ONLY public.tbl_analysis_identifiers
 --
 
 ALTER TABLE ONLY public.tbl_analysis_integer_ranges
-    ADD CONSTRAINT tbl_analysis_integer_ranges_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_integer_ranges_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10916,7 +10858,7 @@ ALTER TABLE ONLY public.tbl_analysis_integer_ranges
 --
 
 ALTER TABLE ONLY public.tbl_analysis_integer_values
-    ADD CONSTRAINT tbl_analysis_integer_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_integer_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10932,7 +10874,7 @@ ALTER TABLE ONLY public.tbl_analysis_integer_values
 --
 
 ALTER TABLE ONLY public.tbl_analysis_notes
-    ADD CONSTRAINT tbl_analysis_notes_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_notes_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10940,7 +10882,7 @@ ALTER TABLE ONLY public.tbl_analysis_notes
 --
 
 ALTER TABLE ONLY public.tbl_analysis_numerical_ranges
-    ADD CONSTRAINT tbl_analysis_numerical_ranges_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_numerical_ranges_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10964,7 +10906,7 @@ ALTER TABLE ONLY public.tbl_analysis_numerical_ranges
 --
 
 ALTER TABLE ONLY public.tbl_analysis_numerical_values
-    ADD CONSTRAINT tbl_analysis_numerical_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_numerical_values_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10980,7 +10922,7 @@ ALTER TABLE ONLY public.tbl_analysis_numerical_values
 --
 
 ALTER TABLE ONLY public.tbl_analysis_taxon_counts
-    ADD CONSTRAINT tbl_analysis_taxon_counts_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_taxon_counts_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -10996,7 +10938,7 @@ ALTER TABLE ONLY public.tbl_analysis_taxon_counts
 --
 
 ALTER TABLE ONLY public.tbl_analysis_value_dimensions
-    ADD CONSTRAINT tbl_analysis_value_dimensions_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_value_dimensions_analysis_value_id_fkey FOREIGN KEY (analysis_value_id) REFERENCES public.tbl_analysis_values(analysis_value_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -11012,7 +10954,7 @@ ALTER TABLE ONLY public.tbl_analysis_value_dimensions
 --
 
 ALTER TABLE ONLY public.tbl_analysis_values
-    ADD CONSTRAINT tbl_analysis_values_analysis_entity_id_fkey FOREIGN KEY (analysis_entity_id) REFERENCES public.tbl_analysis_entities(analysis_entity_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_analysis_values_analysis_entity_id_fkey FOREIGN KEY (analysis_entity_id) REFERENCES public.tbl_analysis_entities(analysis_entity_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
@@ -11029,6 +10971,14 @@ ALTER TABLE ONLY public.tbl_analysis_values
 
 ALTER TABLE ONLY public.tbl_sample_dimensions
     ADD CONSTRAINT tbl_sample_dimensions_qualifier_id_fkey FOREIGN KEY (qualifier_id) REFERENCES public.tbl_value_qualifiers(qualifier_id) DEFERRABLE;
+
+
+--
+-- Name: tbl_sample_group_dimensions tbl_sample_group_dimensions_qualifier_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tbl_sample_group_dimensions
+    ADD CONSTRAINT tbl_sample_group_dimensions_qualifier_id_fkey FOREIGN KEY (qualifier_id) REFERENCES public.tbl_value_qualifiers(qualifier_id) DEFERRABLE;
 
 
 --
@@ -11068,7 +11018,7 @@ ALTER TABLE ONLY public.tbl_value_qualifier_symbols
 --
 
 ALTER TABLE ONLY public.tbl_value_type_items
-    ADD CONSTRAINT tbl_value_type_items_value_type_id_fkey FOREIGN KEY (value_type_id) REFERENCES public.tbl_value_types(value_type_id) DEFERRABLE;
+    ADD CONSTRAINT tbl_value_type_items_value_type_id_fkey FOREIGN KEY (value_type_id) REFERENCES public.tbl_value_types(value_type_id) ON DELETE CASCADE DEFERRABLE;
 
 
 --
