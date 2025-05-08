@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using Npgsql;
 
 namespace SQT
 {
     public static class ConnectionStringFactory
     {
-        public static string Create(Dictionary<string, string> defaultSettings = null)
+        public static string Create(string hostName=null, string databaseName=null, string port = null)
         {
-            var settings = SettingFactory.GetSettings(defaultSettings).Store;
+            var settings = SettingFactory.DefaultSettings.Store;
             return new NpgsqlConnectionStringBuilder
             {
-                Host = settings.Host,
-                Database = settings.Database,
+                Host = hostName ?? settings.Host,
+                Database = databaseName ?? settings.Database,
                 Username = settings.Username,
                 Password = settings.Password,
-                Port = Convert.ToInt32(settings.Port),
+                Port = Convert.ToInt32(port ?? settings.Port),
                 Pooling = false
             }.ConnectionString;
         }
