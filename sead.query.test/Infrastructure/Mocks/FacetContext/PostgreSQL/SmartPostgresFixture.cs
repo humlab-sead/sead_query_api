@@ -13,6 +13,7 @@ namespace SQT.Infrastructure;
 
 #pragma warning disable CS1998
 
+
 public class SmartPostgresFixture : IAsyncLifetime
 {
     private static PostgreSqlTestcontainer _container;
@@ -32,7 +33,7 @@ public class SmartPostgresFixture : IAsyncLifetime
     }
 
     // Ensures the container is started only once
-    
+
     private async Task EnsureContainerStarted()
     {
         if (_containerInitialized) return;
@@ -136,7 +137,6 @@ public class SmartPostgresFixture : IAsyncLifetime
 
             await using var transaction = await conn.BeginTransactionAsync(); // Start transaction
 
-            // Set all constraints deferrable within the transaction
             await using (var cmd = new NpgsqlCommand("set constraints all deferred;", conn, transaction))
             {
                 await cmd.ExecuteNonQueryAsync();
@@ -145,22 +145,16 @@ public class SmartPostgresFixture : IAsyncLifetime
             foreach (var csvFile in Directory.EnumerateFiles(csvDir, "*.csv"))
             {
                 var tableName = Path.GetFileNameWithoutExtension(csvFile);
-                // Note: COPY ... FROM STDIN is a server command; use BeginTextImport
-                // FIXME: read header line from CSV file and use it to specify columns in COPY statement
-                
-
                 var headerLine = File.ReadLines(csvFile).FirstOrDefault();
                 var columns = headerLine.Split(',').Select(c => c.Trim()).ToArray();
 
                 var copySql = $"COPY public.\"{tableName}\" ({string.Join(", ", columns)}) FROM STDIN (FORMAT csv, HEADER true)";
                 await using var importer = conn.BeginTextImport(copySql);
 
-                // stream file lines into the import
                 using var reader = File.OpenText(csvFile);
                 while (!reader.EndOfStream)
                 {
                     var line = await reader.ReadLineAsync();
-                    // Npgsql importer wants exactly the line breaks
                     await importer.WriteAsync(line + "\n");
                 }
 
@@ -183,12 +177,6 @@ public class SmartPostgresFixture : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        // Optionally keep the container for reuse (fastest)
-        // Uncomment to stop and cleanup after all tests
-        // if (_container != null && _container.State == TestcontainersStates.Running)
-        // {
-        //     await _container.StopAsync();
-        // }
     }
 }
 
