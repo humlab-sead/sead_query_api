@@ -100,7 +100,6 @@ if [ "$g_database" == "" ]; then
     usage
 fi
 
-
 function execute_sql_file()
 {
     local tmp_file=$(mktemp)
@@ -117,13 +116,24 @@ function execute_sql_file()
 function execute_sql()
 {
     local sql=$1
-    psql -h $g_host -U $g_user -d $g_database -p $g_port -tAc "$sql"
+    set +e
+    local tmp_file=$(mktemp)
+    local result=$(psql --username=$g_user --host=$g_host --port=$g_port --dbname=$g_database -tAc "$sql")
+    local rc=$?
+    if [ $rc -ne 0 ]; then
+        echo "[$g_timestamp]: error executing SQL: $sql"
+        echo "$result" 
+        rm -f $tmp_file
+        exit 1
+    fi
+    rm -f $tmp_file
+    set -e
 }
 
 function drop_schema()
 {
     local schema=$1
-    execute_sql "drop schema if exists $schema cascade;" >& /dev/null
+    execute_sql "drop schema if exists $schema cascade;" 
 }
 
 g_credentials="--username=$g_user --host=$g_host --port=$g_port --dbname=$g_database"
@@ -209,7 +219,6 @@ function dump_data()
     sed -i 's/uuid DEFAULT public.uuid_generate_v4() NOT NULL/text null/g' $g_folder/01-utility.sql
     sed -i 's/CREATE SCHEMA public;//g' $g_folder/00-public.sql
 }
-
 
 drop_schema "sample"
 execute_sql_file "$g_schema_template"
