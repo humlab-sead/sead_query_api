@@ -24,8 +24,8 @@ public class SmartPostgresFixture : IAsyncLifetime
     private static readonly string CachedDataFolder = Path.Combine(ScaffoldUtility.GetProjectRoot(), "tmp", "sead-query-pgdata-cache");
 
 
-    public string ConnectionString => Container.ConnectionString;
-    public PostgreSqlTestcontainer Container => _container;
+    public string ConnectionString => Container.GetConnectionString();
+    public PostgreSqlContainer Container => _container;
 
     public SmartPostgresFixture()
     {
@@ -44,13 +44,7 @@ public class SmartPostgresFixture : IAsyncLifetime
 
             var options = new SettingFactory().GetSettings();
             var runId = Guid.NewGuid().ToString("N").Substring(0, 8);
-            var config = new PostgreSqlTestcontainerConfiguration
-            {
-                Database = options.Store.Database,
-                Username = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"),
-                Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
-                Port = 5432
-            };
+
 
             Directory.CreateDirectory(CachedDataFolder);
 
@@ -61,6 +55,10 @@ public class SmartPostgresFixture : IAsyncLifetime
             _container = new PostgreSqlBuilder()
                 .WithImage("postgis/postgis:16-3.5-alpine")
                 .WithName($"sead-query-test-postgres-{runId}")
+                .WithUsername(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"))
+                .WithPassword(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"))
+                .WithDatabase(options.Store.Database)
+                .WithHostname("testcontainer_postgres")
                 .WithCleanUp(true)
                 // .WithExposedPort(port)
                 .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
