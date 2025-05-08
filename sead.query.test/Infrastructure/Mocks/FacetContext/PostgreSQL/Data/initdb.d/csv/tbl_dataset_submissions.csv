@@ -984,166 +984,166 @@ dataset_submission_id,dataset_id,submission_type_id,contact_id,date_submitted,no
 97783,46981,10,43,2006-05-09 00:00:00,
 97782,46981,3,34,2020-06-30 00:00:00,
 97781,46981,5,67,2024-01-19 00:00:00,
-189172,89692,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-189176,86259,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-189244,88164,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-189365,90519,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-189416,82821,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-189612,85078,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-189672,83924,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190080,90082,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190098,89054,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190111,87868,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190219,89214,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190321,85743,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190702,87162,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190811,80998,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190869,89616,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-190922,89404,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191042,85270,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191074,84398,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191238,78713,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191590,86558,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191625,89979,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191638,81505,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191711,86266,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191812,80720,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191817,80926,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191852,85338,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191874,86287,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191884,89405,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191910,87157,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-191931,90447,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-192065,83525,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-192205,88577,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-192393,88578,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-192444,86950,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-192728,86683,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-192872,90010,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193008,90297,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193022,89185,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193277,82600,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193300,86280,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193409,89693,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193486,80596,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193574,88670,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193593,88671,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193595,89157,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193661,90409,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193805,89361,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193896,86294,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-193951,87446,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-194039,89128,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-194060,85026,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-194404,87564,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-194497,83438,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-194689,90367,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195205,87956,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195495,90184,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195531,86273,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195634,89221,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195883,87310,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195912,80598,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-195919,79208,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196069,82372,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196084,89011,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196149,84898,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196151,86042,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196201,82419,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196426,89290,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196512,87911,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196529,82425,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196540,89127,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-196862,80011,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197075,89844,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197135,86245,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197377,87167,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197532,87811,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197557,79342,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197602,81870,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197713,88065,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197840,88163,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-197954,89454,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198044,89209,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198139,82108,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198259,79497,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198309,87867,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198360,90306,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198441,87917,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198822,85448,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-198865,86252,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199336,90375,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199431,88066,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199457,89088,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199710,87312,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199737,80449,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199745,86390,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-199822,90272,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-200437,87639,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-200625,87746,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-200787,90488,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-200792,89734,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-200891,87542,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-201067,81117,5,1,2025-05-08 13:10:13.192581+00,Single dataset from another database submission into SEAD
-201182,90552,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+189172,89692,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+189176,86259,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+189244,88164,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+189365,90519,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+189416,82821,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+189612,85078,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+189672,83924,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190080,90082,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190098,89054,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190111,87868,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190219,89214,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190321,85743,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190702,87162,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190811,80998,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190869,89616,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+190922,89404,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191042,85270,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191074,84398,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191238,78713,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191590,86558,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191625,89979,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191638,81505,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191711,86266,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191812,80720,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191817,80926,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191852,85338,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191874,86287,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191884,89405,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191910,87157,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+191931,90447,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+192065,83525,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+192205,88577,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+192393,88578,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+192444,86950,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+192728,86683,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+192872,90010,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193008,90297,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193022,89185,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193277,82600,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193300,86280,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193409,89693,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193486,80596,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193574,88670,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193593,88671,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193595,89157,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193661,90409,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193805,89361,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193896,86294,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+193951,87446,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+194039,89128,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+194060,85026,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+194404,87564,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+194497,83438,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+194689,90367,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195205,87956,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195495,90184,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195531,86273,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195634,89221,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195883,87310,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195912,80598,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+195919,79208,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196069,82372,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196084,89011,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196149,84898,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196151,86042,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196201,82419,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196426,89290,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196512,87911,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196529,82425,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196540,89127,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+196862,80011,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197075,89844,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197135,86245,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197377,87167,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197532,87811,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197557,79342,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197602,81870,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197713,88065,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197840,88163,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+197954,89454,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198044,89209,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198139,82108,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198259,79497,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198309,87867,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198360,90306,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198441,87917,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198822,85448,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+198865,86252,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199336,90375,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199431,88066,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199457,89088,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199710,87312,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199737,80449,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199745,86390,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+199822,90272,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+200437,87639,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+200625,87746,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+200787,90488,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+200792,89734,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+200891,87542,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+201067,81117,5,1,2025-05-08 15:28:51.121744+00,Single dataset from another database submission into SEAD
+201182,90552,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201183,90552,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201274,90598,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201274,90598,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201275,90598,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201362,90642,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201362,90642,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201363,90642,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201432,90677,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201432,90677,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201433,90677,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201512,90717,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201512,90717,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201513,90717,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201514,90718,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201514,90718,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201515,90718,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201574,90748,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201574,90748,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201575,90748,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201630,90776,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201630,90776,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201631,90776,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201678,90800,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201678,90800,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201679,90800,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201688,90805,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201688,90805,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201689,90805,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201702,90812,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201702,90812,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201703,90812,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-201848,90885,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+201848,90885,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 201849,90885,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202082,91002,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202082,91002,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202083,91002,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202084,91003,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202084,91003,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202085,91003,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202172,91047,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202172,91047,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202173,91047,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202184,91053,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202184,91053,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202185,91053,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202474,91198,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202474,91198,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202475,91198,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202628,91275,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202628,91275,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202629,91275,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202632,91277,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202632,91277,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202633,91277,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202702,91312,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202702,91312,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202703,91312,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-202844,91383,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+202844,91383,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 202845,91383,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203094,91508,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203094,91508,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203095,91508,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203278,91600,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203278,91600,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203279,91600,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203464,91693,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203464,91693,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203465,91693,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203628,91775,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203628,91775,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203629,91775,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203678,91800,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203678,91800,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203679,91800,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203696,91809,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203696,91809,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203697,91809,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203816,91869,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203816,91869,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203817,91869,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203832,91877,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203832,91877,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203833,91877,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
-203880,91901,8,1,2025-05-08 13:10:39.035261+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
+203880,91901,8,1,2025-05-08 15:29:13.999233+00,Single data per sample for BugsCEP data as compiled from existing dating evidence by Francesca Pilotto and Philip Buckland for SBDI
 203881,91901,3,1,2021-10-28,Compilation and R code selection of optimal dates from BugsCEP into Excel.
 203909,91917,10,761,,Contact that supplied bone samples for aDNA analysis
 203908,91916,10,761,,Contact that supplied bone samples for aDNA analysis
