@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SQT.Scaffolding;
 
@@ -43,6 +44,28 @@ public static class ScaffoldUtility
         return GetRootFolder($"Infrastructure/Mocks/FacetContext/InMemory/{subFolder}");
     }
 
+    public static string GetProjectRoot()
+    {
+        var assemblyDir = AppDomain.CurrentDomain.BaseDirectory;
+        var probeFolder = new DirectoryInfo(assemblyDir);
+
+        while (probeFolder != null)
+        {
+            if (Directory.EnumerateFiles(probeFolder.FullName, "*.csproj").Any())
+            {
+                return probeFolder.FullName;
+            }
+            probeFolder = probeFolder.Parent;
+        }
+
+        if (probeFolder == null)
+        {
+            throw new InvalidOperationException("Unable to determine project root.");
+        }
+
+        return probeFolder.FullName;
+    }
+    
     public static ICollection<Type> GetModelTypes()
     {
         return [
@@ -76,4 +99,45 @@ public static class ScaffoldUtility
             return g;
         }
     }
+
+    public static string GetHostUserId()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            // Windows doesn't use UID/GID, so we return a default
+            return "1000";
+        }
+
+        // For Linux/macOS: Use "id -u" to get current user ID
+        var uid = ExecuteShellCommand("id -u");
+        return string.IsNullOrWhiteSpace(uid) ? "1000" : uid.Trim();
+    }
+
+    public static string GetHostGroupId()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            // Windows doesn't use UID/GID, so we return a default
+            return "1000";
+        }
+
+        // For Linux/macOS: Use "id -g" to get current group ID
+        var gid = ExecuteShellCommand("id -g");
+        return string.IsNullOrWhiteSpace(gid) ? "1000" : gid.Trim();
+    }
+
+    public static string ExecuteShellCommand(string command)
+    {
+        var processInfo = new ProcessStartInfo("bash", $"-c \"{command}\"")
+        {
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        using var process = new Process { StartInfo = processInfo };
+        process.Start();
+        return process.StandardOutput.ReadToEnd();
+    }
+
 }
