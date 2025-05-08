@@ -13,6 +13,10 @@ test:
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
 	@time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging --port 8089
+	@sudo rm -rf ./sead.query.test/tmp//sead-query-pgdata-cache
+	@echo "info: pgdata cache of test database invalidated"
+	@echo "info: test data generation completed!"
+
 clean:
 	@dotnet clean
 	@dotnet clean -c Release
