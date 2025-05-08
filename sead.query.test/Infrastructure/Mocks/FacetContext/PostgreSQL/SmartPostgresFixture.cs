@@ -37,9 +37,7 @@ public class SmartPostgresFixture : IAsyncLifetime
         {
             if (_containerInitialized) return;
 
-            var settingFactory = new SettingFactory();
-            var options = settingFactory.GetSettings();
-            // int port = int.Parse(options.Store.Port);
+            var options = new SettingFactory().GetSettings();
             var runId = Guid.NewGuid().ToString("N").Substring(0, 8);
             var config = new PostgreSqlTestcontainerConfiguration
             {
