@@ -8,6 +8,7 @@ using Npgsql;
 using SQT.Scaffolding;
 using System;
 using System.Linq;
+using Testcontainers.PostgreSql;
 
 namespace SQT.Infrastructure;
 
@@ -16,7 +17,7 @@ namespace SQT.Infrastructure;
 
 public class SmartPostgresFixture : IAsyncLifetime
 {
-    private static PostgreSqlTestcontainer _container;
+    private static PostgreSqlContainer _container;
     private static bool _containerInitialized = false;
     private static readonly object _lock = new object();
     // private static readonly string CachedDataFolder = Path.Combine(Path.GetTempPath(), "sead-query-pgdata-cache");
@@ -51,7 +52,7 @@ public class SmartPostgresFixture : IAsyncLifetime
             bool cacheExists = Directory.Exists(Path.Combine(CachedDataFolder, "pgdata"));
             var uid = ScaffoldUtility.GetHostUserId();
             var gid = ScaffoldUtility.GetHostGroupId();
-            
+
             _container = new PostgreSqlBuilder()
                 .WithImage("postgis/postgis:16-3.5-alpine")
                 .WithName($"sead-query-test-postgres-{runId}")
@@ -60,15 +61,13 @@ public class SmartPostgresFixture : IAsyncLifetime
                 .WithDatabase(options.Store.Database)
                 .WithHostname("testcontainer_postgres")
                 .WithCleanUp(true)
-                // .WithExposedPort(port)
-                .WithPortBinding(5432, assignRandomHostPort: true) // Random Port
-                // .WithBindMount("/var/lib/postgresql/data", "/var/lib/postgresql/data") // Optional: Persistent data
-                // .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(port))
+                .WithPortBinding(5432, assignRandomHostPort: true)
+                .WithBindMount(CachedDataFolder, "/var/lib/postgresql/data", AccessMode.ReadWrite)
                 .Build();
 
             _container.StartAsync().Wait();
             Environment.SetEnvironmentVariable("QueryBuilderSetting__Store__Port", _container.GetMappedPublicPort(5432).ToString());
-            SettingFactory.DefaultSettings.Store.Port =_container.GetMappedPublicPort(5432).ToString();
+            SettingFactory.DefaultSettings.Store.Port = _container.GetMappedPublicPort(5432).ToString();
 
             _containerInitialized = true;
 
@@ -123,14 +122,14 @@ public class SmartPostgresFixture : IAsyncLifetime
         var schemaFilePath = ScaffoldUtility.GetPostgresDataFolder();
         foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
         {
-            await ExecuteSqlFileAsync(Container.ConnectionString, file);
+            await ExecuteSqlFileAsync(Container.GetConnectionString(), file);
         }
 
         // 2) bulk-load public/*.csv
         var csvDir = Path.Combine(schemaFilePath, "csv");
         if (Directory.Exists(csvDir))
         {
-            await using var conn = new NpgsqlConnection(Container.ConnectionString);
+            await using var conn = new NpgsqlConnection(Container.GetConnectionString());
             await conn.OpenAsync();
 
             await using var transaction = await conn.BeginTransactionAsync(); // Start transaction
