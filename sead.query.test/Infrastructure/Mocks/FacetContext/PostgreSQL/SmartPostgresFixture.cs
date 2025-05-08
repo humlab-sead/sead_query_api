@@ -18,7 +18,11 @@ public class SmartPostgresFixture : IAsyncLifetime
     private static PostgreSqlTestcontainer _container;
     private static bool _containerInitialized = false;
     private static readonly object _lock = new object();
-    
+    // private static readonly string CachedDataFolder = Path.Combine(Path.GetTempPath(), "sead-query-pgdata-cache");
+    // private static readonly string CachedDataFolder = Path.Combine(Directory.GetCurrentDirectory(), "tmp", "sead-query-pgdata-cache");
+    private static readonly string CachedDataFolder = Path.Combine(ScaffoldUtility.GetProjectRoot(), "tmp", "sead-query-pgdata-cache");
+
+
     public string ConnectionString => Container.ConnectionString;
     public PostgreSqlTestcontainer Container => _container;
 
@@ -46,8 +50,14 @@ public class SmartPostgresFixture : IAsyncLifetime
                 Password = Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"),
                 Port = 5432
             };
-            _container = new TestcontainersBuilder<PostgreSqlTestcontainer>()
-                .WithDatabase(config)
+
+            Directory.CreateDirectory(CachedDataFolder);
+
+            bool cacheExists = Directory.Exists(Path.Combine(CachedDataFolder, "pgdata"));
+            var uid = ScaffoldUtility.GetHostUserId();
+            var gid = ScaffoldUtility.GetHostGroupId();
+            
+            _container = new PostgreSqlBuilder()
                 .WithImage("postgis/postgis:16-3.5-alpine")
                 .WithName($"sead-query-test-postgres-{runId}")
                 .WithCleanUp(true)
@@ -62,12 +72,23 @@ public class SmartPostgresFixture : IAsyncLifetime
             SettingFactory.DefaultSettings.Store.Port =_container.GetMappedPublicPort(5432).ToString();
 
             _containerInitialized = true;
+
+            // Only setup database if cache is missing
+            if (!cacheExists)
+            {
+                Console.WriteLine("Initializing database for the first time (no cache).");
+                SetupDatabase().GetAwaiter().GetResult();
+            }
+            else
+            {
+                Console.WriteLine("Using cached database files.");
+            }
         }
     }
 
     public async Task InitializeAsync()
     {
-        await ResetDatabase();
+        //await ResetDatabase();
     }
 
     private async Task ResetDatabase()
