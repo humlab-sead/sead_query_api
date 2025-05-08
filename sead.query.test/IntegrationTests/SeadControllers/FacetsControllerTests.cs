@@ -1,15 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SeadQueryCore;
-using SQT.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace IntegrationTests.Sead
 {
+    [Collection("UsePostgresFixture")]
     public class FacetsControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public FacetsControllerTests(TestHostWithContainer fixture) : base(fixture)

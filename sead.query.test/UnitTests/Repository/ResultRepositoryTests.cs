@@ -1,19 +1,14 @@
-using Moq;
 using SeadQueryCore;
 using SeadQueryInfra;
-using SQT.Infrastructure;
-using SQT.Mocks;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class ResultRepositoryTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class ResultRepositoryTests : MockerWithFacetContext
     {
-        public ResultRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public ResultRepositoryTests() : base()
         {
         }
 
@@ -203,7 +198,7 @@ namespace SQT.Infrastructure.Repository
 
             // Assert
             Assert.NotEmpty(result);
-            Assert.Single(result.Where(z => z.FieldTypeId == expectedType));
+            Assert.Single(result, z => z.FieldTypeId == expectedType);
         }
     }
 }

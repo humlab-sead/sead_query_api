@@ -1,18 +1,16 @@
 using SeadQueryCore;
-using SeadQueryCore.Model.Ext;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
-using System.Collections.Generic;
 using Xunit;
 
 #pragma warning disable RCS1163, IDE0060
 
 namespace SQT.SqlCompilers
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class MapResultSqlCompilerTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class MapResultSqlCompilerTests : MockerWithFacetContext
     {
-        public MapResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public MapResultSqlCompilerTests() : base()
         {
         }
 
@@ -39,7 +37,7 @@ namespace SQT.SqlCompilers
         }
 
         [Theory]
-        [ClassData(typeof(SQT.ClassData.CompleteSetOfSingleTabularResultUriCollection))]
+        [ClassData(typeof(SQT.CollectionFixtures.CompleteSetOfSingleTabularResultUriCollection))]
         public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string viewType)
         {
             // Arrange

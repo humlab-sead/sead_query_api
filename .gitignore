@@ -370,3 +370,6 @@ sead_query_api.code-workspace
 /tmp
 
 deployment
+.pgpass
+bin
+tmp

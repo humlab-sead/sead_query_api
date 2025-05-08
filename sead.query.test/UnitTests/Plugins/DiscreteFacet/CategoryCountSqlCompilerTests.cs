@@ -6,8 +6,8 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class CategoryCountSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("sites:sites", "sites", "count")]

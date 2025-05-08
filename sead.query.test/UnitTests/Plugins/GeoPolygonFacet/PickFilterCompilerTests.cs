@@ -7,8 +7,8 @@ using Xunit;
 
 namespace SQT.Plugins.GeoPolygon
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class PickFilterCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class PickFilterCompilerTests() : MockerWithFacetContext()
     {
         [Fact]
         public void Compile_WhenNoPicks_ReturnsEmptyString()

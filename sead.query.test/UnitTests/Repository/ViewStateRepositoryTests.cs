@@ -1,16 +1,13 @@
 using SeadQueryCore;
 using SeadQueryInfra;
-using SQT.Infrastructure;
-using SQT.Mocks;
-using System;
 using Xunit;
 
 namespace SQT.Infrastructure.Repository
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class ViewStateRepositoryTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class ViewStateRepositoryTests : MockerWithFacetContext
     {
-        public ViewStateRepositoryTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public ViewStateRepositoryTests() : base()
         {
         }
 

@@ -80,4 +80,6 @@
     // "explorer.sortOrder": "modified",
     "explorer.sortOrderLexicographicOptions": "lower",
     "workbench.editor.highlightModifiedTabs": true,
+    "files.participants.timeout": 0,
+    "makefile.configureOnOpen": false
 }

@@ -1,10 +1,7 @@
-﻿using Moq;
-using SeadQueryCore;
+﻿using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -12,10 +9,10 @@ namespace SQT.QueryBuilder
 {
     using Route = List<TableRelation>;
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class QuerySetupBuilderTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class QuerySetupBuilderTests : MockerWithFacetContext
     {
-        public QuerySetupBuilderTests(SeadJsonFacetContextFixture fixture, ITestOutputHelper output) : base(fixture)
+        public QuerySetupBuilderTests(ITestOutputHelper output) : base()
         {
             Output = output;
         }

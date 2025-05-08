@@ -1,0 +1,9 @@
+contact_type_id,contact_type_name,description
+1,Identified by,Specimens identified by contact
+2,Analysed by,Data produced through analytical means by contact
+3,Samples processed by,Samples processed by contact
+4,Samples taked by,Samples taken by contact
+5,Specimen repository,Specimens are stored at this location
+6,Dataset imported by,Dataset uploaded to SEAD by this contact
+7,Dataset originally digitised by,Original storage in a database by this contact
+8,Specimen location,Specimens identified in this dataset are stored at this location

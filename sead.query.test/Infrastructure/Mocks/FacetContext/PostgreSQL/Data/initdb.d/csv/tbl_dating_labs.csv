@@ -1,0 +1,235 @@
+dating_lab_id,contact_id,international_lab_id,lab_name,country_id
+685,,A,Arizona,262
+686,,AA,NSF,262
+687,,AAR,University of Aarhus,58
+688,,AC,Ingeis,10
+689,,AECV,Alberta Environmental Center of Vegreville,38
+690,,AERIK*,Atomic Energy Res. Inst.,115
+691,,ALG,Algiers,3
+692,,ANL*,"Argonne Nat. Lab., Ill.",262
+693,,ANTW,Antwerp,21
+694,,ANU,Australian National University,13
+695,,ANUA,ANU Accelerator,13
+696,,AU*,University of Alaska,262
+697,,B,Bern,206
+698,,Ba,Bratislava,191
+699,,BC*,Brooklyn College,262
+700,,Beta,Beta Analytic,262
+701,,BIOCAMS,BIOCAMS International,262
+702,,Birm,Birmingham,224
+703,,Bln,Berlin,82
+704,,BM,British Museum,240
+705,,BONN*,Universität Bonn,82
+706,,BS,Birbal Sahni Institute,101
+707,,BSG,Brock University,38
+708,,C*,Chicago,262
+709,,CAMS,Center for Accelerator Mass Spectrometry,262
+710,,CAR*,"Univ. College, Cardiff",245
+711,,CENA,Centro Energia Nuclear na Agricultura,30
+712,,CG,Institute of Geology,44
+713,,CH,Chemistry Laboratory,101
+714,,CRCA,Cairo,64
+715,,CSIC,"Geochronology Lab, IQFR-CSIC, Madrid",197
+716,,CSM*,Cosmochemistry Lab. USSR Academy of Sciences,263
+717,,CT*,"Caltech, Calif. Inst. Tech.",262
+718,,CU,Charles University,57
+719,,D*,"Dublin, Trinity College",105
+720,,Dak*,Univ. de Dakar,187
+721,,DAL*,Dalhousie University,38
+722,,DE*,"USGS, Denver",262
+723,,Deb,Debrecen,99
+724,,DEM,"Lab. of Archaeometry, NCSR Demokritos",85
+725,,DIC*,Dicar Corp and Dicarb Radioisotope Company,262
+726,,DRI,Desert Research Institute,262
+727,,ENEA,"ENEA, Bologna",107
+728,,ETH,ETH/AMS Facility,206
+729,,F,Florence,107
+730,,Fr,Freiberg,82
+731,,Fra,Frankfurt,82
+732,,FSU*,Florida State University,262
+733,,FZ,Fortaleza,30
+734,,G*,Göteborg,205
+735,,GAK,Gakushuin University,109
+736,,Gd,Gliwice,172
+737,,GD*,Gdansk,172
+738,,Gif,Gif sur Yvette,74
+739,,Gif A,Gif sur Yvette and Orsay,74
+740,,GIN,Geological Institute,178
+741,,GL*,Geochronological Lab.,240
+742,,GrA,Groningen Accelerator,152
+743,,GrN,Groningen,152
+744,,Gro*,Groningen,152
+745,,GSC,Geological Survey,38
+746,,GU,Scottish Universities Research & Reactor Centre,244
+747,,GX,Geochron Laboratories,262
+748,,H*,Heidelberg,249
+749,,HAM,Hamburg,82
+750,,HAR*,Harwell,240
+751,,Hd,Heidelberg,82
+752,,Hel,Helsinki,73
+753,,HIG*,Hawaii Inst. of Geophys.,262
+754,,HL,Second Institute of Oceanography,44
+755,,HNS,"Hasleton-Nuclear, Palo Alto, California",262
+756,,Hv,Hannover,82
+757,,I,Teledyne Isotopes,262
+758,,IAEA,International Atomic Energy Agency,14
+759,,IAEA-MEL,Marine Environmental Laboratory,143
+760,,ICEN,Instituto Tecnológico e Nuclear,173
+761,,IEMAE,Institute of Evolutionary Morphology and Animal Ecology,178
+762,,IGAN,Institute of Geography,178
+763,,IGS*,"Inst. of Geological Sci.,",205
+764,,II*,"Isotopes, Inc., Palo Alto",262
+765,,IOAN*,Institute of Oceanography,178
+766,,IORAN,Institute of Oceanology,178
+767,,IRPA,Royal Institute of Cultural Heritage,21
+768,,ISGS,Illinois State Geological Survey,262
+769,,IVAN,Institute of Volcanology,222
+770,,IVIC*,Caracas,229
+771,,IWP,Institute of Water Problems,178
+772,,JGS,Geological Survey of Japan,109
+773,,JUBR,Biren Roy Research Laboratory,101
+774,,K,National Museum,58
+775,,KAERI*,Korean Atomic Energy Research Institute,115
+776,,KCP,National Cultural Property Research Institute,115
+777,,KI,Kiel,82
+778,,KIA,Kiel AMS,82
+779,,KIEV,Institute of Radio Geochemistry of the Environment,222
+780,,KN,Köln,82
+781,,KR,Krakow,172
+782,,KRIL,Krasnoyarsk Institute,178
+783,,KSU,Kyoto Sangyo University,109
+784,,L*,Lamont-Doherty,262
+785,,LAR,Liège State University,21
+786,,LE,St. Petersburg,178
+787,,LIH,"Lab. of Isotope Hydrology, NCSR Demokritos",85
+788,,LJ*,Scripps (UCSD) La Jolla,262
+789,,LOD,Lodz,172
+790,,LP,La Plata,10
+791,,Lu,Lund,205
+792,,LU(St.P),St. Petersburg State Univesity,178
+793,,Lv,Louvain-la-Neuve,21
+794,,Ly,University of Lyon,74
+795,,LZ,Umweltforschungszentrum Leipzig-Halle,82
+796,,M*,University of Michigan,262
+797,,Ma*,University of Winnepeg,38
+798,,MAG,Quaternary Geology and Geochronology Laboratory,178
+799,,MC*,Centre Scientifique de Monaco,143
+800,,METU,Middle East Technical University,217
+801,,MGU,Moscow,178
+802,,ML*,Miami,262
+803,,Mo*,"Verdanski Inst. of Geochemistry, Moscow",263
+804,,MOC*,"Archaeological Institute, Czechoslovak Acad. of Sci.",246
+805,,MP*,Magnolia Petroleum,262
+806,,MRRI*,Marine Resources Research Institute,262
+807,,N,Nishina Memorial,109
+808,,NIST,National Institute of Standards and Technology,262
+809,,NPL*,"National Physical Laboratory, Middlesex",240
+810,,NS*,Nova Scotia Research Foundation,38
+811,,NSRL,"INSTAAR AMS Lab, U of Colorado",262
+812,,NSTF*,"Nuclear Science and Technology Facility, State Univ. of New York",262
+813,,NSW*,U. of New South Wales,13
+814,,NTU,National Taiwan University,44
+815,,NU,Nihon University,109
+816,,Ny*,"Nancy, Centre de Recherches Radiogéologiques",74
+817,,NZ,New Zealand,155
+818,,NZA,New Zealand,155
+819,,O*,Humble Oil & Refining,262
+820,,OBDY,ORSTOM Bondy,74
+821,,ORINS*,Oak Ridge Institute of Nuclear Studies,262
+822,,OWU*,Ohio Wesleyan Univ.,262
+823,,OX*,"USDA Oxford, Mississippi",262
+824,,OxA,Oxford Radiocarbon Accelerator Unit,240
+825,,P*,Univ. of Pennsylvania,262
+826,,PI,Permafrost Institute,178
+827,,Pi*,Pisa,107
+828,,PIC*,Packard,262
+829,,PITT*,University of Pittsburgh,262
+830,,PKU,Peking University,44
+831,,Poz,Poznan Radiocarbon Laboratory,172
+832,,Pr*,Prague,246
+833,,PRIME,Purdue Rare Isotope Measurement Laboratory,262
+834,,PRL,Physical Research Laboratory,101
+835,,PSU*,Pennsylvania State Univ.,262
+836,,Pta,Pretoria,195
+837,,Q,Cambridge,240
+838,,QC*,Queens College,262
+839,,QL,Quaternary Isotope Laboratory,262
+840,,QU*,"Centre de Recherches Minérales, Québec",38
+841,,QUADRU,"Quaternary Dating Research Unit, Pretoria",195
+842,,R,Rome,107
+843,,RCD,Radiocarbon Dating,240
+844,,RI*,"Radiochemistry, Inc.",262
+845,,RIDDL*,Simon Fraser Univ.,38
+846,,Riga,Institute of Science,119
+847,,RL*,"Radiocarbon, Ltd.",262
+848,,Rome,"Department of Earth Sciences, Rome",107
+849,,RT,Rehovot,106
+850,,RU*,Rice University,262
+851,,S*,Saskatchewan,38
+852,,Sa*,"Saclay, Gif-sur-Yvette",74
+853,,Sac,Instituto Tecnológico e Nuclear,173
+854,,SFU*,Simon Fraser Univ.,38
+855,,Sh*,Shell Development Co.,262
+856,,SI*,Smithsonian Institution,262
+857,,SL*,Sharp Laboratories,262
+858,,SM*,"Mobil Oil Corp., Dallas",262
+859,,SMU*,Southern Methodist Univ.,262
+860,,SNU,Seoul National Univ.,115
+861,,SOAN,Institute of Geology and Geophysics,178
+862,,SR*,"Salisbury, Rhodesia",247
+863,,SRR,NERC Radiocarbon Laboratory,244
+864,,St*,Stockholm,205
+865,,Su,Finland,73
+866,,SUA,Sydney University,13
+868,,T,Trondheim,162
+869,,TA,Tartu,68
+870,,TAM,Texas A & M University,262
+871,,TB,Tblisi,81
+872,,TBNC*,Kaman Instruments (formerly Texas-Bio-Nuclear),262
+873,,TEM*,Temple University,262
+874,,TF*,Tata Institute of Fundamental Research,101
+875,,TK,University of Tokyo,109
+876,,TKU,Turku,73
+877,,Tln,Tallinn,68
+878,,TO,IsoTrace Laboratory,38
+879,,TUNC,Tehran University Nuclear Centre,103
+880,,Tx*,Texas,262
+881,,U,Uppsala,205
+882,,Ua,Uppsala Accelerator,205
+883,,UB,Belfast,243
+884,,UBAR,University of Barcelona,197
+885,,UCD,"University College, Dublin",105
+886,,UCI,"University of California, Irvine",262
+887,,UCLA,"University of California, Los Angeles",262
+888,,UCR,"University of California, Riverside",262
+889,,UD,Udine,107
+890,,UGa,University of Georgia,262
+891,,UGRA,University of Granada,197
+892,,UM*,University of Miami,262
+893,,UQ,University of Quebec at Montreal,38
+894,,URCRM,Ukrainian Research Ctr. for Radiation Medicine,222
+895,,USGS,"USGS, Menlo Park",262
+896,,UtC,Utrecht van der Graaf Laboratorium,152
+897,,UW*,University of Washington,262
+898,,W,"USGS, National Center",262
+899,,V*,"Melbourne, Victoria",13
+900,,WAT,University of Waterloo,38
+901,,WHAMS,National Ocean Sciences AMS Facility,262
+902,,WIS,Wisconsin,262
+903,,Wk,University of Waikato,155
+904,,WRD*,"USGS Washington, D.C. Water Resources Division",262
+905,,VRI,Vienna Radium Institute,14
+906,,WSU*,Washington State Univ.,262
+907,,X*,Whitworth College,262
+908,,XLLQ,Xian Laboratory of Loess and Quaternary Geology,44
+909,,Y*,Yale University,262
+910,,Ya*,Yale University,262
+911,,Z,Zagreb,54
+912,,VERA,Institut für Radiumforschung und Kernphysik,14
+913,,UBA,Belfast,243
+914,,SWAN,"University of Wales, Swansea",245
+915,,LUS,Lund University,205
+916,,Unknown,Unknown or unspecified,
+917,,SacA,Gif sur Yvette (Saclay),74
+918,,SUERC,Scottish Universities Environmental Research Centre,244
+867,,SWA,"Department of Geography, University of Wales, Swansea",245

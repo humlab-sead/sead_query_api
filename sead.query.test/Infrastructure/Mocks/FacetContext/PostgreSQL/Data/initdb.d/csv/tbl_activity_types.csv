@@ -1,0 +1,11 @@
+activity_type_id,activity_type,description
+1,Flowering,Plant is in flower.
+2,Breeding,"Organisms are actively breeding, i.e. mating season."
+3,Adult active,Adult organisms are active.
+4,Larva active,Larval stages are active.
+5,Pupating,Organism is in pupal stage.
+6,Growing season,"Organism, most commonly plant, is growing."
+7,Shedding leaves,Deciduous plant is shedding leaves.
+8,Hibernating,"Organisim is dowmant, in hibernation."
+9,Migrating,"Organism is migrating, seasonally changing its geographical base."
+10,Dormant,Oganism is dormant for reason other than hibernation.

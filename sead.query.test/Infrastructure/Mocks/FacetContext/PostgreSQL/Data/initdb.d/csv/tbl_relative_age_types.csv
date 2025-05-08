@@ -1,0 +1,15 @@
+relative_age_type_id,age_type,description
+1,Archaeological period,"Culturally, typologically or otherwise defined archaeological period"
+2,Historical period,Period defined by historical rather than archaeological records
+3,Blytt-Sernander,Blytt and Sernander climate zones
+6,Geological periods,
+8,Geological ages,
+7,Geological epochs,
+5,Pollen Zone,Temporal period as defined by pollen stratigraphy
+4,Oxygen Isotope Stage,"Oxygen Isotope Stage, Marine isotope stages (MIS), marine oxygen-isotope stages. Periods defined by analysis of (mainly) oxygen isotopes in marine cores."
+9,Geological period,Subdivision of geological time period which is divided into epochs.
+10,Geological,"General geological age. Either crosses established temporal type definitions, or may need correctly assigning."
+11,Other age type,Age type either undefined or questioned
+12,Calendar date,Absolute date in calendar years (single year)
+13,Calendar date range,Absolute date range in calendar years (range of years)
+14,Calibrated 14C 2sd age range,

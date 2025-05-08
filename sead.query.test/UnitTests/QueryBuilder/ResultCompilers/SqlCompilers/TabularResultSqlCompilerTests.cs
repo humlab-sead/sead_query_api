@@ -1,20 +1,15 @@
-using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SQT.ClassData;
+using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class TabularResultSqlCompilerTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class TabularResultSqlCompilerTests : MockerWithFacetContext
     {
-        public TabularResultSqlCompilerTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public TabularResultSqlCompilerTests() : base()
         {
         }
 

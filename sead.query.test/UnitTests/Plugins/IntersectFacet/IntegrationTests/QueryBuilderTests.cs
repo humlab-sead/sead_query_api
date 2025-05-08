@@ -12,8 +12,8 @@ namespace SQT.Plugins.Intersect
 {
 
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class QueryBuilderTests(SeadJsonFacetContextFixture facetContextFixture) : IntegrationTestBase(facetContextFixture)
+    [Collection("UsePostgresFixture")]
+    public class QueryBuilderTests : IntegrationTestBase
     {
 
         [Theory]

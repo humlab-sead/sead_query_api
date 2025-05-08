@@ -9,7 +9,7 @@ namespace SeadQueryInfra
     {
         public StoreSetting Settings { get; } = settings;
 
-        public IFacetContext GetInstance()
+        public FacetContext GetInstance()
         {
             return new FacetContext(CreateOptionsBuilder(Settings).Options);
         }

@@ -6,8 +6,8 @@ using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class CategoryCountSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class CategoryCountSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]

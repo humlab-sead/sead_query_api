@@ -2,7 +2,6 @@ using KellermanSoftware.CompareNetObjects;
 using Newtonsoft.Json;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
-using SeadQueryInfra;
 using SQT.Infrastructure;
 using SQT.Mocks;
 using System;
@@ -13,12 +12,12 @@ using static SeadQueryCore.FacetsConfig2;
 
 namespace SQT.Model
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetsConfig2Tests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class FacetsConfig2Tests : MockerWithFacetContext
     {
         private readonly MockFacetsConfigFactory FacetsConfigFactory;
 
-        public FacetsConfig2Tests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public FacetsConfig2Tests() : base()
         {
             FacetsConfigFactory = new MockFacetsConfigFactory(Registry.Facets);
         }

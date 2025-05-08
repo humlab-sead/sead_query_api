@@ -6,14 +6,15 @@ using Xunit;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetContentServiceTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class FacetContentServiceTests() : MockerWithFacetContext()
     {
         public virtual Mock<RangeCategoryInfoSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
         {
             var mock = new Mock<RangeCategoryInfoSqlCompiler>();
             dynamic payload = new { Interval = It.IsAny<int>(), Lower = It.IsAny<int>(), Upper = It.IsAny<int>(), IntervalCount = It.IsAny<int>() };
-            mock.Setup(z => z.Compile(null, null, new {
+            mock.Setup(z => z.Compile(null, null, new
+            {
                 DataLow = It.IsAny<decimal>(),
                 DataHigh = It.IsAny<decimal>(),
                 TickLow = It.IsAny<decimal>(),
@@ -37,7 +38,7 @@ namespace SQT.Plugins.Range
             /* GetExtent generates an extent */
             rangeOuterBoundService
                 .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
-                .Returns((lower,upper));
+                .Returns((lower, upper));
 
             /* GetUpperLowerBounds hits the database */
             rangeOuterBoundService

@@ -1,0 +1,12 @@
+sample_description_type_id,type_name,type_description
+1,Decoration,"Decoration, e.g. marks, painting, protrusions, texture, glaze, varnish, perforated"
+2,Vessel part,"Part of the vessel represented by the sample, e.g. lid, base, neck, rim."
+4,Surface treatment,"Type of surface treatment vessel part subjected to, e.g. glaze, slip, polished, smoothed."
+5,Linked sample,"Specifies relationship between a pseudosample and its constituent samples, within a sample group. I.e. Each sample description contains the name of a sample which is contained within a pseudosample; collectively these descriptions list the entire pseudosample aggregation."
+30,Wood function,Function or format of the wood
+31,Wood shape,"Information about how the wood has been handled (e.g. how has a log been split: full section, half section etc.)"
+32,Wood processing markings,Information about potential processing grooves (e.g. axe grooves)
+33,Wood processing technique,Specification about the technique used to cause the wood markings
+34,Wood general markings,Information about wood markings not related to the processing of it (e.g. traces of paint)
+35,Wood reuse,"Information about the potential reuse of the wood (e.g. house move, reused timber)"
+36,Tree height (m),Height of tree sampled for dendrochronological and/or climatological investigation.

@@ -1,0 +1,64 @@
+contact_id,address_1,address_2,location_id,email,first_name,last_name,phone_number,url
+34,Knadriks Kulturbygg,"Blekinge, Skåne",1004,,Karl-Magnus,Melin,,http://www.knadrikskulturbygg.se/
+35,The Laboratory for Wood Anatomy and Dendrochronology,Lund University,,hans.linderson@geol.lu.se,Hans,Linderson,,https://www.geology.lu.se/hans-linderson
+39,Kalmar läns museum,Kalmar,,,Magdalena,Jonsson,,http://www.kalmarlansmuseum.se/
+43,Kalmar läns museum,Kalmar,,,Örjan,Molander,,http://www.kalmarlansmuseum.se/
+56,The Laboratory for Wood Anatomy and Dendrochronology,Lund University,,,VDL,,,https://www.geology.lu.se/research/laboratories-equipment/the-laboratory-for-wood-anatomy-and-dendrochronology
+59,,,,,Jarl,Karlsson,,
+60,,,,,Lennart,Grandelius,,
+62,,,,,Ólafur,Eggertsson,,
+63,,,,,Thomas,Bartholin,,
+65,,,,,Private,,,
+379,,,,,Barbro,Sundnér,,
+383,,,,,Client,"",,
+384,,,,,Dag,Forssblad,,
+386,,,,,Erik,Palmkvist,,
+391,,,,,Jan,Eriksson,,
+394,,,,,Kjell,Taawo,,
+395,,,,,Lars,Bengtsson,,
+403,,,,,Stefan,Kriig,,
+405,,,,,William J.,Callahan,,
+70,The Laboratory for Ceramic Research,Lund University,3911,anders.lindahl@geo.lu.se,Anders,Lindahl,,http://www.geology.lu.se/anders-lindahl
+71,The Laboratory for Ceramic Research,Lund University,3911,,Birgitta ,Hulthén,,
+75,The Laboratory for Ceramic Research,Lund University,3911,,Ole,Stilborg,,
+77,The Laboratory for Ceramic Research,Lund University,3911,,Torbjörn,Brosson,,
+78,The Laboratory for Ceramic Research,Lund University,3911,,Thomas,Eriksson,,
+79,The Laboratory for Ceramic Research,Lund University,3911,,KFL,,,http://www.geology.lu.se/research/laboratories-equipment/the-laboratory-for-ceramic-research
+408,,,,,,Lemdahl,,
+410,,,,,"Edinburgh University, UK",,,
+412,,,,,,Osborne,,
+415,,,,,,Robinson,,
+417,,,,,,Buckland,,
+418,,,,,,Skidmore,,
+421,,,,,,Böcher,,
+422,,,,,,Coope,,
+428,,,,,,Crowson,,
+429,,,,,,Locke,,
+430,,,,,,Sadler,,
+431,,,,,,Kenward,,
+447,,,,,University of Edinburgh,,,
+454,,,,,,Allison,,
+459,,,,,Edinburgh University,,,
+464,,,,,,Moseley,,
+473,,,,,,Elias,,
+474,,,,,,Perry,,
+483,,,,,,Wilkinson,,
+485,,,,,,Hellqvist,,
+537,,,,,,Ponel,,
+542,,,,,,Reilly,,
+543,,,,,,M.L. Cox,,
+569,,,,,,Greenwood,,
+571,,,,,,Olsson,,
+596,,,,,,Dugmore,,
+603,,,,,"Royal Holloway, University of London.",,,
+605,,,,,,Konradsdottir,,
+657,,,,,,Denton,,
+658,,,,,,Angus (Helophorus),,
+684,,,,,,Bezdek,,
+1,"Environmental Archaeology Lab
+ Dept. of Philosophical, Historical & Religious Studes","Umeå University
+SE-90187  Umeå",205,phil.buckland@arke.umu.se,Philip,Buckland,+46 (0)90 786 5292,https://www.umu.se/en/staff/philip-buckland/
+67,"Environmental Archaeology Lab Dept. of Philosophical, Historical & Religious Studies",Umeå University,205,mattias.sjolander@umu.se,Mattias,Sjölander,,https://www.umu.se/en/staff/mattias-sjolander/
+762,"SciLifelab Ancient DNA, Norbyvägen 18 A, 752 36, Uppsala University, Uppsala",,4233,info@scilifelab.se,SciLifelab Ancient DNA,,,https://www.scilifelab.se/units/ancient-dna/
+761,Arkeologerna,,,caroline.ahlstrom.arcini@arkeologerna.com,Caroline,Arcini Ahlström,,https://arkeologerna.com/
+760,"SciLifelab Ancient DNA, Norbyvägen 18 A, 752 36, Uppsala University, Uppsala",,4233,thijessen.naidoo@scilifelab.uu.se,Thijessen,Naidoo,,https://www.scilifelab.se/units/ancient-dna/

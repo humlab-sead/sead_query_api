@@ -3,10 +3,12 @@ using SeadQueryCore.Plugin.Discrete;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using System.Collections.Generic;
+using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    public class DeleteBogusPickServiceTests(JsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class DeleteBogusPickServiceTests() : MockerWithFacetContext()
     {
         protected virtual Mock<IValidPicksSqlCompiler> MockValidPickCompiler(string returnSql)
         {

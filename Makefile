@@ -10,6 +10,13 @@ test:
 		
 #--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
 
+# Creates SQL DDL/DML for a TestContainer PostgreSQL database
+test-data:
+	@time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging --port 8089
+	@sudo rm -rf ./sead.query.test/tmp//sead-query-pgdata-cache
+	@echo "info: pgdata cache of test database invalidated"
+	@echo "info: test data generation completed!"
+
 clean:
 	@dotnet clean
 	@dotnet clean -c Release
@@ -47,7 +54,7 @@ release-pr:
 .PHONY: tools
 tools:
 	@dotnet tool install csharpier --global
-	@cat 'add_folder_to_path "$$HOME/.dotnet/tools"' >> ~/.bashrc'
+	@cat 'add_folder_to_path "$${HOME}/.dotnet/tools"' >> ~/.bashrc'
 	@echo "info: csharpier installed, see https://csharpier.com/docs/About for more information"
 
 changelog-tools:

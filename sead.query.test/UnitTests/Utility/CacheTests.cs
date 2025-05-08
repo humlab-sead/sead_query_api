@@ -5,6 +5,7 @@ using SeadQueryInfra;
 using SQT.Infrastructure;
 using SQT.Mocks;
 using Moq;
+using SQT.Scaffolding;
 
 namespace SQT.Infrastructure
 {
@@ -48,14 +49,13 @@ namespace SQT.Infrastructure
         [Fact]
         public void Resolve_CanResolveCacheService()
         {
-            var settingsMock = new Mock<ISetting>();
-            settingsMock.Setup(x => x.Facet).Returns(new FacetSetting());
-            settingsMock.Setup(x => x.Store).Returns(new StoreSetting());
-            using (var container = DependencyService.CreateContainer(null, ScaffoldUtility.JsonDataFolder(), settingsMock.Object))
+            var settingsMock = MockerWithFacetContext.MockSettings();
+            using (var container = DependencyService.CreateContainer(null, settingsMock.Object))
             using (var scope = container.BeginLifetimeScope())
             {
                 Assert.NotNull(scope.Resolve<ISeadQueryCache>());
             }
         }
+
     }
 }

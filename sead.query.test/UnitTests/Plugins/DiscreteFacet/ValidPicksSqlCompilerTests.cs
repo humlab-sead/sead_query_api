@@ -5,8 +5,8 @@ using Xunit;
 
 namespace SQT.Plugins.Discrete
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class ValidPicksSqlQueryCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class ValidPicksSqlQueryCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("sites:sites@5")]

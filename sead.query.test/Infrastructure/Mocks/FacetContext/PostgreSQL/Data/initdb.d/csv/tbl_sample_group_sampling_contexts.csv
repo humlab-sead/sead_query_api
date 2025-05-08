@@ -1,0 +1,18 @@
+sampling_context_id,sampling_context,description,sort_order
+1,Archaeological site,Samples from archaeological sites.,1
+5,Stratigraphic sequence,"Series of samples from any vertical sequence, includes cores, monoliths and off site archaeological stratigraphies.",2
+3,Other palaeo,Palaeo samples collected under other circumstances or for other purposes.,3
+4,Pitfall traps,Samples from pitfall trap captures.,4
+7,Insect hunting,Samples collected from living moss surfaces.,5
+11,Other quantitative insect survey,Numerical insect/arthropod survey data.,6
+10,Quantitative vegetation survey,Vegetation survey where species/individuals are counted.,7
+8,Qualitative vegetation survey,"General vegetation descriptions or estimations, mainly categorical data.",8
+9,Lake surface sediment samples,Grab samples of upper sediment layers in water bodies.,9
+6,Moss polsters,Samples collected from living moss surfaces.,10
+2,Other modern,Modern samples collected under other circumstances or for other purposes.,11
+12,Dendrochronological investigation,Investigation of wood for age determination,0
+13,Ceramics,Investigation of properties of ceramic materials.,0
+14,Geoarchaeological field prospection,"Spatial survey using geoarchaeological methods (e.g. soil chemistry/properties, metal detector, magnetometer, MS-loop)",0
+17,Dendrochronological building investigation,"Investigation of wood for age determination, sampled in a historic building context",0
+18,Dendrochronological archaeological sampling,"Investigation of wood for age determination, sampled in an archaeological context",0
+19,Dendrochronological living trees,"Investigation of wood for age determination, sampled from living trees.",0

@@ -5,8 +5,8 @@ using SQT.Infrastructure;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class RangeOuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class RangeOuterBoundSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:tbl_denormalized_measured_values_33_0")]

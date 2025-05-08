@@ -15,8 +15,8 @@ using SeadQueryCore.Model;
 namespace IntegrationTests.Sead
 {
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class QueryBuilderTests(SeadJsonFacetContextFixture facetContext) : IntegrationTestBase(facetContext)
+    [Collection("UsePostgresFixture")]
+    public class QueryBuilderTests() : IntegrationTestBase
     {
 
         [Theory]

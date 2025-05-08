@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Autofac.Features.Indexed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -14,18 +12,20 @@ namespace SQT
     {
     }
 
-    /// <summary>
-    /// IOptionsBuilder
-    /// </summary>
     internal class SettingFactory
     {
-        private readonly Setting defaultOptions;
+        public static Setting defaultOptions { get; set; } = null;
 
-        public SettingFactory(Dictionary<string, string> memorySettings = null)
+        // Static dictionary for overriding settings
+        public static Dictionary<string, string> OverrideSettings { get; set; } = new Dictionary<string, string>();
+
+        public SettingFactory(Dictionary<string, string> overrideSettings = null)
         {
-            defaultOptions = GetSettings(memorySettings);
+            OverrideSettings = overrideSettings ?? OverrideSettings ?? [];
         }
-        public FacetSetting DefaultFacetSettings()
+
+        // Default Facet Settings
+        public static FacetSetting DefaultFacetSettings()
         {
             return new FacetSetting()
             {
@@ -34,32 +34,49 @@ namespace SQT
             };
         }
 
-        public ISetting DefaultQueryBuilderSettings()
+        // Default Settings for QueryBuilder
+        public static Setting DefaultSettings
         {
-            return new Setting()
+            get
             {
-                Facet = DefaultFacetSettings(),
-                Store = GetSettings().Store
-            };
+                return defaultOptions ??= new Setting()
+                {
+                    Facet = DefaultFacetSettings(),
+                    Store = LoadSettings().Store
+                };
+            }
         }
-
-        public static Setting GetSettings(Dictionary<string, string> memorySettings = null)
+        // Main method to get settings with overrides applied
+        public static Setting LoadSettings(Dictionary<string, string> memorySettings = null)
         {
             DotEnv.Load(".env", "conf/.env");
+
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
                 .AddInMemoryCollection(memorySettings ?? new Dictionary<string, string>())
+                .AddInMemoryCollection(OverrideSettings) // <-- Apply Override Settings
                 .Build()
                 .GetSection("QueryBuilderSetting")
                 .Get<Setting>();
+
             return config;
         }
 
+        public Setting GetSettings(Dictionary<string, string> memorySettings = null)
+        {
+            if (memorySettings == null)
+            {
+                return LoadSettings(memorySettings);
+            }
+            return DefaultSettings;
+        }
+
+        // Create Mocked IOptions for Dependency Injection
         public IOptions<Setting> Create()
         {
             var options = new Mock<IOptions<Setting>>();
-            options.Setup(o => o.Value).Returns(defaultOptions);
+            options.Setup(o => o.Value).Returns(DefaultSettings);
             return options.Object;
         }
     }

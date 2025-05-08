@@ -18,20 +18,14 @@ namespace SQT.Infrastructure
         public ISetting Options { get; set; }
 
         public IFacetContext FacetContext { get; set; } = null;
-        public JsonFacetContextFixture Fixture { get; set; } = null;
 
-        private readonly DisposableFacetContextContainer MockService;
-
-        public DependencyService(JsonFacetContextFixture fixture)
+        public DependencyService(IFacetContext facetContext)
         {
-            Fixture = fixture;
-            MockService = new DisposableFacetContextContainer(Fixture);
-            // FacetContext = MockService.FacetContext;
+            FacetContext = facetContext;
         }
-
         public void Dispose()
         {
-            MockService.Dispose();
+            //MockService.Dispose();
         }
 
         public virtual ISeadQueryCache GetCache(StoreSetting settings)
@@ -41,7 +35,7 @@ namespace SQT.Infrastructure
 
         protected override void Load(ContainerBuilder builder)
         {
-            Options ??= MockService.CreateSettings();
+            Options ??= new SettingFactory().Create().Value;
 
             builder.RegisterInstance(Options).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
@@ -125,11 +119,11 @@ namespace SQT.Infrastructure
             }
         }
 
-        public static IContainer CreateContainer(IFacetContext facetContext, string jsonFolder, ISetting options)
+        public static IContainer CreateContainer(IFacetContext facetContext, ISetting options)
         {
-            var builder = new Autofac.ContainerBuilder();
-            var fixture = new JsonFacetContextFixture(jsonFolder);
-            var dependencyService = new DependencyService(fixture) { FacetContext = facetContext, Options = options };
+            var builder = new ContainerBuilder();
+            //var fixture = new JsonFacetContextDataFixture(jsonFolder);
+            var dependencyService = new DependencyService(facetContext) { Options = options };
             dependencyService.Load(builder);
             return builder.Build();
         }

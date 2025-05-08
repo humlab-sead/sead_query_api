@@ -5,8 +5,8 @@ using SQT.Infrastructure;
 
 namespace SQT.Plugins.Range
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class OuterBoundSqlCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class OuterBoundSqlCompilerTests() : MockerWithFacetContext()
     {
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]

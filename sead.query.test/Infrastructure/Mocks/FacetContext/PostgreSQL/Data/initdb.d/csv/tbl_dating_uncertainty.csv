@@ -1,0 +1,9 @@
+dating_uncertainty_id,description,uncertainty
+1,"Indication that the date is approximate, with unspecified or unquantifiable errors.",Ca.
+2,"(For radiometric dates only). Oldest possible age of sample, often representing open ended dating where only one extreme limit is known. Occasionally used as part of a >< pair to define approximate age range.",<
+3,"(For radiometric dates only). Youngest possible age of sample, often representing open ended dating where only one extreme limit is known. Occasionally used as part of a >< pair to define approximate age range.",>
+4,"Oldest possible age of sample, usually part of a from-to pair, but could be used to represent open ended dating.",From
+5,"Youngest possible age of sample, usually part of a from-to pair, but could be used to represent open ended dating.",To
+6,"Approximate oldest possible age of sample, usually part of a from-to pair, but could be used to represent open ended dating.",From ca.
+7,"Approximate youngest possible age of sample, usually part of a from-to pair, but could be used to represent open ended dating.",To ca.
+8,Dating is disputable.,?

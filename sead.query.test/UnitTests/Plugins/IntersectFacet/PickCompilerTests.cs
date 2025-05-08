@@ -1,14 +1,15 @@
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Intersect;
 using SQT.Infrastructure;
+using SQT.Scaffolding;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class PickCompilerTests(SeadJsonFacetContextFixture fixture) : DisposableFacetContextContainer(fixture)
+    [Collection("UsePostgresFixture")]
+    public class PickCompilerTests() : MockerWithFacetContext()
     {
         [Fact]
         public void Compile_WhenTargetAndCurrentFacetAreTheSame_ReturnsEmptyString()

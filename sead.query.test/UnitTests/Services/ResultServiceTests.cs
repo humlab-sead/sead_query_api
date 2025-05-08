@@ -7,10 +7,10 @@ using Xunit;
 
 namespace SQT.Services
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class ResultServiceTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class ResultServiceTests : MockerWithFacetContext
     {
-        public ResultServiceTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public ResultServiceTests() : base()
         {
         }
 

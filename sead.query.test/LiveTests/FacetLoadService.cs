@@ -7,6 +7,7 @@ using SQT.Mocks;
 
 namespace SQT.LiveServices
 {
+    [Collection("UsePostgresFixture")]
     public class FacetLoadServiceTests
     {
         public SeadQueryAPI.DependencyService DependencyService { get; private set; }
@@ -16,7 +17,7 @@ namespace SQT.LiveServices
 
         public FacetLoadServiceTests()
         {
-            DependencyService = new SeadQueryAPI.DependencyService() { Options = SettingFactory.GetSettings() };
+            DependencyService = new SeadQueryAPI.DependencyService() { Options = SettingFactory.DefaultSettings };
             var builder = new Autofac.ContainerBuilder();
             builder.RegisterModule(DependencyService);
             Container = builder.Build();

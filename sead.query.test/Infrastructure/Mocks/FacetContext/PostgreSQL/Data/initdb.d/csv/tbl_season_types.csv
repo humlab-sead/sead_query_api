@@ -1,0 +1,4 @@
+season_type_id,description,season_type
+8,A month. One twelth of a year.,Month
+9,"A division of the year, marked by changes in weather.",Season
+10,"A division of the year, marked by changes in weather. This can include multiple seasons (e.g. winter-spring, summer-winter).",Multiple years

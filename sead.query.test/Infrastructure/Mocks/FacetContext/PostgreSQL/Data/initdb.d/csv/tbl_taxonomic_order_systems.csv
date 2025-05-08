@@ -1,0 +1,7 @@
+taxonomic_order_system_id,system_description,system_name
+1,"Taxonomic order system implemented in the Bugs Coleopteran Ecology Package, 20090810 implementation (see references for more version details). 
+Taxonomy is based upon Lucht (1987) revised Böhme (2005), and Gustafsson (2005) with changes where noted. For revision at the Family and subfamily level, 
+see Lawrence & Newton 1995. Bugs Taxonomic Codes are a modified form of the Central European Codes of Lucht (1987).
+",BugsCEP taxonomic order
+2,Taxonomic order system that maps the taxonomy in SEAD with the taxonomy in Dyntaxa.,Dyntaxa taxonomic order
+3,National Center for Biotechnology Information (NCBI) Taxonomy Database with classification and nomenclature for all organisms in the public sequence databases.,NCBI taxonomy

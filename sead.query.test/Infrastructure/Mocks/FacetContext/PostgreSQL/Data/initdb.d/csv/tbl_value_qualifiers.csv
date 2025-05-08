@@ -1,0 +1,14 @@
+qualifier_id,symbol,description
+1,<,Less than. The value is smaller than the compared value.
+2,>,Greater than. The value is larger than the compared value.
+3,=,Equal to. The value is exactly equal to the compared value.
+4,<=,Less than or equal to. The value is smaller than or equal to the compared value.
+5,>=,Greater than or equal to. The value is larger than or equal to the compared value.
+6,~<=,"Approximately less than or equal to (informal, text-friendly)"
+7,~>=,Approximately greater than or equal to the compared value.
+8,~,"Approximately equal to. The value is roughly around the compared value, but not exact."
+9,≈,Almost equal to. The value is very close to the compared value but may not be exactly the same.
+10,≠,Not equal to. The value is different from the compared value.
+11,±,Plus-minus. Indicates a value range where the actual value could be either greater or smaller by a specific amount.
+12,≈ but ≠,Almost equal to but not the same. The value is very close to the compared value but not be exactly the same.
+13,≃,The value might be the same as the compared value (or asymptotically equal to or).

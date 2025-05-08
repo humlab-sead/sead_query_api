@@ -1,0 +1,36 @@
+project_id,project_type_id,project_stage_id,project_name,project_abbrev_name,description
+505,8,6,10001 Hammarlunda kyrka,,CONTRACTOR: Unknown SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+503,8,6,10065 Skårby kyrka,,CONTRACTOR: Riksbankens Jubileumsfond/Ystadprojektet SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+502,8,6,10091 Västra Nöbbelövs kyrka,,CONTRACTOR: Riksbankens Jubileumsfond/Ystadprojektet SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+472,8,6,10627 Perstorps kyrka,,CONTRACTOR: Perstorps Församling SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att datera klockstapeln
+461,8,6,10694 Perstorps kyrka,,"CONTRACTOR: Lunds Universitet, Institutionen För Historisk Arkeologi SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader"
+458,8,6,10754 Visseltofta kyrka,,"CONTRACTOR: Lunds Universitet, Institutionen För Historisk Arkeologi SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader"
+445,8,6,10883 Norra Mellby kyrka,,CONTRACTOR: Knadriks Kulturbygg Ab SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+441,8,6,10930 Farhults kyrka,,CONTRACTOR: Kulla Pastorat SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+430,8,6,12159 Fleringe kyrka,,"CONTRACTOR: Riksantikvarieämbetet SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader, samt att uppbygga en grundkurva för Gotland"
+362,8,6,14049 Hagebyhöga kyrka,,CONTRACTOR: Östergötlands Länsmuseum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadens tillkomst och eventuella ombyggnader
+359,8,6,14115 Kaga kyrka,,CONTRACTOR: Östergötlands Länsmuseum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadens tillkomst och eventuella ombyggnader
+352,8,6,14435 Finntorp,,CONTRACTOR: Östergötlands Länsmuseum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadernas tillkomst och eventuella ombyggnader
+344,8,6,14555 Bankekinds kyrka,,CONTRACTOR: Östergötlands Länsmuseum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadernas tillkomst och eventuella ombyggnader
+329,8,6,14986 Skeppsås kyrka,,CONTRACTOR: Privat SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder
+327,8,6,17004 Slevringe gård,,CONTRACTOR: Privat SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder
+323,8,6,17108 Torpa prästgård,,CONTRACTOR: Privat SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att datera två byggnader på fastigheten
+300,8,6,17421 Hunnebergsgatan 30A,,CONTRACTOR: Riksantikvarieämbetet SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+279,8,6,53535 Kummelnäs gård,,CONTRACTOR: Lönngren Arkitekter Ab SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att datera träprover från Kummelnäs gård
+267,8,6,57214 Gällstaö Gård,,CONTRACTOR: Fastighetsägaren SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder
+231,8,6,61521 Flöxhult säteri,,CONTRACTOR: Privat SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga flera byggnaders tillkomst på Flöxhults säteri
+221,8,6,61813 Kvarteret Borgmästaren,,CONTRACTOR: Kalmar Läns Museum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Åldersbestämning av byggnaden i samband med renovering
+166,8,6,62935 Skålsta,,CONTRACTOR: Fastighetsägaren SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadens ålder
+127,8,6,66101 Bjärsjöholms slott,,"CONTRACTOR: Institutionen För Konstvetenskap, Lunds Universitet SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och dess eventuella ombyggnader"
+121,8,6,66830 Kärnan,,CONTRACTOR: Unknown SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att bestämma portens ålder
+97,8,6,72321 Högsjö gård,,CONTRACTOR: Sörmlands Museum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att datera fatburen från Högsjö gård
+90,8,6,72564 Brunsta gård,,CONTRACTOR: Sörmlands Museum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att datera parstugan och magasinet på Brunsta gård
+76,8,6,75233 Kvarteret Boktryckaren,,CONTRACTOR: Eksjö Kommun SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga åldern på byggnaden
+69,8,6,75510 Stora Kolfly,,CONTRACTOR: Skedebäckshults Hembygdsmuseum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadens ålder och tillkomst
+30,8,6,75889 Ösjöfors handpappersbruk,,CONTRACTOR: Kalmar Läns Museum SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att få klarhet i byggnadens tillkomst och eventuella ombyggnader
+22,8,6,153011 Stockholms Slott,,"CONTRACTOR: Statens Fastighetsverk SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att utreda huruvida träprover från Stockholms slotts norra länga härhör från tiden före 7 maj 1697, slottsbranden, eller om de fällts senare för reperationsarbetena"
+18,8,6,166001 Krapperups borg,,"CONTRACTOR: Arkeologiska Institutionen, Lunds Universitet SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader"
+10,8,6,166121 Tosterup,,CONTRACTOR: Tosterups Gård Ab SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+9,8,6,166141 Smedstorps slott,,CONTRACTOR: Wrede Consulting SAMPLING REASON: Byggnadsundersökning DESCRIPTION: Att klarlägga byggnadens ålder och eventuella ombyggnader
+506,9,7,Swedish Biodiversity Data Infrastructure,SBDI,National infrastructure for biodiversity data in Sweden (biodiversitydata.se)
+507,5,7,SciLifeLab Ancient DNA Unit project 017,A017,"Analysis of project A017, performed by the SciLifeLab Ancient DNA Unit on behalf of Caroline Arcini Ahlström, Arkeologerna."

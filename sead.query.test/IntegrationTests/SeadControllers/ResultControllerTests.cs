@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using SeadQueryCore;
 using SeadQueryCore.Model;
 using SQT;
-using SQT.ClassData;
+using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using System.Linq;
@@ -19,16 +19,14 @@ namespace IntegrationTests.Sead
     {
     }
 
-    [Collection("SeadJsonFacetContextFixture")]
+    [Collection("UsePostgresFixture")]
     public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
-        public JsonFacetContextFixture FacetContextFixture { get; }
-        public DisposableFacetContextContainer MockService { get; }
+        public MockerWithFacetContext MockService { get; }
 
-        public ResultControllerTests(TestHostWithContainer hostBuilderFixture, SeadJsonFacetContextFixture facetContextFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(TestHostWithContainer hostBuilderFixture) : base(hostBuilderFixture)
         {
-            FacetContextFixture = facetContextFixture;
-            MockService = new DisposableFacetContextContainer(facetContextFixture);
+            MockService = new MockerWithFacetContext();
         }
 
         [Fact]
@@ -114,9 +112,9 @@ namespace IntegrationTests.Sead
             Assert.NotEmpty(match.InnerSelect.Tables);
 
             Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
-            
+
         }
-        
+
         /// <summary>
         /// Tests all domain facets
         /// </summary>

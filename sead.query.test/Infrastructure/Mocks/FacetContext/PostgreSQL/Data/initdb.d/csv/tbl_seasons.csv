@@ -1,0 +1,21 @@
+season_id,season_name,season_type,season_type_id,sort_order
+1,January,,8,1
+2,February,,8,2
+3,March,,8,3
+4,April,,8,4
+5,May,,8,5
+6,June,,8,6
+7,July,,8,7
+8,August,,8,8
+9,September,,8,9
+10,October,,8,10
+11,November,,8,11
+12,December,,8,12
+13,Spring,,9,1
+14,Summer,,9,2
+15,Autumn/Fall,,9,3
+16,Winter,,9,4
+18,Mulitple years,,10,1
+19,Monsoon/rainy season,,9,0
+20,Summer-Winter,,10,0
+21,Winter-Summer,,10,0

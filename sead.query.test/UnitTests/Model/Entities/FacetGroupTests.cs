@@ -1,15 +1,14 @@
-using Moq;
 using SeadQueryCore;
+using SeadQueryInfra;
 using SQT.Infrastructure;
-using SQT.Mocks;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace SQT.Model
 {
-    [Collection("SeadJsonFacetContextFixture")]
-    public class FacetGroupTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class FacetGroupTests : MockerWithFacetContext
     {
         public static List<object[]> TestData = new() {
             new object[] {
@@ -25,7 +24,7 @@ namespace SQT.Model
             }
         };
 
-        public FacetGroupTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public FacetGroupTests() : base()
         {
         }
 
@@ -34,7 +33,7 @@ namespace SQT.Model
         public void Find_FromRepository_IsComplete(Type type, object id, Dictionary<string, object> expected)
         {
             // Act
-            var entity = FacetContext.Find(type, new object[] { id });
+            var entity = ((FacetContext)FacetContext).Find(type, new object[] { id });
             // Assert
             Assert.NotNull(entity);
             Asserter.EqualByDictionary(type, expected, entity);

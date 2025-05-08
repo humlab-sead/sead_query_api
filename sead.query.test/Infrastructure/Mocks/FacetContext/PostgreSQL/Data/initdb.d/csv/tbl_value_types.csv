@@ -1,0 +1,19 @@
+value_type_id,unit_id,data_type_id,name,base_type,precision,description
+0,,,Not used,text,,Not used
+1,,5,Count,integer,,An (positive) integer result of an analysis
+2,,5,BigCount,integer,,An (positive) integer result of an analysis
+3,,,Boolean,boolean,,"A boolean (true/false/yes,no) value"
+4,,20,Percentage,decimal,,Percentage of something
+5,,,Age in years,integer,,Age of something in years
+6,8,,Year,integer,,A calendar year
+7,,,Note,text,,A note of something
+8,,,Label,text,,A designation of something
+9,,,Identifier,text,,An identification of something
+10,8,,Year range,int4range,,A range of years
+11,,8,Measurement,decimal,,A decimal measurement result of an analysis.
+12,,19,Early/Latewood,category,,Dendro: Early/Latewood
+13,,19,Waney edge (W),category,,Dendro: Waney edge (W)
+17,,19,Molecular sex,category,,Molecular sex
+16,,19,Damage treatment,category,,Type of damage treatment
+15,,19,SNP capture,category,,Type of SNP capture.
+14,,19,Library preparation,category,,Type of sequence library preparation

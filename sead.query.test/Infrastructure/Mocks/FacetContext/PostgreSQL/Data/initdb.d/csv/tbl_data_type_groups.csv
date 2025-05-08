@@ -1,0 +1,9 @@
+data_type_group_id,data_type_group_name,description
+4,Presence only,"Only the existence of taxa/variables in a sample is recorded, as a '1', with no quantity being given. Absence is implicit."
+2,Discrete,"Systems based on distinct and separate integer values (1,2,3...) from a numerical sequence. This is the standard group for biological proxy counts."
+1,Continuous,Systems based on the assumption that data can assume any numerical value.
+3,Classification,"Any systems based on the division of, or estimation of, quantities into predefined categories, either numerical or relative (e.g. 1-10, few, many). In statistical terms, this group covers ordinal, nominal and categorical data types."
+7,Composite scale,Any system which combines two or more forms of counting. E.g. a discrete abundance for small counts and an approximation for super abundant taxa
+5,Relative scale,"A loose form of classification, where the scale indicates the relative amounts of taxa/variables (1,2,3, many). To be avoided if possible."
+8,Chronological,"Data which indicate the age of sample, either in relation to an event, decay based curve or counted scale."
+19,Geographical,Geographical data either as a value or as a string.

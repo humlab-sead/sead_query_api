@@ -4,35 +4,33 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Autofac;
-using System.Linq;
 using SQT.Infrastructure;
 using SeadQueryInfra;
 using SQT.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using System.Threading.Tasks;
-using System.IO;
+using SQT.Scaffolding;
 
 namespace SQT.Model
 {
     using Route = List<TableRelation>;
 
-    [Collection("SeadJsonFacetContextFixture")]
-    public class RouteFinderTests : DisposableFacetContextContainer
+    [Collection("UsePostgresFixture")]
+    public class RouteFinderTests : MockerWithFacetContext
     {
-        public RouteFinderTests(SeadJsonFacetContextFixture fixture) : base(fixture)
+        public RouteFinderTests() : base()
         {
         }
 
-        private IPathFinder CreateFacetsGraphByFakeContext(IFacetContext testContext)
+        private IPathFinder CreateFacetsGraphByFakeContext(IFacetContext facetContext)
         {
-            return ScaffoldUtility.DefaultRouteFinder(testContext);
+            return ScaffoldUtility.DefaultRouteFinder(facetContext);
         }
 
         private IContainer CreateDependencyContainer()
         {
-            var folder = Path.Combine(ScaffoldUtility.GetRootFolder(), "Infrastructure", "Data", "Json");
-            var container = DependencyService.CreateContainer(FacetContext, folder, null);
+            var container = DependencyService.CreateContainer(FacetContext, MockSettings().Object);
             return container;
         }
 
@@ -193,41 +191,6 @@ namespace SQT.Model
             Assert.NotNull(route);
             Assert.Empty(route);
         }
-        //public static DbContextOptions Initialize(DbConnection connection)
-        //{
-        //    var seeder = new FakeFacetContextJsonSeeder();
-        //    var options = SqliteInMemoryContextOptionsFactory.Create(connection);
-        //    using (var context = new FacetContext(options)) {
-        //        context.Database.EnsureCreated();
-        //    }
-        //    using (var context = new FacetContext(options)) {
-        //        seeder.Seed(context);
-        //    }
-        //    return options;
-        //}
 
-        [Fact]
-        public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
-        {
-            var folder = ScaffoldUtility.JsonDataFolder();
-
-            using (var connection = new SqliteConnection("DataSource=:memory:;Foreign Keys = False"))
-            {
-                connection.Open();
-
-                var options = new DbContextOptionsBuilder<FacetContext>()
-                    .UseSqlite(connection) // Set the connection explicitly, so it won't be closed automatically by EF
-                    .Options;
-
-                using (var context = JsonSeededFacetContextFactory.Create(options, Fixture))
-                {
-                    var count = await context.FacetGroups.CountAsync();
-                    Assert.True(count > 0);
-                    var u = await context.FacetGroups.FirstOrDefaultAsync(group => group.FacetGroupKey == "DOMAIN");
-                    Assert.NotNull(u);
-                    Assert.Equal(999, u.FacetGroupId);
-                }
-            }
-        }
     }
 }

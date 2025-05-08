@@ -7,21 +7,19 @@ using SQT.Infrastructure;
 using SQT.Mocks;
 using Xunit;
 
-[Collection("SeadJsonFacetContextFixture")]
+[Collection("UsePostgresFixture")]
 public class IntegrationTestBase
 {
     // FIXME Create base class
-    public JsonFacetContextFixture FacetContextFixture { get; }
     public DependencyService DependencyService { get; }
     public IContainer Container { get; private set; }
     public IResultSqlCompilerLocator SqlCompilerLocator { get; private set; }
     public IQuerySetupBuilder QuerySetupBuilder { get; private set; }
     public IRepositoryRegistry Registry { get; private set; }
 
-    public IntegrationTestBase(SeadJsonFacetContextFixture facetContextFixture)
+    public IntegrationTestBase(SqliteFacetContext facetConfig = null)
     {
-        FacetContextFixture = facetContextFixture;
-        DependencyService = new DependencyService(FacetContextFixture) { Options = SettingFactory.GetSettings() };
+        DependencyService = new DependencyService(facetConfig) { Options = SettingFactory.DefaultSettings };
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();
