@@ -20,7 +20,7 @@ public class PostgresFixture : IAsyncLifetime
     private static readonly object _lock = new object();
     public PostgresFixture()
     {
-        Options = SettingFactory.GetSettings();
+        Options = SettingFactory.DefaultSettings;
     }
 
     public PostgreSqlTestcontainer Container => _container;

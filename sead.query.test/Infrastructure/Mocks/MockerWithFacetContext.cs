@@ -34,7 +34,7 @@ namespace SQT
         public virtual RepositoryRegistry Registry => __RepositoryRegistry.Value;
 
         public virtual ISetting CreateSettings()
-            => (ISetting)new SettingFactory().Create().Value;
+            => new SettingFactory().GetSettings();
 
         public virtual FacetContext CreateFacetContext()
             => new FacetContextFactory(Settings.Store).GetInstance();
@@ -69,7 +69,7 @@ namespace SQT
         public virtual IFacetRepository Facets => FakeRegistry().Facets;
         public virtual IResultSpecificationRepository Results => FakeRegistry().Results;
 
-        public virtual FacetSetting FakeFacetSetting() => new SettingFactory().Create().Value.Facet;
+        public virtual FacetSetting FakeFacetSetting() => new SettingFactory().GetSettings().Facet;
 
         public virtual Mock<IRepositoryRegistry> MockRegistryWithFacetRepository()
         {

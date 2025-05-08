@@ -19,7 +19,7 @@ public class IntegrationTestBase
 
     public IntegrationTestBase(SqliteFacetContext facetConfig = null)
     {
-        DependencyService = new DependencyService(facetConfig) { Options = SettingFactory.GetSettings() };
+        DependencyService = new DependencyService(facetConfig) { Options = SettingFactory.DefaultSettings };
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();

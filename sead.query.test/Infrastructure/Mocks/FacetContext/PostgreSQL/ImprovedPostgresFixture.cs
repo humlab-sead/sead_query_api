@@ -21,12 +21,12 @@ public class ImprovedPostgresFixture : IAsyncLifetime
 
     public ImprovedPostgresFixture()
     {
-        Options = SettingFactory.GetSettings();
+        Options = SettingFactory.DefaultSettings;
     }
 
     private static PostgreSqlTestcontainer CreateContainer()
     {
-        var options = SettingFactory.GetSettings();
+        var options = SettingFactory.DefaultSettings;
         int port = int.Parse(options.Store.Port);
         var config = new PostgreSqlTestcontainerConfiguration
         {

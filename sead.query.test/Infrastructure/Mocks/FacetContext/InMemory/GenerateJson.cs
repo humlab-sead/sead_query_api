@@ -47,7 +47,7 @@ namespace SQT.TestInfrastructure
                 Debug.WriteLine("Skipping update of JSON fixtures");
                 return;
             }
-            var options = SettingFactory.GetSettings();
+            var options = SettingFactory.DefaultSettings;
             var serializer = CreateSerializer();
             var path = Path.Combine(ScaffoldUtility.GetRootFolder(), folder);
 
