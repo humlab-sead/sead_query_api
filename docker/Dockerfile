@@ -1,5 +1,5 @@
 # Base image for cloning the repository
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS repo
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim AS repo
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 ARG BRANCH
@@ -7,7 +7,7 @@ WORKDIR /repo
 RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
 
 # SDK image for building the project
-FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build
 WORKDIR /src
 
 ARG BUILD_MODE=Release
