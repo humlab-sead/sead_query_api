@@ -2090,6 +2090,75 @@ CREATE VIEW sead_utility.table_columns AS
 
 
 --
+-- Name: adna_analysis_values; Type: VIEW; Schema: sead_utility; Owner: -
+--
+
+CREATE VIEW sead_utility.adna_analysis_values AS
+ WITH datasets AS (
+         SELECT ds.dataset_id
+           FROM public.tbl_datasets ds
+          WHERE (true AND (ds.method_id IN ( SELECT m.method_id
+                   FROM (public.tbl_methods m
+                     JOIN public.tbl_record_types r USING (record_type_id))
+                  WHERE ((r.record_type_name)::text = 'DNA'::text))) AND (ds.project_id IN ( SELECT tbl_projects.project_id
+                   FROM public.tbl_projects
+                  WHERE ((tbl_projects.project_name)::text = 'SciLifeLab Ancient DNA Unit project 017'::text))))
+        ), analysis_entities AS (
+         SELECT ae.analysis_entity_id
+           FROM (public.tbl_analysis_entities ae
+             JOIN datasets USING (dataset_id))
+        ), analysis_values AS (
+         SELECT av.analysis_value_id,
+            av.analysis_entity_id,
+            av.value_class_id,
+            av.analysis_value,
+            vt_1.base_type
+           FROM (((public.tbl_analysis_values av
+             JOIN public.tbl_value_classes vs USING (value_class_id))
+             JOIN public.tbl_value_types vt_1 USING (value_type_id))
+             JOIN analysis_entities USING (analysis_entity_id))
+        ), typed_values AS (
+         SELECT analysis_values_1.analysis_value_id,
+                CASE
+                    WHEN (analysis_values_1.base_type = 'integer'::text) THEN
+                    CASE
+                        WHEN sead_utility.is_integer(analysis_values_1.analysis_value) THEN (analysis_values_1.analysis_value)::integer
+                        WHEN sead_utility.is_numeric(analysis_values_1.analysis_value) THEN (round((analysis_values_1.analysis_value)::numeric(20,10)))::integer
+                        ELSE NULL::integer
+                    END
+                    ELSE NULL::integer
+                END AS integer_value,
+                CASE
+                    WHEN ((analysis_values_1.base_type = 'integer'::text) AND (NOT sead_utility.is_integer(analysis_values_1.analysis_value)) AND (NOT sead_utility.is_numeric(analysis_values_1.analysis_value))) THEN true
+                    ELSE NULL::boolean
+                END AS integer_is_anomaly,
+                CASE
+                    WHEN ((analysis_values_1.base_type = 'decimal'::text) AND sead_utility.is_numeric(analysis_values_1.analysis_value)) THEN (analysis_values_1.analysis_value)::numeric(20,10)
+                    ELSE NULL::numeric
+                END AS decimal_value,
+                CASE
+                    WHEN ((analysis_values_1.base_type = 'decimal'::text) AND (NOT sead_utility.is_numeric(analysis_values_1.analysis_value))) THEN true
+                    ELSE NULL::boolean
+                END AS decimal_is_anomaly
+           FROM analysis_values analysis_values_1
+        )
+ SELECT analysis_values.analysis_value_id,
+    analysis_values.analysis_value,
+    analysis_values.value_class_id,
+    vc.name AS value_class_name,
+    vt.name AS value_type_name,
+    vt.base_type,
+    tv.decimal_value,
+    tv.decimal_is_anomaly,
+    tv.integer_value,
+    tv.integer_is_anomaly
+   FROM (((analysis_values
+     JOIN typed_values tv USING (analysis_value_id))
+     JOIN public.tbl_value_classes vc USING (value_class_id))
+     JOIN public.tbl_value_types vt USING (value_type_id));
+
+
+--
 -- Name: column_sequences; Type: VIEW; Schema: sead_utility; Owner: -
 --
 
@@ -2107,6 +2176,187 @@ CREATE VIEW sead_utility.column_sequences AS
      JOIN pg_namespace q ON ((q.oid = s.relnamespace)))
   WHERE (s.relkind = 'S'::"char")
   ORDER BY q.nspname, s.relname;
+
+
+--
+-- Name: encoded_dendro_analysis_values; Type: VIEW; Schema: sead_utility; Owner: -
+--
+
+CREATE VIEW sead_utility.encoded_dendro_analysis_values AS
+ WITH regular_expressions AS (
+         SELECT '^\d{3,4}\s*\-\s*\d{3,4}$'::text AS regex_is_year_range,
+            '^(\d{3,4})\s*-\s*(\d{3,4})$'::text AS regex_year_range_extract,
+            '^(-?\d+)\s*±\s*(\d+)$'::text AS regex_plus_minus_extract,
+            '^-?\d+\s*±\s*\d+$'::text AS regex_is_plus_minus_range,
+            '^V\s*\d{4}/\d{2,4}$'::text AS regex_is_winter_year,
+            '(\d{4})/(\d{2,4})$'::text AS regex_winter_year_extract,
+            '^E\s*\d{3,4}$'::text AS regex_is_after_year,
+            '^[a-zA-ZåäöÅÄÖ]{2,}\s+\d{4}$'::text AS regex_is_year_with_specifier,
+            '^([a-zA-ZåäöÅÄÖ]{2,})\s*(\d{4})$'::text AS regex_year_with_specifier_extract,
+            ( SELECT format('^(%s)'::text, string_agg(regexp_replace(tbl_value_qualifier_symbols.symbol, '(\.|\^|\$|\||\(|\)|\{|\}|\*|\+|\?|\[|\]])'::text, '\\\1'::text, 'g'::text), '|'::text)) AS symbol
+                   FROM public.tbl_value_qualifier_symbols) AS regex_is_qualifier
+        ), analysis_entities AS (
+         SELECT DISTINCT x.analysis_entity_id
+           FROM ( SELECT tbl_dendro.analysis_entity_id
+                   FROM public.tbl_dendro
+                UNION
+                 SELECT DISTINCT tbl_dendro_dates.analysis_entity_id
+                   FROM public.tbl_dendro_dates) x
+        ), analysis_values AS (
+         SELECT vc_1.analysis_value_id,
+            vc_1.analysis_entity_id,
+            vc_1.value_class_id,
+            vc_1.analysis_value
+           FROM (public.tbl_analysis_values vc_1
+             JOIN analysis_entities USING (analysis_entity_id))
+        ), analysis_values_without_uncertanty AS (
+         SELECT analysis_values.analysis_value_id,
+            (analysis_values.analysis_value ~* '^eventuellt|\?$'::text) AS has_uncertainty_indicator,
+            "substring"(analysis_values.analysis_value, '(?i)^eventuellt|\?$'::text) AS uncertainty_indicator,
+            TRIM(BOTH FROM
+                CASE
+                    WHEN (analysis_values.analysis_value ~* '^eventuellt|\?$'::text) THEN regexp_replace(analysis_values.analysis_value, '(?i)^eventuellt|\?$'::text, ''::text, 'i'::text)
+                    ELSE analysis_values.analysis_value
+                END) AS value_without_uncertainty
+           FROM analysis_values
+        ), analysis_values_with_flags AS (
+         SELECT analysis_values.analysis_value_id,
+            analysis_values.value_class_id,
+            analysis_values.analysis_value,
+            vt_1.base_type,
+            ((analysis_values_without_uncertanty.value_without_uncertainty ~* regular_expressions.regex_is_qualifier) OR (analysis_values_without_uncertanty.value_without_uncertainty ~* regular_expressions.regex_is_after_year)) AS has_qualifier,
+                CASE
+                    WHEN (analysis_values_without_uncertanty.value_without_uncertainty ~* regular_expressions.regex_is_qualifier) THEN "substring"(analysis_values_without_uncertanty.value_without_uncertainty, ('(?i)'::text || regular_expressions.regex_is_qualifier))
+                    ELSE NULL::text
+                END AS qualifier,
+            analysis_values_without_uncertanty.has_uncertainty_indicator,
+            analysis_values_without_uncertanty.uncertainty_indicator,
+            ((analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_year_range) OR (analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_plus_minus_range)) AS is_range,
+            (analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_year_range) AS is_lower_upper_range,
+            (analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_plus_minus_range) AS is_plus_minus_range,
+            (analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_winter_year) AS is_winter_year,
+            (analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_after_year) AS is_after_year,
+            (analysis_values_without_uncertanty.value_without_uncertainty ~ regular_expressions.regex_is_year_with_specifier) AS is_year_with_specifier,
+            ((length(analysis_values_without_uncertanty.value_without_uncertainty) > 50) OR (vt_1.base_type = 'text'::text)) AS is_note
+           FROM ((((analysis_values
+             JOIN analysis_values_without_uncertanty USING (analysis_value_id))
+             JOIN public.tbl_value_classes vc_1 USING (value_class_id))
+             JOIN public.tbl_value_types vt_1 USING (value_type_id))
+             CROSS JOIN regular_expressions)
+        ), stripped_values AS (
+         SELECT f.analysis_value_id,
+            TRIM(BOTH FROM
+                CASE
+                    WHEN f.is_after_year THEN regexp_replace(analysis_values_without_uncertanty.value_without_uncertainty, '^E\s*'::text, ''::text, 'i'::text)
+                    WHEN f.is_winter_year THEN regexp_replace(analysis_values_without_uncertanty.value_without_uncertainty, '^V\s*'::text, ''::text, 'i'::text)
+                    WHEN f.has_qualifier THEN regexp_replace(analysis_values_without_uncertanty.value_without_uncertainty, regular_expressions.regex_is_qualifier, ''::text, 'i'::text)
+                    ELSE analysis_values_without_uncertanty.value_without_uncertainty
+                END) AS stripped_value
+           FROM ((analysis_values_with_flags f
+             JOIN analysis_values_without_uncertanty USING (analysis_value_id))
+             CROSS JOIN regular_expressions)
+        ), value_pattern AS (
+         SELECT analysis_values_with_flags_1.analysis_value_id,
+                CASE
+                    WHEN analysis_values_with_flags_1.is_after_year THEN 'E YYYY'::text
+                    WHEN analysis_values_with_flags_1.is_year_with_specifier THEN 'SPECIFIER YYYY'::text
+                    WHEN analysis_values_with_flags_1.is_winter_year THEN 'V YYYY/YY'::text
+                    WHEN analysis_values_with_flags_1.is_range THEN 'RANGE'::text
+                    WHEN sead_utility.is_numeric(stripped_values.stripped_value) THEN 'INTEGER'::text
+                    WHEN (lower(analysis_values_with_flags_1.analysis_value) = 'undefined'::text) THEN 'UNDEFINED'::text
+                    WHEN analysis_values_with_flags_1.is_note THEN 'NOTE'::text
+                    ELSE upper(stripped_values.stripped_value)
+                END AS pattern
+           FROM (analysis_values_with_flags analysis_values_with_flags_1
+             JOIN stripped_values USING (analysis_value_id))
+        ), intermediate_typed_values AS (
+         SELECT analysis_values_with_flags_1.analysis_value_id,
+            lower_upper_range_table.lower_range_value,
+            lower_upper_range_table.upper_range_value,
+            plus_minus_range_table.plus_minus_year_value,
+            plus_minus_range_table.plus_minus_value,
+            plus_minus_range_table.plus_minus_qualifier,
+            after_year_table.after_year_value,
+            after_year_table.after_qualifier,
+            winter_table.winter_value,
+            year_with_specifier_table.year_with_season_value,
+            year_with_specifier_table.season_specifier
+           FROM (((((((analysis_values_with_flags analysis_values_with_flags_1
+             JOIN stripped_values USING (analysis_value_id))
+             CROSS JOIN regular_expressions)
+             LEFT JOIN LATERAL ( SELECT ((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_year_range_extract))[1])::integer AS lower_range_value,
+                    ((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_year_range_extract))[2])::integer AS upper_range_value
+                  WHERE analysis_values_with_flags_1.is_lower_upper_range) lower_upper_range_table ON (true))
+             LEFT JOIN LATERAL ( SELECT ((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_plus_minus_extract))[1])::integer AS plus_minus_year_value,
+                    ((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_plus_minus_extract))[2])::integer AS plus_minus_value,
+                    '±'::text AS plus_minus_qualifier
+                  WHERE analysis_values_with_flags_1.is_plus_minus_range) plus_minus_range_table ON (true))
+             LEFT JOIN LATERAL ( SELECT ARRAY[((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_winter_year_extract))[1])::integer, ((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_winter_year_extract))[2])::integer] AS winter_value
+                  WHERE analysis_values_with_flags_1.is_winter_year) winter_table ON (true))
+             LEFT JOIN LATERAL ( SELECT ((regexp_matches(stripped_values.stripped_value, '^(\d{3,4})$'::text))[1])::integer AS after_year_value,
+                    'efter'::text AS after_qualifier
+                  WHERE analysis_values_with_flags_1.is_after_year) after_year_table ON (true))
+             LEFT JOIN LATERAL ( SELECT (regexp_matches(stripped_values.stripped_value, regular_expressions.regex_year_with_specifier_extract))[1] AS season_specifier,
+                    ((regexp_matches(stripped_values.stripped_value, regular_expressions.regex_year_with_specifier_extract))[2])::integer AS year_with_season_value
+                  WHERE analysis_values_with_flags_1.is_year_with_specifier) year_with_specifier_table ON (true))
+        ), typed_values AS (
+         SELECT analysis_values_with_flags_1.analysis_value_id,
+                CASE
+                    WHEN ((analysis_values_with_flags_1.base_type = ANY (ARRAY['integer'::text, 'int4range'::text])) AND sead_utility.is_integer(stripped_values.stripped_value)) THEN (stripped_values.stripped_value)::integer
+                    WHEN analysis_values_with_flags_1.is_year_with_specifier THEN intermediate_typed_values_1.year_with_season_value
+                    WHEN (intermediate_typed_values_1.after_year_value IS NOT NULL) THEN intermediate_typed_values_1.after_year_value
+                    WHEN (intermediate_typed_values_1.winter_value IS NOT NULL) THEN intermediate_typed_values_1.winter_value[1]
+                    ELSE NULL::integer
+                END AS integer_value,
+                CASE
+                    WHEN ((analysis_values_with_flags_1.base_type = 'numeric'::text) AND sead_utility.is_numeric(stripped_values.stripped_value)) THEN (stripped_values.stripped_value)::numeric(20,10)
+                    ELSE NULL::numeric
+                END AS decimal_value,
+                CASE
+                    WHEN (analysis_values_with_flags_1.base_type = 'boolean'::text) THEN
+                    CASE
+                        WHEN (lower(stripped_values.stripped_value) = 'yes'::text) THEN true
+                        WHEN (lower(stripped_values.stripped_value) = 'true'::text) THEN true
+                        WHEN (lower(stripped_values.stripped_value) = 'ja'::text) THEN true
+                        WHEN (lower(stripped_values.stripped_value) = 'no'::text) THEN false
+                        WHEN (lower(stripped_values.stripped_value) = 'false'::text) THEN false
+                        WHEN (lower(stripped_values.stripped_value) = 'nej'::text) THEN false
+                        ELSE NULL::boolean
+                    END
+                    ELSE NULL::boolean
+                END AS boolean_value
+           FROM ((analysis_values_with_flags analysis_values_with_flags_1
+             JOIN stripped_values USING (analysis_value_id))
+             JOIN intermediate_typed_values intermediate_typed_values_1 USING (analysis_value_id))
+        )
+ SELECT analysis_values_with_flags.analysis_value_id,
+    analysis_values_with_flags.analysis_value,
+    ss.stripped_value,
+    analysis_values_with_flags.value_class_id,
+    vc.name AS value_class_name,
+    vt.name AS value_type_name,
+    vt.base_type,
+    analysis_values_with_flags.uncertainty_indicator,
+    lower(COALESCE(analysis_values_with_flags.qualifier, intermediate_typed_values.plus_minus_qualifier, intermediate_typed_values.after_qualifier)) AS qualifier,
+        CASE
+            WHEN analysis_values_with_flags.is_winter_year THEN 'V'::text
+            ELSE intermediate_typed_values.season_specifier
+        END AS season_specifier,
+    tv.decimal_value,
+    tv.boolean_value,
+    tv.integer_value,
+    intermediate_typed_values.lower_range_value,
+    intermediate_typed_values.upper_range_value,
+    intermediate_typed_values.plus_minus_year_value,
+    intermediate_typed_values.plus_minus_value,
+    p.pattern
+   FROM ((((((analysis_values_with_flags
+     JOIN value_pattern p USING (analysis_value_id))
+     JOIN stripped_values ss USING (analysis_value_id))
+     JOIN typed_values tv USING (analysis_value_id))
+     JOIN public.tbl_value_classes vc USING (value_class_id))
+     JOIN public.tbl_value_types vt USING (value_type_id))
+     JOIN intermediate_typed_values USING (analysis_value_id));
 
 
 --

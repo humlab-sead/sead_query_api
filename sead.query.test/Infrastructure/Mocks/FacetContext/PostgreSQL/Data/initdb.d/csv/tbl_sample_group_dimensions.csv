@@ -1,2 +1,2 @@
-sample_group_dimension_id,dimension_id,dimension_value,sample_group_id
-260,31,9.50000,11254
+sample_group_dimension_id,dimension_id,dimension_value,sample_group_id,qualifier_id
+260,31,9.50000,11254,

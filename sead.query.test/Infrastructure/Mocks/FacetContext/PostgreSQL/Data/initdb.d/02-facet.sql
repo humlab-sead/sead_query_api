@@ -30,92 +30,122 @@ CREATE SCHEMA facet;
 CREATE FUNCTION facet.create_or_update_facet(j_facet jsonb) RETURNS json
     LANGUAGE plpgsql
     AS $$
-	declare j_tables json;
-	declare j_clauses json;
-	declare i_facet_id int;
-	declare s_aggregate_facet_code text;
-	declare i_aggregate_facet_id int = 0;
-	declare s_facet_code text;
-	declare i_facet_group_id int;
-begin
+            declare j_tables json;
+            declare j_clauses json;
+            declare i_facet_id int;
+            declare s_facet_code text;
+            declare s_aggregate_facet_code text;
+            declare i_aggregate_facet_id int = 0;
+        begin
 
-	j_tables = j_facet -> 'tables';
-	j_clauses = j_facet -> 'clauses';
---	j_facet = j_facet - 'tables';
---	j_facet = j_facet - 'clauses';
+            j_tables = j_facet -> 'tables';
+            j_clauses = j_facet -> 'clauses';
 
-	s_facet_code = (j_facet ->> 'facet_code')::text;
-	if s_facet_code is null then
-		raise exception 'facet_code is null';
-		return null;
-	end if;
+            i_facet_id = (j_facet ->> 'facet_id')::int;
+            s_facet_code = (j_facet ->> 'facet_code')::text;
 
-	i_facet_group_id = (j_facet ->> 'facet_group_id')::int;
+            -- Save facet's association for domain facets before we delete the facet
+            -- drop table if exists _facet_children_temp;
+            if exists (
+                select 1 from pg_catalog.pg_class 
+                where relname = '_facet_children_temp' 
+                  and relkind = 'r' 
+                  and pg_catalog.pg_table_is_visible(oid) -- Ensures it's visible in the current session
+            ) then
+                drop table _facet_children_temp;
+            end if;
 
-	i_facet_id := coalesce(
-		(select facet_id from facet.facet where facet_code = s_facet_code),
-		(j_facet ->> 'facet_id')::int,
-		(
-			select coalesce(max(facet_id), 0) + 1
-		 	from facet.facet
-			where (facet_group_id != 999 and facet_id < 1000) or (facet_group_id = 999 and facet_id >= 1000)
-		)
-	);
+            create temporary table _facet_children_temp as
+                select facet_code, child_facet_code, position
+                from facet.facet_children
+                where s_facet_code in (facet_code, child_facet_code);
 
-	delete from facet.facet
-		where facet_id = i_facet_id or facet_code = s_facet_code;
+            if i_facet_id is null then
+                i_facet_id = (select coalesce(max(facet_id),0)+1 from facet.facet);
+            else
 
-	s_aggregate_facet_code = (j_facet ->> 'aggregate_facet_code')::text;
+                delete from facet.facet_children
+                    where  s_facet_code in (facet_code, child_facet_code);
 
-	if  s_aggregate_facet_code is null then
-		i_aggregate_facet_id = 0;
-	else
-		i_aggregate_facet_id = (select facet_id from facet.facet where facet_code = s_aggregate_facet_code);
-		if i_aggregate_facet_id is null then
-			raise notice 'aggregate_facet_id not found for % - %', (j_facet ->> 'facet_code')::text, s_aggregate_facet_code;
-		end if;
-	end if;
+                delete from facet.facet
+                    where facet_id = i_facet_id;
 
-	insert into facet.facet (
-		facet_id, facet_code, display_title, description, facet_group_id, facet_type_id, category_id_expr, category_id_type, category_id_operator,
-		category_name_expr, sort_expr, is_applicable, is_default, aggregate_type, aggregate_title, aggregate_facet_id)
-		(values (
-			i_facet_id,
-			(j_facet ->> 'facet_code')::text,
-			(j_facet ->> 'display_title')::text,
-			(j_facet ->> 'description')::text,
-			(j_facet ->> 'facet_group_id')::int,
-			(j_facet ->> 'facet_type_id')::text::int,
-			(j_facet ->> 'category_id_expr')::text,
-			(j_facet ->> 'category_id_type')::text,
-			(j_facet ->> 'category_id_operator')::text,
-			(j_facet ->> 'category_name_expr')::text,
-			(j_facet ->> 'sort_expr')::text,
-			(j_facet ->> 'is_applicable')::boolean,
-			(j_facet ->> 'is_default')::boolean,
-			(j_facet ->> 'aggregate_type')::text,
-			(j_facet ->> 'aggregate_title')::text,
-			i_aggregate_facet_id
-		));
+            end if;
 
-	insert into facet.facet_table (facet_id, sequence_id, table_id, udf_call_arguments, alias)
-		select i_facet_id, sequence_id, table_id, udf_call_arguments, alias
-		from (
-			select  (v ->> 'sequence_id')::int		   as sequence_id,
-					(v ->> 'table_name')::text		   as table_or_udf_name,
-					(v ->> 'udf_call_arguments')::text as udf_call_arguments,
-					(v ->> 'alias')					   as alias
-			from jsonb_array_elements(j_facet -> 'tables') as v
-		) as v(sequence_id, table_or_udf_name, udf_call_arguments, alias)
-		left join facet.table t using (table_or_udf_name);
+            s_aggregate_facet_code = (j_facet ->> 'aggregate_facet_code')::text;
 
-	insert into facet.facet_clause (facet_id, clause)
-		select i_facet_id, (v ->> 'clause')::text
-		from jsonb_array_elements(j_facet -> 'clauses') as v;
+            if  s_aggregate_facet_code is null then
+                i_aggregate_facet_id = 0;
+            else
+                i_aggregate_facet_id = (select facet_id from facet.facet where facet_code = s_aggregate_facet_code);
+                if i_aggregate_facet_id is null then
+                    raise notice 'aggregate_facet_id not found for "%" - "%"', (j_facet ->> 'facet_code')::text, s_aggregate_facet_code;
+                end if;
+            end if;
 
-	return j_facet;
+            insert into facet.facet (facet_id, facet_code, display_title, description, facet_group_id, facet_type_id, category_id_expr, category_id_type, category_id_operator, category_name_expr, sort_expr, is_applicable, is_default, aggregate_type, aggregate_title, aggregate_facet_id)
+                (values (
+                    i_facet_id,
+                    (j_facet ->> 'facet_code')::text,
+                    (j_facet ->> 'display_title')::text,
+                    (j_facet ->> 'description')::text,
+                    (j_facet ->> 'facet_group_id')::int,
+                    (j_facet ->> 'facet_type_id')::text::int,
+                    (j_facet ->> 'category_id_expr')::text,
+                    (j_facet ->> 'category_id_type')::text,
+                    (j_facet ->> 'category_id_operator')::text,
+                    (j_facet ->> 'category_name_expr')::text,
+                    (j_facet ->> 'sort_expr')::text,
+                    (j_facet ->> 'is_applicable')::boolean,
+                    (j_facet ->> 'is_default')::boolean,
+                    (j_facet ->> 'aggregate_type')::text,
+                    (j_facet ->> 'aggregate_title')::text,
+                    i_aggregate_facet_id
+                ))
+            on conflict (facet_id)
+                do update set
+                    facet_code = excluded.facet_code,
+                    display_title = excluded.display_title,
+                    description = excluded.description,
+                    facet_group_id = excluded.facet_group_id,
+                    facet_type_id = excluded.facet_type_id,
+                    category_id_expr = excluded.category_id_expr,
+                    category_id_type = excluded.category_id_type,
+                    category_id_operator = coalesce(excluded.category_id_operator,'='),
+                    category_name_expr = excluded.category_name_expr,
+                    sort_expr = excluded.sort_expr,
+                    is_applicable = excluded.is_applicable,
+                    is_default = excluded.is_default,
+                    aggregate_type = excluded.aggregate_type,
+                    aggregate_title = excluded.aggregate_title,
+                    aggregate_facet_id = excluded.aggregate_facet_id;
 
-end $$;
+            insert into facet.facet_table (facet_id, sequence_id, table_id, udf_call_arguments, alias)
+                select i_facet_id, sequence_id, table_id, udf_call_arguments, alias
+                from (
+                    select  (v ->> 'sequence_id')::int           as sequence_id,
+                            (v ->> 'table_name')::text           as table_or_udf_name,
+                            (v ->> 'udf_call_arguments')::text as udf_call_arguments,
+                            (v ->> 'alias')                       as alias
+                    from jsonb_array_elements(j_facet -> 'tables') as v
+                ) as v(sequence_id, table_or_udf_name, udf_call_arguments, alias)
+                left join facet.table t using (table_or_udf_name);
+
+            insert into facet.facet_clause (facet_id, clause, enforce_constraint)
+                select i_facet_id,
+                        (v ->> 'clause')::text,
+                        (v ->> 'enforce_constraint')::bool
+                from jsonb_array_elements(j_facet -> 'clauses') as v;
+
+
+            -- Restore domain facet associations
+            insert into facet.facet_children (facet_code, child_facet_code, position)
+                select facet_code, child_facet_code, position
+                from _facet_children_temp;
+
+            return j_facet;
+
+        end $$;
 
 
 --
@@ -362,14 +392,14 @@ CREATE TABLE facet.facet (
     facet_type_id integer NOT NULL,
     category_id_expr character varying(256) NOT NULL,
     category_id_type character varying(80) DEFAULT 'integer'::character varying NOT NULL,
+    category_id_operator character varying(80) DEFAULT '='::character varying NOT NULL,
     category_name_expr character varying(256) NOT NULL,
     sort_expr character varying(256) NOT NULL,
     is_applicable boolean NOT NULL,
     is_default boolean NOT NULL,
     aggregate_type character varying(256) NOT NULL,
     aggregate_title character varying(256) NOT NULL,
-    aggregate_facet_id integer NOT NULL,
-    category_id_operator character varying(40) DEFAULT '='::character varying NOT NULL
+    aggregate_facet_id integer NOT NULL
 );
 
 
@@ -925,57 +955,57 @@ ALTER TABLE ONLY facet.table_relation ALTER COLUMN table_relation_id SET DEFAULT
 -- Data for Name: facet; Type: TABLE DATA; Schema: facet; Owner: -
 --
 
-INSERT INTO facet.facet VALUES (1, 'result_facet', 'Analysis entities', 'Analysis entities', 99, 1, 'tbl_analysis_entities.analysis_entity_id', 'integer', 'tbl_physical_samples.sample_name||'' ''||tbl_datasets.dataset_name', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of samples', 0, '=');
-INSERT INTO facet.facet VALUES (32, 'abundances_all_helper', 'Abundances', 'Abundances', 4, 2, 'facet.view_abundance.abundance', 'integer', 'facet.view_abundance.abundance', 'facet.view_abundance.abundance', false, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (40, 'result_datasets', 'Datasets', 'Datasets', 99, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 0, '=');
-INSERT INTO facet.facet VALUES (19, 'sites_helper', 'Site', 'Report helper', 2, 1, 'tbl_sites.site_id', 'integer', 'tbl_sites.site_name', 'tbl_sites.site_name', false, true, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (3, 'tbl_denormalized_measured_values_33_0', 'Magnetic sus.', 'Magnetic sus.', 5, 2, 'method_values_33.measured_value', 'integer', 'method_values_33.measured_value', 'method_values_33.measured_value', true, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (4, 'tbl_denormalized_measured_values_33_82', 'MS Heating 550', 'MS Heating 550', 5, 2, 'method_values_33_82.measured_value', 'integer', 'method_values_33_82.measured_value', 'method_values_33_82.measured_value', true, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (5, 'tbl_denormalized_measured_values_32', 'Loss on Ignition', 'Loss of Ignition', 5, 2, 'method_values_32.measured_value', 'numeric(20,5)', 'method_values_32.measured_value', 'method_values_32.measured_value', true, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (6, 'tbl_denormalized_measured_values_37', 'Phosphates', 'Phosphates', 5, 2, 'method_values_37.measured_value', 'numeric(20,5)', 'method_values_37.measured_value', 'method_values_37.measured_value', true, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (9, 'map_result', 'Site', 'Site', 99, 1, 'tbl_sites.site_id', 'integer', 'tbl_sites.site_name', 'tbl_sites.site_name', false, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (11, 'relative_age_name', 'Time periods', 'Age of sample as defined by association with a (often regionally specific) cultural or geological period (in years before present)', 2, 1, 'tbl_relative_ages.relative_age_id', 'integer', 'tbl_relative_ages.relative_age_name', 'tbl_relative_ages.relative_age_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (12, 'record_types', 'Proxy types', 'Proxy types', 1, 1, 'tbl_record_types.record_type_id', 'integer', 'tbl_record_types.record_type_name', 'tbl_record_types.record_type_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (13, 'sample_groups', 'Sample groups', 'A collection of samples, usually defined by the excavator or collector', 2, 1, 'tbl_sample_groups.sample_group_id', 'integer', 'tbl_sites.site_name || '' '' || tbl_sample_groups.sample_group_name', 'tbl_sample_groups.sample_group_name', true, true, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (18, 'sites', 'Site', 'General name for the excavation or sampling location', 2, 1, 'tbl_sites.site_id', 'integer', 'tbl_sites.site_name', 'tbl_sites.site_name', true, true, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (22, 'ecocode', 'Eco code', 'Ecological category (trait) or cultural relevance of organisms based on a classification system', 4, 1, 'tbl_ecocode_definitions.ecocode_definition_id', 'integer', 'tbl_ecocode_definitions.name', 'tbl_ecocode_definitions.name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (23, 'family', 'Family', 'Taxonomic family', 6, 1, 'tbl_taxa_tree_families.family_id', 'integer', 'tbl_taxa_tree_families.family_name ', 'tbl_taxa_tree_families.family_name ', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (24, 'genus', 'Genus', 'Taxonomic genus (under family)', 6, 1, 'tbl_taxa_tree_genera.genus_id', 'integer', 'tbl_taxa_tree_genera.genus_name', 'tbl_taxa_tree_genera.genus_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (28, 'species_author', 'Author', 'Authority of the taxonomic name (not used for all species)', 6, 1, 'tbl_taxa_tree_authors.author_id ', 'integer', 'tbl_taxa_tree_authors.author_name ', 'tbl_taxa_tree_authors.author_name ', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (29, 'feature_type', 'Feature type', 'Feature type', 1, 1, 'tbl_feature_types.feature_type_id ', 'integer', 'tbl_feature_types.feature_type_name', 'tbl_feature_types.feature_type_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (30, 'ecocode_system', 'Eco code system', 'Ecological or cultural organism classification system (which groups items in the ecological/cultural category filter)', 4, 1, 'tbl_ecocode_systems.ecocode_system_id ', 'integer', 'tbl_ecocode_systems.name', 'tbl_ecocode_systems.definition', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (31, 'abundance_classification', 'abundance classification', 'abundance classification', 4, 1, 'facet.view_abundance.elements_part_mod ', 'text', 'facet.view_abundance.elements_part_mod ', 'facet.view_abundance.elements_part_mod ', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (33, 'abundances_all', 'Abundances', 'Abundances', 4, 2, 'facet.view_abundance.abundance', 'integer', 'facet.view_abundance.abundance', 'facet.view_abundance.abundance', true, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (34, 'activeseason', 'Insect activity seasons', 'Insect activity seasons', 2, 1, 'tbl_seasons.season_id', 'integer', 'tbl_seasons.season_name', 'tbl_seasons.season_type ', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (35, 'tbl_biblio_modern', 'Bibliography modern', 'Bibliography modern', 1, 1, 'facet.view_taxa_biblio.biblio_id', 'integer', 'tbl_biblio.title||''  ''||tbl_biblio.authors ', 'tbl_biblio.authors', true, false, 'count', 'count of species', 19, '=');
-INSERT INTO facet.facet VALUES (36, 'tbl_biblio_sample_groups', 'Bibliography sites/Samplegroups', 'Bibliography sites/Samplegroups', 1, 1, 'tbl_biblio.biblio_id', 'integer', 'tbl_biblio.title||''  ''||tbl_biblio.authors', 'tbl_biblio.authors', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (37, 'tbl_biblio_sites', 'Bibliography sites', 'Bibliography sites', 1, 1, 'tbl_biblio.biblio_id', 'integer', 'tbl_biblio.title||''  ''||tbl_biblio.authors', 'tbl_biblio.authors', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (38, 'dataset_provider', 'Dataset provider', 'Dataset provider', 2, 1, 'tbl_dataset_masters.master_set_id ', 'integer', 'tbl_dataset_masters.master_name', 'tbl_dataset_masters.master_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (39, 'dataset_methods', 'Dataset methods', 'Dataset methods', 2, 1, 'tbl_methods.method_id ', 'integer', 'tbl_methods.method_name', 'tbl_methods.method_name', true, false, 'count', 'Number of datasets', 40, '=');
-INSERT INTO facet.facet VALUES (42, 'data_types', 'Data types', 'Data types', 1, 1, 'tbl_data_types.data_type_id', 'integer', 'tbl_data_types.data_type_name', 'tbl_data_types.data_type_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (44, 'rdb_codes', 'RDB Code', 'RDB Code', 1, 1, 'tbl_rdb_codes.rdb_code_id', 'integer', 'tbl_rdb_codes.rdb_definition', 'tbl_rdb_codes.rdb_definition', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (45, 'modification_types', 'Modification Types', 'Modification Types', 1, 1, 'tbl_modification_types.modification_type_id', 'integer', 'tbl_modification_types.modification_type_name', 'tbl_modification_types.modification_type_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (46, 'abundance_elements', 'Abundance Elements', 'Abundance Elements', 1, 1, 'tbl_abundance_elements.abundance_element_id', 'integer', 'tbl_abundance_elements.element_name', 'tbl_abundance_elements.element_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (47, 'sample_group_sampling_contexts', 'Sampling Contexts', 'Sampling Contexts', 1, 1, 'tbl_sample_group_sampling_contexts.sampling_context_id', 'integer', 'tbl_sample_group_sampling_contexts.sampling_context', 'tbl_sample_group_sampling_contexts.sort_order', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (48, 'constructions', 'Constructions', 'Constructions', 1, 1, 'tbl_sample_group_descriptions.sample_group_description_id', 'integer', 'tbl_sample_group_descriptions.group_description ', 'tbl_sample_group_descriptions.group_description || '''' '''' || tbl_sample_groups.sample_group_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (1001, 'palaeoentomology', 'Palaeoentomology', 'Palaeoentomology domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (1002, 'archaeobotany', 'Archaeobotany', 'Archaeobotany domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (1003, 'pollen', 'Pollen', 'Pollen domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (1004, 'geoarchaeology', 'Geoarchaeology', 'Geoarchaeology domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (1005, 'dendrochronology', 'Dendrochronology', 'Dendrochronology domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (1006, 'ceramic', 'Ceramic', 'Ceramic domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (1007, 'isotope', 'Isotope', 'Isotope domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
-INSERT INTO facet.facet VALUES (21, 'country', 'Countries', 'The name of the country, at the time of collection, in which the samples were collected', 2, 1, 'countries.location_id', 'integer', 'countries.location_name ', 'countries.location_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (41, 'region', 'Region', 'Region', 2, 1, 'region.location_id ', 'integer', 'region.location_name', 'region.location_name', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (50, 'location_types', 'Location type', 'Type of location', 2, 1, 'tbl_location_types.location_type_id', 'integer', 'tbl_location_types.location_type', 'tbl_location_types.location_type', true, true, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (51, 'sites_polygon', 'Sites (map)', 'General name for the excavation or sampling location', 2, 3, 'tbl_sites.site_id', 'integer', 'tbl_sites.site_name', 'tbl_sites.site_name', true, true, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (25, 'species', 'Taxa', 'Taxonomic species (under genus)', 6, 1, 'facet.abundance_taxon_shortcut.taxon_id', 'integer', 'facet.abundance_taxon_shortcut.taxon_name', '1', true, false, 'count', 'Count of Anaylysis', 1, '=');
-INSERT INTO facet.facet VALUES (54, 'construction_purpose', 'Construction purpose', 'Construction purpose', 1, 1, 'facet.sample_group_construction_purposes.purpose_id', 'text', 'facet.sample_group_construction_purposes.purpose', '1', true, false, 'count', 'Count of Analysis', 1, '=');
-INSERT INTO facet.facet VALUES (52, 'analysis_entity_ages', 'Analysis entity ages', 'Analysis entity ages (intersects)', 2, 4, 'age_range', 'int4range', 'age_range', '1', true, true, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (53, 'dendro_age_contained_by', 'Dendrochronology ages', 'Generic age range filter for dendrchronology. Return both estimated felling year and outermost tree ring.', 2, 4, 'tbl_dendro_dates.age_range', 'int4range', 'tbl_dendro_dates.age_range', '1', true, true, 'count', 'Number of samples', 1, '@>');
-INSERT INTO facet.facet VALUES (43, 'rdb_systems', 'RDB system', 'RDB system', 1, 1, 'tbl_rdb_systems.rdb_system_id', 'integer', 'concat_ws('' '', tbl_rdb_systems.rdb_system, tbl_locations.location_name)', 'tbl_rdb_systems.rdb_system', true, false, 'count', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (10, 'geochronology', 'Geochronology', 'Sample ages as retrieved through absolute methods such as radiocarbon dating or other radiometric methods (in method based years before present - e.g. 14C years)', 2, 2, 'tbl_geochronology.age', 'integer', 'tbl_geochronology.age', 'tbl_geochronology.age', true, false, '', 'Number of samples', 1, '=');
-INSERT INTO facet.facet VALUES (1008, 'adna', 'aDNA', 'Ancient DNA domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1, '=');
+INSERT INTO facet.facet VALUES (1, 'result_facet', 'Analysis entities', 'Analysis entities', 99, 1, 'tbl_analysis_entities.analysis_entity_id', 'integer', '=', 'tbl_physical_samples.sample_name||'' ''||tbl_datasets.dataset_name', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of samples', 0);
+INSERT INTO facet.facet VALUES (32, 'abundances_all_helper', 'Abundances', 'Abundances', 4, 2, 'facet.view_abundance.abundance', 'integer', '=', 'facet.view_abundance.abundance', 'facet.view_abundance.abundance', false, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (40, 'result_datasets', 'Datasets', 'Datasets', 99, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 0);
+INSERT INTO facet.facet VALUES (19, 'sites_helper', 'Site', 'Report helper', 2, 1, 'tbl_sites.site_id', 'integer', '=', 'tbl_sites.site_name', 'tbl_sites.site_name', false, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (3, 'tbl_denormalized_measured_values_33_0', 'Magnetic sus.', 'Magnetic sus.', 5, 2, 'method_values_33.measured_value', 'integer', '=', 'method_values_33.measured_value', 'method_values_33.measured_value', true, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (4, 'tbl_denormalized_measured_values_33_82', 'MS Heating 550', 'MS Heating 550', 5, 2, 'method_values_33_82.measured_value', 'integer', '=', 'method_values_33_82.measured_value', 'method_values_33_82.measured_value', true, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (5, 'tbl_denormalized_measured_values_32', 'Loss on Ignition', 'Loss of Ignition', 5, 2, 'method_values_32.measured_value', 'numeric(20,5)', '=', 'method_values_32.measured_value', 'method_values_32.measured_value', true, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (6, 'tbl_denormalized_measured_values_37', 'Phosphates', 'Phosphates', 5, 2, 'method_values_37.measured_value', 'numeric(20,5)', '=', 'method_values_37.measured_value', 'method_values_37.measured_value', true, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (9, 'map_result', 'Site', 'Site', 99, 1, 'tbl_sites.site_id', 'integer', '=', 'tbl_sites.site_name', 'tbl_sites.site_name', false, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (11, 'relative_age_name', 'Time periods', 'Age of sample as defined by association with a (often regionally specific) cultural or geological period (in years before present)', 2, 1, 'tbl_relative_ages.relative_age_id', 'integer', '=', 'tbl_relative_ages.relative_age_name', 'tbl_relative_ages.relative_age_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (12, 'record_types', 'Proxy types', 'Proxy types', 1, 1, 'tbl_record_types.record_type_id', 'integer', '=', 'tbl_record_types.record_type_name', 'tbl_record_types.record_type_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (13, 'sample_groups', 'Sample groups', 'A collection of samples, usually defined by the excavator or collector', 2, 1, 'tbl_sample_groups.sample_group_id', 'integer', '=', 'tbl_sites.site_name || '' '' || tbl_sample_groups.sample_group_name', 'tbl_sample_groups.sample_group_name', true, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (18, 'sites', 'Site', 'General name for the excavation or sampling location', 2, 1, 'tbl_sites.site_id', 'integer', '=', 'tbl_sites.site_name', 'tbl_sites.site_name', true, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (22, 'ecocode', 'Eco code', 'Ecological category (trait) or cultural relevance of organisms based on a classification system', 4, 1, 'tbl_ecocode_definitions.ecocode_definition_id', 'integer', '=', 'tbl_ecocode_definitions.name', 'tbl_ecocode_definitions.name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (23, 'family', 'Family', 'Taxonomic family', 6, 1, 'tbl_taxa_tree_families.family_id', 'integer', '=', 'tbl_taxa_tree_families.family_name ', 'tbl_taxa_tree_families.family_name ', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (24, 'genus', 'Genus', 'Taxonomic genus (under family)', 6, 1, 'tbl_taxa_tree_genera.genus_id', 'integer', '=', 'tbl_taxa_tree_genera.genus_name', 'tbl_taxa_tree_genera.genus_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (28, 'species_author', 'Author', 'Authority of the taxonomic name (not used for all species)', 6, 1, 'tbl_taxa_tree_authors.author_id ', 'integer', '=', 'tbl_taxa_tree_authors.author_name ', 'tbl_taxa_tree_authors.author_name ', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (29, 'feature_type', 'Feature type', 'Feature type', 1, 1, 'tbl_feature_types.feature_type_id ', 'integer', '=', 'tbl_feature_types.feature_type_name', 'tbl_feature_types.feature_type_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (30, 'ecocode_system', 'Eco code system', 'Ecological or cultural organism classification system (which groups items in the ecological/cultural category filter)', 4, 1, 'tbl_ecocode_systems.ecocode_system_id ', 'integer', '=', 'tbl_ecocode_systems.name', 'tbl_ecocode_systems.definition', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (31, 'abundance_classification', 'abundance classification', 'abundance classification', 4, 1, 'facet.view_abundance.elements_part_mod ', 'text', '=', 'facet.view_abundance.elements_part_mod ', 'facet.view_abundance.elements_part_mod ', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (33, 'abundances_all', 'Abundances', 'Abundances', 4, 2, 'facet.view_abundance.abundance', 'integer', '=', 'facet.view_abundance.abundance', 'facet.view_abundance.abundance', true, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (34, 'activeseason', 'Insect activity seasons', 'Insect activity seasons', 2, 1, 'tbl_seasons.season_id', 'integer', '=', 'tbl_seasons.season_name', 'tbl_seasons.season_type ', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (35, 'tbl_biblio_modern', 'Bibliography modern', 'Bibliography modern', 1, 1, 'facet.view_taxa_biblio.biblio_id', 'integer', '=', 'tbl_biblio.title||''  ''||tbl_biblio.authors ', 'tbl_biblio.authors', true, false, 'count', 'count of species', 19);
+INSERT INTO facet.facet VALUES (36, 'tbl_biblio_sample_groups', 'Bibliography sites/Samplegroups', 'Bibliography sites/Samplegroups', 1, 1, 'tbl_biblio.biblio_id', 'integer', '=', 'tbl_biblio.title||''  ''||tbl_biblio.authors', 'tbl_biblio.authors', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (37, 'tbl_biblio_sites', 'Bibliography sites', 'Bibliography sites', 1, 1, 'tbl_biblio.biblio_id', 'integer', '=', 'tbl_biblio.title||''  ''||tbl_biblio.authors', 'tbl_biblio.authors', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (38, 'dataset_provider', 'Dataset provider', 'Dataset provider', 2, 1, 'tbl_dataset_masters.master_set_id ', 'integer', '=', 'tbl_dataset_masters.master_name', 'tbl_dataset_masters.master_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (39, 'dataset_methods', 'Dataset methods', 'Dataset methods', 2, 1, 'tbl_methods.method_id ', 'integer', '=', 'tbl_methods.method_name', 'tbl_methods.method_name', true, false, 'count', 'Number of datasets', 40);
+INSERT INTO facet.facet VALUES (42, 'data_types', 'Data types', 'Data types', 1, 1, 'tbl_data_types.data_type_id', 'integer', '=', 'tbl_data_types.data_type_name', 'tbl_data_types.data_type_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (44, 'rdb_codes', 'RDB Code', 'RDB Code', 1, 1, 'tbl_rdb_codes.rdb_code_id', 'integer', '=', 'tbl_rdb_codes.rdb_definition', 'tbl_rdb_codes.rdb_definition', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (45, 'modification_types', 'Modification Types', 'Modification Types', 1, 1, 'tbl_modification_types.modification_type_id', 'integer', '=', 'tbl_modification_types.modification_type_name', 'tbl_modification_types.modification_type_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (46, 'abundance_elements', 'Abundance Elements', 'Abundance Elements', 1, 1, 'tbl_abundance_elements.abundance_element_id', 'integer', '=', 'tbl_abundance_elements.element_name', 'tbl_abundance_elements.element_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (47, 'sample_group_sampling_contexts', 'Sampling Contexts', 'Sampling Contexts', 1, 1, 'tbl_sample_group_sampling_contexts.sampling_context_id', 'integer', '=', 'tbl_sample_group_sampling_contexts.sampling_context', 'tbl_sample_group_sampling_contexts.sort_order', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (48, 'constructions', 'Constructions', 'Constructions', 1, 1, 'tbl_sample_group_descriptions.sample_group_description_id', 'integer', '=', 'tbl_sample_group_descriptions.group_description ', 'tbl_sample_group_descriptions.group_description || '''' '''' || tbl_sample_groups.sample_group_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (1001, 'palaeoentomology', 'Palaeoentomology', 'Palaeoentomology domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (1002, 'archaeobotany', 'Archaeobotany', 'Archaeobotany domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (1003, 'pollen', 'Pollen', 'Pollen domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (1004, 'geoarchaeology', 'Geoarchaeology', 'Geoarchaeology domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (1005, 'dendrochronology', 'Dendrochronology', 'Dendrochronology domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (1006, 'ceramic', 'Ceramic', 'Ceramic domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (1007, 'isotope', 'Isotope', 'Isotope domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
+INSERT INTO facet.facet VALUES (21, 'country', 'Countries', 'The name of the country, at the time of collection, in which the samples were collected', 2, 1, 'countries.location_id', 'integer', '=', 'countries.location_name ', 'countries.location_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (41, 'region', 'Region', 'Region', 2, 1, 'region.location_id ', 'integer', '=', 'region.location_name', 'region.location_name', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (50, 'location_types', 'Location type', 'Type of location', 2, 1, 'tbl_location_types.location_type_id', 'integer', '=', 'tbl_location_types.location_type', 'tbl_location_types.location_type', true, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (51, 'sites_polygon', 'Sites (map)', 'General name for the excavation or sampling location', 2, 3, 'tbl_sites.site_id', 'integer', '=', 'tbl_sites.site_name', 'tbl_sites.site_name', true, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (25, 'species', 'Taxa', 'Taxonomic species (under genus)', 6, 1, 'facet.abundance_taxon_shortcut.taxon_id', 'integer', '=', 'facet.abundance_taxon_shortcut.taxon_name', '1', true, false, 'count', 'Count of Anaylysis', 1);
+INSERT INTO facet.facet VALUES (54, 'construction_purpose', 'Construction purpose', 'Construction purpose', 1, 1, 'facet.sample_group_construction_purposes.purpose_id', 'text', '=', 'facet.sample_group_construction_purposes.purpose', '1', true, false, 'count', 'Count of Analysis', 1);
+INSERT INTO facet.facet VALUES (52, 'analysis_entity_ages', 'Analysis entity ages', 'Analysis entity ages (intersects)', 2, 4, 'age_range', 'int4range', '&&', 'age_range', '1', true, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (53, 'dendro_age_contained_by', 'Dendrochronology ages', 'Generic age range filter for dendrchronology. Return both estimated felling year and outermost tree ring.', 2, 4, 'tbl_dendro_dates.age_range', 'int4range', '@>', 'tbl_dendro_dates.age_range', '1', true, true, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (43, 'rdb_systems', 'RDB system', 'RDB system', 1, 1, 'tbl_rdb_systems.rdb_system_id', 'integer', '=', 'concat_ws('' '', tbl_rdb_systems.rdb_system, tbl_locations.location_name)', 'tbl_rdb_systems.rdb_system', true, false, 'count', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (10, 'geochronology', 'Geochronology', 'Sample ages as retrieved through absolute methods such as radiocarbon dating or other radiometric methods (in method based years before present - e.g. 14C years)', 2, 2, 'tbl_geochronology.age', 'integer', '=', 'tbl_geochronology.age', 'tbl_geochronology.age', true, false, '', 'Number of samples', 1);
+INSERT INTO facet.facet VALUES (1008, 'adna', 'aDNA', 'Ancient DNA domain facet', 999, 1, 'tbl_datasets.dataset_id', 'integer', '=', 'tbl_datasets.dataset_name ', 'tbl_datasets.dataset_name', false, false, 'count', 'Number of datasets', 1);
 
 
 --
@@ -1134,7 +1164,7 @@ INSERT INTO facet.facet_clause VALUES (29, 1007, 'tbl_datasets.method_id in (175
 INSERT INTO facet.facet_clause VALUES (30, 21, 'countries.location_type_id=1', true);
 INSERT INTO facet.facet_clause VALUES (31, 41, 'region.location_type_id in (2, 7, 14, 16, 18)', true);
 INSERT INTO facet.facet_clause VALUES (32, 25, 'tbl_sites.site_id is not null', true);
-INSERT INTO facet.facet_clause VALUES (33, 1008, 'tbl_datasets.method_id in (     select m.method_id     from tbl_methods m     join tbl_record_types r using (record_type_id)     where r.record_type_name = ''DNA'' )', false);
+INSERT INTO facet.facet_clause VALUES (33, 1008, 'tbl_datasets.method_id in (     select m.method_id     from tbl_methods m     join tbl_record_types r using (record_type_id)     where r.record_type_name = ''DNA'' )', true);
 
 
 --
