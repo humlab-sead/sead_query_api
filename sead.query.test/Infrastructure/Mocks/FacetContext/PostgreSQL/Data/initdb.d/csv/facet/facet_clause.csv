@@ -1,0 +1,17 @@
+facet_clause_id,facet_id,clause,enforce_constraint
+15,32,facet.view_abundance.abundance is not null,t
+18,33,facet.view_abundance.abundance is not null,t
+19,36,facet.view_sample_group_references.biblio_id is not null,t
+20,37,facet.view_site_references.biblio_id is not null,t
+22,48,tbl_sample_group_descriptions.sample_group_description_type_id=60,t
+23,1001,"tbl_datasets.method_id in (3, 6)",t
+24,1002,"tbl_datasets.method_id in (4, 8)",t
+25,1003,"tbl_datasets.method_id in (14, 15, 21)",t
+26,1004,"tbl_datasets.method_id in (32, 33, 35, 36, 37, 94, 106)",t
+27,1005,tbl_datasets.method_id in (10),t
+28,1006,"tbl_datasets.method_id in (172, 171)",t
+29,1007,tbl_datasets.method_id in (175),t
+30,21,countries.location_type_id=1,t
+31,41,"region.location_type_id in (2, 7, 14, 16, 18)",t
+32,25,tbl_sites.site_id is not null,t
+33,1008,tbl_datasets.method_id in (     select m.method_id     from tbl_methods m     join tbl_record_types r using (record_type_id)     where r.record_type_name = 'DNA' ),t

@@ -1,0 +1,5 @@
+specification_id,specification_key,display_text,is_applicable,is_activated
+1,site_level,Site level,f,t
+2,aggregate_all,Aggregate all,f,t
+3,sample_group_level,Sample group level,f,t
+4,map_result,Map result,f,f

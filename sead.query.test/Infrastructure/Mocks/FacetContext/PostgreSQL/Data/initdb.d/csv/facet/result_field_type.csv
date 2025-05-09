@@ -1,0 +1,10 @@
+field_type_id,is_result_value,sql_field_compiler,is_aggregate_field,is_sort_field,is_item_field,sql_template
+avg_item,t,TemplateFieldCompiler,t,f,f,AVG({0}) AS avg_of_{0}
+count_distinct_item,t,TemplateFieldCompiler,t,f,f,COUNT({0}) AS count_distinct_of_{0}
+count_item,t,TemplateFieldCompiler,t,f,f,COUNT({0}) AS count_of_{0}
+link_item,t,TemplateFieldCompiler,f,f,t,{0}
+link_item_filtered,t,TemplateFieldCompiler,f,f,t,{0}
+single_item,t,TemplateFieldCompiler,f,f,t,{0}
+sort_item,f,TemplateFieldCompiler,f,t,f,{0}
+sum_item,t,TemplateFieldCompiler,t,f,f,SUM({0}::double precision) AS sum_of_{0}
+text_agg_item,t,TemplateFieldCompiler,t,f,f,"ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),',') AS text_agg_of_{0}"

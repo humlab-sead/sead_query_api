@@ -1,0 +1,9 @@
+image_type_id,description,image_type
+1,Any non-aerial photograph.,Photograph
+2,Specifically plans/maps of excavated archaeological sites or sampling areas.,Site plan
+3,Any graphical representation not covered by the other image categories.,Diagram
+4,Schematic diagram showing process flow,Flow chart
+5,"A graphical representation of numerical values, any form.",Graph
+6,Any cartographic representation of points or data that is not a site plan. May include satelite maps.,Map
+7,,Aerial photograph
+8,Diagram describing details of an exposed strategraphic sequence or archaeological profile.,Stratigraphic plan

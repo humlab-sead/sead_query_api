@@ -1,0 +1,3 @@
+view_type_id,view_name,is_cachable,result_facet_code,sql_compiler,specification_key
+map,Map,f,map_result,MapResultSqlCompiler,map_result
+tabular,Tabular,t,result_facet,TabularResultSqlCompiler,site_level

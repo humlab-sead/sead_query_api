@@ -1,0 +1,1165 @@
+relative_age_id,relative_age_type_id,relative_age_name,description,c14_age_older,c14_age_younger,cal_age_older,cal_age_younger,notes,location_id,abbreviation
+1,3,Alleröd,Pollen Zone II,12000.00000,10500.00000,,,,1661,BS-Al
+2,3,Atlantic,Pollen Zone VI-VIIa,7000.00000,5000.00000,,,,1661,BS-At
+3,3,Boreal,Pollen Zone V,9500.00000,7000.00000,,,,1661,BS-Bo
+4,3,Older Dryas,Pollen Zone I,10500.00000,10000.00000,,,,1661,BS-OD
+5,3,Pre-Boreal,Pollen Zone IV,10000.00000,9500.00000,,,,1661,BS-PB
+6,3,Sub-Stlantic,Pollen Zone VIII,2500.00000,0.00000,,,,1661,BS-SA
+7,3,Sub-Boreal,Pollen Zone VIIb,5000.00000,2500.00000,,,,1661,BS-SB
+8,3,Younger Dryas,Pollen Zone III,10500.00000,10000.00000,,,,1661,BS-YD
+9,4,Oxygen Isotope Stage 1,Warm;=Flandrian;=Holocene,0.00000,10000.00000,,,,1661,MIS-01
+10,4,Oxygen Isotope Stage 2,,,,,,,1661,MIS-02
+11,4,Oxygen Isotope Stage 5e,Warm;=Ipswichian;Approx dates (max range),132000.00000,122000.00000,,,,1661,MIS-05e
+12,4,Oxygen Isotope Stage 7,Warm;=Marsworth?,245000.00000,186000.00000,,,,1661,MIS-07
+13,4,Oxygen Isotope Stage 9,Warm;=Hoxnian;Approx dates (max range),440000.00000,302000.00000,,,,1661,MIS-09
+14,4,Oxygen Isotope Stage 11,Warm;=Swanscombe,423000.00000,0.00000,,,,1661,MIS-11
+15,4,Oxygen Isotope Stage 12,=Anglian,478000.00000,423000.00000,,,,1661,MIS-12
+16,5,Pollen Zone I,Godwin's Zones,12000.00000,10500.00000,,,,1661,PZ-I
+17,5,Pollen Zone II,Godwin's Zones,12000.00000,10500.00000,,,,1661,PZ-II
+18,5,Pollen Zone III,Godwin's Zones,10500.00000,10000.00000,,,,1661,PZ-III
+19,5,Pollen Zone IV,Godwin's Zones,10000.00000,9500.00000,,,,1661,PZ-IV
+20,5,Pollen Zone V,Godwin's Zones,9500.00000,9000.00000,,,,1661,PZ-V
+21,5,Pollen Zone VI,Godwin's Zones,9000.00000,7000.00000,,,,1661,PZ-VI
+22,5,Pollen Zone VIIa,Godwin's Zones,7000.00000,5000.00000,,,,1661,PZ-VIIa
+23,5,Pollen Zone VIIa/b,Godwin's Zones,7000.00000,2500.00000,,,,1661,PZ-VIIa/b
+24,5,Pollen Zone VIIb,Godwin's Zones,5000.00000,2500.00000,,,,1661,PZ-VIIb
+25,5,Pollen Zone VIII,Godwin's Zones,2500.00000,0.00000,,,,1661,PZ-VIII
+26,1,Historical,,2000.00000,0.00000,,,,1662,Hist
+27,1,Arab,From beginning of Arab conquest of Eastern Mediterranean to fall of Ottoman Empire,,,1318.00000,32.00000,,1663,Arab
+28,1,Byzantine,Eastern Mediterranean from fall of Rome to Ottoman conquest of Constantinople,,,1540.00000,500.00000,,1663,Byzantine
+29,1,Graeco-Roman,,,,2450.00000,1550.00000,,1663,GraecoRom
+30,1,Medieval,,,,1550.00000,400.00000,,1664,Med
+31,1,Mesolithic,,10000.00000,5000.00000,,,,1664,Meso
+32,1,Middle Kingdom,,0.00000,0.00000,,,,64,Mking
+33,1,New Kingdom,Egyptian New Kingdom,,,3300.00000,3280.00000,,64,NewKingdom
+34,1,pre-Landnam,Pre Landnam ash in Iceland,,,,1082.00000,,100,preLandnam
+35,1,Roman Italy,Roman Italy,,,2200.00000,1540.00000,,107,Roman Italia
+36,1,Roman Gallia,Roman France,,,2010.00000,1500.00000,,74,RomanF
+37,1,Roman Germania,Roman Germany,,,2006.00000,1500.00000,,82,RomanG
+38,1,Saxon,Saxon (England),,,1540.00000,884.00000,,240,Saxon
+39,1,Neolithic,,5000.00000,4000.00000,,,,1661,Neo
+40,1,Old Kingdom,Egypt,,,5450.00000,4450.00000,,1661,Old Kingdom
+41,1,Palaeolithic,,,10000.00000,,,,1661,Palaeo
+42,1,Post Medieval,,1550.00000,0.00000,,,,1661,PostMed
+43,1,Ptolemaic,"Egypt post Alexander, pre-Roman",,,2273.00000,2000.00000,,1661,Ptol
+44,1,Sarqaq,Sarqaq Eskimo hunter-gatherer sites in Greenland,,,4450.00000,2450.00000,,1661,Sarqaq
+45,1,Spanish adobe,Post Columbian North & Central America,,,458.00000,100.00000,,1661,Spanish adobe
+46,1,Viking,,,,1150.00000,850.00000,,1661,Viking
+47,1,Anglo-Scandinavian,Early medieval,,,1150.00000,850.00000,,224,AS
+48,1,Bronze Age,UK Bronze Age,2500.00000,,,2550.00000,,224,BA
+49,1,Early Saxon,Saxon (England),,,1540.00000,1250.00000,,224,ESaxon
+50,1,Late Bronze Age UK,,,,2950.00000,2600.00000,,224,LBronze
+51,1,Late Iron Age UK,,,,2200.00000,1907.00000,,224,LIron
+52,1,Late Medieval UK,,,,500.00000,350.00000,,224,LMed
+53,1,Late Roman UK,,,,1700.00000,1550.00000,,224,LRoman
+54,1,Roman Britannia,Roman Britain,,,1907.00000,1540.00000,,224,RomanUK
+55,9,Holocene,MIS 1; Interglacial,10000.00000,0.00000,,,,1664,Holocene
+56,9,Lateglacial,Pollen Zones I-III,13500.00000,10000.00000,,,,1664,LG
+57,9,Lateglacial Interstadial,Pollen Zones I-II,12500.00000,11500.00000,,,,1664,LGI
+58,9,Lateglacial Stadial,Pollen Zone III; Younger Dryas,11500.00000,10000.00000,,,,1664,LGS
+59,9,Late Holocene,Pollen Zones VIIb-VIII,5000.00000,0.00000,,,,1664,LH
+60,9,Eemian,MIS 5e;Interglacial,128000.00000,110000.00000,,,,1661,Eemian
+61,9,Early Holocene,Pollen Zone IV-VI,10000.00000,7000.00000,,,,1661,EH
+62,9,Early Pleistocene,MIS 23-13,2400000.00000,,,,,1661,EPleist
+63,9,Early Weichselian,=  MIS-5d - 4,122000.00000,45000.00000,,,,1661,EW
+64,9,Mid Holocene,= Pollen Zone VIIa,7000.00000,5000.00000,,,,1661,MH
+65,9,Middle Pleistocene,MIS 12-8,,,,,,1661,MPleist
+66,9,Pleistocene,MIS 23-2,,,2401950.00000,11950.00000,,1661,Pleisto
+67,9,Pliocene,,,2400000.00000,,,,1661,Plio
+68,9,Weichselian,MIS-5d to MIS-2,122000.00000,10000.00000,,,,1661,W
+69,9,Wolstonian,MIS-8 to MIS-6;Approx dates (max range),302000.00000,186000.00000,,,,1661,Wolst
+70,9,Wurm,= Weichselian,,,,,,1661,Wurm
+71,9,Anglian,=MIS-12;Cold,478000.00000,423000.00000,,,,224,Anglian
+72,9,Chelford,? MIS-5c Interstadia,,58000.00000,,,,224,Chelford
+73,9,Cromerian,MIS-13 Interglacial,,478000.00000,,,,224,Cromerian
+74,9,Devensian,= Weichselian;MIS-5d to MIS-2,122000.00000,10000.00000,,,,224,Devensian
+75,9,Dimlington Stadial,MIS2,26000.00000,13000.00000,,,,224,DimlingtonSt
+76,9,Early Wolstonian,MIS-8 to ?;End date?;Approx dates (max range),302000.00000,,,,,224,EWolst
+77,9,Flandrian,= Holocene;Interglacial,10000.00000,0.00000,,,,224,Flandrian
+78,9,Hoxnian,= MIS-9 and 11 undifferentiated,428000.00000,302000.00000,,,,224,Hoxnian
+79,9,Ipswichian,=MIS- 5e - 7 undifferentiated;Warm;Approx date (max range);Interglacial,132000.00000,122000.00000,,,,224,Ipswichian
+80,9,Loch Lomond,Cold = Lateglacial Stadial = PZ-III,11500.00000,10000.00000,,,,224,LL
+81,9,Middle Devensian,=MIS-3,50000.00000,25000.00000,,,,224,MD
+82,9,Mid-Devensian,= mid-Weichselian;MIS-3,122000.00000,10000.00000,,,,224,Mid-Devensian
+83,9,Upton Warren,= MIS-5a;Interstadial?,,,43000.00000,40000.00000,,224,UWI
+84,9,Windermere,Warm;Interstadial,13000.00000,11000.00000,,,,224,Windermere
+85,11,Modern,,,0.00000,50.00000,,,1661,Modern
+86,11,"Interglacial, uncertain age",Samples from interglacial period of uncertain time origin,,,,,,1661,InterG
+87,2,Recent,Modern collection data,,,50.00000,-100.00000,,1661,Recent
+88,1,Pre-Columbian,Records of Palaearctic or Holoarctic spp in the New World before the arrival of Columbus.,,,0.00000,458.00000,,1665,Pre-Columbian
+89,1,Iron Age,,,,2600.00000,1900.00000,,224,Iron
+90,1,Post-Roman,Used for sites outside the areas of 'Saxon' settlement in E England,,,1550.00000,1250.00000,,224,PostRom
+91,9,Early Devensian,,0.00000,0.00000,,,,224,Edev
+92,4,Oxygen Isotope Stage 3,,0.00000,0.00000,,,,1661,MIS-03
+93,4,Oxygen Isotope Stage 4,,0.00000,0.00000,,,,1661,MIS-04
+94,4,Oxygen Isotope Stage 5,,0.00000,0.00000,,,,1661,MIS-05
+95,4,Oxygen Isotope Stage 5a,Warm;=UWI,0.00000,70000.00000,,,,1661,MIS-05a
+96,4,Oxygen Isotope Stage 5b,,0.00000,0.00000,,,,1661,MIS-05b
+97,4,Oxygen Isotope Stage 5c,Warm;=Chelford,0.00000,0.00000,,,,1661,MIS-05c
+98,4,Oxygen Isotope Stage 5d,,0.00000,0.00000,,,,1661,MIS-05d
+99,4,Oxygen Isotope Stage 6,,0.00000,0.00000,,,,1661,MIS-06
+100,4,Oxygen Isotope Stage 8,,0.00000,0.00000,,,,1661,MIS-08
+101,4,Oxygen Isotope Stage 10,,0.00000,0.00000,,,,1661,MIS-10
+102,4,Oxygen Isotope Stage 13,Warm;=Cromerian,0.00000,478000.00000,,,,1661,MIS-13
+103,4,Oxygen Isotope Stage 14,,0.00000,0.00000,,,,1661,MIS-14
+104,4,Oxygen Isotope Stage 14/15,,0.00000,0.00000,,,,1661,MIS-14/15
+105,4,Oxygen Isotope Stage 15,Warm;=Waverly Wood,0.00000,0.00000,,,,1661,MIS-15
+106,4,Oxygen Isotope Stage 16,,0.00000,0.00000,,,,1661,MIS-16
+107,4,Oxygen Isotope Stage 17,,0.00000,0.00000,,,,1661,MIS-17
+108,4,Oxygen Isotope Stage 18,,0.00000,0.00000,,,,1661,MIS-18
+109,4,Oxygen Isotope Stage 19,,0.00000,0.00000,,,,1661,MIS-19
+110,4,Oxygen Isotope Stage 20,,0.00000,0.00000,,,,1661,MIS-20
+111,4,Oxygen Isotope Stage 21,,0.00000,0.00000,,,,1661,MIS-21
+112,4,Oxygen Isotope Stage 22,,0.00000,0.00000,,,,1661,MIS-22
+113,4,Oxygen Isotope Stage 23,,0.00000,0.00000,,,,1661,MIS-23
+114,12,CAL_PERIOD_1475,Calendar date,,,1475.00000,,,,CAL_1475
+115,12,CAL_PERIOD_1242,Calendar date,,,708.00000,,,,CAL_1242AD
+116,12,CAL_PERIOD_150,Calendar date,,,1800.00000,,,,CAL_150AD
+117,12,CAL_PERIOD_250,Calendar date,,,1700.00000,,,,CAL_250AD
+118,12,CAL_PERIOD_200,Calendar date,,,1750.00000,,,,CAL_200AD
+119,12,CAL_PERIOD_300,Calendar date,,,1650.00000,,,,CAL_300AD
+120,12,CAL_PERIOD_410,Calendar date,,,1540.00000,,,,CAL_410AD
+121,12,CAL_PERIOD_3580,Calendar date,,,5530.00000,,,,CAL_3580BC
+122,12,CAL_PERIOD_1600,Calendar date,,,3550.00000,,,,CAL_1600BC
+123,12,CAL_PERIOD_1200,Calendar date,,,750.00000,,,,CAL_1200AD
+124,12,CAL_PERIOD_1300,Calendar date,,,650.00000,,,,CAL_1300AD
+125,12,CAL_PERIOD_1840,Calendar date,,,110.00000,,,,CAL_1840AD
+126,12,CAL_PERIOD_1400,Calendar date,,,550.00000,,,,CAL_1400AD
+127,12,CAL_PERIOD_1600,Calendar date,,,350.00000,,,,CAL_1600AD
+128,12,CAL_PERIOD_1500,Calendar date,,,450.00000,,,,CAL_1500AD
+129,12,CAL_PERIOD_1700,Calendar date,,,250.00000,,,,CAL_1700AD
+130,12,CAL_PERIOD_175,Calendar date,,,1775.00000,,,,CAL_175AD
+131,12,CAL_PERIOD_225,Calendar date,,,1725.00000,,,,CAL_225AD
+132,12,CAL_PERIOD_75,Calendar date,,,1875.00000,,,,CAL_75AD
+133,12,CAL_PERIOD_5057,Calendar date,,,7007.00000,,,,CAL_5057BC
+134,12,CAL_PERIOD_25,Calendar date,,,1925.00000,,,,CAL_25AD
+135,12,CAL_PERIOD_43,Calendar date,,,1907.00000,,,,CAL_43AD
+136,12,CAL_PERIOD_100,Calendar date,,,1850.00000,,,,CAL_100AD
+137,12,CAL_PERIOD_400,Calendar date,,,1550.00000,,,,CAL_400AD
+138,12,CAL_PERIOD_1250,Calendar date,,,700.00000,,,,CAL_1250AD
+139,12,CAL_PERIOD_1540,Calendar date,,,410.00000,,,,CAL_1540AD
+140,12,CAL_PERIOD_1510,Calendar date,,,440.00000,,,,CAL_1510AD
+141,12,CAL_PERIOD_138,Calendar date,,,1812.00000,,,,CAL_138AD
+142,12,CAL_PERIOD_158,Calendar date,,,1792.00000,,,,CAL_158AD
+143,12,CAL_PERIOD_1450,Calendar date,,,500.00000,,,,CAL_1450AD
+144,12,CAL_PERIOD_1000,Calendar date,,,950.00000,,,,CAL_1000AD
+145,12,CAL_PERIOD_1100,Calendar date,,,850.00000,,,,CAL_1100AD
+146,12,CAL_PERIOD_1550,Calendar date,,,400.00000,,,,CAL_1550AD
+147,12,CAL_PERIOD_350,Calendar date,,,1600.00000,,,,CAL_350AD
+148,12,CAL_PERIOD_65,Calendar date,,,1885.00000,,,,CAL_65AD
+149,12,CAL_PERIOD_79,Calendar date,,,1871.00000,,,,CAL_79AD
+150,12,CAL_PERIOD_80,Calendar date,,,1870.00000,,,,CAL_80AD
+151,12,CAL_PERIOD_120,Calendar date,,,1830.00000,,,,CAL_120AD
+152,12,CAL_PERIOD_1745,Calendar date,,,205.00000,,,,CAL_1745AD
+153,12,CAL_PERIOD_2921,Calendar date,,,4871.00000,,,,CAL_2921BC
+154,12,CAL_PERIOD_2445,Calendar date,,,4395.00000,,,,CAL_2445BC
+155,12,CAL_PERIOD_3618,Calendar date,,,5568.00000,,,,CAL_3618BC
+156,12,CAL_PERIOD_3418,Calendar date,,,5368.00000,,,,CAL_3418BC
+157,12,CAL_PERIOD_1150,Calendar date,,,800.00000,,,,CAL_1150AD
+158,12,CAL_PERIOD_1175,Calendar date,,,775.00000,,,,CAL_1175AD
+159,12,CAL_PERIOD_1675,Calendar date,,,275.00000,,,,CAL_1675AD
+160,12,CAL_PERIOD_1720,Calendar date,,,230.00000,,,,CAL_1720AD
+161,12,CAL_PERIOD_64,Calendar date,,,1886.00000,,,,CAL_64AD
+162,12,CAL_PERIOD_1350,Calendar date,,,600.00000,,,,CAL_1350AD
+163,12,CAL_PERIOD_577,Calendar date,,,1373.00000,,,,CAL_577AD
+164,12,CAL_PERIOD_619,Calendar date,,,1331.00000,,,,CAL_619AD
+165,12,CAL_PERIOD_1125,Calendar date,,,825.00000,,,,CAL_1125AD
+166,12,CAL_PERIOD_45,Calendar date,,,1905.00000,,,,CAL_45AD
+167,12,CAL_PERIOD_900,Calendar date,,,1050.00000,,,,CAL_900AD
+168,12,CAL_PERIOD_800,Calendar date,,,1150.00000,,,,CAL_800AD
+169,12,CAL_PERIOD_325,Calendar date,,,1625.00000,,,,CAL_325AD
+170,12,CAL_PERIOD_3500,Calendar date,,,5450.00000,,,,CAL_3500BC
+171,12,CAL_PERIOD_2000,Calendar date,,,3950.00000,,,,CAL_2000BC
+172,12,CAL_PERIOD_117,Calendar date,,,1833.00000,,,,CAL_117AD
+173,12,CAL_PERIOD_50,Calendar date,,,1900.00000,,,,CAL_50AD
+174,12,CAL_PERIOD_1020,Calendar date,,,2970.00000,,,,CAL_1020BC
+175,12,CAL_PERIOD_800,Calendar date,,,2750.00000,,,,CAL_800BC
+176,12,CAL_PERIOD_1425,Calendar date,,,525.00000,,,,CAL_1425AD
+177,12,CAL_PERIOD_5000,Calendar date,,,5000.00000,,,,CAL_5000BP
+178,12,CAL_PERIOD_330,Calendar date,,,1620.00000,,,,CAL_330AD
+179,12,CAL_PERIOD_365,Calendar date,,,1585.00000,,,,CAL_365AD
+180,12,CAL_PERIOD_500,Calendar date,,,1450.00000,,,,CAL_500AD
+181,12,CAL_PERIOD_1650,Calendar date,,,300.00000,,,,CAL_1650AD
+182,12,CAL_PERIOD_675,Calendar date,,,1275.00000,,,,CAL_675AD
+183,12,CAL_PERIOD_865,Calendar date,,,1085.00000,,,,CAL_865AD
+184,12,CAL_PERIOD_1327,Calendar date,,,3277.00000,,,,CAL_1327BC
+185,12,CAL_PERIOD_2424,Calendar date,,,4374.00000,,,,CAL_2424BC
+186,12,CAL_PERIOD_2143,Calendar date,,,4093.00000,,,,CAL_2143BC
+187,12,CAL_PERIOD_2300,Calendar date,,,4250.00000,,,,CAL_2300BC
+188,12,CAL_PERIOD_30,Calendar date,,,1920.00000,,,,CAL_30AD
+189,12,CAL_PERIOD_60,Calendar date,,,1890.00000,,,,CAL_60AD
+190,12,CAL_PERIOD_1596,Calendar date,,,354.00000,,,,CAL_1596AD
+191,12,CAL_PERIOD_586,Calendar date,,,1364.00000,,,,CAL_586AD
+192,12,CAL_PERIOD_550,Calendar date,,,1400.00000,,,,CAL_550AD
+193,12,CAL_PERIOD_560,Calendar date,,,1390.00000,,,,CAL_560AD
+194,12,CAL_PERIOD_990,Calendar date,,,960.00000,,,,CAL_990AD
+195,12,CAL_PERIOD_140,Calendar date,,,1810.00000,,,,CAL_140AD
+196,12,CAL_PERIOD_420,Calendar date,,,1530.00000,,,,CAL_420AD
+197,12,CAL_PERIOD_720,Calendar date,,,1230.00000,,,,CAL_720AD
+198,12,CAL_PERIOD_1025,Calendar date,,,925.00000,,,,CAL_1025AD
+199,12,CAL_PERIOD_1482,Calendar date,,,468.00000,,,,CAL_1482AD
+200,12,CAL_PERIOD_1419,Calendar date,,,531.00000,,,,CAL_1419AD
+201,12,CAL_PERIOD_1188,Calendar date,,,762.00000,,,,CAL_1188AD
+202,12,CAL_PERIOD_1218,Calendar date,,,732.00000,,,,CAL_1218AD
+203,12,CAL_PERIOD_2001,Calendar date,,,-51.00000,,,,CAL_2001AD
+204,12,CAL_PERIOD_1995,Calendar date,,,-45.00000,,,,CAL_1995AD
+205,12,CAL_PERIOD_135,Calendar date,,,1815.00000,,,,CAL_135AD
+206,12,CAL_PERIOD_399,Calendar date,,,1551.00000,,,,CAL_399AD
+207,12,CAL_PERIOD_950,Calendar date,,,1000.00000,,,,CAL_950AD
+208,12,CAL_PERIOD_1673,Calendar date,,,277.00000,,,,CAL_1673AD
+209,12,CAL_PERIOD_1621,Calendar date,,,329.00000,,,,CAL_1621AD
+210,12,CAL_PERIOD_1620,Calendar date,,,330.00000,,,,CAL_1620AD
+211,12,CAL_PERIOD_1430,Calendar date,,,3380.00000,,,,CAL_1430BC
+212,12,CAL_PERIOD_1200,Calendar date,,,3150.00000,,,,CAL_1200BC
+213,12,CAL_PERIOD_1620,Calendar date,,,3570.00000,,,,CAL_1620BC
+214,12,CAL_PERIOD_1460,Calendar date,,,3410.00000,,,,CAL_1460BC
+215,12,CAL_PERIOD_1310,Calendar date,,,3260.00000,,,,CAL_1310BC
+216,12,CAL_PERIOD_1420,Calendar date,,,3370.00000,,,,CAL_1420BC
+217,12,CAL_PERIOD_1190,Calendar date,,,3140.00000,,,,CAL_1190BC
+218,12,CAL_PERIOD_130000,Calendar date,,,130000.00000,,,,CAL_130000BP
+219,12,CAL_PERIOD_1,Calendar date,,,1949.00000,,,,CAL_1AD
+220,12,CAL_PERIOD_168,Calendar date,,,2118.00000,,,,CAL_168BC
+221,12,CAL_PERIOD_110,Calendar date,,,2060.00000,,,,CAL_110BC
+222,12,CAL_PERIOD_70,Calendar date,,,1880.00000,,,,CAL_70AD
+223,12,CAL_PERIOD_208,Calendar date,,,1742.00000,,,,CAL_208AD
+224,12,CAL_PERIOD_211,Calendar date,,,1739.00000,,,,CAL_211AD
+225,12,CAL_PERIOD_1699,Calendar date,,,251.00000,,,,CAL_1699AD
+226,12,CAL_PERIOD_1099,Calendar date,,,851.00000,,,,CAL_1099AD
+227,12,CAL_PERIOD_1216,Calendar date,,,734.00000,,,,CAL_1216AD
+228,12,CAL_PERIOD_1350,Calendar date,,,3300.00000,,,,CAL_1350BC
+229,12,CAL_PERIOD_1325,Calendar date,,,3275.00000,,,,CAL_1325BC
+230,12,CAL_PERIOD_1825,Calendar date,,,125.00000,,,,CAL_1825AD
+231,12,CAL_PERIOD_1875,Calendar date,,,75.00000,,,,CAL_1875AD
+232,12,CAL_PERIOD_1680,Calendar date,,,270.00000,,,,CAL_1680AD
+233,12,CAL_PERIOD_1930,Calendar date,,,20.00000,,,,CAL_1930AD
+234,12,CAL_PERIOD_630,Calendar date,,,1320.00000,,,,CAL_630AD
+235,12,CAL_PERIOD_780,Calendar date,,,1170.00000,,,,CAL_780AD
+236,12,CAL_PERIOD_1020,Calendar date,,,930.00000,,,,CAL_1020AD
+237,12,CAL_PERIOD_1210,Calendar date,,,740.00000,,,,CAL_1210AD
+238,12,CAL_PERIOD_1160,Calendar date,,,790.00000,,,,CAL_1160AD
+239,12,CAL_PERIOD_1010,Calendar date,,,940.00000,,,,CAL_1010AD
+240,12,CAL_PERIOD_890,Calendar date,,,1060.00000,,,,CAL_890AD
+241,12,CAL_PERIOD_1120,Calendar date,,,830.00000,,,,CAL_1120AD
+242,12,CAL_PERIOD_690,Calendar date,,,1260.00000,,,,CAL_690AD
+243,12,CAL_PERIOD_940,Calendar date,,,1010.00000,,,,CAL_940AD
+244,12,CAL_PERIOD_1030,Calendar date,,,920.00000,,,,CAL_1030AD
+245,12,CAL_PERIOD_40,Calendar date,,,1990.00000,,,,CAL_40BC
+246,12,CAL_PERIOD_130,Calendar date,,,1820.00000,,,,CAL_130AD
+247,12,CAL_PERIOD_50,Calendar date,,,2000.00000,,,,CAL_50BC
+248,12,CAL_PERIOD_1559,Calendar date,,,391.00000,,,,CAL_1559AD
+249,12,CAL_PERIOD_1554,Calendar date,,,396.00000,,,,CAL_1554AD
+250,12,CAL_PERIOD_3340,Calendar date,,,5290.00000,,,,CAL_3340BC
+251,12,CAL_PERIOD_2920,Calendar date,,,4870.00000,,,,CAL_2920BC
+252,12,CAL_PERIOD_370,Calendar date,,,2320.00000,,,,CAL_370BC
+253,12,CAL_PERIOD_375,Calendar date,,,2325.00000,,,,CAL_375BC
+254,12,CAL_PERIOD_10050,Calendar date,,,10050.00000,,,,CAL_10050BP
+255,12,CAL_PERIOD_9390,Calendar date,,,9390.00000,,,,CAL_9390BP
+256,12,CAL_PERIOD_7550,Calendar date,,,7550.00000,,,,CAL_7550BP
+257,12,CAL_PERIOD_7000,Calendar date,,,7000.00000,,,,CAL_7000BP
+258,12,CAL_PERIOD_7500,Calendar date,,,7500.00000,,,,CAL_7500BP
+259,12,CAL_PERIOD_1000,Calendar date,,,2950.00000,,,,CAL_1000BC
+260,12,CAL_PERIOD_900,Calendar date,,,2850.00000,,,,CAL_900BC
+261,12,CAL_PERIOD_7269,Calendar date,,,7269.00000,,,,CAL_7269BP
+262,12,CAL_PERIOD_7180,Calendar date,,,7180.00000,,,,CAL_7180BP
+263,12,CAL_PERIOD_7219,Calendar date,,,7219.00000,,,,CAL_7219BP
+264,12,CAL_PERIOD_7034,Calendar date,,,7034.00000,,,,CAL_7034BP
+265,12,CAL_PERIOD_6200,Calendar date,,,6200.00000,,,,CAL_6200BP
+266,12,CAL_PERIOD_6030,Calendar date,,,6030.00000,,,,CAL_6030BP
+267,12,CAL_PERIOD_6950,Calendar date,,,6950.00000,,,,CAL_6950BP
+268,12,CAL_PERIOD_1850,Calendar date,,,100.00000,,,,CAL_1850AD
+269,12,CAL_PERIOD_430,Calendar date,,,2380.00000,,,,CAL_430BC
+270,12,CAL_PERIOD_3920,Calendar date,,,5870.00000,,,,CAL_3920BC
+271,12,CAL_PERIOD_2890,Calendar date,,,4840.00000,,,,CAL_2890BC
+272,12,CAL_PERIOD_3030,Calendar date,,,4980.00000,,,,CAL_3030BC
+273,12,CAL_PERIOD_2505,Calendar date,,,4455.00000,,,,CAL_2505BC
+274,12,CAL_PERIOD_2880,Calendar date,,,4830.00000,,,,CAL_2880BC
+275,12,CAL_PERIOD_2050,Calendar date,,,4000.00000,,,,CAL_2050BC
+276,12,CAL_PERIOD_1749,Calendar date,,,201.00000,,,,CAL_1749AD
+277,12,CAL_PERIOD_694,Calendar date,,,1256.00000,,,,CAL_694AD
+278,12,CAL_PERIOD_711,Calendar date,,,1239.00000,,,,CAL_711AD
+279,12,CAL_PERIOD_390,Calendar date,,,390.00000,,,,CAL_390BP
+280,12,CAL_PERIOD_10500,Calendar date,,,10500.00000,,,,CAL_10500BP
+281,12,CAL_PERIOD_1510,Calendar date,,,3460.00000,,,,CAL_1510BC
+282,12,CAL_PERIOD_1690,Calendar date,,,3640.00000,,,,CAL_1690BC
+283,12,CAL_PERIOD_1323,Calendar date,,,3273.00000,,,,CAL_1323BC
+284,12,CAL_PERIOD_1293,Calendar date,,,3243.00000,,,,CAL_1293BC
+285,12,CAL_PERIOD_2005,Calendar date,,,-55.00000,,,,CAL_2005AD
+286,12,CAL_PERIOD_1077,Calendar date,,,3027.00000,,,,CAL_1077BC
+287,12,CAL_PERIOD_811,Calendar date,,,2761.00000,,,,CAL_811BC
+288,12,CAL_PERIOD_3410,Calendar date,,,3410.00000,,,,CAL_3410BP
+289,12,CAL_PERIOD_2920,Calendar date,,,2920.00000,,,,CAL_2920BP
+290,12,CAL_PERIOD_3255,Calendar date,,,5205.00000,,,,CAL_3255BC
+291,12,CAL_PERIOD_660,Calendar date,,,1290.00000,,,,CAL_660AD
+292,12,CAL_PERIOD_1609,Calendar date,,,3559.00000,,,,CAL_1609BC
+293,12,CAL_PERIOD_1315,Calendar date,,,635.00000,,,,CAL_1315AD
+294,12,CAL_PERIOD_61,Calendar date,,,1889.00000,,,,CAL_61AD
+295,12,CAL_PERIOD_4140,Calendar date,,,4140.00000,,,,CAL_4140BP
+296,12,CAL_PERIOD_3690,Calendar date,,,3690.00000,,,,CAL_3690BP
+297,12,CAL_PERIOD_5280,Calendar date,,,5280.00000,,,,CAL_5280BP
+298,12,CAL_PERIOD_4840,Calendar date,,,4840.00000,,,,CAL_4840BP
+299,12,CAL_PERIOD_5590,Calendar date,,,5590.00000,,,,CAL_5590BP
+300,12,CAL_PERIOD_4980,Calendar date,,,4980.00000,,,,CAL_4980BP
+301,12,CAL_PERIOD_5750,Calendar date,,,5750.00000,,,,CAL_5750BP
+302,12,CAL_PERIOD_5330,Calendar date,,,5330.00000,,,,CAL_5330BP
+303,12,CAL_PERIOD_6260,Calendar date,,,6260.00000,,,,CAL_6260BP
+304,12,CAL_PERIOD_5910,Calendar date,,,5910.00000,,,,CAL_5910BP
+305,12,CAL_PERIOD_2700,Calendar date,,,4650.00000,,,,CAL_2700BC
+306,12,CAL_PERIOD_2350,Calendar date,,,4300.00000,,,,CAL_2350BC
+307,12,CAL_PERIOD_3650,Calendar date,,,5600.00000,,,,CAL_3650BC
+308,12,CAL_PERIOD_3370,Calendar date,,,5320.00000,,,,CAL_3370BC
+309,12,CAL_PERIOD_2900,Calendar date,,,4850.00000,,,,CAL_2900BC
+310,12,CAL_PERIOD_1680,Calendar date,,,3630.00000,,,,CAL_1680BC
+311,12,CAL_PERIOD_1400,Calendar date,,,3350.00000,,,,CAL_1400BC
+312,12,CAL_PERIOD_2470,Calendar date,,,4420.00000,,,,CAL_2470BC
+313,12,CAL_PERIOD_2060,Calendar date,,,4010.00000,,,,CAL_2060BC
+314,12,CAL_PERIOD_1610,Calendar date,,,3560.00000,,,,CAL_1610BC
+315,12,CAL_PERIOD_1520,Calendar date,,,3470.00000,,,,CAL_1520BC
+316,12,CAL_PERIOD_2004,Calendar date,,,-54.00000,,,,CAL_2004AD
+317,12,CAL_PERIOD_1545,Calendar date,,,405.00000,,,,CAL_1545AD
+318,12,CAL_PERIOD_1075,Calendar date,,,875.00000,,,,CAL_1075AD
+319,12,CAL_PERIOD_1111,Calendar date,,,839.00000,,,,CAL_1111AD
+320,12,CAL_PERIOD_275,Calendar date,,,1675.00000,,,,CAL_275AD
+321,12,CAL_PERIOD_1275,Calendar date,,,675.00000,,,,CAL_1275AD
+322,12,CAL_PERIOD_1225,Calendar date,,,725.00000,,,,CAL_1225AD
+323,12,CAL_PERIOD_1225,Calendar date,,,1225.00000,,,,CAL_1225BP
+324,12,CAL_PERIOD_1050,Calendar date,,,900.00000,,,,CAL_1050AD
+325,12,CAL_PERIOD_1215,Calendar date,,,735.00000,,,,CAL_1215AD
+326,12,CAL_PERIOD_700,Calendar date,,,2650.00000,,,,CAL_700BC
+327,12,CAL_PERIOD_600,Calendar date,,,2550.00000,,,,CAL_600BC
+328,12,CAL_PERIOD_270,Calendar date,,,1680.00000,,,,CAL_270AD
+329,12,CAL_PERIOD_360,Calendar date,,,1590.00000,,,,CAL_360AD
+330,12,CAL_PERIOD_975,Calendar date,,,975.00000,,,,CAL_975AD
+331,12,CAL_PERIOD_375,Calendar date,,,1575.00000,,,,CAL_375AD
+332,12,CAL_PERIOD_280,Calendar date,,,1670.00000,,,,CAL_280AD
+333,12,CAL_PERIOD_320,Calendar date,,,1630.00000,,,,CAL_320AD
+334,12,CAL_PERIOD_1599,Calendar date,,,351.00000,,,,CAL_1599AD
+335,12,CAL_PERIOD_1399,Calendar date,,,551.00000,,,,CAL_1399AD
+336,12,CAL_PERIOD_1499,Calendar date,,,451.00000,,,,CAL_1499AD
+337,12,CAL_PERIOD_650,Calendar date,,,1300.00000,,,,CAL_650AD
+338,12,CAL_PERIOD_1475,Calendar date,,,475.00000,,,,CAL_1475AD
+339,12,CAL_PERIOD_1299,Calendar date,,,651.00000,,,,CAL_1299AD
+340,12,CAL_PERIOD_999,Calendar date,,,951.00000,,,,CAL_999AD
+341,12,CAL_PERIOD_1199,Calendar date,,,751.00000,,,,CAL_1199AD
+342,12,CAL_PERIOD_1325,Calendar date,,,625.00000,,,,CAL_1325AD
+343,12,CAL_PERIOD_1375,Calendar date,,,575.00000,,,,CAL_1375AD
+344,12,CAL_PERIOD_1800,Calendar date,,,150.00000,,,,CAL_1800AD
+345,12,CAL_PERIOD_1899,Calendar date,,,51.00000,,,,CAL_1899AD
+346,12,CAL_PERIOD_1985,Calendar date,,,3935.00000,,,,CAL_1985BC
+347,12,CAL_PERIOD_1773,Calendar date,,,3723.00000,,,,CAL_1773BC
+348,12,CAL_PERIOD_2500,Calendar date,,,4450.00000,,,,CAL_2500BC
+349,12,CAL_PERIOD_2200,Calendar date,,,4150.00000,,,,CAL_2200BC
+350,12,CAL_PERIOD_299,Calendar date,,,1651.00000,,,,CAL_299AD
+351,12,CAL_PERIOD_850,Calendar date,,,1100.00000,,,,CAL_850AD
+352,12,CAL_PERIOD_1780,Calendar date,,,170.00000,,,,CAL_1780AD
+353,12,CAL_PERIOD_1070,Calendar date,,,880.00000,,,,CAL_1070AD
+354,12,CAL_PERIOD_1066,Calendar date,,,884.00000,,,,CAL_1066AD
+355,12,CAL_PERIOD_1385,Calendar date,,,565.00000,,,,CAL_1385AD
+356,12,CAL_PERIOD_3800,Calendar date,,,3800.00000,,,,CAL_3800BP
+357,12,CAL_PERIOD_899,Calendar date,,,1051.00000,,,,CAL_899AD
+358,12,CAL_PERIOD_3450,Calendar date,,,3450.00000,,,,CAL_3450BP
+359,12,CAL_PERIOD_3200,Calendar date,,,3200.00000,,,,CAL_3200BP
+360,12,CAL_PERIOD_3000,Calendar date,,,3000.00000,,,,CAL_3000BP
+361,12,CAL_PERIOD_3600,Calendar date,,,3600.00000,,,,CAL_3600BP
+362,12,CAL_PERIOD_4000,Calendar date,,,4000.00000,,,,CAL_4000BP
+363,12,CAL_PERIOD_3550,Calendar date,,,3550.00000,,,,CAL_3550BP
+364,12,CAL_PERIOD_3500,Calendar date,,,3500.00000,,,,CAL_3500BP
+365,12,CAL_PERIOD_3400,Calendar date,,,3400.00000,,,,CAL_3400BP
+366,12,CAL_PERIOD_4500,Calendar date,,,4500.00000,,,,CAL_4500BP
+367,12,CAL_PERIOD_4300,Calendar date,,,4300.00000,,,,CAL_4300BP
+368,12,CAL_PERIOD_4200,Calendar date,,,4200.00000,,,,CAL_4200BP
+369,12,CAL_PERIOD_600,Calendar date,,,1350.00000,,,,CAL_600AD
+370,12,CAL_PERIOD_400,Calendar date,,,2350.00000,,,,CAL_400BC
+371,12,CAL_PERIOD_1775,Calendar date,,,175.00000,,,,CAL_1775AD
+372,12,CAL_PERIOD_1799,Calendar date,,,151.00000,,,,CAL_1799AD
+373,12,CAL_PERIOD_1681,Calendar date,,,269.00000,,,,CAL_1681AD
+374,12,CAL_PERIOD_1725,Calendar date,,,225.00000,,,,CAL_1725AD
+375,12,CAL_PERIOD_1789,Calendar date,,,161.00000,,,,CAL_1789AD
+376,12,CAL_PERIOD_1796,Calendar date,,,154.00000,,,,CAL_1796AD
+377,12,CAL_PERIOD_1750,Calendar date,,,200.00000,,,,CAL_1750AD
+378,12,CAL_PERIOD_875,Calendar date,,,1075.00000,,,,CAL_875AD
+379,12,CAL_PERIOD_99,Calendar date,,,1851.00000,,,,CAL_99AD
+380,12,CAL_PERIOD_157,Calendar date,,,1793.00000,,,,CAL_157AD
+381,12,CAL_PERIOD_250,Calendar date,,,2200.00000,,,,CAL_250BC
+382,12,CAL_PERIOD_1060,Calendar date,,,890.00000,,,,CAL_1060AD
+383,12,CAL_PERIOD_323,Calendar date,,,2273.00000,,,,CAL_323BC
+384,12,CAL_PERIOD_30,Calendar date,,,1980.00000,,,,CAL_30BC
+385,12,CAL_PERIOD_1362,Calendar date,,,588.00000,,,,CAL_1362AD
+386,12,CAL_PERIOD_871,Calendar date,,,1079.00000,,,,CAL_871AD
+387,12,CAL_PERIOD_920,Calendar date,,,1030.00000,,,,CAL_920AD
+388,12,CAL_PERIOD_3700,Calendar date,,,3700.00000,,,,CAL_3700BP
+389,1,Early Roman,Early Roman without regional definition,,,,,,,ERom
+390,1,Quaternary ,Geologic period.,,,2700000.00000,,,,Quaternary
+391,1,Mesolithic S Scandinavia,Mesolithic period as defined in BugsCEP.,,,12950.00000,5100.00000,,,Mesolithic
+392,1,Mesolithic N Scandinavia,Mesolithic period as defined in BugsCEP.,,,12950.00000,5100.00000,,,Mesolithic
+393,1,Neolithic S Scandinavia,Neolithic period as defined in BugsCEP.,,,5100.00000,3750.00000,,,Neolithic
+394,1,Neolithic N Scandinavia,Neolithic period as defined in BugsCEP.,,,5100.00000,3750.00000,,,Neolithic
+395,1,Early neolithic S Scandinavia,Early neolithic for S Scandinavia as defined by T.Douglas Price (2016).,,,5950.00000,5250.00000,,,Neolithic
+396,1,Middle neolithic S Scandinavia,Middle neolithic for S Scandinavia as defined by T.Douglas Price (2016).,,,5250.00000,4350.00000,,,Neolithic
+397,1,Late neolithic S Scandinavia,Late neolithic for S Scandinavia as defined by T.Douglas Price (2016).,,,4350.00000,3750.00000,,,Neolithic
+398,1,Epineolithic N Sweden ,Epineolithic for northern Sweden as defined by E. Baudou (1993).,,,3950.00000,2750.00000,,,Epineolithic
+399,1,Bronze Age Scandinavia,Bronze age period as defined in BugsCEP.,,,3750.00000,2450.00000,,,Bronze Age
+400,1,Early Bronze Age Scandinavia,Early Bronze Age as defined by T. Douglas Price (2016).,,,3750.00000,3050.00000,,,Bronze Age
+401,1,Late Bronze Age Scandinavia,Late Bronze Age as defined by T. Douglas Price (2016).,,,3050.00000,2450.00000,,,Bronze Age
+402,1,Bronze age Period I,"The southern Scandinavian Bronze Age periods, from T. Douglas Price (2016).",,,3750.00000,3450.00000,,,Bronze Age I
+403,1,Bronze age Period II,"The southern Scandinavian Bronze Age periods, from T. Douglas Price (2016).",,,3450.00000,3250.00000,,,Bronze Age II
+404,1,Bronze age Period III,"The southern Scandinavian Bronze Age periods, from T. Douglas Price (2016).",,,3250.00000,3050.00000,,,Bronze Age III
+405,1,Bronze age Period IV,"The southern Scandinavian Bronze Age periods, from T. Douglas Price (2016).",,,3050.00000,2850.00000,,,Bronze Age IV
+406,1,Bronze age Period V,"The southern Scandinavian Bronze Age periods, from T. Douglas Price (2016).",,,2850.00000,2550.00000,,,Bronze Age V
+407,1,Bronze age Period VI,"The southern Scandinavian Bronze Age periods, from T. Douglas Price (2016).",,,2550.00000,2450.00000,,,Bronze Age VI
+408,1,Early Iron Age,Early Iron Age as defined by T. Douglas Price (2016).,,,2450.00000,1550.00000,,,Iron Age
+409,1,Late Iron Age,Late Iron Age as defined by T. Douglas Price (2016).,,,1550.00000,1150.00000,,,Iron Age
+410,1,Pre Roman Iron Age,Pre Roman Iron Age as defined in BugsCEP.,,,2450.00000,1950.00000,,,Pre-Roman 
+411,1,Roman Iron Age,Roman Iron Age as defined in BugsCEP.,,,1950.00000,1550.00000,,,Roman 
+412,1,Migration period Scandinavia,Migration period in Scandinavia as defined by T. Douglas Price (2016).,,,1550.00000,1400.00000,,,Migration
+413,1,Vendel period Scandinavia,Vendel period in Scandinavia as defined by T. Douglas Price (2016).,,,1400.00000,1150.00000,,,Vendel
+414,1,Medieval Scandinavia,,,,900.00000,450.00000,,,Medieval
+415,1,Metal Age N Scandinavia,Metal Age as defined by E. Baudou (1993).,,,2950.00000,550.00000,,,Metal Age
+416,1,Early Metal Age N Scandinavia,Early metal Age as defined by E. Baudou (1993).,,,2950.00000,1850.00000,,,Metal Age
+417,1,Late Metal Age N Scandinavia,Late metal Age as defined by E. Baudou (1993).,,,1850.00000,550.00000,,,Metal Age
+418,2,Early Modern,Early modern as defined by BugsCEP.,,,450.00000,200.00000,,,Early modern
+419,2,Modern,Modern as defined by BugsCEP.,,,200.00000,0.00000,,,Modern
+420,2,Pre-Columbian South America,Pre-Columbian as defined by BugsCEP.,,,,450.00000,,,Pre-Columbian
+421,1,Inca,"Period of the Inca empire in South America, as defined by Chepstow et. al. 2009.",,,550.00000,418.00000,,169,Inca
+422,1,Early neolithic Belgium,"Early neolithic period in modern day Belgium, as defined by Golitko (2010) and Sarunas (2002).",,,7250.00000,5950.00000,,21,Neolithic
+423,1,Medieval Belgium,Medieval period in modern day Belgium.,,,1550.00000,450.00000,,21,Medieval
+424,1,Viking Age N England,N English Viking age as defined by BugsCEP,,,1150.00000,780.00000,,240,Viking Age
+425,1,Viking Age S England,S English Viking age as defined by BugsCEP,,,1150.00000,870.00000,,240,Viking Age
+426,1,Early Medieval Britain,"From PeriodO which in turn is based on chronology by Spring (2013), from breakdown of roman rule until Norman invasion.",,,1540.00000,885.00000,,,Medieval
+427,1,Medieval N England,N English medieval period as defined by BugsCEP.,,,780.00000,400.00000,,240,Medieval
+428,1,Medieval S England,S English medieval period as defined by BugsCEP.,,,870.00000,475.00000,,240,Medieval
+429,1,Mesolithic Germany,Mesolithic period in Germany as defined by BugsCEP.,,,12950.00000,7450.00000,,82,Mesolithic
+430,1,Early neolithic Germany,Early neolithic as defined by PeriodO: http://n2t.net/ark:/99152/p0qhb66q5vq (20170424),,,7550.00000,6750.00000,,82,Neolithic
+431,1,Middle neolithic Germany,Middle neolithic as defined by PeriodO: http://n2t.net/ark:/99152/p0qhb66wng7 (20170424),,,6750.00000,6200.00000,,82,Neolithic
+432,1,Iron Age Germany,Iron Age in Germany as defined by BugsCEP.,,,2600.00000,870.00000,,82,Iron Age
+433,1,Viking Age Germany,Viking Age period in modern day Germany as defined by BugsCEP.,,,1150.00000,870.00000,,82,Viking Age
+434,1,Medieval Germany,Medieval period in modern day Germany as defined by BugsCEP.,,,870.00000,400.00000,,82,Medieval
+435,1,Medieval Iceland,Medieval periond in Iceland as defined by BugsCEP.,,,850.00000,200.00000,,100,Medieval
+436,1,Middle neolithic Ireland,Middle neolithic in modern day Ireland as used by Whitehouse et. al. (2014).,,,5550.00000,5050.00000,,1,Neolithic
+437,1,Late Iron Age Lithuania,Late Iron Age in Lithuania as used by Migle et. al. (2009).,,,1150.00000,700.00000,,125,Iron Age
+438,1,Mycenaean,"Mycenaean period in Greece, PeriodO: http://n2t.net/ark:/99152/p08m57h97b5 (20170424)",,,3550.00000,3010.00000,,85,Mycenaean
+439,1,Protogeometric,"A cultural ceramic period in Greece, PeriodO: http://n2t.net/ark:/99152/p083p5r65wd",,,2950.00000,2850.00000,,85,Protogeometric
+440,1,Iron Age S Europe,Iron Age in southern Europe as defined by C. Gillis in Dawn of Europe (2004).,,,3050.00000,1350.00000,,,Iron Age
+441,1,Mesolithic Netherlands,Mesolithic in Netherlands as defined by PeriodO: http://n2t.net/ark:/99152/p0qhb66hzfs (20170425),,,10750.00000,7250.00000,,152,Mesolithic
+442,1,Early neolithic Netherlands,Early neolithic period in modern day Netherlands as defined by PeriodO: http://n2t.net/ark:/99152/p0qhb66n38q (20170425),,,7250.00000,6150.00000,,152,Neolithic
+443,1,Medieval Netherlands,Medieval period in modern day Netherlands as defined by PeriodO: http://n2t.net/ark:/99152/p0qhb664bxt (20170425),,,1500.00000,450.00000,,152,Medieval
+444,1,Medieval Norway,Medieval period in modern day Norway as defined by PeriodO: http://n2t.net/ark:/99152/p0zj6g8qpxx (20170425),,,900.00000,413.00000,,162,Medieval
+445,1,Early neolithic Poland,Early neolithic period in modern day Poland as defined by Sarunas (2002).,,,7450.00000,6550.00000,,172,Neolithic
+446,1,Middle neolithic Poland,Middle neolithic period in modern day Poland as defined by Sarunas (2002).,,,6550.00000,5150.00000,,172,Neolithic
+447,1,Bronze Age Poland,Bronze age period in modern day Poland as defined by BugsCEP.,,,3750.00000,2600.00000,,172,Bronze Age
+448,1,Hallstatt C,The European Hallstatt C period as defined by Period O: http://n2t.net/ark:/99152/p08m57hbzjk (20170425).,,,2750.00000,2550.00000,,1644,Hallstatt
+449,1,Viking Age Poland,The Viking age period in modern day Poland as defined by BugsCEP.,,,1150.00000,900.00000,,172,Viking Age
+450,1,Viking Age Russia,The Viking age period in modern day Russia as defined by BugsCEP.,,,1150.00000,900.00000,,178,Viking Age
+451,1,Medieval Russia,Medieval period in modern day Russia as defined by Janet Martin (2007).,,,970.00000,366.00000,,178,Medieval
+452,2,Post Reformation,,,,450.00000,,,,Post Reformation
+453,13,CAL_PERIOD_1000-975_BP,Calendar date range,,,950.00000,925.00000,,,1000 - 975 BP
+454,13,CAL_PERIOD_1900-1500_BP,Calendar date range,,,1850.00000,1450.00000,,,1900 - 1500 BP
+455,13,CAL_PERIOD_975-950_BP,Calendar date range,,,925.00000,900.00000,,,975 - 950 BP
+456,13,CAL_PERIOD_950-925_BP,Calendar date range,,,900.00000,875.00000,,,950 - 925 BP
+457,13,CAL_PERIOD_925-900_BP,Calendar date range,,,875.00000,850.00000,,,925 - 900 BP
+458,13,CAL_PERIOD_900-875_BP,Calendar date range,,,850.00000,825.00000,,,900 - 875 BP
+459,13,CAL_PERIOD_900-870_BP,Calendar date range,,,850.00000,820.00000,,,900 - 870 BP
+460,13,CAL_PERIOD_900-850_BP,Calendar date range,,,850.00000,800.00000,,,900 - 850 BP
+461,13,CAL_PERIOD_900-800_BP,Calendar date range,,,850.00000,750.00000,,,900 - 800 BP
+462,13,CAL_PERIOD_875-850_BP,Calendar date range,,,825.00000,800.00000,,,875 - 850 BP
+463,13,CAL_PERIOD_870-830_BP,Calendar date range,,,820.00000,780.00000,,,870 - 830 BP
+464,13,CAL_PERIOD_1885-1706_BP,Calendar date range,,,1835.00000,1656.00000,,,1885 - 1706 BP
+465,13,CAL_PERIOD_825-775_BP,Calendar date range,,,775.00000,725.00000,,,825 - 775 BP
+466,13,CAL_PERIOD_800-775_BP,Calendar date range,,,750.00000,725.00000,,,800 - 775 BP
+467,13,CAL_PERIOD_800-750_BP,Calendar date range,,,750.00000,700.00000,,,800 - 750 BP
+468,13,CAL_PERIOD_800-600_BP,Calendar date range,,,750.00000,550.00000,,,800 - 600 BP
+469,13,CAL_PERIOD_800-350_BP,Calendar date range,,,750.00000,300.00000,,,800 - 350 BP
+470,13,CAL_PERIOD_3200-2800_BP,Calendar date range,,,3150.00000,2750.00000,,,3200 - 2800 BP
+471,13,CAL_PERIOD_800-700_BP,Calendar date range,,,750.00000,650.00000,,,800 - 700 BP
+472,13,CAL_PERIOD_775-750_BP,Calendar date range,,,725.00000,700.00000,,,775 - 750 BP
+473,13,CAL_PERIOD_700-500_BP,Calendar date range,,,650.00000,450.00000,,,700 - 500 BP
+474,13,CAL_PERIOD_700-381_BP,Calendar date range,,,650.00000,331.00000,,,700 - 381 BP
+475,13,CAL_PERIOD_600-400_BP,Calendar date range,,,550.00000,350.00000,,,600 - 400 BP
+476,13,CAL_PERIOD_500-400_BP,Calendar date range,,,450.00000,350.00000,,,500 - 400 BP
+477,13,CAL_PERIOD_500-300_BP,Calendar date range,,,450.00000,250.00000,,,500 - 300 BP
+478,13,CAL_PERIOD_400-300_BP,Calendar date range,,,350.00000,250.00000,,,400 - 300 BP
+479,13,CAL_PERIOD_370-150_BP,Calendar date range,,,320.00000,100.00000,,,370 - 150 BP
+480,13,CAL_PERIOD_300-200_BP,Calendar date range,,,250.00000,150.00000,,,300 - 200 BP
+481,13,CAL_PERIOD_270-200_BP,Calendar date range,,,220.00000,150.00000,,,270 - 200 BP
+482,13,CAL_PERIOD_100-0_BP,Calendar date range,,,50.00000,-50.00000,,,100 - 0 BP
+483,13,CAL_PERIOD_1800-1300_BP,Calendar date range,,,1750.00000,1250.00000,,,1800 - 1300 BP
+484,13,CAL_PERIOD_4100-3700_BP,Calendar date range,,,4050.00000,3650.00000,,,4100 - 3700 BP
+485,13,CAL_PERIOD_4800-4100_BP,Calendar date range,,,4750.00000,4050.00000,,,4800 - 4100 BP
+486,13,CAL_PERIOD_1700-1400_BP,Calendar date range,,,1650.00000,1350.00000,,,1700 - 1400 BP
+487,13,CAL_PERIOD_5200-4800_BP,Calendar date range,,,5150.00000,4750.00000,,,5200 - 4800 BP
+488,13,CAL_PERIOD_5500-4800_BP,Calendar date range,,,5450.00000,4750.00000,,,5500 - 4800 BP
+489,13,CAL_PERIOD_6000-5200_BP,Calendar date range,,,5950.00000,5150.00000,,,6000 - 5200 BP
+490,13,CAL_PERIOD_8000_5900_BP,Calendar date range,,,7950.00000,5850.00000,,,8000 - 5900 BP
+491,13,CAL_PERIOD_1400_1000_BP,Calendar date range,,,1350.00000,950.00000,,,1400 - 1000 BP
+492,13,CAL_PERIOD_1370-1000_BP,Calendar date range,,,1320.00000,950.00000,,,1370 - 1000 BP
+493,13,CAL_PERIOD_1200-1100_BP,Calendar date range,,,1150.00000,1050.00000,,,1200 - 1100 BP
+494,13,CAL_PERIOD_1150-1050_BP,Calendar date range,,,1100.00000,1000.00000,,,1150 - 1050 BP
+495,13,CAL_PERIOD_1100-1000_BP,Calendar date range,,,1050.00000,950.00000,,,1100 - 1000 BP
+496,13,CAL_PERIOD_1020-1000_BP,Calendar date range,,,970.00000,950.00000,,,1020 - 1000 BP
+497,1,Iron Age Sweden,Iron Age Sweden as defined by T. Douglas Price (2016).,,,2450.00000,1150.00000,,,Iron Age
+498,1,Bronze Age Period II - VI,Bronze Age Period II - VI,,,3450.00000,2450.00000,,,Bronze Age II - VI
+499,1,Mesolithic  - Early Neolithic Scandinavia,South Scandinavian Mesolithic period - early Neolithic,,,12950.00000,5250.00000,,,Mesolithic - Neolithic
+500,1,Middle Neolithic - Late Neolithic,South Scandinavian middle Neolithic - late Neolithic,,,5250.00000,3750.00000,,,Neolithic
+501,1,Viking Age - early Medieval N England,Viking Age period to early Medieval period in modern day Northern England,,,1150.00000,400.00000,,,Viking - Medieval
+502,1,Viking Age - early Medieval S England,Viking Age period to early Medieval period in modern day Southern England,,,1150.00000,475.00000,,,Viking - Medieval
+503,1,Mesolithic - Early Neolithic Netherlands,Mesolithic period to early Neolithic in modern day Netherlands,,,10750.00000,6150.00000,,,Mesolithic - Neolithic
+504,1,Bronze Age Period III - VI,Bronze Age Period III - VI,,,3250.00000,2450.00000,,,Bronze Age III - VI
+505,1,Bronze Age Period I - II,Bronze Age Period I - II,,,3750.00000,3250.00000,,,Bronze Age I - II
+506,1,Bronze Age Period III - V,Bronze Age Period III - V,,,3250.00000,2550.00000,,,Bronze Age III - VI
+507,1,Bronze Age Period II - IV,Bronze Age Period II - IV,,,3450.00000,2850.00000,,,Bronze Age II - IV
+508,1,Bronze Age Period IV - V,Bronze Age Period IV - V,,,3050.00000,2550.00000,,,Bronze Age IV - V
+509,1,Bronze Age Period IV - VI,Bronze Age Period IV - VI,,,3050.00000,2450.00000,,,Bronze Age IV - VI
+510,1,Bronze Age Period VI - Pre Roman Iron Age,Bronze Age Period VI - Pre Roman Iron Age,,,2550.00000,1950.00000,,,Bronze Age - Pre-Roman
+511,1,Bronze Age Period VI - Roman Iron Age,Bronze Age Period VI - Roman Iron Age,,,2550.00000,1550.00000,,,Bronze Age - Pre-Roman
+512,1,Bronze Age Period V - VI,Bronze Age Period V - VI,,,2850.00000,2450.00000,,,Bronze Age V - VI
+513,1,Bronze Age Period V - Pre Roman Iron Age,Bronze Age Period V - Pre Roman Iron Age,,,2850.00000,1950.00000,,,Bronze Age - Pre-Roman
+514,1,Migration Period  - Vendel Period,Migration Period - Vendel Period,,,1550.00000,1150.00000,,,Migration - Vendel
+515,1,Pre Roman - Roman Iron Age,Pre Roman Iron Age to Roman Iron Age,,,2450.00000,1550.00000,,,Pre-Roman - Roman Iron Age
+516,1,Mesolithic - Neolithic N Sweden,Mesolithic - Neolithic in modern day Northern Sweden,,,12950.00000,3750.00000,,,Mesolithic - Neolithic
+517,1,Roman Iron Age - Migration Period,Roman Iron Age - Migration Period,,,1950.00000,1400.00000,,,Roman Iron Age - Migration
+518,1,Roman Iron Age - Vendel Period,Roman Iron Age - Vendel Period,,,1950.00000,1150.00000,,,Roman Iron Age - Vendel
+519,1,Late Neolithic - Early Bronze Age S Scandinavia,Late Neolithic - Early Bronze Age S Scandinavia,,,4350.00000,3050.00000,,,Neolithic - Bronze Age
+520,1,Neolithic - Early Bronze Age N Scandinavia,Neolithic - Early Bronze Age N Scandinavia,,,5100.00000,3050.00000,,,Neolithic - Bronze Age
+521,1,Early Neolithic - Middle Neolithic S Scandinavia,Early Neolithic - Middle Neolithic S Scandinavia,,,5950.00000,4350.00000,,,Neolithic
+522,1,Viking Age - Medieval Period Scandinavia,Viking Age - Medieval Period Scandinavia,,,1150.00000,450.00000,,,Viking - Medieval
+523,1,Late Bronze Age - Pre Roman Iron Age Scandinavia,Late Bronze Age - Pre Roman Iron Age Scandinavia,,,3050.00000,1950.00000,,,Bronze Age - Pre-Roman
+524,1,Pre Roman Iron Age - Migration Period,Pre Roman Iron Age - Migration Period,,,2350.00000,1400.00000,,,Pre-Roman - Migration
+525,1,Mesolithic - Early Neolithic Germany,Mesolithic - Early Neolithic Germany as defined by BugsCEP,,,12950.00000,5950.00000,,,Mesolithic - Neolithic
+526,1,Viking Age - Medieval Period Germany,Viking Age - Medieval Period Germany,,,1150.00000,400.00000,,,Viking - Medieval
+530,9,Anglian,Equivalent to MIS-12; Cold,,,478000.00000,423000.00000,,224,Anglian
+531,1,Arab,From beginning of Arab conquest of Eastern Mediterranean to fall of Ottoman Empire,,,1318.00000,32.00000,,1663,Arab
+532,1,Anglo-Scandinavian,"Early medieval, British Isles",,,1150.00000,850.00000,,224,AS
+533,1,Bronze Age Britain,Archaeological period typified by the use of bronze (either produced or obtained through trade) for the British Isles,,,2500.00000,2550.00000,,224,BA
+534,1,Byzantine,Eastern Mediterranean from fall of Rome to Ottoman conquest of Constantinople,,,1540.00000,500.00000,,1663,Byzantine
+535,1,Chalcolithic Europe,"The copper age, a transition between use of stone tools and bronze. Aterm more commonly used in Southeastern Europe.",,,5450.00000,3650.00000,,1664,Chalco
+536,9,Chelford,Possibly MIS-5c Interstadial,,,96000.00000,87000.00000,,224,Chelford
+537,9,Cromerian,"Initially MIS-13 Interglacial, but now highly debated. Extreme range of 900-400ka included for UK Cromerian complex here, although according to some ~524000 to 47400 BP is more appropriate.",,,900000.00000,400000.00000,,224,Cromerian
+538,9,Devensian,"Glacial period. Equivalent to Weichselian in Northern Europe, Würm in the Alpine region; MIS-5d to MIS-2",,,122000.00000,10000.00000,,224,Devensian
+539,9,Dimlington Stadial,"Last Glacial Maximum (LGM), MIS-2",26000.00000,13000.00000,,,,224,DimlingtonSt
+540,1,Early Bronze Age,General Early Bronze Age without regional definition,,,5450.00000,4050.00000,,1662,EBA
+541,1,Early Bronze Age Britain,"Early Bronze Age of the British Isles, variously including the transition from the Neolithic",,,4450.00000,3950.00000,,224,EBAUK
+542,9,Early Devensian,"MIS-5d to MIS-4, British Isles",,,115000.00000,60000.00000,,224,Edev
+543,9,Eemian,"Interglacial, MIS-5e",,,128000.00000,110000.00000,,1662,Eemian
+544,9,Early Holocene,Beginning of the current interglacial. Pollen Zone IV-VI,10000.00000,7000.00000,,,,1662,EH
+545,9,Early to Mid Holocene,Early to Mid Holocene,10000.00000,5000.00000,,,,1662,EH-MH
+546,1,Early Iron Age,Early Iron Age in the British Isles,,,2600.00000,2200.00000,,224,Eiron
+547,1,Early Mesolithic Britain,Early Mesolithic of the British Isles. End date is abstract,,,10950.00000,8950.00000,,224,EMesoUK
+548,1,Early-Mid Roman Britainnia,Early to mid Roman Britain (end date is abstract),,,1907.00000,1650.00000,,224,EMidRomUK
+549,9,Early Pleistocene,MIS 23-13,,,2580000.00000,773000.00000,,1662,EPleist
+550,1,Early Roman Britainnia,Early Roman in the British Isles,,,1907.00000,1700.00000,,224,ERomUK
+551,1,Early Saxon,Early Saxon (England),,,1540.00000,1250.00000,,224,ESaxon
+552,9,Early Weichselian,Equivalent to  MIS-5d - MIS-4,,,122000.00000,45000.00000,,,EW
+553,9,Early Wolstonian,MIS-8 to abstract end date which varies in publications. Approx dates (max range).,,,302000.00000,200000.00000,,224,EWolst
+554,9,Flandrian,"The Holocene, interglacial",10000.00000,0.00000,,,,224,Flandrian
+555,1,Graeco-Roman,Eastern Mediterranean regions influenced by the ancient Greeks and Romans. Sometimes 'Classical civilisation' or the 'Classical World',,,2450.00000,1550.00000,,1663,GraecoRom
+556,1,Historical,"Generalised global historical period, loosely defined to the last 2000 years, ignoring regional variation before or after this date.",,,2000.00000,0.00000,,1662,Hist
+557,9,Holocene,"The current Interglacial, MIS-1",10000.00000,0.00000,,,,1664,Holocene
+558,9,Hoxnian,"Including MIS-9 and MIS-11, undifferentiated",,,428000.00000,302000.00000,,224,Hoxnian
+559,9,Ipswichian,"Including MIS- 5e - MIS-7 undifferentiated; Warm, interglacial; Approx date (max range)",,,132000.00000,122000.00000,,224,Ipswichian
+560,1,Iron Age,Archaeological period typified by the use of iron (either produced or obtained through trade) in the British Isles. Ends roughly at the start of historical records.,,,2600.00000,1900.00000,,224,Iron
+561,1,Late Bronze Age,Early Late Bronze Age without regional definition,,,3550.00000,2600.00000,,1662,LBA
+562,1,Late BA/Early IA,"Late Bronze Age/Early Iron Age, representing transitions of culture and materials use. Of limited use as a chronological definition due to large regional variation.",,,3550.00000,1950.00000,,1662,LBA/EIA
+563,1,Late Bronze Age Britain,Late Bronze Age for the British Isles,,,2950.00000,2600.00000,,224,LBronze
+564,9,Lateglacial,Cold period after the last Glaciation. Pollen Zones I-III,13500.00000,10000.00000,,,,1664,LG
+565,9,Lateglacial Interstadial,Warmer interlude during the Lateglacial. Pollen Zones I-II,12500.00000,11500.00000,,,,1664,LGI
+566,9,Lateglacial Stadial,Colder period during the Lateglacial. Pollen Zone III; Younger Dryas,11500.00000,10000.00000,,,,1664,LGS
+567,9,Late Holocene,"The latter half of the Holocene, not systematically used in publications. Pollen Zones VIIb-VIII",5000.00000,0.00000,,,,1664,LH
+568,1,Late Iron Age Britain,Late Iron Age in the British Isles.,,,2200.00000,1907.00000,,224,LIron
+569,9,Loch Lomond,"Cold, equivalent to the Lateglacial Stadial, Pollen Zone III",11500.00000,10000.00000,,,,224,LL
+570,1,Late Medieval Britain,"The latter part of the medieval period (middle ages) in the British Isles, loosely defined",,,500.00000,350.00000,,224,LMed
+571,1,Late Roman Britain,The latter part of the Roman period in the British Isles,,,1700.00000,1540.00000,,224,LRoman
+572,1,Late Roman/Anglo-Saxon,"Late Roman/Anglo-Saxon in the British Isles, ending with the Norman Conquest",,,1700.00000,884.00000,,224,LRoman/ASax
+573,9,Late Weichselian,Larger part of the last glaciation in Europe. Equivalent to Late-Devensian,,,29000.00000,10000.00000,,224,Lweichsel
+574,1,Middle Bronze Age,General Middle Bronze Age without regional definition,,,4050.00000,3550.00000,,1662,MBA
+575,9,Middle Devensian,Equivalent to MIS-3,,,50000.00000,25000.00000,,224,MD
+576,1,Medieval,The medieval period or middle ages of Europe,,,1550.00000,400.00000,,1664,Med
+577,1,Medieval to post medieval,Medieval to post medieval Europe,,,1550.00000,-50.00000,,1664,Med-PostMed
+578,1,Mesolithic,"Middle Stone Age of Europe. Archaeological evidence of use of predominantly stone tools. Definition and timing varies regionally, but generally represented by hunter-gatherer cultures which developed in the warming temperatures after the last galciation.",,,11500.00000,5000.00000,,1664,Meso
+579,9,Mid Holocene,Generally defined middle of the current interglacial. Pollen Zone VIIa,7000.00000,5000.00000,,,,1662,MH
+580,9,Mid-Devensian,Larger part of the last glaciation in the British Isles. Equivalent to mid-Weichselian; MIS-3,,,122000.00000,29000.00000,,224,Mid-Devensian
+581,1,Mid-Late Roman Britainnia,Mid to Late Roman Britain (start date is abstract),,,1750.00000,1540.00000,,224,MidLRomUK
+582,4,Oxygen Isotope Stage 1,"Warm, equivalent to Holocene and Flandrian",,,11700.00000,0.00000,,1662,MIS-01
+583,4,Oxygen Isotope Stage 2,Cold,,,29000.00000,11700.00000,,1662,MIS-02
+584,4,Oxygen Isotope Stage 3,Warm,,,57000.00000,29000.00000,,1662,MIS-03
+585,4,Oxygen Isotope Stage 4,Cold,,,71000.00000,57000.00000,,1662,MIS-04
+586,4,Oxygen Isotope Stage 4-3,Dated to somewhere between Oxygen Isotope Stages 4 to 3.,,,71000.00000,29000.00000,,1662,MIS-04-03
+587,4,Oxygen Isotope Stage 5,Warm,,,130000.00000,71000.00000,,1662,MIS-05
+588,4,Oxygen Isotope Stage 5-3,Dated to somewhere between Oxygen Isotope Stages 5 to 3.,,,130000.00000,29000.00000,,1662,MIS-05-03
+589,4,Oxygen Isotope Stage 5a,Warm;=UWI,,,82000.00000,70000.00000,,1662,MIS-05a
+590,4,Oxygen Isotope Stage 5b,,,,87000.00000,82000.00000,,1662,MIS-05b
+591,4,Oxygen Isotope Stage 5c,Warm;=Chelford,,,96000.00000,87000.00000,,1662,MIS-05c
+592,4,Oxygen Isotope Stage 5d,,,,109000.00000,96000.00000,,1662,MIS-05d
+593,4,Oxygen Isotope Stage 5e,Warm;=Ipswichian;Approx dates (max range),,,132000.00000,109000.00000,,1662,MIS-05e
+594,4,Oxygen Isotope Stage 6,,,,191000.00000,130000.00000,,1662,MIS-06
+595,4,Oxygen Isotope Stage 7,Warm;=Marsworth?,,,243000.00000,191000.00000,,1662,MIS-07
+596,4,Oxygen Isotope Stage 8,,,,300000.00000,243000.00000,,1662,MIS-08
+597,4,Oxygen Isotope Stage 9,Warm;=Hoxnian;Approx dates (max range),,,337000.00000,300000.00000,,1662,MIS-09
+598,4,Oxygen Isotope Stage 10,,,,374000.00000,337000.00000,,1662,MIS-10
+599,4,Oxygen Isotope Stage 11,Warm;=Swanscombe,,,424000.00000,374000.00000,,1662,MIS-11
+600,4,Oxygen Isotope Stage 12,Cold; =Anglian,,,478000.00000,424000.00000,,1662,MIS-12
+601,4,Oxygen Isotope Stage 13,Warm;=Cromerian,,,534000.00000,478000.00000,,1662,MIS-13
+602,4,Oxygen Isotope Stage 14,Cold,,,563000.00000,534000.00000,,1662,MIS-14
+603,4,Oxygen Isotope Stage 14/15,MIS 14 or 15,,,621000.00000,534000.00000,,1662,MIS-14/15
+604,4,Oxygen Isotope Stage 15,Warm;=Waverly Wood,,,621000.00000,563000.00000,,1662,MIS-15
+605,4,Oxygen Isotope Stage 16,,,,676000.00000,621000.00000,,1662,MIS-16
+606,4,Oxygen Isotope Stage 17,,,,712000.00000,676000.00000,,1662,MIS-17
+607,4,Oxygen Isotope Stage 18,,,,761000.00000,712000.00000,,1662,MIS-18
+608,4,Oxygen Isotope Stage 19,,,,790000.00000,761000.00000,,1662,MIS-19
+609,4,Oxygen Isotope Stage 20,,,,814000.00000,790000.00000,,1662,MIS-20
+610,4,Oxygen Isotope Stage 21,,,,866000.00000,814000.00000,,1662,MIS-21
+611,4,Oxygen Isotope Stage 22,,,,880000.00000,870000.00000,,1662,MIS-22
+612,4,Oxygen Isotope Stage 23,,,,900000.00000,880000.00000,,1662,MIS-23
+613,1,Middle Kingdom,Egyptian Middle Kingdom,,,4075.00000,3500.00000,,64,Mking
+614,11,Modern,"Present day, geologically and archaeologically speaking",,,50.00000,0.00000,,1662,Modern
+615,9,Middle Pleistocene,MIS-12 - MIS-8,,,478000.00000,243000.00000,,1662,MPleist
+616,1,New Kingdom,Egyptian New Kingdom,,,3300.00000,3280.00000,,64,NewKingdom
+617,1,Old Kingdom,Egyptian Old Kingdom,,,5450.00000,4450.00000,,64,Old Kingdom
+618,1,Palaeolithic,"The Old Stone Age, from the first stone tools until the end of the last glaciation",,,3300000.00000,11500.00000,,1662,Palaeo
+619,9,Pleistocene,From the start of the Quaternary to the Beginning of the Holocene. MIS 23-2,,,2580000.00000,11500.00000,,1662,Pleisto
+620,9,Pliocene,Geological Epoch immediately preceding the Quaternary Period,,,5333000.00000,2580000.00000,,1662,Plio
+621,1,Post Medieval,From the end of the medieval period until the present day. Some variation in the start and end exists.,,,400.00000,0.00000,,1664,PostMed
+622,1,Post-Roman,Used for sites outside the areas of 'Saxon' settlement in Eastern England,,,1550.00000,1250.00000,,224,PostRom
+623,1,Pre-Columbian,Records of Palaearctic or Holoarctic spp in the New World before the arrival of Columbus but after initial human colonisation,,,40000.00000,458.00000,,1665,Pre-Columbian
+624,1,pre-Landnam,Pre Landnam ash in Iceland. Sediments dated to before tephra commonly associated with human settlement and after the final ice retreat after the Younger Dryas.,,,11200.00000,1082.00000,,100,preLandnam
+625,1,Ptolemaic,"Egypt post Alexander, pre-Roman",,,2273.00000,2000.00000,,64,Ptol
+626,5,Godwin Pollen Zone I,Godwin's  pollen zone I. Lower Dryas (Salix herbacea),12000.00000,10500.00000,,,,224,PZ-I
+627,5,Godwin Pollen Zone II,Godwin's  pollen zone II. Allerod (Birch),12000.00000,10500.00000,,,,224,PZ-II
+628,5,Godwin Pollen Zone III,Godwin's  pollen zone III. Upper Dryas (Salix herbacea),10500.00000,10000.00000,,,,224,PZ-III
+629,5,Godwin Pollen Zone IV,Godwin's  pollen zone IV.Pre-boreal (Birch (Pine)),10000.00000,9500.00000,,,,224,PZ-IV
+630,5,Godwin Pollen Zone V,"Godwin's  pollen zone V. Boreal (Hazel, Birch, Pine)",9500.00000,9000.00000,,,,224,PZ-V
+631,5,Godwin Pollen Zone VI,"Godwin's pollen zone VI. Boreal (Pine, Hazel)",9000.00000,7000.00000,,,,224,PZ-VI
+632,5,Godwin Pollen Zone VIIa,"Godwin's pollen zone VIIa. Atlantic (Alder, Oak, Elm, Lime)",7000.00000,5000.00000,,,,224,PZ-VIIa
+633,5,Godwin Pollen Zone VIIa/b,Godwin's pollen zone VIIa or VIIb,7000.00000,2500.00000,,,,224,PZ-VIIa/b
+634,5,Godwin Pollen Zone VIIb,"Godwin's pollen zone VIIb. Sub-boreal (Alder, Oak, Lime (Elm decline))",5000.00000,2500.00000,,,,224,PZ-VIIb
+635,5,Godwin Pollen Zone VIII,"Godwin's pollen zone VIII. Sub Atlantic (Alder, Birch, Oak (Beech))",2500.00000,0.00000,,,,224,PZ-VIII
+636,2,Recent,"Modern collection data (pitfall traps, hunting, collecting etc.)",,,50.00000,0.00000,,1662,Recent
+637,1,Roman Italy,Roman Italy,,,2200.00000,1540.00000,,107,Roman Italia
+638,1,Roman Gallia,Roman France,,,2010.00000,1500.00000,,74,RomanF
+639,1,Roman Germania,Roman Germany,,,2006.00000,1500.00000,,82,RomanG
+640,1,Roman Britannia,Roman Britain,,,1907.00000,1540.00000,,224,RomanUK
+641,1,Sarqaq,Sarqaq Eskimo hunter-gatherer sites in Greenland,,,4450.00000,2450.00000,,86,Sarqaq
+642,1,Saxon,Saxon (England),,,1540.00000,884.00000,,240,Saxon
+643,1,Spanish adobe,Post Columbian North & Central America,,,458.00000,100.00000,,1665,Spanish adobe
+644,9,Upton Warren,MIS-5a; Possibly interstadial?,,,38000.00000,50000.00000,,224,UWI
+645,1,Viking,The Viking Age (note that regional and diciplinary variation in the use of the term exists),,,1150.00000,850.00000,,1662,Viking
+646,9,Weichselian,MIS-5d to MIS-2,122000.00000,10000.00000,,,,1662,W
+647,9,Windermere,Warm; Interstadial,13000.00000,11000.00000,,,,224,Windermere
+648,9,Wolstonian,MIS-8 to MIS-6; Approx dates (max range),,,302000.00000,186000.00000,,224,Wolst
+649,9,Wurm,Equivalent to Weichselian and Devensian in the Alpine region,,,115000.00000,11700.00000,,1662,Wurm
+650,13,CAL_4-260_AD,Autocreated from bugs import,,,1946.00000,1690.00000,,,CAL_4-260_AD
+651,13,CAL_875-950_AD,Autocreated from bugs import,,,1075.00000,1000.00000,,,CAL_875-950_AD
+652,13,CAL_-1425_AD,Autocreated from bugs import,,,,525.00000,,,CAL_-1425_AD
+653,13,CAL_1400_AD-,Autocreated from bugs import,,,550.00000,,,,CAL_1400_AD-
+654,12,CAL_79_AD,Autocreated from bugs import,,,1871.00000,1871.00000,,,CAL_79_AD
+655,13,CAL_1000-1099_AD,Autocreated from bugs import,,,950.00000,851.00000,,,CAL_1000-1099_AD
+656,13,CAL_100-150_AD,Autocreated from bugs import,,,1850.00000,1800.00000,,,CAL_100-150_AD
+657,13,CAL_-1099_AD,Autocreated from bugs import,,,,851.00000,,,CAL_-1099_AD
+658,13,CAL_1000_AD-,Autocreated from bugs import,,,950.00000,,,,CAL_1000_AD-
+659,13,CAL_-550_AD,Autocreated from bugs import,,,,1400.00000,,,CAL_-550_AD
+660,12,CAL_1745_AD,Autocreated from bugs import,,,205.00000,205.00000,,,CAL_1745_AD
+661,12,CAL_1425_AD,Autocreated from bugs import,,,525.00000,525.00000,,,CAL_1425_AD
+662,13,CAL_2900_BC-,Autocreated from bugs import,,,4850.00000,,,,CAL_2900_BC-
+663,13,CAL_-2800_BC,Autocreated from bugs import,,,,4750.00000,,,CAL_-2800_BC
+664,13,CAL_64-80_AD,Autocreated from bugs import,,,1886.00000,1870.00000,,,CAL_64-80_AD
+665,13,CAL_70-100_AD,Autocreated from bugs import,,,1880.00000,1850.00000,,,CAL_70-100_AD
+666,13,CAL_920-800_BC,Autocreated from bugs import,,,2870.00000,2750.00000,,,CAL_920-800_BC
+667,13,CAL_100-200_AD,Autocreated from bugs import,,,1850.00000,1750.00000,,,CAL_100-200_AD
+668,12,CAL_1850_AD,Autocreated from bugs import,,,100.00000,100.00000,,,CAL_1850_AD
+669,13,CAL_100-125_AD,Autocreated from bugs import,,,1850.00000,1825.00000,,,CAL_100-125_AD
+670,13,CAL_900-1100_AD,Autocreated from bugs import,,,1050.00000,850.00000,,,CAL_900-1100_AD
+671,13,CAL_150-200_AD,Autocreated from bugs import,,,1800.00000,1750.00000,,,CAL_150-200_AD
+672,13,CAL_1875-1950_AD,Autocreated from bugs import,,,75.00000,0.00000,,,CAL_1875-1950_AD
+673,13,CAL_1310-1040_BC,Autocreated from bugs import,,,3260.00000,2990.00000,,,CAL_1310-1040_BC
+674,13,CAL_850-950_AD,Autocreated from bugs import,,,1100.00000,1000.00000,,,CAL_850-950_AD
+675,13,CAL_777-396_BC,Autocreated from bugs import,,,2727.00000,2346.00000,,,CAL_777-396_BC
+676,13,CAL_33-321_AD,Autocreated from bugs import,,,1917.00000,1629.00000,,,CAL_33-321_AD
+677,13,CAL_900-950_AD,Autocreated from bugs import,,,1050.00000,1000.00000,,,CAL_900-950_AD
+678,13,CAL_1100-1399_AD,Autocreated from bugs import,,,850.00000,551.00000,,,CAL_1100-1399_AD
+679,13,CAL_1104_AD-,Autocreated from bugs import,,,846.00000,,,,CAL_1104_AD-
+680,13,CAL_1385_AD-,Autocreated from bugs import,,,565.00000,,,,CAL_1385_AD-
+681,13,CAL_1050-1200_AD,Autocreated from bugs import,,,900.00000,750.00000,,,CAL_1050-1200_AD
+682,13,CAL_1350-1400_AD,Autocreated from bugs import,,,600.00000,550.00000,,,CAL_1350-1400_AD
+683,13,CAL_200-300_AD,Autocreated from bugs import,,,1750.00000,1650.00000,,,CAL_200-300_AD
+684,13,CAL_675_AD-,Autocreated from bugs import,,,1275.00000,,,,CAL_675_AD-
+685,13,CAL_-725_AD,Autocreated from bugs import,,,,1225.00000,,,CAL_-725_AD
+686,13,CAL_1500-1699_AD,Autocreated from bugs import,,,450.00000,251.00000,,,CAL_1500-1699_AD
+687,13,CAL_8700-6400_BC,Autocreated from bugs import,,,10650.00000,8350.00000,,,CAL_8700-6400_BC
+688,13,CAL_5000_BP-,Autocreated from bugs import,,,5000.00000,,,,CAL_5000_BP-
+689,13,CAL_70-200_AD,Autocreated from bugs import,,,1880.00000,1750.00000,,,CAL_70-200_AD
+690,13,CAL_200-400_AD,Autocreated from bugs import,,,1750.00000,1550.00000,,,CAL_200-400_AD
+691,13,CAL_1300-1525_AD,Autocreated from bugs import,,,650.00000,425.00000,,,CAL_1300-1525_AD
+692,13,CAL_350-410_AD,Autocreated from bugs import,,,1600.00000,1540.00000,,,CAL_350-410_AD
+693,12,CAL_4550_BC,Autocreated from bugs import,,,6500.00000,6500.00000,,,CAL_4550_BC
+694,13,CAL_690-790_AD,Autocreated from bugs import,,,1260.00000,1160.00000,,,CAL_690-790_AD
+695,13,CAL_1400-1500_AD,Autocreated from bugs import,,,550.00000,450.00000,,,CAL_1400-1500_AD
+696,13,CAL_1500_AD-,Autocreated from bugs import,,,450.00000,,,,CAL_1500_AD-
+697,13,CAL_-1520_BC,Autocreated from bugs import,,,,3470.00000,,,CAL_-1520_BC
+698,13,CAL_1575_BC-,Autocreated from bugs import,,,3525.00000,,,,CAL_1575_BC-
+699,13,CAL_25-65_AD,Autocreated from bugs import,,,1925.00000,1885.00000,,,CAL_25-65_AD
+700,13,CAL_250-410_AD,Autocreated from bugs import,,,1700.00000,1540.00000,,,CAL_250-410_AD
+701,12,CAL_6950_BP,Autocreated from bugs import,,,6950.00000,6950.00000,,,CAL_6950_BP
+702,12,CAL_1483_AD,Autocreated from bugs import,,,467.00000,467.00000,,,CAL_1483_AD
+703,13,CAL_525-343_BC,Autocreated from bugs import,,,2475.00000,2293.00000,,,CAL_525-343_BC
+704,12,CAL_6200_BP,Autocreated from bugs import,,,6200.00000,6200.00000,,,CAL_6200_BP
+705,13,CAL_1607_AD-,Autocreated from bugs import,,,343.00000,,,,CAL_1607_AD-
+706,13,CAL_-1699_AD,Autocreated from bugs import,,,,251.00000,,,CAL_-1699_AD
+707,13,CAL_748-409_BC,Autocreated from bugs import,,,2698.00000,2359.00000,,,CAL_748-409_BC
+708,13,CAL_1150_AD-,Autocreated from bugs import,,,800.00000,,,,CAL_1150_AD-
+709,13,CAL_675-865_AD,Autocreated from bugs import,,,1275.00000,1085.00000,,,CAL_675-865_AD
+710,13,CAL_150-350_AD,Autocreated from bugs import,,,1800.00000,1600.00000,,,CAL_150-350_AD
+711,13,CAL_1060-1300_AD,Autocreated from bugs import,,,890.00000,650.00000,,,CAL_1060-1300_AD
+712,13,CAL_1300-1500_AD,Autocreated from bugs import,,,650.00000,450.00000,,,CAL_1300-1500_AD
+713,13,CAL_1000-1200_AD,Autocreated from bugs import,,,950.00000,750.00000,,,CAL_1000-1200_AD
+714,13,CAL_1100-1300_AD,Autocreated from bugs import,,,850.00000,650.00000,,,CAL_1100-1300_AD
+715,13,CAL_323_BC-1_AD,Autocreated from bugs import,,,2273.00000,1949.00000,,,CAL_323_BC-1_AD
+716,13,CAL_1450_AD-,Autocreated from bugs import,,,500.00000,,,,CAL_1450_AD-
+717,13,CAL_1066-1500_AD,Autocreated from bugs import,,,884.00000,450.00000,,,CAL_1066-1500_AD
+718,13,CAL_1500-1700_AD,Autocreated from bugs import,,,450.00000,250.00000,,,CAL_1500-1700_AD
+719,12,CAL_1025_AD,Autocreated from bugs import,,,925.00000,925.00000,,,CAL_1025_AD
+720,13,CAL_50-100_AD,Autocreated from bugs import,,,1900.00000,1850.00000,,,CAL_50-100_AD
+721,13,CAL_150-250_AD,Autocreated from bugs import,,,1800.00000,1700.00000,,,CAL_150-250_AD
+722,13,CAL_1300-1399_AD,Autocreated from bugs import,,,650.00000,551.00000,,,CAL_1300-1399_AD
+723,13,CAL_-158_AD,Autocreated from bugs import,,,,1792.00000,,,CAL_-158_AD
+724,13,CAL_142_AD-,Autocreated from bugs import,,,1808.00000,,,,CAL_142_AD-
+725,12,CAL_3920_BC,Autocreated from bugs import,,,5870.00000,5870.00000,,,CAL_3920_BC
+726,13,CAL_1356_AD-,Autocreated from bugs import,,,594.00000,,,,CAL_1356_AD-
+727,13,CAL_1200-1299_AD,Autocreated from bugs import,,,750.00000,651.00000,,,CAL_1200-1299_AD
+728,13,CAL_2900-2800_BC,Autocreated from bugs import,,,4850.00000,4750.00000,,,CAL_2900-2800_BC
+729,12,CAL_1482_AD,Autocreated from bugs import,,,468.00000,468.00000,,,CAL_1482_AD
+730,12,CAL_1622_AD,Autocreated from bugs import,,,328.00000,328.00000,,,CAL_1622_AD
+731,13,CAL_1000-1350_AD,Autocreated from bugs import,,,950.00000,600.00000,,,CAL_1000-1350_AD
+732,12,CAL_946_AD,Autocreated from bugs import,,,1004.00000,1004.00000,,,CAL_946_AD
+733,13,CAL_3030-2890_BC,Autocreated from bugs import,,,4980.00000,4840.00000,,,CAL_3030-2890_BC
+734,13,CAL_575-650_AD,Autocreated from bugs import,,,1375.00000,1300.00000,,,CAL_575-650_AD
+735,13,CAL_1-50_AD,Autocreated from bugs import,,,1949.00000,1900.00000,,,CAL_1-50_AD
+736,13,CAL_1080-1150_AD,Autocreated from bugs import,,,870.00000,800.00000,,,CAL_1080-1150_AD
+737,13,CAL_580-660_AD,Autocreated from bugs import,,,1370.00000,1290.00000,,,CAL_580-660_AD
+738,13,CAL_2880-2505_BC,Autocreated from bugs import,,,4830.00000,4455.00000,,,CAL_2880-2505_BC
+739,13,CAL_700-900_AD,Autocreated from bugs import,,,1250.00000,1050.00000,,,CAL_700-900_AD
+740,12,CAL_1362_AD,Autocreated from bugs import,,,588.00000,588.00000,,,CAL_1362_AD
+741,12,CAL_4500_BP,Autocreated from bugs import,,,4500.00000,4500.00000,,,CAL_4500_BP
+742,13,CAL_1400-1600_AD,Autocreated from bugs import,,,550.00000,350.00000,,,CAL_1400-1600_AD
+743,13,CAL_-1100_AD,Autocreated from bugs import,,,,850.00000,,,CAL_-1100_AD
+744,13,CAL_500-899_AD,Autocreated from bugs import,,,1450.00000,1051.00000,,,CAL_500-899_AD
+745,12,CAL_2800_BC,Autocreated from bugs import,,,4750.00000,4750.00000,,,CAL_2800_BC
+746,13,CAL_80-120_AD,Autocreated from bugs import,,,1870.00000,1830.00000,,,CAL_80-120_AD
+747,13,CAL_100-400_AD,Autocreated from bugs import,,,1850.00000,1550.00000,,,CAL_100-400_AD
+748,13,CAL_45-99_AD,Autocreated from bugs import,,,1905.00000,1851.00000,,,CAL_45-99_AD
+749,13,CAL_1200-1300_AD,Autocreated from bugs import,,,750.00000,650.00000,,,CAL_1200-1300_AD
+750,13,CAL_-45_AD,Autocreated from bugs import,,,,1905.00000,,,CAL_-45_AD
+751,12,CAL_277_BC,Autocreated from bugs import,,,2227.00000,2227.00000,,,CAL_277_BC
+752,13,CAL_-619_AD,Autocreated from bugs import,,,,1331.00000,,,CAL_-619_AD
+753,13,CAL_577_AD-,Autocreated from bugs import,,,1373.00000,,,,CAL_577_AD-
+754,13,CAL_100-299_AD,Autocreated from bugs import,,,1850.00000,1651.00000,,,CAL_100-299_AD
+755,13,CAL_-2445_BC,Autocreated from bugs import,,,,4395.00000,,,CAL_-2445_BC
+756,13,CAL_2921_BC-,Autocreated from bugs import,,,4871.00000,,,,CAL_2921_BC-
+757,13,CAL_1400-1620_AD,Autocreated from bugs import,,,550.00000,330.00000,,,CAL_1400-1620_AD
+758,13,CAL_200-299_AD,Autocreated from bugs import,,,1750.00000,1651.00000,,,CAL_200-299_AD
+759,13,CAL_1125-1175_AD,Autocreated from bugs import,,,825.00000,775.00000,,,CAL_1125-1175_AD
+760,13,CAL_350-400_AD,Autocreated from bugs import,,,1600.00000,1550.00000,,,CAL_350-400_AD
+761,13,CAL_1000-1100_AD,Autocreated from bugs import,,,950.00000,850.00000,,,CAL_1000-1100_AD
+762,13,CAL_1000-1199_AD,Autocreated from bugs import,,,950.00000,751.00000,,,CAL_1000-1199_AD
+763,13,CAL_280-320_AD,Autocreated from bugs import,,,1670.00000,1630.00000,,,CAL_280-320_AD
+764,13,CAL_1600-1700_AD,Autocreated from bugs import,,,350.00000,250.00000,,,CAL_1600-1700_AD
+765,13,CAL_-1199_AD,Autocreated from bugs import,,,,751.00000,,,CAL_-1199_AD
+766,13,CAL_-80_AD,Autocreated from bugs import,,,,1870.00000,,,CAL_-80_AD
+767,13,CAL_43_AD-,Autocreated from bugs import,,,1907.00000,,,,CAL_43_AD-
+768,12,CAL_1600_AD,Autocreated from bugs import,,,350.00000,350.00000,,,CAL_1600_AD
+769,12,CAL_1650_AD,Autocreated from bugs import,,,300.00000,300.00000,,,CAL_1650_AD
+770,13,CAL_1930_AD-,Autocreated from bugs import,,,20.00000,,,,CAL_1930_AD-
+771,13,CAL_1450-1700_AD,Autocreated from bugs import,,,500.00000,250.00000,,,CAL_1450-1700_AD
+772,13,CAL_117-138_AD,Autocreated from bugs import,,,1833.00000,1812.00000,,,CAL_117-138_AD
+773,13,CAL_1-200_AD,Autocreated from bugs import,,,1949.00000,1750.00000,,,CAL_1-200_AD
+774,13,CAL_-3370_BC,Autocreated from bugs import,,,,5320.00000,,,CAL_-3370_BC
+775,13,CAL_3650_BC-,Autocreated from bugs import,,,5600.00000,,,,CAL_3650_BC-
+776,13,CAL_1300-1599_AD,Autocreated from bugs import,,,650.00000,351.00000,,,CAL_1300-1599_AD
+777,13,CAL_45-80_AD,Autocreated from bugs import,,,1905.00000,1870.00000,,,CAL_45-80_AD
+778,13,CAL_50-75_AD,Autocreated from bugs import,,,1900.00000,1875.00000,,,CAL_50-75_AD
+779,13,CAL_1400-1699_AD,Autocreated from bugs import,,,550.00000,251.00000,,,CAL_1400-1699_AD
+780,12,CAL_1450_AD,Autocreated from bugs import,,,500.00000,500.00000,,,CAL_1450_AD
+781,12,CAL_1475_AD,Autocreated from bugs import,,,475.00000,475.00000,,,CAL_1475_AD
+782,13,CAL_100_AD-,Autocreated from bugs import,,,1850.00000,,,,CAL_100_AD-
+783,13,CAL_1600-1699_AD,Autocreated from bugs import,,,350.00000,251.00000,,,CAL_1600-1699_AD
+784,13,CAL_1700-1799_AD,Autocreated from bugs import,,,250.00000,151.00000,,,CAL_1700-1799_AD
+785,12,CAL_2300_BC,Autocreated from bugs import,,,4250.00000,4250.00000,,,CAL_2300_BC
+786,13,CAL_240-280_AD,Autocreated from bugs import,,,1710.00000,1670.00000,,,CAL_240-280_AD
+787,13,CAL_-1599_AD,Autocreated from bugs import,,,,351.00000,,,CAL_-1599_AD
+788,13,CAL_1400-1599_AD,Autocreated from bugs import,,,550.00000,351.00000,,,CAL_1400-1599_AD
+789,13,CAL_330-365_AD,Autocreated from bugs import,,,1620.00000,1585.00000,,,CAL_330-365_AD
+790,13,CAL_275-300_AD,Autocreated from bugs import,,,1675.00000,1650.00000,,,CAL_275-300_AD
+791,13,CAL_75-200_AD,Autocreated from bugs import,,,1875.00000,1750.00000,,,CAL_75-200_AD
+792,13,CAL_2900-2350_BC,Autocreated from bugs import,,,4850.00000,4300.00000,,,CAL_2900-2350_BC
+793,12,CAL_1327_BC,Autocreated from bugs import,,,3277.00000,3277.00000,,,CAL_1327_BC
+794,13,CAL_586_AD-,Autocreated from bugs import,,,1364.00000,,,,CAL_586_AD-
+795,12,CAL_1679_AD,Autocreated from bugs import,,,271.00000,271.00000,,,CAL_1679_AD
+796,13,CAL_1250-1540_AD,Autocreated from bugs import,,,700.00000,410.00000,,,CAL_1250-1540_AD
+797,13,CAL_142-158_AD,Autocreated from bugs import,,,1808.00000,1792.00000,,,CAL_142-158_AD
+798,12,CAL_920_AD,Autocreated from bugs import,,,1030.00000,1030.00000,,,CAL_920_AD
+799,13,CAL_850-1225_AD,Autocreated from bugs import,,,1100.00000,725.00000,,,CAL_850-1225_AD
+800,13,CAL_3340-2920_BC,Autocreated from bugs import,,,5290.00000,4870.00000,,,CAL_3340-2920_BC
+801,13,CAL_1650-1800_AD,Autocreated from bugs import,,,300.00000,150.00000,,,CAL_1650-1800_AD
+802,12,CAL_10830_BP,Autocreated from bugs import,,,10830.00000,10830.00000,,,CAL_10830_BP
+803,13,CAL_900-250_BC,Autocreated from bugs import,,,2850.00000,2200.00000,,,CAL_900-250_BC
+804,12,CAL_6390_BP,Autocreated from bugs import,,,6390.00000,6390.00000,,,CAL_6390_BP
+805,12,CAL_5200_BP,Autocreated from bugs import,,,5200.00000,5200.00000,,,CAL_5200_BP
+806,12,CAL_1500_AD,Autocreated from bugs import,,,450.00000,450.00000,,,CAL_1500_AD
+807,12,CAL_1850_BP,Autocreated from bugs import,,,1850.00000,1850.00000,,,CAL_1850_BP
+808,12,CAL_347_BP,Autocreated from bugs import,,,347.00000,347.00000,,,CAL_347_BP
+809,13,CAL_70-400_AD,Autocreated from bugs import,,,1880.00000,1550.00000,,,CAL_70-400_AD
+810,13,CAL_1275-1325_AD,Autocreated from bugs import,,,675.00000,625.00000,,,CAL_1275-1325_AD
+811,13,CAL_1500-1599_AD,Autocreated from bugs import,,,450.00000,351.00000,,,CAL_1500-1599_AD
+812,12,CAL_3600_BP,Autocreated from bugs import,,,3600.00000,3600.00000,,,CAL_3600_BP
+813,12,CAL_102_BC,Autocreated from bugs import,,,2052.00000,2052.00000,,,CAL_102_BC
+814,13,CAL_370-375_BC,Autocreated from bugs import,,,2320.00000,2325.00000,,,CAL_370-375_BC
+815,13,CAL_650-900_BP,Autocreated from bugs import,,,650.00000,900.00000,,,CAL_650-900_BP
+816,12,CAL_1600_BC,Autocreated from bugs import,,,3550.00000,3550.00000,,,CAL_1600_BC
+817,12,CAL_1240_AD,Autocreated from bugs import,,,710.00000,710.00000,,,CAL_1240_AD
+818,12,CAL_3580_BC,Autocreated from bugs import,,,5530.00000,5530.00000,,,CAL_3580_BC
+819,13,CAL_30_BC-250_AD,Autocreated from bugs import,,,1980.00000,1700.00000,,,CAL_30_BC-250_AD
+820,13,CAL_1200-1499_AD,Autocreated from bugs import,,,750.00000,451.00000,,,CAL_1200-1499_AD
+821,12,CAL_2001_AD,Autocreated from bugs import,,,-51.00000,-51.00000,,,CAL_2001_AD
+822,13,CAL_1200-1399_AD,Autocreated from bugs import,,,750.00000,551.00000,,,CAL_1200-1399_AD
+823,13,CAL_30-60_AD,Autocreated from bugs import,,,1920.00000,1890.00000,,,CAL_30-60_AD
+824,13,CAL_200-350_AD,Autocreated from bugs import,,,1750.00000,1600.00000,,,CAL_200-350_AD
+825,13,CAL_175-250_AD,Autocreated from bugs import,,,1775.00000,1700.00000,,,CAL_175-250_AD
+826,13,CAL_300-360_AD,Autocreated from bugs import,,,1650.00000,1590.00000,,,CAL_300-360_AD
+827,13,CAL_375_AD-,Autocreated from bugs import,,,1575.00000,,,,CAL_375_AD-
+828,13,CAL_100-300_AD,Autocreated from bugs import,,,1850.00000,1650.00000,,,CAL_100-300_AD
+829,13,CAL_1775-1825_AD,Autocreated from bugs import,,,175.00000,125.00000,,,CAL_1775-1825_AD
+830,12,CAL_5057_BC,Autocreated from bugs import,,,7007.00000,7007.00000,,,CAL_5057_BC
+831,13,CAL_1700-1899_AD,Autocreated from bugs import,,,250.00000,51.00000,,,CAL_1700-1899_AD
+832,13,CAL_1150-1225_AD,Autocreated from bugs import,,,800.00000,725.00000,,,CAL_1150-1225_AD
+833,13,CAL_1985-1773_BC,Autocreated from bugs import,,,3935.00000,3723.00000,,,CAL_1985-1773_BC
+834,13,CAL_1650-1700_AD,Autocreated from bugs import,,,300.00000,250.00000,,,CAL_1650-1700_AD
+835,13,CAL_-400_AD,Autocreated from bugs import,,,,1550.00000,,,CAL_-400_AD
+836,13,CAL_250_AD-,Autocreated from bugs import,,,1700.00000,,,,CAL_250_AD-
+837,13,CAL_1075-1111_AD,Autocreated from bugs import,,,875.00000,839.00000,,,CAL_1075-1111_AD
+838,13,CAL_1400-1550_AD,Autocreated from bugs import,,,550.00000,400.00000,,,CAL_1400-1550_AD
+839,13,CAL_1500-1600_AD,Autocreated from bugs import,,,450.00000,350.00000,,,CAL_1500-1600_AD
+840,12,CAL_500_AD,Autocreated from bugs import,,,1450.00000,1450.00000,,,CAL_500_AD
+841,12,CAL_871_AD,Autocreated from bugs import,,,1079.00000,1079.00000,,,CAL_871_AD
+842,12,CAL_135_AD,Autocreated from bugs import,,,1815.00000,1815.00000,,,CAL_135_AD
+843,12,CAL_1350_BC,Autocreated from bugs import,,,3300.00000,3300.00000,,,CAL_1350_BC
+844,12,CAL_1370_BC,Autocreated from bugs import,,,3320.00000,3320.00000,,,CAL_1370_BC
+845,12,CAL_2005_AD,Autocreated from bugs import,,,-55.00000,-55.00000,,,CAL_2005_AD
+846,13,CAL_300-399_AD,Autocreated from bugs import,,,1650.00000,1551.00000,,,CAL_300-399_AD
+847,13,CAL_1200_AD-,Autocreated from bugs import,,,750.00000,,,,CAL_1200_AD-
+848,13,CAL_-1399_AD,Autocreated from bugs import,,,,551.00000,,,CAL_-1399_AD
+849,13,CAL_510-495_BC,Autocreated from bugs import,,,2460.00000,2445.00000,,,CAL_510-495_BC
+850,13,CAL_40-60_AD,Autocreated from bugs import,,,1910.00000,1890.00000,,,CAL_40-60_AD
+851,13,CAL_1840_AD-,Autocreated from bugs import,,,110.00000,,,,CAL_1840_AD-
+852,13,CAL_940-1070_AD,Autocreated from bugs import,,,1010.00000,880.00000,,,CAL_940-1070_AD
+853,13,CAL_1210-910_BC,Autocreated from bugs import,,,3160.00000,2860.00000,,,CAL_1210-910_BC
+854,13,CAL_1100-1199_AD,Autocreated from bugs import,,,850.00000,751.00000,,,CAL_1100-1199_AD
+855,13,CAL_1020-1210_AD,Autocreated from bugs import,,,930.00000,740.00000,,,CAL_1020-1210_AD
+856,13,CAL_8534-4851_BC,Autocreated from bugs import,,,10484.00000,6801.00000,,,CAL_8534-4851_BC
+857,13,CAL_1050-1250_AD,Autocreated from bugs import,,,900.00000,700.00000,,,CAL_1050-1250_AD
+858,13,CAL_1-100_AD,Autocreated from bugs import,,,1949.00000,1850.00000,,,CAL_1-100_AD
+859,13,CAL_990-1150_AD,Autocreated from bugs import,,,960.00000,800.00000,,,CAL_990-1150_AD
+860,13,CAL_4041-3810_BC,Autocreated from bugs import,,,5991.00000,5760.00000,,,CAL_4041-3810_BC
+861,13,CAL_175-325_AD,Autocreated from bugs import,,,1775.00000,1625.00000,,,CAL_175-325_AD
+862,13,CAL_1440-1310_BC,Autocreated from bugs import,,,3390.00000,3260.00000,,,CAL_1440-1310_BC
+863,13,CAL_1520-1390_BC,Autocreated from bugs import,,,3470.00000,3340.00000,,,CAL_1520-1390_BC
+864,13,CAL_-200_AD,Autocreated from bugs import,,,,1750.00000,,,CAL_-200_AD
+865,12,CAL_1620_AD,Autocreated from bugs import,,,330.00000,330.00000,,,CAL_1620_AD
+866,13,CAL_1621-1673_AD,Autocreated from bugs import,,,329.00000,277.00000,,,CAL_1621-1673_AD
+867,13,CAL_61_AD-,Autocreated from bugs import,,,1889.00000,,,,CAL_61_AD-
+868,13,CAL_2700-2350_BC,Autocreated from bugs import,,,4650.00000,4300.00000,,,CAL_2700-2350_BC
+869,13,CAL_43-61_AD,Autocreated from bugs import,,,1907.00000,1889.00000,,,CAL_43-61_AD
+870,13,CAL_1440-1260_BC,Autocreated from bugs import,,,3390.00000,3210.00000,,,CAL_1440-1260_BC
+871,13,CAL_1420-1190_BC,Autocreated from bugs import,,,3370.00000,3140.00000,,,CAL_1420-1190_BC
+872,13,CAL_1460-1310_BC,Autocreated from bugs import,,,3410.00000,3260.00000,,,CAL_1460-1310_BC
+873,13,CAL_1673_AD-,Autocreated from bugs import,,,277.00000,,,,CAL_1673_AD-
+874,13,CAL_1710-1740_AD,Autocreated from bugs import,,,240.00000,210.00000,,,CAL_1710-1740_AD
+875,13,CAL_1740-1760_AD,Autocreated from bugs import,,,210.00000,190.00000,,,CAL_1740-1760_AD
+876,13,CAL_1600-1260_BC,Autocreated from bugs import,,,3550.00000,3210.00000,,,CAL_1600-1260_BC
+877,13,CAL_50_AD-,Autocreated from bugs import,,,1900.00000,,,,CAL_50_AD-
+878,13,CAL_-100_AD,Autocreated from bugs import,,,,1850.00000,,,CAL_-100_AD
+879,13,CAL_1430-1620_BC,Autocreated from bugs import,,,3380.00000,3570.00000,,,CAL_1430-1620_BC
+880,12,CAL_3500_BC,Autocreated from bugs import,,,5450.00000,5450.00000,,,CAL_3500_BC
+881,13,CAL_1430-1200_BC,Autocreated from bugs import,,,3380.00000,3150.00000,,,CAL_1430-1200_BC
+882,13,CAL_1610-1310_BC,Autocreated from bugs import,,,3560.00000,3260.00000,,,CAL_1610-1310_BC
+883,13,CAL_1500-1799_AD,Autocreated from bugs import,,,450.00000,151.00000,,,CAL_1500-1799_AD
+884,13,CAL_1350-1325_BC,Autocreated from bugs import,,,3300.00000,3275.00000,,,CAL_1350-1325_BC
+885,13,CAL_1680-1400_BC,Autocreated from bugs import,,,3630.00000,3350.00000,,,CAL_1680-1400_BC
+886,13,CAL_1175-1225_AD,Autocreated from bugs import,,,775.00000,725.00000,,,CAL_1175-1225_AD
+887,13,CAL_2470-2060_BC,Autocreated from bugs import,,,4420.00000,4010.00000,,,CAL_2470-2060_BC
+888,13,CAL_350-550_AD,Autocreated from bugs import,,,1600.00000,1400.00000,,,CAL_350-550_AD
+889,12,CAL_2004_AD,Autocreated from bugs import,,,-54.00000,-54.00000,,,CAL_2004_AD
+890,12,CAL_149_AD,Autocreated from bugs import,,,1801.00000,1801.00000,,,CAL_149_AD
+891,13,CAL_3621-3342_BC,Autocreated from bugs import,,,5571.00000,5292.00000,,,CAL_3621-3342_BC
+892,13,CAL_3656-3526_BC,Autocreated from bugs import,,,5606.00000,5476.00000,,,CAL_3656-3526_BC
+893,12,CAL_1995_AD,Autocreated from bugs import,,,-45.00000,-45.00000,,,CAL_1995_AD
+894,13,CAL_1066-1250_AD,Autocreated from bugs import,,,884.00000,700.00000,,,CAL_1066-1250_AD
+895,13,CAL_1070-1250_AD,Autocreated from bugs import,,,880.00000,700.00000,,,CAL_1070-1250_AD
+896,12,CAL_2050_BC,Autocreated from bugs import,,,4000.00000,4000.00000,,,CAL_2050_BC
+897,13,CAL_1250-1350_AD,Autocreated from bugs import,,,700.00000,600.00000,,,CAL_1250-1350_AD
+898,13,CAL_200-399_AD,Autocreated from bugs import,,,1750.00000,1551.00000,,,CAL_200-399_AD
+899,13,CAL_45-199_AD,Autocreated from bugs import,,,1905.00000,1751.00000,,,CAL_45-199_AD
+900,13,CAL_150-199_AD,Autocreated from bugs import,,,1800.00000,1751.00000,,,CAL_150-199_AD
+901,13,CAL_3500-3000_BP,Autocreated from bugs import,,,3500.00000,3000.00000,,,CAL_3500-3000_BP
+902,13,CAL_100-199_AD,Autocreated from bugs import,,,1850.00000,1751.00000,,,CAL_100-199_AD
+903,13,CAL_200_AD-,Autocreated from bugs import,,,1750.00000,,,,CAL_200_AD-
+904,13,CAL_-299_AD,Autocreated from bugs import,,,,1651.00000,,,CAL_-299_AD
+905,13,CAL_1-299_AD,Autocreated from bugs import,,,1949.00000,1651.00000,,,CAL_1-299_AD
+906,13,CAL_-1499_AD,Autocreated from bugs import,,,,451.00000,,,CAL_-1499_AD
+907,12,CAL_1400_AD,Autocreated from bugs import,,,550.00000,550.00000,,,CAL_1400_AD
+908,13,CAL_1500-1300_BC,Autocreated from bugs import,,,3450.00000,3250.00000,,,CAL_1500-1300_BC
+909,13,CAL_2000-1500_BC,Autocreated from bugs import,,,3950.00000,3450.00000,,,CAL_2000-1500_BC
+910,13,CAL_1920-1750_BC,Autocreated from bugs import,,,3870.00000,3700.00000,,,CAL_1920-1750_BC
+911,13,CAL_25-50_AD,Autocreated from bugs import,,,1925.00000,1900.00000,,,CAL_25-50_AD
+912,13,CAL_9000-8300_BP,Autocreated from bugs import,,,9000.00000,8300.00000,,,CAL_9000-8300_BP
+913,13,CAL_675-725_AD,Autocreated from bugs import,,,1275.00000,1225.00000,,,CAL_675-725_AD
+914,13,CAL_1050-1000_BC,Autocreated from bugs import,,,3000.00000,2950.00000,,,CAL_1050-1000_BC
+915,13,CAL_8300_AD-7250_BP,Autocreated from bugs import,,,-6350.00000,7250.00000,,,CAL_8300_AD-7250_BP
+916,13,CAL_7250-5500_BP,Autocreated from bugs import,,,7250.00000,5500.00000,,,CAL_7250-5500_BP
+917,13,CAL_5500-4500_BP,Autocreated from bugs import,,,5500.00000,4500.00000,,,CAL_5500-4500_BP
+918,13,CAL_70-150_AD,Autocreated from bugs import,,,1880.00000,1800.00000,,,CAL_70-150_AD
+919,13,CAL_-1400_AD,Autocreated from bugs import,,,,550.00000,,,CAL_-1400_AD
+920,13,CAL_1100_AD-,Autocreated from bugs import,,,850.00000,,,,CAL_1100_AD-
+921,13,CAL_1223-1300_AD,Autocreated from bugs import,,,727.00000,650.00000,,,CAL_1223-1300_AD
+922,13,CAL_1175-1300_AD,Autocreated from bugs import,,,775.00000,650.00000,,,CAL_1175-1300_AD
+923,12,CAL_1_AD,Autocreated from bugs import,,,1949.00000,1949.00000,,,CAL_1_AD
+924,13,CAL_6260-5910_BP,Autocreated from bugs import,,,6260.00000,5910.00000,,,CAL_6260-5910_BP
+925,12,CAL_7500_BP,Autocreated from bugs import,,,7500.00000,7500.00000,,,CAL_7500_BP
+926,13,CAL_5750-5330_BP,Autocreated from bugs import,,,5750.00000,5330.00000,,,CAL_5750-5330_BP
+927,13,CAL_1300-1650_AD,Autocreated from bugs import,,,650.00000,300.00000,,,CAL_1300-1650_AD
+928,12,CAL_168_BC,Autocreated from bugs import,,,2118.00000,2118.00000,,,CAL_168_BC
+929,13,CAL_600-700_AD,Autocreated from bugs import,,,1350.00000,1250.00000,,,CAL_600-700_AD
+930,13,CAL_5280-4840_BP,Autocreated from bugs import,,,5280.00000,4840.00000,,,CAL_5280-4840_BP
+931,13,CAL_75-140_AD,Autocreated from bugs import,,,1875.00000,1810.00000,,,CAL_75-140_AD
+932,12,CAL_700_BC,Autocreated from bugs import,,,2650.00000,2650.00000,,,CAL_700_BC
+933,13,CAL_1900_AD-,Autocreated from bugs import,,,50.00000,,,,CAL_1900_AD-
+934,13,CAL_-1950_AD,Autocreated from bugs import,,,,0.00000,,,CAL_-1950_AD
+935,13,CAL_300-350_AD,Autocreated from bugs import,,,1650.00000,1600.00000,,,CAL_300-350_AD
+936,13,CAL_692_AD-,Autocreated from bugs import,,,1258.00000,,,,CAL_692_AD-
+937,13,CAL_4140-3690_BP,Autocreated from bugs import,,,4140.00000,3690.00000,,,CAL_4140-3690_BP
+938,13,CAL_-4980_BP,Autocreated from bugs import,,,,4980.00000,,,CAL_-4980_BP
+939,13,CAL_5590_BP-,Autocreated from bugs import,,,5590.00000,,,,CAL_5590_BP-
+940,13,CAL_1690-1520_BC,Autocreated from bugs import,,,3640.00000,3470.00000,,,CAL_1690-1520_BC
+941,13,CAL_1150-1200_BC,Autocreated from bugs import,,,3100.00000,3150.00000,,,CAL_1150-1200_BC
+942,13,CAL_153-416_BP,Autocreated from bugs import,,,153.00000,416.00000,,,CAL_153-416_BP
+943,12,CAL_6030_BP,Autocreated from bugs import,,,6030.00000,6030.00000,,,CAL_6030_BP
+944,12,CAL_702_AD,Autocreated from bugs import,,,1248.00000,1248.00000,,,CAL_702_AD
+945,13,CAL_6993-6200_BP,Autocreated from bugs import,,,6993.00000,6200.00000,,,CAL_6993-6200_BP
+946,12,CAL_1609_BC,Autocreated from bugs import,,,3559.00000,3559.00000,,,CAL_1609_BC
+947,13,CAL_1700-1800_AD,Autocreated from bugs import,,,250.00000,150.00000,,,CAL_1700-1800_AD
+948,13,CAL_6200-5311_BP,Autocreated from bugs import,,,6200.00000,5311.00000,,,CAL_6200-5311_BP
+949,12,CAL_3800_BP,Autocreated from bugs import,,,3800.00000,3800.00000,,,CAL_3800_BP
+950,12,CAL_430_BC,Autocreated from bugs import,,,2380.00000,2380.00000,,,CAL_430_BC
+951,13,CAL_-3418_BC,Autocreated from bugs import,,,,5368.00000,,,CAL_-3418_BC
+952,13,CAL_3618_BC-,Autocreated from bugs import,,,5568.00000,,,,CAL_3618_BC-
+953,13,CAL_694-711_AD,Autocreated from bugs import,,,1256.00000,1239.00000,,,CAL_694-711_AD
+954,13,CAL_138-157_AD,Autocreated from bugs import,,,1812.00000,1793.00000,,,CAL_138-157_AD
+955,12,CAL_10500_BP,Autocreated from bugs import,,,10500.00000,10500.00000,,,CAL_10500_BP
+956,13,CAL_3200-3000_BP,Autocreated from bugs import,,,3200.00000,3000.00000,,,CAL_3200-3000_BP
+957,12,CAL_3450_BP,Autocreated from bugs import,,,3450.00000,3450.00000,,,CAL_3450_BP
+958,12,CAL_390_BP,Autocreated from bugs import,,,390.00000,390.00000,,,CAL_390_BP
+959,12,CAL_1315_AD,Autocreated from bugs import,,,635.00000,635.00000,,,CAL_1315_AD
+960,13,CAL_1320_AD-,Autocreated from bugs import,,,630.00000,,,,CAL_1320_AD-
+961,13,CAL_200-500_AD,Autocreated from bugs import,,,1750.00000,1450.00000,,,CAL_200-500_AD
+962,13,CAL_975-1099_AD,Autocreated from bugs import,,,975.00000,851.00000,,,CAL_975-1099_AD
+963,12,CAL_1840_AD,Autocreated from bugs import,,,110.00000,110.00000,,,CAL_1840_AD
+964,13,CAL_1275-1399_AD,Autocreated from bugs import,,,675.00000,551.00000,,,CAL_1275-1399_AD
+965,13,CAL_1040-1440_AD,Autocreated from bugs import,,,910.00000,510.00000,,,CAL_1040-1440_AD
+966,13,CAL_1300-1499_AD,Autocreated from bugs import,,,650.00000,451.00000,,,CAL_1300-1499_AD
+967,12,CAL_1260_AD,Autocreated from bugs import,,,690.00000,690.00000,,,CAL_1260_AD
+968,12,CAL_1430_AD,Autocreated from bugs import,,,520.00000,520.00000,,,CAL_1430_AD
+969,12,CAL_1210_AD,Autocreated from bugs import,,,740.00000,740.00000,,,CAL_1210_AD
+970,12,CAL_69_AD,Autocreated from bugs import,,,1881.00000,1881.00000,,,CAL_69_AD
+971,13,CAL_2424-2143_BC,Autocreated from bugs import,,,4374.00000,4093.00000,,,CAL_2424-2143_BC
+972,13,CAL_1100-1400_AD,Autocreated from bugs import,,,850.00000,550.00000,,,CAL_1100-1400_AD
+973,13,CAL_175-225_AD,Autocreated from bugs import,,,1775.00000,1725.00000,,,CAL_175-225_AD
+974,13,CAL_1150-1250_AD,Autocreated from bugs import,,,800.00000,700.00000,,,CAL_1150-1250_AD
+975,13,CAL_950-1000_AD,Autocreated from bugs import,,,1000.00000,950.00000,,,CAL_950-1000_AD
+976,12,CAL_1900_AD,Autocreated from bugs import,,,50.00000,50.00000,,,CAL_1900_AD
+977,13,CAL_350_AD-,Autocreated from bugs import,,,1600.00000,,,,CAL_350_AD-
+978,13,CAL_365_BC-,Autocreated from bugs import,,,2315.00000,,,,CAL_365_BC-
+979,13,CAL_-195_BC,Autocreated from bugs import,,,,2145.00000,,,CAL_-195_BC
+980,13,CAL_-1804_AD,Autocreated from bugs import,,,,146.00000,,,CAL_-1804_AD
+981,13,CAL_800-1050_AD,Autocreated from bugs import,,,1150.00000,900.00000,,,CAL_800-1050_AD
+982,13,CAL_200-2215_AD,Autocreated from bugs import,,,1750.00000,-265.00000,,,CAL_200-2215_AD
+983,13,CAL_-1050_AD,Autocreated from bugs import,,,,900.00000,,,CAL_-1050_AD
+984,13,CAL_1700-1720_AD,Autocreated from bugs import,,,250.00000,230.00000,,,CAL_1700-1720_AD
+985,13,CAL_1749_AD-,Autocreated from bugs import,,,201.00000,,,,CAL_1749_AD-
+986,13,CAL_25-175_AD,Autocreated from bugs import,,,1925.00000,1775.00000,,,CAL_25-175_AD
+987,13,CAL_1520-1310_BC,Autocreated from bugs import,,,3470.00000,3260.00000,,,CAL_1520-1310_BC
+988,13,CAL_1188-1218_AD,Autocreated from bugs import,,,762.00000,732.00000,,,CAL_1188-1218_AD
+989,13,CAL_1720-1780_AD,Autocreated from bugs import,,,230.00000,170.00000,,,CAL_1720-1780_AD
+990,13,CAL_1200-1215_AD,Autocreated from bugs import,,,750.00000,735.00000,,,CAL_1200-1215_AD
+991,13,CAL_1350-1510_AD,Autocreated from bugs import,,,600.00000,440.00000,,,CAL_1350-1510_AD
+992,13,CAL_-800_BC,Autocreated from bugs import,,,,2750.00000,,,CAL_-800_BC
+993,13,CAL_1020_BC-,Autocreated from bugs import,,,2970.00000,,,,CAL_1020_BC-
+994,13,CAL_800-700_BC,Autocreated from bugs import,,,2750.00000,2650.00000,,,CAL_800-700_BC
+995,13,CAL_325-410_AD,Autocreated from bugs import,,,1625.00000,1540.00000,,,CAL_325-410_AD
+996,12,CAL_1350_AD,Autocreated from bugs import,,,600.00000,600.00000,,,CAL_1350_AD
+997,12,CAL_1311_AD,Autocreated from bugs import,,,639.00000,639.00000,,,CAL_1311_AD
+998,13,CAL_6000_BP-,Autocreated from bugs import,,,6000.00000,,,,CAL_6000_BP-
+999,13,CAL_1070_AD-,Autocreated from bugs import,,,880.00000,,,,CAL_1070_AD-
+1000,12,CAL_1596_AD,Autocreated from bugs import,,,354.00000,354.00000,,,CAL_1596_AD
+1001,13,CAL_890-1280_AD,Autocreated from bugs import,,,1060.00000,670.00000,,,CAL_890-1280_AD
+1002,13,CAL_1450-1650_AD,Autocreated from bugs import,,,500.00000,300.00000,,,CAL_1450-1650_AD
+1003,13,CAL_5900-5300_BC,Autocreated from bugs import,,,7850.00000,7250.00000,,,CAL_5900-5300_BC
+1004,13,CAL_5200-4250_BC,Autocreated from bugs import,,,7150.00000,6200.00000,,,CAL_5200-4250_BC
+1005,13,CAL_7050-6100_BC,Autocreated from bugs import,,,9000.00000,8050.00000,,,CAL_7050-6100_BC
+1006,13,CAL_6400-5700_BC,Autocreated from bugs import,,,8350.00000,7650.00000,,,CAL_6400-5700_BC
+1007,13,CAL_8250_BC-,Autocreated from bugs import,,,10200.00000,,,,CAL_8250_BC-
+1008,13,CAL_-7500_BC,Autocreated from bugs import,,,,9450.00000,,,CAL_-7500_BC
+1009,13,CAL_7600-6650_BC,Autocreated from bugs import,,,9550.00000,8600.00000,,,CAL_7600-6650_BC
+1010,13,CAL_-15_BC,Autocreated from bugs import,,,,1965.00000,,,CAL_-15_BC
+1011,13,CAL_150_BC-,Autocreated from bugs import,,,2100.00000,,,,CAL_150_BC-
+1012,13,CAL_150-15_BC,Autocreated from bugs import,,,2100.00000,1965.00000,,,CAL_150-15_BC
+1013,13,CAL_4450-3700_BC,Autocreated from bugs import,,,6400.00000,5650.00000,,,CAL_4450-3700_BC
+1014,13,CAL_900-1000_AD,Autocreated from bugs import,,,1050.00000,950.00000,,,CAL_900-1000_AD
+1015,13,CAL_800-900_AD,Autocreated from bugs import,,,1150.00000,1050.00000,,,CAL_800-900_AD
+1016,13,CAL_1140-1270_AD,Autocreated from bugs import,,,810.00000,680.00000,,,CAL_1140-1270_AD
+1017,13,CAL_1440_AD-,Autocreated from bugs import,,,510.00000,,,,CAL_1440_AD-
+1018,13,CAL_-1630_AD,Autocreated from bugs import,,,,320.00000,,,CAL_-1630_AD
+1019,13,CAL_3950-2350_BC,Autocreated from bugs import,,,5900.00000,4300.00000,,,CAL_3950-2350_BC
+1020,13,CAL_1200-1250_AD,Autocreated from bugs import,,,750.00000,700.00000,,,CAL_1200-1250_AD
+1021,13,CAL_1150-1200_AD,Autocreated from bugs import,,,800.00000,750.00000,,,CAL_1150-1200_AD
+1022,13,CAL_1150-1500_AD,Autocreated from bugs import,,,800.00000,450.00000,,,CAL_1150-1500_AD
+1023,13,CAL_1275-1300_AD,Autocreated from bugs import,,,675.00000,650.00000,,,CAL_1275-1300_AD
+1024,13,CAL_300-400_AD,Autocreated from bugs import,,,1650.00000,1550.00000,,,CAL_300-400_AD
+1025,13,CAL_3410-2920_BP,Autocreated from bugs import,,,3410.00000,2920.00000,,,CAL_3410-2920_BP
+1026,13,CAL_-1225_AD,Autocreated from bugs import,,,,725.00000,,,CAL_-1225_AD
+1027,13,CAL_1175_AD-,Autocreated from bugs import,,,775.00000,,,,CAL_1175_AD-
+1028,13,CAL_2500-2200_BC,Autocreated from bugs import,,,4450.00000,4150.00000,,,CAL_2500-2200_BC
+1029,13,CAL_1025-1075_AD,Autocreated from bugs import,,,925.00000,875.00000,,,CAL_1025-1075_AD
+1030,13,CAL_1050-1100_AD,Autocreated from bugs import,,,900.00000,850.00000,,,CAL_1050-1100_AD
+1031,13,CAL_5311-3090_BP,Autocreated from bugs import,,,5311.00000,3090.00000,,,CAL_5311-3090_BP
+1032,13,CAL_3090-345_BP,Autocreated from bugs import,,,3090.00000,345.00000,,,CAL_3090-345_BP
+1033,13,CAL_1300-1350_AD,Autocreated from bugs import,,,650.00000,600.00000,,,CAL_1300-1350_AD
+1034,13,CAL_1400-1499_AD,Autocreated from bugs import,,,550.00000,451.00000,,,CAL_1400-1499_AD
+1035,12,CAL_1510_AD,Autocreated from bugs import,,,440.00000,440.00000,,,CAL_1510_AD
+1036,13,CAL_250-400_AD,Autocreated from bugs import,,,1700.00000,1550.00000,,,CAL_250-400_AD
+1037,13,CAL_1120-810_BC,Autocreated from bugs import,,,3070.00000,2760.00000,,,CAL_1120-810_BC
+1038,13,CAL_800-400_BC,Autocreated from bugs import,,,2750.00000,2350.00000,,,CAL_800-400_BC
+1039,13,CAL_300_AD-,Autocreated from bugs import,,,1650.00000,,,,CAL_300_AD-
+1040,12,CAL_400_AD,Autocreated from bugs import,,,1550.00000,1550.00000,,,CAL_400_AD
+1041,13,CAL_1400-1450_AD,Autocreated from bugs import,,,550.00000,500.00000,,,CAL_1400-1450_AD
+1042,13,CAL_560-660_AD,Autocreated from bugs import,,,1390.00000,1290.00000,,,CAL_560-660_AD
+1043,13,CAL_75-400_AD,Autocreated from bugs import,,,1875.00000,1550.00000,,,CAL_75-400_AD
+1044,13,CAL_700-600_BC,Autocreated from bugs import,,,2650.00000,2550.00000,,,CAL_700-600_BC
+1045,12,CAL_1554_AD,Autocreated from bugs import,,,396.00000,396.00000,,,CAL_1554_AD
+1046,13,CAL_-1216_AD,Autocreated from bugs import,,,,734.00000,,,CAL_-1216_AD
+1047,13,CAL_-1325_AD,Autocreated from bugs import,,,,625.00000,,,CAL_-1325_AD
+1048,12,CAL_1275_AD,Autocreated from bugs import,,,675.00000,675.00000,,,CAL_1275_AD
+1049,12,CAL_1559_AD,Autocreated from bugs import,,,391.00000,391.00000,,,CAL_1559_AD
+1050,13,CAL_50-299_AD,Autocreated from bugs import,,,1900.00000,1651.00000,,,CAL_50-299_AD
+1051,13,CAL_680-1020_AD,Autocreated from bugs import,,,1270.00000,930.00000,,,CAL_680-1020_AD
+1052,13,CAL_1200-1500_AD,Autocreated from bugs import,,,750.00000,450.00000,,,CAL_1200-1500_AD
+1053,12,CAL_1621_AD,Autocreated from bugs import,,,329.00000,329.00000,,,CAL_1621_AD
+1054,13,CAL_1200-1400_AD,Autocreated from bugs import,,,750.00000,550.00000,,,CAL_1200-1400_AD
+1055,13,CAL_560-890_AD,Autocreated from bugs import,,,1390.00000,1060.00000,,,CAL_560-890_AD
+1056,13,CAL_1500-1550_AD,Autocreated from bugs import,,,450.00000,400.00000,,,CAL_1500-1550_AD
+1057,13,CAL_1000-1450_AD,Autocreated from bugs import,,,950.00000,500.00000,,,CAL_1000-1450_AD
+1058,13,CAL_-79_AD,Autocreated from bugs import,,,,1871.00000,,,CAL_-79_AD
+1059,12,CAL_3000_BP,Autocreated from bugs import,,,3000.00000,3000.00000,,,CAL_3000_BP
+1060,13,CAL_3600-3400_BP,Autocreated from bugs import,,,3600.00000,3400.00000,,,CAL_3600-3400_BP
+1061,12,CAL_3700_BP,Autocreated from bugs import,,,3700.00000,3700.00000,,,CAL_3700_BP
+1062,12,CAL_3500_BP,Autocreated from bugs import,,,3500.00000,3500.00000,,,CAL_3500_BP
+1063,13,CAL_-1450_AD,Autocreated from bugs import,,,,500.00000,,,CAL_-1450_AD
+1064,12,CAL_4000_BP,Autocreated from bugs import,,,4000.00000,4000.00000,,,CAL_4000_BP
+1065,12,CAL_3550_BP,Autocreated from bugs import,,,3550.00000,3550.00000,,,CAL_3550_BP
+1066,13,CAL_4500-4000_BP,Autocreated from bugs import,,,4500.00000,4000.00000,,,CAL_4500-4000_BP
+1067,13,CAL_1250-1255_AD,Autocreated from bugs import,,,700.00000,695.00000,,,CAL_1250-1255_AD
+1068,13,CAL_43-100_AD,Autocreated from bugs import,,,1907.00000,1850.00000,,,CAL_43-100_AD
+1069,13,CAL_300-410_AD,Autocreated from bugs import,,,1650.00000,1540.00000,,,CAL_300-410_AD
+1070,13,CAL_3500-2000_BC,Autocreated from bugs import,,,5450.00000,3950.00000,,,CAL_3500-2000_BC
+1071,12,CAL_1749_AD,Autocreated from bugs import,,,201.00000,201.00000,,,CAL_1749_AD
+1072,13,CAL_1242_AD-,Autocreated from bugs import,,,708.00000,,,,CAL_1242_AD-
+1073,13,CAL_-1300_AD,Autocreated from bugs import,,,,650.00000,,,CAL_-1300_AD
+1074,13,CAL_1800-1899_AD,Autocreated from bugs import,,,150.00000,51.00000,,,CAL_1800-1899_AD
+1075,13,CAL_1323-1293_BC,Autocreated from bugs import,,,3273.00000,3243.00000,,,CAL_1323-1293_BC
+1076,12,CAL_10050_BP,Autocreated from bugs import,,,10050.00000,10050.00000,,,CAL_10050_BP
+1077,12,CAL_9390_BP,Autocreated from bugs import,,,9390.00000,9390.00000,,,CAL_9390_BP
+1078,13,CAL_-811_BC,Autocreated from bugs import,,,,2761.00000,,,CAL_-811_BC
+1079,13,CAL_1077_BC-,Autocreated from bugs import,,,3027.00000,,,,CAL_1077_BC-
+1080,13,CAL_1325-1375_AD,Autocreated from bugs import,,,625.00000,575.00000,,,CAL_1325-1375_AD
+1081,13,CAL_43-75_AD,Autocreated from bugs import,,,1907.00000,1875.00000,,,CAL_43-75_AD
+1082,13,CAL_65-80_AD,Autocreated from bugs import,,,1885.00000,1870.00000,,,CAL_65-80_AD
+1083,13,CAL_-1005_BC,Autocreated from bugs import,,,,2955.00000,,,CAL_-1005_BC
+1084,12,CAL_1450_BC,Autocreated from bugs import,,,3400.00000,3400.00000,,,CAL_1450_BC
+1085,13,CAL_1789_AD-,Autocreated from bugs import,,,161.00000,,,,CAL_1789_AD-
+1086,13,CAL_1675-1725_AD,Autocreated from bugs import,,,275.00000,225.00000,,,CAL_1675-1725_AD
+1087,13,CAL_9130-8740_BC,Autocreated from bugs import,,,11080.00000,10690.00000,,,CAL_9130-8740_BC
+1088,13,CAL_1700-1750_AD,Autocreated from bugs import,,,250.00000,200.00000,,,CAL_1700-1750_AD
+1089,13,CAL_1475-1599_AD,Autocreated from bugs import,,,475.00000,351.00000,,,CAL_1475-1599_AD
+1090,13,CAL_1796_AD-,Autocreated from bugs import,,,154.00000,,,,CAL_1796_AD-
+1091,13,CAL_7000-6420_BC,Autocreated from bugs import,,,8950.00000,8370.00000,,,CAL_7000-6420_BC
+1092,13,CAL_-2850_BC,Autocreated from bugs import,,,,4800.00000,,,CAL_-2850_BC
+1093,13,CAL_3450_BC-,Autocreated from bugs import,,,5400.00000,,,,CAL_3450_BC-
+1094,13,CAL_1700_AD-,Autocreated from bugs import,,,250.00000,,,,CAL_1700_AD-
+1095,13,CAL_-1750_AD,Autocreated from bugs import,,,,200.00000,,,CAL_-1750_AD
+1096,13,CAL_280-350_AD,Autocreated from bugs import,,,1670.00000,1600.00000,,,CAL_280-350_AD
+1097,13,CAL_50_BC-130_AD,Autocreated from bugs import,,,2000.00000,1820.00000,,,CAL_50_BC-130_AD
+1098,13,CAL_225-275_AD,Autocreated from bugs import,,,1725.00000,1675.00000,,,CAL_225-275_AD
+1099,12,CAL_417_AD,Autocreated from bugs import,,,1533.00000,1533.00000,,,CAL_417_AD
+1100,12,CAL_555_AD,Autocreated from bugs import,,,1395.00000,1395.00000,,,CAL_555_AD
+1101,12,CAL_608_AD,Autocreated from bugs import,,,1342.00000,1342.00000,,,CAL_608_AD
+1102,12,CAL_688_AD,Autocreated from bugs import,,,1262.00000,1262.00000,,,CAL_688_AD
+1103,13,CAL_890-1120_AD,Autocreated from bugs import,,,1060.00000,830.00000,,,CAL_890-1120_AD
+1104,13,CAL_690-940_AD,Autocreated from bugs import,,,1260.00000,1010.00000,,,CAL_690-940_AD
+1105,12,CAL_75_BC,Autocreated from bugs import,,,2025.00000,2025.00000,,,CAL_75_BC
+1106,13,CAL_40_BC-130_AD,Autocreated from bugs import,,,1990.00000,1820.00000,,,CAL_40_BC-130_AD
+1107,13,CAL_890-1030_AD,Autocreated from bugs import,,,1060.00000,920.00000,,,CAL_890-1030_AD
+1108,13,CAL_1500-1750_AD,Autocreated from bugs import,,,450.00000,200.00000,,,CAL_1500-1750_AD
+1109,13,CAL_1100-1299_AD,Autocreated from bugs import,,,850.00000,651.00000,,,CAL_1100-1299_AD
+1110,13,CAL_990-1160_AD,Autocreated from bugs import,,,960.00000,790.00000,,,CAL_990-1160_AD
+1111,13,CAL_890-1020_AD,Autocreated from bugs import,,,1060.00000,930.00000,,,CAL_890-1020_AD
+1112,13,CAL_1010-1160_AD,Autocreated from bugs import,,,940.00000,790.00000,,,CAL_1010-1160_AD
+1113,13,CAL_1175-1199_AD,Autocreated from bugs import,,,775.00000,751.00000,,,CAL_1175-1199_AD
+1114,13,CAL_975_AD-,Autocreated from bugs import,,,975.00000,,,,CAL_975_AD-
+1115,13,CAL_-999_AD,Autocreated from bugs import,,,,951.00000,,,CAL_-999_AD
+1116,13,CAL_900-999_AD,Autocreated from bugs import,,,1050.00000,951.00000,,,CAL_900-999_AD
+1117,13,CAL_630-780_AD,Autocreated from bugs import,,,1320.00000,1170.00000,,,CAL_630-780_AD
+1118,13,CAL_250-325_AD,Autocreated from bugs import,,,1700.00000,1625.00000,,,CAL_250-325_AD
+1119,13,CAL_1680_AD-,Autocreated from bugs import,,,270.00000,,,,CAL_1680_AD-
+1120,13,CAL_-1930_AD,Autocreated from bugs import,,,,20.00000,,,CAL_-1930_AD
+1121,13,CAL_800-750_BC,Autocreated from bugs import,,,2750.00000,2700.00000,,,CAL_800-750_BC
+1122,13,CAL_250-550_AD,Autocreated from bugs import,,,1700.00000,1400.00000,,,CAL_250-550_AD
+1123,13,CAL_140-420_AD,Autocreated from bugs import,,,1810.00000,1530.00000,,,CAL_140-420_AD
+1124,13,CAL_1175-1250_AD,Autocreated from bugs import,,,775.00000,700.00000,,,CAL_1175-1250_AD
+1125,13,CAL_560-990_AD,Autocreated from bugs import,,,1390.00000,960.00000,,,CAL_560-990_AD
+1126,13,CAL_950-999_AD,Autocreated from bugs import,,,1000.00000,951.00000,,,CAL_950-999_AD
+1127,13,CAL_7550-7000_BP,Autocreated from bugs import,,,7550.00000,7000.00000,,,CAL_7550-7000_BP
+1128,12,CAL_7219_BP,Autocreated from bugs import,,,7219.00000,7219.00000,,,CAL_7219_BP
+1129,13,CAL_7269-7180_BP,Autocreated from bugs import,,,7269.00000,7180.00000,,,CAL_7269-7180_BP
+1130,13,CAL_720-990_AD,Autocreated from bugs import,,,1230.00000,960.00000,,,CAL_720-990_AD
+1131,13,CAL_1000-800_BC,Autocreated from bugs import,,,2950.00000,2750.00000,,,CAL_1000-800_BC
+1132,13,CAL_1000-900_BC,Autocreated from bugs import,,,2950.00000,2850.00000,,,CAL_1000-900_BC
+1133,12,CAL_7034_BP,Autocreated from bugs import,,,7034.00000,7034.00000,,,CAL_7034_BP
+1134,13,CAL_1675-1720_AD,Autocreated from bugs import,,,275.00000,230.00000,,,CAL_1675-1720_AD
+1135,13,CAL_-950_AD,Autocreated from bugs import,,,,1000.00000,,,CAL_-950_AD
+1136,12,CAL_800_AD,Autocreated from bugs import,,,1150.00000,1150.00000,,,CAL_800_AD
+1137,13,CAL_1775_AD-,Autocreated from bugs import,,,175.00000,,,,CAL_1775_AD-
+1138,13,CAL_-1799_AD,Autocreated from bugs import,,,,151.00000,,,CAL_-1799_AD
+1139,12,CAL_4200_BP,Autocreated from bugs import,,,4200.00000,4200.00000,,,CAL_4200_BP
+1140,13,CAL_1800-1825_AD,Autocreated from bugs import,,,150.00000,125.00000,,,CAL_1800-1825_AD
+1141,12,CAL_4300_BP,Autocreated from bugs import,,,4300.00000,4300.00000,,,CAL_4300_BP
+1142,13,CAL_270-360_AD,Autocreated from bugs import,,,1680.00000,1590.00000,,,CAL_270-360_AD
+1143,12,CAL_200_AD,Autocreated from bugs import,,,1750.00000,1750.00000,,,CAL_200_AD
+1144,12,CAL_300_AD,Autocreated from bugs import,,,1650.00000,1650.00000,,,CAL_300_AD
+1145,13,CAL_-73_AD,Autocreated from bugs import,,,,1877.00000,,,CAL_-73_AD
+1146,13,CAL_66_AD-,Autocreated from bugs import,,,1884.00000,,,,CAL_66_AD-
+1147,13,CAL_43-70_AD,Autocreated from bugs import,,,1907.00000,1880.00000,,,CAL_43-70_AD
+1148,12,CAL_600_AD,Autocreated from bugs import,,,1350.00000,1350.00000,,,CAL_600_AD
+1149,13,CAL_975-1100_AD,Autocreated from bugs import,,,975.00000,850.00000,,,CAL_975-1100_AD
+1150,13,CAL_140_AD-,Autocreated from bugs import,,,1810.00000,,,,CAL_140_AD-
+1151,13,CAL_-1700_AD,Autocreated from bugs import,,,,250.00000,,,CAL_-1700_AD
+1152,13,CAL_1000-1300_AD,Autocreated from bugs import,,,950.00000,650.00000,,,CAL_1000-1300_AD
+1153,13,CAL_275_AD-,Autocreated from bugs import,,,1675.00000,,,,CAL_275_AD-
+1154,13,CAL_500-799_AD,Autocreated from bugs import,,,1450.00000,1151.00000,,,CAL_500-799_AD
+1155,13,CAL_110_BC-70_AD,Autocreated from bugs import,,,2060.00000,1880.00000,,,CAL_110_BC-70_AD
+1156,13,CAL_208-211_AD,Autocreated from bugs import,,,1742.00000,1739.00000,,,CAL_208-211_AD
+1157,13,CAL_3100-2500_BC,Autocreated from bugs import,,,5050.00000,4450.00000,,,CAL_3100-2500_BC
+1158,13,CAL_1635-1665_AD,Autocreated from bugs import,,,315.00000,285.00000,,,CAL_1635-1665_AD
+1159,13,CAL_4500-4200_BC,Autocreated from bugs import,,,6450.00000,6150.00000,,,CAL_4500-4200_BC
+1160,13,CAL_1433-1422_BC,Autocreated from bugs import,,,3383.00000,3372.00000,,,CAL_1433-1422_BC
+1161,13,CAL_629_AD-,Autocreated from bugs import,,,1321.00000,,,,CAL_629_AD-
+1162,13,CAL_150-225_AD,Autocreated from bugs import,,,1800.00000,1725.00000,,,CAL_150-225_AD
+1163,13,CAL_1690-1510_BC,Autocreated from bugs import,,,3640.00000,3460.00000,,,CAL_1690-1510_BC
+1164,13,CAL_1681-1725_AD,Autocreated from bugs import,,,269.00000,225.00000,,,CAL_1681-1725_AD
+1165,12,CAL_1545_AD,Autocreated from bugs import,,,405.00000,405.00000,,,CAL_1545_AD
+1166,13,CAL_1825-1875_AD,Autocreated from bugs import,,,125.00000,75.00000,,,CAL_1825-1875_AD
+1167,13,CAL_39552-40314_BC,Autocreated from bugs import,,,41502.00000,42264.00000,,,CAL_39552-40314_BC
