@@ -25,7 +25,7 @@ RUN dotnet publish "sead.query.api/sead.query.api.csproj" -c $BUILD_MODE -o /app
 #     && dotnet build   sead.query.api.csproj -c $BUILD_MODE \
 #     && dotnet publish sead.query.api.csproj -c $BUILD_MODE -o /src/app --no-restore
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 
