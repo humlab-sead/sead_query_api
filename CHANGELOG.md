@@ -4,6 +4,17 @@
 > All notable changes to this project will be documented in this file
 
 
+## [1.3.0](https://github.com/humlab-sead/sead_query_api/compare/v1.2.0...v1.3.0) (2025-05-09)
+
+### 🍕 Features
+
+* add CsvFacetContextDataFixture for CSV data handling in tests ([47b9926](https://github.com/humlab-sead/sead_query_api/commit/47b99267d538e87c5d2cd09f3b741cb8f3f6efac))
+
+### ✅ Tests
+
+* fixed errors in test data ([afc2a52](https://github.com/humlab-sead/sead_query_api/commit/afc2a5232a1b657b7d5eed27259aeea86bd4c8eb))
+* updated test data to [@2025](https://github.com/2025).05 ([e2ced8c](https://github.com/humlab-sead/sead_query_api/commit/e2ced8c0525d6ff4f48043486b8e3d368b815bff))
+
 ## [1.2.0](https://github.com/humlab-sead/sead_query_api/compare/v1.1.0...v1.2.0) (2025-05-08)
 
 ### 🍕 Features
