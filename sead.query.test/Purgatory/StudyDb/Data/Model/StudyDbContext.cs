@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SQT.Infrastructure;
 using SQT.Mocks;
+using SQT.Scaffolding;
 
 namespace SeadQueryTest.Infrastructure.Data.StudyModel.Model
 {

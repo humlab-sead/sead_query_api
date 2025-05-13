@@ -31,7 +31,7 @@ namespace SQT.Mocks
         }
 
         public virtual async Task<(
-            DbContextOptions,
+            DbContextOptions<T>,
             DbConnection
         )> CreateDbContextOptionsAsync2<T>()
             where T : DbContext

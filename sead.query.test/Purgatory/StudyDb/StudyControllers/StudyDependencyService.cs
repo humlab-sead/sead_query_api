@@ -8,7 +8,7 @@ namespace Deprecated.StudyDb
     {
 
         public StudyDependencyService() :
-            base(new JsonSeededFacetContextFactory().Create(ScaffoldUtility.GetInMemoryDataFolder("Data/StudyDb")))
+            base(new InMemoryFacetContextFactory().Create(ScaffoldUtility.GetInMemoryDataFolder("Data/StudyDb")))
         {
         }
     }

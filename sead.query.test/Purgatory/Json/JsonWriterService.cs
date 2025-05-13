@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using SeadQueryCore;
-using SeadQueryInfra;
-using SQT.Fixtures;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using SeadQueryCore;
+using SeadQueryInfra;
+using SQT.Fixtures;
 
 namespace SQT.Infrastructure
 {
