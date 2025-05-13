@@ -1,100 +1,143 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Globalization;
-// using System.IO;
-// using System.Linq;
-// using CsvHelper;
-// using CsvHelper.Configuration;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using CsvHelper;
+using CsvHelper.Configuration;
 
-// public class CsvFacetContextDataFixture : IDisposable
-// {
-//     private readonly Lazy<Dictionary<Type, IEnumerable<object>>> _lazyItems;
-//     public Dictionary<Type, IEnumerable<object>> Items => _lazyItems.Value;
-//     public string Folder { get; }
+namespace SQT.Scaffolding;
 
-//     public CsvFacetContextDataFixture(string folder)
-//     {
-//         Folder = folder;
-//         _lazyItems = new Lazy<Dictionary<Type, IEnumerable<object>>>(Load);
-//     }
+/// <summary>
+/// Fixture interface for loading seed data into FacetContext.
+/// </summary>
+public interface IFacetContextDataFixture
+{
+    /// <summary>
+    /// Loads CSV data for the given folder, schema, and table map.
+    /// </summary>
+    IReadOnlyDictionary<Type, IEnumerable<object>> Load(
+        string folder,
+        string schema,
+        IReadOnlyDictionary<Type, string> tableMap
+    );
+}
 
-//     private Dictionary<Type, IEnumerable<object>> Load()
-//     {
-//         var items = new Dictionary<Type, IEnumerable<object>>();
-//         // Loop over all types in Dictionary instead of using ScaffoldUtility.GetModelTypes()
-//         foreach (var type in ScaffoldUtility.GetModelTypes())
-//         {
-//             // call the generic Deserialize<T>
-//             var method = typeof(CsvFacetContextDataFixture)
-//                 .GetMethod(nameof(Deserialize), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-//                 .MakeGenericMethod(type);
+/// <summary>
+/// CSV-based implementation of <see cref="IFacetContextDataFixture"/>,
+/// using CsvHelper to read header-matched records in parallel.
+/// </summary>
+public sealed class CsvFacetContextDataFixture : IFacetContextDataFixture
+{
+    private readonly MethodInfo _openDeserialize;
 
-//             var list = (IEnumerable<object>)method.Invoke(this, new object[] { Folder });
-//             items[type] = list;
-//         }
-//         return items;
-//     }
+    /// <summary>
+    /// Transforms CSV header text into the form used to match CLR property names.
+    /// Default: strip underscores and lowercase.
+    /// </summary>
+    public Func<string, string> HeaderMatcher { get; set; } =
+        header => header.Replace("_", string.Empty).ToLowerInvariant();
 
-//     // this method will be invoked via reflection
-//     private IEnumerable<T> Deserialize<T>(string folder) where T : class, new()
-//     {
-//         var file = Path.Combine(folder, $"{typeof(T).Name}.csv");
-//         if (!File.Exists(file))
-//             throw new FileNotFoundException($"CSV fixture not found: {file}");
+    /// <summary>
+    /// Initializes a new instance and caches the generic Deserialize method.
+    /// </summary>
+    public CsvFacetContextDataFixture()
+    {
+        var mi =
+            typeof(CsvFacetContextDataFixture).GetMethod(
+                nameof(Deserialize),
+                BindingFlags.Instance | BindingFlags.NonPublic
+            )
+            ?? throw new InvalidOperationException(
+                "Internal error: cannot find Deserialize method."
+            );
+        _openDeserialize = mi.GetGenericMethodDefinition();
+    }
 
-//         using var reader = new StreamReader(file);
-//         using var csv    = new CsvReader(reader, CultureInfo.InvariantCulture);
+    /// <inheritdoc/>
+    public IReadOnlyDictionary<Type, IEnumerable<object>> Load(
+        string folder,
+        string schema,
+        IReadOnlyDictionary<Type, string> tableMap
+    )
+    {
+        if (folder == null)
+            throw new ArgumentNullException(nameof(folder));
+        if (schema == null)
+            throw new ArgumentNullException(nameof(schema));
+        if (tableMap == null)
+            throw new ArgumentNullException(nameof(tableMap));
 
-//         // If you need custom mapping (e.g. rename columns), you can configure here:
-//         // var map = new DefaultClassMap<T>();
-//         // map.AutoMap(CultureInfo.InvariantCulture);
-//         // csv.Context.RegisterClassMap(map);
+        var result = new ConcurrentDictionary<Type, IEnumerable<object>>();
 
-//         // this will read header first, then map each row to T
-//         return csv.GetRecords<T>().ToList();
-//     }
+        // Load CSVs in parallel to speed up deserialization
+        Parallel.ForEach(
+            tableMap,
+            kvp =>
+            {
+                var clrType = kvp.Key;
+                var tableName = kvp.Value;
+                var csvPath = ResolveCsvPath(folder, schema, tableName);
+                if (csvPath == null)
+                    return;
 
-//     public void Dispose()
-//     {
-//         // nothing to clean up here, unless you hold resources
-//     }
+                var gm = _openDeserialize.MakeGenericMethod(clrType);
+                var records = (IEnumerable<object>)gm.Invoke(this, new object[] { csvPath })!;
+                result[clrType] = records;
+            }
+        );
 
-//     protected override void OnModelCreating(ModelBuilder builder)
-// {
-//     // 1) Apply all your normal entity‐to‐table configuration
-//     base.OnModelCreating(builder);
+        // Return as a regular dictionary
+        return result.ToDictionary(k => k.Key, v => v.Value);
+    }
 
-//     // 2) Build a Type→TableName map for the PUBLIC schema
-//     var tableMap = builder.Model
-//         .GetEntityTypes()
-//         .Where(et => et.GetSchema() == "public")               // if you only care public
-//         .ToDictionary(
-//             et => et.ClrType,
-//             et => et.GetTableName()                            // relational metadata extension
-//         );
+    /// <summary>
+    /// Checks candidate paths and returns the first that exists, or null.
+    /// </summary>
+    private static string? ResolveCsvPath(string folder, string schema, string tableName)
+    {
+        var candidates = new[]
+        {
+            Path.Combine(folder, schema, tableName + ".csv"),
+            Path.Combine(folder, $"{schema}.{tableName}.csv"),
+            Path.Combine(folder, tableName + ".csv"),
+        };
+        return candidates.FirstOrDefault(File.Exists);
+    }
 
-//     // 3) Now seed via Csv, keyed by the real table name
-//     foreach (var kvp in tableMap)
-//     {
-//         var clrType  = kvp.Key;
-//         var table    = kvp.Value;                              // e.g. "order_items"
-//         var csvPath  = Path.Combine(Fixture.Folder, $"{table}.csv");
+    /// <summary>
+    /// Generic CSV deserialization using CsvHelper, streaming records safely.
+    /// </summary>
+    private IEnumerable<T> Deserialize<T>(string filename)
+        where T : class, new()
+    {
+        if (!File.Exists(filename))
+            throw new FileNotFoundException($"CSV fixture not found: {filename}");
 
-//         if (!File.Exists(csvPath))
-//             throw new FileNotFoundException($"Missing CSV for {clrType.Name} → {csvPath}");
+        // Read all records into a list inside the using block to avoid deferred enumeration issues
+        using var reader = new StreamReader(filename);
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            MissingFieldFound = null,
+            HeaderValidated = null,
+            PrepareHeaderForMatch = args => HeaderMatcher(args.Header),
+        };
+        using var csv = new CsvReader(reader, config);
 
-//         // Deserialize<T> overload that takes filename
-//         var method = typeof(CsvReaderService)
-//             .GetMethod(nameof(CsvReaderService.Deserialize), BindingFlags.Instance | BindingFlags.Public)
-//             .MakeGenericMethod(clrType);
-
-//         // pass in folder + explicit filename
-//         var records = (IEnumerable<object>)method.Invoke(
-//             Fixture.Reader, 
-//             new object[] { Fixture.Folder, $"{table}.csv" }
-//         );
-
-//         builder.Entity(clrType).HasData(records);
-//     }
-// }
-// }
+        try
+        {
+            var records = csv.GetRecords<T>().ToList();
+            return records;
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                $"Failed to parse CSV for {typeof(T).Name} from '{filename}'",
+                ex
+            );
+        }
+    }
+}
