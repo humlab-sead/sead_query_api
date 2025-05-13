@@ -8,14 +8,13 @@ namespace IntegrationTests.Deprecated
 {
     public class SeedPublicTests
     {
-        public SeedPublicTests()
-        {
-        }
+        public SeedPublicTests() { }
 
         [Fact(Skip = "In-memory SQLite database is pending deprecation.")]
         public async Task TestMethod_UsingSqliteInMemoryProvider_Success()
         {
-            using (var context = new JsonSeededFacetContextFactory().Create(ScaffoldUtility.GetInMemoryDataFolder("Data/FacetDb"))) 
+            var folder = ScaffoldUtility.GetPostgresDataFolder();
+            using (var context = await new InMemoryFacetContextFactory().CreateAsync(folder, "facet"))
             {
                 var count = await context.FacetGroups.CountAsync();
                 Assert.True(count > 0);
@@ -24,6 +23,5 @@ namespace IntegrationTests.Deprecated
                 Assert.Equal(999, u.FacetGroupId);
             }
         }
-
     }
 }
