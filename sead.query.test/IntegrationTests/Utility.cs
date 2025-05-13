@@ -5,6 +5,7 @@ using SeadQueryCore.QueryBuilder;
 using SQT;
 using SQT.Infrastructure;
 using SQT.Mocks;
+using SQT.Scaffolding;
 using Xunit;
 
 [Collection("UsePostgresFixture")]
@@ -17,9 +18,12 @@ public class IntegrationTestBase
     public IQuerySetupBuilder QuerySetupBuilder { get; private set; }
     public IRepositoryRegistry Registry { get; private set; }
 
-    public IntegrationTestBase(SqliteFacetContext facetConfig = null)
+    public IntegrationTestBase(InMemoryFacetContext facetConfig = null)
     {
-        DependencyService = new DependencyService(facetConfig) { Options = SettingFactory.DefaultSettings };
+        DependencyService = new DependencyService(facetConfig)
+        {
+            Options = SettingFactory.DefaultSettings,
+        };
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();
@@ -27,9 +31,18 @@ public class IntegrationTestBase
         SqlCompilerLocator = Container.Resolve<IResultSqlCompilerLocator>();
         Registry = Container.Resolve<IRepositoryRegistry>();
     }
-    public FacetsConfig2 FakeFacetsConfig(string uri)
-        => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
-    public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
-        => ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
+    public FacetsConfig2 FakeFacetsConfig(string uri) =>
+        new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+
+    public virtual ResultConfig FakeResultConfig(
+        string facetCode,
+        string specificationKey,
+        string viewTypeId
+    ) =>
+        ResultConfigFactory.Create(
+            Registry.Facets.GetByCode(facetCode),
+            Registry.Results.GetByKey(specificationKey),
+            viewTypeId
+        );
 }
