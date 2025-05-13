@@ -64,12 +64,9 @@ public sealed class CsvFacetContextDataFixture : IFacetContextDataFixture
         IReadOnlyDictionary<Type, string> tableMap
     )
     {
-        if (folder == null)
-            throw new ArgumentNullException(nameof(folder));
-        if (schema == null)
-            throw new ArgumentNullException(nameof(schema));
-        if (tableMap == null)
-            throw new ArgumentNullException(nameof(tableMap));
+        ArgumentNullException.ThrowIfNull(folder);
+        ArgumentNullException.ThrowIfNull(schema);
+        ArgumentNullException.ThrowIfNull(tableMap);
 
         var result = new ConcurrentDictionary<Type, IEnumerable<object>>();
 
@@ -97,7 +94,7 @@ public sealed class CsvFacetContextDataFixture : IFacetContextDataFixture
     /// <summary>
     /// Checks candidate paths and returns the first that exists, or null.
     /// </summary>
-    private static string? ResolveCsvPath(string folder, string schema, string tableName)
+    private static string ResolveCsvPath(string folder, string schema, string tableName)
     {
         var candidates = new[]
         {
