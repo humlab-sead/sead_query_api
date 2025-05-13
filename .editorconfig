@@ -1,5 +1,4 @@
 ﻿[*.cs]
-
 # IDE0063: Use simple 'using' statement
 csharp_prefer_simple_using_statement = false:suggestion
 
@@ -100,6 +99,11 @@ indent_size = 2
 indent_size = 4
 insert_final_newline = true
 charset = utf-8
+max_line_length = 140
+trim_trailing_whitespace = true
+indent_style = space
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
 
 ###############################
 # .NET Coding Conventions     #
