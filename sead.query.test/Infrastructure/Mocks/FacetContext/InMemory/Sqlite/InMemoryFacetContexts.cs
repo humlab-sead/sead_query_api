@@ -130,44 +130,44 @@ public class InMemoryFacetContext : FacetContext, IDisposable
 //         return InMemoryFacetContext.CreateAsync(settings, fixture).GetAwaiter().GetResult();
 //     });
 
-public class InMemoryJsonSeededFacetContext : InMemoryFacetContext
-{
-    public InMemoryJsonSeededFacetContext(string folder)
-        : this(
-            new SqliteConnectionFactory()
-                .CreateDbContextOptionsAsync2<InMemoryJsonSeededFacetContext>()
-                .GetAwaiter()
-                .GetResult(),
-            folder
-        ) { }
+// public class InMemoryJsonSeededFacetContext : InMemoryFacetContext
+// {
+//     public InMemoryJsonSeededFacetContext(string folder)
+//         : this(
+//             new SqliteConnectionFactory()
+//                 .CreateDbContextOptionsAsync2<InMemoryJsonSeededFacetContext>()
+//                 .GetAwaiter()
+//                 .GetResult(),
+//             folder
+//         ) { }
 
-    public InMemoryJsonSeededFacetContext(
-        (DbContextOptions options, DbConnection connection) args,
-        string folder
-    )
-        : base(args.options, new JsonFacetContextDataFixture(folder), args.connection) { }
+//     public InMemoryJsonSeededFacetContext(
+//         (DbContextOptions options, DbConnection connection) args,
+//         string folder
+//     )
+//         : base(args.options, new JsonFacetContextDataFixture(folder), args.connection) { }
 
-    public InMemoryJsonSeededFacetContext(
-        (
-            DbContextOptions options,
-            DbConnection connection,
-            JsonFacetContextDataFixture fixture
-        ) args
-    )
-        : base(args.options, args.fixture, args.connection) { }
-}
+//     public InMemoryJsonSeededFacetContext(
+//         (
+//             DbContextOptions options,
+//             DbConnection connection,
+//             JsonFacetContextDataFixture fixture
+//         ) args
+//     )
+//         : base(args.options, args.fixture, args.connection) { }
+// }
 
-public class SqliteFacetContext : InMemoryJsonSeededFacetContext
-{
-    private static bool _created;
+// public class SqliteFacetContext : InMemoryJsonSeededFacetContext
+// {
+//     private static bool _created;
 
-    public SqliteFacetContext()
-        : base(ScaffoldUtility.GetInMemoryDataFolder("Data/FacetDb"))
-    {
-        if (!_created)
-        {
-            Database.EnsureCreated();
-            _created = true;
-        }
-    }
-}
+//     public SqliteFacetContext()
+//         : base(ScaffoldUtility.GetInMemoryDataFolder("Data/FacetDb"))
+//     {
+//         if (!_created)
+//         {
+//             Database.EnsureCreated();
+//             _created = true;
+//         }
+//     }
+// }
