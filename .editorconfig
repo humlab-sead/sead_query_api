@@ -181,7 +181,7 @@ csharp_style_inlined_variable_declaration = true:suggestion
 ###############################
 # New line preferences
 csharp_new_line_before_open_brace = all
-csharp_new_line_before_else = true
+csharp_new_line_before_else = false
 csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
 csharp_new_line_before_members_in_object_initializers = true
