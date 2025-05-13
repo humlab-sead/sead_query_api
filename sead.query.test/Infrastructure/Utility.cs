@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using SeadQueryCore;
-using SeadQueryInfra;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore;
+using SeadQueryInfra;
 
 namespace SQT.Scaffolding;
 
@@ -17,10 +17,8 @@ public static class IEnumerableExtensions
     }
 }
 
-
 public static class ScaffoldUtility
 {
-
     public static string GetRootFolder(string subfolder = "")
     {
         string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -37,11 +35,6 @@ public static class ScaffoldUtility
     public static string GetPostgresDataFolder()
     {
         return GetRootFolder("Infrastructure/Mocks/FacetContext/PostgreSQL/Data/initdb.d");
-    }
-
-    public static string GetInMemoryDataFolder(string subFolder="Data/FacetDb")
-    {
-        return GetRootFolder($"Infrastructure/Mocks/FacetContext/InMemory/{subFolder}");
     }
 
     public static string GetProjectRoot()
@@ -65,32 +58,33 @@ public static class ScaffoldUtility
 
         return probeFolder.FullName;
     }
-    
+
     public static ICollection<Type> GetModelTypes()
     {
-        return [
-                typeof(ResultFieldType),
-                typeof(ResultField),
-                typeof(ResultViewType),
-                typeof(FacetType),
-                typeof(FacetGroup),
-                typeof(Table),
-                typeof(FacetClause),
-                typeof(FacetChild),
-                typeof(FacetTable),
-                typeof(TableRelation),
-                typeof(ResultSpecificationField),
-                typeof(ResultSpecification),
-                typeof(ViewState),
-                typeof(Facet)
-            ];
+        return
+        [
+            typeof(ResultFieldType),
+            typeof(ResultField),
+            typeof(ResultViewType),
+            typeof(FacetType),
+            typeof(FacetGroup),
+            typeof(Table),
+            typeof(FacetClause),
+            typeof(FacetChild),
+            typeof(FacetTable),
+            typeof(TableRelation),
+            typeof(ResultSpecificationField),
+            typeof(ResultSpecification),
+            typeof(ViewState),
+            typeof(Facet),
+        ];
     }
-
 
     public static IPathFinder DefaultRouteFinder(IRepositoryRegistry registry)
     {
         return new PathFinder(registry.Relations.GetEdges());
     }
+
     public static IPathFinder DefaultRouteFinder(IFacetContext testContext)
     {
         using (var registry = new RepositoryRegistry(testContext))
@@ -132,12 +126,11 @@ public static class ScaffoldUtility
         {
             RedirectStandardOutput = true,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
         };
 
         using var process = new Process { StartInfo = processInfo };
         process.Start();
         return process.StandardOutput.ReadToEnd();
     }
-
 }
