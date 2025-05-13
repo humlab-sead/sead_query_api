@@ -65,7 +65,7 @@
     // "dotnet-test-explorer.runInParallel": true,
     // "dotnet-test-explorer.showCodeLens": false,
     "[csharp]": {
-        "editor.defaultFormatter": "ms-dotnettools.csharp",
+        "editor.defaultFormatter": "csharpier.csharpier-vscode",
         // "editor.defaultFormatter": "csharpier.csharpier-vscode"
     },
     "workbench.tree.indent": 10,
