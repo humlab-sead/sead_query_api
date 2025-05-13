@@ -9,7 +9,6 @@ using SeadQueryCore.Plugin.GeoPolygon;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
 using System;
-using System.Diagnostics;
 
 namespace SQT.Infrastructure
 {
