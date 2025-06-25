@@ -1,6 +1,5 @@
 ﻿namespace SeadQueryCore.Plugin.Intersect;
 
-
 public class IntersectCategoryInfoService(
     IIntersectCategoryInfoSqlCompiler categoryInfoSqlCompiler,
     IIntersectOuterBoundService outerBoundService
@@ -40,4 +39,3 @@ public class IntersectCategoryInfoService(
         };
     }
 }
-

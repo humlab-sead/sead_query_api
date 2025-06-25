@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SeadQueryAPI.DTO;
+using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using SeadQueryAPI.Serializers;
-using SeadQueryAPI.DTO;
 
 namespace SeadQueryAPI.Controllers
 {
@@ -56,10 +56,8 @@ namespace SeadQueryAPI.Controllers
             return result;
         }
 
-        private ResultConfigDTO GetResultConfig(JObject data)
-            => data["resultConfig"].ToObject<ResultConfigDTO>();
+        private ResultConfigDTO GetResultConfig(JObject data) => data["resultConfig"].ToObject<ResultConfigDTO>();
 
-        private FacetsConfig2 GetFacetsConfig(JObject data)
-            => data["facetsConfig"].ToObject<FacetsConfig2>();
+        private FacetsConfig2 GetFacetsConfig(JObject data) => data["facetsConfig"].ToObject<FacetsConfig2>();
     }
 }
