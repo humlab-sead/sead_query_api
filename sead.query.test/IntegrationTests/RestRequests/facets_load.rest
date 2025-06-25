@@ -1,4 +1,24 @@
 
+POST https://browser.sead.se/query/api/result/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+      "requestId": 1,
+      "requestType": "populate",
+      "targetCode": "analysis_entity_ages",
+      "triggerCode": "analysis_entity_ages",,
+      "facetConfigs": [
+          {
+              "facetCode": "analysis_entity_ages",
+              "position": 1,
+              "picks": [],
+              "textFilter": ""
+          }
+      ]
+}
+
 ### Picks:  (none)
 POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
@@ -20,7 +40,29 @@ accept: application/json
           }
       ]
 }
-'
+
+### Picks:  (none)
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+      "requestId": 1,
+      "requestType": "populate",
+      "domainCode": "dendrochronology",
+      "targetCode": "sites",
+      "triggerCode": "sites",
+      "facetConfigs": [
+          {
+              "facetCode": "sites",
+              "position": 1,
+              "picks": [],
+              "textFilter": ""
+          }
+      ]
+}
+
 ### Type:   discrete
 ### Chain:  sites
 ### Picks:  (none)

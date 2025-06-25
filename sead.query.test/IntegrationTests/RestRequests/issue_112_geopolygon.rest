@@ -16,6 +16,23 @@ accept: application/json
     }]
 }
 
+
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "RequestId":1,
+    "RequestType":"populate",
+    "TargetCode":"sites_polygon",
+    "FacetConfigs":[ {
+        "FacetCode":"sites_polygon",
+        "Position":1,
+        "Picks":[ ]
+    }]
+}
+
 ###
 POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
 content-type: application/json
