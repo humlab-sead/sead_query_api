@@ -1,16 +1,11 @@
+using System;
 using Autofac;
 using Autofac.Core.Registration;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.Services.Result;
-using SeadQueryInfra;
-using SQT.Infrastructure;
-using SQT.Mocks;
 using SQT.Scaffolding;
-using System;
-using System.Diagnostics;
-using System.IO;
 using Xunit;
 
 namespace SQT.Infrastructure
@@ -55,8 +50,10 @@ namespace SQT.Infrastructure
     public class DependencyInjectionTests
     {
         private IContainer CreateDependencyContainer()
-        {   var settingsMock = MockerWithFacetContext.MockSettings();
-            var facetContext = new SqliteFacetContext();
+        {
+            var settingsMock = MockerWithFacetContext.MockSettings();
+            var fixtureOptions = new InMemoryFacetContextOptions { Folder = ScaffoldUtility.GetPostgresDataFolder(), Schema = "facet" };
+            var facetContext = InMemoryFacetContext.CreateAsync(fixtureOptions).GetAwaiter().GetResult();
             var container = DependencyService.CreateContainer(facetContext, settingsMock.Object);
             return container;
         }
@@ -93,8 +90,13 @@ namespace SQT.Infrastructure
         {
             var builder = new ContainerBuilder();
             builder.RegisterInstance<IDependent>(new MyDependent()); //.As<IDependent>();
-            builder.RegisterType<MyController>().As<IMyController>()
-                .OnActivating(e => { e.Instance.Dependent = e.Context.Resolve<IDependent>(); });
+            builder
+                .RegisterType<MyController>()
+                .As<IMyController>()
+                .OnActivating(e =>
+                {
+                    e.Instance.Dependent = e.Context.Resolve<IDependent>();
+                });
 
             var container = builder.Build();
             using (var scope = container.BeginLifetimeScope())
@@ -107,7 +109,6 @@ namespace SQT.Infrastructure
         [Fact]
         public void CanResolveRegisteredDependencies()
         {
-            //using (var context = JsonSeededFacetContextFactory.Create())
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
@@ -131,10 +132,10 @@ namespace SQT.Infrastructure
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
             }
         }
+
         [Fact]
         public void CanResolveResultSqlCompilerLocator()
         {
-            //using (var context = JsonSeededFacetContextFactory.Create())
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
@@ -155,7 +156,9 @@ namespace SQT.Infrastructure
             using (var container = CreateDependencyContainer())
             using (var scope = container.BeginLifetimeScope())
             {
-                Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() => scope.ResolveKeyed<IFacetContentService>(EFacetType.GeoPolygon));
+                Assert.Throws<Autofac.Core.Registration.ComponentNotRegisteredException>(() =>
+                    scope.ResolveKeyed<IFacetContentService>(EFacetType.GeoPolygon)
+                );
             }
         }
     }

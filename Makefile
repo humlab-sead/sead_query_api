@@ -2,7 +2,18 @@ SHELL := /bin/bash
 
 include docker/.env
 
+DBHOST:=$(shell cat ~/vault/.default.sead.server)
+DBUSER:=$(shell cat ~/vault/.default.sead.username)
+DBNAME:=sead_staging_202504
+DBPORT:=8089
+DBPASSWORD:=$(shell cat ~/vault/.default.sead.password)
+
+SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
+
 .PHONY: test clean build publish tidy
+
+show-settings:
+	@echo "info: postgres://$(DBUSER)@$(DBHOST):$(DBPORT)/$(DBNAME)"
 
 test:
 	@export $(cat conf/.env | xargs) \
@@ -12,10 +23,23 @@ test:
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
-	@ time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample sead_staging_202504 --port 8089 --fixed-ids ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/sample-fixture.csv
+	@ time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample $(DBNAME) --port $(DBPORT) --fixed-ids ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/sample-fixture.csv
 	@sudo rm -rf ./sead.query.test/tmp//sead-query-pgdata-cache
 	@echo "info: pgdata cache of test database invalidated"
 	@echo "info: test data generation completed!"
+
+
+scaffold-facet-context: show-settings
+	@echo "info: creating facet context..."
+	@dotnet tool install -g dotnet-ef
+	@rm -rf $(SCAFFOLD_CONTEXT_FOLDER) && mkdir -p $(SCAFFOLD_CONTEXT_FOLDER)/Models $(SCAFFOLD_CONTEXT_FOLDER)/Context
+	@dotnet ef dbcontext scaffold \
+		"Host=$(DBHOST);Port=$(DBPORT);Database=$(DBNAME);Username=$(DBUSER);Password=$(DBPASSWORD)" \
+		Npgsql.EntityFrameworkCore.PostgreSQL \
+		--context-dir $(SCAFFOLD_CONTEXT_FOLDER)/Context \
+		--output-dir $(SCAFFOLD_CONTEXT_FOLDER)/Models --force \
+		--no-onconfiguring --no-pluralize --schema facet \
+		--project ./sead.query.core/sead.query.core.csproj
 
 clean:
 	@dotnet clean

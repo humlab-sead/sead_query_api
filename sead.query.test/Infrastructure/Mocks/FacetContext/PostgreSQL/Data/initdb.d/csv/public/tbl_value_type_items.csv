@@ -1,0 +1,14 @@
+value_type_item_id,value_type_id,name,description
+1,12,-ew,-ew
+2,12,+ew,+ew
+3,12,-lw,-lw
+4,12,+lw,+lw
+5,12,-llw,-llw
+6,13,W,W
+7,13,ej W,ej W
+8,14,Blunt-end,Blunt-end
+9,15,NO,NO
+10,16,UDG,Uracil-DNA Glycosylase (UDG) Treatment
+11,16,NO,No treatment
+12,17,XY,Male (XY)
+13,17,XX,Female (XX)

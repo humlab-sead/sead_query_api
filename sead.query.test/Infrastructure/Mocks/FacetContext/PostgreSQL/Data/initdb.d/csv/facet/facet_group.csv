@@ -1,0 +1,9 @@
+facet_group_id,facet_group_key,display_title,description,is_applicable,is_default
+1,others,Others,Others,t,f
+2,space_time,Space/Time,Space/Time,t,f
+3,time,Time,Time,t,f
+4,ecology,Ecology,Ecology,t,f
+5,measured_values,Measured values,Measured values,t,f
+6,taxonomy,Taxonomy,Taxonomy,t,f
+99,ROOT,ROOT,ROOT,f,f
+999,DOMAIN,Domain facets,DOMAIN,f,f

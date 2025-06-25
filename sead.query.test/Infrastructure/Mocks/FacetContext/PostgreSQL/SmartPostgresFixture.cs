@@ -1,14 +1,11 @@
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
-using DotNet.Testcontainers.Configurations;
 using System.Threading.Tasks;
 using Xunit;
 using System.IO;
 using Npgsql;
 using SQT.Scaffolding;
 using System;
-using System.Linq;
 using Testcontainers.PostgreSql;
+using System.Linq;
 
 namespace SQT.Infrastructure;
 
@@ -43,7 +40,6 @@ public class SmartPostgresFixture : IAsyncLifetime
 
             var options = new SettingFactory().GetSettings();
             var runId = Guid.NewGuid().ToString("N").Substring(0, 8);
-
 
             Directory.CreateDirectory(CachedDataFolder);
 
@@ -111,53 +107,28 @@ public class SmartPostgresFixture : IAsyncLifetime
         await using var cmd = new NpgsqlCommand(resetSql, conn);
         await cmd.ExecuteNonQueryAsync();
 
-        // Re-seed database (load schema)
         await SetupDatabase();
     }
 
     private async Task SetupDatabase()
     {
         var schemaFilePath = ScaffoldUtility.GetPostgresDataFolder();
-        foreach (var file in Directory.EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly))
+
+        var files = Directory
+            .EnumerateFiles(schemaFilePath, "*.sql", SearchOption.TopDirectoryOnly)
+            .OrderBy(Path.GetFileName);
+
+        foreach (var file in files)
         {
             await ExecuteSqlFileAsync(Container.GetConnectionString(), file);
         }
 
-        // 2) bulk-load public/*.csv
-        var csvDir = Path.Combine(schemaFilePath, "csv");
-        if (Directory.Exists(csvDir))
+        foreach (var schema in new[] { "public", "facet" })
         {
-            await using var conn = new NpgsqlConnection(Container.GetConnectionString());
-            await conn.OpenAsync();
-
-            await using var transaction = await conn.BeginTransactionAsync(); // Start transaction
-
-            await using (var cmd = new NpgsqlCommand("set constraints all deferred;", conn, transaction))
-            {
-                await cmd.ExecuteNonQueryAsync();
-            }
-
-            foreach (var csvFile in Directory.EnumerateFiles(csvDir, "*.csv"))
-            {
-                var tableName = Path.GetFileNameWithoutExtension(csvFile);
-                var headerLine = File.ReadLines(csvFile).FirstOrDefault();
-                var columns = headerLine.Split(',').Select(c => c.Trim()).ToArray();
-
-                var copySql = $"COPY public.\"{tableName}\" ({string.Join(", ", columns)}) FROM STDIN (FORMAT csv, HEADER true)";
-                await using var importer = conn.BeginTextImport(copySql);
-
-                using var reader = File.OpenText(csvFile);
-                while (!reader.EndOfStream)
-                {
-                    var line = await reader.ReadLineAsync();
-                    await importer.WriteAsync(line + "\n");
-                }
-
-                await importer.FlushAsync();  // flush the last batch
-            }
-            await transaction.CommitAsync(); // Commit transaction, constraints are now checked
+            await Utility.LoadData(schema, Path.Combine(schemaFilePath, "csv", schema), Container.GetConnectionString());
         }
     }
+
 
     private async Task ExecuteSqlFileAsync(string connectionString, string sqlFilePath)
     {

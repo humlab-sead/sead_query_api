@@ -5,13 +5,10 @@ using SeadQueryCore;
 
 namespace SeadQueryInfra
 {
-    public class FacetTypeRepository(RepositoryRegistry registry) : Repository<FacetType, int>(registry), IFacetTypeRepository
-    {
-    }
+    public class FacetTypeRepository(RepositoryRegistry registry) : Repository<FacetType, int>(registry), IFacetTypeRepository { }
 
-    public class FacetGroupRepository(RepositoryRegistry registry) : Repository<FacetGroup, int>(registry), IFacetGroupRepository
-    {
-    }
+    public class FacetGroupRepository(RepositoryRegistry registry) : Repository<FacetGroup, int>(registry), IFacetGroupRepository { }
+
     // "editor.semanticTokenColorCustomizations": {
     //     "[Visual Studio Dark]": {
     //         "rules": {
@@ -25,10 +22,12 @@ namespace SeadQueryInfra
     public class FacetTableRepository(RepositoryRegistry registry) : Repository<FacetTable, int>(registry), IFacetTableRepository
     {
         private List<FacetTable> __aliasTables = null;
+
         public List<FacetTable> FindThoseWithAlias()
         {
             return __aliasTables ??= GetAll().Where(p => p.HasAlias).ToList();
         }
+
         protected override IQueryable<FacetTable> GetInclude(IQueryable<FacetTable> set)
         {
             return set.Include(x => x.Table);
@@ -45,10 +44,7 @@ namespace SeadQueryInfra
 
         protected override IQueryable<Facet> GetInclude(IQueryable<Facet> set)
         {
-            return set.Include(x => x.FacetGroup)
-                      .Include(x => x.FacetType)
-                      .Include("Tables.Table")
-                      .Include(x => x.Clauses);
+            return set.Include(x => x.FacetGroup).Include(x => x.FacetType).Include("Tables.Table").Include(x => x.Clauses);
         }
 
         public Dictionary<string, Facet> ToDictionary()
@@ -88,22 +84,17 @@ namespace SeadQueryInfra
             return children.ToList();
         }
 
-        public IEnumerable<Facet> GetOfType(EFacetType type)
-            => Find(z => z.FacetTypeId == type);
+        public IEnumerable<Facet> GetOfType(EFacetType type) => Find(z => z.FacetTypeId == type);
 
-        public IEnumerable<Facet> GetAllUserFacets()
-            => GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable).ToList();
-
+        public IEnumerable<Facet> GetAllUserFacets() =>
+            GetAll().Where(z => z.FacetGroupId != 0 && z.FacetGroupId != DOMAIN_FACET_GROUP_ID && z.IsApplicable).ToList();
     }
 
     public static class FacetRepositoryEagerBuilder
     {
         public static IQueryable<Facet> BuildFacetDefinition(this IQueryable<Facet> query)
         {
-            return query.Include(x => x.FacetGroup)
-                        .Include(x => x.FacetType)
-                        .Include("Tables.Table")
-                        .Include(x => x.Clauses);
+            return query.Include(x => x.FacetGroup).Include(x => x.FacetType).Include("Tables.Table").Include(x => x.Clauses);
         }
     }
 

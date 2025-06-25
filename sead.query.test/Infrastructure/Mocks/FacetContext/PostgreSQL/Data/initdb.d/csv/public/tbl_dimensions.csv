@@ -1,0 +1,44 @@
+dimension_id,dimension_abbrev,dimension_description,dimension_name,unit_id,method_group_id
+1,w,Sample weight,Weight,2,14
+2,,Depth of lower sample boundary from unknown or unspecified reference level,Lower boundary depth from unknown reference,1,14
+3,,Width of entire sample or (square) core width,Sample/core width,1,14
+4,h,Height of sample,Height,1,14
+5,v,Sample volume,Volume,3,14
+6,d,Diameter of core,Core diameter,1,14
+7,X/N,X coordinate or Northing in metres. Negative values are south of the origin (zero coordinate).,X/North,1,17
+9,X/N,X coordinate or Northing in intrinsic units. Negative values are south of the origin (zero coordinate).,X/North,5,17
+10,X/E,X coordinate or Easting in metres. Negative values are west of the meridian or origin (the origin (0/0)).,X/East,1,17
+11,X/E,X coordinate or Easting in intrinsic units. Negative values are west of the meridian or origin (zero coordinate).,X/East,5,17
+12,X/E,X coordinate or Easting in decimal degrees. Negative values are west of the meridian or origin (zero coordinate).,X/East,4,17
+13,Y/N,Y coordinate or Northing in metres. Negative values are south of the origin (zero coordinate).,Y/North,1,17
+14,Y/N,Y coordinate or Northing in intrinsic units. Negative values are south of the origin (zero coordinate).,Y/North,5,17
+15,Y/E,Y coordinate or Easting in metres. Negative values are west of the meridian or origin (zero coordinate).,Y/East,1,17
+16,Y/N,Y coordinate or Northing in decimal degrees. Negative values are west of the meridian or origin (zero coordinate).,Y/North,4,17
+17,Y/E,Y coordinate or Easting in intrinsic units. Negative values are west of the meridian or origin (zero coordinate).,Y/East,5,17
+18,Z/Alt,Z coordinate or Altitude in metres.,Z/Altitude,1,17
+19,,Positive values denote depth of upper sample/unit/core etc boundary from ground or water surface in metres.,Positive boundary depth from surface upper,1,14
+20,,Negative values denote depth of upper sample/unit/core etc boundary from ground or water surface in metres.,Upper boundary depth (negative) from surface,1,14
+21,,Positive values denote depth of lower sample/unit/core etc boundary from ground or water surface in metres.,Lower boundary depth (positive) from surface,1,14
+22,,Negative values denote depth of lower sample/unit/core etc boundary from ground or water surface in metres.,Lower boundary depth (negative) from surface,1,14
+23,,"Positive values denote depth of upper sample/unit/core etc boundary from reference line (e.g. profile line, core top), reference point or datum, in metres.",Upper boundary depth (positive) from reference,1,14
+24,,"Negative values denote depth of upper sample/unit/core etc boundary from reference line (e.g. profile line, core top), reference point or datum, in metres.",Upper boundary depth (negative) from reference,1,14
+25,,"Positive values denote depth of lower sample/unit/core etc boundary from reference line (e.g. profile line, core top), reference point or datum, in metres.",Lower boundary depth (positive) from reference,1,14
+26,,"Negative values denote depth of lower sample/unit/core etc boundary from reference line (e.g. profile line, core top), reference point or datum, in metres.",Lower boundary depth (negative) from reference,1,14
+27,,Depth of upper sample boundary from unknown or unspecified reference level,Upper boundary depth from unknown reference,1,14
+28,h,Vessel height,Vessel height,1,14
+29,,Minimum firing temperature required for creation of ceramic object,Firing temperature (min),9,14
+30,,Vessel base diameter,Base diameter,1,14
+31,,Vessel rim diameter,Rim diameter,1,14
+32,,Approximate ceramics melting point,Melting point,9,14
+33,,Temperature at which ceramic vessel melting point was measured but not achieved. E.g. >1350,Melting point higher than,9,14
+34,Sherd thickness,"Thickness of a sherd of burnt clay, measured in millimeters",Sherd thickness (mm),10,14
+35,Base minimum,"Vessel base diameter in centimeters, minimum size measurement",Base diameter (cm) minimum,16,14
+36,Base maximum,"Vessel base diameter in centimeters, maximum size measurement",Base diameter (cm) maximum,16,14
+37,Rim minimum,"Vessel rim diameter in centimeters, minimum size measurement",Rim diameter (cm) minimum,16,14
+38,Rim maximum,"Vessel rim diameter in centimeters, maximum size measurement",Rim diameter (cm) maximum,16,14
+39,Sherd minimum,"Vessel sherd thickness in millimeters, minimum size measurement",Sherd thickness (mm) minimum,10,14
+40,Sherd maximum,"Vessel sherd thickness in millimeters, maximum size measurement",Sherd thickness (mm) maximum,10,14
+41,Height minimum,"Vessel height in centimeters, minimum",Vessel height (cm) minimum,16,14
+42,Height maximum,"Vessel height in centimeters, maximum",Vessel height (cm) maximum,16,14
+43,Sampling height (cm),Height at which a sample was retrieved. Positive values denotes distance measured from the ground-level. ,Sampling height in centimetres,16,14
+44,Tree diameter (m),Diameter of tree sampled for dendrochronological and/or climatological investigation.,Tree diameter in metres,1,14

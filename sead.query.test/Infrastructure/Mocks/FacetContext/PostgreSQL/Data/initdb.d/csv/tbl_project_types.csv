@@ -1,7 +1,0 @@
-project_type_id,project_type_name,description
-4,Teaching,A project either fully or primarily orientated towards the teaching of students.
-5,Consultancy,A project either fully or primarily funded as contract work.
-6,Research,A project either fully or primarily orientated towards research.
-8,Unclassified,A project of unknown character.
-0,Unknown,Unknown project type
-9,Infrastructure,A project for the development of research infrastructure (e.g. database or data development)

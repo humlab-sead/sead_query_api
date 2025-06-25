@@ -12,13 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Infrastructure\FacetContext\**" />
+    <Compile Remove="Purgatory\**" />
     <Compile Remove="Infrastructure\Services\**" />
     <Compile Remove="Models\**" />
-    <EmbeddedResource Remove="Infrastructure\FacetContext\**" />
+    <EmbeddedResource Remove="Purgatory\**" />
     <EmbeddedResource Remove="Infrastructure\Services\**" />
     <EmbeddedResource Remove="Models\**" />
-    <None Remove="Infrastructure\FacetContext\**" />
+    <None Remove="Purgatory\**" />
     <None Remove="Infrastructure\Services\**" />
     <None Remove="Models\**" />
   </ItemGroup>

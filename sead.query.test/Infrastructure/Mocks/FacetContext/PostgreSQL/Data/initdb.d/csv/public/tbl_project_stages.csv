@@ -1,0 +1,8 @@
+project_stage_id,stage_name,description
+0,Unknown,Unknown project stage
+1,Desktop study,A pre-field map and document based study
+2,Prospection,"A field based, either non-invasive or low impact, investigation to delimit potential areas of interest."
+3,Excavation,"Site excavation, digging holes in the ground."
+4,Preliminary investigation,A field or office (or both) based investigation with the aim of identifying potential areas of interest and evaluating the importance of an area for future studies and/or preservation.
+6,Dendrochronological investigation,"An investigation using tree rings to determine the age of wood. Sampling includes living, felled, and dead trees."
+7,Unclassified,Project stage irrelevant for this type of project

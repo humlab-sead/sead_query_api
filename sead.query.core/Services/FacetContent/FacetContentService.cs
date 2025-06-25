@@ -1,6 +1,6 @@
-using SeadQueryCore.QueryBuilder;
 using System.Data;
 using System.Linq;
+using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {
@@ -10,7 +10,7 @@ namespace SeadQueryCore
         IQuerySetupBuilder builder,
         ITypedQueryProxy queryProxy,
         ICategoryCountService categoryCountService
-        ) : QueryServiceBase(context, builder), IFacetContentService
+    ) : QueryServiceBase(context, builder), IFacetContentService
     {
         public ICategoryCountService CategoryCountService { get; set; } = categoryCountService;
         public IFacetSetting Config { get; } = config;
@@ -31,7 +31,7 @@ namespace SeadQueryCore
                 Distribution = categoryCounts.CategoryCounts,
                 IntervalInfo = categoryCounts.CategoryInfo,
                 SqlQuery = categoryCounts.SqlQuery,
-                Picks = userPicks ?? []
+                Picks = userPicks ?? [],
             };
             return facetContent;
         }

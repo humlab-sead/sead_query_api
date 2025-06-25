@@ -1,12 +1,11 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data.Common;
+using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SeadQueryInfra;
-using System.Data.Common;
-using System.Threading.Tasks;
 
 namespace SQT.Mocks
 {
-
     // public class SqliteContextOptionsFactory
     // {
     //     public virtual DbContextOptions Create<T>(DbConnection connection=null) where T : DbContext
@@ -24,13 +23,18 @@ namespace SQT.Mocks
         /// <summary>
         /// Asynchronously build DbContextOptions by first creating/opening the connection.
         /// </summary>
-        public virtual async Task<DbContextOptions<T>> CreateDbContextOptionsAsync<T>() where T : DbContext
+        public virtual async Task<DbContextOptions<T>> CreateDbContextOptionsAsync<T>()
+            where T : DbContext
         {
             var (options, _) = await CreateDbContextOptionsAsync2<T>();
             return (DbContextOptions<T>)options;
         }
 
-        public virtual async Task<(DbContextOptions, DbConnection)> CreateDbContextOptionsAsync2<T>() where T : DbContext
+        public virtual async Task<(
+            DbContextOptions<T>,
+            DbConnection
+        )> CreateDbContextOptionsAsync2<T>()
+            where T : DbContext
         {
             var connection = await CreateAsync().ConfigureAwait(false);
             var builder = new DbContextOptionsBuilder<T>()
@@ -42,8 +46,8 @@ namespace SQT.Mocks
         /// <summary>
         /// Synchronous options builder (unchanged).
         /// </summary>
-        public virtual DbContextOptions CreateDbContextOptions<T>() where T : DbContext
-            => CreateDbContextOptionsAsync<T>().GetAwaiter().GetResult();
+        public virtual DbContextOptions CreateDbContextOptions<T>()
+            where T : DbContext => CreateDbContextOptionsAsync<T>().GetAwaiter().GetResult();
 
         /// <summary>
         /// Asynchronously create and open an in-memory SQLite connection.
@@ -58,8 +62,6 @@ namespace SQT.Mocks
         /// <summary>
         /// Alias for CreateAsync – returns a generic DbConnection.
         /// </summary>
-        public virtual async Task<DbConnection> CreateAndOpenAsync()
-            => await CreateAsync();
- 
+        public virtual async Task<DbConnection> CreateAndOpenAsync() => await CreateAsync();
     }
 }

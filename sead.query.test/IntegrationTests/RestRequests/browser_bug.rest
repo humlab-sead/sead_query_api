@@ -1,0 +1,60 @@
+
+# POST https://browser.sead.se/query/api/facets/load
+# content-type: application/json
+# mode: cors
+# accept: application/json
+
+# {
+#     "RequestId":1,
+#     "RequestType":"populate",
+#     "TargetCode":"sites_polygon",
+#     "FacetConfigs":[ {
+#         "FacetCode":"sites_polygon",
+#         "Position":1,
+#         "Picks":[ ]
+#     }]
+# }
+
+### 
+POST https://browser.sead.se/query/api/result/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "facetsConfig": {
+        "requestId": 34,
+        "requestType": "populate",
+        "domainCode": "",
+        "targetCode": "ecocode",
+        "triggerCode": "ecocode",
+        "facetConfigs": [
+            {
+                "facetCode": "ecocode_system",
+                "position": 1,
+                "picks": [
+                    {
+                        "pickType": 1,
+                        "pickValue": 2,
+                        "text": 2
+                    }
+                ],
+                "textFilter": ""
+            },
+            {
+                "facetCode": "ecocode",
+                "position": 2,
+                "picks": [],
+                "textFilter": ""
+            }
+        ]
+    },
+    "resultConfig": {
+        "requestId": 34,
+        "sessionId": "1",
+        "viewTypeId": "map",
+        "aggregateKeys": [
+            "site_level"
+        ]
+    }
+}

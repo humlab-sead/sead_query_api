@@ -1,0 +1,6 @@
+facet_type_id,facet_type_name,reload_as_target
+1,discrete,f
+2,range,t
+3,geopolygon,t
+4,rangesintersect,t
+9,undefined,f

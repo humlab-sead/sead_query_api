@@ -1,0 +1,20 @@
+result_field_id,result_field_key,table_name,column_name,display_text,field_type_id,activated,link_url,link_label,datatype
+1,sitename,tbl_sites,tbl_sites.site_name,Site name,single_item,t,,,text
+2,record_type,tbl_record_types,tbl_record_types.record_type_name,Record type(s),text_agg_item,t,,,text
+3,analysis_entities,tbl_analysis_entities,tbl_analysis_entities.analysis_entity_id,Filtered records,single_item,t,,,int
+4,site_link,tbl_sites,tbl_sites.site_id,Full report,link_item,t,deprecated,Show site report,int
+5,site_link_filtered,tbl_sites,tbl_sites.site_id,Filtered report,link_item,t,deprecated,Show filtered report,int
+6,aggregate_all_filtered,tbl_aggregate_samples,'Aggregated'::text,Filtered report,link_item_filtered,t,deprecated,,text
+7,sample_group_link,tbl_sample_groups,tbl_sample_groups.sample_group_id,Full report,link_item,t,deprecated,,int
+8,sample_group_link_filtered,tbl_sample_groups,tbl_sample_groups.sample_group_id,Filtered report,link_item,t,deprecated,,int
+9,abundance,tbl_abundances,tbl_abundances.abundance,number of taxon_id,single_item,t,,,text
+10,taxon_id,tbl_abundances,tbl_abundances.taxon_id,Taxon id  (specie),single_item,t,,,int
+11,dataset,tbl_datasets,tbl_datasets.dataset_name,Dataset,single_item,t,,,text
+12,dataset_link,tbl_datasets,tbl_datasets.dataset_id,Dataset details,single_item,t,deprecated,,int
+13,dataset_link_filtered,tbl_datasets,tbl_datasets.dataset_id,Filtered report,single_item,t,deprecated,,int
+14,sample_group,tbl_sample_groups,tbl_sample_groups.sample_group_name,Sample group,single_item,t,,,text
+15,methods,tbl_methods,tbl_methods.method_name,Method,single_item,t,,,text
+18,category_id,tbl_sites,category_id,Site ID,single_item,t,,,int
+19,category_name,tbl_sites,category_name,Site Name,single_item,t,,,text
+20,latitude_dd,tbl_sites,latitude_dd,Latitude (dd),single_item,t,,,decimal
+21,longitude_dd,tbl_sites,longitude_dd,Longitude (dd),single_item,t,,,decimal

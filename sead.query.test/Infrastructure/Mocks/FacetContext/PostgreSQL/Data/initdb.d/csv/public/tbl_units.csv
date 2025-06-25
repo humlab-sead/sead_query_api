@@ -1,0 +1,16 @@
+unit_id,description,unit_abbrev,unit_name
+1,Distance measure SI unit,m,metres
+2,Weight measure SI unit,kg,kilograms
+3,Volume measurement SI unit,l,litres
+4,Angular positional measurement,dd,Decimal degrees
+5,Intrinsic units of scale system,,Units
+6,1.4959787e08 kilometres,,Astronomical unit
+7,Uncalibrated Carbon 14 years,C14yrs,14C years
+8,Calendar years,yrs,Years
+9,Degrees Celcius,°C,Degrees Celcius
+10,Distance measure 1/1 000 metres,mm,millimetres
+12,Distance measure 1/1 000 000 metres,µm,microns
+13,Weight measure 1/1 000 kilograms,g,grams
+14,Volume measurement 1/1000 litres,ml,millilitres
+15,Undefined and uncalibrated years other than 14C years. May be result of age determination through a variety of methods and reflect years as defined within the framework of the method.,uncal yrs,undefined uncalibrated years
+16,Distance measure in 1/100 metres,cm,centimetres
