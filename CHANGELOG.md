@@ -4,6 +4,32 @@
 > All notable changes to this project will be documented in this file
 
 
+## [1.4.0](https://github.com/humlab-sead/sead_query_api/compare/v1.3.0...v1.4.0) (2025-06-25)
+
+### 🍕 Features
+
+* add InMemoryFacetContextFactory for creating in-memory context instances ([44646e8](https://github.com/humlab-sead/sead_query_api/commit/44646e8776daa7fa6d0815f093d561804537fc3e))
+* enhance Makefile with database configuration and scaffold context setup ([c1d679b](https://github.com/humlab-sead/sead_query_api/commit/c1d679b1e25326bad45ccbbddf3e9a177729809a))
+* implement InMemoryFacetContext with CSV support and improved error handling ([ab03130](https://github.com/humlab-sead/sead_query_api/commit/ab03130a441cf19b1b101989ec9e55b18824accc))
+
+### 🧑‍💻 Code Refactoring
+
+* deprecate GetInMemoryDataFolder and improve formatting in Utility.cs ([c2e9876](https://github.com/humlab-sead/sead_query_api/commit/c2e9876ff2042a85ccdac5e0c3f684385e0549b6))
+* enhance CsvFacetContextDataFixture for parallel CSV loading and improved error handling ([ca879ac](https://github.com/humlab-sead/sead_query_api/commit/ca879aceb25995612fb147e5c60412dbf2586be4))
+* moved JSON related data and code to purgatory ([cf68ef4](https://github.com/humlab-sead/sead_query_api/commit/cf68ef4e2cb4c2f1c4ad21734f56553449e039b4))
+* remove unused System.Diagnostics namespace from Dependency.cs ([32a077b](https://github.com/humlab-sead/sead_query_api/commit/32a077baed2d9f9640a51f58ccbe51f69e9070c0))
+* reorganize using directives and improve method formatting in JsonSeededFacetContextFactory ([6ffdf0e](https://github.com/humlab-sead/sead_query_api/commit/6ffdf0e2777a88fea09fdbfc7fdd702896163b63))
+* reorganize using directives and improve method formatting in SqliteConnectionFactory ([a8589ba](https://github.com/humlab-sead/sead_query_api/commit/a8589ba51798e558024c8669f6372588a1eff787))
+* simplify null checks and update method signature in CsvFixture ([a247502](https://github.com/humlab-sead/sead_query_api/commit/a247502a69ef9ed9b464c3d523e124969bc49d68))
+* use InMemoryFacetContext, deprecate SqliteFacetContext ([38cb36e](https://github.com/humlab-sead/sead_query_api/commit/38cb36edf09185fc18282a57da736a1f1c98eed6))
+* use InMemoryFacetContextFactory ([6ad2e01](https://github.com/humlab-sead/sead_query_api/commit/6ad2e01a32030c43d4f2c519969fc1ef3378f3b6))
+* use InMemotyFacetContext in test base class ([02831ae](https://github.com/humlab-sead/sead_query_api/commit/02831ae50ea582b07bd4cbeb34852b4340fdc095))
+
+### ✅ Tests
+
+* disable fixtures ([38c7061](https://github.com/humlab-sead/sead_query_api/commit/38c706126d82ad8407f4d1e2fe6c81683723cdf6))
+* store facet data as CSV ([4418ff5](https://github.com/humlab-sead/sead_query_api/commit/4418ff5c35cef08726ce809c1919b74932a6cb46))
+
 ## [1.3.0](https://github.com/humlab-sead/sead_query_api/compare/v1.2.0...v1.3.0) (2025-05-09)
 
 ### 🍕 Features
