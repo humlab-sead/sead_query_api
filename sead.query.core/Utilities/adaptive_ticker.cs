@@ -55,6 +55,7 @@ public readonly struct TickerInfo(decimal dataLow, decimal dataHigh, decimal int
     public int IntervalCount => EndFactor - StartFactor + 1;
 
     public override string ToString() => $"({TickLow}, {TickHigh}, {Interval})";
+
     public Tuple<decimal, decimal, decimal> ToTuple() => new Tuple<decimal, decimal, decimal>(TickLow, TickHigh, Interval);
 }
 
@@ -86,7 +87,8 @@ public class AdaptiveTicker(
     {
         TickerInfo ticker = GetInterval(dataLow, dataHigh, desiredNTicks);
 
-        var majorTicks = Enumerable.Range(ticker.StartFactor, ticker.IntervalCount)
+        var majorTicks = Enumerable
+            .Range(ticker.StartFactor, ticker.IntervalCount)
                               .Select(factor => factor * ticker.Interval)
                               .Where(tick => dataLow <= tick && tick <= dataHigh)
                               .ToList();
@@ -102,10 +104,10 @@ public class AdaptiveTicker(
         if (NumMinorTicks > 0 && majorTicks.Count != 0)
         {
             decimal minorInterval = interval / NumMinorTicks;
-            minorTicks = majorTicks.SelectMany(tick => Enumerable
-                .Range(0, NumMinorTicks)
-                .Select(x => tick + x * minorInterval)
-                .Where(mt => dataLow <= mt && mt <= dataHigh))
+            minorTicks = majorTicks
+                .SelectMany(tick =>
+                    Enumerable.Range(0, NumMinorTicks).Select(x => tick + x * minorInterval).Where(mt => dataLow <= mt && mt <= dataHigh)
+                )
                 .ToList();
         }
 
@@ -140,12 +142,13 @@ public class AdaptiveTicker(
 
         var candidateMantissas = ExtendedMantissas();
 
-        var errors = candidateMantissas.Select(mantissa => Math.Abs(desiredNumberOfTicks - (dataRange / (mantissa * idealMagnitude)))).ToList();
+        var errors = candidateMantissas
+            .Select(mantissa => Math.Abs(desiredNumberOfTicks - (dataRange / (mantissa * idealMagnitude))))
+            .ToList();
         decimal bestMantissa = candidateMantissas[ArgMin(errors)];
         decimal interval = Clamp(bestMantissa * idealMagnitude);
 
         return new TickerInfo(dataLow, dataHigh, interval);
-
     }
 
     private decimal Clamp(decimal interval)

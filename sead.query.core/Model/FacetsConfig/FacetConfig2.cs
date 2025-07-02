@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace SeadQueryCore
 {
@@ -10,11 +10,11 @@ namespace SeadQueryCore
         {
             return facetConfigs.Contains(facetConfig);
         }
+
         public static bool ContainsFacet(this IEnumerable<FacetConfig2> facetConfigs, Facet facet)
         {
             return facetConfigs.FirstOrDefault(z => z.FacetCode == facet.FacetCode) != default(FacetConfig2);
         }
-
     }
 
     public class FacetConfig2
@@ -29,28 +29,19 @@ namespace SeadQueryCore
         public Facet Facet { get; set; }
 
         [JsonConstructor]
-        public FacetConfig2()
-        {
-        }
+        public FacetConfig2() { }
 
         [JsonProperty]
         public List<decimal> PickValues
         {
-            set
-            {
-                Picks = value.Select(x => new FacetConfigPick(x)).ToList();
-            }
+            set { Picks = value.Select(x => new FacetConfigPick(x)).ToList(); }
         }
 
         [JsonProperty]
         public List<List<decimal>> Coordinates
         {
-            set
-            {
-                Picks = value.SelectMany(coords => coords.Select(x => new FacetConfigPick(x))).ToList();
-            }
+            set { Picks = value.SelectMany(coords => coords.Select(x => new FacetConfigPick(x))).ToList(); }
         }
-
 
         public FacetConfig2(Facet facet, int position, string filter, List<FacetConfigPick> picks)
         {
@@ -62,11 +53,14 @@ namespace SeadQueryCore
         }
 
         public int GetPickCount() => Picks?.Count ?? 0;
+
         public bool HasPicks() => GetPickCount() > 0;
+
         public bool HasCriterias() => (Facet?.Clauses?.Count ?? 0) > 0;
+
         public bool HasConstraints() => HasPicks() || HasCriterias();
-        public bool HasEnforcedConstraints()
-            => Facet?.Clauses?.Where(x => x.EnforceConstraint).Any() ?? false;
+
+        public bool HasEnforcedConstraints() => Facet?.Clauses?.Where(x => x.EnforceConstraint).Any() ?? false;
 
         public void ClearPicks() => Picks.Clear();
 

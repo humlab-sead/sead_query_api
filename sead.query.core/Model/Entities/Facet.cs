@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace SeadQueryCore
 {
@@ -12,7 +13,7 @@ namespace SeadQueryCore
         Discrete = 1,
         Range = 2,
         GeoPolygon = 3,
-        Intersect = 4
+        Intersect = 4,
     }
 
     [JsonObject(MemberSerialization.OptOut)]
@@ -35,12 +36,18 @@ namespace SeadQueryCore
         [JsonIgnore]
         public int FacetGroupId { get; set; }
 
-        public string FacetGroupKey { get { return FacetGroup?.FacetGroupKey ?? "unknown"; } }
+        public string FacetGroupKey
+        {
+            get { return FacetGroup?.FacetGroupKey ?? "unknown"; }
+        }
 
         [JsonIgnore]
         public EFacetType FacetTypeId { get; set; }
 
-        public string FacetTypeKey { get { return FacetType?.FacetTypeName ?? "unknown"; } }
+        public string FacetTypeKey
+        {
+            get { return FacetType?.FacetTypeName ?? "unknown"; }
+        }
 
         [JsonIgnore]
         public string CategoryIdExpr { get; set; }
@@ -49,7 +56,7 @@ namespace SeadQueryCore
         public string CategoryIdType { get; set; }
         
         [JsonIgnore]
-        public string CategoryIdOperator{ get; set; }
+        public string CategoryIdOperator { get; set; }
 
         [JsonIgnore]
         public string CategoryNameExpr { get; set; }
@@ -90,8 +97,6 @@ namespace SeadQueryCore
         [JsonIgnore]
         public IEnumerable<string> Criterias => Clauses.Select(x => x.Clause);
 
-        public IEnumerable<string> GetResolvedTableNames() =>
-            Tables.Select(x => x.ResolvedAliasOrTableOrUdfName);
-
+        public IEnumerable<string> GetResolvedTableNames() => Tables.Select(x => x.ResolvedAliasOrTableOrUdfName);
     }
 }
