@@ -148,6 +148,16 @@ namespace SeadQueryInfra
                 entity.HasOne<Table>(x => x.Table).WithMany().HasForeignKey(p => p.TableId);
             });
 
+            builder.Entity<FacetPredicate>(entity =>
+            {
+                entity.ToTable("facet_predicate", "facet").HasKey(b => b.TemplateId);
+                entity.Property(b => b.TemplateId).HasColumnName("template_id").IsRequired();
+                entity.Property(b => b.FacetId).HasColumnName("facet_id").IsRequired();
+                entity.Property(b => b.AnchorName).HasColumnName("anchor_name").IsRequired();
+                entity.Property(b => b.SqlTemplate).HasColumnName("sql_template").IsRequired();
+                entity.HasOne<Facet>(x => x.Facet).WithMany().HasForeignKey(p => p.FacetId);
+            });
+
             builder.Entity<ResultViewType>(entity =>
             {
                 entity.ToTable("result_view_type", "facet").HasKey(b => b.ViewTypeId);

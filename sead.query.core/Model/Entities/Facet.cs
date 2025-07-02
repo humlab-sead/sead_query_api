@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -24,6 +23,7 @@ namespace SeadQueryCore
             Clauses = [];
             Tables = [];
             Children = [];
+            Predicates = [];
         }
 
         public int FacetId { get; set; }
@@ -54,7 +54,7 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         public string CategoryIdType { get; set; }
-        
+
         [JsonIgnore]
         public string CategoryIdOperator { get; set; }
 
@@ -80,6 +80,13 @@ namespace SeadQueryCore
 
         [JsonIgnore]
         public virtual List<FacetTable> Tables { get; set; }
+
+        public virtual List<FacetPredicate> Predicates { get; set; }
+
+        public virtual FacetPredicate GetPredicate(string anchorKeyName)
+        {
+            return Predicates.FirstOrDefault(x => x.AnchorName == anchorKeyName);
+        }
 
         [JsonIgnore]
         public virtual List<FacetClause> Clauses { get; set; }
