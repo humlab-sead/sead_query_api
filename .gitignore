@@ -373,3 +373,4 @@ deployment
 .pgpass
 bin
 tmp
+.chats
