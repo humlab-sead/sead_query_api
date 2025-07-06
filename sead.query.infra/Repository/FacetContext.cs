@@ -8,7 +8,8 @@ namespace SeadQueryInfra
         public ITypedQueryProxy TypedQueryProxy { get; set; }
         public IDynamicQueryProxy DynamicQueryProxy { get; set; }
 
-        public FacetContext(DbContextOptions options) : base(options)
+        public FacetContext(DbContextOptions options)
+            : base(options)
         {
             TypedQueryProxy = new DatabaseQueryProxy(this);
             DynamicQueryProxy = new DatabaseQueryProxy(this);
@@ -65,29 +66,19 @@ namespace SeadQueryInfra
 
             builder.Entity<FacetChild>(entity =>
             {
-                entity.HasKey(e => new { e.FacetCode, e.ChildFacetCode })
-                    .HasName("child_facet_pkey");
+                entity.HasKey(e => new { e.FacetCode, e.ChildFacetCode }).HasName("child_facet_pkey");
 
                 entity.ToTable("facet_children", "facet");
 
-                entity.Property(e => e.FacetCode)
-                    .HasColumnName("facet_code")
-                    .HasColumnType("character varying");
+                entity.Property(e => e.FacetCode).HasColumnName("facet_code").HasColumnType("character varying");
 
-                entity.Property(e => e.ChildFacetCode)
-                    .HasColumnName("child_facet_code")
-                    .HasColumnType("character varying");
+                entity.Property(e => e.ChildFacetCode).HasColumnName("child_facet_code").HasColumnType("character varying");
 
                 entity.Property(e => e.Position).HasColumnName("position");
 
-                entity.HasOne(d => d.Child).WithMany()
-                    .HasPrincipalKey(d => d.FacetCode)
-                    .HasForeignKey(d => d.ChildFacetCode);
+                entity.HasOne(d => d.Child).WithMany().HasPrincipalKey(d => d.FacetCode).HasForeignKey(d => d.ChildFacetCode);
 
-                entity.HasOne(d => d.Facet)
-                    .WithMany(p => p.Children)
-                    .HasPrincipalKey(p => p.FacetCode)
-                    .HasForeignKey(d => d.FacetCode);
+                entity.HasOne(d => d.Facet).WithMany(p => p.Children).HasPrincipalKey(p => p.FacetCode).HasForeignKey(d => d.FacetCode);
             });
 
             builder.Entity<Facet>(entity =>
