@@ -66,7 +66,7 @@ public class AdaptiveTicker(
     decimal? maxInterval = null,
     int desiredNumTicks = 6,
     int numMinorTicks = 0
-    )
+)
 {
     /// <summary>
     /// This class is heavely based on the Bokeh AdaptiveTicker class
@@ -89,9 +89,9 @@ public class AdaptiveTicker(
 
         var majorTicks = Enumerable
             .Range(ticker.StartFactor, ticker.IntervalCount)
-                              .Select(factor => factor * ticker.Interval)
-                              .Where(tick => dataLow <= tick && tick <= dataHigh)
-                              .ToList();
+            .Select(factor => factor * ticker.Interval)
+            .Where(tick => dataLow <= tick && tick <= dataHigh)
+            .ToList();
 
         var minorTicks = GetMinorTicksNoDefaults(dataLow, dataHigh, ticker.Interval, majorTicks);
 
