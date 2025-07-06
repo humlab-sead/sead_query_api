@@ -47,7 +47,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.SourceTableId).HasColumnName("source_table_id").IsRequired();
                 entity.Property(b => b.TargetTableId).HasColumnName("target_table_id").IsRequired();
                 entity.Property(b => b.Weight).HasColumnName("weight").IsRequired();
-                entity.Property(b => b.SourceColumName).HasColumnName("source_column_name").IsRequired();
+                entity.Property(b => b.SourceColumnName).HasColumnName("source_column_name").IsRequired();
                 entity.Property(b => b.TargetColumnName).HasColumnName("target_column_name").IsRequired();
                 // FIXME: Add alter table table_relation add column extra_constraint varchar null
                 // entity.Property(b => b.ExtraConstraint).HasColumnName("extra_constraint");

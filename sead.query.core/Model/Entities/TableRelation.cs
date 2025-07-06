@@ -152,7 +152,7 @@ namespace SeadQueryCore
         public int Weight { get; set; }
         //public string ExtraConstraint { get; set; }
 
-        public string SourceColumName { get; set; }
+        public string SourceColumnName { get; set; }
         public string TargetColumnName { get; set; }
 
         [JsonIgnore] public int SourceId { get { return SourceTableId; } }
@@ -176,7 +176,7 @@ namespace SeadQueryCore
                 TargetTableId = TargetTableId,
                 SourceTable = SourceTable,
                 TargetTable = TargetTable,
-                SourceColumName = SourceColumName,
+                SourceColumnName = SourceColumnName,
                 TargetColumnName = TargetColumnName
             };
         }
@@ -187,7 +187,7 @@ namespace SeadQueryCore
             x.TableRelationId = -x.TableRelationId;
             (x.SourceTableId, x.TargetTableId) = (x.TargetTableId, x.SourceTableId);
             (x.SourceTable, x.TargetTable) = (x.TargetTable, x.SourceTable);
-            (x.SourceColumName, x.TargetColumnName) = (x.TargetColumnName, x.SourceColumName);
+            (x.SourceColumnName, x.TargetColumnName) = (x.TargetColumnName, x.SourceColumnName);
             return x;
         }
 
