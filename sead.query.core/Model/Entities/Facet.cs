@@ -23,7 +23,7 @@ namespace SeadQueryCore
             Clauses = [];
             Tables = [];
             Children = [];
-            Predicates = [];
+            Templates = [];
         }
 
         public int FacetId { get; set; }
@@ -81,11 +81,11 @@ namespace SeadQueryCore
         [JsonIgnore]
         public virtual List<FacetTable> Tables { get; set; }
 
-        public virtual List<FacetPredicate> Predicates { get; set; }
+        public virtual List<FacetTemplate> Templates { get; set; }
 
-        public virtual FacetPredicate GetPredicate(string anchorKeyName)
+        public virtual FacetTemplate GetTemplate(string anchorKeyName)
         {
-            return Predicates.FirstOrDefault(x => x.AnchorName == anchorKeyName);
+            return Templates.FirstOrDefault(x => x.AnchorName == anchorKeyName);
         }
 
         [JsonIgnore]
