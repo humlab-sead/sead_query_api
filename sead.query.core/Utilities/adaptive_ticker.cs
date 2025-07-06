@@ -134,6 +134,11 @@ public class AdaptiveTicker(
 
     public TickerInfo GetInterval(decimal dataLow, decimal dataHigh, int desiredNumberOfTicks)
     {
+        if (dataLow == 0 && dataHigh == 0)
+        {
+            return new TickerInfo(0, 0, 1);
+        }
+
         decimal dataRange = dataHigh - dataLow;
         decimal idealInterval = GetIdealInterval(dataLow, dataHigh, desiredNumberOfTicks);
 
