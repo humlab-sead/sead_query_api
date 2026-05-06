@@ -1,7 +1,9 @@
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.Services.Result;
+using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -79,6 +81,83 @@ namespace SQT.Services
             Assert.NotEmpty(result.Data.DataCollection);
             Assert.Equal(testItemCount, result.Data.DataCollection.Count);
             Assert.Equal("#RETURN-SQL#", result.Query);
+        }
+
+        [Fact]
+        public void Load_TabularSiteLevel_AddsCountryResultField()
+        {
+            // Arrange
+            var mockResultPayloadServiceLocator = MockResultPayloadServiceLocator(null);
+            var fakeFacetsConfig = FakeFacetsConfig("palaeoentomology://sites:sites");
+            var fakeResultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var mockQueryProxy = MockDynamicQueryProxyWithFakeData(10, fakeResultConfig.Specifications.First());
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, "result_facet", "site_level");
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
+            var capturedFields = new List<ResultSpecificationField>();
+
+            var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
+            mockResultSqlCompiler
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultSpecificationField>>()))
+                .Callback<QuerySetup, Facet, IEnumerable<ResultSpecificationField>>((_, _, fields) => capturedFields = fields.ToList())
+                .Returns("#RETURN-SQL#");
+            var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
+            mockResultSqlCompilerLocator
+                .Setup(z => z.Locate(It.IsAny<string>()))
+                .Returns(mockResultSqlCompiler.Object);
+
+            // Act
+            var service = new ResultService(
+                FakeRegistry(),
+                mockQueryProxy.Object,
+                mockQuerySetupBuilder.Object,
+                mockResultPayloadServiceLocator.Object,
+                mockResultSqlCompilerLocator.Object
+            );
+            var result = service.Load(fakeFacetsConfig, fakeResultConfig);
+
+            // Assert
+            var countryField = capturedFields.FirstOrDefault(z => z.ResultField?.ResultFieldKey == "country");
+            Assert.NotNull(countryField);
+            Assert.Equal("Country", countryField.ResultField.DisplayText);
+            Assert.Equal("site_country.country_name", countryField.ResultField.ColumnName);
+            Assert.Contains(result.Meta.Columns, z => z.FieldKey == "country");
+        }
+
+        [Fact]
+        public void Load_MapResult_DoesNotAddCountryResultField()
+        {
+            // Arrange
+            var mockResultPayloadServiceLocator = MockResultPayloadServiceLocator(null);
+            var fakeFacetsConfig = FakeFacetsConfig("sites:sites");
+            var fakeResultConfig = FakeResultConfig("map_result", "map_result", "map");
+            var mockQueryProxy = MockDynamicQueryProxyWithFakeData(10, fakeResultConfig.Specifications.First());
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, "map_result", "map_result");
+            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
+            var capturedFields = new List<ResultSpecificationField>();
+
+            var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
+            mockResultSqlCompiler
+                .Setup(z => z.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultSpecificationField>>()))
+                .Callback<QuerySetup, Facet, IEnumerable<ResultSpecificationField>>((_, _, fields) => capturedFields = fields.ToList())
+                .Returns("#RETURN-SQL#");
+            var mockResultSqlCompilerLocator = new Mock<IResultSqlCompilerLocator>();
+            mockResultSqlCompilerLocator
+                .Setup(z => z.Locate(It.IsAny<string>()))
+                .Returns(mockResultSqlCompiler.Object);
+
+            // Act
+            var service = new ResultService(
+                FakeRegistry(),
+                mockQueryProxy.Object,
+                mockQuerySetupBuilder.Object,
+                mockResultPayloadServiceLocator.Object,
+                mockResultSqlCompilerLocator.Object
+            );
+            var result = service.Load(fakeFacetsConfig, fakeResultConfig);
+
+            // Assert
+            Assert.DoesNotContain(capturedFields, z => z.ResultField?.ResultFieldKey == "country");
+            Assert.DoesNotContain(result.Meta.Columns, z => z.FieldKey == "country");
         }
     }
 }

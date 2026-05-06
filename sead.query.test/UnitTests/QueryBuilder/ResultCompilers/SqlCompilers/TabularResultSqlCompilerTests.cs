@@ -2,6 +2,7 @@ using SeadQueryCore;
 using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
+using System.Linq;
 using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
@@ -36,6 +37,37 @@ namespace SQT.QueryBuilder.ResultCompilers
             Assert.True(match.Success);
             Assert.True(match.InnerSelect.Success);
             Assert.NotEmpty(match.InnerSelect.Tables);
+        }
+
+        [Fact]
+        public void Compile_WithCountryField_AddsLeftJoinCountryLookup()
+        {
+            // Arrange
+            var fakeFacetsConfig = FakeFacetsConfig("sites:sites");
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, "result_facet", "site_level");
+            var fields = FakeResultConfig("result_facet", "site_level", "tabular").GetSortedFields().ToList();
+            var singleItemType = fields.First(z => z.FieldType?.FieldTypeId == "single_item").FieldType;
+            fields.Add(new ResultSpecificationField
+            {
+                FieldType = singleItemType,
+                FieldTypeId = singleItemType.FieldTypeId,
+                ResultField = new ResultField
+                {
+                    ResultFieldKey = "country",
+                    ColumnName = "site_country.country_name",
+                    DisplayText = "Country",
+                    FieldType = singleItemType
+                }
+            });
+
+            // Act
+            var compiler = new TabularResultSqlCompiler();
+            var result = compiler.Compile(fakeQuerySetup, fakeQuerySetup.Facet, fields);
+
+            // Assert
+            Assert.Contains("LEFT JOIN (", result);
+            Assert.Contains("country_locations.location_type_id = 1", result);
+            Assert.Contains("site_country.site_id = tbl_sites.site_id", result);
         }
     }
 }
