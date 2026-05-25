@@ -1,0 +1,811 @@
+This is a listing of tables and columns in the SEAD database in the form of a (semicolon seperated) CSV file. Note that all FKs (i.e. columns where is_sk equals YES) with name xyz_id references table tbl_xyz (plural form of tbl_xyz) having PK  (is_pk equals YES) xyz_id. All columns ending with "_id" are integers, starting with "is_" is boolean. Other columns you can treat as text (unless other type is ovious). It's an archealogical database. Could you suggest an ontology, with most significant entities, and create a proposed OBDA model?
+
+```tsv
+schema_name	entity_name	table_name	column_name	comment	is_pk	is_fk
+public	Abundance Element	tbl_abundance_elements		Contains reference data that defines the type of element, part, or unit being counted, as indicated by the values in tbl_abundances. For insects, this is often the Minimum Number of Individuals (MNI), but it can also include individual body parts such as wings, shells, or leg segments. For plant remains (macrofossils), it generally represents specific plant parts like seeds, leaves, or bud scales.		
+public		tbl_abundance_elements	abundance_element_id	Primary key (automatically incremented).	YES	NO
+public		tbl_abundance_elements	element_description	Detailed description of the element, such as 'minimum number of individuals', 'base of seed grain', or 'covering of leaf or flower bud'.	NO	NO
+public		tbl_abundance_elements	element_name	Abbreviated name for the element, such as 'mni', 'seed', or 'leaf'.	NO	NO
+public		tbl_abundance_elements	record_type_id	Specifies record types, thereby restricting the list of available elements based on the record type. This facilitates the use of the same term for different proxies, such as 'mni insects' versus 'mni seeds', without causing confusion.	NO	YES
+public		tbl_abundance_ident_levels	abundance_id	Specifies the related abundance record.	NO	YES
+public		tbl_abundance_ident_levels	identification_level_id	Specifies the specific identification level.	NO	YES
+public	Abundance Identification Level	tbl_abundance_ident_levels		Represents the degree of certainty in taxonomic identification, categorized by levels such as Family, Genus, or Species (e.g., cf. Family, cf. Genus, cf. Species).		
+public		tbl_abundance_ident_levels	abundance_ident_level_id	Primary key (automatically incremented).	YES	NO
+public		tbl_abundance_modifications	abundance_id	Specifies the related abundance record.	NO	YES
+public	Abundance Modification	tbl_abundance_modifications		Contains information about modifications applied to individual specimen counts, such as carbonization, corrosion, or calcification. This enables recording multiple instances of the same taxon with varying modifications (e.g., Hordeum sp. carbonized and Hordeum sp. unmodified).		
+public		tbl_abundance_modifications	abundance_modification_id	Primary key (automatically incremented).	YES	NO
+public		tbl_abundance_modifications	modification_type_id	Specifies the type of modification applied.	NO	YES
+public		tbl_abundances	abundance	Represents the frequency of occurrence, which is usually a numerical count, but can also indicate presence (1), a categorical value, or a value on a relative scale, in accordance with the dataset's data type.	NO	NO
+public		tbl_abundances	abundance_element_id	Specifies specific parts of a taxon, like leaf, seed, or MNI (Minimum Number of Individuals), enabling detailed taxonomic recording.	NO	YES
+public		tbl_abundances	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public	Abundance	tbl_abundances		Records data related to biological proxies, such as individual counts, presence indicators, or scaled values, linking each entry to a specific taxon through an analysis entity. It serves as a species list detailing abundance information for a single physical sample. The intermediate analysis entity allows for the association of multiple proxies per sample. Entries typically reflect count values (abundance), but can also denote presence (1) or use categorical or relative scales, as specified by the dataset's data type.		
+public		tbl_abundances	abundance_id	Primary key (automatically incremented).	YES	NO
+public		tbl_abundances	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_activity_types	activity_type	Name showing the type of activity or life stage.	NO	NO
+public	Activity Type	tbl_activity_types		Defines the life stage or activity of an organism during a specific time of the year, such as 'adult' or 'flowering'.		
+public		tbl_activity_types	activity_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_activity_types	description	Detailed description of the organism's state during the specified time, such as 'adult' or 'flowering'.	NO	NO
+public		tbl_age_types	age_type	Abbreviation representing the chronological system (e.g., AD, BC, BP).	NO	NO
+public		tbl_age_types	description	Detailed explanation of the chronological system denoted by the abbreviation.	NO	NO
+public	Age Type	tbl_age_types		Provides a reference for different chronological systems used to denote years, such as AD, BC, and BP.		
+public		tbl_age_types	age_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_alt_ref_types	alt_ref_type	The name or type of the alternative reference assigned to a sample.	NO	NO
+public	Alternative Reference Type	tbl_alt_ref_types		Defines the types of alternative references or names assigned to samples. These references might include identifiers like lab numbers, field numbers, museum numbers, or site excavation numbers, indicating the origin or purpose of the sample's alternative reference.		
+public		tbl_alt_ref_types	alt_ref_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_alt_ref_types	description	A detailed description of the alternative reference type, providing additional context or clarification.	NO	NO
+public		tbl_analysis_boolean_values	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_boolean_values	qualifier	Additional information qualifying the value.	NO	NO
+public	Analysis Boolean Value	tbl_analysis_boolean_values		Stores analysis values that represent a boolean (true/false) condition.		
+public		tbl_analysis_boolean_values	analysis_boolean_value_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_boolean_values	value	The boolean value (e.g., true/false or 1/0).	NO	NO
+public		tbl_analysis_categorical_values	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_categorical_values	is_variant	Indicates if value is an alternative interpretation of analysed value.	NO	NO
+public	Analysis Categorical Value	tbl_analysis_categorical_values		Storage for analysis values that represents a categorical value.		
+public		tbl_analysis_categorical_values	analysis_categorical_value_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_categorical_values	value	The categorical value assigned to the analysis.	NO	NO
+public		tbl_analysis_categorical_values	value_type_item_id	References the predefined category type.	NO	YES
+public		tbl_analysis_dating_ranges	age_type_id	Specifies the chronological system (e.g., AD, BC, BP).	NO	YES
+public		tbl_analysis_dating_ranges	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_dating_ranges	dating_uncertainty_id	Specifies the uncertainty category related to the dating method used.	NO	YES
+public		tbl_analysis_dating_ranges	high_is_uncertain	Indicates if higher value is uncertain (e.g. question mark).	NO	NO
+public		tbl_analysis_dating_ranges	high_qualifier	Additional information qualifying the higher value.	NO	YES
+public		tbl_analysis_dating_ranges	high_value	The higher value of the range.	NO	NO
+public		tbl_analysis_dating_ranges	is_variant	Indicates if value is an alternative interpretation of analysed value.	NO	NO
+public		tbl_analysis_dating_ranges	low_is_uncertain	Indicates if lower value is uncertain (e.g. question mark).	NO	NO
+public		tbl_analysis_dating_ranges	low_qualifier	Additional information qualifying the lower value.	NO	YES
+public		tbl_analysis_dating_ranges	low_value	The lower value of the range.	NO	NO
+public		tbl_analysis_dating_ranges	season_id	Limits the dating range to a particular season.	NO	YES
+public	Analysis Dating Range	tbl_analysis_dating_ranges		Storage for analysis values that represents a dating range.		
+public		tbl_analysis_dating_ranges	analysis_dating_range_id	Primary key (automatically incremented).	YES	NO
+public	Analysis Entity	tbl_analysis_entities		Represents analysis entities, which are virtual constructs allowing the association of multiple proxies with a single physical sample. This enables the linking of physical samples to various measurements or counts across different methods. Analysis Entities are organized by datasets, which are constructed based on proxy requirements. Refer to the 'Dataset' documentation for more details.		
+public		tbl_analysis_entities	analysis_entity_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_entities	dataset_id	Specifies the dataset the analysis entity belongs to.	NO	YES
+public		tbl_analysis_entities	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_analysis_entity_ages	age	Represents the estimated age derived from analysis.	NO	NO
+public		tbl_analysis_entity_ages	age_older	The upper bound of the age range estimate.	NO	NO
+public		tbl_analysis_entity_ages	age_range	The range as a tyed (int4range) value.	NO	NO
+public		tbl_analysis_entity_ages	age_younger	The lower bound of the age range estimate.	NO	NO
+public		tbl_analysis_entity_ages	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public		tbl_analysis_entity_ages	chronology_id	Specifies the the identifier of a specific chronology.	NO	YES
+public		tbl_analysis_entity_ages	dating_specifier	Specifies the method or criteria used for dating the sample.	NO	NO
+public	Analysis Entity Age	tbl_analysis_entity_ages		Represents a virtual entity that defines a single proxy within a specific physical sample, acting as a statistical sample. A physical sample can contain multiple analysis entities, each linking various proxies. This structure facilitates the precise recording of specific species used in methods like radiocarbon dating.		
+public		tbl_analysis_entity_ages	analysis_entity_age_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_entity_dimensions	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public		tbl_analysis_entity_dimensions	dimension_id	Specifies the specific dimension being measured  (e.g., length, width, height)..	NO	YES
+public		tbl_analysis_entity_dimensions	dimension_value	The quantified value of the measured dimension.	NO	NO
+public	Analysis Entity Dimension	tbl_analysis_entity_dimensions		Contains information about the physical dimensions of samples used for analysis, including both analyzed samples and non-analyzed residues.		
+public		tbl_analysis_entity_dimensions	analysis_entity_dimension_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_entity_prep_methods	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public	Analysis Entity Preparation Method	tbl_analysis_entity_prep_methods		Links analysis entities with their respective preparation methods.		
+public		tbl_analysis_entity_prep_methods	analysis_entity_prep_method_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_entity_prep_methods	method_id	Specifies the preparation method related to the analysis entity.	NO	YES
+public		tbl_analysis_identifiers	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public	Analysis Identifier	tbl_analysis_identifiers		Storage for identifiers associated to analysis values, or analysis value that represents an identifier.		
+public		tbl_analysis_identifiers	analysis_identifier_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_identifiers	value	The identifier value.	NO	NO
+public		tbl_analysis_integer_ranges	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_integer_ranges	high_is_uncertain	Indicates if higher value is uncertain (e.g. question mark).	NO	NO
+public		tbl_analysis_integer_ranges	high_qualifier	Additional information qualifying the higher value.	NO	YES
+public		tbl_analysis_integer_ranges	high_value	The higher value of the analysis.	NO	NO
+public		tbl_analysis_integer_ranges	is_variant	Indicates if value is an alternative interpretation of analysed value.	NO	NO
+public		tbl_analysis_integer_ranges	low_is_uncertain	Indicates if lower value is uncertain (e.g. question mark).	NO	NO
+public		tbl_analysis_integer_ranges	low_qualifier	Additional information qualifying the lower value.	NO	YES
+public		tbl_analysis_integer_ranges	low_value	The lower value of the analysis.	NO	NO
+public	Analysis Integer Range	tbl_analysis_integer_ranges		Storage for analysis values that represents an integer range.		
+public		tbl_analysis_integer_ranges	analysis_integer_range_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_integer_values	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_integer_values	is_variant	Indicates if value is an alternative interpretation of analysed value.	NO	NO
+public		tbl_analysis_integer_values	qualifier	Additional information qualifying the value.	NO	YES
+public	Analysis Integer Value	tbl_analysis_integer_values		Storage for analysis values that represents an integer value.		
+public		tbl_analysis_integer_values	analysis_integer_value_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_integer_values	value	The analysed value interpretated as an integer value.	NO	NO
+public		tbl_analysis_notes	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public	Analysis Note	tbl_analysis_notes		Storage for notes associated to an analysis value.		
+public		tbl_analysis_notes	analysis_note_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_notes	value	The actal note.	NO	NO
+public		tbl_analysis_numerical_ranges	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_numerical_ranges	high_is_uncertain	Indicates if higher value is uncertain (e.g. question mark).	NO	NO
+public		tbl_analysis_numerical_ranges	high_qualifier	Additional information qualifying the higher value.	NO	YES
+public		tbl_analysis_numerical_ranges	is_variant	Indicates if value is an alternative interpretation of analysed value.	NO	NO
+public		tbl_analysis_numerical_ranges	low_is_uncertain	Indicates if lower value is uncertain (e.g. question mark).	NO	NO
+public		tbl_analysis_numerical_ranges	low_qualifier	Additional information qualifying the lower value.	NO	YES
+public	Analysis Numerical Range	tbl_analysis_numerical_ranges		Storage for analysis values that represents a numerical range.		
+public		tbl_analysis_numerical_ranges	analysis_numerical_range_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_numerical_ranges	value	The analysed value interpretated as a numerical (decimal) range.	NO	NO
+public		tbl_analysis_numerical_values	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_numerical_values	is_variant	Indicates if value is an alternative interpretation of analysed value.	NO	NO
+public		tbl_analysis_numerical_values	qualifier	Additional information qualifying the value.	NO	YES
+public	Analysis Numerical Value	tbl_analysis_numerical_values		Storage for analysis values that represents a numerical.		
+public		tbl_analysis_numerical_values	analysis_numerical_value_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_numerical_values	value	The analysed value interpretated as a numerical (decimal) value.	NO	NO
+public		tbl_analysis_taxon_counts	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_taxon_counts	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public	Analysis Taxon Count	tbl_analysis_taxon_counts		Storage for analysis values that represents a taxon counts.		
+public		tbl_analysis_taxon_counts	analysis_taxon_count_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_taxon_counts	value	The count of specified taxon.	NO	NO
+public		tbl_analysis_value_dimensions	analysis_value_id	Identifies the specific analysis value associated with this data.	NO	YES
+public		tbl_analysis_value_dimensions	dimension_id	Specifies the specific dimension being measured  (e.g., length, width, height)..	NO	YES
+public	Analysis Value Dimension	tbl_analysis_value_dimensions		Storage for dimension of analysis value.		
+public		tbl_analysis_value_dimensions	analysis_value_dimension_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_value_dimensions	value	The value of specified dimension.	NO	NO
+public		tbl_analysis_values	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public		tbl_analysis_values	analysis_value	The resulting value from the analysis (untyped as a string)	NO	NO
+public		tbl_analysis_values	boolean_value	Boolean (true/false) interpretation of the value (is is_boolean is true).	NO	NO
+public		tbl_analysis_values	is_anomaly	Indicates if value is an anomaly i.e. not complying to expected value class.	NO	NO
+public		tbl_analysis_values	is_boolean	Indicates if value is a boolean value.	NO	NO
+public		tbl_analysis_values	is_indeterminable	Indicates if result of analysis is indeterminable.	NO	NO
+public		tbl_analysis_values	is_not_analyzed	Indicates that no analysis was made.	NO	NO
+public		tbl_analysis_values	is_uncertain	Indicates if resulting value of analysis is uncertain.	NO	NO
+public		tbl_analysis_values	is_undefined	Indicates if resulting value is undefined.	NO	NO
+public	Analysis Value	tbl_analysis_values		Stores results from an analysis as a (untyped) string value.		
+public		tbl_analysis_values	analysis_value_id	Primary key (automatically incremented).	YES	NO
+public		tbl_analysis_values	value_class_id	Reference to associated value class that specifies kind of analysis value.	NO	YES
+public		tbl_biblio	authors	Formatted list of authors for the bibliographic entry, adhering to citation standards.	NO	NO
+public		tbl_biblio	bugs_reference	Identifier linking this entry to the BugsCEP database or other related datasets.	NO	NO
+public		tbl_biblio	doi	Digital Object Identifier providing a stable, unique reference for digital content.	NO	NO
+public		tbl_biblio	full_reference	Complete citation including all necessary details such as author, title, publication date, and publisher.	NO	NO
+public	Bibliographic Reference	tbl_biblio		Central repository for storing bibliographic references in the SEAD database. It stores detailed citations, including author, title, year, publisher, and DOI/URL for various sources such as books and articles. This table connects to domain-specific tables via foreign keys, ensuring data integrity and supporting research by centralizing bibliographic information.		
+public		tbl_biblio	biblio_id	Primary key (automatically incremented).	YES	NO
+public		tbl_biblio	isbn	International Standard Book Number (ISBN) for cataloging and tracking books.	NO	NO
+public		tbl_biblio	notes	Additional anlabels or comments related to the bibliographic entry.	NO	NO
+public		tbl_biblio	title	Title of the referenced work.	NO	NO
+public		tbl_biblio	url	Online link to the bibliographic resource, if available.	NO	NO
+public		tbl_biblio	year	Year the referenced work was published.	NO	NO
+public		tbl_ceramics	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public		tbl_ceramics	ceramics_lookup_id	Specifies the detailed ceramic type or classification information.	NO	YES
+public	Ceramic Analysis	tbl_ceramics		Stores analysis results from ceramic thin-sections and sherds.		
+public		tbl_ceramics	ceramics_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ceramics	measurement_value	Numeric value representing the measurement obtained from the ceramic analysis.	NO	NO
+public		tbl_ceramics_lookup	description	Detailed description of the ceramic type.	NO	NO
+public	Ceramic Lookup	tbl_ceramics_lookup		Serves as a reference for ceramic types and their associated details.		
+public		tbl_ceramics_lookup	ceramics_lookup_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ceramics_lookup	method_id	Specifies the method used to classify the ceramic type.	NO	YES
+public		tbl_ceramics_lookup	name	Name of the ceramic type.	NO	NO
+public	Ceramic Analysis Measurement	tbl_ceramics_measurements		Contains measurements from ceramic analysis processes.		
+public		tbl_ceramics_measurements	ceramics_measurement_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ceramics_measurements	method_id	Specifies the method used for the ceramic analysis.	NO	YES
+public		tbl_chronologies	age_model	The methodology or model applied to determine the ages of samples within this chronology.	NO	NO
+public		tbl_chronologies	chronology_name	A descriptive title for the chronology, indicating its purpose and extent.	NO	NO
+public		tbl_chronologies	contact_id	Identifies the contact person or organization for the chronology.	NO	YES
+public		tbl_chronologies	date_prepared	The date the chronology was initially created or most recently updated.	NO	NO
+public	Chronology	tbl_chronologies		Represents a collection of dated samples grouped for specific purposes, such as assigning a unified age range to samples in a master dataset or developing an age-depth model for a lake. These chronologies may also be used to integrate with external services that limit the scope of dating evidence, such as GBIF or SBDI.		
+public		tbl_chronologies	chronology_id	Primary key (automatically incremented).	YES	NO
+public		tbl_chronologies	notes	Supplementary information or anlabels related to the chronology, including data sources, assumptions, or constraints.	NO	NO
+public		tbl_chronologies	relative_age_type_id	This was previously constrained by the obsolete tbl_age_types table. Now, it serves as a non-binding reference to relative_age_types, although not fully implemented. Relevant notes should document year types and construction methods for the chronology.	NO	NO
+public		tbl_colours	colour_name	Descriptive name of the colour.	NO	NO
+public	Colour	tbl_colours		Contains the names and definitions of colours as classified by specific methods or colour spaces, such as Munsell or 2.5YR.		
+public		tbl_colours	colour_id	Primary key (automatically incremented).	YES	NO
+public		tbl_colours	method_id	Specifies the method or colour space used for classification.	NO	YES
+public		tbl_colours	rgb	RGB value representing the colour in the RGB colour model.	NO	NO
+public		tbl_contact_types	contact_type_name	Name of the contact type, representing the role or function (e.g., researcher, laboratory, field technician).	NO	NO
+public	Contact Type	tbl_contact_types		Specifies various contact types, categorizing them by their roles or functions such as laboratory, sample taker, or dataset creator. This categorization aids in linking contacts to their respective roles within the system.		
+public		tbl_contact_types	contact_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_contact_types	description	Comprehensive description of the contact type, detailing its role within the system.	NO	NO
+public		tbl_contacts	address_1	Primary address, such as a street or institutional address.	NO	NO
+public		tbl_contacts	address_2	Supplementary address information, such as an apartment or suite number.	NO	NO
+public		tbl_contacts	email	Email address for contact communication.	NO	NO
+public		tbl_contacts	first_name	Given name of the contact.	NO	NO
+public		tbl_contacts	last_name	Surname of the contact.	NO	NO
+public		tbl_contacts	location_id	Specifies to a location, associating the contact with a specific geographic or organizational location.	NO	YES
+public		tbl_contacts	phone_number	Contact's phone number for direct communication.	NO	NO
+public	Contact	tbl_contacts		Contains contact information for various roles, such as dataset authors, specimen identifiers, and laboratory managers.		
+public		tbl_contacts	contact_id	Primary key (automatically incremented).	YES	NO
+public		tbl_contacts	url	Associated website or online profile link.	NO	NO
+public		tbl_coordinate_method_dimensions	dimension_id	Specifies the specific dimension being measured  (e.g., length, width, height)..	NO	YES
+public		tbl_coordinate_method_dimensions	limit_lower	Specifies the lower bound of the legal value range for the dimension, if applicable.	NO	NO
+public		tbl_coordinate_method_dimensions	limit_upper	Specifies the upper bound of the legal value range for the dimension, if applicable.	NO	NO
+public		tbl_coordinate_method_dimensions	method_id	Specifies the coordinate system method to which the dimension applies.	NO	YES
+public	Coordinate Method Dimension	tbl_coordinate_method_dimensions		Defines the dimensions applicable to each coordinate system method and specifies any legal values for these dimensions. Each entry associates a coordinate system method with its corresponding dimensions and their permissible value ranges.		
+public		tbl_coordinate_method_dimensions	coordinate_method_dimension_id	Primary key (automatically incremented).	YES	NO
+public	Data Type Group	tbl_data_type_groups		Contains classifications for various data types, such as relative scale and semi-quantitative.		
+public		tbl_data_type_groups	data_type_group_id	Primary key (automatically incremented).	YES	NO
+public		tbl_data_type_groups	data_type_group_name	Name of the data type group.	NO	NO
+public		tbl_data_type_groups	description	Detailed information about the data type group.	NO	NO
+public	Data Type	tbl_data_types		Specifies the types of quantification methods used in datasets, including definitions of each classification system.		
+public		tbl_data_types	data_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_data_types	data_type_group_id	Specifies the group to which this data type belongs.	NO	YES
+public		tbl_data_types	data_type_name	The name of the data type, providing a descriptive label.	NO	NO
+public		tbl_data_types	definition	A detailed explanation or description of the data type.	NO	NO
+public		tbl_dataset_contacts	contact_id	Identifies the contact person or organization related to the dataset.	NO	YES
+public		tbl_dataset_contacts	contact_type_id	Specifies the type of contact, such as provider or digitaliser.	NO	YES
+public		tbl_dataset_contacts	dataset_id	Specifies the dataset the contact is related to.	NO	YES
+public	Dataset Contact	tbl_dataset_contacts		Contains information about one or more contacts related to a dataset, such as data providers or digitalisers.		
+public		tbl_dataset_contacts	dataset_contact_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dataset_masters	biblio_id	Specifies the primary literature or reference related to the master dataset (e.g., Buckland & Buckland 2006 for BugsCEP).	NO	YES
+public		tbl_dataset_masters	contact_id	Identifies the contact person or organization responsible for the master dataset.	NO	YES
+public	Master Dataset	tbl_dataset_masters		Represents a major grouping identifier for datasets, typically indicating a contributing database, project, user, or laboratory (e.g., BugsCEP, MAL, Lund Dendro Lab).		
+public		tbl_dataset_masters	master_set_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dataset_masters	master_name	Name or title assigned to the master dataset (e.g., MAL, BugsCEP, DendroLab).	NO	NO
+public		tbl_dataset_masters	master_notes	Detailed description of the master dataset, including its nature (e.g., database, lab) and any pertinent tracking information.	NO	NO
+public		tbl_dataset_masters	url	Web address or URL related to the master dataset, which could be a project, lab, or other entity.	NO	NO
+public		tbl_dataset_submission_types	description	A detailed explanation of the dataset submission type, describing the method of data ingestion.	NO	NO
+public	Dataset Submission Type	tbl_dataset_submission_types		Serves as a lookup for different types of dataset submissions, such as original submissions or data ingested from external databases.		
+public		tbl_dataset_submission_types	submission_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dataset_submission_types	submission_type	A concise name showing the type of dataset submission (e.g., 'Original Submission', 'Ingestion from External Database').	NO	NO
+public		tbl_dataset_submissions	contact_id	Identifies the contact person or organization responsible for the dataset submission.	NO	YES
+public		tbl_dataset_submissions	dataset_id	Specifies the dataset related to the submission.	NO	YES
+public		tbl_dataset_submissions	date_submitted	The timestamp indicating when the submission was completed.	NO	NO
+public	Dataset Submission	tbl_dataset_submissions		Contains records of various submission events related to a dataset, such as initial recording, database entries, and integrations with SEAD.		
+public		tbl_dataset_submissions	dataset_submission_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dataset_submissions	notes	Contains supplementary information regarding the submission, such as its origin if not documented elsewhere (e.g., BugsCEP).	NO	NO
+public		tbl_dataset_submissions	submission_type_id	Specifies the type or category of the submission event.	NO	YES
+public		tbl_datasets	biblio_id	Specifies the publication that describes or mentions the dataset.	NO	YES
+public		tbl_datasets	data_type_id	Specifies the type of data contained in the dataset.	NO	YES
+public		tbl_datasets	dataset_name	A unique identifier for the dataset at this site, potentially matching the sample group name or created for clarity and context.	NO	NO
+public	Dataset	tbl_datasets		Organizes collections of analysis entities into datasets, which are structured collections relevant to the specific proxy being studied. For biological proxies, a dataset typically corresponds to a spreadsheet containing samples and taxa for a single analysis method, such as phosphates through citric acid extraction.		
+public		tbl_datasets	dataset_id	Primary key (automatically incremented).	YES	NO
+public		tbl_datasets	master_set_id	Specifies the master set to which this dataset belongs.	NO	YES
+public		tbl_datasets	method_id	Specifies the method of analysis used for this dataset.	NO	YES
+public		tbl_datasets	project_id	Specifies the project related to this dataset.	NO	YES
+public		tbl_datasets	updated_dataset_id	Specifies any subsequent version of this dataset.	NO	YES
+public		tbl_dating_labs	contact_id	Identifies the contact person or organization related to the dating lab.	NO	YES
+public		tbl_dating_labs	country_id	Specifies the country where the dating lab is located.	NO	NO
+public		tbl_dating_labs	international_lab_id	Standardized identifier for the radiocarbon lab, as listed on radiocarbon.org/laboratories.	NO	NO
+public		tbl_dating_labs	lab_name	Official name of the radiocarbon lab, standardized according to radiocarbon.org/laboratories.	NO	NO
+public	Dating Lab	tbl_dating_labs		Contains identifiers and names of radiocarbon laboratories sourced from radiocarbon.org/laboratories. Ensures transparency and traceability in radiocarbon and other radiometric dating records.		
+public		tbl_dating_labs	dating_lab_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dating_material	abundance_element_id	Specifies the abundance element related to the material.	NO	YES
+public		tbl_dating_material	description	Detailed description of the dating material.	NO	NO
+public	Dating Material	tbl_dating_material		Contains information about materials used for dating processes. Materials can be linked to a specific taxon, pseudotaxon, or described in the 'material_dated' field. Specific components of abundance, such as seeds or elytrons, can also be indicated. A single dating instance may involve multiple materials.		
+public		tbl_dating_material	dating_material_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dating_material	geochron_id	Specifies the geochronological context of the dating material.	NO	YES
+public		tbl_dating_material	material_dated	Text field describing the specific material that was dated.	NO	NO
+public		tbl_dating_material	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public	Dating Uncertainty	tbl_dating_uncertainty		Defines various types of dating uncertainties, such as 'from', 'to', 'circa (Ca.)', and '?'. These uncertainties help specify date ranges or approximate periods, such as 'from Mesolithic to Neolithic' or 'from AD 100 to AD 300'.		
+public		tbl_dating_uncertainty	dating_uncertainty_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dating_uncertainty	description	A description of the type of dating uncertainty.	NO	NO
+public		tbl_dating_uncertainty	uncertainty	A brief code or label showing the type of dating uncertainty, such as 'from', 'to', or 'Ca.'.	NO	NO
+public		tbl_dimensions	dimension_abbrev	Abbreviation for the dimension type.	NO	NO
+public		tbl_dimensions	dimension_description	Detailed description of the dimension.	NO	NO
+public		tbl_dimensions	dimension_name	Name of the dimension type.	NO	NO
+public		tbl_dimensions	method_group_id	Specifies the method group, limiting dimension application by group (e.g., size measurements, coordinate systems).	NO	YES
+public	Dimension	tbl_dimensions		Contains definitions of various measurement types, such as sample weight and core length, categorized by method group.		
+public		tbl_dimensions	dimension_id	Primary key (automatically incremented).	YES	NO
+public		tbl_dimensions	unit_id	Specifies the unit of measurement used for the dimension.	NO	YES
+public		tbl_ecocode_definitions	abbreviation	A short form or acronym representing the ecocode.	NO	NO
+public		tbl_ecocode_definitions	definition	A detailed explanation of the ecocode category.	NO	NO
+public		tbl_ecocode_definitions	ecocode_group_id	Specifies the ecocode group to which this definition belongs.	NO	YES
+public		tbl_ecocode_definitions	name	The name of the ecocode category.	NO	NO
+public		tbl_ecocode_definitions	notes	Additional information or comments about the ecocode.	NO	NO
+public	Ecocode Definition	tbl_ecocode_definitions		Contains definitions for ecological, habitat, or ethnographic categories, which are linked to specific taxa within a defined classification system.		
+public		tbl_ecocode_definitions	ecocode_definition_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ecocode_definitions	sort_order	Indicates the display order of ecocode definitions.	NO	NO
+public		tbl_ecocode_groups	abbreviation	Shortened form of the ecocode group name for quick reference.	NO	NO
+public	Ecocode Group	tbl_ecocode_groups		Represents a hierarchical classification system for taxon groups, allowing integration of diverse classification types such as habitat, food type, and food condition.		
+public		tbl_ecocode_groups	ecocode_group_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ecocode_groups	definition	Detailed description of the ecocode group, outlining its characteristics and purpose.	NO	NO
+public		tbl_ecocode_groups	ecocode_system_id	Specifies the ecocode system to which this group belongs.	NO	YES
+public		tbl_ecocode_groups	name	Full name of the ecocode group.	NO	NO
+public		tbl_ecocode_systems	biblio_id	Specifies the publication that describes or mentions  the ecocode system.	NO	YES
+public		tbl_ecocode_systems	definition	Detailed description of the ecocode system.	NO	NO
+public	Ecocode System	tbl_ecocode_systems		Defines various systems used for classifying specific attributes of taxa, including habitat preferences, food types, and cultural uses.		
+public		tbl_ecocode_systems	ecocode_system_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ecocode_systems	name	Name of the ecocode system.	NO	NO
+public		tbl_ecocode_systems	notes	Additional notes or comments about the ecocode system.	NO	NO
+public		tbl_ecocodes	ecocode_definition_id	Specifies the ecocode definition this ecocode belongs to.	NO	YES
+public	Ecocode	tbl_ecocodes		Associates ecological classifications with specific taxa.		
+public		tbl_ecocodes	ecocode_id	Primary key (automatically incremented).	YES	NO
+public		tbl_ecocodes	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public	Feature Type	tbl_feature_types		Categorizes archaeological features by their function, shape, or construction to facilitate the study of historical human activities. Categories include: domestic structures (e.g., homes), public and ceremonial spaces (e.g., temples, public buildings), economic and industrial areas (e.g., workshops, kilns), defensive structures (e.g., fortifications, walls), agricultural modifications (e.g., terraces, irrigation systems), funerary sites (e.g., graves, tombs), transportation routes (e.g., roads, bridges), and water management systems (e.g., wells, aqueducts). These classifications provide insights into societal organization, cultural practices, and technological advancements across various eras and regions.		
+public		tbl_feature_types	feature_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_feature_types	feature_type_description	A detailed description of the feature type, explaining its characteristics and significance.	NO	NO
+public		tbl_feature_types	feature_type_name	The name of the feature type, providing a concise label for identification.	NO	NO
+public	Feature Type	tbl_features		Represents archaeological features, which are immovable traces of past human activities. These features include structures or landscape modifications such as building remains, hearths, burials, pits, roads, terraces, and defensive constructions like mounds and ditches. They are vital for understanding the spatial organization, cultural practices, and daily life of ancient societies, providing context for interpreting artifacts and environmental interactions. Archaeological features are analyzed in situ through excavation and surveying to offer insights into historical human-environment dynamics.		
+public		tbl_features	feature_id	Primary key (automatically incremented).	YES	NO
+public		tbl_features	feature_description	A detailed description of the feature, which may include field and lab notes or interpretative information helpful for analyzing the sample data.	NO	NO
+public		tbl_features	feature_name	The established reference name or number for the feature, such as 'well 47', 'anl.3', or 'c107'. Note: A sample may derive from multiple features (e.g., 'c107' within 'well 47'), but each feature should be recorded separately.	NO	NO
+public		tbl_features	feature_type_id	Specifies the type of feature.	NO	YES
+public		tbl_geochron_refs	biblio_id	Specifies the publication that describes or mentions the geochronological dating.	NO	YES
+public		tbl_geochron_refs	geochron_id	Specifies the geochronological record related to this reference.	NO	YES
+public	Geochronological Reference	tbl_geochron_refs		Contains references for geochronological (radiometric) dating of samples.		
+public		tbl_geochron_refs	geochron_ref_id	Primary key (automatically incremented).	YES	NO
+public		tbl_geochronology	age	Measured radiometric age of the sample, expressed in years.	NO	NO
+public		tbl_geochronology	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public	Geochronology	tbl_geochronology		Contains radiometric dating information for samples, primarily radiocarbon, but also includes other methods such as Uranium series. These are also referred to as absolute dates.		
+public		tbl_geochronology	geochron_id	Primary key (automatically incremented).	YES	NO
+public		tbl_geochronology	dating_lab_id	Foreign key identifying the laboratory that conducted the dating analysis.	NO	YES
+public		tbl_geochronology	dating_uncertainty_id	Specifies the uncertainty category related to the dating method used.	NO	YES
+public		tbl_geochronology	delta_13c	Delta 13C value used for calibration correction, when available.	NO	NO
+public		tbl_geochronology	error_older	Upper bound of the measured error range. Matches 'error_younger' for symmetrical errors.	NO	NO
+public		tbl_geochronology	error_younger	Lower bound of the measured error range. Matches 'error_older' for symmetrical errors.	NO	NO
+public		tbl_geochronology	lab_number	Identifier assigned by the laboratory for the sample.	NO	NO
+public		tbl_geochronology	notes	Additional notes or comments pertinent to this specific date.	NO	NO
+public		tbl_horizons	description	Detailed description of the soil horizon.	NO	NO
+public	Horizons	tbl_horizons		Represents the layer of soil from which samples are taken, classified according to a recognized standard (e.g., FAO A horizon).		
+public		tbl_horizons	horizon_id	Primary key (automatically incremented).	YES	NO
+public		tbl_horizons	horizon_name	Name or designation of the soil horizon.	NO	NO
+public		tbl_horizons	method_id	Specifies the method used to identify or classify the horizon.	NO	YES
+public		tbl_identification_levels	identification_level_abbrev	Abbreviation for the identification level, used for quick reference.	NO	NO
+public		tbl_identification_levels	identification_level_name	The full name of the identification level, providing a detailed description.	NO	NO
+public		tbl_identification_levels	notes	Additional information or remarks related to the identification level.	NO	NO
+public	Identification Levels	tbl_identification_levels		Serves as a lookup for taxonomic identification levels, detailing the resolution or uncertainty in identification, such as 'cf. Family', 'cf. Genus', or 'cf. Species'.		
+public		tbl_identification_levels	identification_level_id	Primary key (automatically incremented).	YES	NO
+public	Image Type	tbl_image_types		Specifies the purpose of images, such as site photos, sample group sketches, and core photos.		
+public		tbl_image_types	image_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_image_types	description	A brief explanation of the image type's purpose.	NO	NO
+public		tbl_image_types	image_type	The specific category or designation of the image.	NO	NO
+public	Language	tbl_languages		Specifies human languages used for the common names of taxa.		
+public		tbl_languages	language_id	Primary key (automatically incremented).	YES	NO
+public		tbl_languages	language_name_english	The name of the language in English.	NO	NO
+public		tbl_languages	language_name_native	The name of the language in its native script or form.	NO	NO
+public		tbl_lithology	depth_bottom	The depth at the bottom of the lithological layer, measured in centimeters.	NO	NO
+public		tbl_lithology	depth_top	The depth at the top of the lithological layer, measured in centimeters.	NO	NO
+public		tbl_lithology	description	A description of the lithological characteristics of the sedimentary layer.	NO	NO
+public	Lithology	tbl_lithology		Provides a detailed description of sedimentary units within a sample group. It allows for the characterization of a soil profile at various depths, corresponding to the sample depths (e.g., 0-10 cm: humus, 10-30 cm: sand).		
+public		tbl_lithology	lithology_id	Primary key (automatically incremented).	YES	NO
+public		tbl_lithology	lower_boundary	Details regarding the boundary characteristics at the lower end of the lithological layer.	NO	NO
+public		tbl_lithology	sample_group_id	Identifies a sample group. linking lithology data to specific sample groups.	NO	YES
+public	Location Types	tbl_location_types		Contains definitions for various geographical terms, specifying their resolution and context (e.g., administrative unit, historical administrative unit, lake, country).		
+public		tbl_location_types	location_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_location_types	description	A detailed explanation or definition of the location type.	NO	NO
+public		tbl_location_types	location_type	The name or designation of the location type (e.g., country, city, lake).	NO	NO
+public		tbl_locations	default_lat_dd	Default latitude of the location in decimal degrees, e.g., the midpoint of a country. Leave empty if unknown.	NO	NO
+public		tbl_locations	default_long_dd	Default longitude of the location in decimal degrees, e.g., the midpoint of a country. Leave empty if unknown.	NO	NO
+public		tbl_locations	location_name	The name of the location.	NO	NO
+public		tbl_locations	location_type_id	Specifies the type of location.	NO	YES
+public	Locations	tbl_locations		Represents geographical locations, typically defined by regions. These can be current or historical locations.		
+public		tbl_locations	location_id	Primary key (automatically incremented).	YES	NO
+public	MCR Name	tbl_mcr_names		Contains the original taxon names utilized in the Birmingham MCR calculation system for climate reconstruction. It ensures the reproducibility of results and facilitates comparison with historical data.		
+public		tbl_mcr_names	taxon_id	Primary key. Specifies the taxonomic unit related to this record.	YES	YES
+public		tbl_mcr_names	comparison_notes	Additional notes for cross-referencing and comparison with other taxa.	NO	NO
+public		tbl_mcr_names	mcr_name_trim	The abbreviated or trimmed version of the MCR taxon name for consistency.	NO	NO
+public		tbl_mcr_names	mcr_number	A unique identifier related to each MCR taxon name.	NO	NO
+public		tbl_mcr_names	mcr_species_name	The full scientific name of the species as used in MCR calculations.	NO	NO
+public	MCR Summary Data	tbl_mcr_summary_data		Contains concise summaries detailing the temperature tolerance limits of MCR species.		
+public		tbl_mcr_summary_data	mcr_summary_data_id	Primary key (automatically incremented).	YES	NO
+public		tbl_mcr_summary_data	cog_mid_tmax	Midpoint of the maximum temperature range for the center of gravity of the species.	NO	NO
+public		tbl_mcr_summary_data	cog_mid_trange	Midpoint of the temperature range for the center of gravity of the species.	NO	NO
+public		tbl_mcr_summary_data	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_mcr_summary_data	tmax_hi	Highest observed maximum temperature tolerance for the species.	NO	NO
+public		tbl_mcr_summary_data	tmax_lo	Lowest observed maximum temperature tolerance for the species.	NO	NO
+public		tbl_mcr_summary_data	tmin_hi	Highest observed minimum temperature tolerance for the species.	NO	NO
+public		tbl_mcr_summary_data	tmin_lo	Lowest observed minimum temperature tolerance for the species.	NO	NO
+public		tbl_mcr_summary_data	trange_hi	Upper bound of the temperature range the species can tolerate.	NO	NO
+public		tbl_mcr_summary_data	trange_lo	Lower bound of the temperature range the species can tolerate.	NO	NO
+public		tbl_mcrdata_birmbeetledat	mcr_data	Data related to the MCR (Mean Climate Range) for each species.	NO	NO
+public		tbl_mcrdata_birmbeetledat	mcr_row	Specifies the row position in the climate envelope matrix based on TMax.	NO	NO
+public	MCR Birmingham Beetle Data	tbl_mcrdata_birmbeetledat		Stores species climate envelopes using binary 1-degree Celsius cells, categorized by TRange (columns) and TMax (rows). For more information, visit www.bugscep.com.		
+public		tbl_mcrdata_birmbeetledat	mcrdata_birmbeetledat_id	Primary key (automatically incremented).	YES	NO
+public		tbl_mcrdata_birmbeetledat	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public	Measured Value Dimension	tbl_measured_value_dimensions		Stores dimensional measurements of samples, such as weight before and after burning, volume, or other similar metrics.		
+public		tbl_measured_value_dimensions	measured_value_dimension_id	Primary key (automatically incremented).	YES	NO
+public		tbl_measured_value_dimensions	dimension_id	Specifies the specific dimension being measured  (e.g., length, width, height)..	NO	YES
+public		tbl_measured_value_dimensions	dimension_value	The quantified value of the measured dimension.	NO	NO
+public		tbl_measured_value_dimensions	measured_value_id	Specifies the measured value to which this dimension belongs.	NO	YES
+public		tbl_measured_values	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public	Measured Value	tbl_measured_values		Records continuous chemical or physical values related to specific sample analyses. Each Sample Analysis can have zero or one associated Measured Value.		
+public		tbl_measured_values	measured_value_id	Primary key (automatically incremented).	YES	NO
+public		tbl_measured_values	measured_value	The continuous value obtained from the sample analysis.	NO	NO
+public		tbl_method_groups	description	A detailed description of the method group, providing insight into the shared characteristics or purpose of the methods within the group.	NO	NO
+public	Method Group	tbl_method_groups		Categorizes various analysis methods into groups based on their similarities, such as dating methods, isotope analyses, palaeoentomology, or geographic location.		
+public		tbl_method_groups	method_group_id	Primary key (automatically incremented).	YES	NO
+public		tbl_method_groups	group_name	The name or title of the method group, serving as a concise identifier for the category of methods.	NO	NO
+public	Method	tbl_methods		Contains definitions and details of various analysis methods.		
+public		tbl_methods	method_id	Primary key (automatically incremented).	YES	NO
+public		tbl_methods	biblio_id	Specifies the publication that describes or mentions the method.	NO	YES
+public		tbl_methods	description	Detailed description of the analysis method.	NO	NO
+public		tbl_methods	method_abbrev_or_alt_name	Abbreviation or alternative name for the method.	NO	NO
+public		tbl_methods	method_group_id	Specifies the group category of the method.	NO	YES
+public		tbl_methods	method_name	Full name of the analysis method.	NO	NO
+public		tbl_methods	record_type_id	Specifies the type of record related to the method.	NO	YES
+public		tbl_methods	unit_id	Specifies the unit of measurement used in the method.	NO	YES
+public	Modification Type	tbl_modification_types		Specifies various modifications or alterations observed in Quaternary or sub-fossils, such as carbonization, mineralization, and fragmentation.		
+public		tbl_modification_types	modification_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_modification_types	modification_type_description	Detailed description of the modification to ensure clarity and understanding, especially for those unfamiliar with domain-specific terminology.	NO	NO
+public		tbl_modification_types	modification_type_name	Concise identifier for the modification type, such as 'carbonized'.	NO	NO
+public	Physical Sample Feature	tbl_physical_sample_features		Establishes a many-to-many relationship between samples and specific features, allowing a feature to be related to multiple samples and a sample to be linked to multiple features. This supports scenarios where samples originate from nested feature groups or features with multiple identifiers.		
+public		tbl_physical_sample_features	physical_sample_feature_id	Primary key (automatically incremented).	YES	NO
+public		tbl_physical_sample_features	feature_id	Specifies the unique identifier of a feature.	NO	YES
+public		tbl_physical_sample_features	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_physical_samples	alt_ref_type_id	Specifies the type of the primary sample name, such as lab or museum number.	NO	YES
+public		tbl_physical_samples	date_sampled	The date when the sample was collected.	NO	NO
+public	Physical Sample	tbl_physical_samples		Records information about physical samples collected from specific sites. Each sample is characterized by its location within the site, its physical properties measured in specific units (e.g., liters, kilograms), and its context within a sample set. Additionally, samples may have descriptive information, notes, and external identifiers linked to other systems.		
+public		tbl_physical_samples	physical_sample_id	Primary key (automatically incremented).	YES	NO
+public		tbl_physical_samples	sample_group_id	Identifies the specific sample group this sample belongs to.	NO	YES
+public		tbl_physical_samples	sample_name	Primary reference number or name of the sample. Additional references can be recorded as alternative names.	NO	NO
+public		tbl_physical_samples	sample_type_id	Specifies the physical form of the sample, such as bulk sample or core subsample.	NO	YES
+public	Project Stage	tbl_project_stages		Defines the various stages of an investigation, such as desktop study, prospection, full excavation, and reanalysis.		
+public		tbl_project_stages	project_stage_id	Primary key (automatically incremented).	YES	NO
+public		tbl_project_stages	description	A detailed explanation of the project stage, outlining its purpose and general activities involved.	NO	NO
+public		tbl_project_stages	stage_name	The name of the project stage within the investigative cycle, such as desktop study, prospection, or final excavation.	NO	NO
+public		tbl_project_types	description	Details the combination of project types, if applicable, such as teaching/research.	NO	NO
+public	Project Type	tbl_project_types		Defines the categories of projects based on their primary purpose or objective, such as teaching, consultancy, research, or their combinations.		
+public		tbl_project_types	project_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_project_types	project_type_name	The name representing the project type, such as consultancy, research, teaching, or combinations like consultancy/teaching.	NO	NO
+public		tbl_projects	description	A brief overview of the project, including relevant details that facilitate further exploration.	NO	NO
+public		tbl_projects	project_abbrev_name	An optional field for the abbreviation or acronym of the project name (e.g., VGV, SWEDAB).	NO	NO
+public		tbl_projects	project_name	The full name of the project (e.g., Phil's PhD Thesis, Malm� Ring Road V�gverket).	NO	NO
+public		tbl_projects	project_stage_id	Specifies the project's stage, linking to the corresponding stage details.	NO	YES
+public		tbl_projects	project_type_id	Specifies the type of the project, linking to the corresponding type details.	NO	YES
+public	Project	tbl_projects		Contains information about projects, including their names and descriptions, pertinent to datasets for specific sites.		
+public		tbl_projects	project_id	Primary key (automatically incremented).	YES	NO
+public	RDB	tbl_rdb		Contains rarity data for taxa within specific geographical areas (e.g., threatened species in Sweden).		
+public		tbl_rdb	rdb_id	Primary key (automatically incremented).	YES	NO
+public		tbl_rdb	location_id	Specifies the geographical area relevant to the rarity data, such as international IUCN classifications specific to the UK.	NO	YES
+public		tbl_rdb	rdb_code_id	Specifies the the specific rarity designation or classification code.	NO	YES
+public		tbl_rdb	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public	RDB Code	tbl_rdb_codes		Definitions of rarity categories across various systems, as specified in tbl_rdb_systems.		
+public		tbl_rdb_codes	rdb_code_id	Primary key (automatically incremented).	YES	NO
+public		tbl_rdb_codes	rdb_category	The name of the rarity category.	NO	NO
+public		tbl_rdb_codes	rdb_definition	Detailed description of the rarity category.	NO	NO
+public		tbl_rdb_codes	rdb_system_id	Specifies the identifier of the system in tbl_rdb_systems.	NO	YES
+public		tbl_rdb_systems	biblio_id	Specifies the publication that describes or mentions  the RDB system.	NO	YES
+public		tbl_rdb_systems	location_id	Specifies the geographical applicability of the RDB system, e.g., UK, international, New Forest.	NO	YES
+public	RDB System	tbl_rdb_systems		Details of rarity designation systems (commonly known as Red Data Books) and the regions where they are applicable.		
+public		tbl_rdb_systems	rdb_system_id	Primary key (automatically incremented).	YES	NO
+public		tbl_rdb_systems	rdb_first_published	The year the RDB system was first published.	NO	NO
+public		tbl_rdb_systems	rdb_system	The name or title of the RDB system.	NO	NO
+public		tbl_rdb_systems	rdb_system_date	The date related to the RDB system, possibly indicating the version or update year.	NO	NO
+public		tbl_rdb_systems	rdb_version	The version or edition number of the RDB system.	NO	NO
+public	Record Type	tbl_record_types		Categorizes biological proxies based on their general usage or origin, enabling the creation of meaningful subsets from the complete taxonomic index and associated abundance elements. It ensures relevance by excluding options like 'seed' from datasets related to insects. The classification is primarily at the 'Order' level in the taxonomic hierarchy. For example, 'Insects & similar' includes insects, arthropods, and other related animals, while 'Plants & pollen' groups entities with shared ecological significance, such as plant presence.		
+public		tbl_record_types	record_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_record_types	record_type_description	Provides a detailed explanation of the group's composition and the rationale for its categorization.	NO	NO
+public		tbl_record_types	record_type_name	Concise name representing the proxy or proxies within the group.	NO	NO
+public		tbl_relative_age_refs	biblio_id	Specifies the publication that describes or mentions the relative age definition.	NO	YES
+public	Relative Age Reference	tbl_relative_age_refs		Stores bibliographic references that define the accepted authority for a dating period, rather than the dating of a specific sample.		
+public		tbl_relative_age_refs	relative_age_ref_id	Primary key (automatically incremented).	YES	NO
+public		tbl_relative_age_refs	relative_age_id	Specifies the the relative age defined by this reference.	NO	YES
+public		tbl_relative_age_types	age_type	The name of the chronological age type, which can include archaeological periods, specific calendar dates, calendar age ranges, or periods defined by the Blytt-Sernander classification.	NO	NO
+public		tbl_relative_age_types	description	A detailed explanation of the chronological age type, such as a period marked by archaeological or geological evidence indicating cultural activities or climate changes as inferred from paleo-vegetation records.	NO	NO
+public	Relative Age Type	tbl_relative_age_types		Contains various types of relative ages used in different contexts such as archaeological, Blytt-Sernander, and Geological. These age types can vary in specificity, ranging from well-defined systems like Blytt-Sernander to broader categories like geological periods.		
+public		tbl_relative_age_types	relative_age_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_relative_ages	abbreviation	Standard abbreviated form of the period name, if available.	NO	NO
+public	Relative Age	tbl_relative_ages		Contains definitions of ages based on historical periods or calendar events, including age ranges and geographical relevance (e.g., Mesolithic in Sweden).		
+public		tbl_relative_ages	relative_age_id	Primary key (automatically incremented).	YES	NO
+public		tbl_relative_ages	c14_age_older	C14 age of the older boundary of the period, if applicable.	NO	NO
+public		tbl_relative_ages	c14_age_younger	C14 age of the younger boundary of the period, if applicable. Leave blank for calendar ages.	NO	NO
+public		tbl_relative_ages	cal_age_older	Approximate age before present (1950) of the earliest boundary of the period, or the calendar age converted to BP if applicable.	NO	NO
+public		tbl_relative_ages	cal_age_younger	Approximate age before present (1950) of the latest boundary of the period, or the calendar age converted to BP if applicable.	NO	NO
+public		tbl_relative_ages	description	A detailed description of the period, typically outlining its characteristics.	NO	NO
+public		tbl_relative_ages	location_id	Specifies the location related to the period.	NO	YES
+public		tbl_relative_ages	notes	Additional notes on the period, such as definitions' reliability or boundary uncertainties.	NO	NO
+public		tbl_relative_ages	relative_age_name	Name of the dating period, e.g., 'Bronze Age'. Calendar ages should be named appropriately, such as 'AD 1492' or '74 BC'.	NO	NO
+public		tbl_relative_ages	relative_age_type_id	Specifies the type of relative age.	NO	YES
+public		tbl_relative_dates	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public		tbl_relative_dates	dating_uncertainty_id	Specifies the uncertainty category related to the dating method used.	NO	YES
+public		tbl_relative_dates	method_id	Specifies the method used for dating the sample to a period or calendar date.	NO	YES
+public		tbl_relative_dates	notes	Additional notes regarding the sample's dating, including any specific details or observations.	NO	NO
+public		tbl_relative_dates	relative_age_id	Specifies the relative age definition.	NO	YES
+public	Relative Date	tbl_relative_dates		Records the relative dating information for samples by associating a relative age definition with a physical sample through an analysis entity. It includes details about dating methods, notes, and indications of uncertainty (e.g., 'from', 'ca', '<').		
+public		tbl_relative_dates	relative_date_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_alt_refs	alt_ref	Alternative reference name for the physical sample.	NO	NO
+public		tbl_sample_alt_refs	alt_ref_type_id	Specifies the type of alternative identification.	NO	YES
+public	Alternative Sample Reference	tbl_sample_alt_refs		Contains various reference names for physical samples, such as laboratory or field numbers.		
+public		tbl_sample_alt_refs	sample_alt_ref_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_alt_refs	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_sample_colours	colour_id	Specifies the unique identifier for a color.	NO	YES
+public	Sample Colour	tbl_sample_colours		Contains information about the colors related to physical samples.		
+public		tbl_sample_colours	sample_colour_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_colours	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_sample_coordinates	accuracy	Describes the precision of the GPS data, e.g., 5m, 10m, 0.01m.	NO	NO
+public		tbl_sample_coordinates	coordinate_method_dimension_id	Specifies referencing the method used to determine the grid type.	NO	YES
+public		tbl_sample_coordinates	measurement	The specific coordinate measurement value.	NO	NO
+public		tbl_sample_coordinates	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public	Sample Coordinate	tbl_sample_coordinates		Specifies the physical location data of samples. This includes both local grid references and standardized global coordinates, such as latitude and longitude. References a methods that determines the type of grid used, facilitating the plotting of samples on large-scale maps or site-specific projects.		
+public		tbl_sample_coordinates	sample_coordinate_id	Primary key (automatically incremented).	YES	NO
+public	Sample Description Sample Group Context	tbl_sample_description_sample_group_contexts		Links sample descriptions to their respective group contexts, providing a structured way to manage and categorize sample data.		
+public		tbl_sample_description_sample_group_contexts	sample_description_sample_group_context_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_description_sample_group_contexts	sample_description_type_id	Specifies the sample description type, indicating the type of sample described.	NO	YES
+public		tbl_sample_description_sample_group_contexts	sampling_context_id	Specifies the sampling context, providing contextual details about the sampling environment.	NO	YES
+public	Sample Description Type	tbl_sample_description_types		Specifies various types of sample descriptions used in the database.		
+public		tbl_sample_description_types	sample_description_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_description_types	type_description	Detailed description of the sample type.	NO	NO
+public		tbl_sample_description_types	type_name	Name assigned to the sample type.	NO	NO
+public		tbl_sample_descriptions	description	Textual description of the sample.	NO	NO
+public	Sample Description	tbl_sample_descriptions		Contains detailed descriptions of samples categorized by different description types.		
+public		tbl_sample_descriptions	sample_description_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_descriptions	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_sample_descriptions	sample_description_type_id	Specifies the type identifier for the sample description.	NO	YES
+public	Sample Dimension	tbl_sample_dimensions		Contains measurable dimension data for samples, excluding coordinates. This includes attributes such as volume, weight, and depth within stratigraphy or cores.		
+public		tbl_sample_dimensions	sample_dimension_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_dimensions	dimension_id	Specifies the specific dimension being measured  (e.g., length, width, height)..	NO	YES
+public		tbl_sample_dimensions	dimension_value	The quantified value of the measured dimension.	NO	NO
+public		tbl_sample_dimensions	method_id	Specifies the measurement method used, including associated units.	NO	YES
+public		tbl_sample_dimensions	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_sample_group_coordinates	coordinate_method_dimension_id	Specifies the method and dimension used for determining coordinates.	NO	YES
+public	Sample Group Coordinate	tbl_sample_group_coordinates		Contains coordinates related to sample groups, such as the top of a core, the top of a profile, or specific locations on dendrochronological or ceramic objects.		
+public		tbl_sample_group_coordinates	sample_group_position_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_coordinates	position_accuracy	Specifies the accuracy level of the recorded position.	NO	NO
+public		tbl_sample_group_coordinates	sample_group_id	Identifies the specific sample group.	NO	YES
+public		tbl_sample_group_coordinates	sample_group_position	Describes the specific position within the sample group.	NO	NO
+public	Sample Group Description Type Sampling Context	tbl_sample_group_description_type_sampling_contexts		Associates description types with sampling methods. Specifically used for dendrochronology to group description types based on detail levels, indicating how fields relate to dendrochronological analysis of buildings.		
+public		tbl_sample_group_description_type_sampling_contexts	sample_group_description_type_sampling_context_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_description_type_sampling_contexts	sample_group_description_type_id	Specifies the description type.	NO	YES
+public		tbl_sample_group_description_type_sampling_contexts	sampling_context_id	Specifies the sampling context, providing contextual details about the sampling environment.	NO	YES
+public	Sample Group Description Type	tbl_sample_group_description_types		Categorizes the types of descriptions related to sample groups. It includes types such as architectural data (e.g., roof type, structural details) or dendrochronological anlabels related to shipwrecks. Note that these descriptions are intended to provide context and should not be used to infer specific features of the samples. Users can add custom lookup data.		
+public		tbl_sample_group_description_types	sample_group_description_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_description_types	type_description	A detailed description of the sample group description type.	NO	NO
+public		tbl_sample_group_description_types	type_name	The name or label of the sample group description type.	NO	NO
+public		tbl_sample_group_descriptions	group_description	Textual description of the sample group.	NO	NO
+public	Sample Group Description	tbl_sample_group_descriptions		Contains definitions or descriptions of groups of samples, categorized by a specific description type.		
+public		tbl_sample_group_descriptions	sample_group_description_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_descriptions	sample_group_description_type_id	Specifies the type of description for the sample group.	NO	YES
+public		tbl_sample_group_descriptions	sample_group_id	Specifies the specific sample group.	NO	YES
+public	Sample Group Dimension	tbl_sample_group_dimensions		Contains the physical dimensions of a sample group (e.g., core length) based on a specified dimension type.		
+public		tbl_sample_group_dimensions	sample_group_dimension_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_dimensions	dimension_id	Specifies the specific dimension being measured  (e.g., length, width, height)..	NO	YES
+public		tbl_sample_group_dimensions	dimension_value	The quantified value of the measured dimension.	NO	NO
+public		tbl_sample_group_dimensions	sample_group_id	Identifies the specific sample group.	NO	YES
+public	Sample Group Image	tbl_sample_group_images		Contains images related to sample groups, such as photographs or annotated sketches of cores.		
+public		tbl_sample_group_images	sample_group_image_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_images	description	A brief description of the image content.	NO	NO
+public		tbl_sample_group_images	image_location	The storage path or URL where the image is located.	NO	NO
+public		tbl_sample_group_images	image_name	The file name or title of the image.	NO	NO
+public		tbl_sample_group_images	image_type_id	Specifies the image type, indicating the category or format of the image.	NO	YES
+public		tbl_sample_group_images	sample_group_id	Identifies the specific sample group.	NO	YES
+public	Sample Group Note	tbl_sample_group_notes		Contains notes pertaining to groups of samples.		
+public		tbl_sample_group_notes	sample_group_note_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_notes	note	Textual note providing additional information about the sample group.	NO	NO
+public		tbl_sample_group_notes	sample_group_id	Identifies the specific sample group.	NO	YES
+public		tbl_sample_group_references	biblio_id	Specifies the publication that describes or mentions the sample group.	NO	YES
+public	Sample Group Reference	tbl_sample_group_references		Contains bibliographic information specifically relevant to a sample group, distinct from site or dataset references (e.g., a publication that reinterprets a structure within a site).		
+public		tbl_sample_group_references	sample_group_reference_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_references	sample_group_id	Identifies the specific sample group.	NO	YES
+public	Sample Group Sampling Context	tbl_sample_group_sampling_contexts		Defines the type of context or situation in which a sample group was collected. It includes the investigation purpose or initial collection intent, such as stratigraphic sequence, invertebrate survey, archaeological excavation, or quantitative vegetation survey. This context aids in filtering and analyzing samples based on specific project types, like climate reconstruction using stratigraphic sequences or habitat analysis using modern survey data.		
+public		tbl_sample_group_sampling_contexts	sampling_context_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_group_sampling_contexts	description	Detailed explanation of the sampling context term.	NO	NO
+public		tbl_sample_group_sampling_contexts	sampling_context	Concise and descriptive name for the sampling context, e.g., stratigraphic sequence or archaeological excavation.	NO	NO
+public		tbl_sample_group_sampling_contexts	sort_order	Defines the order for grouping similar or related contexts, facilitating the organization of modern and paleo investigations.	NO	NO
+public	Sample Group	tbl_sample_groups		Contains collections of related samples, typically grouped by structures (e.g., House 1), stratigraphic sequences (e.g., profile 3), or lake cores. Groups can be defined flexibly based on research needs.		
+public		tbl_sample_groups	sample_group_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_groups	method_id	Specifies the method of sample retrieval, such as 'Russian auger core' or 'pitfall traps'. Distinct from sampling context, this specifies the method used rather than the investigation type.	NO	YES
+public		tbl_sample_groups	sample_group_description	Detailed description of the sample group, providing context and additional information.	NO	NO
+public		tbl_sample_groups	sample_group_name	A unique identifier name for the sample group. For ceramics, this should be the vessel number.	NO	NO
+public		tbl_sample_groups	sampling_context_id	Specifies the sampling context, providing contextual details about the sampling environment.	NO	YES
+public		tbl_sample_groups	site_id	Specifies the site where the samples were collected, linking to additional site-specific information.	NO	YES
+public		tbl_sample_horizons	horizon_id	Specifies the horizon details.	NO	YES
+public		tbl_sample_horizons	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public	Sample Horizon	tbl_sample_horizons		Represents the specific soil layer from which a sample is collected.		
+public		tbl_sample_horizons	sample_horizon_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_images	description	A brief description of the image content.	NO	NO
+public		tbl_sample_images	image_location	The file path or URL where the image is stored.	NO	NO
+public		tbl_sample_images	image_name	The name of the image file.	NO	NO
+public		tbl_sample_images	image_type_id	Specifies the type of image (e.g., site photograph, lab image).	NO	YES
+public	Sample Image	tbl_sample_images		Contains images related to samples, including site photographs, lab processing images, and microscope images.		
+public		tbl_sample_images	sample_image_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_images	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public	Sample Location Type Sampling Context	tbl_sample_location_type_sampling_contexts		Gives the relationship between sample location types and their respective sampling contexts.		
+public		tbl_sample_location_type_sampling_contexts	sample_location_type_sampling_context_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_location_type_sampling_contexts	sample_location_type_id	Specifies the unique identifier for a sample location type.	NO	YES
+public		tbl_sample_location_type_sampling_contexts	sampling_context_id	Specifies the sampling context, providing contextual details about the sampling environment.	NO	YES
+public		tbl_sample_location_types	location_type	The name or identifier of the sample location type.	NO	NO
+public		tbl_sample_location_types	location_type_description	A detailed description of the sample location type.	NO	NO
+public	Sample Location Type	tbl_sample_location_types		Categorizes the different types of sample locations used within the system.		
+public		tbl_sample_location_types	sample_location_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_locations	location	The specific location description of the sample.	NO	NO
+public		tbl_sample_locations	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_sample_locations	sample_location_type_id	Specifies the type of the sample location.	NO	YES
+public	Sample Location	tbl_sample_locations		Contains information about the locations of samples based on predefined types.		
+public		tbl_sample_locations	sample_location_id	Primary key (automatically incremented).	YES	NO
+public	Sample Note	tbl_sample_notes		Contains miscellaneous notes related to samples that do not belong in other tables, such as 'stored in a cellar until processing in 2020'.		
+public		tbl_sample_notes	sample_note_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_notes	note	The content of the note.	NO	NO
+public		tbl_sample_notes	note_type	The origin or category of the note, such as 'field note' or 'lab note'.	NO	NO
+public		tbl_sample_notes	physical_sample_id	Identifies the specific physical sample.	NO	YES
+public		tbl_sample_types	description	Detailed description of the sample type.	NO	NO
+public	Sample Type	tbl_sample_types		Defines the physical form or category of a sample. This can include specific sub-samples related to the sampling method of a sample group, or general bulk samples. Examples include 'Core Subsample', 'Grab Sample', and 'Bulk (Bag) Sample'.		
+public		tbl_sample_types	sample_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sample_types	type_name	The name or label of the sample type.	NO	NO
+public	Season Type	tbl_season_types		Contains different categories of seasons.		
+public		tbl_season_types	season_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_season_types	description	A detailed description of the season type.	NO	NO
+public		tbl_season_types	season_type	The name or identifier of the season type.	NO	NO
+public	Season	tbl_seasons		Contains information about different seasons and their associated months for categorizing activities.		
+public		tbl_seasons	season_id	Primary key (automatically incremented).	YES	NO
+public		tbl_seasons	season_name	Name of the season, e.g., Winter, Spring.	NO	NO
+public		tbl_seasons	season_type	Descriptive category for the season, such as meteorological or astronomical.	NO	NO
+public		tbl_seasons	season_type_id	Specifies the season type.	NO	YES
+public		tbl_seasons	sort_order	Specifies the display order of seasons.	NO	NO
+public	Site Image	tbl_site_images		Contains images related to a site, such as site photographs, aerial images, or location maps.		
+public		tbl_site_images	site_image_id	Primary key (automatically incremented).	YES	NO
+public		tbl_site_images	contact_id	Identifies the contact person or organization related to the site image.	NO	YES
+public		tbl_site_images	credit	Acknowledgment or attribution for the image.	NO	NO
+public		tbl_site_images	date_taken	The date on which the image was captured.	NO	NO
+public		tbl_site_images	description	A brief description of the image content or context.	NO	NO
+public		tbl_site_images	image_location	The file path or URL where the image is stored.	NO	NO
+public		tbl_site_images	image_name	The filename or designated name of the image.	NO	NO
+public		tbl_site_images	image_type_id	Specifies the image type classification.	NO	YES
+public		tbl_site_images	site_id	Specifies the specific site.	NO	YES
+public	Site Location	tbl_site_locations		Associates site identifiers with location names.		
+public		tbl_site_locations	site_location_id	Primary key (automatically incremented).	YES	NO
+public		tbl_site_locations	location_id	Specifies a location the site is located in.	NO	YES
+public		tbl_site_locations	site_id	Specifies the specific site.	NO	YES
+public	Site Coordinate	tbl_site_natgridrefs		Contains site coordinates using various national grid systems, such as the UK Ordnance Survey National Grid and Swedish SWEREF99. Each site may have coordinates in multiple grid systems (e.g., Swedish RT90 and SWEREF99TM).		
+public		tbl_site_natgridrefs	site_natgridref_id	Primary key (automatically incremented).	YES	NO
+public		tbl_site_natgridrefs	method_id	Specifies the coordinate system.	NO	YES
+public		tbl_site_natgridrefs	natgridref	The national grid reference for the site.	NO	NO
+public		tbl_site_natgridrefs	site_id	Specifies the specific site.	NO	YES
+public		tbl_site_other_records	biblio_id	Specifies the publication that describes or mentions  site data is documented.	NO	YES
+public		tbl_site_other_records	description	A brief description of the data not currently stored in SEAD.	NO	NO
+public		tbl_site_other_records	record_type_id	Specifies the type of data (proxy) represented in this record.	NO	YES
+public	Site Other Record	tbl_site_other_records		Contains information about data related to specific sites that is not currently stored in SEAD. Each record corresponds to a distinct proxy type, even if multiple proxies are linked to the same publication. Note that some of these datasets might be integrated into SEAD in the future. Requests for data submission can be directed to the SEAD project team.		
+public		tbl_site_other_records	site_other_records_id	Primary key (automatically incremented).	YES	NO
+public		tbl_site_other_records	site_id	Specifies the specific site.	NO	YES
+public		tbl_site_preservation_status	assessment_author_contact_id	Identifier for the person or authority in tbl_contacts responsible for assessing the preservation status and threats.	NO	NO
+public		tbl_site_preservation_status	assessment_type	Specifies the type of assessment conducted, such as a UNESCO report or archaeological survey, detailing preservation status and threats.	NO	NO
+public		tbl_site_preservation_status	description	A brief overview of the site's preservation status or the threats it faces. This field is for information that does not fit into other specified columns.	NO	NO
+public		tbl_site_preservation_status	Evaluation_date	The date on which the preservation status or threat assessment was conducted, whether formal or informal.	NO	NO
+public	Site Preservation Status	tbl_site_preservation_status		Contains data on the preservation levels and threats to cultural heritage sites. Each record represents a unique preservation status or threat. This information was added at the request of PAN (Polar Archaeology Network) members to support the evaluation of threats to Arctic cultural heritage.		
+public		tbl_site_preservation_status	site_preservation_status_id	Primary key (automatically incremented).	YES	NO
+public		tbl_site_preservation_status	preservation_status_or_threat	A descriptive term for the preservation status (e.g., lost, damaged, threatened) or the primary cause of risk to the site (e.g., hydroelectric projects, oil exploitation, mining, forestry, climate change, erosion).	NO	NO
+public		tbl_site_preservation_status	site_id	Specifies the site to allow multiple preservation status or threat records per site.	NO	YES
+public		tbl_site_references	biblio_id	Specifies the publication that describes or mentions  the site.	NO	YES
+public	Site Reference	tbl_site_references		Catalogs publications that describe or mention sites. Publications related to specific sample groups, physical samples, or datasets are documented at their respective hierarchical levels.		
+public		tbl_site_references	site_reference_id	Primary key (automatically incremented).	YES	NO
+public		tbl_site_references	site_id	Specifies the specific site.	NO	YES
+public		tbl_sites	altitude	The altitude of the site in meters above sea level.	NO	NO
+public	Site	tbl_sites		Records detailed information about each excavation or sampling location i.e. a defined location where samples have been collected through excavation.		
+public		tbl_sites	site_id	Primary key (automatically incremented).	YES	NO
+public		tbl_sites	latitude_dd	The latitude of the site in decimal degrees.	NO	NO
+public		tbl_sites	longitude_dd	The longitude of the site in decimal degrees.	NO	NO
+public		tbl_sites	national_site_identifier	A unique identifier assigned to the site by the national authority.	NO	NO
+public		tbl_sites	site_description	A detailed description of the site's characteristics and significance.	NO	NO
+public		tbl_sites	site_location_accuracy	Describes the accuracy of the site's location resolution, such as 'Nearest settlement', 'Lake', 'Bog', 'Ancient monument', or 'Approximate'.	NO	NO
+public		tbl_sites	site_name	The official or commonly used name of the site.	NO	NO
+public		tbl_sites	site_preservation_status_id	Specifies the preservation status of the site, indicating its current condition.	NO	YES
+public		tbl_species_association_types	association_description	Detailed description of the association type.	NO	NO
+public		tbl_species_association_types	association_type_name	Short name or label for the association type.	NO	NO
+public	Species Association Type	tbl_species_association_types		Defines the permissible types of associations between species, such as 'predates on', 'is predated by', 'parasitic on', and 'parasitized by'.		
+public		tbl_species_association_types	association_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_species_associations	associated_taxon_id	Identifier for the taxon related to the primary taxon (defined by taxon_id).	NO	YES
+public		tbl_species_associations	association_type_id	Identifier for the type of relationship between the primary taxon and the associated taxon, noting the importance of association directionality (e.g., 'x preys on y').	NO	YES
+public		tbl_species_associations	biblio_id	Specifies the publication that describes or mentions the species association.	NO	YES
+public	Species Association	tbl_species_associations		Represents the relationships between different taxa, including interactions such as predation, parasitism, shared habitats, and synonym links. The directionality of the association (e.g., 'x preys on y') is crucial.		
+public		tbl_species_associations	species_association_id	Primary key (automatically incremented).	YES	NO
+public		tbl_species_associations	referencing_type	Type or method of reference used for the species association documentation.	NO	NO
+public		tbl_species_associations	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_common_names	common_name	The common or vernacular name of the organism.	NO	NO
+public		tbl_taxa_common_names	language_id	Specifies the language in which the common name is recorded.	NO	YES
+public	Taxa Common Name	tbl_taxa_common_names		Stores vernacular or common names of organisms, such as 'bluebottle'.		
+public		tbl_taxa_common_names	taxon_common_name_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_common_names	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_images	description	A brief description of the image content.	NO	NO
+public		tbl_taxa_images	image_location	The URL or file path where the image is located.	NO	NO
+public		tbl_taxa_images	image_name	The file name or title of the image.	NO	NO
+public		tbl_taxa_images	image_type_id	Specifies the image type, indicating the format or category of the image.	NO	YES
+public	Taxa Image	tbl_taxa_images		Contains references to images of taxa, stored either in external databases or available online.		
+public		tbl_taxa_images	taxa_images_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_images	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_measured_attributes	attribute_measure	The specific measurement value of the attribute (e.g., 10.5 cm).	NO	NO
+public		tbl_taxa_measured_attributes	attribute_type	The type of measurement being recorded (e.g., length, width).	NO	NO
+public		tbl_taxa_measured_attributes	attribute_units	Units in which the measurement is recorded (e.g., cm, mm).	NO	NO
+public		tbl_taxa_measured_attributes	data	Additional data related to the measurement, if applicable.	NO	NO
+public	Taxa Measured Attribute	tbl_taxa_measured_attributes		Contains measurements related to the size of organisms, such as maximum length.		
+public		tbl_taxa_measured_attributes	measured_attribute_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_measured_attributes	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_reference_specimens	contact_id	Identifies the contact person or organization responsible for the taxon reference specimen.	NO	YES
+public	Taxa Reference Specimen	tbl_taxa_reference_specimens		Contains information on reference and type specimens used for the primary description of species.		
+public		tbl_taxa_reference_specimens	taxa_reference_specimen_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_reference_specimens	notes	Additional information or remarks about the reference specimen.	NO	NO
+public		tbl_taxa_reference_specimens	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_seasonality	activity_type_id	Specifies the type of activity or developmental stage.	NO	YES
+public	Taxa Seasonality	tbl_taxa_seasonality		Contains information about the specific parts of the year (e.g., Winter, June) during which certain activities or developmental stages of taxa occur (e.g., adult stage from June to August).		
+public		tbl_taxa_seasonality	seasonality_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_seasonality	location_id	Specifies the geographical location relevant to the seasonality data.	NO	YES
+public		tbl_taxa_seasonality	season_id	Specifies the specific season or time of year.	NO	YES
+public		tbl_taxa_seasonality	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_synonyms	author_id	Specifies the author related to the taxon synonym.	NO	YES
+public	Taxa Synonym	tbl_taxa_synonyms		Contains alternative scientific names for taxa, along with primary references for their definition or usage.		
+public		tbl_taxa_synonyms	biblio_id	Specifies the publication that describes or mentions then  taxon synonym.	NO	YES
+public		tbl_taxa_synonyms	synonym_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_synonyms	family_id	Specifies the taxonomic family related to the taxon synonym.	NO	YES
+public		tbl_taxa_synonyms	genus_id	Specifies the genus related to the taxon synonym.	NO	YES
+public		tbl_taxa_synonyms	notes	Additional information relevant to the history or usage of the synonym.	NO	NO
+public		tbl_taxa_synonyms	reference_type	Type of reference related to the synonym, such as usage, definition, or incorrect usage.	NO	NO
+public		tbl_taxa_synonyms	synonym	The synonym at the specified taxonomic level. A separate record is used for different taxonomic levels when names differ from the master list.	NO	NO
+public		tbl_taxa_synonyms	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxa_tree_authors	author_name	The name of the authority related to the species or synonym.	NO	NO
+public	Taxa Authority	tbl_taxa_tree_authors		Specifies authoritative information for species names or synonyms.		
+public		tbl_taxa_tree_authors	author_id	Primary key (automatically incremented).	YES	NO
+public	Taxonomic Family	tbl_taxa_tree_families		Specifies information about taxonomic families.		
+public		tbl_taxa_tree_families	family_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_tree_families	family_name	Name of the taxonomic family.	NO	NO
+public		tbl_taxa_tree_families	order_id	Specifies the taxonomic order this family belongs to.	NO	YES
+public	Taxonomic Genera	tbl_taxa_tree_genera		Contains taxonomic genera information.		
+public		tbl_taxa_tree_genera	genus_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_tree_genera	family_id	Specifies the taxonomic family.	NO	YES
+public		tbl_taxa_tree_genera	genus_name	Name of the genus.	NO	NO
+public		tbl_taxa_tree_master	author_id	Specifies the author of the taxonomic classification.	NO	YES
+public		tbl_taxa_tree_master	genus_id	Specifies the genus related to this taxon.	NO	YES
+public	Taxa	tbl_taxa_tree_master		Represents the finest level of taxonomic classification, typically at the species level. It may also include designations such as 'sp.' for an unspecified single species, 'spp.' for multiple unspecified species, 'grp' for taxonomic groups, or split identifications (e.g., x/y), along with other cases depending on the taxonomic context.		
+public		tbl_taxa_tree_master	taxon_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_tree_master	species	Name of the species or designation for unspecified species (e.g., 'sp.', 'spp.').	NO	NO
+public	Taxa Tree Order	tbl_taxa_tree_orders		Represents the taxonomic order level within the taxonomic hierarchy.		
+public		tbl_taxa_tree_orders	order_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxa_tree_orders	order_name	The name of the taxonomic order.	NO	NO
+public		tbl_taxa_tree_orders	record_type_id	Specifies the record type, indicating the type of taxonomic record.	NO	YES
+public		tbl_taxa_tree_orders	sort_order	Specifies the display order of taxonomic orders.	NO	NO
+public	Taxonomic Order	tbl_taxonomic_order		Contains taxonomic codes for organizing species within a taxonomic hierarchy or referencing external database systems (e.g., GBIF, Artdatabanken).		
+public		tbl_taxonomic_order	taxonomic_order_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxonomic_order	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxonomic_order	taxonomic_code	Unique code representing the taxonomic classification.	NO	NO
+public		tbl_taxonomic_order	taxonomic_order_system_id	Specifies the taxonomic ordering system.	NO	YES
+public		tbl_taxonomic_order_biblio	biblio_id	Specifies the publication that describes or mentions  the taxon synonym.	NO	YES
+public	Taxonomic Order Reference	tbl_taxonomic_order_biblio		Contains bibliographic references related to the taxonomic ordering or numbering systems. Multiple references may be associated.		
+public		tbl_taxonomic_order_biblio	taxonomic_order_biblio_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxonomic_order_biblio	taxonomic_order_system_id	Specifies the the taxonomic order system.	NO	YES
+public	Taxonomic Order System	tbl_taxonomic_order_systems		Contains different taxonomic order systems, which provide unique and name-independent identifiers for taxa. It facilitates mapping across various systems, enhancing interoperability between databases.		
+public		tbl_taxonomic_order_systems	taxonomic_order_system_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxonomic_order_systems	system_description	Gives a detailed description of the taxonomic order system.	NO	NO
+public		tbl_taxonomic_order_systems	system_name	The name of the taxonomic order system.	NO	NO
+public		tbl_taxonomy_notes	biblio_id	Specifies the publication that describes or mentions  the taxonomy note.	NO	YES
+public	Taxonomy Note	tbl_taxonomy_notes		Contains general notes on taxa, primarily regarding identification issues (e.g., potential confusion with similar taxa), and may include references and image links.		
+public		tbl_taxonomy_notes	taxonomy_notes_id	Primary key (automatically incremented).	YES	NO
+public		tbl_taxonomy_notes	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_taxonomy_notes	taxonomy_notes	Detailed notes about the taxon, including identification tips and relevant references.	NO	NO
+public		tbl_temperatures	d180_gisp2	Isotopic oxygen-18 data from the Greenland Ice Sheet Project 2, used for paleotemperature reconstructions.	NO	NO
+public	Temperature	tbl_temperatures		Contains temperature-related data with historical context, particularly focusing on isotopic measurements and their corresponding age.		
+public		tbl_temperatures	record_id	Primary key (automatically incremented).	YES	NO
+public		tbl_temperatures	years_bp	The age of the sample in years before present, providing a temporal context for the data.	NO	NO
+public		tbl_tephra_dates	analysis_entity_id	Identifies the specific analysis entity associated with this record.	NO	YES
+public	Tephra Date	tbl_tephra_dates		Records tephrachronology-based sample dates, including associated uncertainties and additional notes.		
+public		tbl_tephra_dates	tephra_date_id	Primary key (automatically incremented).	YES	NO
+public		tbl_tephra_dates	dating_uncertainty_id	Specifies the uncertainty category related to the dating method used.	NO	YES
+public		tbl_tephra_dates	notes	Optional field for additional information or comments related to the tephra date.	NO	NO
+public		tbl_tephra_dates	tephra_id	Specifies the the specific tephra layer related to the date.	NO	YES
+public		tbl_tephra_refs	biblio_id	Specifies the publication that describes or mentions  the tephra layer.	NO	YES
+public	Tephra Reference	tbl_tephra_refs		Contains bibliographic information related to the identification and description of tephra layers (volcanic ash deposits).		
+public		tbl_tephra_refs	tephra_ref_id	Primary key (automatically incremented).	YES	NO
+public		tbl_tephra_refs	tephra_id	Specifies the specific tephra layer.	NO	YES
+public		tbl_tephras	c14_age	Radiocarbon age of the tephra layer.	NO	NO
+public		tbl_tephras	c14_age_older	Upper limit of the radiocarbon age range.	NO	NO
+public		tbl_tephras	c14_age_younger	Lower limit of the radiocarbon age range.	NO	NO
+public		tbl_tephras	cal_age	Calibrated age of the tephra layer.	NO	NO
+public		tbl_tephras	cal_age_older	Upper boundary of the calibrated age range.	NO	NO
+public		tbl_tephras	cal_age_younger	Lower boundary of the calibrated age range.	NO	NO
+public	Tephra	tbl_tephras		Details of volcanic tephra layers, including their age estimates (e.g., Hekla 1984).		
+public		tbl_tephras	notes	Additional information or remarks about the tephra layer.	NO	NO
+public		tbl_tephras	tephra_id	Primary key (automatically incremented).	YES	NO
+public		tbl_tephras	tephra_name	Name of the tephra layer, such as a specific volcanic event.	NO	NO
+public		tbl_text_biology	biblio_id	Specifies the publication detailing the biological information.	NO	YES
+public		tbl_text_biology	biology_text	Descriptive text providing ecological, habitat, or behavioral details.	NO	NO
+public	Text Biology	tbl_text_biology		Contains ecological, habitat, and behavioral information for various taxa, along with references to their sources, such as 'in hollows on old oaks.'		
+public		tbl_text_biology	biology_id	Primary key (automatically incremented).	YES	NO
+public		tbl_text_biology	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_text_distribution	biblio_id	Specifies the publication that describes or mentions the distribution.	NO	YES
+public		tbl_text_distribution	distribution_text	Textual description of the taxon's distribution.	NO	NO
+public	Text Distribution	tbl_text_distribution		Contains descriptive distribution information for taxa, along with references to the source publications. For example, 'Scandinavia north of Tromsø, British Isles - rare.'		
+public		tbl_text_distribution	distribution_id	Primary key (automatically incremented).	YES	NO
+public		tbl_text_distribution	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_text_identification_keys	biblio_id	Specifies the publication that describes or mentions  the identification key.	NO	YES
+public		tbl_text_identification_keys	key_text	Text description of the identification key.	NO	NO
+public	Text Identification Key	tbl_text_identification_keys		Stores identification key extracts along with their bibliographic sources.		
+public		tbl_text_identification_keys	key_id	Primary key (automatically incremented).	YES	NO
+public		tbl_text_identification_keys	taxon_id	Specifies the taxonomic unit related to this record.	NO	YES
+public		tbl_units	description	Gives a detailed explanation or description of the measurement unit.	NO	NO
+public	Unit	tbl_units		Specifies definitions of measurement units (e.g., mm for millimeters).		
+public		tbl_units	unit_id	Primary key (automatically incremented).	YES	NO
+public		tbl_units	unit_abbrev	The abbreviation of the measurement unit (e.g., 'mm' for millimeters).	NO	NO
+public		tbl_units	unit_name	The full name of the measurement unit (e.g., 'millimeters').	NO	NO
+public		tbl_value_classes	description	Provides details about the value class.	NO	NO
+public		tbl_value_classes	method_id	Links to the method associated with the value class.	NO	YES
+public		tbl_value_classes	name	The name of the value class.	NO	NO
+public		tbl_value_classes	parent_id	References a parent value class for hierarchical structuring.	NO	YES
+public	Value Classe	tbl_value_classes		Specifies a value class describing e.g. a data column		
+public		tbl_value_classes	value_class_id	Primary key (automatically incremented).	YES	NO
+public		tbl_value_classes	value_type_id	 Identifies the type of value associated with the class.	NO	YES
+public		tbl_value_qualifier_symbols	cardinal_qualifier_id	Specifies cardinal (base) qualifier id.	NO	YES
+public		tbl_value_qualifier_symbols	symbol	The textual representation of the qualifier (e.g. '>', '<' etc.).	NO	NO
+public	Value Qualifier Symbol	tbl_value_qualifier_symbols		Specifies alternative symbols for value qualifiers		
+public		tbl_value_qualifier_symbols	qualifier_symbol_id	Primary key (automatically incremented).	YES	NO
+public		tbl_value_qualifiers	description	Additional details about the qualifier.	NO	NO
+public		tbl_value_qualifiers	symbol	The textual representation of the qualifier (e.g. '>', '<' etc.).	NO	NO
+public	Value Qualifier	tbl_value_qualifiers		List of base value qualifiers such as '>', '<' etc		
+public		tbl_value_qualifiers	qualifier_id	Primary key (automatically incremented).	YES	NO
+public		tbl_value_type_items	description	Additional details about the category value.	NO	NO
+public		tbl_value_type_items	name	The name of the category value.	NO	NO
+public	Value Type Item	tbl_value_type_items		Defines individual category values if value type is categorical		
+public		tbl_value_type_items	value_type_item_id	Primary key (automatically incremented).	YES	NO
+public		tbl_value_type_items	value_type_id	Links to the associated value type item belongs to.	NO	YES
+public		tbl_value_types	base_type	The fundamental data type (e.g., integer, text).	NO	NO
+public		tbl_value_types	data_type_id	SEAD data type the value type is associated to.	NO	YES
+public		tbl_value_types	description	Additional details about the value type.	NO	NO
+public		tbl_value_types	name	The name of the value type.	NO	NO
+public		tbl_value_types	precision	Specifies the level of precision for numerical values.	NO	NO
+public		tbl_value_types	unit_id	Links to the associated unit of measurement.	NO	YES
+public	Value Type	tbl_value_types		Specifies actual type of values belonging to a value class		
+public		tbl_value_types	value_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_years_types	description	A detailed explanation of the year type.	NO	NO
+public	Year Type	tbl_years_types		Contains the names and descriptions of different types of years used for dating, such as radiocarbon or calendar years.		
+public		tbl_years_types	years_type_id	Primary key (automatically incremented).	YES	NO
+public		tbl_years_types	name	The name of the year type, e.g., 'Radiocarbon', 'Calendar'.	NO	NO

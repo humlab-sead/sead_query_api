@@ -1,0 +1,282 @@
+## Purpose
+
+This document describes how to set up, build, run, validate, and extend the SEAD Query API during day-to-day development.
+
+It is intended for contributors working in this repository. It does not cover deployment, release operations, or high-level architecture rationale beyond what is needed to navigate the codebase.
+
+## Development Status
+
+- Primary stack: .NET 9 solution with API, core, infrastructure, composer, and test projects.
+- Current production-style runtime: the existing faceted query API.
+- In-progress work: the query-engine overhaul in `sead.query.composer` on branch `query-engine-overhaul`.
+- TBD: a final, stable contributor guide for operations and a dedicated testing guide document.
+
+## Prerequisites
+
+You need the following tools to work effectively in this repository:
+
+- .NET 9 SDK
+- Git
+- PostgreSQL access for database-backed development tasks
+- Docker, if you want to use the container workflow or Testcontainers-backed scenarios
+- VS Code or another C#-capable editor
+
+Optional but useful:
+
+- `dotnet ef` for scaffold-related workflows
+- `gh` for release and PR helper targets in the `Makefile`
+- Go and Node.js only if you intend to use the changelog or release tooling
+
+## Repository Layout
+
+The main solution file is `sead_query_api.sln`.
+
+The important projects and folders are:
+
+- `sead.query.api`: ASP.NET Core API host and startup wiring
+- `sead.query.core`: shared domain types, query model, facet model, and core contracts
+- `sead.query.infra`: repositories and infrastructure services
+- `sead.query.composer`: in-progress query-engine redesign and route-based composition work
+- `sead.query.test`: unit and integration tests
+- `conf/`: local appsettings variants and environment files used during development and tests
+- `docker/`: container build and compose assets
+- `docs/proposals/`: proposal and design-in-progress material, including the query-engine overhaul notes
+- `deprecated/`: historical or non-authoritative code and experiments; do not treat as the current implementation guide
+
+For architecture and system boundaries, use `docs/DESIGN.md` as the entry point.
+
+## One-Time Setup
+
+Start from the repository root.
+
+Restore the solution:
+
+```bash
+dotnet restore sead_query_api.sln
+```
+
+Build the solution:
+
+```bash
+dotnet build sead_query_api.sln
+```
+
+If you prefer the repository helper targets, the `Makefile` also exposes:
+
+```bash
+make build
+make debug
+make release
+```
+
+## Local Configuration
+
+Development and tests rely on files in `conf/`.
+
+Relevant files include:
+
+- `conf/appsettings.Development.json`
+- `conf/appsettings.Test.json`
+- `conf/appsettings.Production.json`
+- `conf/.env`
+
+Repository notes:
+
+- The API project has a `UserSecretsId`, so local secrets can also be supplied through the .NET user-secrets mechanism when needed.
+- The test project copies `conf/appsettings.Test.json` and `conf/.env` into test output.
+- Several helper scripts and test utilities expect `.env` values to be present.
+
+Do not commit local secrets. `.env` is gitignored at the repository level.
+
+## Running the API Locally
+
+The most reliable command is:
+
+```bash
+dotnet run --project sead.query.api/sead.query.api.csproj
+```
+
+The repository helper target is also available:
+
+```bash
+make serve
+```
+
+`make serve` builds the solution in Debug, copies `conf/appsettings.Development.json` and `conf/.env` into the API output directory, and runs the API project.
+
+You can also use the VS Code launch and task configuration already present in `.vscode/` for local debugging.
+
+## Common Development Commands
+
+From the repository root, the most useful commands are:
+
+Build everything:
+
+```bash
+dotnet build sead_query_api.sln
+```
+
+Build only tests:
+
+```bash
+dotnet build sead.query.test/sead.query.test.csproj
+```
+
+Run the test project:
+
+```bash
+dotnet test sead.query.test/sead.query.test.csproj
+```
+
+Run all tests through the helper target:
+
+```bash
+make test
+```
+
+Format code:
+
+```bash
+dotnet format
+```
+
+Or via the `Makefile`:
+
+```bash
+make tidy
+```
+
+Clean build outputs and NuGet caches:
+
+```bash
+make clean
+```
+
+## VS Code Workflow
+
+The workspace already includes tasks for common .NET actions, including restore, build, and test.
+
+Useful built-in tasks include:
+
+- restore the full solution
+- build the full solution
+- restore and build the test project
+- run the test project
+
+Use those tasks when you want a repeatable editor-driven workflow instead of shell commands.
+
+## Day-to-Day Development Workflow
+
+For most code changes, the working loop should be:
+
+1. Restore and build the solution if dependencies or project files changed.
+2. Make a focused change in the relevant project.
+3. Run targeted tests for the changed area.
+4. Run a broader test pass when the change touches shared query infrastructure.
+5. Run `dotnet format` if the change introduced style drift.
+6. Review the resulting diff before commit.
+
+For query-related work, prefer validating the smallest affected slice first. Shared query code can influence multiple facet types and result-compilation paths, so targeted validation matters.
+
+## Project-Specific Development Conventions
+
+The repository is C#- and .NET-first. Follow the coding guidance in `.github/instructions/coding.instructions.md` and the settings in `.editorconfig`.
+
+Important local conventions visible in the current repo:
+
+- use 4-space indentation in C# files
+- prefer `dotnet format` as the normal formatting pass
+- keep changes focused rather than mixing unrelated cleanup with feature work
+- treat `sead.query.composer` as active redesign work, not yet the sole authoritative implementation path
+- keep tests in `sead.query.test`, usually under `UnitTests/` or the existing integration-oriented folders already in the repo
+
+The release workflow depends on conventional commits, so use commit messages that follow the repository’s conventional-commit instruction.
+
+## Code Quality and Validation
+
+The practical local quality checks for this repository are:
+
+- `dotnet build sead_query_api.sln`
+- `dotnet test sead.query.test/sead.query.test.csproj`
+- `dotnet format`
+
+Use narrower commands when the change is isolated, especially in the test project or one subsystem.
+
+Examples:
+
+```bash
+dotnet build sead.query.composer/sead.query.composer.csproj
+dotnet test sead.query.test/sead.query.test.csproj --filter "RouteGraphTests"
+```
+
+The repository does not currently present a separate lint-only workflow as the main local quality gate. Formatting, compile success, and test execution are the key developer checks.
+
+## Database and Schema-Driven Work
+
+The project is database-aware and includes scaffold and fixture helpers.
+
+### Test data generation
+
+The `Makefile` includes:
+
+```bash
+make test-data
+```
+
+This creates SQL DDL/DML for the PostgreSQL-backed test-container workflow and clears the cached PostgreSQL data directory used by test fixtures.
+
+### Scaffold facet context
+
+The `Makefile` also includes:
+
+```bash
+make scaffold-facet-context
+```
+
+This installs `dotnet-ef` if needed and scaffolds a context from PostgreSQL into `tmp/SeadQueryCore`.
+
+This workflow depends on local vault-backed credentials referenced by the `Makefile`:
+
+- `~/vault/.default.sead.server`
+- `~/vault/.default.sead.username`
+- `~/vault/.default.sead.password`
+
+If those files are not present on your machine, scaffold-related commands will not work without local adaptation.
+
+### Migrations
+
+Entity Framework migrations are not the documented primary development workflow in this repository.
+
+Treat the current development model as schema-driven and configuration-driven. If a formal migration workflow is introduced later, document it separately instead of inferring one from generic .NET practice.
+
+## Testing During Development
+
+The test project targets `.NET 9` and includes xUnit, Moq, FluentAssertions, AutoFixture, Testcontainers, and ASP.NET Core TestHost.
+
+In practice:
+
+- use focused `dotnet test` runs while iterating
+- run the full test project before finishing shared or cross-cutting changes
+- expect tests and helpers to use `conf/appsettings.Test.json` and `conf/.env`
+
+Detailed testing policy belongs in `docs/TESTING.md` once that document is added.
+
+## Debugging and Troubleshooting
+
+Common local issues and the first thing to check:
+
+- Build failures after dependency or framework changes: run `dotnet restore` and rebuild the solution.
+- API starts but configuration is wrong: verify the expected `conf/appsettings.*.json` file and `.env` values are available.
+- Tests fail because settings are missing: confirm `conf/.env` exists and the test project is copying configuration into output.
+- Scaffold or fixture-generation commands fail immediately: verify local PostgreSQL access and the required files in `~/vault/`.
+- A helper target behaves unexpectedly: compare it against the project’s current target framework before assuming it is up to date.
+
+Because the repository contains long-lived historical material and redesign work in parallel, always verify whether you are modifying the active runtime, test infrastructure, or the in-progress composer before debugging deeper.
+
+## Related Documents
+
+- `README.md`: short overview and entry point
+- `docs/DESIGN.md`: current architecture and overhaul boundaries
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/system_requirements_specification.md`: query-engine overhaul requirements
+- `docs/TESTING.md`: TBD
+- `docs/OPERATIONS.md`: TBD
