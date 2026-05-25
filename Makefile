@@ -4,10 +4,14 @@ include docker/.env
 
 DBHOST:=$(shell cat ~/vault/.default.sead.server)
 DBUSER:=$(shell cat ~/vault/.default.sead.username)
-DBNAME:=sead_staging_202504
-DBPORT:=8089
+DBNAME:=sead_staging
+DBPORT:=5433
 DBPASSWORD:=$(shell cat ~/vault/.default.sead.password)
 
+SOLUTION=sead_query_api.sln
+API_PROJECT=sead.query.api/sead.query.api.csproj
+TEST_PROJECT=sead.query.test/sead.query.test.csproj
+TARGET_FRAMEWORK=net9.0
 SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
 
 .PHONY: test clean build publish tidy
@@ -15,16 +19,19 @@ SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
 show-settings:
 	@echo "info: postgres://$(DBUSER)@$(DBHOST):$(DBPORT)/$(DBNAME)"
 
+.PHONY: test
 test:
-	@export $(cat conf/.env | xargs) \
-		&& dotnet test -l "console;verbosity=detailed"
+	@set -a \
+		&& source conf/.env \
+		&& set +a \
+		&& dotnet test $(TEST_PROJECT) -l "console;verbosity=detailed"
 		
 #--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
-	@ time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample $(DBNAME) --port $(DBPORT) --fixed-ids ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/sample-fixture.csv
-	@sudo rm -rf ./sead.query.test/tmp//sead-query-pgdata-cache
+	time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample $(DBNAME) --port $(DBPORT) --fixed-ids ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/sample-fixture.csv
+	@sudo rm -rf ./sead.query.test/tmp/sead-query-pgdata-cache
 	@echo "info: pgdata cache of test database invalidated"
 	@echo "info: test data generation completed!"
 
@@ -41,30 +48,39 @@ scaffold-facet-context: show-settings
 		--no-onconfiguring --no-pluralize --schema facet \
 		--project ./sead.query.core/sead.query.core.csproj
 
+.PHONY: clean
 clean:
 	@dotnet clean
 	@dotnet clean -c Release
 	@dotnet nuget locals --clear all
 
-.PHONY: clean release debug publish tidy test tag serve
-
+.PHONY: serve
 serve: debug
-	@cp -f conf/appsettings.Development.json sead.query.api/bin/Debug/net8.0/appsettings.json
-	@cp -f conf/.env sead.query.api/bin/Debug/net8.0/.env
-	@dotnet run --project sead.query.api/sead.query.api.csproj
+	@cp -f conf/appsettings.Development.json sead.query.api/bin/Debug/$(TARGET_FRAMEWORK)/appsettings.json
+	@cp -f conf/.env sead.query.api/bin/Debug/$(TARGET_FRAMEWORK)/.env
+	@dotnet run --project $(API_PROJECT)
 
+.PHONY: build
+build:
+	dotnet build $(SOLUTION)
+
+.PHONY: release
 release:
-	dotnet build -c Release
+	dotnet build $(SOLUTION) -c Release
 
+.PHONY: debug
 debug:
-	dotnet build -c Debug
+	dotnet build $(SOLUTION) -c Debug
 
+.PHONY: publish
 publish:
-	dotnet publish -c Release
+	dotnet publish $(API_PROJECT) -c Release
 
+.PHONY: tidy
 tidy:
 	dotnet format
 
+.PHONY: tag
 tag:
 	@echo "info: adding annotated release tag $(SEAD_QUERY_API_TAG)..."
 	@git tag -a $(SEAD_QUERY_API_TAG) -m "Release $(SEAD_QUERY_API_TAG)"

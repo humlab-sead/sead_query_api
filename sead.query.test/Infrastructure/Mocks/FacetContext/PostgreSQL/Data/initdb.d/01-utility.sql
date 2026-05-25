@@ -1966,6 +1966,29 @@ CREATE FUNCTION sead_utility.table_exists(p_schema_name text, p_table_name text)
 
 
 --
+-- Name: table_name_to_entity_name(text); Type: FUNCTION; Schema: sead_utility; Owner: -
+--
+
+CREATE FUNCTION sead_utility.table_name_to_entity_name(p_tablename text) RETURNS text
+    LANGUAGE plpgsql
+    AS $_$
+begin
+	if position('.' in p_tablename) > 0 then
+		p_tablename = split_part(p_tablename, '.', 2);
+    end if;
+	p_tablename = replace(p_tablename,'tbl_', '');
+	if p_tablename like '%ies' then
+		p_tablename = regexp_replace(p_tablename, 'ies$', 'y');
+	end if;
+	if not p_tablename like '%status' then
+		p_tablename = rtrim(p_tablename, 's');
+	end if;
+	return p_tablename;
+end;
+$_$;
+
+
+--
 -- Name: underscore_to_entity_name(text, text); Type: FUNCTION; Schema: sead_utility; Owner: -
 --
 
@@ -2685,6 +2708,24 @@ CREATE TABLE sead_utility.system_id_allocations (
 
 
 --
+-- Name: table_columns_with_description; Type: VIEW; Schema: sead_utility; Owner: -
+--
+
+CREATE VIEW sead_utility.table_columns_with_description AS
+ SELECT c.table_schema,
+    c.table_name,
+    c.column_name,
+    c.ordinal_position,
+    c.column_default,
+    c.data_type,
+    d.description
+   FROM (((information_schema.columns c
+     JOIN pg_class c1 ON (((c.table_name)::name = c1.relname)))
+     JOIN pg_namespace n ON ((((c.table_schema)::name = n.nspname) AND (c1.relnamespace = n.oid))))
+     LEFT JOIN pg_description d ON (((d.objsubid = (c.ordinal_position)::integer) AND (d.objoid = c1.oid))));
+
+
+--
 -- Name: table_dependencies; Type: VIEW; Schema: sead_utility; Owner: -
 --
 
@@ -2722,6 +2763,18 @@ CREATE VIEW sead_utility.table_dependencies AS
     array_upper(chain, 1) AS depth,
     array_to_string(chain, ','::text) AS chain
    FROM t;
+
+
+--
+-- Name: temp_comments; Type: TABLE; Schema: sead_utility; Owner: -
+--
+
+CREATE TABLE sead_utility.temp_comments (
+    schema_name text,
+    table_name text,
+    column_name text,
+    comment text
+);
 
 
 --

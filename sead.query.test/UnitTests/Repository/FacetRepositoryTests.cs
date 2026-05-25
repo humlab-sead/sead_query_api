@@ -1,7 +1,7 @@
-using SeadQueryCore;
-using SeadQueryInfra;
 using System.Collections.Generic;
 using System.Linq;
+using SeadQueryCore;
+using SeadQueryInfra;
 using Xunit;
 
 namespace SQT.Infrastructure.Repository
@@ -9,9 +9,8 @@ namespace SQT.Infrastructure.Repository
     [Collection("UsePostgresFixture")]
     public class FacetRepositoryTests : MockerWithFacetContext
     {
-        public FacetRepositoryTests() : base()
-        {
-        }
+        public FacetRepositoryTests()
+            : base() { }
 
         [Fact]
         public void Get_ByFacetCode_Success()
@@ -20,20 +19,24 @@ namespace SQT.Infrastructure.Repository
 
             Facet facet = repository.GetByCode("species");
 
-            Dictionary<string, object> expectedProperties = new() {
+            Dictionary<string, object> expectedProperties = new()
+            {
                 { "FacetId", 25 },
                 { "FacetCode", "species" },
                 { "DisplayTitle", "Taxa" },
                 { "FacetGroupId", 6 },
                 { "FacetTypeId", EFacetType.Discrete },
                 { "CategoryIdExpr", "tbl_taxa_tree_master.taxon_id" },
-                { "CategoryNameExpr", "concat_ws(' ', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species, tbl_taxa_tree_authors.author_name)" },
+                {
+                    "CategoryNameExpr",
+                    "concat_ws(' ', tbl_taxa_tree_genera.genus_name, tbl_taxa_tree_master.species, tbl_taxa_tree_authors.author_name)"
+                },
                 { "SortExpr", "tbl_taxa_tree_genera.genus_name||' '||tbl_taxa_tree_master.species" },
                 { "IsApplicable", true },
                 { "IsDefault", false },
                 { "AggregateType", "sum" },
                 { "AggregateTitle", "sum of Abundance" },
-                { "AggregateFacetId", 32 }
+                { "AggregateFacetId", 32 },
             };
 
             Asserter.EqualByProperty(expectedProperties, facet);
@@ -47,9 +50,28 @@ namespace SQT.Infrastructure.Repository
         }
 
         [Fact]
+        public void Get_FacetAnchor_Success()
+        {
+            var repository = Registry.Facets;
+
+            Facet facet = repository.GetByCode("sites");
+            Assert.NotNull(facet);
+            Assert.NotNull(facet.FacetAnchors);
+            Assert.NotEmpty(facet.FacetAnchors);
+
+            var anchors = Registry.Anchors.GetAll();
+            Assert.NotEmpty(anchors);
+
+            Assert.All(facet.FacetAnchors, fa => anchors.Any(a => a.AnchorId == fa.AnchorId));
+
+            
+        }
+
+        [Fact]
         public void FindThoseWithAlias_Success()
         {
             var repository = Registry.Facets;
+            var anchhors = Registry.Facets;
 
             List<Facet> aliasFacets = repository.FindThoseWithAlias().ToList();
             Assert.True(aliasFacets.Count > 0);

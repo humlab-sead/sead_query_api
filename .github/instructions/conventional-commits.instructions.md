@@ -1,33 +1,64 @@
 ---
 applyTo: '*'
 ---
+
 # Conventional Commits Instructions
 
-Adopt the [Conventional Commits](https://www.conventionalcommits.org/) specification for all commit messages to ensure a readable history, automate changelog generation, and facilitate continuous integration.
+Use the [Conventional Commits](https://www.conventionalcommits.org/) format for every commit message.
+This keeps history readable and makes release notes, review, and automation easier.
 
 ## Main Rules
 
-- The commit message must be structured as follows:
+- Format the subject line as:
   ```
   <type>[optional scope]: <description>
   ```
-  - **type**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
-  - **scope** (optional): the part of the code concerned (e.g., `api`, `domain`, `infrastructure`, `tests`)
-  - **description**: short imperative description, no initial capital letter, no period at the end
-  - **first line must not exceed 72 characters**
+- Keep the first line at or under 72 characters.
+- Write the description in imperative mood.
+- Do not capitalize the first word unless it is a proper noun or identifier.
+- Do not end the subject with a period.
+
+## Allowed Types
+
+- `feat`: new user-facing or developer-facing functionality
+- `fix`: bug fix or behavior correction
+- `docs`: documentation only
+- `refactor`: internal restructuring without behavior change
+- `perf`: measurable performance improvement
+- `test`: test-only changes
+- `build`: build, package, SDK, or dependency changes
+- `ci`: pipeline or automation changes
+- `chore`: maintenance work that does not fit another type
+- `style`: formatting-only changes with no behavior effect
+- `revert`: reverts a previous commit
+
+## Recommended Scopes For This Repo
+
+- Use a narrow scope when it makes the change easier to understand.
+- Good scopes in this repository include: `api`, `core`, `infra`, `composer`, `tests`, `docs`, `build`, `config`.
+- Omit the scope when the change spans the whole solution or the scope adds no value.
 
 - Examples:
-  - `feat(api): add order endpoint`
-  - `fix(domain): correct order validation logic`
-  - `test(order): add unit tests for order creation`
-  - `chore: update dependencies`
+  - `feat(composer): add arrow route graph resolution`
+  - `fix(api): preserve facet filter order`
+  - `test(tests): add route parser unit coverage`
+  - `build: update dotnet sdk and test packages`
 
 ## Best Practices
 
 - Use English for all commit messages.
-- One commit = one logical/unit change.
-- Use the scope to specify the affected layer or feature.
-- For breaking changes, add `!` after the type or scope and detail in the commit body.
+- Keep one commit focused on one logical change.
+- Put rationale, tradeoffs, or follow-up notes in the body when the subject alone is not enough.
+- For breaking changes, add `!` after the type or scope and explain the break in the body.
+- Reference issues or work items in the body when helpful.
+
+## Breaking Change Example
+
+```text
+feat(core)!: rename facet route contract
+
+BREAKING CHANGE: existing route configuration must use the new contract name.
+```
 
 ---
 

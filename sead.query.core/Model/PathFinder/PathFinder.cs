@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SeadQueryCore;
 
-using Route = List<TableRelation>;
+using Edges = List<TableRelation>;
 using Graph = List<TableRelation>;
 using Nodes = Dictionary<string, Table>;
 
@@ -50,14 +50,14 @@ public class PathFinder : IPathFinder
         Nodes = nodes;
     }
 
-    public List<Route> Find(string start, List<string> targets, bool reduce = true)
+    public List<Edges> Find(string start, List<string> targets, bool reduce = true)
     {
         var routes = targets.Where(z => z != start).Select(z => Find(start, z)).ToList();
 
         return reduce ? routes.ReduceEdges() : routes;
     }
 
-    public Route Find(string source, string target)
+    public Edges Find(string source, string target)
     {
         var sourceNode = Nodes[source];
         var destinationNode = Nodes[target];
@@ -65,7 +65,7 @@ public class PathFinder : IPathFinder
         return route;
     }
 
-    public Route Find(int source, int target)
+    public Edges Find(int source, int target)
     {
         IEnumerable<int> trail = new DijkstrasGraph<int>(Graph.ToValueTuples()).FindShortestPath(source, target);
 
@@ -76,9 +76,9 @@ public class PathFinder : IPathFinder
         return route;
     }
 
-    public Route ToRoute(IEnumerable<int> trail) => ToEdges(trail);
+    public Edges ToRoute(IEnumerable<int> trail) => ToEdges(trail);
 
-    public Route ToEdges(IEnumerable<int> trail)
+    public Edges ToEdges(IEnumerable<int> trail)
         => trail.PairWise((a, b) => Graph.GetEdge(a, b)).ToList();
 
 }

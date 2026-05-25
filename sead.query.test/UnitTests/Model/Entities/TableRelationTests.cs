@@ -1,8 +1,8 @@
+using System;
+using System.Collections.Generic;
 using SeadQueryCore;
 using SQT.Infrastructure;
 using SQT.Mocks;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace SQT.Model;
@@ -19,18 +19,8 @@ public class TableRelationTests
     public TableRelationTests()
     {
         Graph = FakeGraphFactory.CreateSimpleGraph();
-        Route = [
-                Graph.GetEdge("A", "B"),
-                Graph.GetEdge("B", "F"),
-                Graph.GetEdge("F", "H")
-            ];
-        Routes = [
-            Route,
-            [
-                Graph.GetEdge("F", "B"),
-                Graph.GetEdge("B", "A"),
-                Graph.GetEdge("A", "C")
-            ]];
+        Route = [Graph.GetEdge("A", "B"), Graph.GetEdge("B", "F"), Graph.GetEdge("F", "H")];
+        Routes = [Route, [Graph.GetEdge("F", "B"), Graph.GetEdge("B", "A"), Graph.GetEdge("A", "C")]];
     }
 
     [Fact]
@@ -79,62 +69,48 @@ public class TableRelationTests
         Assert.False(Graph.HasEdge("A", "Z"));
     }
 
-
     [Fact]
     public void ReduceEdges_Route_ItemsRemoved()
     {
-        Route route = [
-                Graph.GetEdge("A", "B"),
-                Graph.GetEdge("B", "F"),
-                Graph.GetEdge("F", "H")
-            ];
+        Route route = [Graph.GetEdge("A", "B"), Graph.GetEdge("B", "F"), Graph.GetEdge("F", "H")];
 
-        var result = route.ReduceEdges([
+        var result = route.ReduceEdges(
             [
-                Graph.GetEdge("F", "H")
+                [Graph.GetEdge("F", "H")],
             ]
-        ]);
+        );
 
         Assert.Equal(2, result.Count);
         Assert.True(route.HasEdge(Graph.GetEdge("A", "B")));
         Assert.True(route.HasEdge(Graph.GetEdge("B", "F")));
 
-        result = route.ReduceEdges([
+        result = route.ReduceEdges(
             [
-                Graph.GetEdge("A", "B"),
-                Graph.GetEdge("B", "F")
+                [Graph.GetEdge("A", "B"), Graph.GetEdge("B", "F")],
             ]
-        ]);
+        );
 
         Assert.Single(result);
         Assert.True(route.HasEdge(Graph.GetEdge("F", "H")));
 
-        result = route.ReduceEdges([
+        result = route.ReduceEdges(
             [
-                Graph.GetEdge("A", "B"),
-            ],
-            [
-                Graph.GetEdge("B", "F")
+                [Graph.GetEdge("A", "B")],
+                [Graph.GetEdge("B", "F")],
             ]
-        ]);
+        );
 
         Assert.Single(result);
         Assert.True(route.HasEdge(Graph.GetEdge("F", "H")));
-
     }
 
     [Fact]
     public void ReduceEdges_Routes_ItemsRemoved()
     {
-        List<Route> routes = [
-            [
-                Graph.GetEdge("F", "H")
-            ],
-            [
-                Graph.GetEdge("A", "B"),
-                Graph.GetEdge("B", "F"),
-                Graph.GetEdge("F", "H")
-            ]
+        List<Route> routes =
+        [
+            [Graph.GetEdge("F", "H")],
+            [Graph.GetEdge("A", "B"), Graph.GetEdge("B", "F"), Graph.GetEdge("F", "H")],
         ];
 
         var result = routes.ReduceEdges();
@@ -149,7 +125,6 @@ public class TableRelationTests
         Assert.True(result[1].HasEdge(Graph.GetEdge("B", "F")));
 
         Assert.Empty(new List<Route>().ReduceEdges());
-
     }
 
     [Fact]
@@ -161,13 +136,13 @@ public class TableRelationTests
             new Route
             {
                 new TableRelation { TargetTable = new Table { IsUdf = false } },
-                new TableRelation { TargetTable = new Table { IsUdf = true } }
+                new TableRelation { TargetTable = new Table { IsUdf = true } },
             },
             new Route
             {
                 new TableRelation { TargetTable = new Table { IsUdf = true } },
-                new TableRelation { TargetTable = new Table { IsUdf = false } }
-            }
+                new TableRelation { TargetTable = new Table { IsUdf = false } },
+            },
         };
 
         // Act
@@ -240,7 +215,11 @@ public class TableRelationTests
         var AB = Graph.GetEdge("A", "B");
         var BF = Graph.GetEdge("B", "F");
 
-        var routes = new List<Route>() { new Route() { AB }, new Route() { BF } };
+        var routes = new List<Route>()
+        {
+            new Route() { AB },
+            new Route() { BF },
+        };
 
         var result = routes.ToEdgeString();
 
@@ -248,7 +227,6 @@ public class TableRelationTests
 
         Assert.Equal(expected, result);
     }
-
 
     [Fact]
     public void ToString_OfAnyGraph_ReturnsCsvString()
@@ -275,7 +253,6 @@ public class TableRelationTests
 
         // Assert
         Assert.Equal(expected, result);
-
     }
 
     [Fact]
@@ -289,7 +266,6 @@ public class TableRelationTests
     {
         Assert.False(Graph.GetEdge("A", "B").Equals(Graph.GetEdge("F", "H")));
     }
-
 
     [Fact]
     public void Clone_OfAnyEdge_HasSameState()
@@ -313,8 +289,8 @@ public class TableRelationTests
         Assert.Equal(BA.SourceTable, AB.TargetTable);
         Assert.Equal(BA.TargetName, AB.SourceName);
         Assert.Equal(BA.TargetTable, AB.SourceTable);
-        Assert.Equal(BA.SourceColumName, AB.TargetColumnName);
-        Assert.Equal(BA.TargetColumnName, AB.SourceColumName);
+        Assert.Equal(BA.SourceColumnName, AB.TargetColumnName);
+        Assert.Equal(BA.TargetColumnName, AB.SourceColumnName);
         Assert.Equal(BA.Weight, AB.Weight);
     }
 
@@ -333,6 +309,4 @@ public class TableRelationTests
         // Assert
         Assert.Equal("ALIAS", result.TargetTable.TableOrUdfName);
     }
-
-
 }

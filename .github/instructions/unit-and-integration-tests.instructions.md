@@ -1,56 +1,47 @@
 ---
-applyTo: '**/*.cs'
+applyTo: 'sead.query.test/**/*.cs'
 ---
-# Rules for Unit and Integration Tests
+# Unit and Integration Test Guidance
 
-This rule defines the best practices and tools to use for writing unit and integration tests in the backend project.
+Use this instruction when editing tests in `sead.query.test`.
 
-## Libraries and Tools
-- **Test Framework**: Always use `xunit.v3` for unit and integration tests.
-- **Mocks**: Use `FakeItEasy` to create mocks in unit tests.
-- **Contract Tests or Advanced Mocks**: Use `Testcontainers` and `Microcks` to simulate SOAP or REST calls, or for contract tests.
-- **Integration Tests**: Configure `Testcontainers` for databases or other external dependencies.
+## Test Stack In This Repository
 
-## General Steps
-1. **Unit Tests**:
-   - Write tests for each valid and invalid scenario.
-   - Use `FakeItEasy` to mock dependencies.
-   - Verify exceptions and expected results.
+- Use `xUnit` as the default test framework.
+- Use `Moq` for mocks and interaction-based assertions.
+- Use `FluentAssertions` for expressive assertions when it improves readability.
+- Use `AutoFixture` only when it reduces repetitive setup without hiding intent.
+- Use `Testcontainers` only for integration scenarios that need real external infrastructure.
+- Use `Microsoft.AspNetCore.TestHost` for API-hosted integration tests.
+- Do not introduce `FakeItEasy`, `Microcks`, or other additional testing frameworks unless the repository explicitly adopts them.
 
-2. **Integration Tests**:
-   - Set up a test environment with `Testcontainers`.
-   - Simulate SOAP or REST calls with `Microcks` if necessary.
-   - Validate the entire business flow.
+## Folder and Scope Conventions
 
-3. **Performance Tests**:
-   - Add tests to validate the performance of critical features.
+- Keep unit tests under `sead.query.test/UnitTests/`.
+- Keep broader integration-style tests under `sead.query.test/IntegrationTests/` or the existing feature-specific integration folders already used in the repo.
+- Mirror the production namespace or feature area so tests are easy to locate.
+- Add new tests close to the area they validate instead of creating catch-all test files.
 
-## Unit Tests
-- Located in `tests/[project].UnitTests/`.
-- Test only the **Domain** and **Application** layers.
-- Use `FakeItEasy` to mock dependencies.
-- Do not interact with real databases or external services.
-- Focus on business logic, use cases, and validation.
-- Example folders: `UseCases/`, `Services/`.
+## Unit Test Guidance
 
-## Integration Tests
-- Located in `tests/[project].IntegrationTests/`.
-- Test the **Infrastructure** and **Api** layers, and the integration between layers.
-- Use `Testcontainers` to set up real or simulated external dependencies (databases, APIs, etc.).
-- Use `Microcks` for contract or advanced integration tests (SOAP, REST, events).
-- Validate the entire business flow, including data persistence and external calls.
-- Example folders: `Features/` (for API endpoint tests).
+- Test one behavior per test.
+- Name tests with the pattern `Method_Scenario_ExpectedOutcome` or equivalent clear behavior wording.
+- Keep arrange, act, and assert phases visually obvious.
+- Mock only true dependencies or collaborators.
+- Prefer real value objects and simple concrete models over mocks for passive data.
+- Verify return values, state changes, and thrown exceptions.
+- Avoid file system, network, database, clock, or environment dependencies unless the test is intentionally integration-scoped.
 
-## Best Practices
-- Always write tests before implementation (TDD).
-- Document test cases in the corresponding files.
-- Use explicit test names to describe their purpose.
+## Integration Test Guidance
 
-## Additional Rule: Continuous Test Execution
+- Use integration tests to verify boundaries between layers, persistence behavior, SQL generation, DI wiring, and HTTP endpoints.
+- Prefer the narrowest realistic test setup that proves the behavior.
+- Use in-memory or SQLite-backed setups when they are sufficient for the scenario.
+- Use PostgreSQL Testcontainers when provider-specific SQL or database behavior must be exercised.
+- Keep container-backed tests deterministic and clean up resources reliably.
+- Do not make tests depend on external shared environments when a local container or in-process host is sufficient.
 
-- After every significant change or addition, run `dotnet test` or `dotnet watch` to verify the current state of the project.
-- This ensures that all tests pass and helps identify issues early in the development process.
-- Document the results of the test runs in the corresponding task or user story.
+## Assertions and Test Quality
 
 ## Updates
 This rule must be updated if new tools or practices are adopted in the backend project.

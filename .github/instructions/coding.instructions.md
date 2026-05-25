@@ -2,65 +2,78 @@
 applyTo: '**/*.cs'
 ---
 
-# Coding Style
+# C# and .NET Coding Guidance
 
-## General Guidelines
-- Adhere to Microsoft's [coding conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions).
-- Follow the official Microsoft .NET C# coding conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
-- Prefer clarity and readability over brevity.
-- Use consistent formatting and naming throughout the codebase.
+Use this instruction when editing C# source files in this repository.
 
-## Naming Conventions
-- Follow the official Microsoft [C# identifier naming rules and conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names?source=recommendations)
-- Prefix interfaces with `I` (e.g., `IOrderService`).
-- Use meaningful, descriptive names; avoid abbreviations.
+## Core Principles
 
-## Formatting
-- Use 4 spaces for indentation (no tabs).
-- Use file-scoped namespaces to simplify structure and improve readability.
-- Add a blank line between method definitions.
-- Place opening braces on a new line for methods, properties, and types (unless using file-scoped namespaces, then follow the file-scoped style).
+- Follow the Microsoft C# coding conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+- Prefer small, explicit, composable code over framework-heavy or overly abstract designs.
+- Preserve the existing style of the file unless there is a clear reason to normalize it as part of the change.
+- Fix root causes rather than layering workarounds on top of unclear behavior.
 
-### Example: File-Scoped Namespaces
-```csharp
-// Before
-namespace MyNamespace
-{
-    public class ExampleClass
-    {
-        // ...existing code...
-    }
-}
-// After
-namespace MyNamespace;
+## Naming and Structure
 
-public class ExampleClass
-{
-    // ...existing code...
-}
-```
-- All new files must use file-scoped namespaces. Refactor existing files during updates or maintenance.
+- Use descriptive names that reflect domain meaning.
+- Use `PascalCase` for types, methods, properties, and constants.
+- Use `camelCase` for parameters, locals, and private fields.
+- Prefix interfaces with `I`.
+- Prefer one primary type per file.
+- Keep namespaces aligned with folder structure when practical.
 
-## Variable Declaration
-- Use `var` for local variable declarations when the type is obvious.
-- Prefer explicit types if it improves clarity.
+## Formatting and File Layout
 
+- Use 4 spaces for indentation and do not use tabs.
+- Keep using directives at the top of the file.
+- Prefer file-scoped namespaces for new files.
+- When editing an existing file, preserve the current namespace style unless the task is explicitly a style cleanup.
+- Insert blank lines between logical blocks so methods remain easy to scan.
 
-## Code Structure
-- One type per file (class, interface, enum, etc.).
-- Organize files by feature/domain when possible.
-- Group using directives at the top of the file, outside the namespace.
-- Place related types in the same namespace.
-- Use partial classes only when necessary (e.g., for code generation).
+## Language Features
 
-## Comments & Documentation
-- Use XML documentation comments (`///`) for public APIs.
-- Write comments to explain why, not what, when necessary.
+- Use `var` when the type is obvious from the right-hand side; use explicit types when it improves readability.
+- Use object, collection, and target-typed `new` initializers when they make the code shorter without hiding intent.
+- Use pattern matching, switch expressions, and expression-bodied members when they improve clarity.
+- Do not rewrite stable code only to use newer syntax.
 
-## Null Checks & Exceptions
-- Use guard clauses for argument validation.
-- Use `nameof` for parameter names in exceptions.
+## Nullability and Validation
 
-## Modern C# Features
-- Use pattern matching and expression-bodied members where appropriate.
-- Prefer object and collection initializers.
+- Validate public method arguments with guard clauses.
+- Prefer `ArgumentNullException.ThrowIfNull(...)` for null checks.
+- Use `nameof(...)` for exception parameter names.
+- Return empty collections instead of `null` unless `null` has a real semantic meaning.
+- Follow the file or project nullable context already in place; do not introduce broad nullability changes unless required by the task.
+
+## Exceptions and Error Handling
+
+- Throw the most specific exception type that fits the contract.
+- Use exceptions for exceptional paths, not normal branching.
+- Include enough context in exception messages to make failures diagnosable.
+- Avoid swallowing exceptions; either handle them meaningfully or let them propagate.
+
+## APIs and Dependencies
+
+- Keep constructors explicit about their dependencies.
+- Prefer dependency injection and interfaces at architectural boundaries.
+- Avoid service locator patterns and hidden global state.
+- Keep domain logic out of controllers, startup wiring, and repository plumbing.
+
+## Async and Collections
+
+- Suffix asynchronous methods with `Async`.
+- Pass `CancellationToken` through public async APIs when cancellation is relevant.
+- Avoid blocking async code with `.Result`, `.Wait()`, or `.GetAwaiter().GetResult()`.
+- Prefer `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, or `IEnumerable<T>` for read-only contracts when mutation is not required.
+
+## Comments and Documentation
+
+- Add XML documentation for public APIs, extension points, and non-obvious behavior.
+- Write comments to explain intent, invariants, or tradeoffs.
+- Do not add comments that restate the code line by line.
+
+## Change Discipline
+
+- Keep edits focused on the task.
+- Avoid drive-by renames, formatting-only churn, or unrelated refactors.
+- If a file mixes old and new style, improve only the touched area unless a broader cleanup is part of the task.

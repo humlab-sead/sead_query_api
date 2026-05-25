@@ -1,16 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <!-- <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> -->
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>SeadQueryTest</RootNamespace>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1705;NU1603</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Purgatory\**" />
     <Compile Remove="Infrastructure\Services\**" />
@@ -22,9 +19,14 @@
     <None Remove="Infrastructure\Services\**" />
     <None Remove="Models\**" />
   </ItemGroup>
-
+  <!-- REMOVE REDESIGNED QUERY BUILDER TESTS FOR NOW -->
   <ItemGroup>
-
+    <Compile Remove="QueryComposer/BackBurner/**/*.cs" />
+    <None Remove="QueryComposer/BackBurner/**" />
+    <Content Remove="QueryComposer/BackBurner/**" />
+    <EmbeddedResource Remove="QueryComposer/BackBurner/**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="8.2.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
@@ -35,14 +37,11 @@
     <PackageReference Include="AutoFixture.Xunit2" Version="4.18.1" />
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Bogus" Version="35.6.3" />
-    
     <PackageReference Include="CacheManager.Core" Version="2.0.0" />
     <PackageReference Include="CacheManager.Microsoft.Extensions.Caching.Memory" Version="2.0.0" />
     <PackageReference Include="CacheManager.Serialization.Json" Version="2.0.0" />
     <PackageReference Include="CacheManager.StackExchange.Redis" Version="2.0.0" />
-    
     <PackageReference Include="CompareNETObjects" Version="4.83.0" />
-    
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="FluentAssertions" Version="8.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
@@ -52,7 +51,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.4" />
     <PackageReference Include="ObjectDumper.NET" Version="4.3.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
-
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
@@ -61,17 +59,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.4" />
-
     <PackageReference Include="Moq" Version="4.20.72" />
-
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
-
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.4" />
-
     <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
@@ -79,65 +73,52 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.31" />
-
     <PackageReference Include="System.Runtime.Caching" Version="9.0.4" />
-
     <PackageReference Include="Testcontainers" Version="4.4.0" />
-
     <PackageReference Include="Testcontainers.PostgreSql" Version="4.4.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.analyzers" Version="1.21.0" />
     <PackageReference Include="xunit.assert" Version="2.9.3" />
-
     <PackageReference Include="xunit.runner.console" Version="2.9.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\sead.query.core\sead.query.core.csproj" />
     <ProjectReference Include="..\sead.query.api\sead.query.api.csproj" />
     <ProjectReference Include="..\sead.query.infra\sead.query.infra.csproj" />
+    <ProjectReference Include="..\sead.query.composer\sead.query.composer.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-
   <!-- <ItemGroup>
     <Content Update="..\conf\appsettings.test.json" Link="appsettings.Test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </Content>
   </ItemGroup> -->
-
   <ItemGroup>
     <ContentWithTargetPath Include="../conf/appsettings.Test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>appsettings.json</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-
   <ItemGroup>
     <ContentWithTargetPath Include="../conf/.env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>.env</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="UnitTests\SharedKernel\" />
   </ItemGroup>
-
 </Project>

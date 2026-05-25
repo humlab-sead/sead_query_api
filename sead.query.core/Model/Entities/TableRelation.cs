@@ -1,51 +1,51 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace SeadQueryCore
 {
-    using Route = List<TableRelation>;
+    using Edges = List<TableRelation>;
 
     public static class EdgesExtension
     {
-        public static TableRelation GetEdge(this Route edges, string sourceTable, string targetTable)
+        public static TableRelation GetEdge(this Edges edges, string sourceTable, string targetTable)
         {
             return edges.FirstOrDefault(x => x.SourceName == sourceTable && x.TargetName == targetTable);
         }
 
-        public static TableRelation GetEdge(this Route edges, int sourceTableId, int targetTableId)
+        public static TableRelation GetEdge(this Edges edges, int sourceTableId, int targetTableId)
         {
             return edges.FirstOrDefault(x => x.SourceTableId == sourceTableId && x.TargetTableId == targetTableId);
         }
 
-        public static bool HasEdge(this Route route, TableRelation item)
+        public static bool HasEdge(this Edges edges, TableRelation item)
         {
-            return route.Any(x => x.SourceTableId == item.SourceTableId && x.TargetTableId == item.TargetTableId);
+            return edges.Any(x => x.SourceTableId == item.SourceTableId && x.TargetTableId == item.TargetTableId);
         }
 
-        public static bool HasEdge(this Route route, string sourceName, string targetName)
+        public static bool HasEdge(this Edges edges, string sourceName, string targetName)
         {
-            return route.Any(x => x.SourceName == sourceName && x.TargetName == targetName);
+            return edges.Any(x => x.SourceName == sourceName && x.TargetName == targetName);
         }
 
-        public static bool HasEdge(this List<Route> routes, TableRelation item)
+        public static bool HasEdge(this List<Edges> routes, TableRelation item)
         {
             return routes.Any(x => x.HasEdge(item));
         }
 
-        public static Route ReduceEdges(this Route route, List<Route> routes)
+        public static Edges ReduceEdges(this Edges route, List<Edges> routes)
         {
             return route.Where(z => !routes.HasEdge(z)).ToList();
         }
 
-        public static List<Route> ReduceEdges(this List<Route> routes)
+        public static List<Edges> ReduceEdges(this List<Edges> routes)
         {
-            List<Route> reduced_routes = [];
+            List<Edges> reduced_routes = [];
             foreach (var route in routes)
             {
-                Route reduced_route = route.ReduceEdges(reduced_routes);
+                Edges reduced_route = route.ReduceEdges(reduced_routes);
                 if (reduced_route.Count > 0)
                 {
                     reduced_routes.Add(reduced_route);
@@ -54,40 +54,35 @@ namespace SeadQueryCore
             return reduced_routes;
         }
 
-        public static Route ReversedEdges(this Route route)
+        public static Edges ReversedEdges(this Edges route)
         {
-            return route
-                .Where(z => z.SourceId != z.TargetId)
-                .Select(x => x.Reverse())
-                .Where(z => !route.Any(w => w.Equals(z))).ToList();
+            return route.Where(z => z.SourceId != z.TargetId).Select(x => x.Reverse()).Where(z => !route.Any(w => w.Equals(z))).ToList();
         }
 
+        public static Edges GetFlattenEdges(this List<Edges> routes) =>
+            [.. routes.SelectMany(route => route).OrderByDescending(z => z.TargetTable.IsUdf)];
 
-        public static Route GetFlattenEdges(this List<Route> routes)
-            => [.. routes.SelectMany(route => route).OrderByDescending(z => z.TargetTable.IsUdf)];
-
-
-        public static List<Tuple<int, int, int>> ToTuples(this Route edges)
+        public static List<Tuple<int, int, int>> ToTuples(this Edges edges)
         {
             return edges.Select(x => Tuple.Create(x.SourceId, x.TargetId, x.Weight)).ToList();
         }
 
-        public static List<(int, int, int)> ToValueTuples(this Route edges)
+        public static List<(int, int, int)> ToValueTuples(this Edges edges)
         {
             return edges.Select(x => (x.SourceId, x.TargetId, x.Weight)).ToList();
         }
 
-        public static string ToEdgeString(this Route route)
+        public static string ToEdgeString(this Edges route)
         {
             return string.Join("\n", route.Select(z => $"{z.SourceName};{z.TargetName};{z.Weight}"));
         }
 
-        public static string ToEdgeString(this List<Route> routes)
+        public static string ToEdgeString(this List<Edges> routes)
         {
             return string.Join("\n", routes.Select(z => $"{z.ToEdgeString()}"));
         }
 
-        public static List<string> ToTrail(this Route route)
+        public static List<string> ToTrail(this Edges route)
         {
             if (route.Count > 0)
             {
@@ -96,7 +91,7 @@ namespace SeadQueryCore
             return [];
         }
 
-        public static string ToCSV(this Route relations)
+        public static string ToCSV(this Edges relations)
         {
             StringBuilder sb = new StringBuilder();
             foreach (TableRelation relation in relations)
@@ -104,20 +99,19 @@ namespace SeadQueryCore
             return sb.ToString();
         }
 
-        public static TableRelation Find(this Route route, string sourceName, string targetName)
+        public static TableRelation Find(this Edges route, string sourceName, string targetName)
         {
             return route.FirstOrDefault(x => x.SourceName == sourceName && x.TargetName == targetName);
         }
 
-        public static TableRelation Find(this Route route, int sourceId, int targetId)
+        public static TableRelation Find(this Edges route, int sourceId, int targetId)
         {
             return route.FirstOrDefault(x => x.SourceTableId == sourceId && x.TargetTableId == targetId);
         }
 
-        public static Route ToEdges(this Route route, IEnumerable<int> trail)
-            => trail.PairWise(route.Find).ToList();
+        public static Edges ToEdges(this Edges route, IEnumerable<int> trail) => trail.PairWise(route.Find).ToList();
 
-        public static Table FindNode(this Route route, string nodeName)
+        public static Table FindNode(this Edges route, string nodeName)
         {
             foreach (var edge in route)
             {
@@ -129,7 +123,7 @@ namespace SeadQueryCore
             return null;
         }
 
-        public static Dictionary<string, Table> GetNodes(this Route route)
+        public static Dictionary<string, Table> GetNodes(this Edges route)
         {
             var nodes = new Dictionary<string, Table>();
             foreach (var edge in route)
@@ -141,7 +135,6 @@ namespace SeadQueryCore
             }
             return nodes;
         }
-        
     }
 
     public class TableRelation
@@ -150,21 +143,58 @@ namespace SeadQueryCore
         public int SourceTableId { get; set; }
         public int TargetTableId { get; set; }
         public int Weight { get; set; }
+
         //public string ExtraConstraint { get; set; }
 
         public string SourceColumnName { get; set; }
         public string TargetColumnName { get; set; }
 
-        [JsonIgnore] public int SourceId { get { return SourceTableId; } }
-        [JsonIgnore] public int TargetId { get { return TargetTableId; } }
+        [JsonIgnore]
+        public int SourceId
+        {
+            get { return SourceTableId; }
+        }
 
-        [JsonIgnore] private Table _SourceTable, _TargetTable;
+        [JsonIgnore]
+        public int TargetId
+        {
+            get { return TargetTableId; }
+        }
 
-        public Table SourceTable { get { return _SourceTable; } set { _SourceTable = value; SourceTableId = value?.TableId ?? SourceTableId; } }
-        public Table TargetTable { get { return _TargetTable; } set { _TargetTable = value; TargetTableId = value?.TableId ?? TargetTableId; } }
+        [JsonIgnore]
+        private Table _SourceTable,
+            _TargetTable;
 
-        [JsonIgnore] public string SourceName { get { return SourceTable?.TableOrUdfName ?? ""; } }
-        [JsonIgnore] public string TargetName { get { return TargetTable?.TableOrUdfName ?? ""; } }
+        public Table SourceTable
+        {
+            get { return _SourceTable; }
+            set
+            {
+                _SourceTable = value;
+                SourceTableId = value?.TableId ?? SourceTableId;
+            }
+        }
+        public Table TargetTable
+        {
+            get { return _TargetTable; }
+            set
+            {
+                _TargetTable = value;
+                TargetTableId = value?.TableId ?? TargetTableId;
+            }
+        }
+
+        [JsonIgnore]
+        public string SourceName
+        {
+            get { return SourceTable?.TableOrUdfName ?? ""; }
+        }
+
+        [JsonIgnore]
+        public string TargetName
+        {
+            get { return TargetTable?.TableOrUdfName ?? ""; }
+        }
 
         public TableRelation Clone()
         {
@@ -177,7 +207,7 @@ namespace SeadQueryCore
                 SourceTable = SourceTable,
                 TargetTable = TargetTable,
                 SourceColumnName = SourceColumnName,
-                TargetColumnName = TargetColumnName
+                TargetColumnName = TargetColumnName,
             };
         }
 
