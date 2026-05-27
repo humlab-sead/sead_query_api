@@ -11,13 +11,6 @@
     <NoWarn>1701;1702;1705;1591;CS1591;NU1603;SQL80001;RCS1036;</NoWarn>
   </PropertyGroup>
 
-    <ItemGroup>
-    <Compile Remove="BackBurner/**/*.cs" />
-    <None Remove="BackBurner/**" />
-    <Content Remove="BackBurner/**" />
-    <EmbeddedResource Remove="BackBurner/**" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />

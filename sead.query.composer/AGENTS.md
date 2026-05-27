@@ -17,7 +17,6 @@ Use this guide when working inside `sead.query.composer/`.
 ## Ignore Unless Asked
 
 - `Archived/`
-- `BackBurner/`
 - `bin/` and `obj/`
 
 ## Cheap Validation

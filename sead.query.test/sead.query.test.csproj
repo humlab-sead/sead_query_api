@@ -19,13 +19,6 @@
     <None Remove="Infrastructure\Services\**" />
     <None Remove="Models\**" />
   </ItemGroup>
-  <!-- REMOVE REDESIGNED QUERY BUILDER TESTS FOR NOW -->
-  <ItemGroup>
-    <Compile Remove="QueryComposer/BackBurner/**/*.cs" />
-    <None Remove="QueryComposer/BackBurner/**" />
-    <Content Remove="QueryComposer/BackBurner/**" />
-    <EmbeddedResource Remove="QueryComposer/BackBurner/**" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.2.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />

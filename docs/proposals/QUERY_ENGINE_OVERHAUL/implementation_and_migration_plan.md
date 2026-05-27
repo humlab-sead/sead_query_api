@@ -43,7 +43,7 @@ This plan does not cover:
 Current implementation status is mixed:
 
 - route parser, route graph, route resolver, and route SQL compiler work exist and have matching test areas
-- `BackBurner` composer code is still excluded from compilation
+- `BackBurner` composer code is still excluded from compilation and should be treated as archived reference material, not as an alternative active implementation path
 - anchor and route entities and repositories exist, but the main `sead.query.core/QueryComposer/` contracts are still empty
 - `NewFacetContentService.cs` is present but empty
 
@@ -56,6 +56,8 @@ This means the next step is not more broad design. It is integration and reducti
 Do not continue maintaining both the active `RouteCompiler` track and the broader `BackBurner` design as peer solutions.
 
 Use the active route compiler work as the implementation base. Pull only the ideas worth keeping from `BackBurner`, and reintroduce them into compiled code intentionally.
+
+The first promoted pieces should be small contracts or helpers that support the discrete-facet slice without reviving the old plugin architecture.
 
 ### Define Minimal Contracts First
 
