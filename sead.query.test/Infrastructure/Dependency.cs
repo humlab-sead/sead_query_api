@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using SeadQueryComposer.RouteCompiler;
 using SeadQueryAPI.Serializers;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
@@ -68,8 +69,14 @@ namespace SQT.Infrastructure
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
+            builder.Register(c => c.Resolve<IRepositoryRegistry>().Routes).As<IRouteRepository>().SingleInstance().ExternallyOwned();
             builder.RegisterType<PathFinder>().As<IPathFinder>().UsingConstructor(typeof(IDefaultGraphFactory)).InstancePerLifetimeScope();
             builder.RegisterType<DefaultGraphFactory>().As<IDefaultGraphFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<RouteGraphFactory>().As<IRouteGraphFactory>().InstancePerLifetimeScope();
+            builder.Register(c => c.Resolve<IRouteGraphFactory>().CreateGraph()).As<IRouteResolver>().InstancePerLifetimeScope();
+            builder.RegisterType<ArrowRouteParser>().As<IArrowRouteParser>().InstancePerLifetimeScope();
+            builder.RegisterType<RouteSqlCompiler>().As<IRouteSqlCompiler>().InstancePerLifetimeScope();
+            builder.RegisterType<DiscreteFacetPredicateResolver>().As<IDiscreteFacetPredicateResolver>().InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();

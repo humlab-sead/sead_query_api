@@ -1,6 +1,7 @@
 using System;
 using Autofac;
 using Autofac.Core.Registration;
+using SeadQueryComposer.RouteCompiler;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
@@ -130,6 +131,21 @@ namespace SQT.Infrastructure
 
                 Assert.NotNull(scope.Resolve<ILoadFacetService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
+            }
+        }
+
+        [Fact]
+        public void CanResolveRouteCompilerDependencies()
+        {
+            using (var container = CreateDependencyContainer())
+            using (var scope = container.BeginLifetimeScope())
+            {
+                Assert.NotNull(scope.Resolve<IRouteRepository>());
+                Assert.NotNull(scope.Resolve<IRouteGraphFactory>());
+                Assert.NotNull(scope.Resolve<IRouteResolver>());
+                Assert.NotNull(scope.Resolve<IArrowRouteParser>());
+                Assert.NotNull(scope.Resolve<IRouteSqlCompiler>());
+                Assert.NotNull(scope.Resolve<IDiscreteFacetPredicateResolver>());
             }
         }
 

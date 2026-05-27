@@ -51,7 +51,7 @@ The branch already contains useful groundwork.
 
 ### Remaining Gaps
 
-- `not started`: stable core query-composer interfaces for the new slice
+- `in progress`: stable core query-composer interfaces for the new slice
 - `not started`: composed filter query contract and implementation
 - `not started`: facet content query path on top of the composed anchor set
 - `not started`: runtime integration for one discrete facet flow
@@ -62,7 +62,7 @@ The branch already contains useful groundwork.
 | Phase | Title                              | Status      | Exit Condition                                                                   |
 |-------|------------------------------------|-------------|----------------------------------------------------------------------------------|
 | 0     | Baseline consolidation             | done        | One active path kept, shelved path archived, minimal resolver contracts promoted |
-| 1     | Contract stabilization             | not started | Core and composer contracts are explicit and wired for one discrete slice        |
+| 1     | Contract stabilization             | in progress | Core and composer contracts are explicit and wired for one discrete slice        |
 | 2     | Composed filter query              | not started | Multiple discrete predicates can compose into one anchor-filter query            |
 | 3     | Facet content query                | not started | Target facet content can run from the composed anchor set                        |
 | 4     | Runtime integration and comparison | not started | One end-to-end request path works and is compared against legacy output          |
@@ -102,16 +102,16 @@ Define the smallest compiled contracts needed to support one discrete-facet path
 
 ### Status
 
-`not started`
+`in progress`
 
 ### Tasks
 
-- [ ] Decide which contracts belong in `sead.query.core` and which stay implementation-facing in `sead.query.composer`
-- [ ] Replace empty or placeholder query-composer contracts in `sead.query.core/QueryComposer/` with the minimal interfaces needed for the first slice
-- [ ] Define the contract for a composed filter query result
-- [ ] Define the contract for a facet content query result that consumes the composed anchor set
+- [x] Decide that shared query-composer contracts live in `sead.query.core/QueryComposer/`, while route compilation and discrete resolver implementations stay in `sead.query.composer`
+- [x] Replace the empty `sead.query.core/QueryComposer/` surface with the first minimal interfaces and query-plan contracts for the discrete slice
+- [x] Define the contract for a composed filter query result
+- [x] Define the contract for a facet content query result that consumes the composed anchor set
 - [ ] Decide and document the single anchor-key naming convention for the first slice
-- [ ] Add DI registration for the active route compiler and discrete predicate resolver path
+- [x] Add DI registration for the active route compiler and discrete predicate resolver path
 
 ### Exit Criteria
 
@@ -123,6 +123,8 @@ Define the smallest compiled contracts needed to support one discrete-facet path
 
 - Keep contracts small.
 - Do not define range, intersect, or GIS abstractions yet unless the discrete slice requires them.
+- Initial core contracts added: `ComposedFilterQuery`, `IComposedFilterQueryComposer`, `FacetContentQueryPlan`, and `IFacetContentQueryComposer`.
+- Active DI wiring now resolves `IRouteRepository`, `IRouteGraphFactory`, `IRouteResolver`, `IArrowRouteParser`, `IRouteSqlCompiler`, and `IDiscreteFacetPredicateResolver`.
 
 ## Phase 2: Composed Filter Query
 
