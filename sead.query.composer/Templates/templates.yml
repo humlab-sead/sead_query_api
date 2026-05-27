@@ -1,0 +1,183 @@
+
+anchors:
+  - site
+  - sample_group
+  - physical_sample
+  - dataset
+  - analysis
+
+facets:
+  - facet_code: site
+    target_table: tbl_sites
+    target_id: site_id
+    type: discrete
+    parameters:
+      picks:
+        operator: in
+        nullable: true
+    anchors:
+      site:
+          template_sql: |
+            select s.site_id as target_id, s.site_id as anchor_id
+            from tbl_sites s
+            @criteria
+          description: Site filter (no counts)
+      sample_group:
+          template_sql: |
+            select s.site_id as target_id, sg.sample_group_id as anchor_id
+            from tbl_sites s
+            join tbl_sample_groups sg using (site_id)
+            @criteria
+          description: Sites with sample group counts
+      physical_sample:
+          template_sql: |
+            select s.site_id as target_id, ps.physical_sample_id as anchor_id
+            from tbl_sites s
+            join tbl_sample_groups sg using (site_id)
+            join tbl_physical_samples ps using (sample_group_id)
+            @criteria
+          description: Sites with physical sample counts
+      dataset:
+          template_sql: |
+            select distinct s.site_id as target_id, d.dataset_id as anchor_id
+            from tbl_sites s
+            join tbl_sample_groups sg using (site_id)
+            join tbl_physical_samples ps using (sample_group_id)
+            join tbl_analysis_entities ae using (physical_sample_id)
+            join tbl_datasets d using (analysis_entity_id)
+            @criteria
+          description: Sites with dataset counts
+
+  - facet_code: sample
+    target_table: tbl_sample_groups
+    target_id: sample_group_id
+    type: discrete
+    parameters:
+      picks:
+        operator: in
+        nullable: true
+    anchors:
+      site:
+          template_sql: |
+            select sg.sample_group_id as target_id, s.site_id as anchor_id
+            from tbl_sample_groups sg
+            join tbl_sites s using (site_id)
+            @criteria
+          description: Sample group filter (site counts)
+      sample_group:
+          template_sql: |
+            select sg.sample_group_id as target_id, sg.sample_group_id as anchor_id
+            from tbl_sample_groups sg
+            @criteria
+          description: Sample group (no counts)
+      physical_sample:
+          template_sql: |
+            select sg.sample_group_id as target_id, ps.physical_sample_id as anchor_id
+            from tbl_sample_groups sg
+            join tbl_physical_samples ps using (sample_group_id)
+            @criteria
+          description: Sample group with physical sample counts
+      dataset:
+          template_sql: |
+            select distinct sg.sample_group_id as target_id, d.dataset_id as anchor_id
+            from tbl_sample_groups sg
+            join tbl_physical_samples ps using (sample_group_id)
+            join tbl_analysis_entities ae using (physical_sample_id)
+            join tbl_datasets d using (analysis_entity_id)
+            @criteria
+          description: Sample group with dataset counts
+
+    anchors_with_paths:
+      site:
+        route:
+        description: Site filter (with no counts) 
+      sample_group:
+          route:
+            - table: tbl_sample_groups:
+              using: site_id
+          description: Sites with sample group counts
+      physical_sample:
+          route:
+            - table: tbl_sample_groups:
+              using: site_id
+            - table: tbl_physical_samples:
+              using: sample_group_id
+          description: Sites with physical sample counts
+      analysis:
+          route:
+            - table: tbl_sample_groups:
+              using: site_id
+            - table: tbl_physical_samples:
+              using: sample_group_id
+            - table: tbl_analysis_entities:
+              using: physical_sample_id
+          description: Sites with analysis entity counts
+      dataset:
+          route:
+            - table: tbl_sample_groups:
+              using: site_id
+            - table: tbl_physical_samples:
+              using: sample_group_id
+            - table: tbl_analysis_entities:
+              using: physical_sample_id
+            - table: tbl_datasets:
+              using: dataset_id
+          description: Sites with dataset counts
+  
+  - facet_code: feature_type
+    target_table: tbl_feature_types
+    target_id: feature_type_id
+    type: discrete
+    parameters:
+      picks:
+        operator: in
+        nullable: true
+    anchors:
+      site:
+          template_sql: |
+            select ft.feature_type_id as target_id, s.site_id as anchor_id
+            from tbl_feature_types ft
+            join tbl_features f using (feature_type_id)
+            join tbl_physical_samples ps using (physical_sample_id)
+            join tbl_sample_groups sg using (sample_group_id)
+            join tbl_sites s using (site_id)
+            @criteria
+          description: Feature type filter (site counts)
+      sample_group:
+          template_sql: |
+            select ft.feature_type_id as target_id, sg.sample_group_id as anchor_id
+            from tbl_feature_types ft
+            join tbl_features f using (feature_type_id)
+            join tbl_physical_samples ps using (physical_sample_id)
+            join tbl_sample_groups sg using (sample_group_id)
+            @criteria
+          description: Feature type filter (sample group counts)
+      physical_sample:
+          template_sql: |
+            select ft.feature_type_id as target_id, ps.physical_sample_id as anchor_id
+            from tbl_feature_types ft
+            join tbl_features f using (feature_type_id)
+            join tbl_physical_samples ps using (physical_sample_id)
+            @criteria
+          description: Feature type filter (physical sample counts)
+      analysis:
+          template_sql: |
+            select ft.feature_type_id as target_id, ae.analysis_entity_id as anchor_id
+            from tbl_feature_types ft
+            join tbl_features f using (feature_type_id)
+            join tbl_physical_samples ps using (physical_sample_id)
+            join tbl_sample_groups sg using (sample_group_id)
+            join tbl_analysis_entities ae using (physical_sample_id)
+            @criteria
+          description: Feature type filter (analysis entity counts)
+      dataset:
+          template_sql: |
+            select distinct ft.feature_type_id as target_id, d.dataset_id as anchor_id
+            from tbl_feature_types ft
+            join tbl_features f using (feature_type_id)
+            join tbl_physical_samples ps using (physical_sample_id)
+            join tbl_sample_groups sg using (sample_group_id)
+            join tbl_analysis_entities ae using (physical_sample_id)
+            join tbl_datasets d using (analysis_entity_id)
+            @criteria
+          description: Feature type filter (dataset counts)

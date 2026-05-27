@@ -1,0 +1,93 @@
+# Global route library
+routes:
+  - name: "site_to_sample_group"
+    from: "tbl_sites"
+    to: "tbl_sample_groups"
+    steps:
+      - table: "tbl_sample_groups"
+        join_condition: "using (site_id)"
+  
+  - name: "site_to_physical_sample"
+    from: "tbl_sites"
+    to: "tbl_physical_samples"
+    steps:
+      - route_reference: "site_to_sample_group"
+      - table: "tbl_physical_samples"
+        join_condition: "using (sample_group_id)"
+  
+  - name: "site_to_dataset"
+    from: "tbl_sites"
+    to: "tbl_datasets"
+    steps:
+      - route_reference: "site_to_physical_sample"
+      - table: "tbl_analysis_entities"
+        join_condition: "using (physical_sample_id)"
+      - table: "tbl_datasets"
+        join_condition: "using (analysis_entity_id)"
+        requires_distinct: true
+
+# Facet definitions (much terser!)
+facets:
+  - facet_code: site
+    target_table: tbl_sites
+    target_id: site_id
+    type: discrete
+    anchors:
+      site:
+        # Identity case - no joins needed
+        table_chain: []
+        description: "Site filter (no counts)"
+      sample_group:
+        route_reference: "site_to_sample_group"
+        description: "Sites with sample group counts"
+      physical_sample:
+        route_reference: "site_to_physical_sample"
+        description: "Sites with physical sample counts"
+      dataset:
+        route_reference: "site_to_dataset"
+        description: "Sites with dataset counts"
+
+  - facet_code: sample
+    target_table: tbl_sample_groups
+    target_id: sample_group_id
+    type: discrete
+    anchors:
+      site:
+        # Reverse direction - inline table chain
+        table_chain: ["tbl_sites"]
+        description: "Sample group filter (site counts)"
+      sample_group:
+        table_chain: []
+        description: "Sample group (no counts)"
+      physical_sample:
+        table_chain: ["tbl_physical_samples"]
+        description: "Sample group with physical sample counts"
+      dataset:
+        # Complex path - use route reference
+        route_reference: "sample_to_dataset"
+        description: "Sample group with dataset counts"
+
+  - facet_code: feature_type
+    target_table: tbl_feature_types
+    target_id: feature_type_id
+    type: discrete
+    anchors:
+      site:
+        table_chain: ["tbl_features", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"]
+        description: "Feature type filter (site counts)"
+      sample_group:
+        table_chain: ["tbl_features", "tbl_physical_samples", "tbl_sample_groups"]
+        description: "Feature type filter (sample group counts)"
+      physical_sample:
+        table_chain: ["tbl_features", "tbl_physical_samples"]
+        description: "Feature type filter (physical sample counts)"
+      # Complex cases can still use explicit SQL
+      analysis:
+        explicit_sql: |
+          select ft.feature_type_id as target_id, ae.analysis_entity_id as anchor_id
+          from tbl_feature_types ft
+          join tbl_features f using (feature_type_id)
+          join tbl_physical_samples ps using (physical_sample_id)
+          join tbl_analysis_entities ae using (physical_sample_id)
+          @criteria
+        description: "Feature type filter (analysis entity counts)"
