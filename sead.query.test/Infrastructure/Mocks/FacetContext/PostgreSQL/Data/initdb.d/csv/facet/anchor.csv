@@ -1,0 +1,6 @@
+anchor_id,table_id,name,description
+1,119,site,Sites
+2,109,species,Species
+3,102,sample,Samples
+4,4,analysis,Analysis
+5,86,dataset,Datasets

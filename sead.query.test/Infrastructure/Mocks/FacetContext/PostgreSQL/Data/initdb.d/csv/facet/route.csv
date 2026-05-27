@@ -1,0 +1,154 @@
+route_id,route_name,source_table_id,target_table_id,specification,route_alias
+1,analysis_entity_to_analysis_entity,4,4,tbl_analysis_entities,analysis
+2,abundance_to_dataset,88,86,tbl_abundances -> tbl_analysis_entities -> tbl_datasets,{abundance_datasets}
+3,analysis_entity_to_taxa_tree_master,4,109,tbl_analysis_entities -> tbl_abundances -> tbl_taxa_tree_master,{analysis_abundance_taxa}
+4,analysis_entity_to_dataset,4,86,tbl_analysis_entities -> tbl_datasets,{analysis_datasets}
+5,analysis_entity_to_sample_group,4,91,tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups,{analysis_sample_groups}
+6,analysis_entity_to_physical_sample,4,102,tbl_analysis_entities -> tbl_physical_samples,{analysis_samples}
+7,analysis_entity_to_site,4,119,tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites,{analysis_sites}
+8,dataset_to_taxa_tree_master,86,109,tbl_datasets -> tbl_analysis_entities -> tbl_abundances -> tbl_taxa_tree_master,{dataset_abundance_taxa}
+9,dataset_to_analysis_entity,86,4,tbl_datasets -> tbl_analysis_entities,{dataset_analysis}
+10,dataset_to_physical_sample,86,102,tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples,{dataset_samples}
+11,dataset_to_site,86,119,tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites,{dataset_sites}
+12,ecocode_system_to_ecocode,128,101,tbl_ecocode_systems -> tbl_ecocode_groups -> tbl_ecocode_definitions -> tbl_ecocodes,{ecocode_system}
+13,feature_type_to_physical_sample,6,102,tbl_feature_types -> tbl_features -> tbl_physical_sample_features -> tbl_physical_samples,{feature_type_samples}
+14,location_type_to_site_location,92,113,tbl_location_types -> tbl_locations -> tbl_site_locations,{location_type_sites}
+15,location_to_site,35,119,tbl_locations -> tbl_site_locations -> tbl_sites,{location_sites}
+16,record_type_to_method,110,89,tbl_record_types -> tbl_methods,{record_type_methods}
+17,rdb_code_to_rdb,24,48,tbl_rdb_codes -> tbl_rdb,{rdb}
+18,rdb_system_to_site_location,143,113,tbl_rdb_systems -> tbl_locations -> tbl_site_locations,{rdb_sites}
+19,sample_group_to_analysis_entity,91,4,tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities,{sample_group_analysis}
+20,sample_group_to_dataset,91,86,tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets,{sample_group_datasets}
+21,sample_group_to_site,91,119,tbl_sample_groups -> tbl_sites,{sample_group_sites}
+22,sample_group_to_taxa_tree_master,91,109,tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_abundances -> tbl_taxa_tree_master,{sample_group_abundance_taxa}
+23,sample_group_to_physical_sample,91,102,tbl_sample_groups -> tbl_physical_samples,{sample_group_samples}
+24,physical_sample_to_analysis_entity,102,4,tbl_physical_samples -> tbl_analysis_entities,{sample_analysis}
+25,physical_sample_to_dataset,102,86,tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets,{sample_datasets}
+26,physical_sample_to_site,102,119,tbl_physical_samples -> tbl_sample_groups -> tbl_sites,SAMPLE_SITES
+27,site_to_analysis_entity,119,4,tbl_sites -> tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities,{site_analysis}
+28,site_to_physical_sample,119,102,tbl_sites -> tbl_sample_groups -> tbl_physical_samples,{site_samples}
+29,taxa_tree_master_to_analysis_entity,109,4,tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities,{taxa_abundance_analysis}
+30,taxa_tree_master_to_dataset,109,86,tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets,{taxa_abundance_datasets}
+31,taxa_tree_master_to_physical_sample,109,102,tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples,{taxa_abundance_samples}
+32,taxa_tree_master_to_site,109,119,tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites,{taxa_abundance_sites}
+33,modification_type_to_abundance,142,88,tbl_modification_types -> tbl_abundance_modifications -> tbl_abundances,{modification_type_abundances}
+34,record_type_to_taxa_tree_master,110,109,tbl_record_types -> tbl_taxa_tree_orders -> tbl_taxa_tree_families -> tbl_taxa_tree_genera -> tbl_taxa_tree_master,{record_type_taxa}
+35,site_to_taxa_tree_master,119,109,tbl_sites -> tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_abundances -> tbl_taxa_tree_master,{site_abundance_taxa}
+36,abundance_element_to_analysis_entity,38,4,tbl_abundance_elements -> tbl_abundances -> tbl_analysis_entities,
+37,abundance_element_to_dataset,38,86,tbl_abundance_elements -> {abundance_datasets},
+38,abundance_element_to_physical_sample,38,102,tbl_abundance_elements -> tbl_abundances -> {analysis_samples},
+39,abundance_element_to_site,38,119,tbl_abundance_elements -> tbl_abundances -> {analysis_sites},
+40,abundance_element_to_taxa_tree_master,38,109,tbl_abundance_elements -> {record_type_taxa},
+41,analysis_entity_age_to_analysis_entity,96,4,tbl_analysis_entity_ages -> tbl_analysis_entities,
+42,analysis_entity_age_to_dataset,96,86,tbl_analysis_entity_ages -> {analysis_datasets},
+43,analysis_entity_age_to_physical_sample,96,102,tbl_analysis_entity_ages -> {analysis_samples},
+44,analysis_entity_age_to_site,96,119,tbl_analysis_entity_ages -> {analysis_sites},
+45,analysis_entity_age_to_taxa_tree_master,96,109,tbl_analysis_entity_ages -> {analysis_abundance_taxa},
+46,biblio_to_analysis_entity,84,4,tbl_biblio -> facet.view_taxa_biblio -> {taxa_abundance_analysis},
+47,biblio_to_dataset,84,86,tbl_biblio -> facet.view_taxa_biblio -> {taxa_abundance_datasets},
+48,biblio_to_physical_sample,84,102,tbl_biblio -> facet.view_taxa_biblio -> {taxa_abundance_sample},
+49,biblio_to_site,84,119,tbl_biblio -> facet.view_taxa_biblio -> {taxa_abundance_sites},
+50,biblio_to_taxa_tree_master,84,109,tbl_biblio -> facet.view_taxa_biblio -> tbl_taxa_tree_master,
+51,data_type_to_analysis_entity,135,4,tbl_data_types -> {dataset_analysis},
+52,data_type_to_dataset,135,86,tbl_data_types -> tbl_datasets,
+53,data_type_to_physical_sample,135,102,tbl_data_types -> {dataset_samples},
+54,data_type_to_site,135,119,tbl_data_types -> {dataset_sites},
+55,data_type_to_taxa_tree_master,135,109,tbl_data_types -> {dataset_abundance_taxa},
+56,dataset_master_to_analysis_entity,76,4,tbl_dataset_masters -> {dataset_analysis},
+57,dataset_master_to_dataset,76,86,tbl_dataset_masters -> tbl_datasets,
+58,dataset_master_to_physical_sample,76,102,tbl_dataset_masters -> {dataset_samples},
+59,dataset_master_to_site,76,119,tbl_dataset_masters -> {dataset_sites},
+60,dataset_master_to_taxa_tree_master,76,109,tbl_dataset_masters -> {dataset_abundance_taxa},
+61,dataset_method_to_analysis_entity,162,4,tbl_dataset_methods -> tbl_methods -> {dataset_analysis},
+62,dataset_method_to_dataset,162,86,tbl_dataset_methods -> tbl_methods -> tbl_datasets,
+63,dataset_method_to_physical_sample,162,102,tbl_dataset_methods -> tbl_methods -> {dataset_samples},
+64,dataset_method_to_site,162,119,tbl_dataset_methods -> tbl_methods -> {dataset_sites},
+65,dataset_method_to_taxa_tree_master,162,109,tbl_dataset_methods -> tbl_methods -> {dataset_abundance_taxa},
+66,dendro_date_to_analysis_entity,138,4,tbl_dendro_dates -> tbl_analysis_entities,
+67,dendro_date_to_dataset,138,86,tbl_dendro_dates -> {analysis_datasets},
+68,dendro_date_to_physical_sample,138,102,tbl_dendro_dates -> {analysis_samples},
+69,dendro_date_to_site,138,119,tbl_dendro_dates -> {analysis_sites},
+70,dendro_date_to_taxa_tree_master,138,109,tbl_dendro_dates -> {analysis_abundance_taxa},
+71,ecocode_definition_to_analysis_entity,62,4,tbl_ecocode_definitions -> tbl_ecocodes -> {taxa_abundance_analysis},
+72,ecocode_definition_to_dataset,62,86,tbl_ecocode_definitions -> tbl_ecocodes -> {taxa_abundance_datasets},
+73,ecocode_definition_to_physical_sample,62,102,tbl_ecocode_definitions -> tbl_ecocodes -> {taxa_abundance_sample},
+74,ecocode_definition_to_site,62,119,tbl_ecocode_definitions -> tbl_ecocodes -> {taxa_abundance_sites},
+75,ecocode_definition_to_taxa_tree_master,62,109,tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master,
+76,ecocode_system_to_analysis_entity,128,4,{ecocode_system} -> {taxa_abundance_analysis},
+77,ecocode_system_to_dataset,128,86,{ecocode_system} -> {taxa_abundance_datasets},
+78,ecocode_system_to_physical_sample,128,102,{ecocode_system} -> {taxa_abundance_sample},
+79,ecocode_system_to_site,128,119,{ecocode_system} -> {taxa_abundance_sites},
+80,ecocode_system_to_taxa_tree_master,128,109,{ecocode_system} -> tbl_taxa_tree_master,
+81,feature_type_to_analysis_entity,6,4,{feature_type_samples} -> tbl_analysis_entities,
+82,feature_type_to_dataset,6,86,{feature_type_samples} -> {analysis_datasets},
+83,feature_type_to_site,6,119,{feature_type_samples} -> {sample_group_sites},
+84,feature_type_to_taxa_tree_master,6,109,{feature_type_samples} -> {analysis_abundance_taxa},
+85,geochronology_to_analysis_entity,60,4,tbl_geochronology -> tbl_analysis_entities,
+86,geochronology_to_dataset,60,86,tbl_geochronology -> {analysis_datasets},
+87,geochronology_to_physical_sample,60,102,tbl_geochronology -> {analysis_samples},
+88,geochronology_to_site,60,119,tbl_geochronology -> {analysis_sites},
+89,geochronology_to_taxa_tree_master,60,109,tbl_geochronology -> tbl_dating_material -> tbl_taxa_tree_master,
+90,location_type_to_analysis_entity,92,4,{location_type_sites} -> {site_analysis},
+91,location_type_to_dataset,92,86,{location_type_sites} -> {site_analysis} -> tbl_datasets,
+92,location_type_to_physical_sample,92,102,{location_type_sites} -> {site_samples},
+93,location_type_to_site,92,119,{location_type_sites} -> tbl_sites,
+94,location_type_to_taxa_tree_master,92,109,{location_type_sites} -> {site_abundance_taxa},
+95,location_to_analysis_entity,35,4,{location_sites} -> {site_analysis},
+96,location_to_dataset,35,86,{location_sites} -> {site_analysis} -> tbl_datasets,
+97,location_to_physical_sample,35,102,{location_sites} -> {site_samples},
+98,location_to_taxa_tree_master,35,109,{location_sites} -> {site_abundance_taxa},
+99,modification_type_to_analysis_entity,142,4,{modification_type_abundances} -> tbl_analysis_entities,
+100,modification_type_to_dataset,142,86,{modification_type_abundances} -> {analysis_datasets},
+101,modification_type_to_physical_sample,142,102,{modification_type_abundances} -> {analysis_samples},
+102,modification_type_to_site,142,119,{modification_type_abundances} -> {analysis_sites},
+103,modification_type_to_taxa_tree_master,142,109,{modification_type_abundances} -> tbl_taxa_tree_master,
+104,rdb_code_to_analysis_entity,24,4,{rdb} -> {taxa_abundance_analysis},
+105,rdb_code_to_dataset,24,86,{rdb} -> {taxa_abundance_datasets},
+106,rdb_code_to_physical_sample,24,102,{rdb} -> {taxa_abundance_sample},
+107,rdb_code_to_site,24,119,{rdb} -> {taxa_abundance_sites},
+108,rdb_code_to_taxa_tree_master,24,109,{rdb} -> tbl_taxa_tree_master,
+109,rdb_system_to_analysis_entity,143,4,{rdb_sites} -> {site_analysis},
+110,rdb_system_to_dataset,143,86,{rdb_sites} -> {site_analysis} -> tbl_datasets,
+111,rdb_system_to_physical_sample,143,102,{rdb_sites} -> {site_samples},
+112,rdb_system_to_site,143,119,{rdb_sites} -> tbl_sites,
+113,rdb_system_to_taxa_tree_master,143,109,tbl_rdb_systems -> {rdb} -> tbl_taxa_tree_master,
+114,record_type_to_analysis_entity,110,4,{record_type_methods} -> {dataset_analysis},
+115,record_type_to_dataset,110,86,{record_type_methods} -> tbl_datasets,
+116,record_type_to_physical_sample,110,102,{record_type_methods} -> {dataset_samples},
+117,record_type_to_site,110,119,{record_type_methods} -> {dataset_sites},
+118,relative_age_to_analysis_entity,71,4,tbl_relative_ages -> tbl_relative_dates -> tbl_analysis_entities,
+119,relative_age_to_dataset,71,86,tbl_relative_ages -> tbl_relative_dates -> {analysis_datasets},
+120,relative_age_to_physical_sample,71,102,tbl_relative_ages -> tbl_relative_dates -> {analysis_samples},
+121,relative_age_to_site,71,119,tbl_relative_ages -> tbl_relative_dates -> {analysis_sites},
+122,relative_age_to_taxa_tree_master,71,109,tbl_relative_ages -> tbl_relative_dates -> {analysis_abundance_taxa},
+123,season_to_analysis_entity,82,4,tbl_seasons -> tbl_taxa_seasonality -> {taxa_abundance_analysis},
+124,season_to_dataset,82,86,tbl_seasons -> tbl_taxa_seasonality -> {taxa_abundance_datasets},
+125,season_to_physical_sample,82,102,tbl_seasons -> tbl_taxa_seasonality -> {taxa_abundance_sample},
+126,season_to_site,82,119,tbl_seasons -> tbl_taxa_seasonality -> {taxa_abundance_sites},
+127,season_to_taxa_tree_master,82,109,tbl_seasons -> tbl_taxa_seasonality -> tbl_taxa_tree_master,
+128,site_to_dataset,119,86,{site_analysis} -> tbl_datasets,
+129,taxa_tree_author_to_analysis_entity,39,4,tbl_taxa_tree_authors -> {taxa_abundance_analysis},
+130,taxa_tree_author_to_dataset,39,86,tbl_taxa_tree_authors -> {taxa_abundance_datasets},
+131,taxa_tree_author_to_physical_sample,39,102,tbl_taxa_tree_authors -> {taxa_abundance_sample},
+132,taxa_tree_author_to_site,39,119,tbl_taxa_tree_authors -> {taxa_abundance_sites},
+133,taxa_tree_author_to_taxa_tree_master,39,109,tbl_taxa_tree_authors -> tbl_taxa_tree_master,
+134,taxa_tree_family_to_analysis_entity,36,4,tbl_taxa_tree_families -> tbl_taxa_tree_genera -> {taxa_abundance_analysis},
+135,taxa_tree_family_to_dataset,36,86,tbl_taxa_tree_families -> tbl_taxa_tree_orders -> {record_type_methods} -> tbl_datasets,
+136,taxa_tree_family_to_physical_sample,36,102,tbl_taxa_tree_families -> tbl_taxa_tree_genera -> {taxa_abundance_sample},
+137,taxa_tree_family_to_site,36,119,tbl_taxa_tree_families -> tbl_taxa_tree_genera -> {taxa_abundance_sites},
+138,taxa_tree_family_to_taxa_tree_master,36,109,tbl_taxa_tree_families -> tbl_taxa_tree_genera -> tbl_taxa_tree_master,
+139,taxa_tree_genera_to_analysis_entity,148,4,tbl_taxa_tree_genera -> {taxa_abundance_analysis},
+140,taxa_tree_genera_to_dataset,148,86,tbl_taxa_tree_genera -> {taxa_abundance_datasets},
+141,taxa_tree_genera_to_physical_sample,148,102,tbl_taxa_tree_genera -> {taxa_abundance_sample},
+142,taxa_tree_genera_to_site,148,119,tbl_taxa_tree_genera -> {taxa_abundance_sites},
+143,taxa_tree_genera_to_taxa_tree_master,148,109,tbl_taxa_tree_genera -> tbl_taxa_tree_master,
+144,sample_group_sampling_context_to_analysis_entity,40,4,tbl_sample_group_sampling_contexts -> {sample_group_analysis},
+145,sample_group_sampling_context_to_dataset,40,86,tbl_sample_group_sampling_contexts -> {sample_group_datasets},
+146,sample_group_sampling_context_to_physical_sample,40,102,tbl_sample_group_sampling_contexts -> {sample_group_samples},
+147,sample_group_sampling_context_to_site,40,119,tbl_sample_group_sampling_contexts -> {sample_group_sites},
+148,sample_group_sampling_context_to_taxa_tree_master,40,109,tbl_sample_group_sampling_contexts -> {sample_group_abundance_taxa},
+149,_to_analysis_entity,177,4,facet.sample_group_construction_purposes -> tbl_sample_group_descriptions -> {sample_group_analysis},
+150,_to_dataset,177,86,facet.sample_group_construction_purposes -> tbl_sample_group_descriptions -> {sample_group_datasets},
+151,_to_physical_sample,177,102,facet.sample_group_construction_purposes -> tbl_sample_group_descriptions -> {sample_group_samples},
+152,_to_site,177,119,facet.sample_group_construction_purposes -> tbl_sample_group_descriptions -> {sample_group_sites},
+153,_to_taxa_tree_master,177,109,facet.sample_group_construction_purposes -> tbl_sample_group_descriptions -> {sample_group_abundance_taxa},
