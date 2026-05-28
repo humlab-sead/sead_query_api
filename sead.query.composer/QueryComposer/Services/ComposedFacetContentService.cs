@@ -66,9 +66,10 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             request.AnchorTable,
             QueryComposerAliases.AnchorKeyColumn
         );
-        var categoryInfo = facetsConfig.TargetFacet.FacetTypeId == EFacetType.Range
-            ? _rangeCategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode)
-            : null;
+        var categoryInfo =
+            facetsConfig.TargetFacet.FacetTypeId == EFacetType.Range
+                ? _rangeCategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode)
+                : null;
         var contentQueryPlan = _facetContentQueryComposer.Compose(
             facetsConfig,
             composedFilterQuery,
@@ -80,7 +81,9 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
         if (facetsConfig.TargetFacet.FacetTypeId == EFacetType.Range)
         {
-            var categoryCounts = _queryProxy.QueryRows(contentQueryPlan.Sql, ToRangeCategoryItem).ToDictionary(item => item.Category ?? "(null)");
+            var categoryCounts = _queryProxy
+                .QueryRows(contentQueryPlan.Sql, ToRangeCategoryItem)
+                .ToDictionary(item => item.Category ?? "(null)");
             var outerCategoryCounts = _queryProxy.QueryRows(categoryInfo.Query, _rangeCategoryInfoService.SqlCompiler.ToItem).ToList();
 
             foreach (var item in outerCategoryCounts)
@@ -164,8 +167,14 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             return false;
         }
 
+        var anchorKeyColumn = ResolveAnchorKeyColumn(aggregateFacet);
+        if (string.IsNullOrWhiteSpace(anchorKeyColumn))
+        {
+            return false;
+        }
+
         var targetTableName = targetTable?.TableOrUdfName;
-        var targetJoinColumn = ResolveTargetJoinColumn(targetFacet);
+        var targetJoinColumn = ResolveTargetJoinColumn(targetFacet, anchorKeyColumn);
         if (string.IsNullOrWhiteSpace(targetTableName) || string.IsNullOrWhiteSpace(targetJoinColumn))
         {
             return false;
@@ -177,23 +186,26 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             return false;
         }
 
-        if (affectedConfigs.Any(config => !config.HasPicks()))
+        var predicateConfigs = affectedConfigs
+            .Where(config => !string.Equals(config.FacetCode, facetsConfig.TargetCode, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        if (predicateConfigs.Count == 0)
         {
             return false;
         }
 
-        foreach (var config in affectedConfigs)
+        if (predicateConfigs.Any(config => !config.HasPicks()))
+        {
+            return false;
+        }
+
+        foreach (var config in predicateConfigs)
         {
             if (!CanComposePredicate(config, anchorTable))
             {
                 return false;
             }
-        }
-
-        var anchorKeyColumn = ResolveAnchorKeyColumn(aggregateFacet);
-        if (string.IsNullOrWhiteSpace(anchorKeyColumn))
-        {
-            return false;
         }
 
         var anchorToTargetSql = string.Empty;
@@ -209,7 +221,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             }
         }
 
-        request = new ComposedFacetContentRequest(anchorTable, anchorKeyColumn, targetJoinColumn, anchorToTargetSql, affectedConfigs);
+        request = new ComposedFacetContentRequest(anchorTable, anchorKeyColumn, targetJoinColumn, anchorToTargetSql, predicateConfigs);
         return true;
     }
 
@@ -288,11 +300,17 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             : string.Empty;
     }
 
-    private string ResolveTargetJoinColumn(Facet targetFacet)
+    private string ResolveTargetJoinColumn(Facet targetFacet, string anchorKeyColumn)
     {
         if (targetFacet?.FacetTypeId == EFacetType.Range)
         {
-            return targetFacet.TargetTable?.Table?.PrimaryKeyName ?? string.Empty;
+            var targetPrimaryKey = targetFacet.TargetTable?.Table?.PrimaryKeyName ?? string.Empty;
+            if (!IsPlaceholderPrimaryKey(targetPrimaryKey))
+            {
+                return targetPrimaryKey;
+            }
+
+            return anchorKeyColumn;
         }
 
         if (TryResolveSimpleColumnOnTable(targetFacet.CategoryIdExpr, targetFacet.TargetTable, out var targetJoinColumn))
@@ -301,6 +319,13 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
 
         return targetFacet.TargetTable?.Table?.PrimaryKeyName ?? string.Empty;
+    }
+
+    private static bool IsPlaceholderPrimaryKey(string primaryKeyName)
+    {
+        return string.IsNullOrWhiteSpace(primaryKeyName)
+            || string.Equals(primaryKeyName, "xxx", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(primaryKeyName, "xxxx", StringComparison.OrdinalIgnoreCase);
     }
 
     private string ResolvePredicateSourceKeyColumn(Facet sourceFacet)

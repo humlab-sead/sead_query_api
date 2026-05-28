@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SeadQueryCore.QueryBuilder;
@@ -59,6 +60,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         var targetTableName = targetTable.ResolvedSqlJoinName;
         var targetTableAliasOrName = targetTable.ResolvedAliasOrTableOrUdfName;
         var targetJoins = BuildTargetFacetJoins(facetsConfig, targetFacet, targetTableAliasOrName);
+        var targetCriteria = ResolveTargetFacetCriteria(targetFacet, targetTableAliasOrName);
 
         return new FacetContentQueryPlan
         {
@@ -86,12 +88,15 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
                     targetTableName,
                     targetTableAliasOrName,
                     targetJoins,
+                    targetCriteria,
                     targetJoinColumn,
                     composedFilterQuery.AnchorKeyColumn,
                     anchorToTargetSql,
                     targetFacet.CategoryIdType
                 ),
-                _ => throw new InvalidOperationException($"Target facet '{targetFacet.FacetCode}' is not supported by the composed content composer."),
+                _ => throw new InvalidOperationException(
+                    $"Target facet '{targetFacet.FacetCode}' is not supported by the composed content composer."
+                ),
             },
         };
     }
@@ -148,6 +153,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         string targetTableName,
         string targetTableAliasOrName,
         string[] targetJoins,
+        IReadOnlyList<string> targetCriteria,
         string targetJoinColumn,
         string anchorKeyColumn,
         string anchorToTargetSql,
@@ -185,7 +191,9 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         sql.AppendLine("  join categories");
         sql.AppendLine($"    on categories.lower <= {categoryExpression}::{categoryIdType}");
         sql.AppendLine($"   and categories.upper >= {categoryExpression}::{categoryIdType}");
-        sql.AppendLine($"   and (not (categories.upper < outerbounds.upper and {categoryExpression}::{categoryIdType} = categories.upper))");
+        sql.AppendLine(
+            $"   and (not (categories.upper < outerbounds.upper and {categoryExpression}::{categoryIdType} = categories.upper))"
+        );
         foreach (var join in targetJoins)
         {
             sql.AppendLine($"  {join}");
@@ -199,6 +207,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         {
             sql.AppendLine($"  join composed_filter on composed_filter.{anchorKeyColumn} = {targetTableAliasOrName}.{targetJoinColumn}");
         }
+        AppendWhereClauses(sql, targetCriteria, "  ");
         sql.AppendLine("  group by category");
         sql.AppendLine(") as r");
         sql.AppendLine("  on r.category = c.category");
@@ -221,6 +230,61 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
 
         var routes = _pathFinder.Find(rootTableName, targetTables, true);
         return _joinsClauseCompiler.Compile(routes, facetsConfig).ToArray();
+    }
+
+    private static IReadOnlyList<string> ResolveTargetFacetCriteria(Facet targetFacet, string targetTableAliasOrName)
+    {
+        var clauses = targetFacet?.Clauses?.Where(clause => clause?.EnforceConstraint ?? false).ToList();
+        if (clauses is null || clauses.Count == 0)
+        {
+            return [];
+        }
+
+        var resolvedClauses = new List<string>(clauses.Count);
+        foreach (var clause in clauses)
+        {
+            var resolvedClause = clause.Clause?.Trim();
+            if (string.IsNullOrWhiteSpace(resolvedClause))
+            {
+                continue;
+            }
+
+            var allowedQualifiers = new[]
+            {
+                targetFacet.TargetTable?.Alias,
+                targetFacet.TargetTable?.ResolvedAliasOrTableOrUdfName,
+                targetFacet.TargetTable?.TableOrUdfName,
+            }
+                .Where(value => !string.IsNullOrWhiteSpace(value))
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var qualifier in allowedQualifiers)
+            {
+                resolvedClause = resolvedClause.Replace(
+                    $"{qualifier}.",
+                    $"{targetTableAliasOrName}.",
+                    StringComparison.OrdinalIgnoreCase
+                );
+            }
+
+            resolvedClauses.Add(resolvedClause);
+        }
+
+        return resolvedClauses;
+    }
+
+    private static void AppendWhereClauses(StringBuilder sql, IReadOnlyList<string> clauses, string indent)
+    {
+        if (clauses is null || clauses.Count == 0)
+        {
+            return;
+        }
+
+        sql.AppendLine($"{indent}where {clauses[0]}");
+        for (var index = 1; index < clauses.Count; index++)
+        {
+            sql.AppendLine($"{indent}  and {clauses[index]}");
+        }
     }
 
     private static string Indent(string text, string indent)

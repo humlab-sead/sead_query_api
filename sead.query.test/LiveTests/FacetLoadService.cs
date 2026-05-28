@@ -59,6 +59,7 @@ namespace SQT.LiveServices
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32"],
                 ["tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37"],
+                ["abundances_all:country@1,2,5/abundances_all"],
             ];
 
         [Theory]
@@ -296,6 +297,26 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue37Slice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("abundances_all:country@1,2,5/abundances_all")]
+        public void FacetContentService_ComposedCountryPredicateAbundancesAllSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, lower, upper) as",
+                "facet.view_abundance.abundance",
+                "facet.view_abundance.abundance is not null",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("abundances_all:country@1,2,5/abundances_all")]
+        public void FacetContentService_ComposedCountryPredicateAbundancesAllSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

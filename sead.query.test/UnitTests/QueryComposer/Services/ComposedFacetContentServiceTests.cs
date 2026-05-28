@@ -125,23 +125,52 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void CanHandle_WithRangeTargetAndPlaceholderPrimaryKey_ReturnsTrue()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateCountryToAbundancesAllFacetsConfig();
+
+        service.CanHandle(facetsConfig).Should().BeTrue();
+    }
+
+    [Fact]
     public void Load_WithRangeTargetAndDiscretePredicate_ReturnsIntervalBackedFacetContent()
     {
         var intervalSql = "select '0 to 10', 0, 10 union all select '10 to 20', 10, 20";
-        var categoryInfo = new FacetContent.CategoryInfo
-        {
-            Count = 2,
-            Query = intervalSql,
-        };
+        var categoryInfo = new FacetContent.CategoryInfo { Count = 2, Query = intervalSql };
         var outerItems = new List<CategoryItem>
         {
-            new() { Category = "0 to 10", Count = null, Name = "0 to 10", Extent = [0, 10] },
-            new() { Category = "10 to 20", Count = null, Name = "10 to 20", Extent = [10, 20] },
+            new()
+            {
+                Category = "0 to 10",
+                Count = null,
+                Name = "0 to 10",
+                Extent = [0, 10],
+            },
+            new()
+            {
+                Category = "10 to 20",
+                Count = null,
+                Name = "10 to 20",
+                Extent = [10, 20],
+            },
         };
         var countedItems = new List<CategoryItem>
         {
-            new() { Category = "0 to 10", Count = 2, Name = "0 to 10", Extent = [0, 10] },
-            new() { Category = "10 to 20", Count = 0, Name = "10 to 20", Extent = [10, 20] },
+            new()
+            {
+                Category = "0 to 10",
+                Count = 2,
+                Name = "0 to 10",
+                Extent = [0, 10],
+            },
+            new()
+            {
+                Category = "10 to 20",
+                Count = 0,
+                Name = "10 to 20",
+                Extent = [10, 20],
+            },
         };
 
         var queryProxy = new Mock<ITypedQueryProxy>();
@@ -172,6 +201,57 @@ public class ComposedFacetContentServiceTests
         result.SqlQuery.Should().Contain("target_route.target_id = tbl_geochronology.geochron_id");
         result.Items.Should().BeEquivalentTo(countedItems);
         result.Distribution.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public void Load_WithRangeTargetAndEnforcedTargetClause_IncludesClauseInSql()
+    {
+        var intervalSql = "select '0 to 10', 0, 10 union all select '10 to 20', 10, 20";
+        var categoryInfo = new FacetContent.CategoryInfo { Count = 2, Query = intervalSql };
+        var outerItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "0 to 10",
+                Count = null,
+                Name = "0 to 10",
+                Extent = [0, 10],
+            },
+        };
+        var countedItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "0 to 10",
+                Count = 2,
+                Name = "0 to 10",
+                Extent = [0, 10],
+            },
+        };
+
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        string capturedSql = null;
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql == intervalSql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Returns(outerItems);
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql != intervalSql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Callback<string, Func<IDataReader, CategoryItem>>((sql, _) => capturedSql = sql)
+            .Returns(countedItems);
+
+        var rangeInfoSqlCompiler = new Mock<IRangeCategoryInfoSqlCompiler>();
+        var rangeInfoService = new Mock<IRangeCategoryInfoService>();
+        rangeInfoService.SetupGet(service => service.SqlCompiler).Returns(rangeInfoSqlCompiler.Object);
+        rangeInfoService.Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "abundances_all", null)).Returns(categoryInfo);
+
+        var service = CreateService(queryProxy.Object, rangeInfoService.Object);
+        var facetsConfig = CreateCountryToAbundancesAllFacetsConfig();
+
+        var result = service.Load(facetsConfig);
+
+        result.SqlQuery.Should().Be(capturedSql);
+        result.SqlQuery.Should().Contain("facet.view_abundance.abundance is not null");
+        result.SqlQuery.Should().Contain("target_route.target_id = facet.view_abundance.analysis_entity_id");
     }
 
     [Fact]
@@ -250,6 +330,7 @@ public class ComposedFacetContentServiceTests
         var physicalSampleFeatures = CreateTable(7, "tbl_physical_sample_features", "physical_sample_feature_id");
         var abundanceTaxonShortcut = CreateTable(8, "facet.abundance_taxon_shortcut", "xxx");
         var geochronology = CreateTable(9, "tbl_geochronology", "geochron_id");
+        var viewAbundance = CreateTable(10, "facet.view_abundance", "xxxx");
         var aggregateFacet = new Facet
         {
             FacetId = 10,
@@ -276,6 +357,7 @@ public class ComposedFacetContentServiceTests
             CreateRelation(physicalSampleFeatures, samples, "physical_sample_id", "physical_sample_id"),
             CreateRelation(abundanceTaxonShortcut, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
             CreateRelation(geochronology, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
+            CreateRelation(viewAbundance, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
         };
 
         var facetRepository = new Mock<IFacetRepository>();
@@ -542,6 +624,53 @@ public class ComposedFacetContentServiceTests
         return new FacetsConfig2
         {
             TargetCode = "geochronology",
+            TargetFacet = targetFacet,
+            FacetConfigs =
+            [
+                new FacetConfig2(countryFacet, 1, string.Empty, [new FacetConfigPick(1), new FacetConfigPick(2), new FacetConfigPick(5)]),
+                new FacetConfig2(targetFacet, 2, string.Empty, []),
+            ],
+        };
+    }
+
+    private static FacetsConfig2 CreateCountryToAbundancesAllFacetsConfig()
+    {
+        var countryShortcut = CreateTable(5, "facet.site_location_shortcut", "xxxx");
+        var viewAbundance = CreateTable(10, "facet.view_abundance", "xxxx");
+
+        var countryFacet = new Facet
+        {
+            FacetCode = "country",
+            FacetId = 21,
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "countries.location_id",
+            Tables =
+            [
+                new FacetTable
+                {
+                    SequenceId = 1,
+                    Table = countryShortcut,
+                    Alias = "countries",
+                },
+            ],
+            Clauses = [new FacetClause { Clause = "countries.location_type_id=1", EnforceConstraint = true }],
+        };
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "abundances_all",
+            FacetTypeId = EFacetType.Range,
+            FacetType = new FacetType { FacetTypeId = EFacetType.Range, ReloadAsTarget = true },
+            AggregateFacetId = 10,
+            CategoryIdExpr = "facet.view_abundance.abundance",
+            CategoryIdType = "integer",
+            Tables = [new FacetTable { SequenceId = 1, Table = viewAbundance }],
+            Clauses = [new FacetClause { Clause = "facet.view_abundance.abundance is not null", EnforceConstraint = true }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "abundances_all",
             TargetFacet = targetFacet,
             FacetConfigs =
             [
