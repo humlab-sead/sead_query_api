@@ -66,7 +66,7 @@ The branch already contains useful groundwork.
 | 2     | Composed filter query              | done        | Multiple discrete predicates can compose into one anchor-filter query            |
 | 3     | Facet content query                | done        | Target facet content can run from the composed anchor set                        |
 | 4     | Runtime integration and comparison | done        | One end-to-end request path works and is compared against legacy output          |
-| 5     | Expansion gate                     | not started | The discrete slice is proven and ready for extension to more facet types         |
+| 5     | Expansion gate                     | in progress | The discrete slice is proven and the first range-target expansion is validated   |
 
 ## Progress Status Checklist
 
@@ -76,9 +76,9 @@ The branch already contains useful groundwork.
 - [x] Phase 3 is complete: target facet content can be generated from the composed anchor set.
 - [x] Phase 4 is complete for the supported slice: the composed runtime is wired into `FacetContentService` and compared against legacy output.
 - [x] Phase 4 live regression is in place: the grouped PostgreSQL-backed matrix in `FacetLoadService` covers the currently validated URIs.
-- [x] Phase 4 widening is active: validated visible-target coverage now includes `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, and `record_types`.
-- [ ] Phase 5 has not started: the branch has not yet chosen the next facet-type expansion beyond the current discrete visible-target slice.
-- [ ] The next widening candidate is still open: continue with one focused live slice at a time until the remaining unsupported surface is better understood.
+- [x] Phase 4 widening is active: validated visible-target coverage now includes `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
+- [x] Phase 5 has started: `geochronology:country@1,2,5/geochronology` is now a validated composed-path range-target slice.
+- [ ] The next widening candidate is still open: decide whether `geochronology` is a one-off slice or the start of broader non-discrete target support.
 
 ## Phase 0: Baseline Consolidation
 
@@ -256,16 +256,17 @@ Integrate the new discrete slice into one request path while keeping the legacy 
 - [x] `record_types:country@1,2,5/record_types`
 - [x] `dataset_provider:country@1,2,5/dataset_provider`
 - [x] `relative_age_name:country@1,2,5/relative_age_name`
+- [x] `geochronology:country@1,2,5/geochronology`
 
 #### Current Support And Boundaries
 
-- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
-- Phase-4 live regression now has an explicit grouped matrix in `FacetLoadService` covering the baseline visible-target slices plus the currently supported `country`-predicate slices.
+- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`, plus the first range target `geochronology`.
+- The grouped live matrix in `FacetLoadService` now covers the baseline visible-target slices, the supported `country`-predicate slices, and the first phase-5 `geochronology` range-target slice.
 - Predicate planning now has unit-validated support for routed source-key overrides when the picked facet's source table uses a placeholder primary key and exposes a simple same-table category column instead.
 - Predicate planning now also supports same-table enforced facet clauses on picked discrete facets, including the live `country` clause `countries.location_type_id=1`.
 - Target join resolution now also handles schema-qualified category expressions on target shortcut tables, which unblocks `species:country@1,2,5/species` where the target table metadata primary key is a placeholder.
 - Clause-bearing `country` predicates now have live-validated coverage across multiple visible targets, including `sites`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
-- Live-validated phase-4 boundary: `geochronology:country@1,2,5/geochronology` is rejected by `IComposedFacetContentService.CanHandle(...)` and falls back to the legacy path.
+- Former phase-4 boundary crossed in phase 5: `geochronology:country@1,2,5/geochronology` now uses the composed path and matches legacy facet content in live validation.
 - Remaining unsupported visible facets are those that still need more than a simple target-join column derived from the category-id expression or whose predicate side does not resolve cleanly to a source-table key.
 - Phase-4 fixes included a route SQL target-alias off-by-one correction and predicate SQL wrapping so `source_id` filters apply in an outer query block.
 - Expansion fixes also included deriving the composed anchor table from the aggregate facet, routing anchor-to-target joins through an explicit table trail before SQL compilation, and allowing routed target joins to override placeholder target primary keys.
@@ -285,16 +286,29 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 ### Status
 
-`not started`
+`in progress`
 
 ### Tasks
 
 - [ ] Review unresolved issues from phases 1 through 4
 - [ ] Confirm that the discrete slice no longer depends on archived design assumptions
 - [ ] Decide whether the next facet type is range, intersect, or GIS
-- [ ] Decide whether out-of-scope requests such as `geochronology:country@1,2,5/geochronology` define the first phase-5 expansion candidate
+- [x] Decide whether out-of-scope requests such as `geochronology:country@1,2,5/geochronology` define the first phase-5 expansion candidate
 - [ ] Record the reasons for the chosen next facet type
 - [ ] Update this plan or split a new follow-up plan for the next slice
+
+### Proposed First Phase-5 Slice
+
+- [x] Keep the predicate side unchanged with `country@1,2,5` as the picked discrete filter.
+- [x] Add target-content support for `geochronology` as the first out-of-scope phase-5 candidate.
+- [x] Add one focused live comparison for `geochronology:country@1,2,5/geochronology` that passes through the composed path instead of the fallback path.
+- [ ] Decide whether a passing `geochronology` slice should be treated as the start of broader non-discrete target support or as a one-off target expansion.
+
+### Current Notes
+
+- Current validated phase-5 scenario: `geochronology:country@1,2,5/geochronology` through `IFacetContentService`.
+- The composed path now supports a first range target while keeping the predicate side on the proven discrete `country@1,2,5` slice.
+- `geochronology` is no longer just a fallback boundary; it is now the first implemented phase-5 expansion candidate.
 
 ### Exit Criteria
 
@@ -305,9 +319,9 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 These are the next actions to take unless a blocker appears:
 
-1. Decide whether to keep widening low-risk discrete visible targets or treat the `geochronology` boundary as the start of phase-5 planning.
-2. If widening continues, pick the next unsupported visible target adjacent to the current `country`-predicate matrix.
-3. If phase 5 starts next, use the `geochronology` fallback boundary as the first concrete expansion candidate.
+1. Decide whether `geochronology` should remain a one-off range-target slice or become the template for broader non-discrete target support.
+2. If phase 5 continues immediately, pick the next range-like or non-discrete target adjacent to the same `country@1,2,5` predicate side.
+3. If phase 5 pauses here, document the generalized contract changes needed before widening beyond `geochronology`.
 
 ## Decision Log
 

@@ -24,7 +24,8 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         FacetsConfig2 facetsConfig,
         ComposedFilterQuery composedFilterQuery,
         string targetJoinColumn,
-        string anchorToTargetSql
+        string anchorToTargetSql,
+        string categoryInfoSql = null
     )
     {
         ArgumentNullException.ThrowIfNull(facetsConfig);
@@ -34,11 +35,6 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         var targetFacet =
             facetsConfig.TargetFacet ?? throw new ArgumentException("TargetFacet must be set on facetsConfig.", nameof(facetsConfig));
         var targetTable = targetFacet.TargetTable ?? throw new InvalidOperationException("Target facet does not define a target table.");
-
-        if (targetFacet.FacetTypeId != EFacetType.Discrete)
-        {
-            throw new InvalidOperationException($"Target facet '{targetFacet.FacetCode}' is not a discrete facet.");
-        }
 
         if (string.IsNullOrWhiteSpace(targetFacet.CategoryIdExpr))
         {
@@ -71,20 +67,36 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
             AnchorKeyColumn = composedFilterQuery.AnchorKeyColumn,
             AnchorJoinColumn = targetJoinColumn,
             ComposedFilterSql = composedFilterQuery.Sql,
-            Sql = BuildSql(
-                composedFilterQuery.Sql,
-                categoryExpression,
-                targetTableName,
-                targetTableAliasOrName,
-                targetJoins,
-                targetJoinColumn,
-                composedFilterQuery.AnchorKeyColumn,
-                anchorToTargetSql
-            ),
+            Sql = targetFacet.FacetTypeId switch
+            {
+                EFacetType.Discrete => BuildDiscreteSql(
+                    composedFilterQuery.Sql,
+                    categoryExpression,
+                    targetTableName,
+                    targetTableAliasOrName,
+                    targetJoins,
+                    targetJoinColumn,
+                    composedFilterQuery.AnchorKeyColumn,
+                    anchorToTargetSql
+                ),
+                EFacetType.Range => BuildRangeSql(
+                    composedFilterQuery.Sql,
+                    categoryInfoSql,
+                    categoryExpression,
+                    targetTableName,
+                    targetTableAliasOrName,
+                    targetJoins,
+                    targetJoinColumn,
+                    composedFilterQuery.AnchorKeyColumn,
+                    anchorToTargetSql,
+                    targetFacet.CategoryIdType
+                ),
+                _ => throw new InvalidOperationException($"Target facet '{targetFacet.FacetCode}' is not supported by the composed content composer."),
+            },
         };
     }
 
-    private static string BuildSql(
+    private static string BuildDiscreteSql(
         string composedFilterSql,
         string categoryExpression,
         string targetTableName,
@@ -126,6 +138,71 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         }
         sql.AppendLine($"group by {categoryExpression}");
         sql.Append("order by ").Append(categoryExpression);
+        return sql.ToString();
+    }
+
+    private static string BuildRangeSql(
+        string composedFilterSql,
+        string categoryInfoSql,
+        string categoryExpression,
+        string targetTableName,
+        string targetTableAliasOrName,
+        string[] targetJoins,
+        string targetJoinColumn,
+        string anchorKeyColumn,
+        string anchorToTargetSql,
+        string categoryIdType
+    )
+    {
+        if (string.IsNullOrWhiteSpace(categoryInfoSql))
+        {
+            throw new InvalidOperationException("Range target facets require a category-info SQL definition.");
+        }
+
+        var sql = new StringBuilder();
+        sql.AppendLine("with composed_filter as (");
+        sql.AppendLine(Indent(composedFilterSql.Trim(), "  "));
+        sql.AppendLine("),");
+        if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
+        {
+            sql.AppendLine("target_route as (");
+            sql.AppendLine(Indent(anchorToTargetSql.Trim(), "  "));
+            sql.AppendLine("),");
+        }
+        sql.AppendLine("categories(category, lower, upper) as (");
+        sql.AppendLine(Indent(categoryInfoSql.Trim(), "  "));
+        sql.AppendLine("),");
+        sql.AppendLine("outerbounds(lower, upper) as (");
+        sql.AppendLine("  select min(lower), max(upper)");
+        sql.AppendLine("  from categories");
+        sql.AppendLine(")");
+        sql.AppendLine("select c.category, c.lower, c.upper, coalesce(r.count_column, 0) as count_column");
+        sql.AppendLine("from categories c");
+        sql.AppendLine("left join (");
+        sql.AppendLine($"  select category, count(distinct composed_filter.{anchorKeyColumn}) as count_column");
+        sql.AppendLine($"  from {targetTableName}");
+        sql.AppendLine("  cross join outerbounds");
+        sql.AppendLine("  join categories");
+        sql.AppendLine($"    on categories.lower <= {categoryExpression}::{categoryIdType}");
+        sql.AppendLine($"   and categories.upper >= {categoryExpression}::{categoryIdType}");
+        sql.AppendLine($"   and (not (categories.upper < outerbounds.upper and {categoryExpression}::{categoryIdType} = categories.upper))");
+        foreach (var join in targetJoins)
+        {
+            sql.AppendLine($"  {join}");
+        }
+        if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
+        {
+            sql.AppendLine($"  join target_route on target_route.target_id = {targetTableAliasOrName}.{targetJoinColumn}");
+            sql.AppendLine($"  join composed_filter on composed_filter.{anchorKeyColumn} = target_route.source_id");
+        }
+        else
+        {
+            sql.AppendLine($"  join composed_filter on composed_filter.{anchorKeyColumn} = {targetTableAliasOrName}.{targetJoinColumn}");
+        }
+        sql.AppendLine("  group by category");
+        sql.AppendLine(") as r");
+        sql.AppendLine("  on r.category = c.category");
+        sql.Append("order by c.lower");
         return sql.ToString();
     }
 

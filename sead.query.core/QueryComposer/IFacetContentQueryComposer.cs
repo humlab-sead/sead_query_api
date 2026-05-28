@@ -9,6 +9,7 @@ public interface IFacetContentQueryComposer
         FacetsConfig2 facetsConfig,
         ComposedFilterQuery composedFilterQuery,
         string targetJoinColumn,
-        string anchorToTargetSql
+        string anchorToTargetSql,
+        string categoryInfoSql = null
     );
 }

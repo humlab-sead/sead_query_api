@@ -55,6 +55,7 @@ namespace SQT.LiveServices
                 ["record_types:country@1,2,5/record_types"],
                 ["dataset_provider:country@1,2,5/dataset_provider"],
                 ["relative_age_name:country@1,2,5/relative_age_name"],
+                ["geochronology:country@1,2,5/geochronology"],
             ];
 
         [Theory]
@@ -222,9 +223,16 @@ namespace SQT.LiveServices
 
         [Theory]
         [InlineData("geochronology:country@1,2,5/geochronology")]
-        public void FacetContentService_UnsupportedCountryPredicateGeochronologySlice_FallsBackToLegacyFacetContent(string uri)
+        public void FacetContentService_ComposedCountryPredicateGeochronologySlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertFallsBackToLegacyFacetContent(uri);
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, lower, upper) as", "tbl_geochronology.age::integer", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("geochronology:country@1,2,5/geochronology")]
+        public void FacetContentService_ComposedCountryPredicateGeochronologySlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
         }
 
         private IFacetContentService CreateLegacyFacetContentService()
@@ -270,23 +278,6 @@ namespace SQT.LiveServices
             Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(composedData.Items));
             Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(composedData.Distribution.Values));
             Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), composedData.Picks.Keys.OrderBy(key => key));
-        }
-
-        private void AssertFallsBackToLegacyFacetContent(string uri)
-        {
-            var facetsConfig = UriToFacetsConfig(uri);
-            var composedBoundary = Container.Resolve<IComposedFacetContentService>();
-            var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
-
-            Assert.False(composedBoundary.CanHandle(facetsConfig));
-
-            var data = service.Load(facetsConfig);
-
-            Assert.NotNull(data);
-            Assert.DoesNotContain("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
-
-            AssertMatchesLegacyFacetContent(uri);
         }
 
         private static List<string> ToCategoryCounts(IEnumerable<CategoryItem> items)
