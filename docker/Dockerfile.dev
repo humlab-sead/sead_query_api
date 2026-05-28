@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim
+
+WORKDIR /workspace
+
+COPY sead.query.api/sead.query.api.csproj sead.query.api/
+COPY sead.query.core/sead.query.core.csproj sead.query.core/
+COPY sead.query.infra/sead.query.infra.csproj sead.query.infra/
+RUN dotnet restore sead.query.api/sead.query.api.csproj
+
+EXPOSE 8089
