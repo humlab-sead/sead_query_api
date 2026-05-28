@@ -78,7 +78,7 @@ The branch already contains useful groundwork.
 - [x] Phase 4 live regression is in place: the grouped PostgreSQL-backed matrix in `FacetLoadService` covers the currently validated URIs.
 - [x] Phase 4 widening is active: validated visible-target coverage now includes `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
 - [x] Phase 5 has started: `geochronology:country@1,2,5/geochronology` is now a validated composed-path range-target slice.
-- [ ] The next widening candidate is still open: decide whether `geochronology` is a one-off slice or the start of broader non-discrete target support.
+- [x] The next widening direction is chosen: treat `geochronology` as the first template for broader range-target support, not as a generic template for every non-discrete facet type.
 
 ## Phase 0: Baseline Consolidation
 
@@ -292,9 +292,9 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 - [ ] Review unresolved issues from phases 1 through 4
 - [ ] Confirm that the discrete slice no longer depends on archived design assumptions
-- [ ] Decide whether the next facet type is range, intersect, or GIS
+- [x] Decide whether the next facet type is range, intersect, or GIS
 - [x] Decide whether out-of-scope requests such as `geochronology:country@1,2,5/geochronology` define the first phase-5 expansion candidate
-- [ ] Record the reasons for the chosen next facet type
+- [x] Record the reasons for the chosen next facet type
 - [ ] Update this plan or split a new follow-up plan for the next slice
 
 ### Proposed First Phase-5 Slice
@@ -302,13 +302,20 @@ Decide whether the first slice is stable enough to extend to more facet types.
 - [x] Keep the predicate side unchanged with `country@1,2,5` as the picked discrete filter.
 - [x] Add target-content support for `geochronology` as the first out-of-scope phase-5 candidate.
 - [x] Add one focused live comparison for `geochronology:country@1,2,5/geochronology` that passes through the composed path instead of the fallback path.
-- [ ] Decide whether a passing `geochronology` slice should be treated as the start of broader non-discrete target support or as a one-off target expansion.
+- [x] Decide whether a passing `geochronology` slice should be treated as the start of broader non-discrete target support or as a one-off target expansion.
 
 ### Current Notes
 
 - Current validated phase-5 scenario: `geochronology:country@1,2,5/geochronology` through `IFacetContentService`.
 - The composed path now supports a first range target while keeping the predicate side on the proven discrete `country@1,2,5` slice.
 - `geochronology` is no longer just a fallback boundary; it is now the first implemented phase-5 expansion candidate.
+
+### Decision
+
+- Treat `geochronology` as the template for the next range-target slices, not as a one-off exception.
+- Do not treat it as a generic template for all non-discrete facet types. `Intersect` and `GeoPolygon` targets still need separate contracts and validation.
+- The decisive reuse points are now explicit: the composed path can keep the discrete predicate side, derive interval metadata through `IRangeCategoryInfoService`, join routed targets on the target-table primary key, and count distinct composed anchor ids inside interval buckets.
+- This makes `Range` the intentional next facet-type track for phase 5, while keeping the support boundary narrower than “all non-discrete targets”.
 
 ### Exit Criteria
 
@@ -319,9 +326,9 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 These are the next actions to take unless a blocker appears:
 
-1. Decide whether `geochronology` should remain a one-off range-target slice or become the template for broader non-discrete target support.
-2. If phase 5 continues immediately, pick the next range-like or non-discrete target adjacent to the same `country@1,2,5` predicate side.
-3. If phase 5 pauses here, document the generalized contract changes needed before widening beyond `geochronology`.
+1. Pick the next range target adjacent to the same `country@1,2,5` predicate side and validate that it reuses the `geochronology` template without new contract changes.
+2. If the next range target needs different interval semantics, document that difference explicitly before widening further.
+3. Keep `Intersect` and `GeoPolygon` targets outside this widening track until they get their own phase-5 entry criteria.
 
 ## Decision Log
 
