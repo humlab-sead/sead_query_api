@@ -167,21 +167,27 @@ Generate target facet content from the composed anchor set rather than from the 
 
 ### Status
 
-`not started`
+`in progress`
 
 ### Tasks
 
-- [ ] Define the first target facet content query contract
-- [ ] Implement a content query builder or service that accepts the composed anchor query as input
-- [ ] Support one discrete target facet only
+- [x] Define the first target facet content query contract
+- [x] Implement a content query builder or service that accepts the composed anchor query as input
+- [x] Support one discrete target facet only
 - [ ] Return the shape needed by the current facet-content consumer
-- [ ] Add unit or narrow integration tests for content query generation
+- [x] Add unit or narrow integration tests for content query generation
 
 ### Exit Criteria
 
 - one target facet content query runs from the composed anchor set
 - the content path is separate from final result-set generation
 - the query shape is testable without enabling a full runtime switch
+
+### Notes
+
+- Current implementation target: discrete facets whose target table matches the composed anchor table.
+- Current implementation: `DiscreteFacetContentQueryComposer` in `sead.query.core/QueryComposer/Strategies/`.
+- Current tests cover missing target facet, non-discrete targets, mismatched anchor tables, and the successful discrete content-query shape.
 
 ## Phase 4: Runtime Integration And Comparison
 
