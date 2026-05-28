@@ -7,5 +7,5 @@ namespace SeadQueryCore.QueryComposer;
 /// </summary>
 public interface IComposedFilterQueryComposer
 {
-    ComposedFilterQuery Compose(IReadOnlyCollection<string> predicateQueries, string anchorTable, string anchorKeyColumn);
+    ComposedFilterQuery Compose(IReadOnlyCollection<PredicateQueryPlan> predicateQueries, string anchorTable, string anchorKeyColumn);
 }

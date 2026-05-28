@@ -10,21 +10,54 @@ namespace SeadQueryCore.QueryComposer;
 /// </summary>
 public sealed class IntersectComposedFilterQueryComposer : IComposedFilterQueryComposer
 {
-    public ComposedFilterQuery Compose(IReadOnlyCollection<string> predicateQueries, string anchorTable, string anchorKeyColumn)
+    public ComposedFilterQuery Compose(
+        IReadOnlyCollection<PredicateQueryPlan> predicateQueries,
+        string anchorTable,
+        string anchorKeyColumn
+    )
     {
         ArgumentNullException.ThrowIfNull(predicateQueries);
         ArgumentException.ThrowIfNullOrWhiteSpace(anchorTable);
         ArgumentException.ThrowIfNullOrWhiteSpace(anchorKeyColumn);
 
-        var normalizedQueries = predicateQueries.Where(static query => !string.IsNullOrWhiteSpace(query)).Select(NormalizeSql).ToList();
+        var normalizedQueries = predicateQueries
+            .Where(static query => !string.IsNullOrWhiteSpace(query.Sql))
+            .Select(NormalizePlan)
+            .ToList();
+
+        ValidateAnchorCompatibility(normalizedQueries, anchorTable, anchorKeyColumn);
 
         return new ComposedFilterQuery
         {
             AnchorTable = anchorTable,
             AnchorKeyColumn = anchorKeyColumn,
             PredicateQueries = normalizedQueries,
-            Sql = BuildSql(normalizedQueries, anchorKeyColumn),
+            Sql = BuildSql(normalizedQueries.Select(static query => query.Sql).ToList(), anchorKeyColumn),
         };
+    }
+
+    private static void ValidateAnchorCompatibility(
+        IReadOnlyList<PredicateQueryPlan> predicateQueries,
+        string anchorTable,
+        string anchorKeyColumn
+    )
+    {
+        foreach (var predicateQuery in predicateQueries)
+        {
+            if (!string.Equals(predicateQuery.AnchorTable, anchorTable, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    $"Predicate query '{predicateQuery.FacetCode}' targets anchor table '{predicateQuery.AnchorTable}', expected '{anchorTable}'."
+                );
+            }
+
+            if (!string.Equals(predicateQuery.AnchorKeyColumn, anchorKeyColumn, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"Predicate query '{predicateQuery.FacetCode}' exposes anchor key '{predicateQuery.AnchorKeyColumn}', expected '{anchorKeyColumn}'."
+                );
+            }
+        }
     }
 
     private static string BuildSql(IReadOnlyList<string> predicateQueries, string anchorKeyColumn)
@@ -63,9 +96,16 @@ public sealed class IntersectComposedFilterQueryComposer : IComposedFilterQueryC
         return sql.ToString();
     }
 
-    private static string NormalizeSql(string sql)
+    private static PredicateQueryPlan NormalizePlan(PredicateQueryPlan predicateQuery)
     {
-        return sql.Trim().TrimEnd(';');
+        return new PredicateQueryPlan
+        {
+            FacetCode = predicateQuery.FacetCode,
+            AnchorTable = predicateQuery.AnchorTable,
+            SourceKeyColumn = predicateQuery.SourceKeyColumn,
+            AnchorKeyColumn = predicateQuery.AnchorKeyColumn,
+            Sql = predicateQuery.Sql.Trim().TrimEnd(';'),
+        };
     }
 
     private static string Indent(string text, string indent)

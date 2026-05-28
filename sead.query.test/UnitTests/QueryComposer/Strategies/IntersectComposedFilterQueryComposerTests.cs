@@ -9,6 +9,21 @@ public class IntersectComposedFilterQueryComposerTests
 {
     private readonly IntersectComposedFilterQueryComposer _composer = new();
 
+    private static PredicateQueryPlan CreatePredicateQueryPlan(
+        string facetCode,
+        string sql,
+        string anchorTable = "tbl_samples",
+        string anchorKeyColumn = QueryComposerAliases.AnchorKeyColumn)
+    {
+        return new PredicateQueryPlan
+        {
+            FacetCode = facetCode,
+            AnchorTable = anchorTable,
+            AnchorKeyColumn = anchorKeyColumn,
+            Sql = sql,
+        };
+    }
+
     [Fact]
     public void Compose_WithNullPredicateQueries_ThrowsArgumentNullException()
     {
@@ -40,11 +55,11 @@ public class IntersectComposedFilterQueryComposerTests
     [Fact]
     public void Compose_WithSinglePredicateQuery_WrapsQueryInSingleCte()
     {
-        var predicateSql = "select source_id, target_id from predicate_source;";
+        var predicateSql = CreatePredicateQueryPlan("facet_a", "select source_id, target_id from predicate_source;");
 
         var result = _composer.Compose([predicateSql], "tbl_samples", QueryComposerAliases.AnchorKeyColumn);
 
-        result.PredicateQueries.Should().ContainSingle().Which.Should().Be("select source_id, target_id from predicate_source");
+        result.PredicateQueries.Should().ContainSingle().Which.Sql.Should().Be("select source_id, target_id from predicate_source");
         result.Sql.Should().Contain("with");
         result.Sql.Should().Contain("predicate_0 as");
         result.Sql.Should().Contain("select distinct target_id");
@@ -54,9 +69,9 @@ public class IntersectComposedFilterQueryComposerTests
     [Fact]
     public void Compose_WithMultiplePredicateQueries_UsesIntersectAcrossAllQueries()
     {
-        var first = "select source_id, target_id from predicate_one";
-        var second = "select source_id, target_id from predicate_two";
-        var third = "select source_id, target_id from predicate_three";
+        var first = CreatePredicateQueryPlan("facet_a", "select source_id, target_id from predicate_one");
+        var second = CreatePredicateQueryPlan("facet_b", "select source_id, target_id from predicate_two");
+        var third = CreatePredicateQueryPlan("facet_c", "select source_id, target_id from predicate_three");
 
         var result = _composer.Compose([first, second, third], "tbl_samples", QueryComposerAliases.AnchorKeyColumn);
 
@@ -73,10 +88,38 @@ public class IntersectComposedFilterQueryComposerTests
     [Fact]
     public void Compose_WithWhitespaceOnlyQueries_SkipsEmptyQueries()
     {
-        var result = _composer.Compose([" ", "select source_id, target_id from predicate_one"], "tbl_samples", QueryComposerAliases.AnchorKeyColumn);
+        var result = _composer.Compose(
+            [
+                CreatePredicateQueryPlan("facet_a", " "),
+                CreatePredicateQueryPlan("facet_b", "select source_id, target_id from predicate_one")
+            ],
+            "tbl_samples",
+            QueryComposerAliases.AnchorKeyColumn);
 
         result.PredicateQueries.Should().ContainSingle();
         result.Sql.Should().Contain("predicate_0 as");
         result.Sql.Should().NotContain("predicate_1 as");
+    }
+
+    [Fact]
+    public void Compose_WithDifferentAnchorTables_ThrowsInvalidOperationException()
+    {
+        var first = CreatePredicateQueryPlan("facet_a", "select source_id, target_id from predicate_one", anchorTable: "tbl_sites");
+        var second = CreatePredicateQueryPlan("facet_b", "select source_id, target_id from predicate_two", anchorTable: "tbl_samples");
+
+        Action act = () => _composer.Compose([first, second], "tbl_samples", QueryComposerAliases.AnchorKeyColumn);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*anchor table*");
+    }
+
+    [Fact]
+    public void Compose_WithDifferentAnchorKeyAliases_ThrowsInvalidOperationException()
+    {
+        var first = CreatePredicateQueryPlan("facet_a", "select source_id, target_id from predicate_one");
+        var second = CreatePredicateQueryPlan("facet_b", "select source_id, anchor_id from predicate_two", anchorKeyColumn: "anchor_id");
+
+        Action act = () => _composer.Compose([first, second], "tbl_samples", QueryComposerAliases.AnchorKeyColumn);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*anchor key*");
     }
 }

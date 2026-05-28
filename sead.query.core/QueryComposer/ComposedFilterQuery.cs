@@ -19,9 +19,9 @@ public sealed class ComposedFilterQuery
     public string AnchorKeyColumn { get; init; } = QueryComposerAliases.AnchorKeyColumn;
 
     /// <summary>
-    /// Predicate SQL fragments that were combined to form the composed query.
+    /// Predicate query plans that were combined to form the composed query.
     /// </summary>
-    public IReadOnlyList<string> PredicateQueries { get; init; } = [];
+    public IReadOnlyList<PredicateQueryPlan> PredicateQueries { get; init; } = [];
 
     /// <summary>
     /// Final SQL for the composed filter query.
