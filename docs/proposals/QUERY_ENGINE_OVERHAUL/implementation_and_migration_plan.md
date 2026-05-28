@@ -51,7 +51,7 @@ The branch already contains useful groundwork.
 
 ### Remaining Gaps
 
-- `in progress`: stable core query-composer interfaces for the new slice
+- `done`: stable core query-composer interfaces for the new slice
 - `not started`: composed filter query contract and implementation
 - `not started`: facet content query path on top of the composed anchor set
 - `not started`: runtime integration for one discrete facet flow
@@ -62,7 +62,7 @@ The branch already contains useful groundwork.
 | Phase | Title                              | Status      | Exit Condition                                                                   |
 |-------|------------------------------------|-------------|----------------------------------------------------------------------------------|
 | 0     | Baseline consolidation             | done        | One active path kept, shelved path archived, minimal resolver contracts promoted |
-| 1     | Contract stabilization             | in progress | Core and composer contracts are explicit and wired for one discrete slice        |
+| 1     | Contract stabilization             | done        | Core and composer contracts are explicit and wired for one discrete slice        |
 | 2     | Composed filter query              | not started | Multiple discrete predicates can compose into one anchor-filter query            |
 | 3     | Facet content query                | not started | Target facet content can run from the composed anchor set                        |
 | 4     | Runtime integration and comparison | not started | One end-to-end request path works and is compared against legacy output          |
@@ -102,7 +102,7 @@ Define the smallest compiled contracts needed to support one discrete-facet path
 
 ### Status
 
-`in progress`
+`done`
 
 ### Tasks
 
@@ -110,7 +110,7 @@ Define the smallest compiled contracts needed to support one discrete-facet path
 - [x] Replace the empty `sead.query.core/QueryComposer/` surface with the first minimal interfaces and query-plan contracts for the discrete slice
 - [x] Define the contract for a composed filter query result
 - [x] Define the contract for a facet content query result that consumes the composed anchor set
-- [ ] Decide and document the single anchor-key naming convention for the first slice
+- [x] Decide and document the single anchor-key naming convention for the first slice
 - [x] Add DI registration for the active route compiler and discrete predicate resolver path
 
 ### Exit Criteria
@@ -124,6 +124,7 @@ Define the smallest compiled contracts needed to support one discrete-facet path
 - Keep contracts small.
 - Do not define range, intersect, or GIS abstractions yet unless the discrete slice requires them.
 - Initial core contracts added: `ComposedFilterQuery`, `IComposedFilterQueryComposer`, `FacetContentQueryPlan`, and `IFacetContentQueryComposer`.
+- First-slice naming convention: predicate queries expose `source_id` for the facet-source key and `target_id` for the anchor key.
 - Active DI wiring now resolves `IRouteRepository`, `IRouteGraphFactory`, `IRouteResolver`, `IArrowRouteParser`, `IRouteSqlCompiler`, and `IDiscreteFacetPredicateResolver`.
 
 ## Phase 2: Composed Filter Query
@@ -231,11 +232,11 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 These are the next actions to take unless a blocker appears:
 
-1. Define the minimal core and composer contracts for the discrete slice.
-2. Add DI wiring for the active route compiler and discrete predicate resolver.
-3. Implement the composed filter query for one anchor type.
-4. Add tests for multi-facet composition.
-5. Implement one target facet content path from the composed anchor set.
+1. Implement the composed filter query for one anchor type.
+2. Add tests for single-facet, multi-facet, incompatible-anchor, and no-filter cases.
+3. Choose the first composition strategy: `INTERSECT` or `INNER JOIN`.
+4. Implement one target facet content path from the composed anchor set.
+5. Identify the narrowest runtime boundary for the first end-to-end integration.
 
 ## Decision Log
 
@@ -243,6 +244,7 @@ Record implementation decisions here as they are made.
 
 - `done`: keep the active route-compiler path and archive `BackBurner`
 - `done`: promote only small, useful contracts from the shelved design
+- `done`: use `source_id` as the facet-source key alias and `target_id` as the anchor-key alias for the first vertical slice
 - `open`: decide whether the first composed filter query uses `INTERSECT` or `INNER JOIN`
 - `open`: decide when route definitions move from code or fixtures to database-backed configuration
 - `open`: decide which stable contracts move to `sead.query.core` after the first slice settles

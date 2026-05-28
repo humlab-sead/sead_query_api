@@ -14,8 +14,9 @@ public sealed class ComposedFilterQuery
 
     /// <summary>
     /// Anchor key column returned by the composed query.
+    /// The first vertical slice uses the shared `target_id` alias.
     /// </summary>
-    public string AnchorKeyColumn { get; init; } = string.Empty;
+    public string AnchorKeyColumn { get; init; } = QueryComposerAliases.AnchorKeyColumn;
 
     /// <summary>
     /// Predicate SQL fragments that were combined to form the composed query.

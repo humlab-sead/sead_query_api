@@ -17,8 +17,9 @@ public sealed class FacetContentQueryPlan
 
     /// <summary>
     /// Anchor key column expected by the content query.
+    /// The first vertical slice uses the shared `target_id` alias.
     /// </summary>
-    public string AnchorKeyColumn { get; init; } = string.Empty;
+    public string AnchorKeyColumn { get; init; } = QueryComposerAliases.AnchorKeyColumn;
 
     /// <summary>
     /// SQL used to define the composed anchor set consumed by this content query.
