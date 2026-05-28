@@ -17,5 +17,4 @@ public interface IRepositoryRegistry : IDisposable
     IRouteRepository Routes { get; }
 
     int Commit();
-
 }

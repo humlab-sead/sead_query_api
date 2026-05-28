@@ -10,11 +10,7 @@ namespace SeadQueryCore.QueryComposer;
 /// </summary>
 public sealed class IntersectComposedFilterQueryComposer : IComposedFilterQueryComposer
 {
-    public ComposedFilterQuery Compose(
-        IReadOnlyCollection<PredicateQueryPlan> predicateQueries,
-        string anchorTable,
-        string anchorKeyColumn
-    )
+    public ComposedFilterQuery Compose(IReadOnlyCollection<PredicateQueryPlan> predicateQueries, string anchorTable, string anchorKeyColumn)
     {
         ArgumentNullException.ThrowIfNull(predicateQueries);
         ArgumentException.ThrowIfNullOrWhiteSpace(anchorTable);

@@ -13,7 +13,8 @@ public class IntersectComposedFilterQueryComposerTests
         string facetCode,
         string sql,
         string anchorTable = "tbl_samples",
-        string anchorKeyColumn = QueryComposerAliases.AnchorKeyColumn)
+        string anchorKeyColumn = QueryComposerAliases.AnchorKeyColumn
+    )
     {
         return new PredicateQueryPlan
         {
@@ -91,10 +92,11 @@ public class IntersectComposedFilterQueryComposerTests
         var result = _composer.Compose(
             [
                 CreatePredicateQueryPlan("facet_a", " "),
-                CreatePredicateQueryPlan("facet_b", "select source_id, target_id from predicate_one")
+                CreatePredicateQueryPlan("facet_b", "select source_id, target_id from predicate_one"),
             ],
             "tbl_samples",
-            QueryComposerAliases.AnchorKeyColumn);
+            QueryComposerAliases.AnchorKeyColumn
+        );
 
         result.PredicateQueries.Should().ContainSingle();
         result.Sql.Should().Contain("predicate_0 as");
