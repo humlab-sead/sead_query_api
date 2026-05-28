@@ -5,5 +5,10 @@ namespace SeadQueryCore.QueryComposer;
 /// </summary>
 public interface IFacetContentQueryComposer
 {
-    FacetContentQueryPlan Compose(FacetsConfig2 facetsConfig, ComposedFilterQuery composedFilterQuery);
+    FacetContentQueryPlan Compose(
+        FacetsConfig2 facetsConfig,
+        ComposedFilterQuery composedFilterQuery,
+        string targetJoinColumn,
+        string anchorToTargetSql
+    );
 }

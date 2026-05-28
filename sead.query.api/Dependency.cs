@@ -1,15 +1,17 @@
-﻿using Autofac;
-using SeadQueryComposer.RouteCompiler;
+﻿using System;
+using Autofac;
 using SeadQueryAPI.Serializers;
+using SeadQueryComposer.QueryComposer.Services;
+using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
-using SeadQueryCore.Plugin.Intersect;
-using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.Plugin.Discrete;
 using SeadQueryCore.Plugin.GeoPolygon;
+using SeadQueryCore.Plugin.Intersect;
+using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryComposer;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
-using System;
 
 namespace SeadQueryAPI
 {
@@ -38,21 +40,13 @@ namespace SeadQueryAPI
             builder.RegisterInstance<IFacetSetting>(Options.Facet).SingleInstance().ExternallyOwned();
             builder.RegisterInstance<StoreSetting>(Options.Store).SingleInstance().ExternallyOwned();
 
-            builder.RegisterType<FacetContextFactory>()
-                .As<IFacetContextFactory>()
-                .InstancePerLifetimeScope();
+            builder.RegisterType<FacetContextFactory>().As<IFacetContextFactory>().InstancePerLifetimeScope();
 
-            builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
-                .As<IFacetContext>()
-                .InstancePerLifetimeScope();
+            builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance()).As<IFacetContext>().InstancePerLifetimeScope();
 
-            builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy)
-                .As<ITypedQueryProxy>()
-                .InstancePerLifetimeScope();
+            builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy).As<ITypedQueryProxy>().InstancePerLifetimeScope();
 
-            builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy)
-                .As<IDynamicQueryProxy>()
-                .InstancePerLifetimeScope();
+            builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy).As<IDynamicQueryProxy>().InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().InstancePerLifetimeScope();
             builder.Register(c => c.Resolve<IRepositoryRegistry>().Routes).As<IRouteRepository>().InstancePerLifetimeScope();
@@ -63,6 +57,9 @@ namespace SeadQueryAPI
             builder.RegisterType<ArrowRouteParser>().As<IArrowRouteParser>().InstancePerLifetimeScope();
             builder.RegisterType<RouteSqlCompiler>().As<IRouteSqlCompiler>().InstancePerLifetimeScope();
             builder.RegisterType<DiscreteFacetPredicateResolver>().As<IDiscreteFacetPredicateResolver>().InstancePerLifetimeScope();
+            builder.RegisterType<IntersectComposedFilterQueryComposer>().As<IComposedFilterQueryComposer>().InstancePerLifetimeScope();
+            builder.RegisterType<DiscreteFacetContentQueryComposer>().As<IFacetContentQueryComposer>().InstancePerLifetimeScope();
+            builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
             //builder.RegisterType<RouteFinder>().As<IRouteFinder>();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();

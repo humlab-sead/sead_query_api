@@ -1,15 +1,17 @@
-﻿using Autofac;
-using SeadQueryComposer.RouteCompiler;
+﻿using System;
+using Autofac;
 using SeadQueryAPI.Serializers;
+using SeadQueryComposer.QueryComposer.Services;
+using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
-using SeadQueryCore.Plugin.Intersect;
-using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.Plugin.Discrete;
 using SeadQueryCore.Plugin.GeoPolygon;
+using SeadQueryCore.Plugin.Intersect;
+using SeadQueryCore.Plugin.Range;
+using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryComposer;
 using SeadQueryCore.Services.Result;
 using SeadQueryInfra;
-using System;
 
 namespace SQT.Infrastructure
 {
@@ -23,6 +25,7 @@ namespace SQT.Infrastructure
         {
             FacetContext = facetContext;
         }
+
         public void Dispose()
         {
             //MockService.Dispose();
@@ -47,26 +50,18 @@ namespace SQT.Infrastructure
 
                 // builder.RegisterType<FacetContext>().As<IFacetContext>().SingleInstance().ExternallyOwned();
 
-                builder.RegisterType<FacetContextFactory>()
-                    .As<IFacetContextFactory>()
-                    .InstancePerLifetimeScope();
+                builder.RegisterType<FacetContextFactory>().As<IFacetContextFactory>().InstancePerLifetimeScope();
 
-                builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance())
-                    .As<IFacetContext>()
-                    .InstancePerLifetimeScope();
+                builder.Register(c => c.Resolve<IFacetContextFactory>().GetInstance()).As<IFacetContext>().InstancePerLifetimeScope();
             }
             else
             {
                 builder.RegisterInstance(FacetContext).SingleInstance().ExternallyOwned();
             }
 
-            builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy)
-                .As<ITypedQueryProxy>()
-                .InstancePerLifetimeScope();
+            builder.Register(c => c.Resolve<IFacetContext>().TypedQueryProxy).As<ITypedQueryProxy>().InstancePerLifetimeScope();
 
-            builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy)
-                .As<IDynamicQueryProxy>()
-                .InstancePerLifetimeScope();
+            builder.Register(c => c.Resolve<IFacetContext>().DynamicQueryProxy).As<IDynamicQueryProxy>().InstancePerLifetimeScope();
 
             builder.RegisterType<RepositoryRegistry>().As<IRepositoryRegistry>().SingleInstance().ExternallyOwned();
             builder.Register(c => c.Resolve<IRepositoryRegistry>().Routes).As<IRouteRepository>().SingleInstance().ExternallyOwned();
@@ -77,6 +72,9 @@ namespace SQT.Infrastructure
             builder.RegisterType<ArrowRouteParser>().As<IArrowRouteParser>().InstancePerLifetimeScope();
             builder.RegisterType<RouteSqlCompiler>().As<IRouteSqlCompiler>().InstancePerLifetimeScope();
             builder.RegisterType<DiscreteFacetPredicateResolver>().As<IDiscreteFacetPredicateResolver>().InstancePerLifetimeScope();
+            builder.RegisterType<IntersectComposedFilterQueryComposer>().As<IComposedFilterQueryComposer>().InstancePerLifetimeScope();
+            builder.RegisterType<DiscreteFacetContentQueryComposer>().As<IFacetContentQueryComposer>().InstancePerLifetimeScope();
+            builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();

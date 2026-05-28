@@ -37,6 +37,7 @@ public class DiscreteFacetPredicateResolverTests
 
         sql.Should().Be("select source_id, target_id from custom_sql");
         _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>()), Times.Never);
+        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -47,17 +48,119 @@ public class DiscreteFacetPredicateResolverTests
         const string compiledSql = "select distinct X_0.site_id as source_id, X_1.sample_id as target_id\nfrom tbl_sites as X_0";
 
         _routeSqlCompiler
-            .Setup(x => x.Compile(It.Is<List<string>>(tables =>
-                tables.Count == 3
-                && tables[0] == "tbl_sites"
-                && tables[1] == "tbl_sample_groups"
-                && tables[2] == "tbl_samples")))
+            .Setup(x =>
+                x.Compile(
+                    It.Is<List<string>>(tables =>
+                        tables.Count == 3 && tables[0] == "tbl_sites" && tables[1] == "tbl_sample_groups" && tables[2] == "tbl_samples"
+                    ),
+                    "site_id",
+                    "sample_id"
+                )
+            )
             .Returns(compiledSql);
 
         var sql = _resolver.ResolveSql("tbl_sites", "site_id", input, anchorTemplate, "tbl_samples", "sample_id");
 
+        sql.Should().Contain("select *");
         sql.Should().Contain(compiledSql);
+        sql.Should().Contain("as predicate_query");
         sql.Should().Contain("where source_id in (101, 102)");
+    }
+
+    [Fact]
+    public void ResolveSql_WithRoute_UsesSourceAndAnchorKeyOverrides()
+    {
+        var input = new DiscreteFacetUserInput { Picks = [1, 2, 5] };
+        var anchorTemplate = new AnchorTemplate { Route = ["tbl_sites"], RequiresDistinct = true };
+        const string compiledSql =
+            "select distinct X_0.location_id as source_id, X_2.site_id as target_id\nfrom facet.site_location_shortcut as X_0";
+
+        _routeSqlCompiler
+            .Setup(x =>
+                x.Compile(
+                    It.Is<List<string>>(tables =>
+                        tables.Count == 3
+                        && tables[0] == "facet.site_location_shortcut"
+                        && tables[1] == "tbl_sites"
+                        && tables[2] == "tbl_analysis_entities"
+                    ),
+                    "location_id",
+                    "site_id"
+                )
+            )
+            .Returns(compiledSql);
+
+        var sql = _resolver.ResolveSql(
+            "facet.site_location_shortcut",
+            "location_id",
+            input,
+            anchorTemplate,
+            "tbl_analysis_entities",
+            "site_id"
+        );
+
+        sql.Should().Contain(compiledSql);
+        sql.Should().Contain("where source_id in (1, 2, 5)");
+    }
+
+    [Fact]
+    public void ResolveSql_WithRouteAndSourceCriteria_AppendsCriteriaInsideBaseQuery()
+    {
+        var input = new DiscreteFacetUserInput { Picks = [1, 2, 5] };
+        var anchorTemplate = new AnchorTemplate { Route = ["tbl_sites"], RequiresDistinct = true };
+        const string compiledSql =
+            "select distinct X_0.location_id as source_id, X_2.site_id as target_id\nfrom facet.site_location_shortcut as X_0\nwhere X_0.location_type_id=1";
+
+        _routeSqlCompiler
+            .Setup(x =>
+                x.Compile(
+                    It.Is<List<string>>(tables =>
+                        tables.Count == 3
+                        && tables[0] == "facet.site_location_shortcut"
+                        && tables[1] == "tbl_sites"
+                        && tables[2] == "tbl_analysis_entities"
+                    ),
+                    "location_id",
+                    "site_id",
+                    It.Is<IReadOnlyList<string>>(criteria => criteria.Count == 1 && criteria[0] == "X_0.location_type_id=1")
+                )
+            )
+            .Returns(compiledSql);
+
+        var sql = _resolver.ResolveSql(
+            "facet.site_location_shortcut",
+            "location_id",
+            input,
+            anchorTemplate,
+            "tbl_analysis_entities",
+            "site_id",
+            ["X_0.location_type_id=1"]
+        );
+
+        sql.Should().Contain("where X_0.location_type_id=1");
+        sql.Should().Contain("where source_id in (1, 2, 5)");
+    }
+
+    [Fact]
+    public void ResolveSql_WithoutRouteAndWithSourceCriteria_AliasesSourceTableAndAppliesCriteria()
+    {
+        var input = new DiscreteFacetUserInput { Picks = [1] };
+        var anchorTemplate = new AnchorTemplate { RequiresDistinct = true };
+
+        var sql = _resolver.ResolveSql(
+            "facet.site_location_shortcut",
+            "location_id",
+            input,
+            anchorTemplate,
+            "facet.site_location_shortcut",
+            "location_id",
+            ["X_0.location_type_id=1"]
+        );
+
+        sql.Should().Contain("select distinct X_0.location_id as source_id, X_0.location_id as target_id");
+        sql.Should().Contain("from facet.site_location_shortcut as X_0");
+        sql.Should().Contain("where X_0.location_type_id=1");
+        sql.Should().Contain("where source_id in (1)");
     }
 
     [Fact]
@@ -71,6 +174,7 @@ public class DiscreteFacetPredicateResolverTests
         sql.Should().Contain("select distinct site_id as source_id, site_id as target_id");
         sql.Should().Contain("from tbl_sites");
         _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>()), Times.Never);
+        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -81,6 +185,7 @@ public class DiscreteFacetPredicateResolverTests
 
         var sql = _resolver.ResolveSql("tbl_sites", "site_id", input, anchorTemplate, "tbl_sites", "site_id");
 
+        sql.Should().Contain("as predicate_query");
         sql.Should().Contain("where source_id = 'SEAD'");
     }
 

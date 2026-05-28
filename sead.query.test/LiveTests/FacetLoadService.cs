@@ -1,9 +1,14 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Autofac;
+using FluentAssertions;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using Xunit;
+using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryComposer;
 using SQT.Mocks;
+using Xunit;
 
 namespace SQT.LiveServices
 {
@@ -25,16 +30,39 @@ namespace SQT.LiveServices
             Registry = Container.Resolve<IRepositoryRegistry>();
         }
 
-        public FacetsConfig2 UriToFacetsConfig(string uri)
-            => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+        public FacetsConfig2 UriToFacetsConfig(string uri) => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
-        public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId)
-            => ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
+        public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId) =>
+            ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
+
+        public static IEnumerable<object[]> SupportedComposedLiveUris =>
+            [
+                ["result_facet:sites@4/result_facet"],
+                ["sites:sample_groups@1/sites"],
+                ["sample_groups:sites@4/sample_groups"],
+                ["country:sites@4/country"],
+                ["constructions:sites@4/constructions"],
+                ["ecocode:sites@4/ecocode"],
+                ["sites:country@1,2,5/sites"],
+                ["ecocode:country@1,2,5/ecocode"],
+                ["feature_type:country@1,2,5/feature_type"],
+                ["ecocode_system:country@1,2,5/ecocode_system"],
+                ["genus:country@1,2,5/genus"],
+                ["species:country@1,2,5/species"],
+                ["species_author:country@1,2,5/species_author"],
+                ["family:country@1,2,5/family"],
+                ["dataset_methods:country@1,2,5/dataset_methods"],
+                ["record_types:country@1,2,5/record_types"],
+                ["dataset_provider:country@1,2,5/dataset_provider"],
+                ["relative_age_name:country@1,2,5/relative_age_name"],
+            ];
 
         [Theory]
         [InlineData("genus:genus")]
         [InlineData("abundance_classification:abundance_classification")]
-        [InlineData("sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738")]
+        [InlineData(
+            "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"
+        )]
         [InlineData("sites_polygon:sites_polygon")]
         [InlineData("sites:sites/tbl_denormalized_measured_values_33_0")]
         public void Load_VariousConfigs_Success(string uri)
@@ -59,5 +87,211 @@ namespace SQT.LiveServices
             Assert.NotNull(data);
         }
 
+        [Theory]
+        [MemberData(nameof(SupportedComposedLiveUris))]
+        public void FacetContentService_ComposedSupportedLiveSlices_UseComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedLiveUris))]
+        public void FacetContentService_ComposedSupportedLiveSlices_MatchLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("sites:sample_groups@1/sites")]
+        public void FacetContentService_ComposedVisibleSitesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "join target_route");
+        }
+
+        [Theory]
+        [InlineData("sample_groups:sites@4/sample_groups")]
+        public void FacetContentService_ComposedVisibleSampleGroupsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "join target_route");
+        }
+
+        [Theory]
+        [InlineData("country:sites@4/country")]
+        public void FacetContentService_ComposedVisibleCountrySlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "join target_route");
+        }
+
+        [Theory]
+        [InlineData("constructions:sites@4/constructions")]
+        public void FacetContentService_ComposedVisibleConstructionsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_sample_group_descriptions");
+        }
+
+        [Theory]
+        [InlineData("sites:country@1,2,5/sites")]
+        public void FacetContentService_ComposedCountryPredicateSitesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("ecocode:sites@4/ecocode")]
+        public void FacetContentService_ComposedVisibleEcocodeSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_ecocode_definitions");
+        }
+
+        [Theory]
+        [InlineData("ecocode:country@1,2,5/ecocode")]
+        public void FacetContentService_ComposedCountryPredicateEcocodeSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_ecocode_definitions", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("feature_type:country@1,2,5/feature_type")]
+        public void FacetContentService_ComposedCountryPredicateFeatureTypeSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_feature_types", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("ecocode_system:country@1,2,5/ecocode_system")]
+        public void FacetContentService_ComposedCountryPredicateEcocodeSystemSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_ecocode_systems", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("genus:country@1,2,5/genus")]
+        public void FacetContentService_ComposedCountryPredicateGenusSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_genera", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("species:country@1,2,5/species")]
+        public void FacetContentService_ComposedCountryPredicateSpeciesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "abundance_taxon_shortcut", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("species_author:country@1,2,5/species_author")]
+        public void FacetContentService_ComposedCountryPredicateSpeciesAuthorSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_authors", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("family:country@1,2,5/family")]
+        public void FacetContentService_ComposedCountryPredicateFamilySlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_families", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("dataset_methods:country@1,2,5/dataset_methods")]
+        public void FacetContentService_ComposedCountryPredicateDatasetMethodsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_methods", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("record_types:country@1,2,5/record_types")]
+        public void FacetContentService_ComposedCountryPredicateRecordTypesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_record_types", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("dataset_provider:country@1,2,5/dataset_provider")]
+        public void FacetContentService_ComposedCountryPredicateDatasetProviderSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_dataset_masters", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("relative_age_name:country@1,2,5/relative_age_name")]
+        public void FacetContentService_ComposedCountryPredicateRelativeAgeNameSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_relative_ages", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("geochronology:country@1,2,5/geochronology")]
+        public void FacetContentService_UnsupportedCountryPredicateGeochronologySlice_FallsBackToLegacyFacetContent(string uri)
+        {
+            AssertFallsBackToLegacyFacetContent(uri);
+        }
+
+        private IFacetContentService CreateLegacyFacetContentService()
+        {
+            var registry = Container.Resolve<IRepositoryRegistry>();
+            var facetSettings = Container.Resolve<IFacetSetting>();
+            var querySetupBuilder = Container.Resolve<IQuerySetupBuilder>();
+            var queryProxy = Container.Resolve<ITypedQueryProxy>();
+            var categoryCountService = Container.Resolve<ICategoryCountService>();
+
+            return new FacetContentService(facetSettings, registry, querySetupBuilder, queryProxy, categoryCountService, null);
+        }
+
+        private void AssertUsesComposedFacetContentQuery(string uri, params string[] expectedSqlFragments)
+        {
+            var facetsConfig = UriToFacetsConfig(uri);
+            var composedService = Container.Resolve<IComposedFacetContentService>();
+            var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
+
+            Assert.True(composedService.CanHandle(facetsConfig));
+            Assert.NotNull(service.ComposedFacetContentService);
+
+            var data = service.Load(facetsConfig);
+
+            Assert.NotNull(data);
+            Assert.Contains("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+
+            foreach (var expectedSqlFragment in expectedSqlFragments)
+            {
+                Assert.Contains(expectedSqlFragment, data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        private void AssertMatchesLegacyFacetContent(string uri)
+        {
+            var composedService = Container.Resolve<IFacetContentService>();
+            var legacyService = CreateLegacyFacetContentService();
+
+            var composedData = composedService.Load(UriToFacetsConfig(uri));
+            var legacyData = legacyService.Load(UriToFacetsConfig(uri));
+
+            Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(composedData.Items));
+            Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(composedData.Distribution.Values));
+            Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), composedData.Picks.Keys.OrderBy(key => key));
+        }
+
+        private void AssertFallsBackToLegacyFacetContent(string uri)
+        {
+            var facetsConfig = UriToFacetsConfig(uri);
+            var composedBoundary = Container.Resolve<IComposedFacetContentService>();
+            var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
+
+            Assert.False(composedBoundary.CanHandle(facetsConfig));
+
+            var data = service.Load(facetsConfig);
+
+            Assert.NotNull(data);
+            Assert.DoesNotContain("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        private static List<string> ToCategoryCounts(IEnumerable<CategoryItem> items)
+        {
+            return items.Select(item => $"{item.Category}:{item.Count}").OrderBy(value => value).ToList();
+        }
     }
 }

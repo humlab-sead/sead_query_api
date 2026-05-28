@@ -15,7 +15,8 @@ public interface IDiscreteFacetPredicateResolver
         DiscreteFacetUserInput userInput,
         AnchorTemplate anchorTemplate,
         string anchorTable,
-        string anchorId
+        string anchorId,
+        IReadOnlyList<string> sourceCriteria = null
     );
 }
 
@@ -37,7 +38,8 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         DiscreteFacetUserInput userInput,
         AnchorTemplate anchorTemplate,
         string anchorTable,
-        string anchorId
+        string anchorId,
+        IReadOnlyList<string> sourceCriteria = null
     )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(targetTable);
@@ -47,35 +49,59 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         ArgumentException.ThrowIfNullOrWhiteSpace(anchorTable);
         ArgumentException.ThrowIfNullOrWhiteSpace(anchorId);
 
+        sourceCriteria ??= [];
+
         if (!string.IsNullOrWhiteSpace(anchorTemplate.ExplicitSql))
         {
             return anchorTemplate.ExplicitSql;
         }
 
-        var baseSql = anchorTemplate.Route.Count > 0
-            ? BuildRouteSql(targetTable, anchorTemplate.Route, anchorTable)
-            : BuildIdentitySql(targetTable, targetId, anchorId, anchorTemplate.RequiresDistinct);
+        var baseSql =
+            anchorTemplate.Route.Count > 0
+                ? BuildRouteSql(targetTable, targetId, anchorTemplate.Route, anchorTable, anchorId, sourceCriteria)
+                : BuildIdentitySql(targetTable, targetId, anchorId, anchorTemplate.RequiresDistinct, sourceCriteria);
 
         if (!userInput.HasPicks)
         {
             return baseSql;
         }
 
-        return $"{baseSql}{Environment.NewLine}{BuildWhereClause(userInput)}";
+        return WrapWithSourceFilter(baseSql, userInput);
     }
 
-    private string BuildRouteSql(string targetTable, IReadOnlyList<string> route, string anchorTable)
+    private string BuildRouteSql(
+        string targetTable,
+        string sourceKeyColumn,
+        IReadOnlyList<string> route,
+        string anchorTable,
+        string anchorId,
+        IReadOnlyList<string> sourceCriteria
+    )
     {
         var tableChain = new List<string>(route.Count + 2) { targetTable };
         tableChain.AddRange(route);
         tableChain.Add(anchorTable);
 
-        return _routeSqlCompiler.Compile(tableChain);
+        return sourceCriteria?.Count > 0
+            ? _routeSqlCompiler.Compile(tableChain, sourceKeyColumn, anchorId, sourceCriteria)
+            : _routeSqlCompiler.Compile(tableChain, sourceKeyColumn, anchorId);
     }
 
-    private static string BuildIdentitySql(string targetTable, string targetId, string anchorId, bool requiresDistinct)
+    private static string BuildIdentitySql(
+        string targetTable,
+        string targetId,
+        string anchorId,
+        bool requiresDistinct,
+        IReadOnlyList<string> sourceCriteria
+    )
     {
         var distinct = requiresDistinct ? " distinct" : string.Empty;
+
+        if (sourceCriteria?.Count > 0)
+        {
+            return $"select{distinct} X_0.{targetId} as source_id, X_0.{anchorId} as target_id{Environment.NewLine}from {targetTable} as X_0{Environment.NewLine}where {string.Join(" and ", sourceCriteria)}";
+        }
+
         return $"select{distinct} {targetId} as source_id, {anchorId} as target_id{Environment.NewLine}from {targetTable}";
     }
 
@@ -94,6 +120,11 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         }
 
         return $"where source_id {userInput.Operator} {FormatLiteral(userInput.Picks[0])}";
+    }
+
+    private static string WrapWithSourceFilter(string baseSql, DiscreteFacetUserInput userInput)
+    {
+        return $"select *{Environment.NewLine}from ({Environment.NewLine}{baseSql}{Environment.NewLine}) as predicate_query{Environment.NewLine}{BuildWhereClause(userInput)}";
     }
 
     private static string FormatLiteral(object value)

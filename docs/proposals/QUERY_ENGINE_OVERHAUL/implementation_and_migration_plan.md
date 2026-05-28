@@ -53,9 +53,9 @@ The branch already contains useful groundwork.
 
 - `done`: stable core query-composer interfaces for the new slice
 - `done`: composed filter query contract and implementation
-- `not started`: facet content query path on top of the composed anchor set
-- `not started`: runtime integration for one discrete facet flow
-- `not started`: comparison-style validation against the legacy path
+- `done`: facet content query path on top of the composed anchor set
+- `done`: runtime integration for one discrete facet flow
+- `done`: comparison-style validation against the legacy path
 
 ## Progress Summary
 
@@ -64,9 +64,21 @@ The branch already contains useful groundwork.
 | 0     | Baseline consolidation             | done        | One active path kept, shelved path archived, minimal resolver contracts promoted |
 | 1     | Contract stabilization             | done        | Core and composer contracts are explicit and wired for one discrete slice        |
 | 2     | Composed filter query              | done        | Multiple discrete predicates can compose into one anchor-filter query            |
-| 3     | Facet content query                | not started | Target facet content can run from the composed anchor set                        |
-| 4     | Runtime integration and comparison | not started | One end-to-end request path works and is compared against legacy output          |
+| 3     | Facet content query                | done        | Target facet content can run from the composed anchor set                        |
+| 4     | Runtime integration and comparison | done        | One end-to-end request path works and is compared against legacy output          |
 | 5     | Expansion gate                     | not started | The discrete slice is proven and ready for extension to more facet types         |
+
+## Progress Status Checklist
+
+- [x] Phase 0 is complete: one active implementation path remains and shelved code is archived.
+- [x] Phase 1 is complete: the first discrete-slice contracts and DI wiring are stable.
+- [x] Phase 2 is complete: multiple discrete predicates compose into one anchor-filter query.
+- [x] Phase 3 is complete: target facet content can be generated from the composed anchor set.
+- [x] Phase 4 is complete for the supported slice: the composed runtime is wired into `FacetContentService` and compared against legacy output.
+- [x] Phase 4 live regression is in place: the grouped PostgreSQL-backed matrix in `FacetLoadService` covers the currently validated URIs.
+- [x] Phase 4 widening is active: validated visible-target coverage now includes `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, and `record_types`.
+- [ ] Phase 5 has not started: the branch has not yet chosen the next facet-type expansion beyond the current discrete visible-target slice.
+- [ ] The next widening candidate is still open: continue with one focused live slice at a time until the remaining unsupported surface is better understood.
 
 ## Phase 0: Baseline Consolidation
 
@@ -167,14 +179,14 @@ Generate target facet content from the composed anchor set rather than from the 
 
 ### Status
 
-`in progress`
+`done`
 
 ### Tasks
 
 - [x] Define the first target facet content query contract
 - [x] Implement a content query builder or service that accepts the composed anchor query as input
 - [x] Support one discrete target facet only
-- [ ] Return the shape needed by the current facet-content consumer
+- [x] Return the shape needed by the current facet-content consumer
 - [x] Add unit or narrow integration tests for content query generation
 
 ### Exit Criteria
@@ -185,9 +197,10 @@ Generate target facet content from the composed anchor set rather than from the 
 
 ### Notes
 
-- Current implementation target: discrete facets whose target table matches the composed anchor table.
+- Current implementation target: discrete facets whose target table either matches the composed anchor table or can be reached from it through one routed anchor-to-target path.
 - Current implementation: `DiscreteFacetContentQueryComposer` in `sead.query.core/QueryComposer/Strategies/`.
-- Current tests cover missing target facet, non-discrete targets, mismatched anchor tables, and the successful discrete content-query shape.
+- Current tests cover missing target facet, non-discrete targets, missing anchor-to-target routes, direct target joins, routed target joins, and target facets whose category expression depends on joined target-facet tables.
+- Current runtime shape: `ComposedFacetContentService` returns `FacetContent` so the active `FacetContentService` consumer contract stays unchanged.
 
 ## Phase 4: Runtime Integration And Comparison
 
@@ -197,16 +210,66 @@ Integrate the new discrete slice into one request path while keeping the legacy 
 
 ### Status
 
-`not started`
+`done`
 
 ### Tasks
 
-- [ ] Identify the narrowest runtime boundary where the new path can be called
-- [ ] Wire one discrete facet flow from request configuration to the new composer path
-- [ ] Keep the legacy path as the default or fallback behavior
-- [ ] Add one integration test using the new path end to end
-- [ ] Add one comparison test that runs the same scenario against both new and legacy behavior
-- [ ] Capture known differences explicitly if the outputs cannot match exactly at first
+- [x] Identify the narrowest runtime boundary where the new path can be called
+- [x] Wire one discrete facet flow from request configuration to the new composer path
+- [x] Keep the legacy path as the default or fallback behavior
+- [x] Add one integration test using the new path end to end
+- [x] Add one comparison test that runs the same scenario against both new and legacy behavior
+- [x] Capture known differences explicitly if the outputs cannot match exactly at first
+
+### Notes
+
+- Current runtime boundary: `FacetContentService` delegates to `IComposedFacetContentService` only when the request fits the first discrete slice.
+- Current supported composed runtime slice: discrete target facet, one or more prior picked discrete filters, no target-side facet clauses, and predicate facets whose category expression resolves to the source-table key the composed path can derive.
+
+#### Supported Request Shapes
+
+- [x] Discrete target facet with one or more prior picked discrete filters. Example: `result_facet:sites@4/result_facet`.
+- [x] Routed visible target reached through explicit anchor-to-target SQL. Examples: `sites:sample_groups@1/sites`, `sample_groups:sites@4/sample_groups`, `country:sites@4/country`.
+- [x] Routed visible target that also needs target-facet-local joins. Examples: `constructions:sites@4/constructions`, `ecocode:sites@4/ecocode`.
+- [x] Predicate facet with a normal source-table key shape. Examples: `record_types:country@1,2,5/record_types`, `dataset_methods:country@1,2,5/dataset_methods`, `dataset_provider:country@1,2,5/dataset_provider`, `relative_age_name:country@1,2,5/relative_age_name`.
+- [x] Predicate facet with same-table enforced clauses preserved in composed SQL. Current live example: `country` contributes `location_type_id=1`.
+- [x] Target facet whose join column comes from a simple target-table category expression. Examples: `family`, `dataset_provider`, `relative_age_name`.
+- [x] Target facet whose join column must be resolved from a schema-qualified expression on a shortcut or joined table. Current live example: `species:country@1,2,5/species`.
+
+#### Validated Live Matrix Checklist
+
+- [x] `result_facet:sites@4/result_facet`
+- [x] `sites:sample_groups@1/sites`
+- [x] `sample_groups:sites@4/sample_groups`
+- [x] `country:sites@4/country`
+- [x] `constructions:sites@4/constructions`
+- [x] `ecocode:sites@4/ecocode`
+- [x] `sites:country@1,2,5/sites`
+- [x] `ecocode:country@1,2,5/ecocode`
+- [x] `feature_type:country@1,2,5/feature_type`
+- [x] `ecocode_system:country@1,2,5/ecocode_system`
+- [x] `genus:country@1,2,5/genus`
+- [x] `species:country@1,2,5/species`
+- [x] `species_author:country@1,2,5/species_author`
+- [x] `family:country@1,2,5/family`
+- [x] `dataset_methods:country@1,2,5/dataset_methods`
+- [x] `record_types:country@1,2,5/record_types`
+- [x] `dataset_provider:country@1,2,5/dataset_provider`
+- [x] `relative_age_name:country@1,2,5/relative_age_name`
+
+#### Current Support And Boundaries
+
+- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
+- Phase-4 live regression now has an explicit grouped matrix in `FacetLoadService` covering the baseline visible-target slices plus the currently supported `country`-predicate slices.
+- Predicate planning now has unit-validated support for routed source-key overrides when the picked facet's source table uses a placeholder primary key and exposes a simple same-table category column instead.
+- Predicate planning now also supports same-table enforced facet clauses on picked discrete facets, including the live `country` clause `countries.location_type_id=1`.
+- Target join resolution now also handles schema-qualified category expressions on target shortcut tables, which unblocks `species:country@1,2,5/species` where the target table metadata primary key is a placeholder.
+- Clause-bearing `country` predicates now have live-validated coverage across multiple visible targets, including `sites`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
+- Live-validated phase-4 boundary: `geochronology:country@1,2,5/geochronology` is rejected by `IComposedFacetContentService.CanHandle(...)` and falls back to the legacy path.
+- Remaining unsupported visible facets are those that still need more than a simple target-join column derived from the category-id expression or whose predicate side does not resolve cleanly to a source-table key.
+- Phase-4 fixes included a route SQL target-alias off-by-one correction and predicate SQL wrapping so `source_id` filters apply in an outer query block.
+- Expansion fixes also included deriving the composed anchor table from the aggregate facet, routing anchor-to-target joins through an explicit table trail before SQL compilation, and allowing routed target joins to override placeholder target primary keys.
+- Unsupported requests still fall back to the legacy category-count path.
 
 ### Exit Criteria
 
@@ -229,6 +292,7 @@ Decide whether the first slice is stable enough to extend to more facet types.
 - [ ] Review unresolved issues from phases 1 through 4
 - [ ] Confirm that the discrete slice no longer depends on archived design assumptions
 - [ ] Decide whether the next facet type is range, intersect, or GIS
+- [ ] Decide whether out-of-scope requests such as `geochronology:country@1,2,5/geochronology` define the first phase-5 expansion candidate
 - [ ] Record the reasons for the chosen next facet type
 - [ ] Update this plan or split a new follow-up plan for the next slice
 
@@ -241,11 +305,9 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 These are the next actions to take unless a blocker appears:
 
-1. Define the first target facet content query contract in concrete terms.
-2. Implement one content query builder or service that consumes `ComposedFilterQuery`.
-3. Support one discrete target facet only.
-4. Add focused tests for the new content-query path.
-5. Identify the narrowest runtime boundary for the first end-to-end integration.
+1. Decide whether to keep widening low-risk discrete visible targets or treat the `geochronology` boundary as the start of phase-5 planning.
+2. If widening continues, pick the next unsupported visible target adjacent to the current `country`-predicate matrix.
+3. If phase 5 starts next, use the `geochronology` fallback boundary as the first concrete expansion candidate.
 
 ## Decision Log
 

@@ -22,6 +22,11 @@ public sealed class FacetContentQueryPlan
     public string AnchorKeyColumn { get; init; } = QueryComposerAliases.AnchorKeyColumn;
 
     /// <summary>
+    /// Concrete target-table column used to join the composed anchor set.
+    /// </summary>
+    public string AnchorJoinColumn { get; init; } = string.Empty;
+
+    /// <summary>
     /// SQL used to define the composed anchor set consumed by this content query.
     /// </summary>
     public string ComposedFilterSql { get; init; } = string.Empty;

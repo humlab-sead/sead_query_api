@@ -22,6 +22,12 @@ public interface IRouteSqlCompiler
     /// <param name="tables"></param>
     /// <returns></returns>
     string Compile(List<string> tables);
+
+    string Compile(List<string> tables, string targetKeyColumn);
+
+    string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn);
+
+    string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn, IReadOnlyList<string> sourceCriteria);
 }
 
 public class RouteSqlCompiler : IRouteSqlCompiler
@@ -36,6 +42,21 @@ public class RouteSqlCompiler : IRouteSqlCompiler
     }
 
     public string Compile(List<string> tables)
+    {
+        return Compile(tables, null, null);
+    }
+
+    public string Compile(List<string> tables, string targetKeyColumn)
+    {
+        return Compile(tables, null, targetKeyColumn);
+    }
+
+    public string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn)
+    {
+        return Compile(tables, sourceKeyColumn, targetKeyColumn, []);
+    }
+
+    public string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn, IReadOnlyList<string> sourceCriteria)
     {
         if (tables.Count < 1)
             throw new ArgumentException("At least one table is required to compile a route.");
@@ -71,8 +92,11 @@ public class RouteSqlCompiler : IRouteSqlCompiler
         var sb = new StringBuilder();
         var sourceTable = resolvedRoute[0].SourceTable;
         var targetTable = resolvedRoute[^1].TargetTable;
+        var targetAliasIndex = resolvedRoute.Count;
+        var resolvedSourceKeyColumn = string.IsNullOrWhiteSpace(sourceKeyColumn) ? sourceTable.PrimaryKeyName : sourceKeyColumn;
+        var resolvedTargetKeyColumn = string.IsNullOrWhiteSpace(targetKeyColumn) ? targetTable.PrimaryKeyName : targetKeyColumn;
         sb.AppendLine(
-            $"select distinct X_0.{sourceTable.PrimaryKeyName} as source_id, X_{resolvedRoute.Count - 1}.{targetTable.PrimaryKeyName} as target_id"
+            $"select distinct X_0.{resolvedSourceKeyColumn} as source_id, X_{targetAliasIndex}.{resolvedTargetKeyColumn} as target_id"
         );
         sb.AppendLine($"from {sourceTable.Name} as X_0");
         foreach (var (edge, i) in resolvedRoute.Select((edge, i) => (edge, i)))
@@ -81,6 +105,12 @@ public class RouteSqlCompiler : IRouteSqlCompiler
                 $"join {edge.TargetTable.Name} as X_{i + 1} on X_{i + 1}.{edge.TargetColumnName} = X_{i}.{edge.SourceColumnName}"
             );
         }
+
+        if (sourceCriteria?.Count > 0)
+        {
+            sb.AppendLine($"where {string.Join(" and ", sourceCriteria)}");
+        }
+
         return sb.ToString();
     }
 
