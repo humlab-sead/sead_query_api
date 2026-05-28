@@ -135,15 +135,15 @@ Compose multiple discrete facet predicates into one anchor-filter query for a si
 
 ### Status
 
-`not started`
+`in progress`
 
 ### Tasks
 
-- [ ] Choose the first composition strategy: `INTERSECT` or `INNER JOIN`
-- [ ] Implement a composed filter query builder for multiple anchor-key predicate queries
+- [x] Choose the first composition strategy: `INTERSECT`
+- [x] Implement a composed filter query builder for multiple anchor-key predicate queries
 - [ ] Reject incompatible anchor-type mixes explicitly
-- [ ] Handle the single-facet case without extra composition overhead
-- [ ] Handle the zero-filter case explicitly and document the expected behavior
+- [x] Handle the single-facet case without extra composition overhead
+- [x] Handle the zero-filter case explicitly and document the expected behavior
 - [ ] Add unit tests for single-facet, multi-facet, incompatible-anchor, and no-filter scenarios
 
 ### Exit Criteria
@@ -155,6 +155,9 @@ Compose multiple discrete facet predicates into one anchor-filter query for a si
 ### Notes
 
 - Keep the composition contract stable even if the SQL strategy changes later.
+- Current implementation: `IntersectComposedFilterQueryComposer` in `sead.query.core/QueryComposer/Strategies/`.
+- Current tests cover null input, empty filter set, single predicate, multiple predicates, and whitespace-only predicate entries.
+- Explicit incompatible-anchor validation is still pending.
 
 ## Phase 3: Facet Content Query
 
