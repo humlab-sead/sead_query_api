@@ -57,6 +57,7 @@ namespace SQT.LiveServices
                 ["relative_age_name:country@1,2,5/relative_age_name"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
+                ["tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32"],
             ];
 
         [Theory]
@@ -226,7 +227,12 @@ namespace SQT.LiveServices
         [InlineData("geochronology:country@1,2,5/geochronology")]
         public void FacetContentService_ComposedCountryPredicateGeochronologySlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(uri, "categories(category, lower, upper) as", "tbl_geochronology.age::integer", "X_0.location_type_id=1");
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, lower, upper) as",
+                "tbl_geochronology.age::integer",
+                "X_0.location_type_id=1"
+            );
         }
 
         [Theory]
@@ -240,12 +246,36 @@ namespace SQT.LiveServices
         [InlineData("tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue33_0Slice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(uri, "categories(category, lower, upper) as", "method_values_33.measured_value", "X_0.location_type_id=1");
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, lower, upper) as",
+                "method_values_33.measured_value",
+                "X_0.location_type_id=1"
+            );
         }
 
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue33_0Slice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32")]
+        public void FacetContentService_ComposedCountryPredicateMeasuredValue32Slice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, lower, upper) as",
+                "method_values_32.measured_value",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32")]
+        public void FacetContentService_ComposedCountryPredicateMeasuredValue32Slice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
