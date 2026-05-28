@@ -258,14 +258,15 @@ Integrate the new discrete slice into one request path while keeping the legacy 
 - [x] `relative_age_name:country@1,2,5/relative_age_name`
 - [x] `geochronology:country@1,2,5/geochronology`
 - [x] `tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0`
+- [x] `tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82`
 - [x] `tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32`
 - [x] `tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37`
 - [x] `abundances_all:country@1,2,5/abundances_all`
 
 #### Current Support And Boundaries
 
-- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`, plus the validated phase-5 range targets `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
-- The grouped live matrix in `FacetLoadService` now covers the baseline visible-target slices, the supported `country`-predicate slices, and five validated phase-5 range-target slices: `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
+- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`, plus the validated phase-5 range targets `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
+- The grouped live matrix in `FacetLoadService` now covers the baseline visible-target slices, the supported `country`-predicate slices, and six validated phase-5 range-target slices: `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
 - Predicate planning now has unit-validated support for routed source-key overrides when the picked facet's source table uses a placeholder primary key and exposes a simple same-table category column instead.
 - Predicate planning now also supports same-table enforced facet clauses on picked discrete facets, including the live `country` clause `countries.location_type_id=1`.
 - Target join resolution now also handles schema-qualified category expressions on target shortcut tables, which unblocks `species:country@1,2,5/species` where the target table metadata primary key is a placeholder.
@@ -314,10 +315,11 @@ Decide whether the first slice is stable enough to extend to more facet types.
 
 - Current validated phase-5 scenario: `geochronology:country@1,2,5/geochronology` through `IFacetContentService`.
 - Current additional validated phase-5 scenario: `tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0` through `IFacetContentService`.
+- Current additional validated phase-5 scenario: `tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82` through `IFacetContentService`.
 - Current additional validated phase-5 scenario: `tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32` through `IFacetContentService`.
 - Current additional validated phase-5 scenario: `tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37` through `IFacetContentService`.
 - Current additional validated phase-5 scenario: `abundances_all:country@1,2,5/abundances_all` through `IFacetContentService`.
-- The composed path now supports a routed range target (`geochronology`), multiple UDF-backed measured-value range targets (`tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`), and a placeholder-PK view-backed range target with enforced target-side clauses (`abundances_all`) while keeping the predicate side on the proven discrete `country@1,2,5` slice.
+- The composed path now supports a routed range target (`geochronology`), multiple UDF-backed measured-value range targets (`tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`), and a placeholder-PK view-backed range target with enforced target-side clauses (`abundances_all`) while keeping the predicate side on the proven discrete `country@1,2,5` slice.
 - `geochronology` is no longer just a fallback boundary; it is now the first implemented phase-5 expansion candidate.
 
 ### Decision
@@ -326,9 +328,11 @@ Decide whether the first slice is stable enough to extend to more facet types.
 - Do not treat it as a generic template for all non-discrete facet types. `Intersect` and `GeoPolygon` targets still need separate contracts and validation.
 - The decisive reuse points are now explicit: the composed path can keep the discrete predicate side, derive interval metadata through `IRangeCategoryInfoService`, join routed targets on the target-table primary key, and count distinct composed anchor ids inside interval buckets.
 - The second validated slice shows that the same range-target contract also works when the target facet is backed by a UDF keyed directly on `analysis_entity_id`, without requiring a routed `target_route` hop.
+- The third validated slice shows that the same UDF-backed measured-value contract also works for `method_values_33_82`, which strengthens the case that the measured-value widening track is alias-reusable rather than fitted only to the first measured-value target.
 - The third validated slice shows that this UDF-backed measured-value pattern is not specific to one facet alias; the same contract also works for `method_values_32` without new runtime changes.
 - The fourth validated slice shows the same outcome for `method_values_37`, which strengthens the case that the measured-value widening track is a reusable subpattern, not a pair of isolated aliases.
-- The fifth validated slice shows that the range-target contract also extends to a view-backed target whose metadata primary key is a placeholder and whose target-side clause must be preserved in the composed content SQL.
+- The fifth validated slice shows the same outcome for `method_values_37`, which strengthens the case that the measured-value widening track is a reusable subpattern, not a pair of isolated aliases.
+- The sixth validated slice shows that the range-target contract also extends to a view-backed target whose metadata primary key is a placeholder and whose target-side clause must be preserved in the composed content SQL.
 - This makes `Range` the intentional next facet-type track for phase 5, while keeping the support boundary narrower than “all non-discrete targets”.
 
 ### Exit Criteria
