@@ -56,6 +56,7 @@ namespace SQT.LiveServices
                 ["dataset_provider:country@1,2,5/dataset_provider"],
                 ["relative_age_name:country@1,2,5/relative_age_name"],
                 ["geochronology:country@1,2,5/geochronology"],
+                ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
             ];
 
         [Theory]
@@ -231,6 +232,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("geochronology:country@1,2,5/geochronology")]
         public void FacetContentService_ComposedCountryPredicateGeochronologySlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0")]
+        public void FacetContentService_ComposedCountryPredicateMeasuredValue33_0Slice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, lower, upper) as", "method_values_33.measured_value", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0")]
+        public void FacetContentService_ComposedCountryPredicateMeasuredValue33_0Slice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
