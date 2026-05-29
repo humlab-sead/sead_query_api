@@ -63,6 +63,7 @@ namespace SQT.LiveServices
                 ["activeseason:country@1,2,5/activeseason"],
                 ["sample_groups:country@1,2,5/sample_groups"],
                 ["data_types:country@1,2,5/data_types"],
+                ["rdb_systems:country@1,2,5/rdb_systems"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -447,6 +448,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("data_types:country@1,2,5/data_types")]
         public void FacetContentService_ComposedCountryPredicateDataTypesSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("rdb_systems:country@1,2,5/rdb_systems")]
+        public void FacetContentService_ComposedCountryPredicateRdbSystemsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_rdb_systems", "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("rdb_systems:country@1,2,5/rdb_systems")]
+        public void FacetContentService_ComposedCountryPredicateRdbSystemsSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

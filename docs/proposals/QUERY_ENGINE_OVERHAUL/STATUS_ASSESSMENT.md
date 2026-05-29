@@ -2,9 +2,9 @@
 
 ## Summary
 
-The branch contains meaningful redesign work, but not a completed redesign.
+The branch contains meaningful redesign work and one proven runtime slice, but not a completed redesign.
 
-The strongest implemented direction is route-based composition. The weakest point is end-to-end integration: the core anchor-based composer is still not compiled into the active runtime.
+The strongest implemented direction is route-based composition carried through a compiled facet-content path. The weakest points are breadth and completion: result-set generation is not yet on the new composer, and the overhaul is still widening through adjacent discrete and range targets.
 
 ## Implemented Or Demonstrated
 
@@ -12,13 +12,18 @@ The strongest implemented direction is route-based composition. The weakest poin
 - route graph, route resolution, and route SQL generation experiments
 - matching unit-test areas for route compiler behavior
 - anchor and route entity and repository scaffolding in the current working tree
+- compiled core query-composer contracts for one active slice
+- composed filter query generation for a single-anchor predicate chain
+- composed facet content generation for a supported target-facet path
+- runtime integration into `FacetContentService` for the supported composed slice
+- live comparison coverage against the legacy runtime, plus widening across initial range and adjacent discrete targets
 
 ## Not Implemented Or Not Integrated
 
-- a compiled end-to-end query composer based on anchor-key predicates
-- a compiled replacement for the legacy runtime path
-- complete resolver contracts in `sead.query.core/QueryComposer/`
-- completed facet content generation on top of the new composer path
+- full facet-family coverage on the composed runtime path
+- final result-set generation on top of the new composer path
+- a complete replacement for the legacy runtime path
+- final route-definition governance and cutover rules
 
 ## Deferred Or Shelved
 
@@ -34,9 +39,10 @@ The proposal should be treated as a focused change request, not as a near-comple
 The right description of branch status is:
 
 - route-based direction proved
-- anchor-based composition partially explored
-- runtime integration still pending
+- anchor-based composition compiled and integrated for one runtime slice
+- widening in progress
+- full migration still pending
 
 ## Recommended Use Of This Assessment
 
-Use this file as a branch snapshot and review note. Use `system_requirements_specification.md` as the main proposal and `implementation_and_migration_plan.md` as the implementation handoff.
+Use this file as a branch snapshot and review note. Use `QUERY_ENGINE_OVERHAL.md` as the main change request, `implementation_and_migration_plan.md` as the implementation handoff, and `docs/REQUIREMENTS.md` plus `docs/DESIGN.md` as the durable system documents.

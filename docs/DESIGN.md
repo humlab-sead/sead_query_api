@@ -8,6 +8,7 @@ This is an architecture document, not a developer setup guide, testing guide, or
 
 - Current authoritative runtime: the existing faceted query API implemented in the solution projects and described by the current request-flow notes.
 - In progress: the query-engine overhaul on branch `query-engine-overhaul`, centered on the new composer and route-based query model.
+- Current validated overhaul state: one compiled, tested discrete vertical slice is integrated into `FacetContentService`, and widening across adjacent discrete and range targets is in progress.
 - TBD: the exact cutover plan, final route configuration format, and any companion diagrams or ADRs.
 
 ## System Overview
@@ -85,6 +86,16 @@ Its architectural center is the anchor-based predicate contract:
 - the final filtered set is produced by composing those anchor-key queries
 
 The overhaul replaces template explosion with a route-based model and uses CTE-based composition to make the generated SQL more modular and easier to reason about.
+
+## Overhaul Runtime Status
+
+The overhaul is no longer only a design direction.
+
+- The first compiled vertical slice is integrated into the branch runtime.
+- The legacy runtime still remains authoritative outside the supported composed slice.
+- The current widening work is extending the same contract across adjacent discrete targets and the first range-target families.
+
+This means `docs/DESIGN.md` should describe both the current authoritative runtime and the intended architectural destination, while keeping the delivery state explicit.
 
 ## Planned Overhaul Components
 
@@ -217,7 +228,10 @@ The system is intentionally database-aware. It is not designed around full datab
 
 - `README.md`: short project overview
 - `docs/DIAGRAMS.md`: visual overview of core interactions and workflows
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/system_requirements_specification.md`: overhaul requirements and target architecture constraints
+- `docs/REQUIREMENTS.md`: durable system requirements for the active architecture direction
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`: top-level change request and bird's-eye overview of the overhaul
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/implementation_and_migration_plan.md`: execution tracker for the widening and migration work
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/system_requirements_specification.md`: proposal-era technical source material for the overhaul
 - `docs/DEVELOPMENT.md`: contributor workflow and local development guidance
 - `docs/TESTING.md`: test strategy and validation guidance
 - `docs/OPERATIONS.md`: runtime and deployment guidance
