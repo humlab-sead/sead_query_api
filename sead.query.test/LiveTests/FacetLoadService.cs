@@ -53,6 +53,7 @@ namespace SQT.LiveServices
                 ["genus:genus"],
                 ["genus:country@1,2,5/genus"],
                 ["species:country@1,2,5/species"],
+                ["species_author:species_author"],
                 ["species_author:country@1,2,5/species_author"],
                 ["family:country@1,2,5/family"],
                 ["dataset_methods:dataset_methods"],
@@ -343,6 +344,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("ecocode_system:ecocode_system")]
         public void FacetContentService_ComposedTargetOnlyEcocodeSystemSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("species_author:species_author")]
+        public void FacetContentService_ComposedTargetOnlySpeciesAuthorSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_authors");
+        }
+
+        [Theory]
+        [InlineData("species_author:species_author")]
+        public void FacetContentService_ComposedTargetOnlySpeciesAuthorSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
