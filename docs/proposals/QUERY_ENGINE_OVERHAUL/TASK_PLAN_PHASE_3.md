@@ -1,0 +1,187 @@
+# Task Plan: Phase 3 - Non-Discrete Facet Parity
+
+## Phase Summary
+
+**Phase:** Phase 3 - Non-Discrete Facet Parity
+
+**Status:** Not started
+
+**Goal**
+
+Extend the composed path to the remaining non-discrete facet families needed for legacy parity.
+
+**Focus**
+
+- complete range-target coverage beyond the currently validated targets
+- implement and validate intersect-facet support under the same anchor contract
+- implement and validate GIS polygon support under the same anchor contract
+- keep facet-type-specific behavior inside resolver or composer boundaries
+
+**Acceptance Criteria**
+
+- [ ] Legacy range behavior needed by the active API is supported on the composed path.
+- [ ] Intersect and GIS polygon requests have compiled contracts, runtime validation, and regression coverage.
+- [ ] The composed runtime supports the legacy facet families required by the API, not just the first validated subset.
+
+## Documentation Targets
+
+- Maintain the working parity inventory in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- Record durable contract or runtime-boundary changes in `docs/DESIGN.md`.
+- Update this task plan in place as range, intersect, and GIS polygon support widens or explicit exceptions are accepted.
+
+## Work Breakdown
+
+### Non-Discrete Inventory And Exception List
+
+**Objective**
+
+Turn the remaining non-discrete parity gap into one explicit working list of supported slices, widening candidates, and exceptions.
+
+- [ ] Enumerate the in-scope legacy non-discrete facet families still outside the composed supported matrix.
+- [ ] Separate the remaining surface into range, intersect, and GIS polygon lanes.
+- [ ] Classify each remaining lane as planned-for-phase support or explicit exception.
+- [ ] Record one concrete blocker for every explicit exception.
+- [ ] Keep `PARITY_INVENTORY.md` aligned with the current support or exception status.
+
+**Completion Criteria**
+
+- [ ] Every in-scope non-discrete facet family is either in the widening backlog or on an explicit exception list.
+- [ ] The parity inventory distinguishes supported, in-progress, and excepted non-discrete behavior clearly enough to guide implementation.
+
+### Range-Target Widening
+
+**Objective**
+
+Extend composed range support beyond the current validated subset without weakening the existing anchor and fallback contracts.
+
+- [ ] Inventory the legacy range targets not yet promoted into `SupportedComposedRangeLiveUris`.
+- [ ] Group remaining range targets by shape: direct, view-backed, measured-value, and routed range targets.
+- [ ] Implement or widen target-side range support only where the current anchor and category contracts stay explicit.
+- [ ] Keep unsupported range targets on the explicit exception list until a concrete contract exists.
+- [ ] Add or update focused unit tests for each new range support rule.
+
+**Completion Criteria**
+
+- [ ] Newly supported range targets run through the composed path with explicit target-side contracts.
+- [ ] Unsupported range cases still fail or fall back explicitly rather than producing misleading SQL.
+
+### Intersect Facet Support
+
+**Objective**
+
+Replace the current intersect fallback with compiled composed-path support only when the intersect contract is explicit and testable.
+
+- [ ] Define the composed contract for intersect facet requests under the current anchor model.
+- [ ] Implement intersect-specific query behavior inside resolver or composer boundaries rather than in controllers or runtime wiring.
+- [ ] Preserve explicit legacy fallback until the intersect contract is proven.
+- [ ] Add focused unit coverage for intersect contract resolution and failure boundaries.
+- [ ] Promote at least one live intersect comparison slice only after the composed path and legacy output agree.
+
+**Completion Criteria**
+
+- [ ] Intersect requests either run on the composed path with explicit contracts or remain on a documented exception list.
+- [ ] Intersect support is covered by focused contract tests and live validation.
+
+### GIS Polygon Support
+
+**Objective**
+
+Add a compiled and validated polygon-filter path without leaking GIS-specific behavior across unrelated composer boundaries.
+
+- [ ] Define the composed contract for polygon-filter requests under the current anchor model.
+- [ ] Implement GIS polygon filtering inside resolver or composer boundaries with explicit fallback rules.
+- [ ] Preserve explicit legacy fallback until polygon filtering is proven for at least one live slice.
+- [ ] Add focused unit coverage for polygon contract resolution and unsupported-boundary behavior.
+- [ ] Promote live polygon validation only after the composed path and legacy output agree.
+
+**Completion Criteria**
+
+- [ ] GIS polygon requests either run on the composed path with explicit contracts or remain on a documented exception list.
+- [ ] Polygon-specific behavior is validated without weakening current fallback boundaries for other facet families.
+
+### Documentation And Phase Exit
+
+**Objective**
+
+Leave one explicit record of what Phase 3 delivered and what it intentionally deferred.
+
+- [ ] Update `PARITY_INVENTORY.md` when a non-discrete lane moves from unsupported or partial to supported.
+- [ ] Update `docs/DESIGN.md` when non-discrete runtime or contract boundaries change.
+- [ ] Record explicit exceptions that remain at phase exit, with blockers or deferral reasons.
+- [ ] Update this task plan’s progress tracker, validation log, and deliverables as widening lands.
+
+**Completion Criteria**
+
+- [ ] The end-of-phase non-discrete support surface is visible without reading code diffs.
+- [ ] Remaining exceptions are documented as intentional follow-up work rather than accidental gaps.
+
+## Progress Tracker
+
+| Area | Status | Notes |
+|---|---|---|
+| Non-discrete inventory and exception list | In progress | `PARITY_INVENTORY.md` already shows three active lanes: supported initial range widening, unsupported intersect fallback, and unsupported GIS polygon fallback. Phase 3 should turn that snapshot into an explicit execution list and exception set. |
+| Range-target widening | In progress | `SupportedComposedRangeLiveUris` already validates `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`; the remaining range surface still needs inventory and widening decisions. |
+| Intersect facet support | Not started | `analysis_entity_ages:analysis_entity_ages` currently serves as a focused fallback-only live anchor rather than a composed parity slice. |
+| GIS polygon support | Not started | `sites_polygon` currently serves as a focused fallback-only live anchor rather than a composed parity slice. |
+| Documentation and phase exit | Not started | Phase 3 needs its own execution tracker plus parity-inventory and design-document updates as non-discrete support changes. |
+
+## Definition Of Done
+
+- [ ] All Phase 3 acceptance criteria are satisfied.
+- [ ] Every in-scope non-discrete facet family is either supported on the composed path or listed as an explicit exception with a concrete blocker.
+- [ ] Supported composed non-discrete output matches legacy behavior for the validated matrix.
+- [ ] Grouped range regression and any new non-discrete regression coverage stay green without regressions.
+- [ ] Focused validation has been run and recorded for each promoted non-discrete widening batch.
+- [ ] `PARITY_INVENTORY.md` and `docs/DESIGN.md` reflect the final Phase 3 support surface.
+- [ ] Follow-up work is captured as explicit exceptions or later-phase tasks.
+
+## Validation And Testing
+
+- [ ] Run focused unit tests for touched non-discrete target and predicate contracts.
+- [ ] Run focused composed-service tests for touched non-discrete widening slices.
+- [x] Run grouped live comparison coverage for the current supported range subset using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedSupportedRangeLiveSlices"`.
+- [x] Run focused live fallback validation for intersect behavior using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_UnsupportedIntersectSlice_FallsBackToLegacyFacetContent"`.
+- [x] Run focused live fallback validation for GIS polygon behavior using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent"`.
+- [ ] Run focused live comparison coverage for each newly supported range slice before grouped promotion.
+- [ ] Run focused live comparison coverage for each intersect or GIS polygon slice before changing fallback boundaries.
+- [ ] Review `PARITY_INVENTORY.md` after each non-discrete promotion or exception decision to confirm range, intersect, and GIS rows remain current.
+
+## Deliverables
+
+| Deliverable | Description | Status | Link |
+|---|---|---|---|
+| Non-discrete parity task plan | Execution tracker for Phase 3 widening work | Not started | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_3.md` |
+| Updated parity inventory | Current support and exception status for range, intersect, and GIS polygon behavior | In progress | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md` |
+| Non-discrete contract updates | Code-level widening for range, intersect, and GIS polygon support | Not started | `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` |
+| Non-discrete live coverage | Focused and grouped live coverage for supported non-discrete slices and explicit fallback boundaries | In progress | `sead.query.test/LiveTests/FacetLoadService.cs` |
+| Durable architecture updates | Non-discrete runtime and contract boundary updates | Not started | `docs/DESIGN.md` |
+
+## Scope
+
+**In scope**
+
+- widening the composed runtime across the remaining in-scope non-discrete facet families
+- explicit exception handling for range, intersect, or GIS polygon cases that still cannot satisfy the current composed contracts
+- focused unit, composed-service, and live comparison validation for promoted non-discrete slices
+- parity-inventory and design-document updates required to keep the supported non-discrete surface explicit
+
+**Out of scope**
+
+- discrete facet-family widening beyond regression protection for already validated slices
+- result-set parity or final result projection work
+- full retirement of legacy fallback outside the non-discrete parity surface
+- broad route or anchor redesign that would reopen the Phase 1 contract baseline
+
+## Risks And Mitigations
+
+| Risk | Mitigation |
+|---|---|
+| Remaining range targets depend on undocumented legacy category or view behavior. | Promote one focused live slice at a time and keep explicit exception rows for anything still unclear. |
+| Intersect support needs a broader anchor contract than the current composed path exposes. | Define the intersect contract explicitly and keep fallback authoritative until focused unit and live comparisons pass. |
+| GIS polygon support leaks spatial behavior into unrelated composer boundaries. | Keep polygon-specific behavior local to resolver or composer boundaries and validate fallback behavior before any promotion. |
+| Non-discrete widening regresses the already-supported range matrix. | Re-run the grouped range live regression after each promotion batch and keep parity inventory updates in the same change. |
+
+## Assumptions
+
+- Phase 3 covers facet-content parity for non-discrete families only; result projection remains Phase 4 work.
+- The current supported range subset and the explicit intersect and GIS fallback tests are the authoritative starting baseline for this phase.
