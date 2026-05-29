@@ -58,6 +58,7 @@ namespace SQT.LiveServices
                 ["abundance_classification:country@1,2,5/abundance_classification"],
                 ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
                 ["tbl_biblio_sites:country@1,2,5/tbl_biblio_sites"],
+                ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -328,11 +329,7 @@ namespace SQT.LiveServices
         [InlineData("abundance_classification:country@1,2,5/abundance_classification")]
         public void FacetContentService_ComposedCountryPredicateAbundanceClassificationSlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(
-                uri,
-                "facet.view_abundance.elements_part_mod",
-                "X_0.location_type_id=1"
-            );
+            AssertUsesComposedFacetContentQuery(uri, "facet.view_abundance.elements_part_mod", "X_0.location_type_id=1");
         }
 
         [Theory]
@@ -376,6 +373,24 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_biblio_sites:country@1,2,5/tbl_biblio_sites")]
         public void FacetContentService_ComposedCountryPredicateBiblioSitesSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_modern:country@1,2,5/tbl_biblio_modern")]
+        public void FacetContentService_ComposedCountryPredicateBiblioModernSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "facet.view_taxa_biblio.biblio_id",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_modern:country@1,2,5/tbl_biblio_modern")]
+        public void FacetContentService_ComposedCountryPredicateBiblioModernSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
