@@ -80,6 +80,7 @@ namespace SQT.LiveServices
                 ["data_types:data_types"],
                 ["data_types:country@1,2,5/data_types"],
                 ["modification_types:modification_types"],
+                ["location_types:location_types"],
                 ["rdb_codes:rdb_codes"],
                 ["rdb_systems:rdb_systems"],
                 ["rdb_systems:country@1,2,5/rdb_systems"],
@@ -448,6 +449,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("result_facet:result_facet")]
         public void FacetContentService_ComposedTargetOnlyResultFacetSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("location_types:location_types")]
+        public void FacetContentService_ComposedTargetOnlyLocationTypesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_location_types");
+        }
+
+        [Theory]
+        [InlineData("location_types:location_types")]
+        public void FacetContentService_ComposedTargetOnlyLocationTypesSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
