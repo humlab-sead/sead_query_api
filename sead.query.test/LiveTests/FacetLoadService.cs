@@ -38,6 +38,7 @@ namespace SQT.LiveServices
         public static IEnumerable<object[]> SupportedComposedVisibleAndDiscreteLiveUris =>
             [
                 ["result_facet:sites@4/result_facet"],
+                ["result_facet:result_facet"],
                 ["sites:sample_groups@1/sites"],
                 ["sample_groups:sites@4/sample_groups"],
                 ["country:sites@4/country"],
@@ -433,6 +434,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("rdb_codes:rdb_codes")]
         public void FacetContentService_ComposedTargetOnlyRdbCodesSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("result_facet:result_facet")]
+        public void FacetContentService_ComposedTargetOnlyResultFacetSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [InlineData("result_facet:result_facet")]
+        public void FacetContentService_ComposedTargetOnlyResultFacetSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
