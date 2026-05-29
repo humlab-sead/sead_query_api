@@ -42,6 +42,7 @@ namespace SQT.LiveServices
                 ["sample_groups:sites@4/sample_groups"],
                 ["country:sites@4/country"],
                 ["constructions:sites@4/constructions"],
+                ["ecocode:ecocode"],
                 ["ecocode:sites@4/ecocode"],
                 ["sites:sites"],
                 ["sites:country@1,2,5/sites"],
@@ -313,6 +314,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("activeseason:activeseason")]
         public void FacetContentService_ComposedTargetOnlyActiveSeasonSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("ecocode:ecocode")]
+        public void FacetContentService_ComposedTargetOnlyEcocodeSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_ecocode_definitions");
+        }
+
+        [Theory]
+        [InlineData("ecocode:ecocode")]
+        public void FacetContentService_ComposedTargetOnlyEcocodeSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
