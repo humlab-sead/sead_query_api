@@ -7,6 +7,7 @@ using SeadQueryComposer.QueryComposer.Services;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Discrete;
+using SeadQueryCore.Plugin.Intersect;
 using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.QueryComposer;
@@ -311,6 +312,15 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void CanHandle_WithTargetOnlyIntersectRequest_ReturnsTrue()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateTargetOnlyIntersectFacetsConfig();
+
+        service.CanHandle(facetsConfig).Should().BeTrue();
+    }
+
+    [Fact]
     public void Load_WithRangeTargetAndDiscretePredicate_ReturnsIntervalBackedFacetContent()
     {
         var intervalSql = "select '0 to 10', 0, 10 union all select '10 to 20', 10, 20";
@@ -451,6 +461,78 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void Load_WithTargetOnlyIntersectRequest_UsesIntervalBackedComposedQuery()
+    {
+        var intervalSql =
+            "select '0 to 10', int4range(0, 10), 0, 10 union all select '10 to 20', int4range(10, 20), 10, 20";
+        var categoryInfo = new FacetContent.CategoryInfo { Count = 2, Query = intervalSql };
+        var outerItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "0 to 10",
+                Count = null,
+                Name = "0 to 10",
+                Extent = [0, 10],
+            },
+            new()
+            {
+                Category = "10 to 20",
+                Count = null,
+                Name = "10 to 20",
+                Extent = [10, 20],
+            },
+        };
+        var countedItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "0 to 10",
+                Count = 2,
+                Name = "0 to 10",
+                Extent = [0, 10],
+            },
+            new()
+            {
+                Category = "10 to 20",
+                Count = 0,
+                Name = "10 to 20",
+                Extent = [10, 20],
+            },
+        };
+
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        string capturedSql = null;
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql == intervalSql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Returns(outerItems);
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql != intervalSql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Callback<string, Func<IDataReader, CategoryItem>>((sql, _) => capturedSql = sql)
+            .Returns(countedItems);
+
+        var intersectInfoSqlCompiler = new Mock<IIntersectCategoryInfoSqlCompiler>();
+        var intersectInfoService = new Mock<IIntersectCategoryInfoService>();
+        intersectInfoService.SetupGet(service => service.SqlCompiler).Returns(intersectInfoSqlCompiler.Object);
+        intersectInfoService.Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "analysis_entity_ages", null)).Returns(categoryInfo);
+
+        var service = CreateService(queryProxy.Object, intersectCategoryInfoService: intersectInfoService.Object);
+        var facetsConfig = CreateTargetOnlyIntersectFacetsConfig();
+
+        var result = service.Load(facetsConfig);
+
+        result.IntervalInfo.Should().BeSameAs(categoryInfo);
+        result.SqlQuery.Should().Be(capturedSql);
+        result.SqlQuery.Should().Contain("categories(category, category_range, lower, upper) as");
+        result.SqlQuery.Should().Contain("categories.category_range && tbl_analysis_entity_ages.age_range::int4range");
+        result.SqlQuery.Should().Contain("select distinct analysis_entity_id as target_id");
+        result.SqlQuery.Should().Contain("target_route.target_id = tbl_analysis_entity_ages.analysis_entity_age_id");
+        result.SqlQuery.Should().NotContain("predicate_0 as");
+        result.Items.Should().BeEquivalentTo(countedItems);
+        result.Distribution.Should().HaveCount(2);
+    }
+
+    [Fact]
     public void Load_WithRangeTargetAndEnforcedTargetClause_IncludesClauseInSql()
     {
         var intervalSql = "select '0 to 10', 0, 10 union all select '10 to 20', 10, 20";
@@ -575,7 +657,8 @@ public class ComposedFacetContentServiceTests
     private static ComposedFacetContentService CreateService(
         ITypedQueryProxy queryProxy = null,
         IDiscreteCategoryInfoService discreteCategoryInfoService = null,
-        IRangeCategoryInfoService rangeCategoryInfoService = null
+        IRangeCategoryInfoService rangeCategoryInfoService = null,
+        IIntersectCategoryInfoService intersectCategoryInfoService = null
     )
     {
         var sites = CreateTable(1, "tbl_sites", "site_id");
@@ -588,6 +671,7 @@ public class ComposedFacetContentServiceTests
         var abundanceTaxonShortcut = CreateTable(8, "facet.abundance_taxon_shortcut", "xxx");
         var geochronology = CreateTable(9, "tbl_geochronology", "geochron_id");
         var viewAbundance = CreateTable(10, "facet.view_abundance", "xxxx");
+        var analysisEntityAges = CreateTable(11, "tbl_analysis_entity_ages", "analysis_entity_age_id");
         var aggregateFacet = new Facet
         {
             FacetId = 10,
@@ -615,6 +699,7 @@ public class ComposedFacetContentServiceTests
             CreateRelation(abundanceTaxonShortcut, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
             CreateRelation(geochronology, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
             CreateRelation(viewAbundance, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
+            CreateRelation(analysisEntityAges, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
         };
 
         var facetRepository = new Mock<IFacetRepository>();
@@ -632,6 +717,7 @@ public class ComposedFacetContentServiceTests
             .Returns([]);
         var defaultDiscreteInfoService = discreteCategoryInfoService ?? Mock.Of<IDiscreteCategoryInfoService>();
         var defaultRangeInfoService = rangeCategoryInfoService ?? Mock.Of<IRangeCategoryInfoService>();
+        var defaultIntersectInfoService = intersectCategoryInfoService ?? Mock.Of<IIntersectCategoryInfoService>();
         return new ComposedFacetContentService(
             registry.Object,
             queryProxy ?? Mock.Of<ITypedQueryProxy>(),
@@ -641,7 +727,8 @@ public class ComposedFacetContentServiceTests
             new IntersectComposedFilterQueryComposer(),
             new DiscreteFacetContentQueryComposer(new PathFinder([.. graph, .. graph.ReversedEdges()]), joinsClauseCompiler.Object),
             defaultDiscreteInfoService,
-            defaultRangeInfoService
+            defaultRangeInfoService,
+            defaultIntersectInfoService
         );
     }
 
@@ -959,6 +1046,29 @@ public class ComposedFacetContentServiceTests
         return new FacetsConfig2
         {
             TargetCode = "geochronology",
+            TargetFacet = targetFacet,
+            FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
+        };
+    }
+
+    private static FacetsConfig2 CreateTargetOnlyIntersectFacetsConfig()
+    {
+        var analysisEntityAges = CreateTable(11, "tbl_analysis_entity_ages", "analysis_entity_age_id");
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "analysis_entity_ages",
+            FacetTypeId = EFacetType.Intersect,
+            AggregateFacetId = 10,
+            CategoryIdExpr = "tbl_analysis_entity_ages.age_range",
+            CategoryIdType = "int4range",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = analysisEntityAges }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "analysis_entity_ages",
             TargetFacet = targetFacet,
             FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
         };

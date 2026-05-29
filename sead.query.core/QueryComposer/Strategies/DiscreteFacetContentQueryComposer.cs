@@ -95,6 +95,20 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
                     anchorToTargetSql,
                     targetFacet.CategoryIdType
                 ),
+                EFacetType.Intersect => BuildIntersectSql(
+                    composedFilterQuery.Sql,
+                    categoryInfoSql,
+                    categoryExpression,
+                    targetTableName,
+                    targetTableAliasOrName,
+                    targetJoins,
+                    targetCriteria,
+                    targetJoinColumn,
+                    composedFilterQuery.AnchorKeyColumn,
+                    anchorToTargetSql,
+                    targetFacet.CategoryIdType,
+                    targetFacet.CategoryIdOperator
+                ),
                 _ => throw new InvalidOperationException(
                     $"Target facet '{targetFacet.FacetCode}' is not supported by the composed content composer."
                 ),
@@ -197,6 +211,72 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         sql.AppendLine(
             $"   and (not (categories.upper < outerbounds.upper and {categoryExpression}::{categoryIdType} = categories.upper))"
         );
+        foreach (var join in targetJoins)
+        {
+            sql.AppendLine($"  {join}");
+        }
+        if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
+        {
+            sql.AppendLine($"  join target_route on target_route.target_id = {targetTableAliasOrName}.{targetJoinColumn}");
+            sql.AppendLine($"  join composed_filter on composed_filter.{anchorKeyColumn} = target_route.source_id");
+        }
+        else
+        {
+            sql.AppendLine($"  join composed_filter on composed_filter.{anchorKeyColumn} = {targetTableAliasOrName}.{targetJoinColumn}");
+        }
+        AppendWhereClauses(sql, targetCriteria, "  ");
+        sql.AppendLine("  group by category");
+        sql.AppendLine(") as r");
+        sql.AppendLine("  on r.category = c.category");
+        sql.Append("order by c.lower");
+        return sql.ToString();
+    }
+
+    private static string BuildIntersectSql(
+        string composedFilterSql,
+        string categoryInfoSql,
+        string categoryExpression,
+        string targetTableName,
+        string targetTableAliasOrName,
+        string[] targetJoins,
+        IReadOnlyList<string> targetCriteria,
+        string targetJoinColumn,
+        string anchorKeyColumn,
+        string anchorToTargetSql,
+        string categoryIdType,
+        string categoryOperator
+    )
+    {
+        if (string.IsNullOrWhiteSpace(categoryInfoSql))
+        {
+            throw new InvalidOperationException("Intersect target facets require a category-info SQL definition.");
+        }
+
+        if (string.IsNullOrWhiteSpace(categoryOperator))
+        {
+            throw new InvalidOperationException("Intersect target facets require a category operator.");
+        }
+
+        var sql = new StringBuilder();
+        sql.AppendLine("with composed_filter as (");
+        sql.AppendLine(Indent(composedFilterSql.Trim(), "  "));
+        sql.AppendLine("),");
+        if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
+        {
+            sql.AppendLine("target_route as (");
+            sql.AppendLine(Indent(anchorToTargetSql.Trim(), "  "));
+            sql.AppendLine("),");
+        }
+        sql.AppendLine("categories(category, category_range, lower, upper) as (");
+        sql.AppendLine(Indent(categoryInfoSql.Trim(), "  "));
+        sql.AppendLine(")");
+        sql.AppendLine("select c.category, c.lower, c.upper, coalesce(r.count_column, 0) as count_column");
+        sql.AppendLine("from categories c");
+        sql.AppendLine("left join (");
+        sql.AppendLine($"  select category, count(distinct composed_filter.{anchorKeyColumn}) as count_column");
+        sql.AppendLine($"  from {targetTableName}");
+        sql.AppendLine("  join categories");
+        sql.AppendLine($"    on categories.category_range {categoryOperator} {categoryExpression}::{categoryIdType}");
         foreach (var join in targetJoins)
         {
             sql.AppendLine($"  {join}");

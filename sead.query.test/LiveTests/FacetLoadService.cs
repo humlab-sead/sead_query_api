@@ -97,8 +97,13 @@ namespace SQT.LiveServices
                 ["abundances_all:country@1,2,5/abundances_all"],
             ];
 
+        public static IEnumerable<object[]> SupportedComposedIntersectLiveUris =>
+            [
+                ["analysis_entity_ages:analysis_entity_ages"],
+            ];
+
         public static IEnumerable<object[]> SupportedComposedLiveUris =>
-            [.. SupportedComposedVisibleAndDiscreteLiveUris, .. SupportedComposedRangeLiveUris];
+            [.. SupportedComposedVisibleAndDiscreteLiveUris, .. SupportedComposedRangeLiveUris, .. SupportedComposedIntersectLiveUris];
 
         [Theory]
         [InlineData("genus:genus")]
@@ -132,9 +137,16 @@ namespace SQT.LiveServices
 
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]
-        public void FacetContentService_UnsupportedIntersectSlice_FallsBackToLegacyFacetContent(string uri)
+        public void FacetContentService_ComposedTargetOnlyIntersectSlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertFallsBackToLegacyFacetContent(uri);
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, category_range, lower, upper) as", "categories.category_range && age_range::int4range");
+        }
+
+        [Theory]
+        [InlineData("analysis_entity_ages:analysis_entity_ages")]
+        public void FacetContentService_ComposedTargetOnlyIntersectSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
         }
 
         [Theory]
@@ -170,6 +182,20 @@ namespace SQT.LiveServices
         [Theory]
         [MemberData(nameof(SupportedComposedRangeLiveUris))]
         public void FacetContentService_ComposedSupportedRangeLiveSlices_MatchLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedIntersectLiveUris))]
+        public void FacetContentService_ComposedSupportedIntersectLiveSlices_UseComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedIntersectLiveUris))]
+        public void FacetContentService_ComposedSupportedIntersectLiveSlices_MatchLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

@@ -6,6 +6,7 @@ using SeadQueryComposer.QueryComposer.Inputs;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Discrete;
+using SeadQueryCore.Plugin.Intersect;
 using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryComposer;
 
@@ -26,6 +27,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     private readonly IFacetContentQueryComposer _facetContentQueryComposer;
     private readonly IDiscreteCategoryInfoService _discreteCategoryInfoService;
     private readonly IRangeCategoryInfoService _rangeCategoryInfoService;
+    private readonly IIntersectCategoryInfoService _intersectCategoryInfoService;
 
     public ComposedFacetContentService(
         IRepositoryRegistry registry,
@@ -36,7 +38,8 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         IComposedFilterQueryComposer composedFilterQueryComposer,
         IFacetContentQueryComposer facetContentQueryComposer,
         IDiscreteCategoryInfoService discreteCategoryInfoService,
-        IRangeCategoryInfoService rangeCategoryInfoService
+        IRangeCategoryInfoService rangeCategoryInfoService,
+        IIntersectCategoryInfoService intersectCategoryInfoService
     )
     {
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
@@ -48,6 +51,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         _facetContentQueryComposer = facetContentQueryComposer ?? throw new ArgumentNullException(nameof(facetContentQueryComposer));
         _discreteCategoryInfoService = discreteCategoryInfoService ?? throw new ArgumentNullException(nameof(discreteCategoryInfoService));
         _rangeCategoryInfoService = rangeCategoryInfoService ?? throw new ArgumentNullException(nameof(rangeCategoryInfoService));
+        _intersectCategoryInfoService = intersectCategoryInfoService ?? throw new ArgumentNullException(nameof(intersectCategoryInfoService));
     }
 
     public bool CanHandle(FacetsConfig2 facetsConfig)
@@ -67,10 +71,8 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
 
         var composedFilterQuery = CreateComposedFilterQuery(request);
-        var categoryInfo =
-            facetsConfig.TargetFacet.FacetTypeId == EFacetType.Range
-                ? _rangeCategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode)
-                : null;
+        var intervalCategoryInfoService = GetIntervalCategoryInfoService(facetsConfig.TargetFacet.FacetTypeId);
+        var categoryInfo = intervalCategoryInfoService?.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
         var contentQueryPlan = _facetContentQueryComposer.Compose(
             facetsConfig,
             composedFilterQuery,
@@ -80,12 +82,12 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         );
         var userPicks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
 
-        if (facetsConfig.TargetFacet.FacetTypeId == EFacetType.Range)
+        if (IsIntervalFacetType(facetsConfig.TargetFacet.FacetTypeId))
         {
             var categoryCounts = _queryProxy
                 .QueryRows(contentQueryPlan.Sql, ToRangeCategoryItem)
                 .ToDictionary(item => item.Category ?? "(null)");
-            var outerCategoryCounts = _queryProxy.QueryRows(categoryInfo.Query, _rangeCategoryInfoService.SqlCompiler.ToItem).ToList();
+            var outerCategoryCounts = _queryProxy.QueryRows(categoryInfo.Query, intervalCategoryInfoService.SqlCompiler.ToItem).ToList();
 
             foreach (var item in outerCategoryCounts)
             {
@@ -158,7 +160,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     {
         request = null;
 
-        if (facetsConfig?.TargetFacet?.FacetTypeId is not EFacetType.Discrete and not EFacetType.Range)
+        if (facetsConfig?.TargetFacet?.FacetTypeId is not EFacetType.Discrete and not EFacetType.Range and not EFacetType.Intersect)
         {
             return false;
         }
@@ -340,6 +342,21 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         };
     }
 
+    private static bool IsIntervalFacetType(EFacetType facetType)
+    {
+        return facetType is EFacetType.Range or EFacetType.Intersect;
+    }
+
+    private ICategoryInfoService GetIntervalCategoryInfoService(EFacetType facetType)
+    {
+        return facetType switch
+        {
+            EFacetType.Range => _rangeCategoryInfoService,
+            EFacetType.Intersect => _intersectCategoryInfoService,
+            _ => null,
+        };
+    }
+
     private string ResolveAnchorKeyColumn(Facet anchorFacet)
     {
         return TryResolveSimpleColumnOnTable(anchorFacet.CategoryIdExpr, anchorFacet.TargetTable, out var anchorKeyColumn)
@@ -349,7 +366,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
     private string ResolveTargetJoinColumn(Facet targetFacet, string anchorKeyColumn)
     {
-        if (targetFacet?.FacetTypeId == EFacetType.Range)
+        if (targetFacet?.FacetTypeId is EFacetType.Range or EFacetType.Intersect)
         {
             var targetPrimaryKey = targetFacet.TargetTable?.Table?.PrimaryKeyName ?? string.Empty;
             if (!IsPlaceholderPrimaryKey(targetPrimaryKey))
