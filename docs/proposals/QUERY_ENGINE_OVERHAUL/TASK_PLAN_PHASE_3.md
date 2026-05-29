@@ -39,6 +39,7 @@ Turn the remaining non-discrete parity gap into one explicit working list of sup
 
 - [ ] Enumerate the in-scope legacy non-discrete facet families still outside the composed supported matrix.
 - [ ] Separate the remaining surface into range, intersect, and GIS polygon lanes.
+- [ ] Confirm that the routed discrete overcount blockers carried out of Phase 2 remain on the discrete exception list unless Phase 3 uncovers a shared non-discrete root cause.
 - [ ] Classify each remaining lane as planned-for-phase support or explicit exception.
 - [ ] Record one concrete blocker for every explicit exception.
 - [ ] Keep `PARITY_INVENTORY.md` aligned with the current support or exception status.
@@ -119,7 +120,7 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 
 | Area | Status | Notes |
 |---|---|---|
-| Non-discrete inventory and exception list | In progress | `PARITY_INVENTORY.md` already shows three active lanes: supported initial range widening, unsupported intersect fallback, and unsupported GIS polygon fallback. Phase 3 should turn that snapshot into an explicit execution list and exception set. |
+| Non-discrete inventory and exception list | In progress | `PARITY_INVENTORY.md` already shows three active lanes: supported initial range widening, unsupported intersect fallback, and unsupported GIS polygon fallback. Phase 3 should turn that snapshot into an explicit execution list and exception set while keeping the routed discrete overcount set from Phase 2 (`abundance_classification`, `abundance_elements`, `construction_purpose`, `constructions`, `country`, `region`, `feature_type`, `family`, `sample_group_sampling_contexts`, and `species`) on the discrete exception track unless a shared non-discrete contract gap is proven. |
 | Range-target widening | In progress | `SupportedComposedRangeLiveUris` already validates `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`; the remaining range surface still needs inventory and widening decisions. |
 | Intersect facet support | Not started | `analysis_entity_ages:analysis_entity_ages` currently serves as a focused fallback-only live anchor rather than a composed parity slice. |
 | GIS polygon support | Not started | `sites_polygon` currently serves as a focused fallback-only live anchor rather than a composed parity slice. |
@@ -168,6 +169,7 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 **Out of scope**
 
 - discrete facet-family widening beyond regression protection for already validated slices
+- the routed discrete overcount blockers carried out of Phase 2, unless Phase 3 work proves they share a non-discrete root cause
 - result-set parity or final result projection work
 - full retirement of legacy fallback outside the non-discrete parity surface
 - broad route or anchor redesign that would reopen the Phase 1 contract baseline
@@ -185,3 +187,4 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 
 - Phase 3 covers facet-content parity for non-discrete families only; result projection remains Phase 4 work.
 - The current supported range subset and the explicit intersect and GIS fallback tests are the authoritative starting baseline for this phase.
+- The routed discrete overcount blockers identified in Phase 2 remain discrete exceptions by default and should move into Phase 3 only if range, intersect, or GIS implementation work exposes the same underlying contract defect.
