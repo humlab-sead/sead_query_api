@@ -100,6 +100,7 @@ namespace SQT.LiveServices
         public static IEnumerable<object[]> SupportedComposedIntersectLiveUris =>
             [
                 ["analysis_entity_ages:analysis_entity_ages"],
+                ["dendro_age_contained_by:dendro_age_contained_by"],
             ];
 
         public static IEnumerable<object[]> SupportedComposedLiveUris =>
@@ -125,6 +126,7 @@ namespace SQT.LiveServices
 
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]
+        [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
         public void Load_Intersect_Facets(string uri)
         {
             var facetsConfig = UriToFacetsConfig(uri);
@@ -143,8 +145,22 @@ namespace SQT.LiveServices
         }
 
         [Theory]
+        [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
+        public void FacetContentService_ComposedTargetOnlyDendroAgeContainedBySlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, category_range, lower, upper) as", "categories.category_range @> tbl_dendro_dates.age_range::int4range");
+        }
+
+        [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]
         public void FacetContentService_ComposedTargetOnlyIntersectSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
+        public void FacetContentService_ComposedTargetOnlyDendroAgeContainedBySlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
