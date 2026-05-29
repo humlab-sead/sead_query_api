@@ -109,6 +109,13 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
                     targetFacet.CategoryIdType,
                     targetFacet.CategoryIdOperator
                 ),
+                EFacetType.GeoPolygon => BuildGeoPolygonSql(
+                    composedFilterQuery.Sql,
+                    categoryInfoSql,
+                    targetJoinColumn,
+                    composedFilterQuery.AnchorKeyColumn,
+                    anchorToTargetSql
+                ),
                 _ => throw new InvalidOperationException(
                     $"Target facet '{targetFacet.FacetCode}' is not supported by the composed content composer."
                 ),
@@ -295,6 +302,47 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         sql.AppendLine(") as r");
         sql.AppendLine("  on r.category = c.category");
         sql.Append("order by c.lower");
+        return sql.ToString();
+    }
+
+    private static string BuildGeoPolygonSql(
+        string composedFilterSql,
+        string categoryInfoSql,
+        string targetJoinColumn,
+        string anchorKeyColumn,
+        string anchorToTargetSql
+    )
+    {
+        if (string.IsNullOrWhiteSpace(categoryInfoSql))
+        {
+            throw new InvalidOperationException("Geo-polygon target facets require a category-info SQL definition.");
+        }
+
+        var sql = new StringBuilder();
+        sql.AppendLine("with composed_filter as (");
+        sql.AppendLine(Indent(composedFilterSql.Trim(), "  "));
+        sql.AppendLine("),");
+        if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
+        {
+            sql.AppendLine("target_route as (");
+            sql.AppendLine(Indent(anchorToTargetSql.Trim(), "  "));
+            sql.AppendLine("),");
+        }
+        sql.AppendLine("categories(category, count_column, longitude_dd, latitude_dd) as (");
+        sql.AppendLine(Indent(categoryInfoSql.Trim(), "  "));
+        sql.AppendLine(")");
+        sql.AppendLine("select c.category, c.count_column, c.longitude_dd, c.latitude_dd");
+        sql.AppendLine("from categories c");
+        if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
+        {
+            sql.AppendLine("join target_route on target_route.target_id = c.category");
+            sql.AppendLine($"join composed_filter on composed_filter.{anchorKeyColumn} = target_route.source_id");
+        }
+        else
+        {
+            sql.AppendLine($"join composed_filter on composed_filter.{anchorKeyColumn} = c.category");
+        }
+        sql.Append("order by c.category");
         return sql.ToString();
     }
 

@@ -6,6 +6,7 @@ using SeadQueryComposer.QueryComposer.Inputs;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Discrete;
+using SeadQueryCore.Plugin.GeoPolygon;
 using SeadQueryCore.Plugin.Intersect;
 using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryComposer;
@@ -26,6 +27,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
     private readonly IFacetContentQueryComposer _facetContentQueryComposer;
     private readonly IDiscreteCategoryInfoService _discreteCategoryInfoService;
+    private readonly IGeoPolygonCategoryInfoService _geoPolygonCategoryInfoService;
     private readonly IRangeCategoryInfoService _rangeCategoryInfoService;
     private readonly IIntersectCategoryInfoService _intersectCategoryInfoService;
 
@@ -38,6 +40,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         IComposedFilterQueryComposer composedFilterQueryComposer,
         IFacetContentQueryComposer facetContentQueryComposer,
         IDiscreteCategoryInfoService discreteCategoryInfoService,
+        IGeoPolygonCategoryInfoService geoPolygonCategoryInfoService,
         IRangeCategoryInfoService rangeCategoryInfoService,
         IIntersectCategoryInfoService intersectCategoryInfoService
     )
@@ -47,11 +50,18 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
         _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
-        _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
-        _facetContentQueryComposer = facetContentQueryComposer ?? throw new ArgumentNullException(nameof(facetContentQueryComposer));
-        _discreteCategoryInfoService = discreteCategoryInfoService ?? throw new ArgumentNullException(nameof(discreteCategoryInfoService));
-        _rangeCategoryInfoService = rangeCategoryInfoService ?? throw new ArgumentNullException(nameof(rangeCategoryInfoService));
-        _intersectCategoryInfoService = intersectCategoryInfoService ?? throw new ArgumentNullException(nameof(intersectCategoryInfoService));
+        _composedFilterQueryComposer = composedFilterQueryComposer
+            ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
+        _facetContentQueryComposer = facetContentQueryComposer
+            ?? throw new ArgumentNullException(nameof(facetContentQueryComposer));
+        _discreteCategoryInfoService = discreteCategoryInfoService
+            ?? throw new ArgumentNullException(nameof(discreteCategoryInfoService));
+        _geoPolygonCategoryInfoService = geoPolygonCategoryInfoService
+            ?? throw new ArgumentNullException(nameof(geoPolygonCategoryInfoService));
+        _rangeCategoryInfoService = rangeCategoryInfoService
+            ?? throw new ArgumentNullException(nameof(rangeCategoryInfoService));
+        _intersectCategoryInfoService = intersectCategoryInfoService
+            ?? throw new ArgumentNullException(nameof(intersectCategoryInfoService));
     }
 
     public bool CanHandle(FacetsConfig2 facetsConfig)
@@ -71,6 +81,30 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
 
         var composedFilterQuery = CreateComposedFilterQuery(request);
+        if (facetsConfig.TargetFacet.FacetTypeId == EFacetType.GeoPolygon)
+        {
+            var geoCategoryInfo = _geoPolygonCategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
+            var geoContentQueryPlan = _facetContentQueryComposer.Compose(
+                facetsConfig,
+                composedFilterQuery,
+                request.TargetJoinColumn,
+                request.AnchorToTargetSql,
+                geoCategoryInfo.Query
+            );
+            var geoCategoryItems = _queryProxy.QueryRows(geoContentQueryPlan.Sql, ToGeoPolygonCategoryItem);
+            var geoUserPicks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
+
+            return new FacetContent
+            {
+                FacetsConfig = facetsConfig,
+                Items = geoCategoryItems.Where(item => item.Count != null).ToList(),
+                Distribution = geoCategoryItems.ToDictionary(item => item.Category ?? "(null)"),
+                IntervalInfo = geoCategoryInfo,
+                SqlQuery = geoContentQueryPlan.Sql,
+                Picks = geoUserPicks ?? [],
+            };
+        }
+
         var intervalCategoryInfoService = GetIntervalCategoryInfoService(facetsConfig.TargetFacet.FacetTypeId);
         var categoryInfo = intervalCategoryInfoService?.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
         var contentQueryPlan = _facetContentQueryComposer.Compose(
@@ -160,7 +194,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     {
         request = null;
 
-        if (facetsConfig?.TargetFacet?.FacetTypeId is not EFacetType.Discrete and not EFacetType.Range and not EFacetType.Intersect)
+        if (facetsConfig?.TargetFacet?.FacetTypeId is not EFacetType.Discrete and not EFacetType.Range and not EFacetType.Intersect and not EFacetType.GeoPolygon)
         {
             return false;
         }
@@ -193,6 +227,11 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         var predicateConfigs = affectedConfigs
             .Where(config => !string.Equals(config.FacetCode, facetsConfig.TargetCode, StringComparison.OrdinalIgnoreCase))
             .ToList();
+
+        if (targetFacet.FacetTypeId == EFacetType.GeoPolygon && predicateConfigs.Count > 0)
+        {
+            return false;
+        }
 
         if (predicateConfigs.Count > 0)
         {
@@ -339,6 +378,17 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             Count = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
             Extent = [reader.IsDBNull(1) ? 0 : reader.GetDecimal(1), reader.IsDBNull(2) ? 0 : reader.GetDecimal(2)],
             Name = reader.IsDBNull(0) ? "(null)" : reader.GetString(0),
+        };
+    }
+
+    private static CategoryItem ToGeoPolygonCategoryItem(IDataReader reader)
+    {
+        return new CategoryItem
+        {
+            Category = reader.Category2String(0),
+            Count = reader.GetInt32(1),
+            Extent = [reader.GetDecimal(2), reader.GetDecimal(3)],
+            Name = reader.Category2String(0),
         };
     }
 

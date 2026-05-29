@@ -7,6 +7,7 @@ using SeadQueryComposer.QueryComposer.Services;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Discrete;
+using SeadQueryCore.Plugin.GeoPolygon;
 using SeadQueryCore.Plugin.Intersect;
 using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryBuilder;
@@ -57,7 +58,9 @@ public class ComposedFacetContentServiceTests
     {
         var queryProxy = new Mock<ITypedQueryProxy>(MockBehavior.Strict);
         var service = CreateService(queryProxy.Object);
-        var facetsConfig = CreateCountryToSpeciesFacetsConfig(targetCategoryExpression: "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)");
+        var facetsConfig = CreateCountryToSpeciesFacetsConfig(
+            targetCategoryExpression: "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)"
+        );
 
         var act = () => service.Load(facetsConfig);
 
@@ -212,13 +215,27 @@ public class ComposedFacetContentServiceTests
 
         result.SqlQuery.Should().Be(capturedSql);
         result.IntervalInfo.Query.Should().Be(outerCategorySql);
-        result.Items.Should().BeEquivalentTo(
-            new[]
-            {
-                new CategoryItem { Category = "12", Count = 2, Name = "Feature 12", Extent = [0] },
-                new CategoryItem { Category = "99", Count = 0, Name = "Feature 99", Extent = [0] },
-            }
-        );
+        result
+            .Items.Should()
+            .BeEquivalentTo(
+                new[]
+                {
+                    new CategoryItem
+                    {
+                        Category = "12",
+                        Count = 2,
+                        Name = "Feature 12",
+                        Extent = [0],
+                    },
+                    new CategoryItem
+                    {
+                        Category = "99",
+                        Count = 0,
+                        Name = "Feature 99",
+                        Extent = [0],
+                    },
+                }
+            );
         result.Distribution.Should().ContainKey("12");
         result.Distribution.Should().NotContainKey("99");
         result.SqlQuery.Should().Contain("target_route as");
@@ -316,6 +333,15 @@ public class ComposedFacetContentServiceTests
     {
         var service = CreateService();
         var facetsConfig = CreateTargetOnlyIntersectFacetsConfig();
+
+        service.CanHandle(facetsConfig).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanHandle_WithTargetOnlyGeoPolygonRequest_ReturnsTrue()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateTargetOnlySitesPolygonFacetsConfig();
 
         service.CanHandle(facetsConfig).Should().BeTrue();
     }
@@ -533,6 +559,56 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void Load_WithTargetOnlyGeoPolygonRequest_UsesPolygonCategoryInfoQuery()
+    {
+        const string polygonSql = "select 12 as category, 1 as count, 20.1 as longitude_dd, 63.8 as latitude_dd";
+        var categoryInfo = new FacetContent.CategoryInfo { Count = 1, Query = polygonSql };
+        var geoItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "12",
+                Count = 1,
+                Name = "12",
+                Extent = [20.1m, 63.8m],
+            },
+        };
+
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        string capturedSql = null;
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Callback<string, Func<IDataReader, CategoryItem>>((sql, _) => capturedSql = sql)
+            .Returns(geoItems);
+
+        var geoPolygonInfoService = new Mock<IGeoPolygonCategoryInfoService>();
+        geoPolygonInfoService.SetupGet(service => service.SqlCompiler).Returns(Mock.Of<IGeoPolygonCategoryInfoSqlCompiler>());
+        geoPolygonInfoService
+            .Setup(
+                service => service.GetCategoryInfo(
+                    It.IsAny<FacetsConfig2>(),
+                    "sites_polygon",
+                    null
+                )
+            )
+            .Returns(categoryInfo);
+
+        var service = CreateService(queryProxy.Object, geoPolygonCategoryInfoService: geoPolygonInfoService.Object);
+        var facetsConfig = CreateTargetOnlySitesPolygonFacetsConfig();
+
+        var result = service.Load(facetsConfig);
+
+        result.IntervalInfo.Should().BeSameAs(categoryInfo);
+        result.SqlQuery.Should().Be(capturedSql);
+        result.SqlQuery.Should().Contain("categories(category, count_column, longitude_dd, latitude_dd) as");
+        result.SqlQuery.Should().Contain("select distinct site_id as target_id");
+        result.SqlQuery.Should().Contain("join composed_filter on composed_filter.target_id = c.category");
+        result.SqlQuery.Should().NotContain("predicate_0 as");
+        result.Items.Should().BeEquivalentTo(geoItems);
+        result.Distribution.Should().HaveCount(1);
+    }
+
+    [Fact]
     public void Load_WithRangeTargetAndEnforcedTargetClause_IncludesClauseInSql()
     {
         var intervalSql = "select '0 to 10', 0, 10 union all select '10 to 20', 10, 20";
@@ -657,6 +733,7 @@ public class ComposedFacetContentServiceTests
     private static ComposedFacetContentService CreateService(
         ITypedQueryProxy queryProxy = null,
         IDiscreteCategoryInfoService discreteCategoryInfoService = null,
+        IGeoPolygonCategoryInfoService geoPolygonCategoryInfoService = null,
         IRangeCategoryInfoService rangeCategoryInfoService = null,
         IIntersectCategoryInfoService intersectCategoryInfoService = null
     )
@@ -716,6 +793,7 @@ public class ComposedFacetContentServiceTests
             .Setup(compiler => compiler.Compile(It.IsAny<List<List<TableRelation>>>(), It.IsAny<FacetsConfig2>()))
             .Returns([]);
         var defaultDiscreteInfoService = discreteCategoryInfoService ?? Mock.Of<IDiscreteCategoryInfoService>();
+        var defaultGeoPolygonInfoService = geoPolygonCategoryInfoService ?? Mock.Of<IGeoPolygonCategoryInfoService>();
         var defaultRangeInfoService = rangeCategoryInfoService ?? Mock.Of<IRangeCategoryInfoService>();
         var defaultIntersectInfoService = intersectCategoryInfoService ?? Mock.Of<IIntersectCategoryInfoService>();
         return new ComposedFacetContentService(
@@ -727,6 +805,7 @@ public class ComposedFacetContentServiceTests
             new IntersectComposedFilterQueryComposer(),
             new DiscreteFacetContentQueryComposer(new PathFinder([.. graph, .. graph.ReversedEdges()]), joinsClauseCompiler.Object),
             defaultDiscreteInfoService,
+            defaultGeoPolygonInfoService,
             defaultRangeInfoService,
             defaultIntersectInfoService
         );
@@ -1071,6 +1150,37 @@ public class ComposedFacetContentServiceTests
             TargetCode = "analysis_entity_ages",
             TargetFacet = targetFacet,
             FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
+        };
+    }
+
+    private static FacetsConfig2 CreateTargetOnlySitesPolygonFacetsConfig()
+    {
+        var sites = CreateTable(1, "tbl_sites", "site_id");
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "sites_polygon",
+            FacetTypeId = EFacetType.GeoPolygon,
+            FacetType = new FacetType { FacetTypeId = EFacetType.GeoPolygon, ReloadAsTarget = true },
+            AggregateFacetId = 11,
+            CategoryIdExpr = "tbl_sites.site_id",
+            CategoryIdType = "integer",
+            Tables = [new FacetTable { SequenceId = 1, Table = sites }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "sites_polygon",
+            TargetFacet = targetFacet,
+            FacetConfigs =
+            [
+                new FacetConfig2(
+                    targetFacet,
+                    1,
+                    string.Empty,
+                    FacetConfigPick.CreateByList([0, 0, 0, 1, 1, 1, 1, 0, 0, 0])
+                ),
+            ],
         };
     }
 

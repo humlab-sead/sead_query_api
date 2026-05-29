@@ -103,8 +103,13 @@ namespace SQT.LiveServices
                 ["dendro_age_contained_by:dendro_age_contained_by"],
             ];
 
+        public static IEnumerable<object[]> SupportedComposedGeoPolygonLiveUris =>
+            [
+                ["sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"],
+            ];
+
         public static IEnumerable<object[]> SupportedComposedLiveUris =>
-            [.. SupportedComposedVisibleAndDiscreteLiveUris, .. SupportedComposedRangeLiveUris, .. SupportedComposedIntersectLiveUris];
+            [.. SupportedComposedVisibleAndDiscreteLiveUris, .. SupportedComposedRangeLiveUris, .. SupportedComposedIntersectLiveUris, .. SupportedComposedGeoPolygonLiveUris];
 
         [Theory]
         [InlineData("genus:genus")]
@@ -169,9 +174,18 @@ namespace SQT.LiveServices
         [InlineData(
             "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"
         )]
-        public void FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent(string uri)
+        public void FacetContentService_ComposedTargetOnlySitesPolygonSlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertFallsBackToLegacyFacetContent(uri);
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, count_column, longitude_dd, latitude_dd) as", "ST_Within");
+        }
+
+        [Theory]
+        [InlineData(
+            "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"
+        )]
+        public void FacetContentService_ComposedTargetOnlySitesPolygonSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
         }
 
         [Theory]
@@ -212,6 +226,20 @@ namespace SQT.LiveServices
         [Theory]
         [MemberData(nameof(SupportedComposedIntersectLiveUris))]
         public void FacetContentService_ComposedSupportedIntersectLiveSlices_MatchLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedGeoPolygonLiveUris))]
+        public void FacetContentService_ComposedSupportedGeoPolygonLiveSlices_UseComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedGeoPolygonLiveUris))]
+        public void FacetContentService_ComposedSupportedGeoPolygonLiveSlices_MatchLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
