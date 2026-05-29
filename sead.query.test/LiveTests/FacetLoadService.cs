@@ -78,6 +78,7 @@ namespace SQT.LiveServices
                 ["sample_groups:country@1,2,5/sample_groups"],
                 ["data_types:data_types"],
                 ["data_types:country@1,2,5/data_types"],
+                ["modification_types:modification_types"],
                 ["rdb_systems:rdb_systems"],
                 ["rdb_systems:country@1,2,5/rdb_systems"],
             ];
@@ -403,6 +404,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_biblio_modern:tbl_biblio_modern")]
         public void FacetContentService_ComposedTargetOnlyBiblioModernSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("modification_types:modification_types")]
+        public void FacetContentService_ComposedTargetOnlyModificationTypesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_modification_types");
+        }
+
+        [Theory]
+        [InlineData("modification_types:modification_types")]
+        public void FacetContentService_ComposedTargetOnlyModificationTypesSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
