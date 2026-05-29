@@ -61,6 +61,7 @@ namespace SQT.LiveServices
                 ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
                 ["region:country@1,2,5/region"],
                 ["activeseason:country@1,2,5/activeseason"],
+                ["sample_groups:country@1,2,5/sample_groups"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -383,11 +384,7 @@ namespace SQT.LiveServices
         [InlineData("tbl_biblio_modern:country@1,2,5/tbl_biblio_modern")]
         public void FacetContentService_ComposedCountryPredicateBiblioModernSlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(
-                uri,
-                "facet.view_taxa_biblio.biblio_id",
-                "X_0.location_type_id=1"
-            );
+            AssertUsesComposedFacetContentQuery(uri, "facet.view_taxa_biblio.biblio_id", "X_0.location_type_id=1");
         }
 
         [Theory]
@@ -421,6 +418,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("activeseason:country@1,2,5/activeseason")]
         public void FacetContentService_ComposedCountryPredicateActiveSeasonSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("sample_groups:country@1,2,5/sample_groups")]
+        public void FacetContentService_ComposedCountryPredicateSampleGroupsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("sample_groups:country@1,2,5/sample_groups")]
+        public void FacetContentService_ComposedCountryPredicateSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
