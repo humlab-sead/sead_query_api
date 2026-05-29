@@ -192,14 +192,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             .Where(config => !string.Equals(config.FacetCode, facetsConfig.TargetCode, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
-        if (predicateConfigs.Count == 0)
-        {
-            if (targetFacet.FacetTypeId != EFacetType.Discrete)
-            {
-                return false;
-            }
-        }
-        else
+        if (predicateConfigs.Count > 0)
         {
             if (predicateConfigs.Any(config => !config.HasPicks()))
             {

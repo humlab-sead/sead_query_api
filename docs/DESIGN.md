@@ -137,6 +137,7 @@ The current composed path depends on a small contract surface that is already ac
 - Target facet content is generated from the composed anchor set, not from a re-expanded global join template.
 - The current composed content path supports direct aggregate/result targets and routed visible targets whose category expression can be resolved either on the routed target table or on joined target-facet tables.
 - The current composed content path also supports target-only discrete requests by using an explicit unfiltered anchor-set query instead of requiring prior picked predicates.
+- The current composed content path also supports target-only range requests when the existing anchor route and interval category-info contract can be resolved without predicate-driven narrowing.
 - Routed target-only discrete requests now overlay legacy-style discrete category-info rows onto composed counts so the composed result can retain zero-count categories where the legacy discrete path exposes them.
 - The currently validated target set includes the baseline visible-target slices, multiple adjacent discrete targets, and the first validated range-target families recorded in the phase-0 tracker.
 
@@ -164,6 +165,7 @@ The current composed path depends on a small contract surface that is already ac
 - The runtime handoff between composed and legacy behavior is anchored in `sead.query.core/Services/FacetContent/FacetContentService.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`.
 - The current direct unsupported-load boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
 - The current same-table target-only discrete contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
+- The current target-only range contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`, `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`, and `sead.query.test/LiveTests/FacetLoadService.cs` through the `geochronology:geochronology` slice.
 - The current routed target-only discrete outer-category overlay contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
 - The current composed-query alias contract is anchored in `sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs` and `sead.query.test/UnitTests/QueryComposer/Strategies/IntersectComposedFilterQueryComposerTests.cs`.
 - The current route compiler input-validation contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/RouteSqlCompiler.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/RouteSqlCompilerTests.cs`.

@@ -88,6 +88,7 @@ namespace SQT.LiveServices
 
         public static IEnumerable<object[]> SupportedComposedRangeLiveUris =>
             [
+                ["geochronology:geochronology"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -225,6 +226,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("sample_groups:sample_groups")]
         public void FacetContentService_ComposedTargetOnlySampleGroupsSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("geochronology:geochronology")]
+        public void FacetContentService_ComposedTargetOnlyGeochronologySlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, lower, upper) as", "tbl_geochronology.age::integer");
+        }
+
+        [Theory]
+        [InlineData("geochronology:geochronology")]
+        public void FacetContentService_ComposedTargetOnlyGeochronologySlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

@@ -4,7 +4,7 @@
 
 **Phase:** Phase 3 - Non-Discrete Facet Parity
 
-**Status:** Not started
+**Status:** In progress
 
 **Goal**
 
@@ -121,7 +121,7 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 | Area | Status | Notes |
 |---|---|---|
 | Non-discrete inventory and exception list | In progress | `PARITY_INVENTORY.md` already shows three active lanes: supported initial range widening, unsupported intersect fallback, and unsupported GIS polygon fallback. Phase 3 should turn that snapshot into an explicit execution list and exception set while keeping the routed discrete overcount set from Phase 2 (`abundance_classification`, `abundance_elements`, `construction_purpose`, `constructions`, `country`, `region`, `feature_type`, `family`, `sample_group_sampling_contexts`, and `species`) on the discrete exception track unless a shared non-discrete contract gap is proven. |
-| Range-target widening | In progress | `SupportedComposedRangeLiveUris` already validates `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`; the remaining range surface still needs inventory and widening decisions. |
+| Range-target widening | In progress | `SupportedComposedRangeLiveUris` now validates both `geochronology:geochronology` and `geochronology:country@1,2,5/geochronology` alongside `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`. The active catalog inventory check for Phase 3 found no additional real range candidates beyond the already-supported set and helper-only residue. |
 | Intersect facet support | Not started | `analysis_entity_ages:analysis_entity_ages` currently serves as a focused fallback-only live anchor rather than a composed parity slice. |
 | GIS polygon support | Not started | `sites_polygon` currently serves as a focused fallback-only live anchor rather than a composed parity slice. |
 | Documentation and phase exit | Not started | Phase 3 needs its own execution tracker plus parity-inventory and design-document updates as non-discrete support changes. |
@@ -138,12 +138,12 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 
 ## Validation And Testing
 
-- [ ] Run focused unit tests for touched non-discrete target and predicate contracts.
+- [x] Run focused unit validation for the target-only range contract using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~SQT.UnitTests.QueryComposer.Services.ComposedFacetContentServiceTests"`.
 - [ ] Run focused composed-service tests for touched non-discrete widening slices.
 - [x] Run grouped live comparison coverage for the current supported range subset using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedSupportedRangeLiveSlices"`.
 - [x] Run focused live fallback validation for intersect behavior using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_UnsupportedIntersectSlice_FallsBackToLegacyFacetContent"`.
 - [x] Run focused live fallback validation for GIS polygon behavior using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent"`.
-- [ ] Run focused live comparison coverage for each newly supported range slice before grouped promotion.
+- [x] Run focused live comparison coverage for the promoted target-only geochronology range slice using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyGeochronologySlice"` before grouped promotion.
 - [ ] Run focused live comparison coverage for each intersect or GIS polygon slice before changing fallback boundaries.
 - [ ] Review `PARITY_INVENTORY.md` after each non-discrete promotion or exception decision to confirm range, intersect, and GIS rows remain current.
 
@@ -151,9 +151,9 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 
 | Deliverable | Description | Status | Link |
 |---|---|---|---|
-| Non-discrete parity task plan | Execution tracker for Phase 3 widening work | Not started | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_3.md` |
+| Non-discrete parity task plan | Execution tracker for Phase 3 widening work | In progress | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_3.md` |
 | Updated parity inventory | Current support and exception status for range, intersect, and GIS polygon behavior | In progress | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md` |
-| Non-discrete contract updates | Code-level widening for range, intersect, and GIS polygon support | Not started | `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` |
+| Non-discrete contract updates | Code-level widening for range, intersect, and GIS polygon support | In progress | `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` |
 | Non-discrete live coverage | Focused and grouped live coverage for supported non-discrete slices and explicit fallback boundaries | In progress | `sead.query.test/LiveTests/FacetLoadService.cs` |
 | Durable architecture updates | Non-discrete runtime and contract boundary updates | Not started | `docs/DESIGN.md` |
 
