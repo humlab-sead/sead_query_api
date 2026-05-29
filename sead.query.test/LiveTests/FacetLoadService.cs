@@ -57,6 +57,7 @@ namespace SQT.LiveServices
                 ["relative_age_name:country@1,2,5/relative_age_name"],
                 ["abundance_classification:country@1,2,5/abundance_classification"],
                 ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
+                ["tbl_biblio_sites:country@1,2,5/tbl_biblio_sites"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -356,6 +357,25 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups")]
         public void FacetContentService_ComposedCountryPredicateBiblioSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_sites:country@1,2,5/tbl_biblio_sites")]
+        public void FacetContentService_ComposedCountryPredicateBiblioSitesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "tbl_biblio.biblio_id",
+                "facet.view_site_references.biblio_id is not null",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_sites:country@1,2,5/tbl_biblio_sites")]
+        public void FacetContentService_ComposedCountryPredicateBiblioSitesSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
