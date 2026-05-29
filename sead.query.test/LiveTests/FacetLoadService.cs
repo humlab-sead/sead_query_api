@@ -59,6 +59,7 @@ namespace SQT.LiveServices
                 ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
                 ["tbl_biblio_sites:country@1,2,5/tbl_biblio_sites"],
                 ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
+                ["region:country@1,2,5/region"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -391,6 +392,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_biblio_modern:country@1,2,5/tbl_biblio_modern")]
         public void FacetContentService_ComposedCountryPredicateBiblioModernSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("region:country@1,2,5/region")]
+        public void FacetContentService_ComposedCountryPredicateRegionSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "X_0.location_type_id=1");
+        }
+
+        [Theory]
+        [InlineData("region:country@1,2,5/region")]
+        public void FacetContentService_ComposedCountryPredicateRegionSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
