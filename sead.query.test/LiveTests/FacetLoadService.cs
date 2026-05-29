@@ -65,6 +65,7 @@ namespace SQT.LiveServices
                 ["activeseason:country@1,2,5/activeseason"],
                 ["sample_groups:sample_groups"],
                 ["sample_groups:country@1,2,5/sample_groups"],
+                ["data_types:data_types"],
                 ["data_types:country@1,2,5/data_types"],
                 ["rdb_systems:country@1,2,5/rdb_systems"],
             ];
@@ -208,6 +209,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("sample_groups:sample_groups")]
         public void FacetContentService_ComposedTargetOnlySampleGroupsSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("data_types:data_types")]
+        public void FacetContentService_ComposedTargetOnlyDataTypesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_data_types");
+        }
+
+        [Theory]
+        [InlineData("data_types:data_types")]
+        public void FacetContentService_ComposedTargetOnlyDataTypesSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
