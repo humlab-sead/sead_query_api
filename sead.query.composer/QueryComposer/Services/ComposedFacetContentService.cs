@@ -57,7 +57,9 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
         if (!TryCreateRequest(facetsConfig, out var request))
         {
-            throw new InvalidOperationException("The composed facet-content service cannot handle this request.");
+            throw new InvalidOperationException(
+                "The composed facet-content service cannot handle this request. Call CanHandle(...) before invoking Load or use FacetContentService to fall back to the legacy runtime."
+            );
         }
 
         var predicatePlans = request.PredicateConfigs.Select(config => CreatePredicateQueryPlan(config, request)).ToList();
@@ -318,7 +320,8 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             return targetJoinColumn;
         }
 
-        return targetFacet.TargetTable?.Table?.PrimaryKeyName ?? string.Empty;
+        var targetPrimaryKeyName = targetFacet.TargetTable?.Table?.PrimaryKeyName ?? string.Empty;
+        return IsPlaceholderPrimaryKey(targetPrimaryKeyName) ? string.Empty : targetPrimaryKeyName;
     }
 
     private static bool IsPlaceholderPrimaryKey(string primaryKeyName)

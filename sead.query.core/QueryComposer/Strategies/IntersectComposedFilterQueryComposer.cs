@@ -82,7 +82,7 @@ public sealed class IntersectComposedFilterQueryComposer : IComposedFilterQueryC
                 sql.AppendLine("intersect");
             }
 
-            sql.Append($"select distinct {QueryComposerAliases.AnchorKeyColumn}{Environment.NewLine}from {cteNames[index]}");
+            sql.Append($"select distinct {anchorKeyColumn}{Environment.NewLine}from {cteNames[index]}");
             if (index < cteNames.Count - 1)
             {
                 sql.AppendLine();

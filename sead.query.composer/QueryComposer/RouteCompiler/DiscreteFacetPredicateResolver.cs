@@ -107,6 +107,11 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
 
     private static string BuildWhereClause(DiscreteFacetUserInput userInput)
     {
+        if (string.IsNullOrWhiteSpace(userInput.Operator))
+        {
+            throw new ArgumentException("Discrete facet operators must be non-empty.", nameof(userInput));
+        }
+
         var normalizedOperator = userInput.Operator.Trim().ToLowerInvariant();
 
         if (normalizedOperator is "in" or "not in")

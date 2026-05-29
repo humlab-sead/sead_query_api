@@ -25,6 +25,45 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void Load_WithUnsupportedRequest_ThrowsInvalidOperationException()
+    {
+        var queryProxy = new Mock<ITypedQueryProxy>(MockBehavior.Strict);
+        var service = CreateService(queryProxy.Object);
+        var facetsConfig = CreateFacetsConfig(sampleGroupCategoryExpression: "sample_group_tbl.group_name");
+
+        var act = () => service.Load(facetsConfig);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Call CanHandle(...)*legacy runtime*");
+        queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
+    }
+
+    [Fact]
+    public void Load_WithUnsupportedJoinedTableFacetClause_ThrowsInvalidOperationException()
+    {
+        var queryProxy = new Mock<ITypedQueryProxy>(MockBehavior.Strict);
+        var service = CreateService(queryProxy.Object);
+        var facetsConfig = CreateCountryToSitesFacetsConfig(countryClause: "tbl_sites.deleted = true");
+
+        var act = () => service.Load(facetsConfig);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Call CanHandle(...)*legacy runtime*");
+        queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
+    }
+
+    [Fact]
+    public void Load_WithUnsupportedTargetJoinDerivation_ThrowsInvalidOperationException()
+    {
+        var queryProxy = new Mock<ITypedQueryProxy>(MockBehavior.Strict);
+        var service = CreateService(queryProxy.Object);
+        var facetsConfig = CreateCountryToSpeciesFacetsConfig(targetCategoryExpression: "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)");
+
+        var act = () => service.Load(facetsConfig);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Call CanHandle(...)*legacy runtime*");
+        queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
+    }
+
+    [Fact]
     public void Load_WithSupportedDiscreteRequest_ReturnsFacetContentFromComposedQuery()
     {
         var fakeItems = new List<CategoryItem>
@@ -113,6 +152,15 @@ public class ComposedFacetContentServiceTests
         var facetsConfig = CreateCountryToSitesFacetsConfig();
 
         service.CanHandle(facetsConfig).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanHandle_WithJoinedTableFacetClause_ReturnsFalse()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateCountryToSitesFacetsConfig(countryClause: "tbl_sites.deleted = true");
+
+        service.CanHandle(facetsConfig).Should().BeFalse();
     }
 
     [Fact]
@@ -316,6 +364,15 @@ public class ComposedFacetContentServiceTests
         result.SqlQuery.Should().NotContain(".xxx", "schema-qualified target expressions should resolve to their real join column");
     }
 
+    [Fact]
+    public void CanHandle_WithPlaceholderTargetPrimaryKeyAndNonSimpleCategoryExpression_ReturnsFalse()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateCountryToSpeciesFacetsConfig(targetCategoryExpression: "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)");
+
+        service.CanHandle(facetsConfig).Should().BeFalse();
+    }
+
     private static ComposedFacetContentService CreateService(
         ITypedQueryProxy queryProxy = null,
         IRangeCategoryInfoService rangeCategoryInfoService = null
@@ -493,7 +550,9 @@ public class ComposedFacetContentServiceTests
         };
     }
 
-    private static FacetsConfig2 CreateCountryToSpeciesFacetsConfig()
+    private static FacetsConfig2 CreateCountryToSpeciesFacetsConfig(
+        string targetCategoryExpression = "facet.abundance_taxon_shortcut.taxon_id"
+    )
     {
         var countryShortcut = CreateTable(5, "facet.site_location_shortcut", "xxxx");
         var abundanceTaxonShortcut = CreateTable(8, "facet.abundance_taxon_shortcut", "xxx");
@@ -520,7 +579,7 @@ public class ComposedFacetContentServiceTests
             FacetCode = "species",
             FacetTypeId = EFacetType.Discrete,
             AggregateFacetId = 11,
-            CategoryIdExpr = "facet.abundance_taxon_shortcut.taxon_id",
+            CategoryIdExpr = targetCategoryExpression,
             Tables = [new FacetTable { SequenceId = 1, Table = abundanceTaxonShortcut }],
         };
 
@@ -536,7 +595,7 @@ public class ComposedFacetContentServiceTests
         };
     }
 
-    private static FacetsConfig2 CreateCountryToSitesFacetsConfig()
+    private static FacetsConfig2 CreateCountryToSitesFacetsConfig(string countryClause = "countries.location_type_id=1")
     {
         var sites = CreateTable(1, "tbl_sites", "site_id");
         var countryShortcut = CreateTable(5, "facet.site_location_shortcut", "xxxx");
@@ -556,7 +615,7 @@ public class ComposedFacetContentServiceTests
                     Alias = "countries",
                 },
             ],
-            Clauses = [new FacetClause { Clause = "countries.location_type_id=1", EnforceConstraint = true }],
+            Clauses = [new FacetClause { Clause = countryClause, EnforceConstraint = true }],
         };
 
         var targetFacet = new Facet

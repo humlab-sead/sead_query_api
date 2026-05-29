@@ -273,10 +273,46 @@ Common local issues and the first thing to check:
 
 Because the repository contains long-lived historical material and redesign work in parallel, always verify whether you are modifying the active runtime, test infrastructure, or the in-progress composer before debugging deeper.
 
+## Choosing The Right Document
+
+Use this section when you are deciding where new documentation should live or which existing document to update.
+
+Keep decision documents, phase plans, task plans, and durable system documents separate when the work is substantial. For small changes, a proposal may include a short delivery-order or implementation-handoff section instead of a separate phase plan.
+
+### Document roles
+
+- `README.md`: front door for project overview, quick start, and links to the main documents
+- `docs/DEVELOPMENT.md`: contributor workflow, local setup, build and test commands, repository conventions, and documentation-placement guidance
+- `docs/DESIGN.md`: active architecture, component boundaries, runtime flows, design constraints, and major technical decisions
+- `docs/REQUIREMENTS.md`: durable system requirements that should outlive a specific proposal
+- `docs/TESTING.md`: repository testing strategy, validation expectations, and testing guidance
+- `docs/OPERATIONS.md`: environments, deployment, rollback, observability, and operational readiness
+- `docs/proposals/<name>.md`: proposal or change request document for problem, recommendation, tradeoffs, risks, and open questions
+- `docs/proposals/<name>/IMPLEMENTATION_PLAN.md`: ordered multi-phase path from current state to target state for major efforts
+- `docs/proposals/<name>/TASK_PLAN_PHASE_N.md`: concrete implementation work for one phase, including work breakdown, validation, and definition of done
+- `docs/archive/` and proposal archive folders: historical material that is no longer authoritative
+
+### Practical rules of thumb
+
+- If the reader needs to decide whether to do the work, update or create a proposal.
+- If the decision is already made and the reader needs the ordered delivery path, update or create a phase plan.
+- If one phase needs concrete implementation steps, update or create a task plan.
+- If the content should remain true after the proposal is closed, move it into a durable document.
+- If the content is only historical, archive it.
+
+### Default recommendation for major proposals
+
+For major proposals, prefer this document set:
+
+- one proposal or change request document as the master decision record
+- one separate phase plan as the execution-sequencing document
+- one task plan per active phase when that phase needs tracked implementation work
+- updates to durable docs as design, requirements, development guidance, or operations truth becomes stable
+
 ## Related Documents
 
 - `README.md`: short overview and entry point
 - `docs/DESIGN.md`: current architecture and overhaul boundaries
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/system_requirements_specification.md`: query-engine overhaul requirements
+- `docs/REQUIREMENTS.md`: durable query-engine requirements
 - `docs/TESTING.md`: TBD
 - `docs/OPERATIONS.md`: TBD

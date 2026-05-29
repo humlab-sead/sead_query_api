@@ -35,7 +35,7 @@ namespace SQT.LiveServices
         public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId) =>
             ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
 
-        public static IEnumerable<object[]> SupportedComposedLiveUris =>
+        public static IEnumerable<object[]> SupportedComposedVisibleAndDiscreteLiveUris =>
             [
                 ["result_facet:sites@4/result_facet"],
                 ["sites:sample_groups@1/sites"],
@@ -64,6 +64,10 @@ namespace SQT.LiveServices
                 ["sample_groups:country@1,2,5/sample_groups"],
                 ["data_types:country@1,2,5/data_types"],
                 ["rdb_systems:country@1,2,5/rdb_systems"],
+            ];
+
+        public static IEnumerable<object[]> SupportedComposedRangeLiveUris =>
+            [
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -71,6 +75,9 @@ namespace SQT.LiveServices
                 ["tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37"],
                 ["abundances_all:country@1,2,5/abundances_all"],
             ];
+
+        public static IEnumerable<object[]> SupportedComposedLiveUris =>
+            [.. SupportedComposedVisibleAndDiscreteLiveUris, .. SupportedComposedRangeLiveUris];
 
         [Theory]
         [InlineData("genus:genus")]
@@ -103,6 +110,22 @@ namespace SQT.LiveServices
         }
 
         [Theory]
+        [InlineData("analysis_entity_ages:analysis_entity_ages")]
+        public void FacetContentService_UnsupportedIntersectSlice_FallsBackToLegacyFacetContent(string uri)
+        {
+            AssertFallsBackToLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData(
+            "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"
+        )]
+        public void FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent(string uri)
+        {
+            AssertFallsBackToLegacyFacetContent(uri);
+        }
+
+        [Theory]
         [MemberData(nameof(SupportedComposedLiveUris))]
         public void FacetContentService_ComposedSupportedLiveSlices_UseComposedFacetContentQuery(string uri)
         {
@@ -112,6 +135,34 @@ namespace SQT.LiveServices
         [Theory]
         [MemberData(nameof(SupportedComposedLiveUris))]
         public void FacetContentService_ComposedSupportedLiveSlices_MatchLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedRangeLiveUris))]
+        public void FacetContentService_ComposedSupportedRangeLiveSlices_UseComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedRangeLiveUris))]
+        public void FacetContentService_ComposedSupportedRangeLiveSlices_MatchLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedVisibleAndDiscreteLiveUris))]
+        public void FacetContentService_ComposedSupportedVisibleAndDiscreteLiveSlices_UseComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedComposedVisibleAndDiscreteLiveUris))]
+        public void FacetContentService_ComposedSupportedVisibleAndDiscreteLiveSlices_MatchLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
@@ -529,6 +580,28 @@ namespace SQT.LiveServices
             Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(composedData.Items));
             Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(composedData.Distribution.Values));
             Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), composedData.Picks.Keys.OrderBy(key => key));
+        }
+
+        private void AssertFallsBackToLegacyFacetContent(string uri)
+        {
+            var facetsConfig = UriToFacetsConfig(uri);
+            var composedService = Container.Resolve<IComposedFacetContentService>();
+            var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
+            var legacyService = CreateLegacyFacetContentService();
+
+            Assert.False(composedService.CanHandle(facetsConfig));
+            Assert.NotNull(service.ComposedFacetContentService);
+
+            var data = service.Load(facetsConfig);
+            var legacyData = legacyService.Load(UriToFacetsConfig(uri));
+
+            Assert.NotNull(data);
+            Assert.DoesNotContain("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Equal(legacyData.SqlQuery, data.SqlQuery);
+            Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(data.Items));
+            Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(data.Distribution.Values));
+            Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), data.Picks.Keys.OrderBy(key => key));
         }
 
         private static List<string> ToCategoryCounts(IEnumerable<CategoryItem> items)

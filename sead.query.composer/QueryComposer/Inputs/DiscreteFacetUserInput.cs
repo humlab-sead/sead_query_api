@@ -11,7 +11,7 @@ public sealed class DiscreteFacetUserInput
     /// <summary>
     /// Selected facet values.
     /// </summary>
-    public List<object> Picks { get; init; } = [];
+    public IReadOnlyList<object> Picks { get; init; } = [];
 
     /// <summary>
     /// Comparison operator for the selected values.

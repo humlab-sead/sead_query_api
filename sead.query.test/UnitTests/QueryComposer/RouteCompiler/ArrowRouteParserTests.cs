@@ -46,6 +46,22 @@ public class ArrowRouteParserTests
         parser.Should().NotBeNull();
     }
 
+    [Fact]
+    public void ResolveRoute_ExposesReadOnlyRouteContract()
+    {
+        typeof(IArrowRouteParser)
+            .GetMethod(nameof(IArrowRouteParser.ResolveRoute))!
+            .ReturnType
+            .Should()
+            .Be(typeof(IReadOnlyList<string>));
+
+        typeof(ArrowRouteParser)
+            .GetMethod(nameof(ArrowRouteParser.ResolveRoute))!
+            .ReturnType
+            .Should()
+            .Be(typeof(IReadOnlyList<string>));
+    }
+
     #endregion
 
     #region ResolveRoute - Basic Functionality Tests

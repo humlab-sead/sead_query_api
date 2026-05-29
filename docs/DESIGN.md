@@ -97,6 +97,72 @@ The overhaul is no longer only a design direction.
 
 This means `docs/DESIGN.md` should describe both the current authoritative runtime and the intended architectural destination, while keeping the delivery state explicit.
 
+## Current Overhaul Contract Surface
+
+The current composed path depends on a small contract surface that is already active in the branch runtime.
+
+### Route Contract
+
+- Route definitions are explicit traversal inputs, not inferred global join searches.
+- The active route contract is owned by the route parser, route graph, route resolver, and route SQL compiler in `sead.query.composer/QueryComposer/RouteCompiler/`.
+- The arrow-route parser resolves route expressions to a read-only table-chain contract before graph resolution and SQL compilation continue.
+- Route compilation expects an explicit table chain before SQL generation and is responsible for emitting the table-traversal SQL used by composed filtering and target joins.
+- The current route compiler interface accepts that table chain as a read-only input contract rather than requiring callers to provide a mutable collection.
+- Missing route table chains are explicit input-validation failures at the route compiler boundary, not incidental null dereferences.
+- The anchor-template route segments used to construct that table chain are also exposed as a read-only contract.
+
+### Anchor Contract
+
+- One composed query context uses one anchor type.
+- Active facet predicates must resolve to the same anchor identity before they can be composed.
+- Anchor mismatches are validation failures, not cases for silent repair.
+
+### Facet-Resolver Contract
+
+- Facet-type-specific resolver logic is responsible for turning facet configuration into anchor-key-producing predicate plans.
+- The currently integrated picked-filter resolver path is the discrete-facet path used by the composed runtime slice.
+- The discrete picked-filter input now exposes selected values as a read-only contract rather than a mutable collection.
+- The discrete picked-filter operator must be non-empty; missing operators are explicit argument-validation failures rather than incidental null references or malformed SQL.
+- Predicate planning now also supports same-table source-key overrides and enforced same-table facet clauses for the validated discrete predicate scenarios.
+
+### Composed-Query Contract
+
+- Predicate plans are composed through one anchor-key contract rather than through one global join shape.
+- The current implementation combines compatible predicate plans through `INTERSECT`-style anchor-set composition.
+- The composed filter must preserve the active anchor-key alias through the final composed SQL, including non-default aliases carried by validated predicate plans.
+- Zero-filter, single-filter, and incompatible-anchor cases are treated as explicit contract cases rather than incidental SQL side effects.
+
+### Facet-Content Contract
+
+- Target facet content is generated from the composed anchor set, not from a re-expanded global join template.
+- The current composed content path supports direct aggregate/result targets and routed visible targets whose category expression can be resolved either on the routed target table or on joined target-facet tables.
+- The currently validated target set includes the baseline visible-target slices, multiple adjacent discrete targets, and the first validated range-target families recorded in the phase-0 tracker.
+
+### Unsupported-Request Boundary
+
+- Unsupported composed requests must remain explicit.
+- `FacetContentService.Load` uses the composed path only when `ComposedFacetContentService.CanHandle(...)` returns `true`; otherwise it falls back to the legacy category-count path.
+- Predicate-side clauses that cannot be normalized onto the predicate source table, including joined-table clause references, remain outside the composed contract and continue to fall back before composed execution starts.
+- Discrete targets whose join key cannot be derived from a simple target expression and that do not expose a real target primary key also remain outside the composed contract and fall back before composed execution starts.
+- `ComposedFacetContentService.Load` throws for direct unsupported use with an actionable error that tells callers to check `CanHandle(...)` first or to use `FacetContentService` for legacy fallback.
+- The current boundary is still the legacy category-count path for requests outside the validated composed contract.
+- Remaining unsupported visible facets are the ones whose predicate side still does not resolve cleanly to a source-table key or whose target-side join key cannot yet be derived from the routed target contract.
+
+### Current Validation Anchors
+
+- The current route-parser contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/ArrowRouteParser.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/ArrowRouteParserTests.cs`.
+- The current discrete resolver input-validation contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolver.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolverTests.cs`.
+- The grouped live support matrix is maintained in `sead.query.test/LiveTests/FacetLoadService.cs` through `SupportedComposedLiveUris`.
+- The supported visible and discrete subset is also grouped explicitly in that file through `SupportedComposedVisibleAndDiscreteLiveUris` and the `FacetContentService_ComposedSupportedVisibleAndDiscreteLiveSlices_*` tests.
+- The supported range subset is also grouped explicitly in that file through `SupportedComposedRangeLiveUris` and the `FacetContentService_ComposedSupportedRangeLiveSlices_*` tests.
+- The active composed-path assertions in that file are `FacetContentService_ComposedSupportedLiveSlices_UseComposedFacetContentQuery` and `FacetContentService_ComposedSupportedLiveSlices_MatchLegacyFacetContent`.
+- The current unsupported intersect fallback boundary is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_UnsupportedIntersectSlice_FallsBackToLegacyFacetContent`.
+- The current unsupported GIS polygon fallback boundary is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent`.
+- The runtime handoff between composed and legacy behavior is anchored in `sead.query.core/Services/FacetContent/FacetContentService.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`.
+- The current direct unsupported-load boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
+- The current composed-query alias contract is anchored in `sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs` and `sead.query.test/UnitTests/QueryComposer/Strategies/IntersectComposedFilterQueryComposerTests.cs`.
+- The current route compiler input-validation contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/RouteSqlCompiler.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/RouteSqlCompilerTests.cs`.
+
 ## Planned Overhaul Components
 
 The overhaul introduces or formalizes the following responsibilities.
@@ -230,8 +296,8 @@ The system is intentionally database-aware. It is not designed around full datab
 - `docs/DIAGRAMS.md`: visual overview of core interactions and workflows
 - `docs/REQUIREMENTS.md`: durable system requirements for the active architecture direction
 - `docs/proposals/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`: top-level change request and bird's-eye overview of the overhaul
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/implementation_and_migration_plan.md`: execution tracker for the widening and migration work
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/system_requirements_specification.md`: proposal-era technical source material for the overhaul
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_0.md`: phase-0 execution tracker for the vertical slice and widening work
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/archive/system_requirements_specification.md`: archived proposal-era technical source material for the overhaul
 - `docs/DEVELOPMENT.md`: contributor workflow and local development guidance
 - `docs/TESTING.md`: test strategy and validation guidance
 - `docs/OPERATIONS.md`: runtime and deployment guidance

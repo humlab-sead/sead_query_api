@@ -21,13 +21,13 @@ public interface IRouteSqlCompiler
     /// </summary>
     /// <param name="tables"></param>
     /// <returns></returns>
-    string Compile(List<string> tables);
+    string Compile(IReadOnlyList<string> tables);
 
-    string Compile(List<string> tables, string targetKeyColumn);
+    string Compile(IReadOnlyList<string> tables, string targetKeyColumn);
 
-    string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn);
+    string Compile(IReadOnlyList<string> tables, string sourceKeyColumn, string targetKeyColumn);
 
-    string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn, IReadOnlyList<string> sourceCriteria);
+    string Compile(IReadOnlyList<string> tables, string sourceKeyColumn, string targetKeyColumn, IReadOnlyList<string> sourceCriteria);
 }
 
 public class RouteSqlCompiler : IRouteSqlCompiler
@@ -41,23 +41,30 @@ public class RouteSqlCompiler : IRouteSqlCompiler
         _routeGraph = routeGraph;
     }
 
-    public string Compile(List<string> tables)
+    public string Compile(IReadOnlyList<string> tables)
     {
         return Compile(tables, null, null);
     }
 
-    public string Compile(List<string> tables, string targetKeyColumn)
+    public string Compile(IReadOnlyList<string> tables, string targetKeyColumn)
     {
         return Compile(tables, null, targetKeyColumn);
     }
 
-    public string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn)
+    public string Compile(IReadOnlyList<string> tables, string sourceKeyColumn, string targetKeyColumn)
     {
         return Compile(tables, sourceKeyColumn, targetKeyColumn, []);
     }
 
-    public string Compile(List<string> tables, string sourceKeyColumn, string targetKeyColumn, IReadOnlyList<string> sourceCriteria)
+    public string Compile(
+        IReadOnlyList<string> tables,
+        string sourceKeyColumn,
+        string targetKeyColumn,
+        IReadOnlyList<string> sourceCriteria
+    )
     {
+        ArgumentNullException.ThrowIfNull(tables);
+
         if (tables.Count < 1)
             throw new ArgumentException("At least one table is required to compile a route.");
 

@@ -45,4 +45,4 @@ The right description of branch status is:
 
 ## Recommended Use Of This Assessment
 
-Use this file as a branch snapshot and review note. Use `QUERY_ENGINE_OVERHAL.md` as the main change request, `implementation_and_migration_plan.md` as the implementation handoff, and `docs/REQUIREMENTS.md` plus `docs/DESIGN.md` as the durable system documents.
+Use this file as a branch snapshot and review note. Use `QUERY_ENGINE_OVERHAL.md` as the main change request, `TASK_PLAN_PHASE_0.md` as the phase-0 implementation handoff, and `docs/REQUIREMENTS.md` plus `docs/DESIGN.md` as the durable system documents.

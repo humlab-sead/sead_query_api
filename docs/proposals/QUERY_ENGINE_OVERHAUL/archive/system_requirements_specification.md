@@ -162,4 +162,3 @@ Validation should follow the implementation path, not wait for a full rewrite.
 Continue the overhaul, but narrow it.
 
 The next target should be a compiled, tested vertical slice built on explicit routes and anchor-key predicates. Treat the current branch as proof of direction, not as a completed migration plan.
-

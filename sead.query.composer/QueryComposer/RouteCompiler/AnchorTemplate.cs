@@ -15,7 +15,7 @@ public sealed class AnchorTemplate
     /// <summary>
     /// Ordered route segments between the facet source table and the anchor table.
     /// </summary>
-    public List<string> Route { get; init; } = [];
+    public IReadOnlyList<string> Route { get; init; } = [];
 
     /// <summary>
     /// True when the generated base query should enforce distinct source and anchor pairs.

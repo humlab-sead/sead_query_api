@@ -68,6 +68,23 @@ public class IntersectComposedFilterQueryComposerTests
     }
 
     [Fact]
+    public void Compose_WithCustomAnchorKeyAlias_UsesAliasInComposedSql()
+    {
+        var predicateSql = CreatePredicateQueryPlan(
+            "facet_a",
+            "select source_id, anchor_id from predicate_source;",
+            anchorKeyColumn: "anchor_id"
+        );
+
+        var result = _composer.Compose([predicateSql], "tbl_samples", "anchor_id");
+
+        result.AnchorKeyColumn.Should().Be("anchor_id");
+        result.PredicateQueries.Should().ContainSingle().Which.AnchorKeyColumn.Should().Be("anchor_id");
+        result.Sql.Should().Contain("select distinct anchor_id");
+        result.Sql.Should().NotContain("select distinct target_id");
+    }
+
+    [Fact]
     public void Compose_WithMultiplePredicateQueries_UsesIntersectAcrossAllQueries()
     {
         var first = CreatePredicateQueryPlan("facet_a", "select source_id, target_id from predicate_one");

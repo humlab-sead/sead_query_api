@@ -10,7 +10,7 @@ It is not a proposal and not an implementation log. It describes the requirement
 
 - Current authoritative runtime: the legacy faceted query pipeline, plus the supported composed slice on the `query-engine-overhaul` branch.
 - Required direction: route-based, anchor-centered query composition.
-- Current branch status: one discrete vertical slice is integrated and validated; widening across adjacent targets is in progress.
+- Current branch status: one proven vertical slice is integrated and validated, and the composed path is already widened across multiple discrete target families and initial range-target support.
 
 ## Core Terms
 
@@ -28,9 +28,11 @@ It is not a proposal and not an implementation log. It describes the requirement
 - The system must support a chain of facets composed dynamically from user input.
 - Each active filtering facet must resolve to a query that returns distinct anchor keys.
 - All active facets in one composed query must return keys for the same anchor type.
+- Composed filtering must keep only anchor keys that survive all active facet predicates.
 - The runtime must reject incompatible anchor mixes explicitly.
 - A facet may support more than one anchor type, but only through explicit configuration.
 - If a facet has no active user input, it must not change the composed filtering result.
+- The runtime may implement composed filtering with `INTERSECT` or equivalent inner-join semantics, as long as the shared anchor contract is preserved.
 
 ### Route And Traversal
 
@@ -76,8 +78,10 @@ It is not a proposal and not an implementation log. It describes the requirement
 ### Testability
 
 - Route parsing and route resolution must be unit-testable.
+- Anchor-key-producing facet predicates must be testable through stable contract-level checks.
 - Facet predicate resolution must be testable independently of the final runtime path.
 - Runtime integration must be validated through focused and grouped regression coverage.
+- Migration validation must compare legacy and composed behavior separately for facet content and final result generation.
 
 ### Debuggability
 
@@ -100,7 +104,7 @@ It is not a proposal and not an implementation log. It describes the requirement
 The following points are already required and partially delivered in the branch:
 
 - explicit route-based composition is the target architecture
-- one compiled discrete vertical slice is integrated and validated
+- one proven vertical slice is integrated and validated
 - widening across adjacent discrete and range targets is active
 
 The following remain required but not yet fully delivered:
@@ -113,10 +117,12 @@ The following remain required but not yet fully delivered:
 
 - This document does not define rollout scheduling.
 - This document does not define staffing or delivery ownership.
+- This document does not define feature-flag infrastructure.
+- This document does not define operational risk management.
 - This document does not define frontend behavior beyond backend query and content requirements.
 
 ## Related Documents
 
 - `docs/DESIGN.md`
 - `docs/proposals/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/implementation_and_migration_plan.md`
+- `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_0.md`

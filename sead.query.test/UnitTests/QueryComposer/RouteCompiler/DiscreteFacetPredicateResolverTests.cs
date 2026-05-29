@@ -36,8 +36,8 @@ public class DiscreteFacetPredicateResolverTests
         var sql = _resolver.ResolveSql("tbl_sites", "site_id", input, anchorTemplate, "tbl_samples", "sample_id");
 
         sql.Should().Be("select source_id, target_id from custom_sql");
-        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>()), Times.Never);
-        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<IReadOnlyList<string>>()), Times.Never);
+        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<IReadOnlyList<string>>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class DiscreteFacetPredicateResolverTests
         _routeSqlCompiler
             .Setup(x =>
                 x.Compile(
-                    It.Is<List<string>>(tables =>
+                    It.Is<IReadOnlyList<string>>(tables =>
                         tables.Count == 3 && tables[0] == "tbl_sites" && tables[1] == "tbl_sample_groups" && tables[2] == "tbl_samples"
                     ),
                     "site_id",
@@ -78,7 +78,7 @@ public class DiscreteFacetPredicateResolverTests
         _routeSqlCompiler
             .Setup(x =>
                 x.Compile(
-                    It.Is<List<string>>(tables =>
+                    It.Is<IReadOnlyList<string>>(tables =>
                         tables.Count == 3
                         && tables[0] == "facet.site_location_shortcut"
                         && tables[1] == "tbl_sites"
@@ -114,7 +114,7 @@ public class DiscreteFacetPredicateResolverTests
         _routeSqlCompiler
             .Setup(x =>
                 x.Compile(
-                    It.Is<List<string>>(tables =>
+                    It.Is<IReadOnlyList<string>>(tables =>
                         tables.Count == 3
                         && tables[0] == "facet.site_location_shortcut"
                         && tables[1] == "tbl_sites"
@@ -173,8 +173,8 @@ public class DiscreteFacetPredicateResolverTests
 
         sql.Should().Contain("select distinct site_id as source_id, site_id as target_id");
         sql.Should().Contain("from tbl_sites");
-        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>()), Times.Never);
-        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<List<string>>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<IReadOnlyList<string>>()), Times.Never);
+        _routeSqlCompiler.Verify(x => x.Compile(It.IsAny<IReadOnlyList<string>>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -198,5 +198,19 @@ public class DiscreteFacetPredicateResolverTests
         Action act = () => _resolver.ResolveSql("tbl_sites", "site_id", input, anchorTemplate, "tbl_sites", "site_id");
 
         act.Should().Throw<ArgumentException>().WithMessage("*exactly one selected value*");
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void ResolveSql_WithMissingOperator_ThrowsArgumentException(string @operator)
+    {
+        var input = new DiscreteFacetUserInput { Picks = [1], Operator = @operator! };
+        var anchorTemplate = new AnchorTemplate();
+
+        Action act = () => _resolver.ResolveSql("tbl_sites", "site_id", input, anchorTemplate, "tbl_sites", "site_id");
+
+        act.Should().Throw<ArgumentException>().WithParameterName("userInput").WithMessage("*operator*");
     }
 }

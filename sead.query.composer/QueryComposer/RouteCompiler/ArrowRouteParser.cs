@@ -22,7 +22,7 @@ public interface IArrowRouteParser
     /// Output: ["sites", "samples", "sample_groups", "results"]
     /// (where SAMPLE_CHAIN expands to "samples -> sample_groups")
     /// </example>
-    List<string> ResolveRoute(string route);
+    IReadOnlyList<string> ResolveRoute(string route);
 }
 
 /// <summary>
@@ -79,7 +79,7 @@ public sealed class ArrowRouteParser : IArrowRouteParser
     /// // If DATING_CHAIN = "samples -> dating_results"
     /// // Returns: ["sites", "samples", "dating_results"]
     /// </example>
-    public List<string> ResolveRoute(string route)
+    public IReadOnlyList<string> ResolveRoute(string route)
     {
         if (string.IsNullOrWhiteSpace(route))
             throw new ArgumentException("Route is null or empty.", nameof(route));

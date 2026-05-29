@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
@@ -9,6 +10,18 @@ namespace SQT.UnitTests.QueryComposer.RouteCompiler;
 
 public class RouteSqlCompilerTests
 {
+    [Fact]
+    public void Compile_WithNullTables_ThrowsArgumentNullException()
+    {
+        var repository = new Mock<IRouteRepository>();
+        var routeResolver = new Mock<IRouteResolver>();
+        var compiler = new RouteSqlCompiler(repository.Object, routeResolver.Object);
+
+        Action act = () => compiler.Compile(null!);
+
+        act.Should().Throw<ArgumentNullException>().WithParameterName("tables");
+    }
+
     [Fact]
     public void Compile_WithMultiHopRoute_SelectsTargetKeyFromFinalAlias()
     {

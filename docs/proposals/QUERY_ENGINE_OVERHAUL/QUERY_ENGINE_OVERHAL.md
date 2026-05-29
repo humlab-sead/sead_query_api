@@ -209,9 +209,9 @@ Acceptance criteria for the overall change request are:
 Use the documents in this order.
 
 - `QUERY_ENGINE_OVERHAL.md`: top-level change request and bird's-eye view
-- `implementation_and_migration_plan.md`: execution tracker and widening log
-- `system_requirements_specification.md`: proposal-era technical requirements source material
+- `TASK_PLAN_PHASE_0.md`: phase-0 execution tracker and widening log
 - `docs/REQUIREMENTS.md`: durable system requirements for the active architecture direction
+- `archive/system_requirements_specification.md`: archived proposal-era technical requirements source material
 - `docs/DESIGN.md`: durable architecture and runtime-structure documentation
 
 The older problem statement and rationale material has been consolidated into this master CR.

@@ -47,7 +47,7 @@ Then open the local URL reported by ASP.NET Core at startup.
 - [Development](docs/DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
 - [Diagrams](docs/DIAGRAMS.md)
-- [Query engine overhaul proposal](docs/proposals/QUERY_ENGINE_OVERHAUL/system_requirements_specification.md)
+- [Requirements](docs/REQUIREMENTS.md)
 - [Operations](docs/OPERATIONS.md)
 - Docker guide: `TBD`
 - [Agent guidance](AGENTS.md) (`.github/instructions/` contains the focused repository instruction files)
