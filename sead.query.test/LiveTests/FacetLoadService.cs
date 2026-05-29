@@ -66,6 +66,7 @@ namespace SQT.LiveServices
                 ["tbl_biblio_sites:country@1,2,5/tbl_biblio_sites"],
                 ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
                 ["region:country@1,2,5/region"],
+                ["activeseason:activeseason"],
                 ["activeseason:country@1,2,5/activeseason"],
                 ["sample_groups:sample_groups"],
                 ["sample_groups:country@1,2,5/sample_groups"],
@@ -298,6 +299,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("dataset_methods:dataset_methods")]
         public void FacetContentService_ComposedTargetOnlyDatasetMethodsSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("activeseason:activeseason")]
+        public void FacetContentService_ComposedTargetOnlyActiveSeasonSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [InlineData("activeseason:activeseason")]
+        public void FacetContentService_ComposedTargetOnlyActiveSeasonSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
