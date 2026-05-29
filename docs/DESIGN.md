@@ -136,6 +136,8 @@ The current composed path depends on a small contract surface that is already ac
 
 - Target facet content is generated from the composed anchor set, not from a re-expanded global join template.
 - The current composed content path supports direct aggregate/result targets and routed visible targets whose category expression can be resolved either on the routed target table or on joined target-facet tables.
+- The current composed content path also supports target-only discrete requests by using an explicit unfiltered anchor-set query instead of requiring prior picked predicates.
+- Routed target-only discrete requests now overlay legacy-style discrete category-info rows onto composed counts so the composed result can retain zero-count categories where the legacy discrete path exposes them.
 - The currently validated target set includes the baseline visible-target slices, multiple adjacent discrete targets, and the first validated range-target families recorded in the phase-0 tracker.
 
 ### Unsupported-Request Boundary
@@ -144,6 +146,7 @@ The current composed path depends on a small contract surface that is already ac
 - `FacetContentService.Load` uses the composed path only when `ComposedFacetContentService.CanHandle(...)` returns `true`; otherwise it falls back to the legacy category-count path.
 - Predicate-side clauses that cannot be normalized onto the predicate source table, including joined-table clause references, remain outside the composed contract and continue to fall back before composed execution starts.
 - Discrete targets whose join key cannot be derived from a simple target expression and that do not expose a real target primary key also remain outside the composed contract and fall back before composed execution starts.
+- Target-only discrete requests remain outside the composed contract when routed zero-predicate execution still cannot derive the target-side join key, resolve the target route, or enumerate the legacy-compatible outer category set.
 - `ComposedFacetContentService.Load` throws for direct unsupported use with an actionable error that tells callers to check `CanHandle(...)` first or to use `FacetContentService` for legacy fallback.
 - The current boundary is still the legacy category-count path for requests outside the validated composed contract.
 - Remaining unsupported visible facets are the ones whose predicate side still does not resolve cleanly to a source-table key or whose target-side join key cannot yet be derived from the routed target contract.
@@ -160,8 +163,11 @@ The current composed path depends on a small contract surface that is already ac
 - The current unsupported GIS polygon fallback boundary is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent`.
 - The runtime handoff between composed and legacy behavior is anchored in `sead.query.core/Services/FacetContent/FacetContentService.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`.
 - The current direct unsupported-load boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
+- The current same-table target-only discrete contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
+- The current routed target-only discrete outer-category overlay contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
 - The current composed-query alias contract is anchored in `sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs` and `sead.query.test/UnitTests/QueryComposer/Strategies/IntersectComposedFilterQueryComposerTests.cs`.
 - The current route compiler input-validation contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/RouteSqlCompiler.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/RouteSqlCompilerTests.cs`.
+- The current routed zero-predicate genus validation is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_ComposedTargetOnlyGenusSlice_*` and the grouped `SupportedComposedVisibleAndDiscreteLiveUris` matrix.
 
 ## Planned Overhaul Components
 

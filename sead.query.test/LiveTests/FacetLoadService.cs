@@ -43,10 +43,12 @@ namespace SQT.LiveServices
                 ["country:sites@4/country"],
                 ["constructions:sites@4/constructions"],
                 ["ecocode:sites@4/ecocode"],
+                ["sites:sites"],
                 ["sites:country@1,2,5/sites"],
                 ["ecocode:country@1,2,5/ecocode"],
                 ["feature_type:country@1,2,5/feature_type"],
                 ["ecocode_system:country@1,2,5/ecocode_system"],
+                ["genus:genus"],
                 ["genus:country@1,2,5/genus"],
                 ["species:country@1,2,5/species"],
                 ["species_author:country@1,2,5/species_author"],
@@ -61,6 +63,7 @@ namespace SQT.LiveServices
                 ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
                 ["region:country@1,2,5/region"],
                 ["activeseason:country@1,2,5/activeseason"],
+                ["sample_groups:sample_groups"],
                 ["sample_groups:country@1,2,5/sample_groups"],
                 ["data_types:country@1,2,5/data_types"],
                 ["rdb_systems:country@1,2,5/rdb_systems"],
@@ -163,6 +166,48 @@ namespace SQT.LiveServices
         [Theory]
         [MemberData(nameof(SupportedComposedVisibleAndDiscreteLiveUris))]
         public void FacetContentService_ComposedSupportedVisibleAndDiscreteLiveSlices_MatchLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("genus:genus")]
+        public void FacetContentService_ComposedTargetOnlyGenusSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_genera");
+        }
+
+        [Theory]
+        [InlineData("genus:genus")]
+        public void FacetContentService_ComposedTargetOnlyGenusSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("sites:sites")]
+        public void FacetContentService_ComposedTargetOnlySitesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_sites");
+        }
+
+        [Theory]
+        [InlineData("sites:sites")]
+        public void FacetContentService_ComposedTargetOnlySitesSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("sample_groups:sample_groups")]
+        public void FacetContentService_ComposedTargetOnlySampleGroupsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_sample_groups");
+        }
+
+        [Theory]
+        [InlineData("sample_groups:sample_groups")]
+        public void FacetContentService_ComposedTargetOnlySampleGroupsSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

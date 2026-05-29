@@ -6,6 +6,7 @@ using Moq;
 using SeadQueryComposer.QueryComposer.Services;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
+using SeadQueryCore.Plugin.Discrete;
 using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.QueryComposer;
@@ -103,6 +104,125 @@ public class ComposedFacetContentServiceTests
         result.SqlQuery.Should().Contain("join target_route on target_route.target_id = site_tbl.site_id");
         result.SqlQuery.Should().Contain("join composed_filter on composed_filter.target_id = target_route.source_id");
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Once);
+    }
+
+    [Fact]
+    public void CanHandle_WithTargetOnlyDiscreteRequest_ReturnsTrue()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateTargetOnlyDiscreteFacetsConfig();
+
+        service.CanHandle(facetsConfig).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanHandle_WithTargetOnlyDiscreteRequestUsingDifferentAnchorTable_ReturnsTrue()
+    {
+        var service = CreateService();
+        var facetsConfig = CreateTargetOnlyRoutedDiscreteFacetsConfig();
+
+        service.CanHandle(facetsConfig).Should().BeTrue();
+    }
+
+    [Fact]
+    public void Load_WithTargetOnlyDiscreteRequest_UsesUnfilteredAnchorQuery()
+    {
+        var fakeItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "Pinus",
+                Count = 4,
+                Name = "Pinus",
+                Extent = [4],
+            },
+        };
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        string capturedSql = null;
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Callback<string, Func<IDataReader, CategoryItem>>((sql, _) => capturedSql = sql)
+            .Returns(fakeItems);
+
+        var service = CreateService(queryProxy.Object);
+        var facetsConfig = CreateTargetOnlyDiscreteFacetsConfig();
+
+        var result = service.Load(facetsConfig);
+
+        result.Items.Should().BeEquivalentTo(fakeItems);
+        result.SqlQuery.Should().Be(capturedSql);
+        result.SqlQuery.Should().Contain("select distinct genus_id as target_id");
+        result.SqlQuery.Should().Contain("from tbl_taxa_tree_genera");
+        result.SqlQuery.Should().Contain("join composed_filter on composed_filter.target_id = tbl_taxa_tree_genera.genus_id");
+        result.SqlQuery.Should().NotContain("predicate_0 as");
+    }
+
+    [Fact]
+    public void Load_WithTargetOnlyRoutedDiscreteRequest_UsesOuterCategoryInfoForReturnedItems()
+    {
+        var countedItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "12",
+                Count = 2,
+                Name = "12",
+                Extent = [2],
+            },
+        };
+        var outerItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "12",
+                Count = 0,
+                Name = "Feature 12",
+                Extent = [0],
+            },
+            new()
+            {
+                Category = "99",
+                Count = 0,
+                Name = "Feature 99",
+                Extent = [0],
+            },
+        };
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        const string outerCategorySql = "select '12' as category, 'Feature 12' as name union all select '99', 'Feature 99'";
+        string capturedSql = null;
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql == outerCategorySql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Returns(outerItems);
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql != outerCategorySql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Callback<string, Func<IDataReader, CategoryItem>>((sql, _) => capturedSql = sql)
+            .Returns(countedItems);
+
+        var discreteCategoryInfoService = new Mock<IDiscreteCategoryInfoService>();
+        discreteCategoryInfoService.SetupGet(service => service.SqlCompiler).Returns(Mock.Of<IDiscreteCategoryInfoSqlCompiler>());
+        discreteCategoryInfoService
+            .Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "feature_type", null))
+            .Returns(new FacetContent.CategoryInfo { Count = 2, Query = outerCategorySql });
+
+        var service = CreateService(queryProxy.Object, discreteCategoryInfoService: discreteCategoryInfoService.Object);
+        var facetsConfig = CreateTargetOnlyRoutedDiscreteFacetsConfig();
+
+        var result = service.Load(facetsConfig);
+
+        result.SqlQuery.Should().Be(capturedSql);
+        result.IntervalInfo.Query.Should().Be(outerCategorySql);
+        result.Items.Should().BeEquivalentTo(
+            new[]
+            {
+                new CategoryItem { Category = "12", Count = 2, Name = "Feature 12", Extent = [0] },
+                new CategoryItem { Category = "99", Count = 0, Name = "Feature 99", Extent = [0] },
+            }
+        );
+        result.Distribution.Should().ContainKey("12");
+        result.Distribution.Should().NotContainKey("99");
+        result.SqlQuery.Should().Contain("target_route as");
+        result.SqlQuery.Should().Contain("join composed_filter");
+        result.SqlQuery.Should().NotContain("predicate_0 as");
     }
 
     [Fact]
@@ -236,7 +356,7 @@ public class ComposedFacetContentServiceTests
         rangeInfoService.SetupGet(service => service.SqlCompiler).Returns(rangeInfoSqlCompiler.Object);
         rangeInfoService.Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "geochronology", null)).Returns(categoryInfo);
 
-        var service = CreateService(queryProxy.Object, rangeInfoService.Object);
+        var service = CreateService(queryProxy.Object, rangeCategoryInfoService: rangeInfoService.Object);
         var facetsConfig = CreateCountryToGeochronologyFacetsConfig();
 
         var result = service.Load(facetsConfig);
@@ -292,7 +412,7 @@ public class ComposedFacetContentServiceTests
         rangeInfoService.SetupGet(service => service.SqlCompiler).Returns(rangeInfoSqlCompiler.Object);
         rangeInfoService.Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "abundances_all", null)).Returns(categoryInfo);
 
-        var service = CreateService(queryProxy.Object, rangeInfoService.Object);
+        var service = CreateService(queryProxy.Object, rangeCategoryInfoService: rangeInfoService.Object);
         var facetsConfig = CreateCountryToAbundancesAllFacetsConfig();
 
         var result = service.Load(facetsConfig);
@@ -375,6 +495,7 @@ public class ComposedFacetContentServiceTests
 
     private static ComposedFacetContentService CreateService(
         ITypedQueryProxy queryProxy = null,
+        IDiscreteCategoryInfoService discreteCategoryInfoService = null,
         IRangeCategoryInfoService rangeCategoryInfoService = null
     )
     {
@@ -430,6 +551,7 @@ public class ComposedFacetContentServiceTests
         joinsClauseCompiler
             .Setup(compiler => compiler.Compile(It.IsAny<List<List<TableRelation>>>(), It.IsAny<FacetsConfig2>()))
             .Returns([]);
+        var defaultDiscreteInfoService = discreteCategoryInfoService ?? Mock.Of<IDiscreteCategoryInfoService>();
         var defaultRangeInfoService = rangeCategoryInfoService ?? Mock.Of<IRangeCategoryInfoService>();
         return new ComposedFacetContentService(
             registry.Object,
@@ -439,6 +561,7 @@ public class ComposedFacetContentServiceTests
             new DiscreteFacetPredicateResolver(routeSqlCompiler),
             new IntersectComposedFilterQueryComposer(),
             new DiscreteFacetContentQueryComposer(new PathFinder([.. graph, .. graph.ReversedEdges()]), joinsClauseCompiler.Object),
+            defaultDiscreteInfoService,
             defaultRangeInfoService
         );
     }
@@ -547,6 +670,54 @@ public class ComposedFacetContentServiceTests
                 new FacetConfig2(countryFacet, 1, string.Empty, [new FacetConfigPick(1), new FacetConfigPick(2), new FacetConfigPick(5)]),
                 new FacetConfig2(targetFacet, 2, string.Empty, []),
             ],
+        };
+    }
+
+    private static FacetsConfig2 CreateTargetOnlyDiscreteFacetsConfig()
+    {
+        var genera = CreateTable(12, "tbl_taxa_tree_genera", "genus_id");
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "genus",
+            FacetId = 30,
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_taxa_tree_genera.genus_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = genera }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "genus",
+            TargetFacet = targetFacet,
+            FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
+        };
+    }
+
+    private static FacetsConfig2 CreateTargetOnlyRoutedDiscreteFacetsConfig()
+    {
+        var featureTypes = CreateTable(6, "tbl_feature_types", "feature_type_id");
+        var physicalSampleFeatures = CreateTable(7, "tbl_physical_sample_features", "physical_sample_feature_id");
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "feature_type",
+            FacetId = 31,
+            FacetTypeId = EFacetType.Discrete,
+            AggregateFacetId = 10,
+            CategoryIdExpr = "tbl_feature_types.feature_type_id",
+            Tables =
+            [
+                new FacetTable { SequenceId = 1, Table = featureTypes },
+                new FacetTable { SequenceId = 2, Table = physicalSampleFeatures },
+            ],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "feature_type",
+            TargetFacet = targetFacet,
+            FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
         };
     }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using SeadQueryComposer.QueryComposer.Inputs;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
+using SeadQueryCore.Plugin.Discrete;
 using SeadQueryCore.Plugin.Range;
 using SeadQueryCore.QueryComposer;
 
@@ -23,6 +24,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     private readonly IDiscreteFacetPredicateResolver _predicateResolver;
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
     private readonly IFacetContentQueryComposer _facetContentQueryComposer;
+    private readonly IDiscreteCategoryInfoService _discreteCategoryInfoService;
     private readonly IRangeCategoryInfoService _rangeCategoryInfoService;
 
     public ComposedFacetContentService(
@@ -33,6 +35,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         IDiscreteFacetPredicateResolver predicateResolver,
         IComposedFilterQueryComposer composedFilterQueryComposer,
         IFacetContentQueryComposer facetContentQueryComposer,
+        IDiscreteCategoryInfoService discreteCategoryInfoService,
         IRangeCategoryInfoService rangeCategoryInfoService
     )
     {
@@ -43,6 +46,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
         _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
         _facetContentQueryComposer = facetContentQueryComposer ?? throw new ArgumentNullException(nameof(facetContentQueryComposer));
+        _discreteCategoryInfoService = discreteCategoryInfoService ?? throw new ArgumentNullException(nameof(discreteCategoryInfoService));
         _rangeCategoryInfoService = rangeCategoryInfoService ?? throw new ArgumentNullException(nameof(rangeCategoryInfoService));
     }
 
@@ -62,12 +66,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             );
         }
 
-        var predicatePlans = request.PredicateConfigs.Select(config => CreatePredicateQueryPlan(config, request)).ToList();
-        var composedFilterQuery = _composedFilterQueryComposer.Compose(
-            predicatePlans,
-            request.AnchorTable,
-            QueryComposerAliases.AnchorKeyColumn
-        );
+        var composedFilterQuery = CreateComposedFilterQuery(request);
         var categoryInfo =
             facetsConfig.TargetFacet.FacetTypeId == EFacetType.Range
                 ? _rangeCategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode)
@@ -108,6 +107,11 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
 
         var categoryItems = _queryProxy.QueryRows(contentQueryPlan.Sql, ToCategoryItem);
+
+        if (request.PredicateConfigs.Count == 0 && !string.IsNullOrWhiteSpace(request.AnchorToTargetSql))
+        {
+            return CreateTargetOnlyDiscreteFacetContent(facetsConfig, contentQueryPlan.Sql, userPicks, categoryItems);
+        }
 
         return new FacetContent
         {
@@ -183,10 +187,6 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
 
         var affectedConfigs = facetsConfig.GetConfigsThatAffectsTarget(facetsConfig.TargetCode, facetsConfig.GetFacetCodes());
-        if (affectedConfigs.Count == 0)
-        {
-            return false;
-        }
 
         var predicateConfigs = affectedConfigs
             .Where(config => !string.Equals(config.FacetCode, facetsConfig.TargetCode, StringComparison.OrdinalIgnoreCase))
@@ -194,19 +194,24 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
         if (predicateConfigs.Count == 0)
         {
-            return false;
-        }
-
-        if (predicateConfigs.Any(config => !config.HasPicks()))
-        {
-            return false;
-        }
-
-        foreach (var config in predicateConfigs)
-        {
-            if (!CanComposePredicate(config, anchorTable))
+            if (targetFacet.FacetTypeId != EFacetType.Discrete)
             {
                 return false;
+            }
+        }
+        else
+        {
+            if (predicateConfigs.Any(config => !config.HasPicks()))
+            {
+                return false;
+            }
+
+            foreach (var config in predicateConfigs)
+            {
+                if (!CanComposePredicate(config, anchorTable))
+                {
+                    return false;
+                }
             }
         }
 
@@ -225,6 +230,53 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
         request = new ComposedFacetContentRequest(anchorTable, anchorKeyColumn, targetJoinColumn, anchorToTargetSql, predicateConfigs);
         return true;
+    }
+
+    private FacetContent CreateTargetOnlyDiscreteFacetContent(
+        FacetsConfig2 facetsConfig,
+        string sqlQuery,
+        Dictionary<string, FacetsConfig2.UserPickData> userPicks,
+        List<CategoryItem> categoryItems
+    )
+    {
+        var categoryInfo = _discreteCategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
+        var categoryCounts = categoryItems.ToDictionary(item => item.Category ?? "(null)");
+        var outerCategoryCounts = _queryProxy.QueryRows(categoryInfo.Query, _discreteCategoryInfoService.SqlCompiler.ToItem).ToList();
+
+        foreach (var item in outerCategoryCounts)
+        {
+            if (categoryCounts.TryGetValue(item.Category ?? "(null)", out var countedItem))
+            {
+                item.Count = countedItem.Count;
+            }
+        }
+
+        return new FacetContent
+        {
+            FacetsConfig = facetsConfig,
+            Items = outerCategoryCounts.Where(item => item.Count != null).ToList(),
+            Distribution = categoryCounts,
+            IntervalInfo = categoryInfo,
+            SqlQuery = sqlQuery,
+            Picks = userPicks ?? [],
+        };
+    }
+
+    private ComposedFilterQuery CreateComposedFilterQuery(ComposedFacetContentRequest request)
+    {
+        if (request.PredicateConfigs.Count > 0)
+        {
+            var predicatePlans = request.PredicateConfigs.Select(config => CreatePredicateQueryPlan(config, request)).ToList();
+            return _composedFilterQueryComposer.Compose(predicatePlans, request.AnchorTable, QueryComposerAliases.AnchorKeyColumn);
+        }
+
+        return new ComposedFilterQuery
+        {
+            AnchorTable = request.AnchorTable,
+            AnchorKeyColumn = QueryComposerAliases.AnchorKeyColumn,
+            PredicateQueries = [],
+            Sql = CreateUnfilteredAnchorSql(request.AnchorTable, request.AnchorKeyColumnName, QueryComposerAliases.AnchorKeyColumn),
+        };
     }
 
     private bool CanComposePredicate(FacetConfig2 config, string anchorTable)
@@ -477,6 +529,15 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     {
         var routeTables = _pathFinder.Find(anchorTable, targetTable).ToTrail();
         return _routeSqlCompiler.Compile(routeTables, anchorKeyColumn, targetJoinColumn);
+    }
+
+    private static string CreateUnfilteredAnchorSql(string anchorTable, string anchorKeyColumnName, string anchorKeyAlias)
+    {
+        var selectedAnchorKey = string.Equals(anchorKeyColumnName, anchorKeyAlias, StringComparison.Ordinal)
+            ? anchorKeyColumnName
+            : $"{anchorKeyColumnName} as {anchorKeyAlias}";
+
+        return $"select distinct {selectedAnchorKey}{Environment.NewLine}from {anchorTable}";
     }
 
     private sealed record ComposedFacetContentRequest(
