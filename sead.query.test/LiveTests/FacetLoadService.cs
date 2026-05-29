@@ -56,6 +56,7 @@ namespace SQT.LiveServices
                 ["dataset_methods:country@1,2,5/dataset_methods"],
                 ["record_types:record_types"],
                 ["record_types:country@1,2,5/record_types"],
+                ["dataset_provider:dataset_provider"],
                 ["dataset_provider:country@1,2,5/dataset_provider"],
                 ["relative_age_name:relative_age_name"],
                 ["relative_age_name:country@1,2,5/relative_age_name"],
@@ -268,6 +269,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("record_types:record_types")]
         public void FacetContentService_ComposedTargetOnlyRecordTypesSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("dataset_provider:dataset_provider")]
+        public void FacetContentService_ComposedTargetOnlyDatasetProviderSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_dataset_masters");
+        }
+
+        [Theory]
+        [InlineData("dataset_provider:dataset_provider")]
+        public void FacetContentService_ComposedTargetOnlyDatasetProviderSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

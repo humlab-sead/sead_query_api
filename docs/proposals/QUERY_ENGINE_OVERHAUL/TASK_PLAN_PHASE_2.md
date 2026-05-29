@@ -120,8 +120,8 @@ Leave one explicit record of what Phase 2 delivered and what it intentionally de
 | Discrete target inventory and exception list | In progress | Inventory work showed there was no clean live same-table target-only promotion candidate in the current smoke set; the first promotable target-only slice was the routed `genus:genus` request. |
 | Target-side discrete widening | In progress | Same-table target-only discrete requests use an explicit unfiltered anchor query, and routed zero-predicate discrete requests now use legacy-style outer-category overlay on top of composed counts. |
 | Predicate-side discrete widening | Not started | Predicate-side widening should stay constrained by the explicit source-key and clause contracts from Phase 1. |
-| Focused live promotion | In progress | `genus:genus`, `sites:sites`, `sample_groups:sample_groups`, `data_types:data_types`, `rdb_systems:rdb_systems`, `relative_age_name:relative_age_name`, and `record_types:record_types` now pass focused composed-path validation and have been promoted into `SupportedComposedVisibleAndDiscreteLiveUris`; `abundance_classification:abundance_classification` was probed and still overcounts on the target-only composed path, so it is not a clean promotion candidate yet. |
-| Documentation and phase exit | In progress | `PARITY_INVENTORY.md` and this plan now reflect the promoted routed target-only batch through `record_types:record_types`; update `docs/DESIGN.md` only when the runtime boundary changes rather than when the validated matrix widens within the same contract. |
+| Focused live promotion | In progress | `genus:genus`, `sites:sites`, `sample_groups:sample_groups`, `data_types:data_types`, `rdb_systems:rdb_systems`, `relative_age_name:relative_age_name`, `record_types:record_types`, and `dataset_provider:dataset_provider` now pass focused composed-path validation and have been promoted into `SupportedComposedVisibleAndDiscreteLiveUris`; `abundance_classification:abundance_classification` was probed and still overcounts on the target-only composed path, so it is not a clean promotion candidate yet. |
+| Documentation and phase exit | In progress | `PARITY_INVENTORY.md` and this plan now reflect the promoted routed target-only batch through `dataset_provider:dataset_provider`; update `docs/DESIGN.md` only when the runtime boundary changes rather than when the validated matrix widens within the same contract. |
 
 ## Definition Of Done
 
@@ -143,7 +143,8 @@ Leave one explicit record of what Phase 2 delivered and what it intentionally de
 - [x] Run focused live comparison coverage for the promoted `rdb_systems:rdb_systems` discrete slice using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyRdbSystemsSlice"`.
 - [x] Run focused live comparison coverage for the promoted `relative_age_name:relative_age_name` discrete slice using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyRelativeAgeNameSlice"`.
 - [x] Run focused live comparison coverage for the promoted `record_types:record_types` discrete slice using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyRecordTypesSlice"`.
-- [x] Review `PARITY_INVENTORY.md` after the `genus:genus`, `sites:sites`, `sample_groups:sample_groups`, `data_types:data_types`, `rdb_systems:rdb_systems`, `relative_age_name:relative_age_name`, and `record_types:record_types` promotion batches to confirm support and exception rows remain current.
+- [x] Run focused live comparison coverage for the promoted `dataset_provider:dataset_provider` discrete slice using `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyDatasetProviderSlice"`.
+- [x] Review `PARITY_INVENTORY.md` after the `genus:genus`, `sites:sites`, `sample_groups:sample_groups`, `data_types:data_types`, `rdb_systems:rdb_systems`, `relative_age_name:relative_age_name`, `record_types:record_types`, and `dataset_provider:dataset_provider` promotion batches to confirm support and exception rows remain current.
 
 ## Deliverables
 
@@ -185,4 +186,4 @@ Leave one explicit record of what Phase 2 delivered and what it intentionally de
 - [ ] Hand off remaining discrete exceptions to the next widening batch or record them as later-phase work when Phase 2 closes.
 - [ ] Revisit whether any explicit Phase 2 exceptions should instead be handled in Phase 3 or later cutover work.
 - [ ] Decide whether a broader repository-level regression command is needed once the discrete parity matrix is materially larger than today.
-- [ ] Select and probe the next routed target-only discrete live slice after `record_types:record_types`, then continue inventorying the remaining target-only targets once that result is known.
+- [ ] Select and probe the next routed target-only discrete live slice after `dataset_provider:dataset_provider`, then continue inventorying the remaining target-only targets once that result is known.
