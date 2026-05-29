@@ -67,6 +67,7 @@ namespace SQT.LiveServices
                 ["abundance_classification:country@1,2,5/abundance_classification"],
                 ["tbl_biblio_sample_groups:tbl_biblio_sample_groups"],
                 ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
+                ["tbl_biblio_sites:tbl_biblio_sites"],
                 ["tbl_biblio_sites:country@1,2,5/tbl_biblio_sites"],
                 ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
                 ["region:country@1,2,5/region"],
@@ -373,6 +374,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_biblio_sample_groups:tbl_biblio_sample_groups")]
         public void FacetContentService_ComposedTargetOnlyBiblioSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_sites:tbl_biblio_sites")]
+        public void FacetContentService_ComposedTargetOnlyBiblioSitesSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "tbl_biblio.biblio_id", "facet.view_site_references.biblio_id is not null");
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_sites:tbl_biblio_sites")]
+        public void FacetContentService_ComposedTargetOnlyBiblioSitesSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
