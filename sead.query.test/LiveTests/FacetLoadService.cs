@@ -468,6 +468,20 @@ namespace SQT.LiveServices
         }
 
         [Theory]
+        [InlineData("map_result:map_result")]
+        public void FacetContentService_ComposedTargetOnlyMapResultSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri);
+        }
+
+        [Theory]
+        [InlineData("map_result:map_result")]
+        public void FacetContentService_ComposedTargetOnlyMapResultSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
         [InlineData("location_types:location_types")]
         public void FacetContentService_ComposedTargetOnlyLocationTypesSlice_UsesComposedFacetContentQuery(string uri)
         {
