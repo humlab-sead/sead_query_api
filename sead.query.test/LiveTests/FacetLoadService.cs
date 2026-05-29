@@ -56,6 +56,7 @@ namespace SQT.LiveServices
                 ["dataset_methods:country@1,2,5/dataset_methods"],
                 ["record_types:country@1,2,5/record_types"],
                 ["dataset_provider:country@1,2,5/dataset_provider"],
+                ["relative_age_name:relative_age_name"],
                 ["relative_age_name:country@1,2,5/relative_age_name"],
                 ["abundance_classification:country@1,2,5/abundance_classification"],
                 ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
@@ -238,6 +239,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("rdb_systems:rdb_systems")]
         public void FacetContentService_ComposedTargetOnlyRdbSystemsSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("relative_age_name:relative_age_name")]
+        public void FacetContentService_ComposedTargetOnlyRelativeAgeNameSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_relative_ages");
+        }
+
+        [Theory]
+        [InlineData("relative_age_name:relative_age_name")]
+        public void FacetContentService_ComposedTargetOnlyRelativeAgeNameSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
