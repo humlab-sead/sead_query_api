@@ -75,6 +75,32 @@ public class DiscreteFacetContentQueryComposerTests
         };
     }
 
+    private static FacetsConfig2 CreateBiblioSampleGroupsFacetsConfig()
+    {
+        var biblio = new Table { TableOrUdfName = "tbl_biblio", PrimaryKeyName = "biblio_id" };
+        var sampleGroupReferences = new Table { TableOrUdfName = "facet.view_sample_group_references", PrimaryKeyName = "xxxx" };
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "tbl_biblio_sample_groups",
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_biblio.biblio_id",
+            Tables =
+            [
+                new FacetTable { SequenceId = 1, Table = biblio },
+                new FacetTable { SequenceId = 2, Table = sampleGroupReferences },
+            ],
+            Clauses = [new FacetClause { Clause = "facet.view_sample_group_references.biblio_id is not null", EnforceConstraint = true }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "tbl_biblio_sample_groups",
+            TargetFacet = targetFacet,
+            FacetConfigs = [],
+        };
+    }
+
     private static ComposedFilterQuery CreateComposedFilterQuery(string anchorTable = "tbl_sites")
     {
         return new ComposedFilterQuery
@@ -195,5 +221,30 @@ public class DiscreteFacetContentQueryComposerTests
             );
         result.Sql.Should().Contain("select tbl_sample_group_descriptions.sample_group_description_id as category");
         result.Sql.Should().Contain("join target_route on target_route.target_id = tbl_sample_groups.sample_group_id");
+    }
+
+    [Fact]
+    public void Compose_WithDiscreteTargetClause_IncludesClauseInSql()
+    {
+        var facetsConfig = CreateBiblioSampleGroupsFacetsConfig();
+        var composedFilterQuery = CreateComposedFilterQuery(anchorTable: "tbl_analysis_entities");
+        const string anchorToTargetSql = "select distinct source_id, target_id from anchor_route";
+
+        _pathFinder
+            .Setup(x => x.Find("tbl_biblio", It.IsAny<System.Collections.Generic.List<string>>(), true))
+            .Returns(
+                [
+                    [],
+                ]
+            );
+        _joinsClauseCompiler
+            .Setup(x => x.Compile(It.IsAny<System.Collections.Generic.List<System.Collections.Generic.List<TableRelation>>>(), facetsConfig))
+            .Returns(["join facet.view_sample_group_references on facet.view_sample_group_references.biblio_id = tbl_biblio.biblio_id"]);
+
+        var result = _composer.Compose(facetsConfig, composedFilterQuery, "biblio_id", anchorToTargetSql);
+
+        result.Sql.Should().Contain("join facet.view_sample_group_references on facet.view_sample_group_references.biblio_id = tbl_biblio.biblio_id");
+        result.Sql.Should().Contain("where facet.view_sample_group_references.biblio_id is not null");
+        result.Sql.Should().Contain("group by tbl_biblio.biblio_id");
     }
 }

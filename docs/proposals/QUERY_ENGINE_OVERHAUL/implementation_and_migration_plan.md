@@ -256,6 +256,8 @@ Integrate the new discrete slice into one request path while keeping the legacy 
 - [x] `record_types:country@1,2,5/record_types`
 - [x] `dataset_provider:country@1,2,5/dataset_provider`
 - [x] `relative_age_name:country@1,2,5/relative_age_name`
+- [x] `abundance_classification:country@1,2,5/abundance_classification`
+- [x] `tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups`
 - [x] `geochronology:country@1,2,5/geochronology`
 - [x] `tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0`
 - [x] `tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82`
@@ -265,11 +267,12 @@ Integrate the new discrete slice into one request path while keeping the legacy 
 
 #### Current Support And Boundaries
 
-- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`, plus the validated phase-5 range targets `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
-- The grouped live matrix in `FacetLoadService` now covers the baseline visible-target slices, the supported `country`-predicate slices, and six validated phase-5 range-target slices: `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
+- The composed runtime now supports direct aggregate/result targets plus routed visible targets whose category expression is either on the routed target table itself or on joined target-facet tables, including `sites`, `sample_groups`, `country`, `constructions`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, `relative_age_name`, `abundance_classification`, and `tbl_biblio_sample_groups`, plus the validated phase-5 range targets `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
+- The grouped live matrix in `FacetLoadService` now covers the baseline visible-target slices, the supported `country`-predicate slices, two additional validated discrete view-backed targets (`abundance_classification` and `tbl_biblio_sample_groups`), and six validated phase-5 range-target slices: `geochronology`, `tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`, and `abundances_all`.
 - Predicate planning now has unit-validated support for routed source-key overrides when the picked facet's source table uses a placeholder primary key and exposes a simple same-table category column instead.
 - Predicate planning now also supports same-table enforced facet clauses on picked discrete facets, including the live `country` clause `countries.location_type_id=1`.
 - Target join resolution now also handles schema-qualified category expressions on target shortcut tables, which unblocks `species:country@1,2,5/species` where the target table metadata primary key is a placeholder.
+- Discrete target SQL now also carries enforced target-side clauses, which unblocks clause-bearing joined targets such as `tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups`.
 - Range target planning now also handles placeholder target primary keys by falling back to the aggregate anchor key when the target rows are keyed on the anchor identity instead of metadata PK placeholders.
 - Range target SQL now carries enforced target-side clauses, which unblocks `abundances_all:country@1,2,5/abundances_all` where the target view requires `facet.view_abundance.abundance is not null`.
 - Clause-bearing `country` predicates now have live-validated coverage across multiple visible targets, including `sites`, `ecocode`, `feature_type`, `ecocode_system`, `genus`, `species`, `species_author`, `family`, `dataset_methods`, `record_types`, `dataset_provider`, and `relative_age_name`.
@@ -319,7 +322,10 @@ Decide whether the first slice is stable enough to extend to more facet types.
 - Current additional validated phase-5 scenario: `tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32` through `IFacetContentService`.
 - Current additional validated phase-5 scenario: `tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37` through `IFacetContentService`.
 - Current additional validated phase-5 scenario: `abundances_all:country@1,2,5/abundances_all` through `IFacetContentService`.
+- Current adjacent validated discrete view-backed scenario: `abundance_classification:country@1,2,5/abundance_classification` through `IFacetContentService`.
+- Current adjacent validated discrete target-clause scenario: `tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups` through `IFacetContentService`.
 - The composed path now supports a routed range target (`geochronology`), multiple UDF-backed measured-value range targets (`tbl_denormalized_measured_values_33_0`, `tbl_denormalized_measured_values_33_82`, `tbl_denormalized_measured_values_32`, `tbl_denormalized_measured_values_37`), and a placeholder-PK view-backed range target with enforced target-side clauses (`abundances_all`) while keeping the predicate side on the proven discrete `country@1,2,5` slice.
+- After exhausting the currently visible range-target variants in metadata, the next validated boundary is discrete view-backed targets with placeholder metadata or enforced target-side clauses.
 - `geochronology` is no longer just a fallback boundary; it is now the first implemented phase-5 expansion candidate.
 
 ### Decision
@@ -333,6 +339,7 @@ Decide whether the first slice is stable enough to extend to more facet types.
 - The fourth validated slice shows the same outcome for `method_values_37`, which strengthens the case that the measured-value widening track is a reusable subpattern, not a pair of isolated aliases.
 - The fifth validated slice shows the same outcome for `method_values_37`, which strengthens the case that the measured-value widening track is a reusable subpattern, not a pair of isolated aliases.
 - The sixth validated slice shows that the range-target contract also extends to a view-backed target whose metadata primary key is a placeholder and whose target-side clause must be preserved in the composed content SQL.
+- The next validated post-range boundary shows that discrete view-backed targets can also use the composed path when the join key stays routable on the root target table (`abundance_classification`) or when a joined target table contributes an enforced target-side clause (`tbl_biblio_sample_groups`).
 - This makes `Range` the intentional next facet-type track for phase 5, while keeping the support boundary narrower than “all non-discrete targets”.
 
 ### Exit Criteria

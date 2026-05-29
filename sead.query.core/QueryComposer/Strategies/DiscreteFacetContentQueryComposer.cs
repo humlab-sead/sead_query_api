@@ -77,6 +77,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
                     targetTableName,
                     targetTableAliasOrName,
                     targetJoins,
+                    targetCriteria,
                     targetJoinColumn,
                     composedFilterQuery.AnchorKeyColumn,
                     anchorToTargetSql
@@ -107,6 +108,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         string targetTableName,
         string targetTableAliasOrName,
         string[] targetJoins,
+        IReadOnlyList<string> targetCriteria,
         string targetJoinColumn,
         string anchorKeyColumn,
         string anchorToTargetSql
@@ -141,6 +143,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         {
             sql.AppendLine($"join composed_filter on composed_filter.{anchorKeyColumn} = {targetTableAliasOrName}.{targetJoinColumn}");
         }
+        AppendWhereClauses(sql, targetCriteria, string.Empty);
         sql.AppendLine($"group by {categoryExpression}");
         sql.Append("order by ").Append(categoryExpression);
         return sql.ToString();

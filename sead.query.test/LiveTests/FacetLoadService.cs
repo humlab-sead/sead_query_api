@@ -55,6 +55,8 @@ namespace SQT.LiveServices
                 ["record_types:country@1,2,5/record_types"],
                 ["dataset_provider:country@1,2,5/dataset_provider"],
                 ["relative_age_name:country@1,2,5/relative_age_name"],
+                ["abundance_classification:country@1,2,5/abundance_classification"],
+                ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
@@ -317,6 +319,43 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue33_82Slice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("abundance_classification:country@1,2,5/abundance_classification")]
+        public void FacetContentService_ComposedCountryPredicateAbundanceClassificationSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "facet.view_abundance.elements_part_mod",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("abundance_classification:country@1,2,5/abundance_classification")]
+        public void FacetContentService_ComposedCountryPredicateAbundanceClassificationSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups")]
+        public void FacetContentService_ComposedCountryPredicateBiblioSampleGroupsSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "tbl_biblio.biblio_id",
+                "facet.view_sample_group_references.biblio_id is not null",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups")]
+        public void FacetContentService_ComposedCountryPredicateBiblioSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
