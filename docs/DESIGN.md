@@ -8,7 +8,7 @@ This is an architecture document, not a developer setup guide, testing guide, or
 
 - Current authoritative runtime: the existing faceted query API implemented in the solution projects and described by the current request-flow notes.
 - In progress: the query-engine overhaul on branch `query-engine-overhaul`, centered on the new composer and route-based query model.
-- Current validated overhaul state: one compiled, tested discrete vertical slice is integrated into `FacetContentService`, and widening across adjacent discrete and range targets is in progress.
+- Current validated overhaul state: composed facet-content slices and the Phase 4 result-projection support surface are integrated into the branch runtime, while unsupported result routes remain explicit legacy-fallback exceptions.
 - TBD: the exact cutover plan, final route configuration format, and any companion diagrams or ADRs.
 
 ## System Overview
@@ -92,8 +92,10 @@ The overhaul replaces template explosion with a route-based model and uses CTE-b
 The overhaul is no longer only a design direction.
 
 - The first compiled vertical slice is integrated into the branch runtime.
+- The composed facet-content path is active for the validated facet-content matrix and still falls back outside that supported surface.
+- `ResultService` now enters result SQL compilation through an explicit result-projection handoff instead of calling `QuerySetupBuilder.Build(...)` directly.
 - The legacy runtime still remains authoritative outside the supported composed slice.
-- The current widening work is extending the same contract across adjacent discrete targets and the first range-target families.
+- Phase 4 closes the current result-projection widening work on the validated support surface while keeping unsupported routes explicit.
 
 This means `docs/DESIGN.md` should describe both the current authoritative runtime and the intended architectural destination, while keeping the delivery state explicit.
 
@@ -143,10 +145,22 @@ The current composed path depends on a small contract surface that is already ac
 - Routed target-only discrete requests now overlay legacy-style discrete category-info rows onto composed counts so the composed result can retain zero-count categories where the legacy discrete path exposes them.
 - The currently validated target set includes the baseline visible-target slices, multiple adjacent discrete targets, and the first validated range-target families recorded in the phase-0 tracker.
 
+### Result-Projection Handoff Contract
+
+- `ResultService` now treats result projection as a two-step contract: build a `ResultProjectionHandoff`, then compile the final tabular or map SQL from that handoff.
+- `IResultProjectionHandoffBuilder` owns the boundary between composed result filtering and legacy fallback. `ResultService` no longer decides SQL shape by calling `QuerySetupBuilder.Build(...)` directly.
+- The handoff currently carries the `QuerySetup` that the result compilers consume plus the sorted result fields used for projection, grouping, and ordering.
+- The active composed handoff builder emits `composed_filter` CTE SQL and, when needed for routed map or site-level projections, a `target_route` CTE before the result compiler runs.
+- `TabularResultSqlCompiler` and `MapResultSqlCompiler` preserve their format-specific projection rules, but now accept the handoff `QuerySetup.LeadingSql` as the composed SQL prologue instead of assuming a legacy-only query-setup path.
+- Payload lookup remains a result-service concern. After SQL compilation and query execution, `ResultService` still resolves the view-type-specific payload service separately from the filtering handoff.
+- The currently validated composed handoff shapes include discrete, clause-only discrete, range, geo-polygon, and normalized intersect requests plus the promoted target-only result families tracked in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- Unsupported result requests remain explicit. They still fall back through the legacy result-projection handoff path rather than silently mixing composed and legacy query-setup behavior inside one compiled result request.
+
 ### Unsupported-Request Boundary
 
 - Unsupported composed requests must remain explicit.
 - `FacetContentService.Load` uses the composed path only when `ComposedFacetContentService.CanHandle(...)` returns `true`; otherwise it falls back to the legacy category-count path.
+- `ResultService.Load` now uses whatever `IResultProjectionHandoffBuilder` returns, so the unsupported-result boundary is the handoff builder itself: supported requests return composed `composed_filter` and optional `target_route` SQL, while unsupported requests return the legacy query-setup handoff.
 - Predicate-side clauses that cannot be normalized onto the predicate source table, including joined-table clause references, remain outside the composed contract and continue to fall back before composed execution starts.
 - Discrete targets whose join key cannot be derived from a simple target expression and that do not expose a real target primary key also remain outside the composed contract and fall back before composed execution starts.
 - Target-only discrete requests remain outside the composed contract when routed zero-predicate execution still cannot derive the target-side join key, resolve the target route, or enumerate the legacy-compatible outer category set.
@@ -295,10 +309,14 @@ The system is intentionally database-aware. It is not designed around full datab
 - Why: facet filtering and result rendering change at different rates and have different performance needs
 - Benefit: one filtered anchor set can support multiple result formats
 - Tradeoff: the runtime must maintain a clear handoff between composed filters and final result queries
+- Current state: the composed facet-content path already uses the explicit anchor-set contract, and `ResultService` now depends on an explicit result-projection handoff builder before SQL compilation
+- Current limitation: the active Phase 4 handoff builder composes validated discrete, range, geo-polygon, and normalized intersect result requests through `composed_filter` and `target_route` joins, but still falls back to the legacy query-setup path for unsupported result requests
+- Phase 4 outcome: supported result formats now use the widened handoff on the validated tabular and map matrix, while remaining unproven routes stay on the explicit fallback boundary as follow-up work
 
 ## Known Constraints and Open Items
 
 - The composer architecture is in progress and should not be documented as fully authoritative runtime behavior yet.
+- Final result projection is on the composed path for the validated Phase 4 support matrix; unsupported result requests still fall back to the legacy query-setup path.
 - Final route-definition format and migration sequencing remain TBD.
 - Final documentation split between `docs/DESIGN.md` and any future ADRs or subsystem notes is TBD.
 

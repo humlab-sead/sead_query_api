@@ -87,6 +87,8 @@ namespace SeadQueryAPI
             builder.RegisterType<FacetContentService>().As<IFacetContentService>();
 
             builder.RegisterType<ResultService>().As<IResultService>();
+            builder.RegisterType<LegacyResultProjectionHandoffBuilder>().AsSelf();
+            builder.RegisterType<ComposedResultProjectionHandoffBuilder>().As<IResultProjectionHandoffBuilder>();
 
             builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("map");
             builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("tabular");

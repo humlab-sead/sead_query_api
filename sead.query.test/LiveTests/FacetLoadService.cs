@@ -105,11 +105,18 @@ namespace SQT.LiveServices
 
         public static IEnumerable<object[]> SupportedComposedGeoPolygonLiveUris =>
             [
-                ["sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"],
+                [
+                    "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738",
+                ],
             ];
 
         public static IEnumerable<object[]> SupportedComposedLiveUris =>
-            [.. SupportedComposedVisibleAndDiscreteLiveUris, .. SupportedComposedRangeLiveUris, .. SupportedComposedIntersectLiveUris, .. SupportedComposedGeoPolygonLiveUris];
+            [
+                .. SupportedComposedVisibleAndDiscreteLiveUris,
+                .. SupportedComposedRangeLiveUris,
+                .. SupportedComposedIntersectLiveUris,
+                .. SupportedComposedGeoPolygonLiveUris,
+            ];
 
         [Theory]
         [InlineData("genus:genus")]
@@ -146,14 +153,22 @@ namespace SQT.LiveServices
         [InlineData("analysis_entity_ages:analysis_entity_ages")]
         public void FacetContentService_ComposedTargetOnlyIntersectSlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(uri, "categories(category, category_range, lower, upper) as", "categories.category_range && age_range::int4range");
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, category_range, lower, upper) as",
+                "categories.category_range && age_range::int4range"
+            );
         }
 
         [Theory]
         [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
         public void FacetContentService_ComposedTargetOnlyDendroAgeContainedBySlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(uri, "categories(category, category_range, lower, upper) as", "categories.category_range @> tbl_dendro_dates.age_range::int4range");
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, category_range, lower, upper) as",
+                "categories.category_range @> tbl_dendro_dates.age_range::int4range"
+            );
         }
 
         [Theory]

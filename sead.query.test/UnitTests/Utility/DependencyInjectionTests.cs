@@ -119,6 +119,7 @@ namespace SQT.Infrastructure
                 Assert.NotNull(scope.Resolve<IRepositoryRegistry>());
                 Assert.NotNull(scope.Resolve<IPathFinder>());
                 Assert.NotNull(scope.Resolve<IQuerySetupBuilder>());
+                Assert.NotNull(scope.Resolve<IResultProjectionHandoffBuilder>());
                 Assert.NotNull(scope.Resolve<IBogusPickService>());
                 Assert.NotNull(scope.Resolve<IResultService>());
                 Assert.NotNull(scope.Resolve<ICategoryCountService>());

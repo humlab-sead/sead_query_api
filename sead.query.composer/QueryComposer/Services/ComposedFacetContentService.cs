@@ -50,18 +50,14 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
         _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
-        _composedFilterQueryComposer = composedFilterQueryComposer
-            ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
-        _facetContentQueryComposer = facetContentQueryComposer
-            ?? throw new ArgumentNullException(nameof(facetContentQueryComposer));
-        _discreteCategoryInfoService = discreteCategoryInfoService
-            ?? throw new ArgumentNullException(nameof(discreteCategoryInfoService));
-        _geoPolygonCategoryInfoService = geoPolygonCategoryInfoService
-            ?? throw new ArgumentNullException(nameof(geoPolygonCategoryInfoService));
-        _rangeCategoryInfoService = rangeCategoryInfoService
-            ?? throw new ArgumentNullException(nameof(rangeCategoryInfoService));
-        _intersectCategoryInfoService = intersectCategoryInfoService
-            ?? throw new ArgumentNullException(nameof(intersectCategoryInfoService));
+        _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
+        _facetContentQueryComposer = facetContentQueryComposer ?? throw new ArgumentNullException(nameof(facetContentQueryComposer));
+        _discreteCategoryInfoService = discreteCategoryInfoService ?? throw new ArgumentNullException(nameof(discreteCategoryInfoService));
+        _geoPolygonCategoryInfoService =
+            geoPolygonCategoryInfoService ?? throw new ArgumentNullException(nameof(geoPolygonCategoryInfoService));
+        _rangeCategoryInfoService = rangeCategoryInfoService ?? throw new ArgumentNullException(nameof(rangeCategoryInfoService));
+        _intersectCategoryInfoService =
+            intersectCategoryInfoService ?? throw new ArgumentNullException(nameof(intersectCategoryInfoService));
     }
 
     public bool CanHandle(FacetsConfig2 facetsConfig)
@@ -194,7 +190,13 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
     {
         request = null;
 
-        if (facetsConfig?.TargetFacet?.FacetTypeId is not EFacetType.Discrete and not EFacetType.Range and not EFacetType.Intersect and not EFacetType.GeoPolygon)
+        if (
+            facetsConfig?.TargetFacet?.FacetTypeId
+            is not EFacetType.Discrete
+                and not EFacetType.Range
+                and not EFacetType.Intersect
+                and not EFacetType.GeoPolygon
+        )
         {
             return false;
         }

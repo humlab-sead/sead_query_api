@@ -7,7 +7,7 @@ Use `docs/DESIGN.md` as the primary written architecture reference. These diagra
 ## Diagram Status
 
 - Current runtime diagrams reflect the existing faceted query API flow.
-- Overhaul diagrams describe the planned route-based, anchor-centered query model on `query-engine-overhaul`.
+- Overhaul diagrams describe the active route-based, anchor-centered work on `query-engine-overhaul`, including the current result-projection handoff boundary.
 - Detailed deployment and operations diagrams are `TBD`.
 
 ## System Overview
@@ -114,24 +114,81 @@ sequenceDiagram
 sequenceDiagram
     autonumber
     actor UI as Client UI
-    participant API as API Controller
+    participant API as ResultController
     participant RC as ReconstituteConfigService
-    participant RS as Result Service
-    participant QB as Query Builder
+    participant LRS as LoadResultService
+    participant RS as ResultService
+    participant HB as ResultProjectionHandoffBuilder
+    participant SQL as Result SQL Compiler
+    participant PAY as Result Payload Service
     participant DB as PostgreSQL
 
     UI->>API: Result request with facet state
     API->>RC: Reconstitute facet and result config
     RC-->>API: FacetsConfig and ResultConfig
-    API->>RS: Load result set
-    RS->>QB: Compile filter query
-    QB->>DB: Execute filtered query
-    DB-->>QB: Filtered anchor or result rows
-    RS->>QB: Compile result projection
-    QB->>DB: Execute result query
-    DB-->>QB: Result payload
-    RS-->>API: Result set
+    API->>LRS: Load result set
+    LRS->>RS: Load(FacetsConfig, ResultConfig)
+    RS->>HB: Build result handoff
+    HB-->>RS: QuerySetup and ResultFields
+    RS->>SQL: Compile(handoff.QuerySetup, result facet, handoff.ResultFields)
+    SQL->>DB: Execute result SQL
+    DB-->>SQL: Result rows
+    RS->>PAY: Load extra payload for view type
+    PAY-->>RS: Payload
+    RS-->>LRS: ResultContentSet
+    LRS-->>API: ResultContentSet
     API-->>UI: Tabular or map response
+```
+
+## Current Result Handoff Boundary
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant RS as ResultService
+    participant HB as ResultProjectionHandoffBuilder
+    participant CH as Composed Handoff Builder
+    participant LH as Legacy Handoff Builder
+    participant SQL as Result SQL Compiler
+
+    RS->>HB: Build(facetsConfig, resultConfig)
+    alt Supported composed request
+        HB->>CH: Resolve composed result handoff
+        CH->>CH: Build composed_filter
+        opt Routed result target
+            CH->>CH: Build target_route
+        end
+        CH-->>HB: QuerySetup and ResultFields
+    else Unsupported request
+        HB->>LH: Build legacy query setup
+        LH-->>HB: QuerySetup and ResultFields
+    end
+    HB-->>RS: ResultProjectionHandoff
+    RS->>SQL: Compile final result SQL
+```
+
+## Current Composed Result Handoff Internals
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CH as ComposedResultProjectionHandoffBuilder
+    participant PF as Path Finder
+    participant PR as Predicate Resolver
+    participant RC as Route SQL Compiler
+    participant CF as Composed Filter Composer
+
+    CH->>PF: Resolve target and anchor path
+    PF-->>CH: Route path
+    CH->>PR: Resolve predicate plan
+    PR-->>CH: Predicate SQL fragments
+    opt Routed result target
+        CH->>RC: Compile target route SQL
+        RC-->>CH: target_route CTE
+    end
+    CH->>CF: Compose anchor filter SQL
+    CF-->>CH: composed_filter CTE
+    CH-->>CH: Return QuerySetup.LeadingSql, joins, and result fields
 ```
 
 ## Planned Overhaul Component Model

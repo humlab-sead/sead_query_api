@@ -4,17 +4,17 @@
 
 This document is the high-level implementation plan for the query-engine overhaul.
 
-It complements `TASK_PLAN_PHASE_0.md`. That document tracks the detailed phase-0 vertical-slice work and the widening already underway. This document defines the broader phase plan needed to reach the end state: a query engine that is feature-wise on par with the legacy runtime.
+It complements the phase task plans. `TASK_PLAN_PHASE_3.md` now records the completed non-discrete facet-content lane for the active catalog, and `TASK_PLAN_PHASE_4.md` tracks the active result-set parity work. This document defines the broader phase plan needed to reach the end state: a query engine that is feature-wise on par with the legacy runtime.
 
 ## Problem
 
 The branch now proves the architecture direction, but it does not yet deliver full runtime parity.
 
-The remaining gap is no longer “can the composed model work at all?” The remaining gap is breadth and completion:
+The remaining gap is no longer “can the composed model work at all?” The remaining gap is the remaining unsupported boundaries and the still-legacy result path:
 
-- all legacy facet families are not yet supported on the composed path
-- all legacy target and result shapes are not yet produced from the new composer
-- the legacy runtime is still authoritative outside the supported slice
+- the composed facet-content path is broader, but explicit unsupported facet boundaries still remain
+- final result shapes are not yet produced from the composed anchor handoff
+- the legacy runtime is still authoritative for result generation and unsupported requests
 
 The implementation plan therefore needs to move from one validated vertical slice to complete runtime replacement.
 
@@ -36,10 +36,10 @@ It does not include frontend rollout, staffing, or release scheduling.
 
 The current branch state can be summarized as follows:
 
-- the composed runtime is integrated for one proven vertical slice and already widened across multiple discrete target families and initial range-target support
-- composed facet content is validated for an expanding set of discrete and range targets
-- widening is active through focused live probes and grouped regression coverage
-- result-set generation is not yet migrated to the new composer
+- the composed runtime is integrated for the original vertical slice and now widened across the active discrete, range, intersect, and geo-polygon facet-content surface
+- Phase 3 non-discrete facet parity is closed for the current active catalog in `TASK_PLAN_PHASE_3.md`
+- Phase 4 result-set parity is now the active migration lane in `TASK_PLAN_PHASE_4.md`
+- result-set parity is now in its first runtime slice: `ResultService` consumes an explicit handoff builder, and supported discrete-predicate result requests can be projected through composed-filter SQL with legacy fallback still active elsewhere
 - full feature parity with the legacy runtime is not yet reached
 
 ## Phase Plan
@@ -142,6 +142,7 @@ Move final result generation onto the same composed anchor model so filtering an
 - the main result-set formats used by the API can be generated from composed anchor sets
 - result generation on the composed path matches legacy behavior for validated scenarios
 - the runtime no longer depends on legacy filtering internals to generate equivalent results for supported requests
+- the detailed execution tracker for this phase is maintained in `TASK_PLAN_PHASE_4.md`
 
 ### Phase 5: Configuration And Operational Hardening
 
@@ -204,6 +205,6 @@ Validation should remain layered.
 
 ## Final Recommendation
 
-Treat the current branch as the midpoint between phase-0 proof and runtime replacement.
+Treat the current branch as a proven facet-content migration baseline with result-set parity still ahead.
 
-The right implementation plan is to build from the proven phase-0 vertical slice and then close parity gaps explicitly: discrete parity first, then non-discrete parity, then result-set parity, then cutover. The end state is not merely a cleaner design. It is a composed query engine that can replace the legacy engine without feature loss for the intended API scope.
+The right implementation plan is still to build from the proven phase-0 vertical slice and then close parity gaps explicitly: discrete parity first, then non-discrete parity, then result-set parity, then cutover. The active implementation question is now Phase 4: replacing the legacy result query-setup dependency with a composed anchor handoff. The end state is not merely a cleaner design. It is a composed query engine that can replace the legacy engine without feature loss for the intended API scope.

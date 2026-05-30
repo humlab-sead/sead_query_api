@@ -2,9 +2,9 @@
 
 ## Summary
 
-The branch contains meaningful redesign work and one proven runtime slice, but not a completed redesign.
+The branch contains meaningful redesign work and a broad proven facet-content slice, but not a completed redesign.
 
-The strongest implemented direction is route-based composition carried through a compiled facet-content path. The weakest points are breadth and completion: result-set generation is not yet on the new composer, and the overhaul is still widening through adjacent discrete and range targets.
+The strongest implemented direction is route-based composition carried through a compiled facet-content path across the current active discrete and non-discrete catalog. The weakest point is still result-set generation, but it is no longer a pure legacy-only area: the overhaul now has an explicit result-projection handoff seam and an initial composed runtime slice with legacy fallback.
 
 ## Implemented Or Demonstrated
 
@@ -14,14 +14,13 @@ The strongest implemented direction is route-based composition carried through a
 - anchor and route entity and repository scaffolding in the current working tree
 - compiled core query-composer contracts for one active slice
 - composed filter query generation for a single-anchor predicate chain
-- composed facet content generation for a supported target-facet path
-- runtime integration into `FacetContentService` for the supported composed slice
-- live comparison coverage against the legacy runtime, plus widening across initial range and adjacent discrete targets
+- composed facet content generation for the supported target-facet paths in the active discrete, range, intersect, and geo-polygon catalog
+- runtime integration into `FacetContentService` for the supported composed facet-content surface
+- live comparison coverage against the legacy runtime, including grouped regression for the supported facet-content matrix
 
 ## Not Implemented Or Not Integrated
 
-- full facet-family coverage on the composed runtime path
-- final result-set generation on top of the new composer path
+- full result-set generation on top of the new composer path
 - a complete replacement for the legacy runtime path
 - final route-definition governance and cutover rules
 
@@ -39,10 +38,11 @@ The proposal should be treated as a focused change request, not as a near-comple
 The right description of branch status is:
 
 - route-based direction proved
-- anchor-based composition compiled and integrated for one runtime slice
-- widening in progress
+- anchor-based composition compiled and integrated for the active facet-content surface
+- Phase 3 facet-content widening closed for the current catalog
+- Phase 4 result-set parity now active, with an explicit handoff builder and focused unit validation in place
 - full migration still pending
 
 ## Recommended Use Of This Assessment
 
-Use this file as a branch snapshot and review note. Use `QUERY_ENGINE_OVERHAL.md` as the main change request, `TASK_PLAN_PHASE_0.md` as the phase-0 implementation handoff, and `docs/REQUIREMENTS.md` plus `docs/DESIGN.md` as the durable system documents.
+Use this file as a branch snapshot and review note. Use `QUERY_ENGINE_OVERHAL.md` as the main change request, `TASK_PLAN_PHASE_3.md` and `TASK_PLAN_PHASE_4.md` as the current execution trackers, and `docs/REQUIREMENTS.md` plus `docs/DESIGN.md` as the durable system documents.

@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using SeadQueryCore;
 using SeadQueryCore.Model.Ext;
 using SQT.Infrastructure;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SQT.QueryBuilder.ResultCompilers
@@ -10,9 +10,8 @@ namespace SQT.QueryBuilder.ResultCompilers
     [Collection("UsePostgresFixture")]
     public class ResultSpecificationFieldExtensionTests : MockerWithFacetContext
     {
-        public ResultSpecificationFieldExtensionTests() : base()
-        {
-        }
+        public ResultSpecificationFieldExtensionTests()
+            : base() { }
 
 #if false
 		[Fact]
@@ -126,6 +125,7 @@ namespace SQT.QueryBuilder.ResultCompilers
             var expected = specification.Fields;
             Assert.Equal(expected.Count, result.Count());
         }
+
         [Fact]
         public void GetSpecificationColumnNameAliasPairs_Called_Success()
         {
@@ -139,6 +139,68 @@ namespace SQT.QueryBuilder.ResultCompilers
             // Assert
             var expected = specification.Fields;
             Assert.Equal(expected.Count, result.Count());
+        }
+
+        [Fact]
+        public void GetSpecificationFields_PreservesOrderingAliasingCompiledValuesAndGrouping()
+        {
+            // Arrange
+            var specification = FakeResultSpecificationFixture();
+            var fields = specification.GetSortedFields().ToList();
+
+            // Act
+            var aliasedFields = fields
+                .GetResultAliasedFields()
+                .Select(pair => (pair.Alias, pair.Field.ResultField.ResultFieldKey))
+                .ToList();
+            var compiledValueFields = fields.GetResultCompiledValueFields().ToList();
+            var innerGroupByFields = fields.GetResultInnerGroupByFields().ToList();
+            var groupByFields = fields.GetResultGroupByFields().ToList();
+            var sortFields = fields.GetResultSortFields().ToList();
+            var columnNameAliasPairs = fields.GetResultColumnNameAliasPairs().ToList();
+
+            // Assert
+            Assert.Equal(
+                new[]
+                {
+                    ("alias_1", "sitename"),
+                    ("alias_2", "record_type"),
+                    ("alias_3", "analysis_entities"),
+                    ("alias_4", "site_link"),
+                    ("alias_5", "site_link_filtered"),
+                    ("alias_6", "sitename"),
+                },
+                aliasedFields
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    "alias_1",
+                    "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT alias_2),',') AS text_agg_of_alias_2",
+                    "COUNT(alias_3) AS count_of_alias_3",
+                    "alias_4",
+                    "alias_5",
+                },
+                compiledValueFields
+            );
+
+            Assert.Equal(new[] { "alias_1", "alias_2", "alias_3", "alias_4", "alias_5", "alias_6" }, innerGroupByFields);
+            Assert.Equal(new[] { "alias_1", "alias_4", "alias_5", "alias_6" }, groupByFields);
+            Assert.Equal(new[] { "alias_6" }, sortFields);
+
+            Assert.Equal(
+                new[]
+                {
+                    ("tbl_sites.site_name", "alias_1"),
+                    ("tbl_record_types.record_type_name", "alias_2"),
+                    ("tbl_analysis_entities.analysis_entity_id", "alias_3"),
+                    ("tbl_sites.site_id", "alias_4"),
+                    ("tbl_sites.site_id", "alias_5"),
+                    ("tbl_sites.site_name", "alias_6"),
+                },
+                columnNameAliasPairs
+            );
         }
 
         [Fact]
@@ -156,24 +218,31 @@ namespace SQT.QueryBuilder.ResultCompilers
 
         #region FakeData
 
-        ResultSpecification FakeResultSpecificationFixture() => new ResultSpecification
-        {
-            SpecificationId = 1,
-            SpecificationKey = "site_level",
-            DisplayText = "Site level",
-            IsActivated = true,
-            Fields = new List<ResultSpecificationField> {
-                FakeResultSpecificationField(4, "single_item", 1, 1),
-                FakeResultSpecificationField(5, "text_agg_item", 2, 2),
-                FakeResultSpecificationField(8, "count_item", 3, 3),
-                FakeResultSpecificationField(10, "link_item", 4, 4),
-                FakeResultSpecificationField(13, "link_item_filtered", 5, 5),
-                FakeResultSpecificationField(16, "sort_item", 1, 99)
-            }
-        };
+        ResultSpecification FakeResultSpecificationFixture() =>
+            new ResultSpecification
+            {
+                SpecificationId = 1,
+                SpecificationKey = "site_level",
+                DisplayText = "Site level",
+                IsActivated = true,
+                Fields = new List<ResultSpecificationField>
+                {
+                    FakeResultSpecificationField(4, "single_item", 1, 1),
+                    FakeResultSpecificationField(5, "text_agg_item", 2, 2),
+                    FakeResultSpecificationField(8, "count_item", 3, 3),
+                    FakeResultSpecificationField(10, "link_item", 4, 4),
+                    FakeResultSpecificationField(13, "link_item_filtered", 5, 5),
+                    FakeResultSpecificationField(16, "sort_item", 1, 99),
+                },
+            };
 
-        private static ResultSpecificationField FakeResultSpecificationField(int id, string fieldTypeId, int resultFieldId, int sequenceId)
-            => new ResultSpecificationField
+        private static ResultSpecificationField FakeResultSpecificationField(
+            int id,
+            string fieldTypeId,
+            int resultFieldId,
+            int sequenceId
+        ) =>
+            new ResultSpecificationField
             {
                 SpecificationFieldId = id,
                 SpecificationId = 1,
@@ -181,10 +250,11 @@ namespace SQT.QueryBuilder.ResultCompilers
                 ResultFieldId = resultFieldId,
                 SequenceId = sequenceId,
                 FieldType = ResultFieldTypes[fieldTypeId],
-                ResultField = ResultFields[resultFieldId]
+                ResultField = ResultFields[resultFieldId],
             };
 
-        public static Dictionary<int, ResultField> ResultFields = new List<ResultField>  {
+        public static Dictionary<int, ResultField> ResultFields = new List<ResultField>
+        {
             new ResultField
             {
                 ResultFieldId = 1,
@@ -194,7 +264,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Site name",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -205,7 +275,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Record type(s)",
                 FieldTypeId = "text_agg_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -216,7 +286,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Filtered records",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -227,7 +297,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Full report",
                 FieldTypeId = "link_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -238,7 +308,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Filtered report",
                 FieldTypeId = "link_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -249,7 +319,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Filtered report",
                 FieldTypeId = "link_item_filtered",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -260,7 +330,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Full report",
                 FieldTypeId = "link_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -271,7 +341,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Filtered report",
                 FieldTypeId = "link_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -282,7 +352,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "number of taxon_id",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -293,7 +363,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Taxon id  (specie)",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -304,7 +374,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Dataset",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -315,7 +385,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Dataset details",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -326,7 +396,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Filtered report",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -337,7 +407,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Sample group",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -348,7 +418,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Method",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -359,7 +429,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Site ID",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "int"
+                DataType = "int",
             },
             new ResultField
             {
@@ -370,7 +440,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Site Name",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "text"
+                DataType = "text",
             },
             new ResultField
             {
@@ -381,7 +451,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Latitude (dd)",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "decimal"
+                DataType = "decimal",
             },
             new ResultField
             {
@@ -392,11 +462,12 @@ namespace SQT.QueryBuilder.ResultCompilers
                 DisplayText = "Longitude (dd)",
                 FieldTypeId = "single_item",
                 Activated = true,
-                DataType = "decimal"
-            }
+                DataType = "decimal",
+            },
         }.ToDictionary(z => z.ResultFieldId);
 
-        public static Dictionary<string, ResultFieldType> ResultFieldTypes = new List<ResultFieldType> {
+        public static Dictionary<string, ResultFieldType> ResultFieldTypes = new List<ResultFieldType>
+        {
             new ResultFieldType
             {
                 FieldTypeId = "link_item",
@@ -405,7 +476,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = false,
                 IsItemField = true,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "{0}"
+                SqlTemplate = "{0}",
             },
             new ResultFieldType
             {
@@ -415,7 +486,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = false,
                 IsItemField = false,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "{0}"
+                SqlTemplate = "{0}",
             },
             new ResultFieldType
             {
@@ -425,7 +496,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = false,
                 IsItemField = true,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "{0}"
+                SqlTemplate = "{0}",
             },
             new ResultFieldType
             {
@@ -435,7 +506,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = false,
                 IsItemField = true,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "{0}"
+                SqlTemplate = "{0}",
             },
             new ResultFieldType
             {
@@ -445,7 +516,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = true,
                 IsItemField = false,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "AVG({0}) AS avg_of_{0}"
+                SqlTemplate = "AVG({0}) AS avg_of_{0}",
             },
             new ResultFieldType
             {
@@ -455,7 +526,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = true,
                 IsItemField = false,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "SUM({0}::double precision) AS sum_of_{0}"
+                SqlTemplate = "SUM({0}::double precision) AS sum_of_{0}",
             },
             new ResultFieldType
             {
@@ -465,7 +536,7 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = true,
                 IsItemField = false,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),\',\') AS text_agg_of_{0}"
+                SqlTemplate = "ARRAY_TO_STRING(ARRAY_AGG(DISTINCT {0}),\',\') AS text_agg_of_{0}",
             },
             new ResultFieldType
             {
@@ -475,11 +546,10 @@ namespace SQT.QueryBuilder.ResultCompilers
                 IsAggregateField = true,
                 IsItemField = false,
                 SqlFieldCompiler = "TemplateFieldCompiler",
-                SqlTemplate = "COUNT({0}) AS count_of_{0}"
-            }
+                SqlTemplate = "COUNT({0}) AS count_of_{0}",
+            },
         }.ToDictionary(z => z.FieldTypeId);
 
         #endregion
-
     }
 }

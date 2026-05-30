@@ -391,11 +391,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
 
             foreach (var qualifier in allowedQualifiers)
             {
-                resolvedClause = resolvedClause.Replace(
-                    $"{qualifier}.",
-                    $"{targetTableAliasOrName}.",
-                    StringComparison.OrdinalIgnoreCase
-                );
+                resolvedClause = resolvedClause.Replace($"{qualifier}.", $"{targetTableAliasOrName}.", StringComparison.OrdinalIgnoreCase);
             }
 
             resolvedClauses.Add(resolvedClause);

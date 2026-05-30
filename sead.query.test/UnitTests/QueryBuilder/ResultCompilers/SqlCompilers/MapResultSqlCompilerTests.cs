@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SeadQueryCore;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
@@ -10,9 +11,8 @@ namespace SQT.SqlCompilers
     [Collection("UsePostgresFixture")]
     public class MapResultSqlCompilerTests : MockerWithFacetContext
     {
-        public MapResultSqlCompilerTests() : base()
-        {
-        }
+        public MapResultSqlCompilerTests()
+            : base() { }
 
         [Theory]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "result_facet", "site_level")]
@@ -38,7 +38,12 @@ namespace SQT.SqlCompilers
 
         [Theory]
         [ClassData(typeof(SQT.CollectionFixtures.CompleteSetOfSingleTabularResultUriCollection))]
-        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string viewType)
+        public void Compile_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(
+            string uri,
+            string resultFacetCode,
+            string specificationKey,
+            string viewType
+        )
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig(uri);
@@ -56,6 +61,27 @@ namespace SQT.SqlCompilers
             Assert.True(match.Success);
 
             Assert.Equal(viewType, viewType);
+        }
+
+        [Fact]
+        public void Compile_WithComposedHandoffQuerySetup_PrependsLeadingSqlAndUsesHandoffJoinCriteria()
+        {
+            // Arrange
+            var fakeFacetsConfig = FakeFacetsConfig("sites:sites");
+            var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, "result_facet", "site_level");
+            fakeQuerySetup.LeadingSql = "with composed_filter as (select 1 as target_id)";
+            fakeQuerySetup.Joins = new List<string> { " join composed_filter on composed_filter.target_id = tbl_sites.site_id" };
+            fakeQuerySetup.Criterias = new List<string> { "composed_filter.target_id > 0" };
+            var fakeResultFields = FakeResultConfig("result_facet", "site_level", "map").GetSortedFields();
+
+            // Act
+            var sqlCompiler = new MapResultSqlCompiler();
+            var result = sqlCompiler.Compile(fakeQuerySetup, fakeQuerySetup.Facet, fakeResultFields);
+
+            // Assert
+            Assert.Contains(fakeQuerySetup.LeadingSql, result);
+            Assert.Contains(fakeQuerySetup.Joins[0], result);
+            Assert.Contains(fakeQuerySetup.Criterias[0], result);
         }
     }
 }

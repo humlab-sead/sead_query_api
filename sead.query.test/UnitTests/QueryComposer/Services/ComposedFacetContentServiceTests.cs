@@ -489,8 +489,7 @@ public class ComposedFacetContentServiceTests
     [Fact]
     public void Load_WithTargetOnlyIntersectRequest_UsesIntervalBackedComposedQuery()
     {
-        var intervalSql =
-            "select '0 to 10', int4range(0, 10), 0, 10 union all select '10 to 20', int4range(10, 20), 10, 20";
+        var intervalSql = "select '0 to 10', int4range(0, 10), 0, 10 union all select '10 to 20', int4range(10, 20), 10, 20";
         var categoryInfo = new FacetContent.CategoryInfo { Count = 2, Query = intervalSql };
         var outerItems = new List<CategoryItem>
         {
@@ -540,7 +539,9 @@ public class ComposedFacetContentServiceTests
         var intersectInfoSqlCompiler = new Mock<IIntersectCategoryInfoSqlCompiler>();
         var intersectInfoService = new Mock<IIntersectCategoryInfoService>();
         intersectInfoService.SetupGet(service => service.SqlCompiler).Returns(intersectInfoSqlCompiler.Object);
-        intersectInfoService.Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "analysis_entity_ages", null)).Returns(categoryInfo);
+        intersectInfoService
+            .Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "analysis_entity_ages", null))
+            .Returns(categoryInfo);
 
         var service = CreateService(queryProxy.Object, intersectCategoryInfoService: intersectInfoService.Object);
         var facetsConfig = CreateTargetOnlyIntersectFacetsConfig();
@@ -584,13 +585,7 @@ public class ComposedFacetContentServiceTests
         var geoPolygonInfoService = new Mock<IGeoPolygonCategoryInfoService>();
         geoPolygonInfoService.SetupGet(service => service.SqlCompiler).Returns(Mock.Of<IGeoPolygonCategoryInfoSqlCompiler>());
         geoPolygonInfoService
-            .Setup(
-                service => service.GetCategoryInfo(
-                    It.IsAny<FacetsConfig2>(),
-                    "sites_polygon",
-                    null
-                )
-            )
+            .Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "sites_polygon", null))
             .Returns(categoryInfo);
 
         var service = CreateService(queryProxy.Object, geoPolygonCategoryInfoService: geoPolygonInfoService.Object);
@@ -725,7 +720,9 @@ public class ComposedFacetContentServiceTests
     public void CanHandle_WithPlaceholderTargetPrimaryKeyAndNonSimpleCategoryExpression_ReturnsFalse()
     {
         var service = CreateService();
-        var facetsConfig = CreateCountryToSpeciesFacetsConfig(targetCategoryExpression: "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)");
+        var facetsConfig = CreateCountryToSpeciesFacetsConfig(
+            targetCategoryExpression: "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)"
+        );
 
         service.CanHandle(facetsConfig).Should().BeFalse();
     }
@@ -1172,15 +1169,7 @@ public class ComposedFacetContentServiceTests
         {
             TargetCode = "sites_polygon",
             TargetFacet = targetFacet,
-            FacetConfigs =
-            [
-                new FacetConfig2(
-                    targetFacet,
-                    1,
-                    string.Empty,
-                    FacetConfigPick.CreateByList([0, 0, 0, 1, 1, 1, 1, 0, 0, 0])
-                ),
-            ],
+            FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, FacetConfigPick.CreateByList([0, 0, 0, 1, 1, 1, 1, 0, 0, 0]))],
         };
     }
 
