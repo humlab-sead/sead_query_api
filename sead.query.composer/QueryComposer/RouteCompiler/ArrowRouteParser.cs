@@ -112,6 +112,13 @@ public sealed class ArrowRouteParser : IArrowRouteParser
         // Check if this token is a macro reference or a concrete table name
         if (!_repository.HasRoute(token))
         {
+            if (IsRouteMacroToken(token))
+            {
+                throw new InvalidOperationException(
+                    $"Route macro '{token}' is not defined. Add it to the route repository or update the route specification."
+                );
+            }
+
             // Not a macro: treat as concrete table name and add directly to output
             output.Add(token);
             return;
@@ -127,12 +134,20 @@ public sealed class ArrowRouteParser : IArrowRouteParser
         }
 
         // Retrieve the macro definition and expand it recursively
-        var inner = _repository.GetRoute(token)?.Specification;
+        var innerRoute = _repository.GetRoute(token);
+        if (innerRoute is null)
+        {
+            expansionStack.Remove(token);
+
+            throw new InvalidOperationException($"Route macro '{token}' is registered but could not be loaded from the route repository.");
+        }
+
+        var inner = innerRoute.Specification;
         if (string.IsNullOrWhiteSpace(inner))
         {
-            // Empty or null macro definition - remove from stack and continue
             expansionStack.Remove(token);
-            return;
+
+            throw new InvalidOperationException($"Route macro '{token}' has an empty specification. Update the route repository entry.");
         }
 
         // Recursively expand each token in the macro definition
@@ -179,5 +194,10 @@ public sealed class ArrowRouteParser : IArrowRouteParser
             if (!string.IsNullOrWhiteSpace(t))
                 yield return t;
         }
+    }
+
+    private static bool IsRouteMacroToken(string token)
+    {
+        return token.StartsWith('{') && token.EndsWith('}') && token.Length > 2;
     }
 }

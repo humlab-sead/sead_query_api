@@ -36,7 +36,9 @@ public class ComposedFacetContentServiceTests
 
         var act = () => service.Load(facetsConfig);
 
-        act.Should().Throw<InvalidOperationException>().WithMessage("*Call CanHandle(...)*legacy runtime*");
+        act.Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*predicate facet 'sample_group' does not expose a simple source key column*Call CanHandle(...)*legacy runtime*");
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
@@ -49,7 +51,11 @@ public class ComposedFacetContentServiceTests
 
         var act = () => service.Load(facetsConfig);
 
-        act.Should().Throw<InvalidOperationException>().WithMessage("*Call CanHandle(...)*legacy runtime*");
+        act.Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage(
+                "*predicate facet 'country' uses facet clauses that the composed predicate path cannot apply*Call CanHandle(...)*legacy runtime*"
+            );
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
@@ -64,7 +70,26 @@ public class ComposedFacetContentServiceTests
 
         var act = () => service.Load(facetsConfig);
 
-        act.Should().Throw<InvalidOperationException>().WithMessage("*Call CanHandle(...)*legacy runtime*");
+        act.Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*target facet 'species' does not expose a routable target join column*Call CanHandle(...)*legacy runtime*");
+        queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
+    }
+
+    [Fact]
+    public void Load_WithEmptyPredicateFacetConfig_ThrowsInvalidOperationException()
+    {
+        var queryProxy = new Mock<ITypedQueryProxy>(MockBehavior.Strict);
+        var service = CreateService(queryProxy.Object);
+        var facetsConfig = CreateCountryToSitesFacetsConfigWithoutCountryPicks();
+
+        var act = () => service.Load(facetsConfig);
+
+        act.Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage(
+                "*predicate facet 'country' has no picks*remove empty secondary facet configs*Call CanHandle(...)*legacy runtime*"
+            );
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
@@ -1103,6 +1128,13 @@ public class ComposedFacetContentServiceTests
                 new FacetConfig2(targetFacet, 2, string.Empty, []),
             ],
         };
+    }
+
+    private static FacetsConfig2 CreateCountryToSitesFacetsConfigWithoutCountryPicks()
+    {
+        var facetsConfig = CreateCountryToSitesFacetsConfig();
+        facetsConfig.FacetConfigs[0] = new FacetConfig2(facetsConfig.FacetConfigs[0].Facet, 1, string.Empty, []);
+        return facetsConfig;
     }
 
     private static FacetsConfig2 CreateTargetOnlyGeochronologyFacetsConfig()

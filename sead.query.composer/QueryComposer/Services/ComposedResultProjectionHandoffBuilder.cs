@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using SeadQueryComposer.QueryComposer.Inputs;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
@@ -23,6 +24,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
     private readonly IDiscreteFacetPredicateResolver _predicateResolver;
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
     private readonly LegacyResultProjectionHandoffBuilder _legacyBuilder;
+    private readonly ILogger<ComposedResultProjectionHandoffBuilder> _logger;
 
     public ComposedResultProjectionHandoffBuilder(
         IRepositoryRegistry registry,
@@ -32,7 +34,8 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         IRouteSqlCompiler routeSqlCompiler,
         IDiscreteFacetPredicateResolver predicateResolver,
         IComposedFilterQueryComposer composedFilterQueryComposer,
-        LegacyResultProjectionHandoffBuilder legacyBuilder
+        LegacyResultProjectionHandoffBuilder legacyBuilder,
+        ILogger<ComposedResultProjectionHandoffBuilder> logger
     )
     {
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
@@ -43,6 +46,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
         _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
         _legacyBuilder = legacyBuilder ?? throw new ArgumentNullException(nameof(legacyBuilder));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public ResultProjectionHandoff Build(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
@@ -50,8 +54,15 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         ArgumentNullException.ThrowIfNull(facetsConfig);
         ArgumentNullException.ThrowIfNull(resultConfig);
 
-        if (!TryCreateRequest(facetsConfig, resultConfig, out var request))
+        if (!TryCreateRequest(facetsConfig, resultConfig, out var request, out var failureReason))
         {
+            _logger.LogInformation(
+                "Falling back to legacy result projection handoff for result facet '{FacetCode}' and view '{ViewTypeId}': {FailureReason}",
+                resultConfig.Facet?.FacetCode ?? resultConfig.FacetCode,
+                resultConfig.ViewTypeId ?? string.Empty,
+                failureReason
+            );
+
             return _legacyBuilder.Build(facetsConfig, resultConfig);
         }
 
@@ -152,23 +163,38 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         };
     }
 
-    private bool TryCreateRequest(FacetsConfig2 facetsConfig, ResultConfig resultConfig, out ComposedResultProjectionRequest request)
+    private bool TryCreateRequest(
+        FacetsConfig2 facetsConfig,
+        ResultConfig resultConfig,
+        out ComposedResultProjectionRequest request,
+        out string failureReason
+    )
     {
         request = null;
+        failureReason = string.Empty;
 
         var resultFacet = resultConfig?.Facet;
+        if (resultFacet is null)
+        {
+            failureReason = "result configuration does not specify a result facet.";
+            return false;
+        }
+
         var targetTable = resultFacet?.TargetTable;
         var aggregateFacet = _registry.Facets.Get(resultFacet?.AggregateFacetId ?? 0) ?? resultFacet;
         var anchorFacetTable = aggregateFacet?.TargetTable;
         var anchorTable = anchorFacetTable?.TableOrUdfName;
         if (string.IsNullOrWhiteSpace(anchorTable))
         {
+            failureReason = $"aggregate facet '{aggregateFacet?.FacetCode ?? resultFacet.FacetCode}' does not expose an anchor table.";
             return false;
         }
 
         var anchorKeyColumn = ResolveAnchorKeyColumn(aggregateFacet);
         if (string.IsNullOrWhiteSpace(anchorKeyColumn))
         {
+            failureReason =
+                $"aggregate facet '{aggregateFacet?.FacetCode ?? resultFacet.FacetCode}' does not expose a simple anchor key column on its target table.";
             return false;
         }
 
@@ -176,24 +202,21 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         var targetJoinColumn = ResolveTargetJoinColumn(resultFacet, anchorKeyColumn);
         if (string.IsNullOrWhiteSpace(targetTableName) || string.IsNullOrWhiteSpace(targetJoinColumn))
         {
+            failureReason = $"result facet '{resultFacet.FacetCode}' does not expose a routable target join column on its target table.";
             return false;
         }
 
         var predicateConfigs = facetsConfig
             .GetFacetConfigsAffectedBy(resultFacet, facetsConfig.GetFacetCodes())
             .Where(config => !string.Equals(config.FacetCode, resultFacet.FacetCode, StringComparison.OrdinalIgnoreCase))
+            .Where(config => config.HasPicks() || CanComposeClauseOnlyPredicate(config))
             .ToList();
 
         if (predicateConfigs.Count > 0)
         {
             foreach (var config in predicateConfigs)
             {
-                if (!config.HasPicks() && !CanComposeClauseOnlyPredicate(config))
-                {
-                    return false;
-                }
-
-                if (!CanComposePredicate(config, anchorTable))
+                if (!TryGetPredicateFailureReason(config, anchorTable, out failureReason))
                 {
                     return false;
                 }
@@ -209,11 +232,14 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             }
             catch (Exception)
             {
+                failureReason =
+                    $"result facet '{resultFacet.FacetCode}' cannot be routed from anchor table '{anchorTable}' to target table '{targetTableName}'.";
                 return false;
             }
         }
 
         request = new ComposedResultProjectionRequest(anchorTable, anchorKeyColumn, targetJoinColumn, anchorToTargetSql, predicateConfigs);
+        failureReason = string.Empty;
         return true;
     }
 
@@ -224,6 +250,13 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
     private bool CanComposePredicate(FacetConfig2 config, string anchorTable)
     {
+        return TryGetPredicateFailureReason(config, anchorTable, out _);
+    }
+
+    private bool TryGetPredicateFailureReason(FacetConfig2 config, string anchorTable, out string failureReason)
+    {
+        failureReason = string.Empty;
+
         var facet = config.Facet;
         var sourceTable = facet?.TargetTable;
         var sourceTableName = sourceTable?.TableOrUdfName;
@@ -236,23 +269,43 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
                 and not EFacetType.GeoPolygon
         )
         {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' uses facet type '{facet?.FacetTypeId}' which the composed result path does not support.";
             return false;
         }
 
         if (string.IsNullOrWhiteSpace(sourceTableName))
         {
+            failureReason = $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' does not expose a source table.";
             return false;
         }
 
         if (facet.FacetTypeId == EFacetType.Discrete)
         {
-            if (!TryResolvePredicateSourceKeyColumn(facet, out _) || !TryResolvePredicateCriteria(facet, out _))
+            if (!TryResolvePredicateSourceKeyColumn(facet, out _))
             {
+                failureReason =
+                    $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' does not expose a simple source key column on its target table.";
+                return false;
+            }
+
+            if (!TryResolvePredicateCriteria(facet, out _))
+            {
+                failureReason =
+                    $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' uses facet clauses that the composed result path cannot apply.";
                 return false;
             }
         }
-        else if (!TryResolvePredicateRouteKeyColumn(facet, out _) || !TryResolveCompiledPredicateCriteria(config, out _))
+        else if (!TryResolvePredicateRouteKeyColumn(facet, out _))
         {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' does not expose a routable source key column on its target table.";
+            return false;
+        }
+        else if (!TryResolveCompiledPredicateCriteria(config, out _))
+        {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' uses pick criteria that the composed result path cannot normalize.";
             return false;
         }
 
@@ -263,6 +316,8 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         }
         catch (Exception)
         {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' cannot be routed from source table '{sourceTableName}' to anchor table '{anchorTable}'.";
             return false;
         }
     }

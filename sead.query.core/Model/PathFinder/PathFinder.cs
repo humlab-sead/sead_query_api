@@ -13,9 +13,10 @@ public interface IDefaultGraphFactory
     Graph CreateGraph();
 }
 
-public class DefaultGraphFactory: IDefaultGraphFactory
+public class DefaultGraphFactory : IDefaultGraphFactory
 {
     private IRepositoryRegistry Registry;
+
     public DefaultGraphFactory(IRepositoryRegistry registry)
     {
         Registry = registry;
@@ -29,25 +30,39 @@ public class DefaultGraphFactory: IDefaultGraphFactory
 
 public class PathFinder : IPathFinder
 {
-
     public Graph Graph { get; set; }
     public Nodes Nodes { get; private set; }
 
     public PathFinder(IDefaultGraphFactory factory)
     {
-        Graph = factory.CreateGraph();
+        Graph = CreateBidirectionalGraph(factory.CreateGraph());
         Nodes = Graph.GetNodes();
     }
 
     public PathFinder(Graph edges)
     {
-        Graph = edges;
-        Nodes = edges.GetNodes();
+        Graph = CreateBidirectionalGraph(edges);
+        Nodes = Graph.GetNodes();
     }
 
-    public PathFinder(Graph edges, Nodes nodes) : this(edges)
+    public PathFinder(Graph edges, Nodes nodes)
+        : this(edges)
     {
         Nodes = nodes;
+    }
+
+    private static Graph CreateBidirectionalGraph(Graph edges)
+    {
+        var graph = edges ?? throw new ArgumentNullException(nameof(edges));
+        var reversedEdges = graph
+            .Where(edge => edge.SourceTableId != edge.TargetTableId)
+            .Select(edge => edge.Reverse())
+            .Where(reverse =>
+                !graph.Any(existing => existing.SourceTableId == reverse.SourceTableId && existing.TargetTableId == reverse.TargetTableId)
+            )
+            .ToList();
+
+        return [.. graph, .. reversedEdges];
     }
 
     public List<Edges> Find(string start, List<string> targets, bool reduce = true)
@@ -78,7 +93,5 @@ public class PathFinder : IPathFinder
 
     public Edges ToRoute(IEnumerable<int> trail) => ToEdges(trail);
 
-    public Edges ToEdges(IEnumerable<int> trail)
-        => trail.PairWise((a, b) => Graph.GetEdge(a, b)).ToList();
-
+    public Edges ToEdges(IEnumerable<int> trail) => trail.PairWise((a, b) => Graph.GetEdge(a, b)).ToList();
 }

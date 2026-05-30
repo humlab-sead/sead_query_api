@@ -29,6 +29,7 @@ namespace SeadQueryInfra
         public virtual DbSet<FacetClause> FacetClauses { get; set; }
         public virtual DbSet<FacetTable> FacetTables { get; set; }
         public virtual DbSet<FacetChild> FacetChildren { get; set; }
+        public DbSet<FacetConfigRevision> ConfigRevisions => Set<FacetConfigRevision>();
         public DbSet<Anchor> Anchors => Set<Anchor>();
         public DbSet<Route> Routes => Set<Route>();
         public DbSet<RouteStep> RouteSteps => Set<RouteStep>();
@@ -120,6 +121,19 @@ namespace SeadQueryInfra
                 entity.Property(b => b.IsDefault).HasColumnName("is_default").IsRequired();
             });
 
+            builder.Entity<FacetConfigRevision>(entity =>
+            {
+                entity.ToTable("config_revision", "facet").HasKey(b => b.RevisionId);
+                entity.HasIndex(b => b.ConfigRevision).IsUnique();
+                entity.Property(b => b.RevisionId).HasColumnName("revision_id").IsRequired();
+                entity.Property(b => b.ConfigRevision).HasColumnName("config_revision").IsRequired();
+                entity.Property(b => b.SourceCommit).HasColumnName("source_commit").IsRequired();
+                entity.Property(b => b.ContentHash).HasColumnName("content_hash").IsRequired();
+                entity.Property(b => b.ImportedAt).HasColumnName("imported_at").IsRequired();
+                entity.Property(b => b.ImportedBy).HasColumnName("imported_by").IsRequired();
+                entity.Property(b => b.IsActive).HasColumnName("is_active").IsRequired();
+            });
+
             builder.Entity<FacetClause>(entity =>
             {
                 entity.ToTable("facet_clause", "facet").HasKey(b => b.FacetClauseId);
@@ -161,7 +175,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.SourceTableId).HasColumnName("source_table_id").IsRequired();
                 entity.Property(b => b.TargetTableId).HasColumnName("target_table_id").IsRequired();
                 entity.Property(b => b.Specification).HasColumnName("specification").IsRequired();
-                entity.Property(b => b.Alias).HasColumnName("route_alias").IsRequired();
+                entity.Property(b => b.Alias).HasColumnName("route_alias");
                 entity.HasOne<Table>(x => x.SourceTable).WithMany().HasForeignKey(p => p.SourceTableId);
                 entity.HasOne<Table>(x => x.TargetTable).WithMany().HasForeignKey(p => p.TargetTableId);
             });
@@ -173,6 +187,7 @@ namespace SeadQueryInfra
                 entity.Property(b => b.RouteId).HasColumnName("route_id").IsRequired();
                 entity.Property(b => b.SequenceId).HasColumnName("sequence_id").IsRequired();
                 entity.Property(b => b.TableId).HasColumnName("table_id").IsRequired();
+                entity.Property(b => b.KeyName).HasColumnName("key_name").IsRequired();
                 entity.HasOne<Route>(x => x.Route).WithMany(x => x.Steps).HasForeignKey(p => p.RouteId);
                 entity.HasOne<Table>(x => x.Table).WithMany().HasForeignKey(p => p.TableId);
             });

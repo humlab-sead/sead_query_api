@@ -170,6 +170,70 @@ public class RouteGraphTests
         graph.Nodes["measurements"].TableId.Should().Be(3);
     }
 
+    [Fact]
+    public void Constructor_WithDuplicateRelations_ThrowsInvalidOperationException()
+    {
+        var sites = CreateTable(1, "sites");
+        var samples = CreateTable(2, "samples");
+        var edges = new List<TableRelation>
+        {
+            CreateRelation(1, sites, samples, "site_id", "site_id"),
+            CreateRelation(2, sites, samples, "site_id", "site_id"),
+        };
+
+        Action act = () => new RouteResolver(edges, bidirectional: false);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Duplicate route relations found for 'sites' -> 'samples'*");
+    }
+
+    [Fact]
+    public void Constructor_WithInconsistentRelations_ThrowsInvalidOperationException()
+    {
+        var sites = CreateTable(1, "sites");
+        var samples = CreateTable(2, "samples");
+        var edges = new List<TableRelation>
+        {
+            CreateRelation(1, sites, samples, "site_id", "site_id"),
+            CreateRelation(2, sites, samples, "location_id", "site_id"),
+        };
+
+        Action act = () => new RouteResolver(edges, bidirectional: false);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Inconsistent route relations found for 'sites' -> 'samples'*");
+    }
+
+    [Fact]
+    public void Constructor_WithMissingTableMetadata_ThrowsInvalidOperationException()
+    {
+        var sites = CreateTable(1, "sites");
+        var edges = new List<TableRelation>
+        {
+            new()
+            {
+                TableRelationId = 1,
+                SourceTable = sites,
+                SourceColumnName = "site_id",
+                TargetColumnName = "site_id",
+            },
+        };
+
+        Action act = () => new RouteResolver(edges, bidirectional: false);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Route relation 1 is missing its source or target table metadata*");
+    }
+
+    [Fact]
+    public void Constructor_WithMissingColumnMapping_ThrowsInvalidOperationException()
+    {
+        var sites = CreateTable(1, "sites");
+        var samples = CreateTable(2, "samples");
+        var edges = new List<TableRelation> { CreateRelation(1, sites, samples, sourceColumn: "site_id", targetColumn: string.Empty) };
+
+        Action act = () => new RouteResolver(edges, bidirectional: false);
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*has an empty source or target column mapping*");
+    }
+
     #endregion
 
     #region GetRoute Method Tests
@@ -389,13 +453,11 @@ public class RouteGraphTests
         var route = graph.Resolve(new[] { "sites", "samples", "samples", "measurements" });
 
         // Assert
-        route.Should().HaveCount(3);
+        route.Should().HaveCount(2);
         route[0].SourceTable.TableOrUdfName.Should().Be("sites");
         route[0].TargetTable.TableOrUdfName.Should().Be("samples");
         route[1].SourceTable.TableOrUdfName.Should().Be("samples");
-        route[1].TargetTable.TableOrUdfName.Should().Be("samples"); // Self-relation
-        route[2].SourceTable.TableOrUdfName.Should().Be("samples");
-        route[2].TargetTable.TableOrUdfName.Should().Be("measurements");
+        route[1].TargetTable.TableOrUdfName.Should().Be("measurements");
     }
 
     #endregion
@@ -526,6 +588,37 @@ public class RouteGraphFactoryTests
         // Assert
         graph.Relations.Should().BeEmpty();
         graph.Nodes.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void CreateGraph_WithDuplicateRelations_ThrowsInvalidOperationException()
+    {
+        var sites = new Table { TableId = 1, TableOrUdfName = "sites" };
+        var samples = new Table { TableId = 2, TableOrUdfName = "samples" };
+        var testEdges = new List<TableRelation>
+        {
+            new()
+            {
+                TableRelationId = 1,
+                SourceTable = sites,
+                TargetTable = samples,
+                SourceColumnName = "site_id",
+                TargetColumnName = "site_id",
+            },
+            new()
+            {
+                TableRelationId = 2,
+                SourceTable = sites,
+                TargetTable = samples,
+                SourceColumnName = "site_id",
+                TargetColumnName = "site_id",
+            },
+        };
+        _mockRelationRepository.Setup(x => x.GetEdges(It.IsAny<bool>())).Returns(testEdges);
+
+        Action act = () => _factory.CreateGraph();
+
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Duplicate route relations found for 'sites' -> 'samples'*");
     }
 
     #endregion

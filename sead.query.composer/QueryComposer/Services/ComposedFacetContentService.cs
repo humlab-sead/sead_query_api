@@ -62,17 +62,17 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
     public bool CanHandle(FacetsConfig2 facetsConfig)
     {
-        return TryCreateRequest(facetsConfig, out _);
+        return TryCreateRequest(facetsConfig, out _, out _);
     }
 
     public FacetContent Load(FacetsConfig2 facetsConfig)
     {
         ArgumentNullException.ThrowIfNull(facetsConfig);
 
-        if (!TryCreateRequest(facetsConfig, out var request))
+        if (!TryCreateRequest(facetsConfig, out var request, out var failureReason))
         {
             throw new InvalidOperationException(
-                "The composed facet-content service cannot handle this request. Call CanHandle(...) before invoking Load or use FacetContentService to fall back to the legacy runtime."
+                $"The composed facet-content service cannot handle this request: {failureReason} Call CanHandle(...) before invoking Load or use FacetContentService to fall back to the legacy runtime."
             );
         }
 
@@ -186,9 +186,10 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         };
     }
 
-    private bool TryCreateRequest(FacetsConfig2 facetsConfig, out ComposedFacetContentRequest request)
+    private bool TryCreateRequest(FacetsConfig2 facetsConfig, out ComposedFacetContentRequest request, out string failureReason)
     {
         request = null;
+        failureReason = string.Empty;
 
         if (
             facetsConfig?.TargetFacet?.FacetTypeId
@@ -198,6 +199,8 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
                 and not EFacetType.GeoPolygon
         )
         {
+            failureReason =
+                $"target facet '{facetsConfig?.TargetCode ?? facetsConfig?.TargetFacet?.FacetCode ?? "(unknown)"}' uses facet type '{facetsConfig?.TargetFacet?.FacetTypeId}' which the composed facet-content path does not support.";
             return false;
         }
 
@@ -208,12 +211,16 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         var anchorTable = anchorFacetTable?.TableOrUdfName;
         if (string.IsNullOrWhiteSpace(anchorTable))
         {
+            failureReason =
+                $"aggregate facet '{aggregateFacet?.FacetCode ?? targetFacet?.FacetCode ?? "(unknown)"}' does not expose an anchor table.";
             return false;
         }
 
         var anchorKeyColumn = ResolveAnchorKeyColumn(aggregateFacet);
         if (string.IsNullOrWhiteSpace(anchorKeyColumn))
         {
+            failureReason =
+                $"aggregate facet '{aggregateFacet?.FacetCode ?? targetFacet?.FacetCode ?? "(unknown)"}' does not expose a simple anchor key column on its target table.";
             return false;
         }
 
@@ -221,6 +228,8 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         var targetJoinColumn = ResolveTargetJoinColumn(targetFacet, anchorKeyColumn);
         if (string.IsNullOrWhiteSpace(targetTableName) || string.IsNullOrWhiteSpace(targetJoinColumn))
         {
+            failureReason =
+                $"target facet '{targetFacet?.FacetCode ?? facetsConfig.TargetCode}' does not expose a routable target join column on its target table.";
             return false;
         }
 
@@ -232,19 +241,24 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
         if (targetFacet.FacetTypeId == EFacetType.GeoPolygon && predicateConfigs.Count > 0)
         {
+            failureReason =
+                $"target facet '{targetFacet.FacetCode}' is geo-polygon and does not support additional predicate facets on the composed facet-content path.";
             return false;
         }
 
         if (predicateConfigs.Count > 0)
         {
-            if (predicateConfigs.Any(config => !config.HasPicks()))
+            var emptyPredicateConfig = predicateConfigs.FirstOrDefault(config => !config.HasPicks());
+            if (emptyPredicateConfig is not null)
             {
+                failureReason =
+                    $"predicate facet '{emptyPredicateConfig.FacetCode}' has no picks; remove empty secondary facet configs before using the composed facet-content path.";
                 return false;
             }
 
             foreach (var config in predicateConfigs)
             {
-                if (!CanComposePredicate(config, anchorTable))
+                if (!TryGetPredicateFailureReason(config, anchorTable, out failureReason))
                 {
                     return false;
                 }
@@ -260,11 +274,14 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             }
             catch (Exception)
             {
+                failureReason =
+                    $"target facet '{targetFacet.FacetCode}' cannot be routed from anchor table '{anchorTable}' to target table '{targetTableName}'.";
                 return false;
             }
         }
 
         request = new ComposedFacetContentRequest(anchorTable, anchorKeyColumn, targetJoinColumn, anchorToTargetSql, predicateConfigs);
+        failureReason = string.Empty;
         return true;
     }
 
@@ -317,21 +334,41 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
     private bool CanComposePredicate(FacetConfig2 config, string anchorTable)
     {
-        var facet = config.Facet;
+        return TryGetPredicateFailureReason(config, anchorTable, out _);
+    }
+
+    private bool TryGetPredicateFailureReason(FacetConfig2 config, string anchorTable, out string failureReason)
+    {
+        failureReason = string.Empty;
+
+        var facet = config?.Facet;
         var sourceTable = facet?.TargetTable;
         var sourceTableName = sourceTable?.TableOrUdfName;
 
         if (facet?.FacetTypeId != EFacetType.Discrete)
         {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' uses facet type '{facet?.FacetTypeId}' which the composed facet-content path does not support as a secondary predicate.";
             return false;
         }
 
-        if (
-            string.IsNullOrWhiteSpace(sourceTableName)
-            || !TryResolvePredicateSourceKeyColumn(facet, out _)
-            || !TryResolvePredicateCriteria(facet, out _)
-        )
+        if (string.IsNullOrWhiteSpace(sourceTableName))
         {
+            failureReason = $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' does not expose a source table.";
+            return false;
+        }
+
+        if (!TryResolvePredicateSourceKeyColumn(facet, out _))
+        {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' does not expose a simple source key column on its target table.";
+            return false;
+        }
+
+        if (!TryResolvePredicateCriteria(facet, out _))
+        {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' uses facet clauses that the composed predicate path cannot apply.";
             return false;
         }
 
@@ -342,6 +379,8 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
         catch (Exception)
         {
+            failureReason =
+                $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' cannot be routed from source table '{sourceTableName}' to anchor table '{anchorTable}'.";
             return false;
         }
     }

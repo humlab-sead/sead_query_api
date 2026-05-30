@@ -128,6 +128,8 @@ public sealed class RouteResolver : IRouteResolver
     {
         ArgumentNullException.ThrowIfNull(edges);
 
+        ValidateRelations(edges);
+
         // Create bidirectional edges by adding reverse relationships
         if (bidirectional)
             edges = [.. edges, .. edges.ReversedEdges()];
@@ -135,6 +137,66 @@ public sealed class RouteResolver : IRouteResolver
         // Build fast lookup dictionaries for relationships and nodes
         Relations = edges.ToDictionary(tr => (tr.SourceTable.Name, tr.TargetTable.Name), tr => tr);
         Nodes = edges.GetNodes();
+    }
+
+    private static void ValidateRelations(IEnumerable<TableRelation> edges)
+    {
+        var relations = edges.ToList();
+
+        foreach (var relation in relations)
+        {
+            ValidateRelation(relation);
+        }
+
+        foreach (
+            var relationGroup in relations.GroupBy(relation => (relation.SourceName, relation.TargetName)).Where(group => group.Count() > 1)
+        )
+        {
+            var mappings = relationGroup
+                .Select(relation => $"{relation.SourceColumnName}->{relation.TargetColumnName}")
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
+
+            if (mappings.Count == 1)
+            {
+                throw new InvalidOperationException(
+                    $"Duplicate route relations found for '{relationGroup.Key.SourceName}' -> '{relationGroup.Key.TargetName}' "
+                        + $"with mapping '{mappings[0]}'. Remove the duplicate relation definition."
+                );
+            }
+
+            throw new InvalidOperationException(
+                $"Inconsistent route relations found for '{relationGroup.Key.SourceName}' -> '{relationGroup.Key.TargetName}'. "
+                    + $"Found mappings: {string.Join(", ", mappings)}."
+            );
+        }
+    }
+
+    private static void ValidateRelation(TableRelation relation)
+    {
+        if (relation is null)
+        {
+            throw new InvalidOperationException("Route relation list contains a null entry.");
+        }
+
+        if (relation.SourceTable is null || relation.TargetTable is null)
+        {
+            throw new InvalidOperationException(
+                $"Route relation {relation.TableRelationId} is missing its source or target table metadata."
+            );
+        }
+
+        if (string.IsNullOrWhiteSpace(relation.SourceName) || string.IsNullOrWhiteSpace(relation.TargetName))
+        {
+            throw new InvalidOperationException($"Route relation {relation.TableRelationId} has an empty source or target table name.");
+        }
+
+        if (string.IsNullOrWhiteSpace(relation.SourceColumnName) || string.IsNullOrWhiteSpace(relation.TargetColumnName))
+        {
+            throw new InvalidOperationException(
+                $"Route relation '{relation.SourceName}' -> '{relation.TargetName}' has an empty source or target column mapping."
+            );
+        }
     }
 
     /// <summary>

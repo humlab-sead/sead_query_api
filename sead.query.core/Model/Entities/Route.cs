@@ -45,6 +45,13 @@ public class RouteStep
     /// </summary>
     public int TableId { get; set; }
 
+    /// <summary>
+    /// Stable key for the step as stored in the existing facet schema.
+    /// Current runtime code does not consume this yet, but the importer writes it
+    /// so the EF model matches the checked-in database contract.
+    /// </summary>
+    public string KeyName { get; set; }
+
     [JsonIgnore]
     public virtual Route Route { get; set; }
 

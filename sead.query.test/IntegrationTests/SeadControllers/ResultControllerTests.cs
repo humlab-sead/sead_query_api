@@ -407,6 +407,58 @@ namespace IntegrationTests.Sead
             Assert.Contains("ST_Within(", sqlQuery);
         }
 
+                [Fact]
+                public async Task LoadMap_GeoPolygonFilteredSinglePickRequest_UsesComposedFilterSql()
+                {
+                        const string payloadJson = @"{
+    ""facetsConfig"": {
+        ""RequestId"": ""1"",
+        ""DomainCode"": """",
+        ""RequestType"": ""populate"",
+        ""TargetCode"": ""sites_polygon"",
+        ""FacetConfigs"": [
+            {
+                ""FacetCode"": ""sites_polygon"",
+                ""Position"": 0,
+                ""TextFilter"": """",
+                ""Picks"": [
+                    {
+                        ""PickValue"": ""63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"",
+                        ""Text"": ""63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738""
+                    }
+                ]
+            }
+        ]
+    },
+    ""resultConfig"": {
+        ""RequestId"": ""1"",
+        ""SessionId"": ""1"",
+        ""FacetCode"": ""map_result"",
+        ""ViewTypeId"": ""map"",
+        ""AggregateKeys"": [""site_level""]
+    }
+}";
+
+                        using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+                        using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+                        response.EnsureSuccessStatusCode();
+
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+                        Assert.NotNull(result);
+                        Assert.NotNull(result.Query);
+
+                        var sqlQuery = result.Query.Squeeze();
+
+                        Assert.Contains("with composed_filter as", sqlQuery);
+                        Assert.Contains("target_route as", sqlQuery);
+                        Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+                        Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+                        Assert.Contains("ST_Within(", sqlQuery);
+                }
+
         [Fact]
         public async Task LoadMap_IntersectFilteredRequest_UsesComposedFilterSql()
         {
@@ -435,6 +487,68 @@ namespace IntegrationTests.Sead
             Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
             Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
         }
+
+                [Fact]
+                public async Task LoadMap_IntersectFilteredRequestWithEmptySitesConfig_UsesComposedFilterSql()
+                {
+                        const string payloadJson = @"{
+    ""facetsConfig"": {
+        ""RequestId"": ""1"",
+        ""DomainCode"": """",
+        ""RequestType"": ""populate"",
+        ""TargetCode"": ""analysis_entity_ages"",
+        ""FacetConfigs"": [
+            {
+                ""FacetCode"": ""analysis_entity_ages"",
+                ""Position"": 0,
+                ""TextFilter"": """",
+                ""Picks"": [
+                    {
+                        ""PickValue"": ""850000"",
+                        ""Text"": ""850000""
+                    },
+                    {
+                        ""PickValue"": ""2350000"",
+                        ""Text"": ""2350000""
+                    }
+                ]
+            },
+            {
+                ""FacetCode"": ""sites"",
+                ""Position"": 1,
+                ""TextFilter"": """",
+                ""Picks"": []
+            }
+        ]
+    },
+    ""resultConfig"": {
+        ""RequestId"": ""1"",
+        ""SessionId"": ""1"",
+        ""FacetCode"": ""map_result"",
+        ""ViewTypeId"": ""map"",
+        ""AggregateKeys"": [""site_level""]
+    }
+}";
+
+                        using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+                        using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+                        response.EnsureSuccessStatusCode();
+
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+                        Assert.NotNull(result);
+                        Assert.NotNull(result.Query);
+
+                        var sqlQuery = result.Query.Squeeze();
+
+                        Assert.Contains("with composed_filter as", sqlQuery);
+                        Assert.Contains("target_route as", sqlQuery);
+                        Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+                        Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+                        Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
+                }
 
         [Fact]
         public async Task LoadTabular_TargetOnlyGenusRequest_UsesComposedFilterSql()

@@ -1,0 +1,370 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://sead.local/schemas/facet-route-config.schema.json",
+    "title": "SEAD facet route configuration v1",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schema_version",
+        "config_revision",
+        "runtime_import",
+        "anchors",
+        "route_macros",
+        "route_families",
+        "facets"
+    ],
+    "properties": {
+        "schema_version": {
+            "const": 1
+        },
+        "config_revision": {
+            "type": "string",
+            "minLength": 1
+        },
+        "runtime_import": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "target_schema",
+                "mode"
+            ],
+            "properties": {
+                "target_schema": {
+                    "const": "facet"
+                },
+                "mode": {
+                    "enum": [
+                        "merge-into-existing"
+                    ]
+                }
+            }
+        },
+        "anchors": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/anchor"
+            }
+        },
+        "route_macros": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/routeMacro"
+            }
+        },
+        "route_families": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/routeFamily"
+            }
+        },
+        "facets": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/facet"
+            }
+        }
+    },
+    "$defs": {
+        "identifier": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "qualifiedIdentifier": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+        },
+        "tableReference": {
+            "oneOf": [
+                {
+                    "$ref": "#/$defs/identifier"
+                },
+                {
+                    "$ref": "#/$defs/qualifiedIdentifier"
+                }
+            ]
+        },
+        "sqlExpression": {
+            "type": "string",
+            "minLength": 1
+        },
+        "anchor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "key",
+                "table",
+                "key_column",
+                "description"
+            ],
+            "properties": {
+                "key": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "table": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "key_column": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "pathStep": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "table"
+                    ],
+                    "properties": {
+                        "table": {
+                            "$ref": "#/$defs/identifier"
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "macro"
+                    ],
+                    "properties": {
+                        "macro": {
+                            "$ref": "#/$defs/identifier"
+                        }
+                    }
+                }
+            ]
+        },
+        "routeMacro": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "key",
+                "path"
+            ],
+            "properties": {
+                "key": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "path": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/pathStep"
+                    }
+                }
+            }
+        },
+        "anchorRouteBinding": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "path"
+            ],
+            "properties": {
+                "path": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/pathStep"
+                    }
+                }
+            }
+        },
+        "routeFamily": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "key",
+                "source_table",
+                "source_key_column",
+                "generated_route_key_pattern",
+                "anchors"
+            ],
+            "properties": {
+                "key": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "source_table": {
+                    "$ref": "#/$defs/tableReference"
+                },
+                "source_key_column": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "generated_route_key_pattern": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*__\\{anchor\\}$"
+                },
+                "anchors": {
+                    "type": "object",
+                    "minProperties": 1,
+                    "additionalProperties": {
+                        "$ref": "#/$defs/anchorRouteBinding"
+                    },
+                    "propertyNames": {
+                        "$ref": "#/$defs/identifier"
+                    }
+                }
+            }
+        },
+        "facetCategory": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id_expr",
+                "name_expr",
+                "data_type",
+                "operator"
+            ],
+            "properties": {
+                "id_expr": {
+                    "$ref": "#/$defs/sqlExpression"
+                },
+                "name_expr": {
+                    "$ref": "#/$defs/sqlExpression"
+                },
+                "data_type": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "operator": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "facetFlags": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "is_applicable",
+                "is_default"
+            ],
+            "properties": {
+                "is_applicable": {
+                    "type": "boolean"
+                },
+                "is_default": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "facetAggregate": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "type",
+                "title"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "facet_key": {
+                    "$ref": "#/$defs/identifier"
+                }
+            }
+        },
+        "facetAnchor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "anchor",
+                "route"
+            ],
+            "properties": {
+                "anchor": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "route": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "sql_override": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "facet": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "key",
+                "display_title",
+                "description",
+                "group_key",
+                "type",
+                "source_table",
+                "category",
+                "sort_expr",
+                "flags",
+                "aggregate",
+                "anchors"
+            ],
+            "properties": {
+                "key": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "display_title": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "description": {
+                    "type": "string"
+                },
+                "group_key": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "type": {
+                    "enum": [
+                        "discrete",
+                        "range",
+                        "intersect",
+                        "geopolygon"
+                    ]
+                },
+                "source_table": {
+                    "$ref": "#/$defs/tableReference"
+                },
+                "category": {
+                    "$ref": "#/$defs/facetCategory"
+                },
+                "sort_expr": {
+                    "$ref": "#/$defs/sqlExpression"
+                },
+                "flags": {
+                    "$ref": "#/$defs/facetFlags"
+                },
+                "aggregate": {
+                    "$ref": "#/$defs/facetAggregate"
+                },
+                "clauses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/sqlExpression"
+                    }
+                },
+                "anchors": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/facetAnchor"
+                    }
+                }
+            }
+        }
+    }
+}

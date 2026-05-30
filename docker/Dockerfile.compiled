@@ -1,5 +1,5 @@
 # Base image for cloning the repository
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim
 
 LABEL MAINTAINER Roger Mähler <roger dot mahler at umu dot se>
 

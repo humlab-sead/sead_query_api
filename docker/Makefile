@@ -18,9 +18,14 @@ ifndef SEAD_QUERY_API_TAG
 	$(error SEAD_QUERY_API_TAG is undefined)
 endif
 
-.PHONY: image bash
+.PHONY: image bash write-build-env
 
-image:
+write-build-env:
+	@commit="$$(git rev-parse HEAD 2>/dev/null || echo unknown)" \
+		&& printf "GIT_COMMIT=%s\nSEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT=%s\nSEAD_QUERY_FACET_CONFIG_IMPORTED_BY=%s\n" "$$commit" "$$commit" "docker-compose" > build.env \
+		&& echo "info: wrote build.env with commit $$commit"
+
+image: write-build-env
 	@echo "Building image using $(SEAD_QUERY_API_TAG)..."
 	@docker build \
 		--build-arg BRANCH=$(SEAD_QUERY_API_TAG) \
@@ -29,7 +34,7 @@ image:
         -t $(IMAGE_NAME):$(SEAD_QUERY_API_TAG) \
 		-f ./Dockerfile .
 
-image-host-compiled:
+image-host-compiled: write-build-env
 	@echo "Building image using $(SEAD_QUERY_API_TAG) and binaries from ./publish ..."
 	@rm -rf ./publish
 	@dotnet publish "../sead.query.api/sead.query.api.csproj" -c $(BUILD_MODE) -o ./publish --no-restore
@@ -58,6 +63,8 @@ jump-into-docker-compose-container:
 restart-docker-compose-cluster:
 	@pushd . \
 		&& cd $(DEPLOY_CLUSTER) \
+		&& commit="$$(git rev-parse HEAD 2>/dev/null || echo unknown)" \
+		&& printf "GIT_COMMIT=%s\nSEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT=%s\nSEAD_QUERY_FACET_CONFIG_IMPORTED_BY=%s\n" "$$commit" "$$commit" "docker-compose" > build.env \
 		&& sudo docker-compose down \
 		&& sudo docker-compose up -d \
 		&& popd

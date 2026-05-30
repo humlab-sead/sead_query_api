@@ -1,93 +1,369 @@
-# Global route library
-routes:
-  - name: "site_to_sample_group"
-    from: "tbl_sites"
-    to: "tbl_sample_groups"
-    steps:
-      - table: "tbl_sample_groups"
-        join_condition: "using (site_id)"
-  
-  - name: "site_to_physical_sample"
-    from: "tbl_sites"
-    to: "tbl_physical_samples"
-    steps:
-      - route_reference: "site_to_sample_group"
-      - table: "tbl_physical_samples"
-        join_condition: "using (sample_group_id)"
-  
-  - name: "site_to_dataset"
-    from: "tbl_sites"
-    to: "tbl_datasets"
-    steps:
-      - route_reference: "site_to_physical_sample"
-      - table: "tbl_analysis_entities"
-        join_condition: "using (physical_sample_id)"
-      - table: "tbl_datasets"
-        join_condition: "using (analysis_entity_id)"
-        requires_distinct: true
+# yaml-language-server: $schema=./facet-route-config.schema.json
 
-# Facet definitions (much terser!)
+schema_version: 1
+config_revision: phase5-runtime-slices-draft-06
+
+runtime_import:
+  target_schema: facet
+  mode: merge-into-existing
+
+anchors:
+  - key: sample
+    table: tbl_physical_samples
+    key_column: physical_sample_id
+    description: Physical-sample anchor using the current runtime anchor key
+
+  - key: dataset
+    table: tbl_datasets
+    key_column: dataset_id
+    description: Dataset anchor
+
+  - key: sites
+    table: tbl_sites
+    key_column: site_id
+    description: Site anchor for representative map-target and site-level composed slices
+
+  - key: analysis_entity
+    table: tbl_analysis_entities
+    key_column: analysis_entity_id
+    description: Analysis-entity anchor for representative composed result and facet slices
+
+route_macros:
+  - key: feature_type_context
+    path:
+      - table: tbl_features
+      - table: tbl_physical_sample_features
+      - table: tbl_physical_samples
+
+  - key: dataset_method_dataset_context
+    path:
+      - table: tbl_methods
+      - table: tbl_datasets
+
+  - key: dataset_method_sample_context
+    path:
+      - macro: dataset_method_dataset_context
+      - table: tbl_analysis_entities
+      - table: tbl_physical_samples
+
+  - key: data_type_sample_context
+    path:
+      - table: tbl_datasets
+      - table: tbl_analysis_entities
+      - table: tbl_physical_samples
+
+  - key: dataset_provider_sample_context
+    path:
+      - table: tbl_datasets
+      - table: tbl_analysis_entities
+      - table: tbl_physical_samples
+
+  - key: record_type_dataset_context
+    path:
+      - table: tbl_methods
+      - table: tbl_datasets
+
+  - key: record_type_sample_context
+    path:
+      - macro: record_type_dataset_context
+      - table: tbl_analysis_entities
+      - table: tbl_physical_samples
+
+route_families:
+  - key: feature_type
+    source_table: tbl_feature_types
+    source_key_column: feature_type_id
+    generated_route_key_pattern: feature_type__{anchor}
+    anchors:
+      sample:
+        path:
+          - macro: feature_type_context
+      dataset:
+        path:
+          - macro: feature_type_context
+          - table: tbl_analysis_entities
+          - table: tbl_datasets
+
+  - key: dataset_methods
+    source_table: tbl_dataset_methods
+    source_key_column: dataset_method_id
+    generated_route_key_pattern: dataset_methods__{anchor}
+    anchors:
+      sample:
+        path:
+          - macro: dataset_method_sample_context
+      dataset:
+        path:
+          - macro: dataset_method_dataset_context
+
+  - key: data_types
+    source_table: tbl_data_types
+    source_key_column: data_type_id
+    generated_route_key_pattern: data_types__{anchor}
+    anchors:
+      sample:
+        path:
+          - macro: data_type_sample_context
+      dataset:
+        path:
+          - table: tbl_datasets
+
+  - key: dataset_provider
+    source_table: tbl_dataset_masters
+    source_key_column: master_set_id
+    generated_route_key_pattern: dataset_provider__{anchor}
+    anchors:
+      sample:
+        path:
+          - macro: dataset_provider_sample_context
+      dataset:
+        path:
+          - table: tbl_datasets
+
+  - key: record_types
+    source_table: tbl_record_types
+    source_key_column: record_type_id
+    generated_route_key_pattern: record_types__{anchor}
+    anchors:
+      sample:
+        path:
+          - macro: record_type_sample_context
+      dataset:
+        path:
+          - macro: record_type_dataset_context
+
+  - key: country
+    source_table: facet.site_location_shortcut
+    source_key_column: location_id
+    generated_route_key_pattern: country__{anchor}
+    anchors:
+      analysis_entity:
+        path:
+          - table: tbl_sites
+          - table: tbl_sample_groups
+          - table: tbl_physical_samples
+          - table: tbl_analysis_entities
+
+  - key: sites_polygon
+    source_table: tbl_sites
+    source_key_column: site_id
+    generated_route_key_pattern: sites_polygon__{anchor}
+    anchors:
+      analysis_entity:
+        path:
+          - table: tbl_sample_groups
+          - table: tbl_physical_samples
+          - table: tbl_analysis_entities
+
+  - key: analysis_entity_ages
+    source_table: tbl_analysis_entity_ages
+    source_key_column: analysis_entity_age_id
+    generated_route_key_pattern: analysis_entity_ages__{anchor}
+    anchors:
+      analysis_entity:
+        path:
+          - table: tbl_analysis_entities
+
 facets:
-  - facet_code: site
-    target_table: tbl_sites
-    target_id: site_id
+  - key: feature_type
+    display_title: Feature type
+    description: Feature-type facet slice for first YAML-to-facet-schema import
+    group_key: others
     type: discrete
+    source_table: tbl_feature_types
+    category:
+      id_expr: tbl_feature_types.feature_type_id
+      name_expr: tbl_feature_types.feature_type_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_feature_types.feature_type_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses: []
     anchors:
-      site:
-        # Identity case - no joins needed
-        table_chain: []
-        description: "Site filter (no counts)"
-      sample_group:
-        route_reference: "site_to_sample_group"
-        description: "Sites with sample group counts"
-      physical_sample:
-        route_reference: "site_to_physical_sample"
-        description: "Sites with physical sample counts"
-      dataset:
-        route_reference: "site_to_dataset"
-        description: "Sites with dataset counts"
+      - anchor: sample
+        route: feature_type__sample
+      - anchor: dataset
+        route: feature_type__dataset
 
-  - facet_code: sample
-    target_table: tbl_sample_groups
-    target_id: sample_group_id
+  - key: dataset_methods
+    display_title: Dataset methods
+    description: Dataset methods
+    group_key: space_time
     type: discrete
+    source_table: tbl_dataset_methods
+    category:
+      id_expr: tbl_methods.method_id
+      name_expr: tbl_methods.method_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_methods.method_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of datasets
+      facet_key: result_facet
+    clauses: []
     anchors:
-      site:
-        # Reverse direction - inline table chain
-        table_chain: ["tbl_sites"]
-        description: "Sample group filter (site counts)"
-      sample_group:
-        table_chain: []
-        description: "Sample group (no counts)"
-      physical_sample:
-        table_chain: ["tbl_physical_samples"]
-        description: "Sample group with physical sample counts"
-      dataset:
-        # Complex path - use route reference
-        route_reference: "sample_to_dataset"
-        description: "Sample group with dataset counts"
+      - anchor: sample
+        route: dataset_methods__sample
+      - anchor: dataset
+        route: dataset_methods__dataset
 
-  - facet_code: feature_type
-    target_table: tbl_feature_types
-    target_id: feature_type_id
+  - key: data_types
+    display_title: Data types
+    description: Data types
+    group_key: others
     type: discrete
+    source_table: tbl_data_types
+    category:
+      id_expr: tbl_data_types.data_type_id
+      name_expr: tbl_data_types.data_type_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_data_types.data_type_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses: []
     anchors:
-      site:
-        table_chain: ["tbl_features", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites"]
-        description: "Feature type filter (site counts)"
-      sample_group:
-        table_chain: ["tbl_features", "tbl_physical_samples", "tbl_sample_groups"]
-        description: "Feature type filter (sample group counts)"
-      physical_sample:
-        table_chain: ["tbl_features", "tbl_physical_samples"]
-        description: "Feature type filter (physical sample counts)"
-      # Complex cases can still use explicit SQL
-      analysis:
-        explicit_sql: |
-          select ft.feature_type_id as target_id, ae.analysis_entity_id as anchor_id
-          from tbl_feature_types ft
-          join tbl_features f using (feature_type_id)
-          join tbl_physical_samples ps using (physical_sample_id)
-          join tbl_analysis_entities ae using (physical_sample_id)
-          @criteria
-        description: "Feature type filter (analysis entity counts)"
+      - anchor: sample
+        route: data_types__sample
+      - anchor: dataset
+        route: data_types__dataset
+
+  - key: dataset_provider
+    display_title: Dataset provider
+    description: Dataset provider
+    group_key: space_time
+    type: discrete
+    source_table: tbl_dataset_masters
+    category:
+      id_expr: tbl_dataset_masters.master_set_id
+      name_expr: tbl_dataset_masters.master_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_dataset_masters.master_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses: []
+    anchors:
+      - anchor: sample
+        route: dataset_provider__sample
+      - anchor: dataset
+        route: dataset_provider__dataset
+
+  - key: record_types
+    display_title: Proxy types
+    description: Proxy types
+    group_key: others
+    type: discrete
+    source_table: tbl_record_types
+    category:
+      id_expr: tbl_record_types.record_type_id
+      name_expr: tbl_record_types.record_type_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_record_types.record_type_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses: []
+    anchors:
+      - anchor: sample
+        route: record_types__sample
+      - anchor: dataset
+        route: record_types__dataset
+
+  - key: country
+    display_title: Countries
+    description: The name of the country, at the time of collection, in which the samples were collected
+    group_key: space_time
+    type: discrete
+    source_table: facet.site_location_shortcut
+    category:
+      id_expr: facet.site_location_shortcut.location_id
+      name_expr: facet.site_location_shortcut.location_name
+      data_type: integer
+      operator: "="
+    sort_expr: facet.site_location_shortcut.location_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses:
+      - facet.site_location_shortcut.location_type_id=1
+    anchors:
+      - anchor: analysis_entity
+        route: country__analysis_entity
+
+  - key: sites_polygon
+    display_title: Sites (map)
+    description: General name for the excavation or sampling location
+    group_key: space_time
+    type: geopolygon
+    source_table: tbl_sites
+    category:
+      id_expr: tbl_sites.site_id
+      name_expr: tbl_sites.site_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_sites.site_name
+    flags:
+      is_applicable: true
+      is_default: true
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses: []
+    anchors:
+      - anchor: analysis_entity
+        route: sites_polygon__analysis_entity
+
+  - key: analysis_entity_ages
+    display_title: Analysis entity ages
+    description: Age range assigned to analysis entities based on dating evidence; uses range-intersection matching
+    group_key: space_time
+    type: intersect
+    source_table: tbl_analysis_entity_ages
+    category:
+      id_expr: int4range(lower(tbl_analysis_entity_ages.age_range) - 10000, upper(tbl_analysis_entity_ages.age_range) - 10000)
+      name_expr: int4range(lower(tbl_analysis_entity_ages.age_range) - 10000, upper(tbl_analysis_entity_ages.age_range) - 10000)
+      data_type: int4range
+      operator: "&&"
+    sort_expr: "1"
+    flags:
+      is_applicable: true
+      is_default: true
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    clauses: []
+    anchors:
+      - anchor: analysis_entity
+        route: analysis_entity_ages__analysis_entity

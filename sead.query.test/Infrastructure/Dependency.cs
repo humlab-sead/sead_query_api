@@ -1,5 +1,7 @@
 ﻿using System;
 using Autofac;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SeadQueryAPI.Serializers;
 using SeadQueryComposer.QueryComposer.Services;
 using SeadQueryComposer.RouteCompiler;
@@ -80,6 +82,9 @@ namespace SQT.Infrastructure
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
+            builder.RegisterType<FacetRouteConfigurationImporter>().As<IFacetRouteConfigurationImporter>().InstancePerLifetimeScope();
+            builder.RegisterType<SeadQueryAPI.Services.FacetRouteConfigurationImportCommand>().AsSelf().InstancePerDependency();
+            builder.RegisterType<SeadQueryAPI.Services.FacetRouteConfigurationValidationCommand>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<UndefinedPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Unknown);
 
@@ -102,6 +107,9 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<ResultService>().As<IResultService>();
             builder.RegisterType<LegacyResultProjectionHandoffBuilder>().AsSelf();
+            builder.Register(_ => NullLogger<ComposedResultProjectionHandoffBuilder>.Instance)
+                .As<ILogger<ComposedResultProjectionHandoffBuilder>>()
+                .SingleInstance();
             builder.RegisterType<ComposedResultProjectionHandoffBuilder>().As<IResultProjectionHandoffBuilder>();
 
             builder.RegisterType<NullPayloadService>().Keyed<IResultPayloadService>("map");

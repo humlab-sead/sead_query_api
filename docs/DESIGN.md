@@ -8,8 +8,8 @@ This is an architecture document, not a developer setup guide, testing guide, or
 
 - Current authoritative runtime: the existing faceted query API implemented in the solution projects and described by the current request-flow notes.
 - In progress: the query-engine overhaul on branch `query-engine-overhaul`, centered on the new composer and route-based query model.
-- Current validated overhaul state: composed facet-content slices and the Phase 4 result-projection support surface are integrated into the branch runtime, while unsupported result routes remain explicit legacy-fallback exceptions.
-- TBD: the exact cutover plan, final route configuration format, and any companion diagrams or ADRs.
+- Current validated overhaul state: composed facet-content slices, the Phase 4 result-projection support surface, and the Phase 5 route-configuration import path are integrated into the branch runtime, while unsupported result routes remain explicit legacy-fallback exceptions.
+- Under review: the exact default-cutover plan, the final governance boundary for route-definition ownership, and any companion diagrams or ADRs.
 
 ## System Overview
 
@@ -94,6 +94,8 @@ The overhaul is no longer only a design direction.
 - The first compiled vertical slice is integrated into the branch runtime.
 - The composed facet-content path is active for the validated facet-content matrix and still falls back outside that supported surface.
 - `ResultService` now enters result SQL compilation through an explicit result-projection handoff instead of calling `QuerySetupBuilder.Build(...)` directly.
+- Facet and route authoring now follows a checked-in YAML draft that is validated and imported into the existing `facet` schema for runtime use, with active revision metadata stored in `facet.config_revision`.
+- The runtime import path now has explicit `--import-facet-config` and `--validate-facet-config` host entry points, but the application still runs against the imported database copy rather than against raw YAML files.
 - The legacy runtime still remains authoritative outside the supported composed slice.
 - Phase 4 closes the current result-projection widening work on the validated support surface while keeping unsupported routes explicit.
 
@@ -266,11 +268,16 @@ This means the database is not just a passive store. It is an active execution e
 - Facet content queries must remain responsive because they drive interactive UI updates.
 - The existing design pays complexity cost in template management; the new design pays some upfront modeling cost in routes and anchors to reduce long-term SQL complexity.
 - Range, geo, and aggregate queries should continue to rely on database-native capabilities where that improves correctness and performance.
+- The current measured runtime boundary is limited to the recorded `sites_polygon`, country-filter, and `analysis_entity_ages` intersect baselines plus the latest broader live result, controller, and composed facet-content reruns.
+- The dominant recorded timing outlier in branch validation is PostgreSQL Testcontainers cold-start overhead, not a measured steady-state failure inside the currently covered composed slices.
 
 ### Configuration
 
 - The system is heavily configuration-driven, especially for facet behavior.
 - The redesign increases the importance of configuration quality because route definitions and anchor mappings become architectural inputs rather than incidental SQL details.
+- The current Phase 5 direction is to author facet and route configuration in YAML, validate it before import, and run the application against an imported normalized copy in the existing `facet` schema.
+- The imported runtime copy is versioned through `facet.config_revision`, which records the active revision id, content hash, provenance metadata, and active-state flag.
+- `facet.route.specification` is currently the authoritative imported route representation; `facet.route_step` remains deferred because the checked-in schema still applies a global unique constraint on `table_id`.
 
 ## External Dependencies and Integration Points
 
@@ -304,6 +311,12 @@ The system is intentionally database-aware. It is not designed around full datab
 - Benefit: lower template duplication and clearer relationship ownership
 - Tradeoff: route modeling becomes a core design artifact and must be kept accurate
 
+### Decision: YAML authoring with imported database runtime copy
+
+- Why: route and facet configuration needs code-reviewable authoring and explicit validation, but runtime still needs one deterministic database-backed copy.
+- Benefit: reviewed YAML authoring can be imported into the existing `facet` schema with revision metadata, while runtime continues to read one active normalized copy.
+- Tradeoff: configuration governance now spans both the authoring contract and the importer contract, and the route-step representation is still constrained by the current schema.
+
 ### Decision: Decouple filtering from result projection
 
 - Why: facet filtering and result rendering change at different rates and have different performance needs
@@ -317,7 +330,8 @@ The system is intentionally database-aware. It is not designed around full datab
 
 - The composer architecture is in progress and should not be documented as fully authoritative runtime behavior yet.
 - Final result projection is on the composed path for the validated Phase 4 support matrix; unsupported result requests still fall back to the legacy query-setup path.
-- Final route-definition format and migration sequencing remain TBD.
+- The current route-definition authoring direction is YAML plus importer-managed database copy, but long-term ownership and exception-inventory governance are still in progress.
+- The current measured runtime-readiness claim is intentionally limited to the recorded spatial, country-filter, and intersect baselines plus the latest broader green reruns; unmeasured composed families remain outside that claim.
 - Final documentation split between `docs/DESIGN.md` and any future ADRs or subsystem notes is TBD.
 
 ## Related Documents

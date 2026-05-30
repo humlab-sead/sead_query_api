@@ -243,6 +243,46 @@ This workflow depends on local vault-backed credentials referenced by the `Makef
 
 If those files are not present on your machine, scaffold-related commands will not work without local adaptation.
 
+### Scripted facet-config import
+
+The `Makefile` now also includes:
+
+```bash
+make import-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+```
+
+This runs the API host through the `--import-facet-config` command path instead of starting the web server.
+
+The target sources `conf/.env`, resolves the current git commit into `SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT`, and defaults `SEAD_QUERY_FACET_CONFIG_IMPORTED_BY` to `make-import-facet-config`.
+
+Use it only against a database you intend to update. It is a scripted import path, not a no-op validation mode.
+
+For a non-mutating YAML check through the same host entry point, use:
+
+```bash
+make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+```
+
+This runs the `--validate-facet-config` command path and stops after deserialization and importer-contract validation.
+
+The validation path is now semantic as well as structural. In addition to deserialization and importer-contract checks, it resolves anchor tables, generated route endpoints, facet source-table references, and facet-anchor route bindings against the current facet schema without mutating the database.
+
+### Current Phase 5 branch assumptions
+
+While Phase 5 remains in progress, contributors should work from these branch-local assumptions:
+
+- YAML is the current authoring source for facet and route configuration work, but the running application still reads the imported database copy in the existing `facet` schema rather than loading YAML directly at request time.
+- A YAML edit is not a runtime change until it has been validated and, when appropriate, imported through the current CLI path.
+- The current runtime-readiness claim is intentionally narrow. It is backed by the recorded `sites_polygon`, country-filter, and `analysis_entity_ages` intersect baselines plus the broader green live result, controller, and composed facet-content reruns. Do not treat unmeasured composed families as already cleared for default cutover.
+- Unsupported or unresolved composed requests are still expected to stay on the explicit legacy-fallback boundary rather than being repaired implicitly in request handlers.
+
+For Phase 5 work on facet and route configuration, the practical contributor loop is:
+
+1. edit the YAML authoring file or importer code
+2. run `make validate-facet-config FACET_CONFIG_FILE=...`
+3. run the narrowest focused tests for the touched slice
+4. run `make import-facet-config FACET_CONFIG_FILE=...` only when you intend to update the target database copy
+
 ### Migrations
 
 Entity Framework migrations are not the documented primary development workflow in this repository.

@@ -558,6 +558,41 @@ CREATE TABLE facet.facet_group (
 
 
 --
+-- Name: config_revision; Type: TABLE; Schema: facet; Owner: -
+--
+
+CREATE TABLE facet.config_revision (
+    revision_id integer NOT NULL,
+    config_revision character varying(128) NOT NULL,
+    source_commit character varying(128) DEFAULT ''::character varying NOT NULL,
+    content_hash character varying(128) NOT NULL,
+    imported_at timestamp with time zone NOT NULL,
+    imported_by character varying(128) NOT NULL,
+    is_active boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: config_revision_revision_id_seq; Type: SEQUENCE; Schema: facet; Owner: -
+--
+
+CREATE SEQUENCE facet.config_revision_revision_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: config_revision_revision_id_seq; Type: SEQUENCE OWNED BY; Schema: facet; Owner: -
+--
+
+ALTER SEQUENCE facet.config_revision_revision_id_seq OWNED BY facet.config_revision.revision_id;
+
+
+--
 -- Name: facet_table; Type: TABLE; Schema: facet; Owner: -
 --
 
@@ -1051,6 +1086,13 @@ ALTER TABLE ONLY facet.anchor ALTER COLUMN anchor_id SET DEFAULT nextval('facet.
 
 
 --
+-- Name: config_revision revision_id; Type: DEFAULT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.config_revision ALTER COLUMN revision_id SET DEFAULT nextval('facet.config_revision_revision_id_seq'::regclass);
+
+
+--
 -- Name: facet_anchor facet_anchor_id; Type: DEFAULT; Schema: facet; Owner: -
 --
 
@@ -1119,6 +1161,22 @@ ALTER TABLE ONLY facet.table_relation ALTER COLUMN table_relation_id SET DEFAULT
 
 ALTER TABLE ONLY facet.anchor
     ADD CONSTRAINT anchor_pkey PRIMARY KEY (anchor_id);
+
+
+--
+-- Name: config_revision config_revision_config_revision_key; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.config_revision
+    ADD CONSTRAINT config_revision_config_revision_key UNIQUE (config_revision);
+
+
+--
+-- Name: config_revision config_revision_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.config_revision
+    ADD CONSTRAINT config_revision_pkey PRIMARY KEY (revision_id);
 
 
 --

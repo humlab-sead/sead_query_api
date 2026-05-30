@@ -273,12 +273,16 @@ public class ResultProjectionHandoffBuilderTests : IntegrationTestBase
             .Contain(join => join.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id"));
     }
 
-    [Fact]
-    public void Build_WithUnsupportedSpeciesTabularResult_FallsBackToLegacyHandoff()
+    [Theory]
+    [InlineData("palaeoentomology://species:species")]
+    [InlineData("archaeobotany://species:species")]
+    [InlineData("pollen://species:species")]
+    [InlineData("dendrochronology://species:species")]
+    public void Build_WithUnsupportedOutOfDraftSpeciesTabularResult_FallsBackToLegacyHandoff(string uri)
     {
         var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
         var legacyBuilder = Container.Resolve<LegacyResultProjectionHandoffBuilder>();
-        var facetsConfig = FakeFacetsConfig("palaeoentomology://species:species");
+        var facetsConfig = FakeFacetsConfig(uri);
         var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
 
         var result = builder.Build(facetsConfig, resultConfig);

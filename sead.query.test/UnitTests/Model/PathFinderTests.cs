@@ -1,16 +1,16 @@
-using Moq;
-using SeadQueryCore;
 using System;
 using System.Collections.Generic;
-using Xunit;
-using Autofac;
-using SQT.Infrastructure;
-using SeadQueryInfra;
-using SQT.Mocks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.Sqlite;
 using System.Threading.Tasks;
+using Autofac;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using SeadQueryCore;
+using SeadQueryInfra;
+using SQT.Infrastructure;
+using SQT.Mocks;
 using SQT.Scaffolding;
+using Xunit;
 
 namespace SQT.Model
 {
@@ -19,9 +19,8 @@ namespace SQT.Model
     [Collection("UsePostgresFixture")]
     public class RouteFinderTests : MockerWithFacetContext
     {
-        public RouteFinderTests() : base()
-        {
-        }
+        public RouteFinderTests()
+            : base() { }
 
         private IPathFinder CreateFacetsGraphByFakeContext(IFacetContext facetContext)
         {
@@ -83,7 +82,8 @@ namespace SQT.Model
         [Fact]
         public void Build_WhenSuccessfullyCalled_HasExpectedNodesAndEdges()
         {
-            var uniedges = new List<(string, string, int)> {
+            var uniedges = new List<(string, string, int)>
+            {
                 ("A", "B", 7),
                 ("A", "C", 8),
                 ("B", "F", 2),
@@ -105,7 +105,6 @@ namespace SQT.Model
             var finder = new PathFinder(edges);
 
             Assert.NotNull(finder);
-
         }
 
         [Fact]
@@ -159,7 +158,8 @@ namespace SQT.Model
             var result = finder.Graph.ToCSV();
 
             // Assert
-            const string expected = "A;B;7\nA;C;8\nB;A;7\nB;F;2\nC;A;8\nC;F;6\nC;G;4\nD;F;8\nE;H;1\nF;B;2\nF;C;6\nF;D;8\nF;G;9\nF;H;3\nG;C;4\nG;F;9\nH;E;1\nH;F;3\n";
+            const string expected =
+                "A;B;7\nA;C;8\nB;A;7\nB;F;2\nC;A;8\nC;F;6\nC;G;4\nD;F;8\nE;H;1\nF;B;2\nF;C;6\nF;D;8\nF;G;9\nF;H;3\nG;C;4\nG;F;9\nH;E;1\nH;F;3\n";
             Assert.Equal(expected, result);
         }
 
@@ -192,5 +192,18 @@ namespace SQT.Model
             Assert.Empty(route);
         }
 
+        [Fact]
+        public void Find_WhenStartingFromSiteLocationShortcut_CanReachAnalysisEntities()
+        {
+            var graph = CreateFacetsGraphByFakeContext(FacetContext);
+
+            Route route = graph.Find("facet.site_location_shortcut", "tbl_analysis_entities");
+
+            Assert.NotNull(route);
+            Assert.Equal(
+                "facet.site_location_shortcut-tbl_sites-tbl_sample_groups-tbl_physical_samples-tbl_analysis_entities",
+                string.Join('-', route.ToTrail())
+            );
+        }
     }
 }
