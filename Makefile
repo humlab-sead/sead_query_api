@@ -13,6 +13,11 @@ API_PROJECT=sead.query.api/sead.query.api.csproj
 TEST_PROJECT=sead.query.test/sead.query.test.csproj
 TARGET_FRAMEWORK=net9.0
 SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
+FACET_CONFIG_FILE?=sead.query.composer/Templates/route_v1.yaml
+FACET_CONFIG_SOURCE_COMMIT?=$(shell git rev-parse HEAD 2>/dev/null || echo unknown)
+FACET_CONFIG_IMPORTED_BY?=make-import-facet-config
+FACET_RUNTIME_SCHEMA_FILE?=scripts/prepare-phase5-facet-runtime-schema.sql
+SEAD_QUERY_API_BASE_URL?=http://localhost:8090
 
 .PHONY: test clean build publish tidy
 
@@ -59,6 +64,58 @@ serve: debug
 	@cp -f conf/appsettings.Development.json sead.query.api/bin/Debug/$(TARGET_FRAMEWORK)/appsettings.json
 	@cp -f conf/.env sead.query.api/bin/Debug/$(TARGET_FRAMEWORK)/.env
 	@dotnet run --project $(API_PROJECT)
+
+.PHONY: import-facet-config
+import-facet-config:
+	@set -a \
+		&& source conf/.env \
+		&& set +a \
+		&& SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT="$(FACET_CONFIG_SOURCE_COMMIT)" \
+		SEAD_QUERY_FACET_CONFIG_IMPORTED_BY="$(FACET_CONFIG_IMPORTED_BY)" \
+		dotnet run --project $(API_PROJECT) -- --import-facet-config "$(FACET_CONFIG_FILE)"
+
+.PHONY: prepare-phase5-facet-runtime-schema
+prepare-phase5-facet-runtime-schema:
+	@PGPASSWORD="$(DBPASSWORD)" psql \
+		-h "$(DBHOST)" \
+		-p "$(DBPORT)" \
+		-U "$(DBUSER)" \
+		-d "$(DBNAME)" \
+		-v ON_ERROR_STOP=1 \
+		-f "$(FACET_RUNTIME_SCHEMA_FILE)"
+
+.PHONY: validate-facet-config
+validate-facet-config:
+	@set -a \
+		&& source conf/.env \
+		&& set +a \
+		&& SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT="$(FACET_CONFIG_SOURCE_COMMIT)" \
+		SEAD_QUERY_FACET_CONFIG_IMPORTED_BY="$(FACET_CONFIG_IMPORTED_BY)" \
+		dotnet run --project $(API_PROJECT) -- --validate-facet-config "$(FACET_CONFIG_FILE)"
+
+.PHONY: default-cutover-smoke-check
+default-cutover-smoke-check:
+	@set -euo pipefail \
+		&& set -a \
+		&& source conf/.env \
+		&& set +a \
+		&& echo "info: running representative spatial cutover checks..." \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlySitesPolygonSlice" \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~Load_GeoPolygonFilteredMapResult_UsesComposedFilterSql|FullyQualifiedName~LoadMap_GeoPolygonFilteredRequest_UsesComposedFilterSql" \
+		&& echo "info: running representative country-filter cutover checks..." \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~FacetContentService_ComposedCountryPredicateGeochronologySlice" \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~Load_CountryFilteredMapResult_UsesComposedFilterSql|FullyQualifiedName~Load_CountryFilteredMapResult_MatchesLegacyOutput|FullyQualifiedName~LoadMap_CountryFilteredRequest_UsesComposedFilterSql" \
+		&& echo "info: running representative intersect cutover checks..." \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyIntersectSlice" \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~Load_IntersectFilteredMapResult_UsesComposedFilterSql|FullyQualifiedName~LoadMap_IntersectFilteredRequest_UsesComposedFilterSql" \
+		&& echo "info: running broader cutover regression checks..." \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~SQT.LiveServices.ResultLoadServiceTests" \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~IntegrationTests.Sead.ResultControllerTests" \
+		&& dotnet test $(TEST_PROJECT) --filter "FullyQualifiedName~FacetContentService_ComposedSupportedLiveSlices"
+
+.PHONY: default-cutover-http-smoke-check
+default-cutover-http-smoke-check:
+	@./scripts/default-cutover-http-smoke-check.sh "$(SEAD_QUERY_API_BASE_URL)"
 
 .PHONY: build
 build:

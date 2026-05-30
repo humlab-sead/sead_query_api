@@ -37,6 +37,7 @@ This repository is a .NET 9 solution with these main projects:
 - Keep edits small and aligned with current naming, nullability, async, and DI patterns.
 - Run targeted validation for the touched slice before finishing, and widen scope only when the change crosses layers.
 - Do not invent operational or CI behavior that is not defined in the repository; mark missing process as `TBD` in docs.
+- When work depends on the SEAD database model, join paths, or repository-safe SQL, use the local skill at `.github/skills/sead-database/SKILL.md`.
 
 ## Detailed Instructions
 

@@ -33,6 +33,7 @@ This repository is a .NET solution centered on these projects:
 - Use the root `Makefile`, VS Code tasks, or `dotnet` commands already present in the repo.
 - Run targeted tests for the changed slice before finishing; widen validation only when the change crosses layers.
 - Keep changes small and aligned with existing naming, nullability, async, and DI patterns.
+- When a task is about the SEAD schema, table relationships, or safe SQL join paths, load the local skill at `.github/skills/sead-database/SKILL.md`.
 
 ## Task-specific instruction files
 
