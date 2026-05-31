@@ -485,7 +485,7 @@ Use these references when you need to confirm what configuration is active or wh
 
 - `docs/DESIGN.md` for the architecture and runtime/configuration split
 - `docs/OPERATIONS.md` for deployment-time import provenance and runtime verification
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_CONFIGURATION_SOURCE_OF_TRUTH.md` for the detailed authoring and imported-copy contract
+- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_CONFIGURATION_SOURCE_OF_TRUTH.md` for the detailed authoring and imported-copy contract
 
 ### Current branch assumptions
 

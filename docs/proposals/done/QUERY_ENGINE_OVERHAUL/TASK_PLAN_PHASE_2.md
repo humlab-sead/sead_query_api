@@ -24,7 +24,7 @@ Reach practical parity for legacy discrete facet content generation.
 
 ## Documentation Targets
 
-- Maintain the working parity inventory in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- Maintain the working parity inventory in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
 - Record durable contract or runtime-boundary changes in `docs/DESIGN.md`.
 - Update this task plan in place as discrete support widens or explicit exceptions are accepted.
 
@@ -164,8 +164,8 @@ Leave one explicit record of what Phase 2 delivered and what it intentionally de
 
 | Deliverable                       | Description                                                          | Status      | Link                                                                        |
 |-----------------------------------|----------------------------------------------------------------------|-------------|-----------------------------------------------------------------------------|
-| Discrete parity task plan         | Execution tracker for Phase 2 widening work                          | In progress | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`                 |
-| Updated discrete parity inventory | Current support and exception status for discrete targets            | In progress | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                  |
+| Discrete parity task plan         | Execution tracker for Phase 2 widening work                          | In progress | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`                 |
+| Updated discrete parity inventory | Current support and exception status for discrete targets            | In progress | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                  |
 | Discrete contract updates         | Code-level widening for discrete target and predicate support        | In progress | `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` |
 | Focused live promotion coverage   | Focused and grouped live coverage for newly promoted discrete slices | In progress | `sead.query.test/LiveTests/FacetLoadService.cs`                             |
 | Durable architecture updates      | Discrete runtime and contract boundary updates                       | In progress | `docs/DESIGN.md`                                                            |

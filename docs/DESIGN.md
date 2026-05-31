@@ -145,11 +145,30 @@ Facet definitions carry expressions, type metadata, display behavior, grouping r
 
 Configuration authoring is moving toward reviewed YAML plus importer-managed normalization, but runtime execution remains database-backed. The application reads one active imported configuration copy rather than interpreting authoring files directly during requests.
 
+The current configuration boundary has two stable sides.
+
+- Authoring side: checked-in YAML plus schema-backed validation
+- Runtime side: one active imported configuration revision in the `facet` schema
+
+The imported runtime copy currently materializes the route and facet metadata the application depends on, including rows in `facet.anchor`, `facet.route`, `facet.facet`, `facet.facet_table`, `facet.facet_anchor`, and optional exception tables such as `facet.facet_clause` and `facet.facet_template`.
+The active revision and its provenance live in `facet.config_revision`.
+
+Import-time normalization resolves human-readable authoring keys against runtime lookup tables such as `facet.table`, `facet.facet_group`, and `facet.facet_type` before the imported revision becomes active.
+
+The authoring model is intentionally asymmetric.
+Generated route families and macros are the default way to represent repeatable source-to-anchor traversal.
+Explicit routes and SQL overrides are reserved for durable exception cases rather than routine authoring.
+
+The current persisted-route boundary is also intentionally narrow.
+`facet.route.specification` is the authoritative persisted route representation for the imported runtime copy.
+`facet.route_step` persistence remains deferred because the current schema constraint on `route_step.table_id` is not compatible with storing steps for multiple routes.
+
 This has several consequences.
 
 - The database is not just a storage backend; it is an active query-execution environment.
 - Configuration quality is architecture-critical because route and facet definitions influence query correctness.
 - Runtime determinism depends on having one authoritative active configuration revision.
+- Authoring-time validation and import-time normalization are part of the runtime design, not only contributor workflow.
 
 ## Cross-Cutting Concerns
 
@@ -158,6 +177,7 @@ This has several consequences.
 - Request payloads must be reconstructed into valid internal models before query compilation begins.
 - Invalid or stale selections should be removed early.
 - Anchor mismatches, missing route inputs, and unsupported request shapes are explicit contract failures.
+- Invalid configuration revisions must fail before activation rather than leaving the runtime on a partially imported state.
 - The composed path should reject invalid input deliberately rather than drifting into malformed SQL or implicit behavior repair.
 
 ### Error Handling

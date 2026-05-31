@@ -25,7 +25,7 @@ Move final result generation onto the same composed anchor model so filtering an
 
 ## Documentation Targets
 
-- Maintain the result-projection row in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- Maintain the result-projection row in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
 - Record durable result-projection and handoff changes in `docs/DESIGN.md`.
 - Update this task plan in place as result parity widens or explicit exceptions are accepted.
 
@@ -259,8 +259,8 @@ Leave one explicit record of what Phase 4 delivered and what it intentionally de
 
 | Deliverable                    | Description                                                                               | Status | Link                                                                                    |
 |--------------------------------|-------------------------------------------------------------------------------------------|--------|-----------------------------------------------------------------------------------------|
-| Result-set parity task plan    | Execution tracker for Phase 4 widening work                                               | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`                             |
-| Updated parity inventory       | Current support and exception status for result projection                                | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                              |
+| Result-set parity task plan    | Execution tracker for Phase 4 widening work                                               | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`                             |
+| Updated parity inventory       | Current support and exception status for result projection                                | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                              |
 | Result runtime handoff updates | Runtime changes in `ResultService` and the handoff builder for composed result projection | Done   | `sead.query.core/Services/Result/Services/ResultService.cs`                             |
 | Result SQL compiler updates    | Composed-anchor support for tabular and map result formats                                | Done   | `sead.query.core/QueryBuilder/ResultCompilers/SqlCompilers/TabularResultSqlCompiler.cs` |
 | Result parity validation       | Unit, live, and controller coverage for supported result scenarios                        | Done   | `sead.query.test/IntegrationTests/SeadControllers/ResultControllerTests.cs`             |

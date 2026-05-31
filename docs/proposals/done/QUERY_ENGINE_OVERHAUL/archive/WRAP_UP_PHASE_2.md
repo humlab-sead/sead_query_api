@@ -5,7 +5,7 @@
 - Branch: `query-engine-overhaul`
 - HEAD: `b02c30c`
 - Checkpoint commit: `feat(composer): promote routed zero-predicate discrete slices`
-- Current worktree state: one uncommitted planning change in `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`
+- Current worktree state: one uncommitted planning change in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`
 
 ## What Landed In This Session
 
@@ -18,8 +18,8 @@
   - `sample_groups:sample_groups`
 - Updated durable and tracking docs:
   - `docs/DESIGN.md`
-  - `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`
-  - `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`
+  - `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`
+  - `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`
 
 ## Validation That Passed
 
@@ -39,7 +39,7 @@ None of these warnings blocked the Phase 2 slice work above.
 
 ## Current Tracking State
 
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md` is now the active execution tracker for Phase 2.
+- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md` is now the active execution tracker for Phase 2.
 - The tracker reflects that there was no clean live same-table target-only promotion candidate in the current smoke set.
 - The routed zero-predicate contract is now proven for at least three slices: `genus:genus`, `sites:sites`, and `sample_groups:sample_groups`.
 - The next explicitly selected candidate is `data_types:data_types`.
@@ -56,12 +56,12 @@ Continue with `data_types:data_types` using the same narrow sequence:
 
 ## Good Starting Files For Resume
 
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`
+- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md`
 - `sead.query.test/LiveTests/FacetLoadService.cs`
 - `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`
+- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`
 
 ## Notes On The Current Dirty State
 
-- The only post-commit change right now is the planning update in `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md` that pins `data_types:data_types` as the next target-only routed probe.
+- The only post-commit change right now is the planning update in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_2.md` that pins `data_types:data_types` as the next target-only routed probe.
 - If you want a fully clean restart point later, either commit that one-file plan update or keep it as the first local context read when resuming.

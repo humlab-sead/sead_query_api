@@ -8,9 +8,10 @@
 
 ## Summary
 
-This contract defines how the v1 YAML shape imports into the current runtime schema.
+This contract defines the field-level v1 import mapping from facet-route authoring YAML into the current runtime schema.
 
-The import target is the existing `facet` schema, not a new side schema. YAML stays the authoring source of truth. Runtime continues to read the current tables.
+It assumes the durable authoring, runtime, and workflow model already described in `docs/REQUIREMENTS.md`, `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, and `docs/OPERATIONS.md`.
+This document is only the narrow importer contract for the v1 shape.
 
 ## Scope
 
@@ -20,6 +21,8 @@ This contract covers:
 - mapping into existing `facet` schema tables
 - validation rules required before import
 - the first end-to-end slice to implement
+
+This contract does not restate the long-lived source-of-truth decision, contributor workflow, or operational import procedure.
 
 ## Existing Runtime Targets
 
@@ -39,6 +42,9 @@ The importer reads these existing lookup tables.
 - `facet.table`
 - `facet.facet_group`
 - `facet.facet_type`
+
+These tables are listed here because the importer maps into them directly.
+Their broader runtime role belongs in durable architecture docs rather than in this contract.
 
 ## YAML To Schema Mapping
 
@@ -216,3 +222,5 @@ Why this slice:
 ## Final Recommendation
 
 Use this contract as the Phase 5 v1 import boundary. Keep it narrow. Prove one small slice first. Widen only after the importer, runtime mapping, and validation path are stable.
+
+If the durable configuration model changes, update the long-lived docs first and then adjust this contract to match the current v1 importer boundary.

@@ -29,7 +29,7 @@ Make the composed engine robust enough to be the default runtime path.
 - Record route-governance and runtime-boundary decisions in `docs/DESIGN.md`.
 - Record contributor-facing configuration and validation workflow changes in `docs/DEVELOPMENT.md`.
 - Record operational diagnostics, performance expectations, and runtime-boundary guidance in `docs/OPERATIONS.md`.
-- Keep `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md` aligned if Phase 5 narrows or clarifies supported boundaries.
+- Keep `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md` aligned if Phase 5 narrows or clarifies supported boundaries.
 - Update this task plan in place as hardening work lands or explicit Phase 6 prerequisites are identified.
 
 ## Work Breakdown
@@ -145,9 +145,9 @@ Close the gap between a validated branch runtime and a maintainable long-term de
 
 | Deliverable                        | Description                                                                                | Status | Link                                                                                        |
 |------------------------------------|--------------------------------------------------------------------------------------------|--------|---------------------------------------------------------------------------------------------|
-| Phase 5 task plan                  | Execution tracker for configuration and operational hardening                              | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_5.md`                                 |
-| Route-governance decisions         | Maintained source-of-truth and validation rules for route and anchor setup                 | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_CONFIGURATION_SOURCE_OF_TRUTH.md`         |
-| Configuration diagnostics coverage | Focused validation for startup-time and request-time configuration failure                 | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/CONFIGURATION_DIAGNOSTICS_AND_VALIDATION_BOUNDARY.md` |
+| Phase 5 task plan                  | Execution tracker for configuration and operational hardening                              | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_5.md`                                 |
+| Route-governance decisions         | Maintained source-of-truth and validation rules for route and anchor setup                 | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_CONFIGURATION_SOURCE_OF_TRUTH.md`         |
+| Configuration diagnostics coverage | Focused validation for startup-time and request-time configuration failure                 | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/CONFIGURATION_DIAGNOSTICS_AND_VALIDATION_BOUNDARY.md` |
 | Runtime-readiness notes            | Representative performance observations, limits, and known outliers                        | Done   | `docs/OPERATIONS.md`                                                                        |
 | Durable hardening documentation    | Architecture, development, operations, and parity-inventory updates for Phase 5 boundaries | Done   | `docs/DEVELOPMENT.md`                                                                       |
 | Deployment schema prep             | Idempotent SQL for the missing Phase 5 route/provenance tables on target databases         | Done   | `scripts/prepare-phase5-facet-runtime-schema.sql`                                           |

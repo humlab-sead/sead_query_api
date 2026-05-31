@@ -19,27 +19,15 @@ The right split is:
 - route macros and route families to avoid hand-authoring every source-to-anchor path
 - concrete expanded routes in the imported database copy so runtime stays simple
 
+The durable governance and runtime-boundary parts of that decision now live in `docs/REQUIREMENTS.md`, `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, and `docs/OPERATIONS.md`.
+This proposal remains useful as the rationale record, migration-state note, and exception-inventory companion for the source-of-truth decision.
+
 ## Governance Decision
 
 Phase 5 should treat the checked-in YAML authoring files as the maintained change surface and the imported database revision as the maintained runtime surface.
 
-Current authoring authority:
-
-- `sead.query.composer/Templates/route_v1.yaml` for anchors, route families, explicit exception routes, and facet definitions
-- `sead.query.composer/Templates/facet-route-config.schema.json` for authoring structure and field-level validation
-- this proposal plus [docs/proposals/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_IMPORT_CONTRACT_V1.md](FACET_ROUTE_IMPORT_CONTRACT_V1.md) for the governance rules and importer mapping
-
-Current runtime authority after import:
-
-- one active row in `facet.config_revision`
-- imported rows in `facet.anchor`, `facet.route`, `facet.facet`, `facet.facet_table`, `facet.facet_anchor`, `facet.facet_clause`, and `facet.facet_template`
-- `facet.route.specification` as the current canonical persisted route representation
-
-Operational rule:
-
-- normal route or anchor changes start in YAML, pass validation, and land through import
-- direct edits to runtime rows are repair-only and must be backported into YAML before the next import
-- uncovered route families must be recorded as explicit follow-up work, not carried as undocumented branch knowledge
+That durable split is now recorded in the stable docs.
+Use this proposal for the reasoning behind the decision, the route-explosion guidance, and the remaining migration-state notes that should not live permanently in architecture or requirements docs.
 
 ## Problem
 
@@ -150,12 +138,6 @@ Current implementation status:
 - each import deactivates the previous active revision and marks the imported YAML revision active
 - the importer stores `config_revision`, content hash, import time, and provenance fields from environment-backed runtime metadata
 - the current operational surfaces wire provenance through Docker Compose and the scripted local import command
-
-Recommended runtime split:
-
-- authoring lives in YAML in git
-- imported normalized copy lives in the existing `facet` schema
-- runtime reads only one active imported revision
 
 For Phase 5, import directly into the existing `facet` schema and add revision tracking there. This is less clean than a separate imported schema, but it is the lower-risk path for the current runtime and the right short-term choice.
 
@@ -347,7 +329,7 @@ The importer should resolve YAML keys against existing runtime lookup tables rat
 
 If `aggregate.facet_key` is omitted, the importer should store `aggregate_facet_id = 0`. Current runtime behavior already falls back to the target facet when that field is zero or unresolved.
 
-See [docs/proposals/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_IMPORT_CONTRACT_V1.md](FACET_ROUTE_IMPORT_CONTRACT_V1.md) for the concrete v1 mapping.
+See [docs/proposals/done/QUERY_ENGINE_OVERHAUL/FACET_ROUTE_IMPORT_CONTRACT_V1.md](FACET_ROUTE_IMPORT_CONTRACT_V1.md) for the concrete v1 mapping.
 
 ### First Import Slice
 
@@ -473,4 +455,4 @@ Store anchors, route macros, route families, explicit exception routes, and face
 
 Do not adopt full per-facet-per-anchor handwritten SQL as the main YAML model. That is the fastest way to recreate route explosion.
 
-For Phase 5, treat `route_v1.yaml` plus its JSON schema and import contract as the maintained authoring contract. Treat the active imported `facet.config_revision` row plus the imported `facet` tables as the maintained runtime contract. Keep the exception list explicit as coverage widens.
+For Phase 5, keep the durable governance model in the stable docs and keep this proposal focused on rationale, tradeoffs, current exceptions, and remaining widening notes. Use the import contract for the concrete field-level mapping.

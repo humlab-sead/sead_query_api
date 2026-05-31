@@ -16,6 +16,7 @@ It is not a proposal and not an implementation log. It describes the requirement
 
 - Anchor: the entity identity used as the common composition key in one query context
 - Anchor key: the identifier returned by a facet predicate and consumed by composed filtering
+- Configuration revision: one imported, versioned copy of facet and route configuration that the runtime treats as authoritative
 - Facet: a configurable filter definition with one facet type and one or more supported anchors
 - Target facet: the facet currently being populated for UI content
 - Result set: the final data projection produced from a filtered anchor set
@@ -67,6 +68,16 @@ It is not a proposal and not an implementation log. It describes the requirement
 - The system must support final result generation from the filtered anchor set.
 - Different result-set formats may be projected from the same filtered anchor set.
 - Result projection must remain separate from composed filtering and facet content generation.
+
+### Configuration Governance
+
+- The system must support checked-in, reviewed authoring for facet and route configuration.
+- The runtime must execute against one imported, normalized configuration copy in the `facet` schema rather than interpreting raw authoring files during requests.
+- Exactly one active configuration revision must be authoritative for runtime reads at a time.
+- Import and validation must resolve authoring keys through runtime lookup tables rather than relying on hard-coded database ids in authoring files.
+- Generated route families and macros must be the default authoring model for repeatable source-to-anchor traversal, while explicit routes and SQL overrides remain reserved for true exceptions.
+- A configuration revision that fails validation or import must not become active partially.
+- Explicit SQL overrides may exist for exception cases, but they must remain exceptional rather than becoming the primary authoring model.
 
 ## Quality Requirements
 
@@ -124,5 +135,5 @@ The following remain required but not yet fully delivered:
 ## Related Documents
 
 - `docs/DESIGN.md`
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_0.md`
+- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`
+- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_0.md`

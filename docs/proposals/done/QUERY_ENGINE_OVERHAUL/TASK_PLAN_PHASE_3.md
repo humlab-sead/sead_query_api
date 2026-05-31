@@ -25,9 +25,9 @@ Extend the composed path to the remaining non-discrete facet families needed for
 
 ## Documentation Targets
 
-- Maintain the working parity inventory in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- Maintain the working parity inventory in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
 - Record durable contract or runtime-boundary changes in `docs/DESIGN.md`.
-- Capture deferred result projection work in `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`.
+- Capture deferred result projection work in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`.
 
 ## Work Breakdown
 
@@ -110,7 +110,7 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 - [x] Update `docs/DESIGN.md` when non-discrete runtime or contract boundaries change.
 - [x] Record explicit exceptions that remain at phase exit, with blockers or deferral reasons.
 - [x] Update this task plan’s progress tracker, validation log, and deliverables as widening lands.
-- [x] Hand off result projection work to `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`.
+- [x] Hand off result projection work to `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`.
 
 **Completion Criteria**
 
@@ -152,12 +152,12 @@ Leave one explicit record of what Phase 3 delivered and what it intentionally de
 
 | Deliverable                   | Description                                                                         | Status | Link                                                                        |
 |-------------------------------|-------------------------------------------------------------------------------------|--------|-----------------------------------------------------------------------------|
-| Non-discrete parity task plan | Execution tracker for Phase 3 widening work                                         | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_3.md`                 |
-| Updated parity inventory      | Current support and exception status for range, intersect, and GIS polygon behavior | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                  |
+| Non-discrete parity task plan | Execution tracker for Phase 3 widening work                                         | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_3.md`                 |
+| Updated parity inventory      | Current support and exception status for range, intersect, and GIS polygon behavior | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                  |
 | Non-discrete contract updates | Code-level widening for range, intersect, and GIS polygon support                   | Done   | `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` |
 | Non-discrete live coverage    | Focused and grouped live coverage for supported non-discrete slices                 | Done   | `sead.query.test/LiveTests/FacetLoadService.cs`                             |
 | Durable architecture updates  | Non-discrete runtime and contract boundary updates                                  | Done   | `docs/DESIGN.md`                                                            |
-| Phase 4 handoff               | Follow-on tracker for result projection parity                                      | Done   | `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`                 |
+| Phase 4 handoff               | Follow-on tracker for result projection parity                                      | Done   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_4.md`                 |
 
 ## Scope
 

@@ -28,7 +28,7 @@ Lock down the contracts that the rest of the migration depends on and establish 
 
 - Store stable contract documentation and unsupported-request semantics in `docs/DESIGN.md`.
 - Record long-lived requirement constraints that emerge from this phase in `docs/REQUIREMENTS.md`.
-- Maintain the working parity inventory in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- Maintain the working parity inventory in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
 
 ## Work Breakdown
 
@@ -82,7 +82,7 @@ Create one maintained inventory of legacy capabilities for migration tracking.
 - [x] Mark each capability as supported, partially supported, unsupported, ambiguous, or deprecated.
 - [x] Link inventory entries to relevant tests, code paths, or legacy examples where available.
 - [x] Add notes for known behavioral differences.
-- [x] Maintain the canonical inventory in `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- [x] Maintain the canonical inventory in `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
 - [x] Define how the inventory will be updated as support changes.
 
 **Completion Criteria**
@@ -103,7 +103,7 @@ Ensure unsupported composed requests fail or fall back explicitly.
 - [x] Define and implement explicit error or fallback semantics.
 - [x] Ensure error messages are actionable.
 - [x] Add tests for unsupported request behavior.
-- [x] Document unsupported behavior in `docs/DESIGN.md` and `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
+- [x] Document unsupported behavior in `docs/DESIGN.md` and `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`.
 
 **Completion Criteria**
 
@@ -153,7 +153,7 @@ Ensure unsupported composed requests fail or fall back explicitly.
 |------------------------------|-----------------------------------------------------------------------------------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Contract documentation       | Canonical description of route, anchor, facet-resolver, composed-query, and unsupported-request contracts | Completed   | `docs/DESIGN.md`                                                                                                                                                                                                 |
 | Compiled contract updates    | Code-level types or interfaces that reflect the documented contracts                                      | Completed   | `sead.query.composer/QueryComposer/RouteCompiler/ArrowRouteParser.cs`, `sead.query.composer/QueryComposer/RouteCompiler/RouteSqlCompiler.cs`, `sead.query.composer/QueryComposer/RouteCompiler/AnchorTemplate.cs`, `sead.query.composer/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolver.cs`, `sead.query.composer/QueryComposer/Inputs/DiscreteFacetUserInput.cs` |
-| Parity inventory             | Maintained inventory of legacy facet families and result paths                                            | Completed   | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                                                                                                                                                       |
+| Parity inventory             | Maintained inventory of legacy facet families and result paths                                            | Completed   | `docs/proposals/done/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md`                                                                                                                                                       |
 | Grouped regression coverage  | Regression coverage for currently supported composed slices                                               | Completed   | `sead.query.test/LiveTests/FacetLoadService.cs`                                                                                                                                                                  |
 | Unsupported-request behavior | Explicit current fallback and direct-throw boundary for unsupported composed requests                     | Completed   | `docs/DESIGN.md`, `sead.query.test/UnitTests/QueryComposer/Services/FacetContentServiceComposerTests.cs`, `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`                 |
 
