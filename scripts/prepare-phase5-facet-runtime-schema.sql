@@ -8,15 +8,17 @@ CREATE TABLE IF NOT EXISTS facet.anchor (
 );
 
 CREATE SEQUENCE IF NOT EXISTS facet.anchor_anchor_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE facet.anchor_anchor_id_seq OWNED BY facet.anchor.anchor_id;
-ALTER TABLE ONLY facet.anchor ALTER COLUMN anchor_id SET DEFAULT nextval('facet.anchor_anchor_id_seq'::regclass);
+ALTER TABLE ONLY facet.anchor ALTER COLUMN anchor_id SET DEFAULT nextval(
+    'facet.anchor_anchor_id_seq'::regclass
+);
 
 CREATE TABLE IF NOT EXISTS facet.config_revision (
     revision_id integer NOT NULL,
@@ -29,15 +31,17 @@ CREATE TABLE IF NOT EXISTS facet.config_revision (
 );
 
 CREATE SEQUENCE IF NOT EXISTS facet.config_revision_revision_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE facet.config_revision_revision_id_seq OWNED BY facet.config_revision.revision_id;
-ALTER TABLE ONLY facet.config_revision ALTER COLUMN revision_id SET DEFAULT nextval('facet.config_revision_revision_id_seq'::regclass);
+ALTER TABLE ONLY facet.config_revision ALTER COLUMN revision_id SET DEFAULT nextval(
+    'facet.config_revision_revision_id_seq'::regclass
+);
 
 CREATE TABLE IF NOT EXISTS facet.route (
     route_id integer NOT NULL,
@@ -49,15 +53,17 @@ CREATE TABLE IF NOT EXISTS facet.route (
 );
 
 CREATE SEQUENCE IF NOT EXISTS facet.route_route_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE facet.route_route_id_seq OWNED BY facet.route.route_id;
-ALTER TABLE ONLY facet.route ALTER COLUMN route_id SET DEFAULT nextval('facet.route_route_id_seq'::regclass);
+ALTER TABLE ONLY facet.route ALTER COLUMN route_id SET DEFAULT nextval(
+    'facet.route_route_id_seq'::regclass
+);
 
 CREATE TABLE IF NOT EXISTS facet.route_step (
     route_step_id integer NOT NULL,
@@ -68,15 +74,17 @@ CREATE TABLE IF NOT EXISTS facet.route_step (
 );
 
 CREATE SEQUENCE IF NOT EXISTS facet.route_step_route_step_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE facet.route_step_route_step_id_seq OWNED BY facet.route_step.route_step_id;
-ALTER TABLE ONLY facet.route_step ALTER COLUMN route_step_id SET DEFAULT nextval('facet.route_step_route_step_id_seq'::regclass);
+ALTER TABLE ONLY facet.route_step ALTER COLUMN route_step_id SET DEFAULT nextval(
+    'facet.route_step_route_step_id_seq'::regclass
+);
 
 CREATE TABLE IF NOT EXISTS facet.facet_anchor (
     facet_anchor_id integer NOT NULL,
@@ -86,15 +94,17 @@ CREATE TABLE IF NOT EXISTS facet.facet_anchor (
 );
 
 CREATE SEQUENCE IF NOT EXISTS facet.facet_anchor_facet_anchor_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE facet.facet_anchor_facet_anchor_id_seq OWNED BY facet.facet_anchor.facet_anchor_id;
-ALTER TABLE ONLY facet.facet_anchor ALTER COLUMN facet_anchor_id SET DEFAULT nextval('facet.facet_anchor_facet_anchor_id_seq'::regclass);
+ALTER TABLE ONLY facet.facet_anchor ALTER COLUMN facet_anchor_id SET DEFAULT nextval(
+    'facet.facet_anchor_facet_anchor_id_seq'::regclass
+);
 
 CREATE TABLE IF NOT EXISTS facet.facet_template (
     template_id integer NOT NULL,
@@ -104,15 +114,17 @@ CREATE TABLE IF NOT EXISTS facet.facet_template (
 );
 
 CREATE SEQUENCE IF NOT EXISTS facet.facet_template_template_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
 
 ALTER SEQUENCE facet.facet_template_template_id_seq OWNED BY facet.facet_template.template_id;
-ALTER TABLE ONLY facet.facet_template ALTER COLUMN template_id SET DEFAULT nextval('facet.facet_template_template_id_seq'::regclass);
+ALTER TABLE ONLY facet.facet_template ALTER COLUMN template_id SET DEFAULT nextval(
+    'facet.facet_template_template_id_seq'::regclass
+);
 
 DO $$
 BEGIN
