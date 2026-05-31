@@ -1,0 +1,2 @@
+[sqlfluff]
+exclude_rules = ST07, LT09, LT15, AM05, CP02
