@@ -16,7 +16,7 @@ SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
 FACET_CONFIG_FILE?=sead.query.composer/Templates/route_v1.yaml
 FACET_CONFIG_SOURCE_COMMIT?=$(shell git rev-parse HEAD 2>/dev/null || echo unknown)
 FACET_CONFIG_IMPORTED_BY?=make-import-facet-config
-FACET_RUNTIME_SCHEMA_FILE?=scripts/prepare-phase5-facet-runtime-schema.sql
+FACET_RUNTIME_SCHEMA_FILE?=scripts/prepare-facet-runtime-schema.sql
 SEAD_QUERY_API_BASE_URL?=http://localhost:8090
 
 .PHONY: test clean build publish tidy
@@ -74,8 +74,8 @@ import-facet-config:
 		SEAD_QUERY_FACET_CONFIG_IMPORTED_BY="$(FACET_CONFIG_IMPORTED_BY)" \
 		dotnet run --project $(API_PROJECT) -- --import-facet-config "$(FACET_CONFIG_FILE)"
 
-.PHONY: prepare-phase5-facet-runtime-schema
-prepare-phase5-facet-runtime-schema:
+.PHONY: prepare-facet-runtime-schema
+prepare-facet-runtime-schema:
 	@PGPASSWORD="$(DBPASSWORD)" psql \
 		-h "$(DBHOST)" \
 		-p "$(DBPORT)" \

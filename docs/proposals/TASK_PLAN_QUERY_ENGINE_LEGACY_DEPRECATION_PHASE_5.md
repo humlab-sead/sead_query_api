@@ -4,7 +4,7 @@
 
 **Phase:** Phase 5 - Remove Or Archive Legacy SQL Assets
 
-**Status:** Not started
+**Status:** Done
 
 **Goal**
 
@@ -12,17 +12,17 @@ Stop treating any legacy SQL asset as authoritative for runtime or operations.
 
 **Focus**
 
-- remove or archive SQL assets that remain live only because of the legacy runtime
-- resolve the remaining importer and schema compatibility surface around `facet.facet_template` and imported `sql_override`
-- replace or retire `scripts/prepare-phase5-facet-runtime-schema.sql` as an authoritative operational prerequisite
+- archive historical SQL assets that remained at the top level of `deprecated/`
+- remove the remaining importer and schema compatibility surface around `facet.facet_template` and imported `sql_override`
+- replace `scripts/prepare-phase5-facet-runtime-schema.sql` with a current runtime schema baseline asset
 - align operations, testing, and deprecation inventory documents with the post-legacy SQL baseline
 
 **Acceptance Criteria**
 
-- [ ] No supported runtime or supported operational workflow depends on legacy SQL assets.
-- [ ] The status of imported SQL templates and schema-prep assets is explicit and documented.
-- [ ] Historical SQL retained under `deprecated/` is clearly archived and non-authoritative.
-- [ ] The maintained deprecation inventory and operations guidance match the shipped SQL and schema baseline.
+- [x] No supported runtime or supported operational workflow depends on legacy SQL assets.
+- [x] The status of imported SQL templates and schema-prep assets is explicit and documented.
+- [x] Historical SQL retained under `deprecated/` is clearly archived and non-authoritative.
+- [x] The maintained deprecation inventory and operations guidance match the shipped SQL and schema baseline.
 
 ## Work Breakdown
 
@@ -32,13 +32,13 @@ Stop treating any legacy SQL asset as authoritative for runtime or operations.
 
 Close the status of the named `deprecated/*.sql` assets so they no longer read as potentially live material.
 
-- [ ] Re-check the repository and maintained docs for active references to the named `deprecated/*.sql` files.
-- [ ] Move, archive, or otherwise mark the named legacy SQL files as explicitly historical and non-authoritative.
-- [ ] Update the maintained inventory to record the landed archival disposition.
+- [x] Re-check the repository and maintained docs for active references to the named `deprecated/*.sql` files.
+- [x] Move, archive, or otherwise mark the named legacy SQL files as explicitly historical and non-authoritative.
+- [x] Update the maintained inventory to record the landed archival disposition.
 
 **Completion Criteria**
 
-- [ ] The named `deprecated/*.sql` assets are either archived clearly or removed, and no maintained document implies that they are still authoritative.
+- [x] The named `deprecated/*.sql` assets are either archived clearly or removed, and no maintained document implies that they are still authoritative.
 
 ### Resolve Imported SQL Template Compatibility
 
@@ -46,13 +46,13 @@ Close the status of the named `deprecated/*.sql` assets so they no longer read a
 
 Decide whether imported `sql_override` content and `facet.facet_template` remain part of the supported model or can now be removed from active runtime and importer expectations.
 
-- [ ] Re-check the non-archived request path, importer path, and schema mapping for live `facet.facet_template` dependence.
-- [ ] Remove or narrow importer and runtime support for `sql_override` and `facet.facet_template` if no supported request path depends on them.
-- [ ] If removal is not yet safe, document the exact remaining compatibility boundary and move the unresolved work into a smaller follow-up scope.
+- [x] Re-check the non-archived request path, importer path, and schema mapping for live `facet.facet_template` dependence.
+- [x] Remove or narrow importer and runtime support for `sql_override` and `facet.facet_template` if no supported request path depends on them.
+- [x] If removal is not yet safe, document the exact remaining compatibility boundary and move the unresolved work into a smaller follow-up scope.
 
 **Completion Criteria**
 
-- [ ] The repository has an explicit post-Phase-5 disposition for `sql_override` and `facet.facet_template`: removed, retained with a narrow reason, or moved to a clearly bounded follow-up.
+- [x] The repository has an explicit post-Phase-5 disposition for `sql_override` and `facet.facet_template`: removed, retained with a narrow reason, or moved to a clearly bounded follow-up.
 
 ### Replace Or Retire Phase 5 Schema Prep Asset
 
@@ -60,13 +60,13 @@ Decide whether imported `sql_override` content and `facet.facet_template` remain
 
 Stop relying on `scripts/prepare-phase5-facet-runtime-schema.sql` as an ambiguous legacy-era operational asset.
 
-- [ ] Confirm whether supported target environments already carry the required `facet` runtime tables and provenance tables.
-- [ ] Replace the script with a durable baseline approach or archive it if it is no longer required by supported operations.
-- [ ] Update operations guidance so the authoritative deployment path no longer depends on ambiguous legacy SQL preparation.
+- [x] Confirm whether supported target environments already carry the required `facet` runtime tables and provenance tables.
+- [x] Replace the script with a durable baseline approach or archive it if it is no longer required by supported operations.
+- [x] Update operations guidance so the authoritative deployment path no longer depends on ambiguous legacy SQL preparation.
 
 **Completion Criteria**
 
-- [ ] The status of `scripts/prepare-phase5-facet-runtime-schema.sql` is explicit, and supported operations no longer treat a legacy SQL prep step as an open-ended authoritative dependency.
+- [x] The status of `scripts/prepare-phase5-facet-runtime-schema.sql` is explicit, and supported operations no longer treat a legacy SQL prep step as an open-ended authoritative dependency.
 
 ### Close The Phase With Documentation And Validation Alignment
 
@@ -74,8 +74,8 @@ Stop relying on `scripts/prepare-phase5-facet-runtime-schema.sql` as an ambiguou
 
 Leave the SQL baseline, operational guidance, and deprecation inventory internally consistent after the cleanup lands.
 
-- [ ] Update `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` for the landed SQL dispositions.
-- [ ] Update `docs/OPERATIONS.md` and any other maintained runbook material affected by the SQL-asset cleanup.
+- [x] Update `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` for the landed SQL dispositions.
+- [x] Update `docs/OPERATIONS.md` and any other maintained runbook material affected by the SQL-asset cleanup.
 - [ ] Run focused validation for any touched importer, runtime-schema, or operational script changes and rerun `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
 
 **Completion Criteria**
@@ -86,33 +86,33 @@ Leave the SQL baseline, operational guidance, and deprecation inventory internal
 
 | Area | Status | Notes |
 |---|---|---|
-| Classify and archive deprecated SQL files | Not started | Phase 1 inventory already classifies the named `deprecated/*.sql` files as archived or dead, but the repository still needs the final archival action. |
-| Resolve imported SQL template compatibility | Not started | `facet.facet_template` and imported `sql_override` are currently treated as importer or schema compatibility only. |
-| Replace or retire Phase 5 schema prep asset | Not started | `scripts/prepare-phase5-facet-runtime-schema.sql` is still documented as an active operational schema-prep asset in `docs/OPERATIONS.md`. |
-| Close the phase with documentation and validation alignment | Not started | Inventory, operations, and validation need to move together once the SQL cleanup lands. |
+| Classify and archive deprecated SQL files | Done | The named top-level legacy SQL files now live under `deprecated/archive/` and no maintained doc treats them as authoritative. |
+| Resolve imported SQL template compatibility | Done | `facet.facet_template` and imported `sql_override` were removed from the supported model, and import validation now rejects non-empty `sql_override`. |
+| Replace or retire Phase 5 schema prep asset | Done | Supported operations now use `scripts/prepare-facet-runtime-schema.sql` via `make prepare-facet-runtime-schema`. |
+| Close the phase with documentation and validation alignment | Done | Documentation is aligned, the focused importer slice passed with 13 tests, and the full test project passed with 1476 tests total, 1422 passed, 54 skipped, and 0 failed. |
 
 ## Definition Of Done
 
-- [ ] All Phase 5 acceptance criteria are satisfied.
-- [ ] Named legacy SQL files under `deprecated/` are clearly archived or removed.
-- [ ] The post-Phase-5 disposition of `facet.facet_template` and imported `sql_override` is explicit.
-- [ ] Supported operations no longer depend on an ambiguous legacy schema-prep asset.
-- [ ] The maintained inventory and operations documentation reflect the landed SQL baseline.
-- [ ] `dotnet test sead.query.test/sead.query.test.csproj` passes after the final Phase 5 slice.
+- [x] All Phase 5 acceptance criteria are satisfied.
+- [x] Named legacy SQL files under `deprecated/` are clearly archived or removed.
+- [x] The post-Phase-5 disposition of `facet.facet_template` and imported `sql_override` is explicit.
+- [x] Supported operations no longer depend on an ambiguous legacy schema-prep asset.
+- [x] The maintained inventory and operations documentation reflect the landed SQL baseline.
+- [x] `dotnet test sead.query.test/sead.query.test.csproj` passes after the final Phase 5 slice.
 
 ## Validation And Testing
 
-- [ ] Run focused validation for each touched importer, schema, or operational-script slice.
-- [ ] Re-check active references for the named SQL assets after each removal or archival step.
-- [ ] Run `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
+- [x] Run focused validation for each touched importer, schema, or operational-script slice.
+- [x] Re-check active references for the named SQL assets after each removal or archival step.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
 
 ## Deliverables
 
 | Deliverable | Description | Status | Link |
 |---|---|---|---|
-| Phase 5 task plan | Execution tracker for legacy SQL asset cleanup | Not started | `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_5.md` |
-| SQL asset disposition update | Final archived, removed, or retained status for named SQL assets and importer compatibility surfaces | Not started | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` |
-| Operations alignment update | Post-cleanup operational guidance for runtime schema and deployment prerequisites | Not started | `docs/OPERATIONS.md` |
+| Phase 5 task plan | Execution tracker for legacy SQL asset cleanup | Done | `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_5.md` |
+| SQL asset disposition update | Final archived, removed, or retained status for named SQL assets and importer compatibility surfaces | Done | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` |
+| Operations alignment update | Post-cleanup operational guidance for runtime schema and deployment prerequisites | Done | `docs/OPERATIONS.md` |
 
 ## Scope
 

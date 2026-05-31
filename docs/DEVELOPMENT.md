@@ -479,7 +479,7 @@ The key metadata fields on the active revision are:
 - `imported_by`: who or what performed the import
 - `is_active`: whether this revision is the active runtime copy
 
-The surrounding runtime metadata for facet configuration currently includes the imported tables in schema `facet`, including `anchor`, `facet_anchor`, `facet_template`, `route`, `route_step`, and `config_revision`.
+The surrounding runtime metadata for facet configuration currently includes the imported tables in schema `facet`, including `anchor`, `facet_anchor`, `route`, `route_step`, and `config_revision`.
 
 Use these references when you need to confirm what configuration is active or when you need to reason about the current runtime copy versus the checked-in authoring source:
 

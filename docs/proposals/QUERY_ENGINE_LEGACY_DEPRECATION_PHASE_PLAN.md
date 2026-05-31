@@ -39,9 +39,9 @@ It does not include frontend changes, release scheduling, or unrelated cleanup o
 - `LegacyResultProjectionHandoffBuilder` is no longer registered in the authoritative runtime DI path and remains only as an explicit retained surface for comparison or later deletion work.
 - `BogusPickService` now remains only on retained compatibility paths rather than the supported facet/result controller or probe paths.
 - the facet plugin registrations are now split into explicit legacy, composer, and shared groups, which gives later phases a safe DI boundary without removing fallback yet
-- `scripts/prepare-phase5-facet-runtime-schema.sql` is still documented as an active operational schema-prep asset.
-- imported `sql_override` data is still designed to land in `facet.facet_template`, but Phase 2 has now classified that surface as importer/schema compatibility and Phase 5 cleanup scope rather than as a live request-path blocker.
-- the `deprecated/` SQL files are expected to be historical, but they should still be explicitly classified during inventory rather than assumed safe to ignore.
+- Phase 5 has now retired `scripts/prepare-phase5-facet-runtime-schema.sql` in favor of `scripts/prepare-facet-runtime-schema.sql`, which provisions only the still-live runtime route and provenance tables.
+- Phase 5 has now removed imported `sql_override` support and the `facet.facet_template` compatibility seam after confirming there was no non-archived request-path consumer.
+- Phase 5 has now moved the named top-level `deprecated/` SQL files under `deprecated/archive/`, making their historical status explicit in the repository.
 
 ## Phase Plan
 
@@ -55,7 +55,7 @@ Establish the exact set of legacy runtime and SQL assets that still matter to th
 
 - inventory the live fallback and hybrid code paths centered on `FacetContentService`, `CategoryCountService`, `QuerySetupBuilder`, `LegacyResultProjectionHandoffBuilder`, `ComposedResultProjectionHandoffBuilder`, `BogusPickService`, and `CategoryInfoService`
 - inventory legacy DI surfaces, including facet-type plugin registrations that still participate in authoritative execution
-- inventory SQL assets that are still operationally relevant, including `scripts/prepare-phase5-facet-runtime-schema.sql`, imported `sql_override` content written to `facet.facet_template`, and the SQL files under `deprecated/`
+- close the remaining SQL compatibility surfaces by retiring the old Phase 5 schema-prep asset, removing `facet_template` / `sql_override` support, and archiving the named legacy SQL files under `deprecated/`
 - classify each inventoried item as live, transitional, archived, or dead
 
 **Acceptance Criteria**

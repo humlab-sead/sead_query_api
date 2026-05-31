@@ -66,7 +66,6 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
 
         UpsertFacetTables(document, facetsByCode, tablesByName);
         UpsertFacetAnchors(document, facetsByCode, anchorsByName, routesByName);
-        UpsertFacetTemplates(document, facetsByCode);
         UpsertFacetClauses(document, facetsByCode);
         UpsertConfigRevision(document, filePath, contentHash);
 
@@ -500,6 +499,14 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         {
             foreach (var anchorBinding in facetDefinition.Anchors)
             {
+                if (!string.IsNullOrWhiteSpace(anchorBinding.SqlOverride))
+                {
+                    throw new InvalidOperationException(
+                        $"Facet '{facetDefinition.Key}' anchor '{anchorBinding.Anchor}' uses unsupported sql_override content. "
+                            + "Import-time SQL overrides were removed in Phase 5."
+                    );
+                }
+
                 var anchor = ResolveRequiredLookup(anchorsByName, anchorBinding.Anchor, $"facet '{facetDefinition.Key}' anchor");
                 var route = ResolveRequiredLookup(routesByName, anchorBinding.Route, $"facet '{facetDefinition.Key}' route");
 
@@ -510,39 +517,6 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                             + $"but the route ends on table '{route.TargetTableName}' instead of anchor table '{anchor.Table?.TableOrUdfName ?? anchor.TableId.ToString()}'."
                     );
                 }
-            }
-        }
-    }
-
-    private void UpsertFacetTemplates(FacetRouteConfigurationDocument document, IReadOnlyDictionary<string, Facet> facetsByCode)
-    {
-        var templateSet = _context.Set<FacetTemplate>();
-
-        foreach (var facetDefinition in document.Facets)
-        {
-            var facet = ResolveRequiredLookup(facetsByCode, facetDefinition.Key, $"facet '{facetDefinition.Key}'");
-
-            foreach (var anchorBinding in facetDefinition.Anchors.Where(binding => !string.IsNullOrWhiteSpace(binding.SqlOverride)))
-            {
-                var existingTemplate = templateSet.FirstOrDefault(template =>
-                    template.FacetId == facet.FacetId && template.AnchorName == anchorBinding.Anchor
-                );
-
-                if (existingTemplate is null)
-                {
-                    templateSet.Add(
-                        new FacetTemplate
-                        {
-                            TemplateId = _idAllocator.NextFacetTemplateId(),
-                            FacetId = facet.FacetId,
-                            AnchorName = anchorBinding.Anchor,
-                            SqlTemplate = anchorBinding.SqlOverride!,
-                        }
-                    );
-                    continue;
-                }
-
-                existingTemplate.SqlTemplate = anchorBinding.SqlOverride!;
             }
         }
     }
@@ -857,7 +831,6 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         private int _nextFacetTableId;
         private int _nextFacetAnchorId;
         private int _nextConfigRevisionId;
-        private int? _nextFacetTemplateId;
         private int? _nextFacetClauseId;
 
         public ImportIdAllocator(IFacetContext context)
@@ -885,14 +858,6 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         public int NextFacetAnchorId() => _nextFacetAnchorId++;
 
         public int NextConfigRevisionId() => _nextConfigRevisionId++;
-
-        public int NextFacetTemplateId()
-        {
-            _nextFacetTemplateId ??= GetNextId(_context.Set<FacetTemplate>(), template => template.TemplateId);
-            var nextId = _nextFacetTemplateId.Value;
-            _nextFacetTemplateId = nextId + 1;
-            return nextId;
-        }
 
         public int NextFacetClauseId()
         {

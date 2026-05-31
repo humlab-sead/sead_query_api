@@ -242,22 +242,22 @@ This smoke path requires `curl` and a base URL that is reachable from the host w
 
 Observed deployment-like validation on 2026-05-30:
 
-- after applying `make prepare-phase5-facet-runtime-schema` and importing the active Phase 5 facet-route revision into `sead_staging`, a branch-built probe passed the deployment-targeted HTTP smoke gate on the staging network for `api/version`, representative `country`, `sites_polygon`, and `analysis_entity_ages` map requests, plus the target-only `sites` map slice, target-only `geochronology` facet-content slice, and prefixed `ceramic://sample_groups:sample_groups` map slice
+- after preparing the current runtime schema and importing the active Phase 5 facet-route revision into `sead_staging`, a branch-built probe passed the deployment-targeted HTTP smoke gate on the staging network for `api/version`, representative `country`, `sites_polygon`, and `analysis_entity_ages` map requests, plus the target-only `sites` map slice, target-only `geochronology` facet-content slice, and prefixed `ceramic://sample_groups:sample_groups` map slice
 
-### Phase 5 database preparation
+### Runtime schema preparation
 
-When the target database still has the legacy facet core but is missing the Phase 5 route/provenance tables, prepare that schema before attempting a branch-candidate startup or facet-route import.
+When the target database still has the legacy facet core but is missing the current route and provenance tables, prepare that schema before attempting a branch-candidate startup or facet-route import.
 
 The repository now includes an idempotent prep script and a root Make target:
 
 ```bash
-make prepare-phase5-facet-runtime-schema
+make prepare-facet-runtime-schema
 ```
 
 Operational notes:
 
-- the target applies `scripts/prepare-phase5-facet-runtime-schema.sql` using the root Makefile PostgreSQL connection variables, so operators can override `DBHOST`, `DBPORT`, `DBNAME`, `DBUSER`, and `DBPASSWORD` for a deployment-targeted non-production database
-- the script creates only the missing Phase 5 runtime additions in schema `facet`: `anchor`, `facet_anchor`, `facet_template`, `route`, `route_step`, and `config_revision`, together with their sequences, defaults, primary keys, and foreign keys
+- the target applies `scripts/prepare-facet-runtime-schema.sql` using the root Makefile PostgreSQL connection variables, so operators can override `DBHOST`, `DBPORT`, `DBNAME`, `DBUSER`, and `DBPASSWORD` for a deployment-targeted non-production database
+- the script creates only the missing runtime route and provenance tables in schema `facet`: `anchor`, `facet_anchor`, `route`, `route_step`, and `config_revision`, together with their sequences, defaults, primary keys, and foreign keys
 - after schema preparation, run the normal import path to seed the active runtime data before starting a Phase 5 branch container
 
 ### Current runtime-readiness baseline
@@ -416,8 +416,8 @@ Interpretation rules:
 
 Observed `supersead` target readiness on 2026-05-30:
 
-- a deployment-like schema probe on staging confirmed that `sead_staging` already carried `facet.anchor`, `facet.facet_anchor`, `facet.facet_template`, `facet.route`, `facet.route_step`, and `facet.config_revision`, together with one active imported revision (`phase5-runtime-slices-draft-06`)
-- the live `supersead` PostgreSQL service originally lacked the Phase 5 runtime additions, so `scripts/prepare-phase5-facet-runtime-schema.sql` was applied directly to the target database through the running `supersead-postgresql-1` container
+- a deployment-like schema probe on staging confirmed that `sead_staging` already carried the required runtime tables `facet.anchor`, `facet.facet_anchor`, `facet.route`, `facet.route_step`, and `facet.config_revision`, together with one active imported revision (`phase5-runtime-slices-draft-06`)
+- the live `supersead` PostgreSQL service originally lacked the required runtime additions, so the repository runtime schema prep SQL was applied directly to the target database through the running `supersead-postgresql-1` container
 - a current-branch validation run on the `supersead_sead_network` then passed with `--validate-facet-config` against the mounted live appsettings and current `route_v1.yaml`
 - a current-branch import run on the same network then materialized one active `facet.config_revision` row on the live target: `phase5-runtime-slices-draft-06`, source commit `267b4bcf55cfc42e820edf6a17d9919e104b0074`, imported by `phase6-supersead-import`
 - a live-network branch probe on `http://127.0.0.1:8098` then served HTTP successfully and passed both `make default-cutover-http-smoke-check` and `make default-cutover-http-measure`

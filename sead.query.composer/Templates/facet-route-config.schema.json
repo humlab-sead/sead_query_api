@@ -291,10 +291,6 @@
                 },
                 "route": {
                     "$ref": "#/$defs/identifier"
-                },
-                "sql_override": {
-                    "type": "string",
-                    "minLength": 1
                 }
             }
         },
