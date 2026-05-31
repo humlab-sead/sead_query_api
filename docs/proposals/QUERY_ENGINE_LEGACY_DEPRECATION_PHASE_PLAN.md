@@ -147,6 +147,8 @@ Stop treating any legacy SQL asset as authoritative for runtime or operations.
 - the status of imported SQL templates and schema-prep assets is explicit and documented
 - remaining historical SQL is clearly archived and non-authoritative
 
+The detailed execution tracker for this phase is maintained in [TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_5.md](TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_5.md).
+
 ## Cross-Phase Rules
 
 - prefer incremental removal over large unvalidated rewrites
