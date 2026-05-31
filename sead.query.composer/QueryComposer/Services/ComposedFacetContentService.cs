@@ -170,7 +170,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             sourceTableName,
             sourceKeyColumn,
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
-            new AnchorTemplate { Route = route, RequiresDistinct = true },
+            new AnchorTemplate { Route = route, IsIdentityRoute = isIdentityRoute, RequiresDistinct = true },
             request.AnchorTable,
             request.AnchorKeyColumnName,
             sourceCriteria
@@ -234,6 +234,18 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         }
 
         var affectedConfigs = facetsConfig.GetConfigsThatAffectsTarget(facetsConfig.TargetCode, facetsConfig.GetFacetCodes());
+        if (facetsConfig.HasDomainCode())
+        {
+            var domainConfig = facetsConfig.CreateDomainConfig();
+            if (
+                domainConfig is not null
+                && (domainConfig.HasPicks() || domainConfig.HasEnforcedConstraints())
+                && affectedConfigs.All(config => !string.Equals(config.FacetCode, domainConfig.FacetCode, StringComparison.OrdinalIgnoreCase))
+            )
+            {
+                affectedConfigs.Insert(0, domainConfig);
+            }
+        }
 
         var predicateConfigs = affectedConfigs
             .Where(config => !string.Equals(config.FacetCode, facetsConfig.TargetCode, StringComparison.OrdinalIgnoreCase))
@@ -248,7 +260,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
 
         if (predicateConfigs.Count > 0)
         {
-            var emptyPredicateConfig = predicateConfigs.FirstOrDefault(config => !config.HasPicks());
+            var emptyPredicateConfig = predicateConfigs.FirstOrDefault(config => !config.HasPicks() && !config.HasEnforcedConstraints());
             if (emptyPredicateConfig is not null)
             {
                 failureReason =

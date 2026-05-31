@@ -119,7 +119,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             sourceTableName,
             sourceKeyColumn,
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
-            new AnchorTemplate { Route = route, RequiresDistinct = true },
+            new AnchorTemplate { Route = route, IsIdentityRoute = isIdentityRoute, RequiresDistinct = true },
             request.AnchorTable,
             request.AnchorKeyColumnName,
             sourceCriteria

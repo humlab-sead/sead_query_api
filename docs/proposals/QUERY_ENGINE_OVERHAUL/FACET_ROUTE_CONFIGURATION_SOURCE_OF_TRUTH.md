@@ -401,8 +401,9 @@ Current exception surface:
 
 Current remaining governance gap:
 
-- the authoring model and validation boundary are now explicit, but the repository still needs one maintained inventory of which future facet families require explicit routes or SQL overrides as YAML coverage widens toward default cutover
-- families outside the current checked-in draft are not yet classified as generated-family candidates, explicit-route exceptions, SQL-override exceptions, or deferred follow-up work
+- the authoring model and validation boundary are now explicit, but the repository still needs to keep the widening inventory current as YAML coverage expands toward default cutover
+- the currently known out-of-draft families are now classified as deferred follow-up rather than left unclassified: prefixed `species`, plus archaeobotany `modification_types` and archaeobotany and pollen `abundance_elements`, remain outside the current draft until focused cutover probes prove that they belong in generated families rather than in a later explicit-route or SQL-override inventory
+- the checked-in draft still has no active YAML-side `routes` exception section and no active SQL-override inventory; those remain reserved for genuine exceptions rather than for routine widening
 
 ## Alternatives Considered
 

@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using SeadQueryCore.Model;
 using SeadQueryCore.Model.Ext;
-using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore.Services.Result
 {
-    public class ResultService : QueryServiceBase, IResultService
+    public class ResultService : IResultService
     {
         public IResultProjectionHandoffBuilder ResultProjectionHandoffBuilder { get; }
         public IResultSqlCompilerLocator SqlCompilerLocator { get; }
@@ -14,14 +12,11 @@ namespace SeadQueryCore.Services.Result
         public IDynamicQueryProxy QueryProxy { get; }
 
         public ResultService(
-            IRepositoryRegistry repositoryRegistry,
             IDynamicQueryProxy queryProxy,
-            IQuerySetupBuilder builder,
             IResultProjectionHandoffBuilder resultProjectionHandoffBuilder,
             IResultPayloadServiceLocator payloadServiceLocator,
             IResultSqlCompilerLocator sqlCompilerLocator
         )
-            : base(repositoryRegistry, builder)
         {
             ResultProjectionHandoffBuilder = resultProjectionHandoffBuilder;
             PayloadServiceLocator = payloadServiceLocator;

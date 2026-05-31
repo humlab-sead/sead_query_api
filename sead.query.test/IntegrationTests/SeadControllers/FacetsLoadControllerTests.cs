@@ -130,7 +130,6 @@ namespace IntegrationTests.Sead
             Assert.Equal("", match.AggregateType);
         }
 
-
         /// <summary>
         /// Tests all domain facets
         /// </summary>

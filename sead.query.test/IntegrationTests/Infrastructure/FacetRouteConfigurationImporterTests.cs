@@ -216,7 +216,9 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
             .FacetAnchors.Should()
             .Contain(facetAnchor => facetAnchor.Anchor.Name == "dataset" && facetAnchor.Route.Name == "record_types__dataset");
 
-        countryFacet.Tables.Should().Contain(table => table.SequenceId == 1 && table.TableId == countrySourceTableId && table.Alias == null);
+        countryFacet
+            .Tables.Should()
+            .Contain(table => table.SequenceId == 1 && table.TableId == countrySourceTableId && table.Alias == null);
         countryFacet.Clauses.Select(clause => clause.Clause).Should().Equal("facet.site_location_shortcut.location_type_id=1");
         countryFacet
             .FacetAnchors.Should()

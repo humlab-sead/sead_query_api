@@ -57,9 +57,9 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         }
 
         var baseSql =
-            anchorTemplate.Route.Count > 0
-                ? BuildRouteSql(targetTable, targetId, anchorTemplate.Route, anchorTable, anchorId, sourceCriteria)
-                : BuildIdentitySql(targetTable, targetId, anchorId, anchorTemplate.RequiresDistinct, sourceCriteria);
+            anchorTemplate.IsIdentityRoute
+                ? BuildIdentitySql(targetTable, targetId, anchorId, anchorTemplate.RequiresDistinct, sourceCriteria)
+                : BuildRouteSql(targetTable, targetId, anchorTemplate.Route, anchorTable, anchorId, sourceCriteria);
 
         if (!userInput.HasPicks)
         {

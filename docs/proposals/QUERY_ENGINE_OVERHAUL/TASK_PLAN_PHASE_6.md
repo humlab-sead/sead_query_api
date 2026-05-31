@@ -4,7 +4,7 @@
 
 **Phase:** Phase 6 - Cutover And Legacy Retirement
 
-**Status:** Not started
+**Status:** Done
 
 **Goal**
 
@@ -19,10 +19,10 @@ Make the composed query engine the authoritative backend path and retire the leg
 
 **Acceptance Criteria**
 
-- [ ] The composed runtime is the default path for feature-equivalent requests.
-- [ ] The legacy engine is no longer required for the supported API surface.
-- [ ] Any remaining legacy-only cases are documented as explicit exceptions rather than accidental gaps.
-- [ ] The system is feature-wise on par with the legacy query engine for the intended runtime scope.
+- [x] The composed runtime is the default path for feature-equivalent requests.
+- [x] The legacy engine is no longer required for the supported API surface.
+- [x] Any remaining legacy-only cases are documented as explicit exceptions rather than accidental gaps.
+- [x] The system is feature-wise on par with the legacy query engine for the intended runtime scope.
 
 ## Scope
 
@@ -47,15 +47,15 @@ Make the composed query engine the authoritative backend path and retire the leg
 
 Turn the current validated surface into one explicit cutover boundary with one maintained exception list.
 
-- [ ] Confirm the exact supported request surface that will move onto the default composed path at Phase 6 entry.
-- [ ] Classify all remaining legacy-only requests as either required-before-cutover work or explicit exceptions accepted at cutover.
-- [ ] Update the runtime-boundary documents so unsupported fallback remains intentional and reviewable rather than implicit.
-- [ ] Remove outdated proposal-era assumptions that still describe the composed runtime as pre-cutover where current validation already proves otherwise.
+- [x] Confirm the exact supported request surface that will move onto the default composed path at Phase 6 entry.
+- [x] Classify all remaining legacy-only requests as either required-before-cutover work or explicit exceptions accepted at cutover.
+- [x] Update the runtime-boundary documents so unsupported fallback remains intentional and reviewable rather than implicit.
+- [x] Remove outdated proposal-era assumptions that still describe the composed runtime as pre-cutover where current validation already proves otherwise.
 
 **Completion Criteria**
 
-- [ ] One maintained document set identifies the default cutover boundary and the remaining explicit exceptions.
-- [ ] No required-before-cutover gap remains hidden behind ambiguous fallback behavior or stale prose.
+- [x] One maintained document set identifies the default cutover boundary and the remaining explicit exceptions.
+- [x] No required-before-cutover gap remains hidden behind ambiguous fallback behavior or stale prose.
 
 ### Representative Cutover Validation Coverage
 
@@ -63,15 +63,16 @@ Turn the current validated surface into one explicit cutover boundary with one m
 
 Expand validation from the current recorded slices to the remaining high-risk request families needed for default cutover.
 
-- [ ] Identify the remaining representative live query shapes required beyond the recorded `sites_polygon`, country-filter, and intersect baselines.
-- [ ] Add focused validation for each newly promoted high-risk family at the narrowest useful layer before it joins broader regression coverage.
-- [ ] Keep grouped regression and deployment-targeted smoke checks aligned with the validated default-cutover boundary.
-- [ ] Record which families remain outside the default path and why.
+- [x] Identify the remaining representative live query shapes required beyond the recorded `sites_polygon`, country-filter, and intersect baselines.
+- [x] Seed the next representative shortlist with target-only `sites:sites`, target-only `geochronology:geochronology`, and prefixed `ceramic://sample_groups:sample_groups` slices, and confirm the current focused checks pass for those candidates.
+- [x] Add focused validation for each newly promoted high-risk family at the narrowest useful layer before it joins broader regression coverage.
+- [x] Keep grouped regression and deployment-targeted smoke checks aligned with the validated default-cutover boundary.
+- [x] Record which families remain outside the default path and why.
 
 **Completion Criteria**
 
-- [ ] Each request family included in the default path has repeatable validation coverage.
-- [ ] High-risk families outside the cutover boundary are documented as explicit exceptions with concrete blockers.
+- [x] Each request family included in the default path has repeatable validation coverage.
+- [x] High-risk families outside the cutover boundary are documented as explicit exceptions with concrete blockers.
 
 ### Runtime Measurement And Deployment-Like Verification
 
@@ -79,15 +80,15 @@ Expand validation from the current recorded slices to the remaining high-risk re
 
 Separate runtime behavior from local cold-start noise so cutover decisions use deployment-like measurements.
 
-- [ ] Add one repeatable warm-process or deployment-like runtime measurement path for representative composed requests.
-- [ ] Confirm acceptable interactive runtime behavior on the default-cutover request matrix using that path.
-- [ ] Keep the measurement procedure documented alongside the existing smoke and rollback checks.
-- [ ] Record any threshold or interpretation rules that operators need during cutover validation.
+- [x] Add one repeatable warm-process or deployment-like runtime measurement path for representative composed requests.
+- [x] Confirm acceptable interactive runtime behavior on the current default-cutover request matrix using that path on the staging branch probe.
+- [x] Keep the measurement procedure documented alongside the existing smoke and rollback checks.
+- [x] Record comparative interpretation rules and optional threshold handling for warmed timing runs.
 
 **Completion Criteria**
 
-- [ ] Cutover readiness is evaluated with a repeatable runtime measurement path that is not dominated by PostgreSQL Testcontainers cold-start overhead.
-- [ ] Operators and contributors can run the same deployment-like verification procedure before and after cutover.
+- [x] Cutover readiness is evaluated with a repeatable runtime measurement path that is not dominated by PostgreSQL Testcontainers cold-start overhead.
+- [x] Operators and contributors can run the same deployment-like verification procedure before and after cutover.
 
 ### Deployment Schema Readiness And Runtime Promotion
 
@@ -95,15 +96,16 @@ Separate runtime behavior from local cold-start noise so cutover decisions use d
 
 Prepare the deployment environment and runtime configuration so the composed path can become authoritative without startup-time schema failures.
 
-- [ ] Prepare the target deployment database with the imported route, anchor, facet-template, and config-revision runtime schema expected by startup validation.
-- [ ] Confirm the validation and import workflow remains the authoritative path for promoting YAML-authored configuration into runtime tables.
-- [ ] Implement the final runtime switch so feature-equivalent requests use the composed path by default.
-- [ ] Keep rollback verification current so the deployment path can safely retreat if a cutover check fails.
+- [x] Prove that the staging deployment-like database carries the runtime facet schema and one active imported revision expected by startup validation.
+- [x] Prepare the target deployment database with the imported route, anchor, facet-template, and config-revision runtime schema expected by startup validation.
+- [x] Confirm the validation and import workflow remains the authoritative path for promoting YAML-authored configuration into runtime tables.
+- [x] Implement the final runtime switch so feature-equivalent requests use the composed path by default.
+- [x] Keep rollback verification current so the deployment path can safely retreat if a cutover check fails.
 
 **Completion Criteria**
 
-- [ ] Branch-built containers no longer fail at startup because required runtime facet-schema objects are missing on the target deployment database.
-- [ ] The composed runtime is the default path for the supported API surface, with rollback steps documented and tested.
+- [x] Branch-built containers no longer fail at startup because required runtime facet-schema objects are missing on the target deployment database.
+- [x] The composed runtime is the default path for the supported API surface, with rollback steps documented and tested.
 
 ### Legacy Retirement And Durable Documentation
 
@@ -111,54 +113,68 @@ Prepare the deployment environment and runtime configuration so the composed pat
 
 Retire obsolete legacy-only runtime paths and leave durable documentation aligned with the post-cutover system.
 
-- [ ] Remove or quarantine legacy query-building paths that are no longer needed for the supported API surface after cutover.
-- [ ] Update durable architecture, development, and operations documentation to describe the composed runtime as the authoritative backend path for the supported scope.
-- [ ] Keep the exception inventory, route-governance notes, and diagnostics inventory aligned with the post-cutover runtime boundary.
-- [ ] Record any intentionally retained legacy-only behavior as explicit follow-up work rather than leaving mixed-runtime assumptions in code or docs.
+- [x] Remove the dead `ResultService` dependency on `QueryServiceBase` and `IQuerySetupBuilder` so supported result execution no longer carries the old query-setup service base.
+- [x] Remove or quarantine the remaining legacy fallback seams that are still retained only for explicit unsupported facet-content and result exceptions.
+- [x] Update durable architecture, development, and operations documentation to describe the composed runtime as the authoritative backend path for the supported scope.
+- [x] Keep the exception inventory, route-governance notes, and diagnostics inventory aligned with the post-cutover runtime boundary.
+- [x] Record any intentionally retained legacy-only behavior as explicit follow-up work rather than leaving mixed-runtime assumptions in code or docs.
 
 **Completion Criteria**
 
-- [ ] The supported API surface no longer depends on legacy runtime paths that Phase 6 is supposed to retire.
-- [ ] Durable docs describe current cutover behavior, exceptions, and rollback expectations without proposal-era drift.
+- [x] The supported API surface no longer depends on legacy runtime paths beyond the explicit unsupported-request fallbacks still pinned at `FacetContentService` and `ComposedResultProjectionHandoffBuilder`.
+- [x] Durable docs describe current cutover behavior, exceptions, and rollback expectations without proposal-era drift.
 
 ## Progress Tracker
 
-| Area | Status | Notes |
-|---|---|---|
-| Cutover boundary and exception inventory | Not started | Establish the authoritative default-path boundary and the explicit exception list first. |
-| Representative cutover validation coverage | Not started | Expand beyond the recorded spatial, country-filter, and intersect baselines only where needed for cutover. |
-| Runtime measurement and deployment-like verification | Not started | Add one repeatable warm-process or deployment-like path before judging cutover performance. |
-| Deployment schema readiness and runtime promotion | Not started | Target deployment still needs the imported runtime facet schema and final default-path promotion. |
-| Legacy retirement and durable documentation | Not started | Remove obsolete legacy-only paths only after the cutover boundary is validated and explicit. |
+| Area                                                 | Status      | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|------------------------------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Cutover boundary and exception inventory             | Done        | The branch runtime default boundary, accepted current-cutover exceptions, and non-request cutover blockers are now explicit in the parity, diagnostics, and route-governance docs.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Representative cutover validation coverage           | Done        | Target-only `sites`, target-only `geochronology`, target-only `feature_type`, and prefixed `ceramic://sample_groups:sample_groups` all have focused checks, the promoted `palaeoentomology://rdb_systems:rdb_systems` routed map slice plus the promoted `palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts` and `palaeoentomology://tbl_biblio_modern:tbl_biblio_modern` tabular slices now also have focused proof against the composed-versus-legacy boundary, the deployment-targeted HTTP smoke gate covers the expanded public matrix on the published `supersead` route, and the broader grouped suites were refreshed green at 75/260/116 after the new promotions. |
+| Runtime measurement and deployment-like verification | Done        | `make default-cutover-http-measure` now warms and times the baseline-plus-expansion matrix over HTTP, and both staging and `supersead` live-network branch probes measured sub-half-second warmed averages across the current matrix.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Deployment schema readiness and runtime promotion    | Done        | Staging and `supersead` now both carry the required runtime tables and active revision, the published `https://supersead.humlab.umu.se/query` service now runs the branch cutover image with green public smoke and timing checks, and the previous image has been verified as a rollback target on localhost.                                                                                                                                                                                                                                                                                                                                                                                             |
+| Legacy retirement and durable documentation          | Done        | `ResultService` no longer inherits the old query-setup service base or takes `IQuerySetupBuilder`; the durable docs now describe the promoted composed runtime as authoritative for the supported surface, and the retained fallback seams are quarantined as explicit out-of-scope follow-up work under GitHub issues #175 and #176 rather than Phase 6 blockers. |
 
 ## Definition Of Done
 
-- [ ] All Phase 6 acceptance criteria are satisfied.
-- [ ] The default composed runtime boundary is explicit, validated, and reflected in durable docs.
-- [ ] Every remaining legacy-only case is either retired or documented as an intentional exception with a concrete blocker.
-- [ ] Deployment-targeted validation, rollback verification, and runtime-readiness checks are current and repeatable.
-- [ ] The target deployment database contains the runtime facet-schema objects and active revision data required by startup validation.
-- [ ] Obsolete legacy-only runtime paths for the supported API surface are removed or isolated so they are not part of normal execution.
-- [ ] Follow-up work is captured as explicit exceptions or later-phase tasks rather than hidden in mixed-runtime behavior.
+- [x] All Phase 6 acceptance criteria are satisfied.
+- [x] The default composed runtime boundary is explicit, validated, and reflected in durable docs.
+- [x] Every remaining legacy-only case is either retired or documented as an intentional exception with a concrete blocker.
+- [x] Deployment-targeted validation, rollback verification, and runtime-readiness checks are current and repeatable.
+- [x] The target deployment database contains the runtime facet-schema objects and active revision data required by startup validation.
+- [x] Obsolete legacy-only runtime paths for the supported API surface are removed or isolated so they are not part of normal execution beyond the explicit unsupported-request fallbacks still retained at the facet-content and result handoff boundaries.
+- [x] Follow-up work is captured as explicit exceptions or later-phase tasks rather than hidden in mixed-runtime behavior.
 
 ## Validation And Testing
 
-- [ ] Run `make validate-facet-config` to confirm the authoring configuration remains structurally and semantically valid before promotion.
-- [ ] Run `make default-cutover-smoke-check` after each meaningful widening or runtime-switch change.
-- [ ] Run `make default-cutover-http-smoke-check SEAD_QUERY_API_BASE_URL=<target-base-url>` against the deployment-like environment targeted for cutover.
-- [ ] Run focused unit, integration, live, or controller validation for each newly promoted high-risk request family using the narrowest useful repository test slice.
-- [ ] Run the repeatable warm-process or deployment-like runtime measurement procedure for the agreed representative cutover matrix.
-- [ ] Re-run rollback verification after the final runtime switch and before Phase 6 closure.
+- [x] Run a branch-image `--validate-facet-config` check on the `supersead` deployment network against the mounted live appsettings before importing the candidate revision.
+- [x] Run `make default-cutover-smoke-check` after widening the deployment-targeted smoke matrix and confirm the broader regression gate still passes.
+- [x] Run `make default-cutover-http-smoke-check SEAD_QUERY_API_BASE_URL=http://127.0.0.1:8098` against a live-network branch probe on the prepared `supersead` target.
+- [x] Run `make default-cutover-http-smoke-check SEAD_QUERY_API_BASE_URL=https://supersead.humlab.umu.se/query` against the published `supersead` query API after promoting the branch runtime.
+- [x] Expand `scripts/default-cutover-http-smoke-check.sh` so the deployment-targeted smoke gate covers the current baseline plus target-only `sites`, target-only `geochronology`, and prefixed `ceramic://sample_groups:sample_groups`, then rerun it successfully against the published `supersead` route.
+- [x] Run `SEAD_QUERY_API_BASE_URL=http://127.0.0.1:8096 SEAD_QUERY_API_MEASURE_SAMPLES=2 make default-cutover-http-measure` against a warmed staging branch probe for the agreed representative matrix.
+- [x] Run branch-image `--import-facet-config` on the `supersead` deployment network and confirm one active `facet.config_revision` row exists on the target deployment database.
+- [x] Run focused unit, integration, live, or controller validation for each newly promoted high-risk request family using the narrowest useful repository test slice.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlySitesSlice|FullyQualifiedName~Load_TargetOnlySitesMapResult_UsesComposedFilterSql|FullyQualifiedName~LoadMap_TargetOnlySitesRequest_UsesComposedFilterSql"` to validate the target-only routed `sites` expansion candidate.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyGeochronologySlice"` to validate the target-only range `geochronology` expansion candidate.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~Load_TargetOnlyCeramicSampleGroupsTabularResult_UsesComposedFilterSql|FullyQualifiedName~Load_TargetOnlyCeramicSampleGroupsMapResult_UsesComposedFilterSql|FullyQualifiedName~LoadMap_TargetOnlyCeramicSampleGroupsRequest_UsesComposedFilterSql"` to validate the deeper prefixed `ceramic://sample_groups:sample_groups` result-path expansion candidate.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~Load_TargetOnlyPalaeoentomologyRdbSystemsMapResult_MatchesLegacyOutput"` to validate the promoted `palaeoentomology://rdb_systems:rdb_systems` routed map slice against the forced-legacy result path.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyFeatureTypeSlice|FullyQualifiedName~FacetContentService_ComposedTargetOnlySitesSlice_MatchesLegacyFacetContent|FullyQualifiedName~Build_WithTargetOnlyPrefixedSampleGroupSamplingContextsTabularResult_UsesUnfilteredComposedFilterJoin|FullyQualifiedName~Load_TargetOnlyPalaeoentomologySampleGroupSamplingContextsTabularResult"` to validate the target-only routed `feature_type` facet-content slice and the prefixed `sample_group_sampling_contexts` result-path exception candidate.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~Build_WithTargetOnlyPrefixedBiblioModernTabularResult_UsesUnfilteredComposedFilterJoin|FullyQualifiedName~Load_TargetOnlyPalaeoentomologyBiblioModernTabularResult"` to validate the prefixed `tbl_biblio_modern` result-path exception candidate.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~SQT.Services.ResultServiceTests|FullyQualifiedName~DependencyInjectionTests"` after removing the dead `ResultService` query-setup dependency and confirm the focused result-service and DI slice still passes.
+- [x] Run `SEAD_QUERY_API_BASE_URL=http://127.0.0.1:8098 SEAD_QUERY_API_MEASURE_SAMPLES=2 make default-cutover-http-measure` against a warmed live-network branch probe on the prepared `supersead` target.
+- [x] Run `SEAD_QUERY_API_BASE_URL=https://supersead.humlab.umu.se/query SEAD_QUERY_API_MEASURE_SAMPLES=2 make default-cutover-http-measure` against the published `supersead` query API after promoting the branch runtime.
+- [x] Start `supersead-sead_query_api:latest` as a localhost rollback probe on `127.0.0.1:8099` and confirm `api/version` still responds against the prepared live database.
+- [x] Re-run rollback verification after the final runtime switch by starting `supersead-sead_query_api:latest` on `127.0.0.1:8099` and confirming both `api/version` and the representative legacy `country` map request still succeed against the prepared live database.
 
 ## Deliverables
 
-| Deliverable | Description | Status | Link |
-|---|---|---|---|
-| Default cutover boundary record | One maintained record of the supported default-path surface and the remaining explicit exceptions. | Not started | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md` and adjacent cutover docs |
-| Cutover validation matrix | Focused and grouped validation coverage for the request families required at cutover. | Not started | `TBD` |
-| Deployment-like runtime measurement procedure | One repeatable runtime-readiness path that can be used before and after cutover. | Not started | `docs/OPERATIONS.md` |
-| Deployment schema and promotion procedure | Durable guidance for validation, import, deployment readiness, runtime promotion, and rollback. | Not started | `docs/OPERATIONS.md` and `docs/DEVELOPMENT.md` |
-| Post-cutover architecture record | Durable architecture and diagnostics docs aligned with the authoritative composed runtime. | Not started | `docs/DESIGN.md` and Phase 6 follow-up docs |
+| Deliverable                                   | Description                                                                                        | Status      | Link                                                                                                                                                                        |
+|-----------------------------------------------|----------------------------------------------------------------------------------------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Default cutover boundary record               | One maintained record of the supported default-path surface and the remaining explicit exceptions. | Done        | `docs/proposals/QUERY_ENGINE_OVERHAUL/PARITY_INVENTORY.md` and adjacent cutover docs                                                                                        |
+| Cutover validation matrix                     | Focused and grouped validation coverage for the request families required at cutover.              | Done        | `docs/OPERATIONS.md` and this task plan; the current public smoke matrix and the broader grouped regression gate are now aligned for the validated default-cutover surface. |
+| Deployment-like runtime measurement procedure | One repeatable runtime-readiness path that can be used before and after cutover.                   | Done        | `docs/OPERATIONS.md`, `Makefile`, and `scripts/default-cutover-http-measure.sh`                                                                                             |
+| Deployment schema and promotion procedure     | Durable guidance for validation, import, deployment readiness, runtime promotion, and rollback.    | Done        | `docs/OPERATIONS.md` and `docs/DEVELOPMENT.md`                                                                                                                              |
+| Post-cutover architecture record              | Durable architecture and diagnostics docs aligned with the authoritative composed runtime.         | Done        | `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, `docs/OPERATIONS.md`, `docs/DIAGRAMS.md`, and Phase 6 follow-up docs                                                            |
 
 ## Risks And Mitigations
 
@@ -168,9 +184,8 @@ Retire obsolete legacy-only runtime paths and leave durable documentation aligne
 
 ## Open Questions
 
-- Which additional representative live query shapes beyond the recorded `sites_polygon`, country-filter, and intersect baselines must be green before default cutover?
-- Which remaining facet families, if any, still require explicit exception routes or SQL overrides as YAML coverage widens?
-- Which residual diagnostics gaps are acceptable explicit Phase 6 exceptions, and which must be closed before the runtime switch?
+- Which explicit unsupported facet-content family should be retired next so the `FacetContentService` fallback boundary can shrink without widening scope?
+- Which explicit unsupported result family should be retired next so `ComposedResultProjectionHandoffBuilder` can stop delegating that request shape to the legacy handoff?
 
 ## Assumptions
 

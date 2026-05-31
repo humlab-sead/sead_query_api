@@ -117,6 +117,10 @@ default-cutover-smoke-check:
 default-cutover-http-smoke-check:
 	@./scripts/default-cutover-http-smoke-check.sh "$(SEAD_QUERY_API_BASE_URL)"
 
+.PHONY: default-cutover-http-measure
+default-cutover-http-measure:
+	@./scripts/default-cutover-http-measure.sh "$(SEAD_QUERY_API_BASE_URL)"
+
 .PHONY: build
 build:
 	dotnet build $(SOLUTION)

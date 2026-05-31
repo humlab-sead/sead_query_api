@@ -274,6 +274,50 @@ public class ResultProjectionHandoffBuilderTests : IntegrationTestBase
     }
 
     [Theory]
+    [InlineData("palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts")]
+    [InlineData("archaeobotany://sample_group_sampling_contexts:sample_group_sampling_contexts")]
+    [InlineData("pollen://sample_group_sampling_contexts:sample_group_sampling_contexts")]
+    [InlineData("geoarchaeology://sample_group_sampling_contexts:sample_group_sampling_contexts")]
+    [InlineData("dendrochronology://sample_group_sampling_contexts:sample_group_sampling_contexts")]
+    [InlineData("ceramic://sample_group_sampling_contexts:sample_group_sampling_contexts")]
+    public void Build_WithTargetOnlyPrefixedSampleGroupSamplingContextsTabularResult_UsesUnfilteredComposedFilterJoin(string uri)
+    {
+        var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
+        var facetsConfig = FakeFacetsConfig(uri);
+        var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+
+        var result = builder.Build(facetsConfig, resultConfig);
+
+        result.QuerySetup.LeadingSql.Should().Contain("with composed_filter as");
+        result.QuerySetup.LeadingSql.Should().Contain("from tbl_analysis_entities");
+        result
+            .QuerySetup.Joins.Should()
+            .Contain(join => join.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id"));
+    }
+
+    [Theory]
+    [InlineData("palaeoentomology://tbl_biblio_modern:tbl_biblio_modern")]
+    [InlineData("archaeobotany://tbl_biblio_modern:tbl_biblio_modern")]
+    [InlineData("pollen://tbl_biblio_modern:tbl_biblio_modern")]
+    [InlineData("geoarchaeology://tbl_biblio_modern:tbl_biblio_modern")]
+    [InlineData("dendrochronology://tbl_biblio_modern:tbl_biblio_modern")]
+    [InlineData("ceramic://tbl_biblio_modern:tbl_biblio_modern")]
+    public void Build_WithTargetOnlyPrefixedBiblioModernTabularResult_UsesUnfilteredComposedFilterJoin(string uri)
+    {
+        var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
+        var facetsConfig = FakeFacetsConfig(uri);
+        var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+
+        var result = builder.Build(facetsConfig, resultConfig);
+
+        result.QuerySetup.LeadingSql.Should().Contain("with composed_filter as");
+        result.QuerySetup.LeadingSql.Should().Contain("from tbl_analysis_entities");
+        result
+            .QuerySetup.Joins.Should()
+            .Contain(join => join.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id"));
+    }
+
+    [Theory]
     [InlineData("palaeoentomology://species:species")]
     [InlineData("archaeobotany://species:species")]
     [InlineData("pollen://species:species")]

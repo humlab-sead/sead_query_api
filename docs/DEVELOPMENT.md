@@ -267,16 +267,16 @@ This runs the `--validate-facet-config` command path and stops after deserializa
 
 The validation path is now semantic as well as structural. In addition to deserialization and importer-contract checks, it resolves anchor tables, generated route endpoints, facet source-table references, and facet-anchor route bindings against the current facet schema without mutating the database.
 
-### Current Phase 5 branch assumptions
+### Current branch assumptions
 
-While Phase 5 remains in progress, contributors should work from these branch-local assumptions:
+Contributors should work from these current branch-local assumptions:
 
 - YAML is the current authoring source for facet and route configuration work, but the running application still reads the imported database copy in the existing `facet` schema rather than loading YAML directly at request time.
 - A YAML edit is not a runtime change until it has been validated and, when appropriate, imported through the current CLI path.
-- The current runtime-readiness claim is intentionally narrow. It is backed by the recorded `sites_polygon`, country-filter, and `analysis_entity_ages` intersect baselines plus the broader green live result, controller, and composed facet-content reruns. Do not treat unmeasured composed families as already cleared for default cutover.
-- Unsupported or unresolved composed requests are still expected to stay on the explicit legacy-fallback boundary rather than being repaired implicitly in request handlers.
+- The current runtime-readiness claim is intentionally narrow. It is backed by the recorded `sites_polygon`, country-filter, and `analysis_entity_ages` intersect baselines plus the broader green live result, controller, and composed facet-content reruns that now back the published `supersead` route. Do not treat unmeasured composed families as already cleared for default cutover.
+- Unsupported or unresolved composed requests are still expected to stay on the explicit legacy-fallback boundary rather than being repaired implicitly in request handlers. Current deferred examples include the live `family` facet-content parity follow-up and the prefixed `species:species` result fallback follow-up tracked outside the current CR.
 
-For Phase 5 work on facet and route configuration, the practical contributor loop is:
+For current facet and route configuration work, the practical contributor loop is:
 
 1. edit the YAML authoring file or importer code
 2. run `make validate-facet-config FACET_CONFIG_FILE=...`

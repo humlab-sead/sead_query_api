@@ -147,9 +147,7 @@ namespace SQT.UnitTests.QueryComposer.Services
         {
             public static NullScope Instance { get; } = new();
 
-            public void Dispose()
-            {
-            }
+            public void Dispose() { }
         }
     }
 }

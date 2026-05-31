@@ -321,6 +321,60 @@ namespace SQT.LiveServices
         }
 
         [Fact]
+        public void Load_TargetOnlyPalaeoentomologySampleGroupSamplingContextsTabularResult_UsesComposedFilterSql()
+        {
+            var fakeFacetsConfig = FakeFacetsConfig("palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts");
+            var fakeResultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var service = Container.Resolve<ILoadResultService>();
+
+            var data = service.Load(fakeFacetsConfig, fakeResultConfig);
+
+            Assert.NotNull(data);
+            Assert.NotNull(data.Query);
+            Assert.Contains("with composed_filter as", data.Query);
+            Assert.Contains("from tbl_analysis_entities", data.Query);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
+        }
+
+        [Fact]
+        public void Load_TargetOnlyPalaeoentomologySampleGroupSamplingContextsTabularResult_MatchesLegacyOutput()
+        {
+            AssertMatchesLegacyResult(
+                uri: "palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts",
+                resultCode: "result_facet",
+                specificationKey: "site_level",
+                viewType: "tabular"
+            );
+        }
+
+        [Fact]
+        public void Load_TargetOnlyPalaeoentomologyBiblioModernTabularResult_UsesComposedFilterSql()
+        {
+            var fakeFacetsConfig = FakeFacetsConfig("palaeoentomology://tbl_biblio_modern:tbl_biblio_modern");
+            var fakeResultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var service = Container.Resolve<ILoadResultService>();
+
+            var data = service.Load(fakeFacetsConfig, fakeResultConfig);
+
+            Assert.NotNull(data);
+            Assert.NotNull(data.Query);
+            Assert.Contains("with composed_filter as", data.Query);
+            Assert.Contains("from tbl_analysis_entities", data.Query);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
+        }
+
+        [Fact]
+        public void Load_TargetOnlyPalaeoentomologyBiblioModernTabularResult_MatchesLegacyOutput()
+        {
+            AssertMatchesLegacyResult(
+                uri: "palaeoentomology://tbl_biblio_modern:tbl_biblio_modern",
+                resultCode: "result_facet",
+                specificationKey: "site_level",
+                viewType: "tabular"
+            );
+        }
+
+        [Fact]
         public void Load_TargetOnlyIsotopeSitesTabularResult_UsesComposedFilterSql()
         {
             var fakeFacetsConfig = FakeFacetsConfig("isotope://sites:sites");
@@ -681,6 +735,18 @@ namespace SQT.LiveServices
             Assert.Contains("target_route as", data.Query);
             Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", data.Query);
             Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", data.Query);
+        }
+
+        [Fact]
+        public void Load_TargetOnlyPalaeoentomologyRdbSystemsMapResult_MatchesLegacyOutput()
+        {
+            AssertMatchesLegacyResult(
+                uri: "palaeoentomology://rdb_systems:rdb_systems",
+                resultCode: "map_result",
+                specificationKey: "map_result",
+                viewType: "map",
+                ignoreRowOrder: true
+            );
         }
 
         [Fact]
@@ -1065,7 +1131,13 @@ namespace SQT.LiveServices
             return builder.Build();
         }
 
-        private void AssertMatchesLegacyResult(string uri, string resultCode, string specificationKey, string viewType)
+        private void AssertMatchesLegacyResult(
+            string uri,
+            string resultCode,
+            string specificationKey,
+            string viewType,
+            bool ignoreRowOrder = false
+        )
         {
             var facetsConfig = FakeFacetsConfig(uri);
             var resultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
@@ -1078,7 +1150,17 @@ namespace SQT.LiveServices
             var legacyData = legacyService.Load(facetsConfig, resultConfig);
 
             Assert.Equal(ToResultColumns(legacyData), ToResultColumns(composedData));
-            Assert.Equal(ToDataRows(legacyData), ToDataRows(composedData));
+
+            var legacyRows = ToDataRows(legacyData);
+            var composedRows = ToDataRows(composedData);
+
+            if (ignoreRowOrder)
+            {
+                legacyRows = legacyRows.OrderBy(row => row).ToList();
+                composedRows = composedRows.OrderBy(row => row).ToList();
+            }
+
+            Assert.Equal(legacyRows, composedRows);
             Assert.Equal(legacyData.Payload is null, composedData.Payload is null);
         }
 

@@ -187,6 +187,59 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void Load_WithDomainPrefixedTargetOnlyFamilyRequest_IncludesImplicitDomainFacetClauseInComposedFilterSql()
+    {
+        var countedItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "1992",
+                Count = 2,
+                Name = "1992",
+                Extent = [2],
+            },
+        };
+        var outerItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "1992",
+                Count = 0,
+                Name = "Rosaceae",
+                Extent = [0],
+            },
+        };
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        const string outerCategorySql = "select '1992' as category, 'Rosaceae' as name";
+        string capturedSql = null;
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql == outerCategorySql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Returns(outerItems);
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.Is<string>(sql => sql != outerCategorySql), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Callback<string, Func<IDataReader, CategoryItem>>((sql, _) => capturedSql = sql)
+            .Returns(countedItems);
+
+        var discreteCategoryInfoService = new Mock<IDiscreteCategoryInfoService>();
+        discreteCategoryInfoService.SetupGet(service => service.SqlCompiler).Returns(Mock.Of<IDiscreteCategoryInfoSqlCompiler>());
+        discreteCategoryInfoService
+            .Setup(service => service.GetCategoryInfo(It.IsAny<FacetsConfig2>(), "family", null))
+            .Returns(new FacetContent.CategoryInfo { Count = 1, Query = outerCategorySql });
+
+        var service = CreateService(queryProxy.Object, discreteCategoryInfoService: discreteCategoryInfoService.Object);
+        var facetsConfig = CreateTargetOnlyDomainPrefixedFamilyFacetsConfig();
+
+        service.CanHandle(facetsConfig).Should().BeTrue();
+
+        var result = service.Load(facetsConfig);
+
+        result.SqlQuery.Should().Be(capturedSql);
+        result.SqlQuery.Should().Contain("predicate_0 as", "the implicit domain facet should participate in the composed predicate set");
+        result.SqlQuery.Should().Contain("from tbl_datasets");
+        result.SqlQuery.Should().Contain("method_id in (32, 33, 35, 36, 37, 94, 106)");
+    }
+
+    [Fact]
     public void Load_WithTargetOnlyRoutedDiscreteRequest_UsesOuterCategoryInfoForReturnedItems()
     {
         var countedItems = new List<CategoryItem>
@@ -771,6 +824,9 @@ public class ComposedFacetContentServiceTests
         var geochronology = CreateTable(9, "tbl_geochronology", "geochron_id");
         var viewAbundance = CreateTable(10, "facet.view_abundance", "xxxx");
         var analysisEntityAges = CreateTable(11, "tbl_analysis_entity_ages", "analysis_entity_age_id");
+        var datasets = CreateTable(12, "tbl_datasets", "dataset_id");
+        var abundances = CreateTable(13, "tbl_abundances", "abundance_id");
+        var familyTaxonShortcut = CreateTable(14, "facet.family_taxon_shortcut", "family_id");
         var aggregateFacet = new Facet
         {
             FacetId = 10,
@@ -799,6 +855,9 @@ public class ComposedFacetContentServiceTests
             CreateRelation(geochronology, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
             CreateRelation(viewAbundance, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
             CreateRelation(analysisEntityAges, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
+            CreateRelation(datasets, analysisEntities, "dataset_id", "dataset_id"),
+            CreateRelation(abundances, analysisEntities, "analysis_entity_id", "analysis_entity_id"),
+            CreateRelation(familyTaxonShortcut, abundances, "taxon_id", "taxon_id"),
         };
 
         var facetRepository = new Mock<IFacetRepository>();
@@ -957,6 +1016,41 @@ public class ComposedFacetContentServiceTests
         {
             TargetCode = "genus",
             TargetFacet = targetFacet,
+            FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
+        };
+    }
+
+    private static FacetsConfig2 CreateTargetOnlyDomainPrefixedFamilyFacetsConfig()
+    {
+        var datasets = CreateTable(12, "tbl_datasets", "dataset_id");
+        var familyTaxonShortcut = CreateTable(14, "facet.family_taxon_shortcut", "family_id");
+
+        var domainFacet = new Facet
+        {
+            FacetCode = "geoarchaeology",
+            FacetId = 1004,
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_datasets.dataset_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = datasets }],
+            Clauses = [new FacetClause { Clause = "tbl_datasets.method_id in (32, 33, 35, 36, 37, 94, 106)", EnforceConstraint = true }],
+        };
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "family",
+            FacetId = 32,
+            FacetTypeId = EFacetType.Discrete,
+            AggregateFacetId = 10,
+            CategoryIdExpr = "facet.family_taxon_shortcut.family_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = familyTaxonShortcut }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "family",
+            TargetFacet = targetFacet,
+            DomainCode = "geoarchaeology",
+            DomainFacet = domainFacet,
             FacetConfigs = [new FacetConfig2(targetFacet, 1, string.Empty, [])],
         };
     }

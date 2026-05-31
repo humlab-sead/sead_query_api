@@ -9,7 +9,7 @@ It is an operations-facing guide for maintainers of deployed environments. It is
 - Primary runtime model in the repository: containerized ASP.NET Core service plus Redis, defined in `docker/docker-compose.yml`.
 - Primary build inputs: `docker/Dockerfile`, `docker/Dockerfile.compiled`, and `docker/Makefile`.
 - Release automation present: `.github/workflows/release.yml`.
-- Full CI gate, formal environment promotion flow, and documented rollback automation are `TBD`.
+- Full CI gate and fully automated promotion and rollback workflow are `TBD`, but the current repository runbook now includes documented `supersead` promotion evidence, published smoke and timing verification, and verified rollback evidence for the promoted target.
 
 ## Runtime Environments
 
@@ -168,6 +168,12 @@ Run the deployment-targeted HTTP smoke check against a live service base URL:
 make default-cutover-http-smoke-check SEAD_QUERY_API_BASE_URL=https://host/query
 ```
 
+Run the warmed deployment-like timing procedure against a live service base URL:
+
+```bash
+make default-cutover-http-measure SEAD_QUERY_API_BASE_URL=https://host/query
+```
+
 For router-backed deployments like `supersead.humlab.umu.se`, `SEAD_QUERY_API_BASE_URL` should point at the published query API root, not the site root. In the checked-in deployment topology that means the public query API path is `/query/`, so the effective base URL is `https://host/query`.
 
 These commands are the operational surface currently expressed in the repository. If a different deployment system exists outside the repo, it should be documented explicitly instead of inferred here.
@@ -212,6 +218,8 @@ Operationally, this means the repository has release automation, but not a fully
 
 The repository now defines one deployment-targeted HTTP smoke script for operators. It does not replace the broader repository-side `make default-cutover-smoke-check` catalog, but it does provide one repeatable live-service probe after rollout.
 
+The repository also now defines one deployment-like HTTP timing procedure. It is intentionally separate from the smoke gate: the smoke script remains pass/fail coverage for representative requests, while the timing procedure warms the service and then records repeated `curl` `time_total` samples for the agreed representative matrix without local Testcontainers startup overhead.
+
 After a deployment or restart:
 
 1. confirm the API container is running
@@ -226,6 +234,7 @@ make default-cutover-http-smoke-check SEAD_QUERY_API_BASE_URL=https://host/query
 ```
 
 7. confirm that the live smoke check completed cleanly. It validates `api/version` plus representative `api/result/load` map requests for the current country-filter, `sites_polygon`, and `analysis_entity_ages` intersect cutover slices.
+8. for the current Phase 6 expanded matrix, confirm that the same smoke path also validates the target-only `sites` map slice, the target-only `geochronology` facet-content slice, and the prefixed `ceramic://sample_groups:sample_groups` map slice.
 
 For facet-route configuration imports, also confirm that the latest row in `facet.config_revision` reflects the expected `config_revision`, provenance fields, and active flag after the import completes.
 
@@ -233,7 +242,7 @@ This smoke path requires `curl` and a base URL that is reachable from the host w
 
 Observed deployment-like validation on 2026-05-30:
 
-- after applying `make prepare-phase5-facet-runtime-schema` and importing the active Phase 5 facet-route revision into `sead_staging`, a branch-built probe passed the deployment-targeted HTTP smoke gate on the staging network for `api/version` plus representative `country`, `sites_polygon`, and `analysis_entity_ages` map requests
+- after applying `make prepare-phase5-facet-runtime-schema` and importing the active Phase 5 facet-route revision into `sead_staging`, a branch-built probe passed the deployment-targeted HTTP smoke gate on the staging network for `api/version`, representative `country`, `sites_polygon`, and `analysis_entity_ages` map requests, plus the target-only `sites` map slice, target-only `geochronology` facet-content slice, and prefixed `ceramic://sample_groups:sample_groups` map slice
 
 ### Phase 5 database preparation
 
@@ -276,19 +285,26 @@ Observed baseline on 2026-05-30:
 - the intersect baseline also passed across facet-content, result-load, and controller layers, preserving the expected composed SQL shape for `analysis_entity_ages`
 - cold wall-clock time was about 9-17 seconds per command in this workspace, with most of that time spent on PostgreSQL Testcontainers startup rather than query execution inside an already-running process
 
+Phase 6 measurement-lane expansion checks observed on 2026-05-30:
+
+- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlySitesSlice|FullyQualifiedName~Load_TargetOnlySitesMapResult_UsesComposedFilterSql|FullyQualifiedName~LoadMap_TargetOnlySitesRequest_UsesComposedFilterSql"` passed 4 tests in about 13 seconds wall-clock, expanding the measured surface to a target-only routed discrete `sites:sites` slice across facet-content, result-load, and controller boundaries
+- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedTargetOnlyGeochronologySlice"` passed 2 tests in about 10 seconds wall-clock, adding a zero-predicate range `geochronology:geochronology` facet-content baseline beyond the existing country-predicate range probe
+- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~Load_TargetOnlyCeramicSampleGroupsTabularResult_UsesComposedFilterSql|FullyQualifiedName~Load_TargetOnlyCeramicSampleGroupsMapResult_UsesComposedFilterSql|FullyQualifiedName~LoadMap_TargetOnlyCeramicSampleGroupsRequest_UsesComposedFilterSql"` passed 3 tests in about 12 seconds wall-clock, adding a deeper prefixed `ceramic://sample_groups:sample_groups` tabular/map result-path probe beyond the original spatial, country-filter, and intersect baseline
+
 Operational interpretation:
 
 - the current branch now has one recorded heavy spatial probe, one recorded non-spatial country-filter baseline, and one recorded intersect baseline with no immediate Phase 5 blocker in those measured slices
+- the first Phase 6 expansion shortlist is now explicit and green for focused checks: target-only routed `sites`, target-only range `geochronology`, and prefixed `ceramic://sample_groups:sample_groups`
 - the current acceptable measured boundary is limited to those recorded baselines and the broader green reruns noted below; unmeasured composed families remain outside the current runtime-readiness claim
 - the main recorded outlier is test-harness overhead from PostgreSQL Testcontainers startup, not a measured steady-state query-execution failure inside the covered slices
 - the remaining operational risk is primarily unmeasured default-cutover behavior, not an observed failure in the currently covered runtime slices
 
 Broader regression status on 2026-05-30:
 
-- the repository rerun of `make default-cutover-smoke-check` completed cleanly after the final representative Phase 5 fixes
-- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~SQT.LiveServices.ResultLoadServiceTests"` passed 72 tests in about 53 seconds wall-clock
+- the repository rerun of `make default-cutover-smoke-check` completed cleanly after the Phase 6 deployment-smoke widening, keeping the broader grouped gate aligned with the expanded public smoke matrix
+- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~SQT.LiveServices.ResultLoadServiceTests"` passed 75 tests in about 53 seconds wall-clock, now also including the focused composed-versus-legacy tabular proof for `palaeoentomology://sample_group_sampling_contexts:sample_group_sampling_contexts`
 - `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~IntegrationTests.Sead.ResultControllerTests"` passed 260 tests in about 66 seconds wall-clock
-- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedSupportedLiveSlices"` passed 114 tests in about 56 seconds wall-clock
+- `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~FacetContentService_ComposedSupportedLiveSlices"` passed 116 tests in about 56 seconds wall-clock after promoting the target-only routed `feature_type:feature_type` facet-content slice into the grouped live matrix
 
 ### Default-cutover gate
 
@@ -302,7 +318,7 @@ Before treating the composed runtime as eligible for default-path cutover in an 
 make default-cutover-smoke-check
 ```
 
-4. confirm that the smoke-check target completed cleanly for the candidate runtime state. It covers the currently accepted representative spatial `sites_polygon`, non-spatial country-filter, and intersect `analysis_entity_ages` slices plus the broader live result, controller, and composed facet-content reruns.
+4. confirm that the smoke-check target completed cleanly for the candidate runtime state. It covers the currently accepted representative spatial `sites_polygon`, non-spatial country-filter, and intersect `analysis_entity_ages` slices plus the broader live result, controller, and composed facet-content reruns, and it has been rerun green after the Phase 6 deployment-smoke expansion.
 5. run the deployment-targeted HTTP smoke check against the deployed service base URL:
 
 ```bash
@@ -312,16 +328,101 @@ make default-cutover-http-smoke-check SEAD_QUERY_API_BASE_URL=https://host/query
 6. confirm that the live HTTP smoke check completed cleanly against the deployed service
 7. if the deployment also imports facet-route configuration, confirm that the latest row in `facet.config_revision` reflects the expected active revision and provenance values after the import completes
 
+Current exception boundary:
+
+- this operational gate applies to the validated representative matrix served by the current promoted runtime; explicit retained fallback exceptions such as the deferred live `family` facet-content follow-up and prefixed `species:species` result follow-up remain outside that supported matrix and do not change the gate definition
+
 Current limitation:
 
-- the live HTTP smoke path currently checks `api/version` plus three representative `api/result/load` map requests; it is narrower than the broader repository-side regression catalog and still relies on manual rollback confirmation outside the script
+- the live HTTP smoke path now checks `api/version`, four representative `api/result/load` map requests (`country`, `sites_polygon`, `analysis_entity_ages`, and target-only `sites`), one representative `api/facets/load` range request (`geochronology`), and one prefixed `ceramic://sample_groups:sample_groups` map request; it is still narrower than the broader repository-side regression catalog
 
-Current measured deployment blocker on `supersead`:
+### Warmed deployment-like timing procedure
 
-- a branch-built Phase 5 query API container can be built and started far enough to reach startup validation against the live `supersead` PostgreSQL service, but it fails before serving HTTP because the target database is still missing the Phase 5 route/provenance tables expected in schema `facet`
-- direct schema inspection on 2026-05-30 showed the legacy facet core is present (`facet`, `facet_table`, `facet_clause`), but the Phase 5 runtime additions are absent: `facet.anchor`, `facet.facet_anchor`, `facet.facet_template`, `facet.route`, `facet.route_step`, and `facet.config_revision`
-- use `make prepare-phase5-facet-runtime-schema` against a non-production target copy first, then run the facet-route import so those tables and the corresponding imported runtime data exist before starting a Phase 5 branch container
-- this blocker is now specific to the live target database state on `supersead`, not to the branch runtime in general; the same prep-plus-import flow has already been proven on staging with a green deployment-targeted HTTP smoke result
+Use the warmed HTTP timing target after the smoke gate passes and while the candidate service is already running:
+
+```bash
+make default-cutover-http-measure SEAD_QUERY_API_BASE_URL=https://host/query
+```
+
+Current matrix measured by `scripts/default-cutover-http-measure.sh`:
+
+- `api/version` warm-up check
+- baseline `country` map result request
+- baseline `sites_polygon` map result request
+- baseline `analysis_entity_ages` map result request
+- target-only `sites:sites` map result request
+- target-only `geochronology:geochronology` facet-content request
+- prefixed `ceramic://sample_groups:sample_groups` map result request
+
+Observed warmed staging-branch-probe timings on 2026-05-30 using `SEAD_QUERY_API_MEASURE_SAMPLES=2` against `http://127.0.0.1:8096`:
+
+- `version`: avg `0.002s`, min `0.001s`, max `0.004s`
+- `country-map-result`: avg `0.220s`, min `0.217s`, max `0.224s`
+- `sites-polygon-map-result`: avg `0.233s`, min `0.228s`, max `0.238s`
+- `analysis-entity-ages-map-result`: avg `0.228s`, min `0.217s`, max `0.238s`
+- `sites-map-result`: avg `0.395s`, min `0.389s`, max `0.400s`
+- `geochronology-facet-content`: avg `0.112s`, min `0.107s`, max `0.116s`
+- `ceramic-sample-groups-map-result`: avg `0.335s`, min `0.322s`, max `0.348s`
+
+Operational interpretation of that run:
+
+- the warmed staging branch probe stayed well below one second for every measured sample in the current matrix
+- the slowest current representative request in that environment was the target-only `sites` map slice at about `0.400s` max across two measured samples
+- this confirms that the current deployment-like timing path can evaluate query execution without local PostgreSQL Testcontainers startup dominating the reading
+
+Observed warmed `supersead` live-network branch-probe timings on 2026-05-30 using `SEAD_QUERY_API_MEASURE_SAMPLES=2` against `http://127.0.0.1:8098`:
+
+- `version`: avg `0.001s`, min `0.001s`, max `0.001s`
+- `country-map-result`: avg `0.214s`, min `0.203s`, max `0.225s`
+- `sites-polygon-map-result`: avg `0.204s`, min `0.195s`, max `0.214s`
+- `analysis-entity-ages-map-result`: avg `0.179s`, min `0.176s`, max `0.181s`
+- `sites-map-result`: avg `0.329s`, min `0.319s`, max `0.339s`
+- `geochronology-facet-content`: avg `0.065s`, min `0.065s`, max `0.065s`
+- `ceramic-sample-groups-map-result`: avg `0.333s`, min `0.315s`, max `0.351s`
+
+Operational interpretation of that `supersead` run:
+
+- the live-network branch probe also stayed well below one second for every measured sample in the current matrix
+- the prepared `supersead` target measured similarly to or slightly faster than the earlier staging probe across the baseline and expansion slices
+- this confirms that the deployment-like timing path remains stable after preparing and importing the live target database copy
+
+Observed warmed published `supersead` timings on 2026-05-30 using `SEAD_QUERY_API_MEASURE_SAMPLES=2` against `https://supersead.humlab.umu.se/query` after promoting the branch runtime:
+
+- `version`: avg `0.013s`, min `0.013s`, max `0.013s`
+- `country-map-result`: avg `0.226s`, min `0.217s`, max `0.236s`
+- `sites-polygon-map-result`: avg `0.241s`, min `0.198s`, max `0.284s`
+- `analysis-entity-ages-map-result`: avg `0.199s`, min `0.197s`, max `0.201s`
+- `sites-map-result`: avg `0.346s`, min `0.335s`, max `0.357s`
+- `geochronology-facet-content`: avg `0.079s`, min `0.077s`, max `0.081s`
+- `ceramic-sample-groups-map-result`: avg `0.340s`, min `0.333s`, max `0.348s`
+
+Operational interpretation of the published `supersead` run:
+
+- the public query route also stayed well below one second for every measured sample in the current matrix after the live container swap
+- public timings remained close to the earlier live-network branch-probe timings, which supports the claim that the router path is not hiding a different runtime profile for the current baseline matrix
+- this is the first published-environment confirmation that the current default-cutover matrix is serving composed SQL through the real `https://supersead.humlab.umu.se/query` entry point
+
+Operational options:
+
+- `SEAD_QUERY_API_MEASURE_SAMPLES` controls measured repetitions per request and defaults to `3`
+- `SEAD_QUERY_API_MEASURE_WARMUPS` controls discarded warm-up requests per request and defaults to `1`
+- `SEAD_QUERY_API_MEASURE_WARN_SECONDS` is optional; when set, the script warns if any measured sample exceeds that threshold
+
+Interpretation rules:
+
+- use the timing script comparatively on the same warmed environment rather than as a one-size-fits-all pass/fail gate
+- compare averages and max values against earlier runs from the same deployment-like target, not against cold local test times that include PostgreSQL Testcontainers startup
+- investigate sustained regressions, obvious multi-second outliers, or any request that breaches the locally agreed `SEAD_QUERY_API_MEASURE_WARN_SECONDS` threshold when one is configured
+
+Observed `supersead` target readiness on 2026-05-30:
+
+- a deployment-like schema probe on staging confirmed that `sead_staging` already carried `facet.anchor`, `facet.facet_anchor`, `facet.facet_template`, `facet.route`, `facet.route_step`, and `facet.config_revision`, together with one active imported revision (`phase5-runtime-slices-draft-06`)
+- the live `supersead` PostgreSQL service originally lacked the Phase 5 runtime additions, so `scripts/prepare-phase5-facet-runtime-schema.sql` was applied directly to the target database through the running `supersead-postgresql-1` container
+- a current-branch validation run on the `supersead_sead_network` then passed with `--validate-facet-config` against the mounted live appsettings and current `route_v1.yaml`
+- a current-branch import run on the same network then materialized one active `facet.config_revision` row on the live target: `phase5-runtime-slices-draft-06`, source commit `267b4bcf55cfc42e820edf6a17d9919e104b0074`, imported by `phase6-supersead-import`
+- a live-network branch probe on `http://127.0.0.1:8098` then served HTTP successfully and passed both `make default-cutover-http-smoke-check` and `make default-cutover-http-measure`
+- the live `supersead` service was then promoted by replacing `supersead-sead_query_api:latest` with `supersead-sead_query_api:phase6-cutover-20260530` on the existing `sead_query_api` network alias, after which the published `https://supersead.humlab.umu.se/query` route passed both `make default-cutover-http-smoke-check` and `make default-cutover-http-measure`
+- the previous `supersead-sead_query_api:latest` image was then re-run as a rollback probe on `127.0.0.1:8099`; it answered both `api/version` and the representative legacy `country` map request against the prepared live database, so rollback verification is now current for the promoted target
 
 ## Logging, Observability, and Health
 
@@ -354,6 +455,13 @@ Because rollback commands are environment-specific and the deployment cluster pa
 - keep previously known-good image tags available
 - roll back by version, not by manually editing running containers
 - verify the service and Redis dependencies after rollback the same way as after forward deployment
+
+Current verified rollback evidence on `supersead`:
+
+- the pre-cutover image `supersead-sead_query_api:latest` remained available after promotion to `supersead-sead_query_api:phase6-cutover-20260530`
+- a localhost rollback probe on `127.0.0.1:8099` booted successfully on the live `supersead_sead_network` with the prepared database and mounted production appsettings
+- that rollback probe answered `api/version` and the representative `country` map request that previously characterized the legacy runtime path
+- this verification proves that the known-good legacy image is still runnable against the prepared live database, but it does not change the operational rule: production rollback should still happen by redeploying the known-good image tag rather than by manually swapping containers
 
 ## Backup and Recovery
 

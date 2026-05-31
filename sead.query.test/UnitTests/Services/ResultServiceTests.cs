@@ -67,14 +67,11 @@ namespace SQT.Services
             var fakeResultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
             var mockQueryProxy = MockDynamicQueryProxyWithFakeData(testItemCount, fakeResultConfig.Specifications.FirstOrDefault());
             var fakeQuerySetup = FakeResultQuerySetup(fakeFacetsConfig, resultCode, specificationKey);
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var mockResultProjectionHandoffBuilder = MockResultProjectionHandoffBuilder(fakeQuerySetup, fakeResultConfig.GetSortedFields());
 
             // Act
             var service = new ResultService(
-                FakeRegistry(),
                 mockQueryProxy.Object,
-                mockQuerySetupBuilder.Object,
                 mockResultProjectionHandoffBuilder.Object,
                 mockResultPayloadServiceLocator.Object,
                 mockResultSqlCompilerLocator.Object
@@ -94,7 +91,7 @@ namespace SQT.Services
         }
 
         [Fact]
-        public void Load_WithComposedHandoff_UsesHandoffQuerySetupAndSkipsLegacyQuerySetupBuilder()
+        public void Load_WithComposedHandoff_UsesHandoffQuerySetup()
         {
             // Arrange
             var fakeFacetsConfig = FakeFacetsConfig("sites:sites");
@@ -105,7 +102,6 @@ namespace SQT.Services
             var mockResultProjectionHandoffBuilder = MockResultProjectionHandoffBuilder(handoffQuerySetup, handoffResultFields);
             var mockResultPayloadServiceLocator = MockResultPayloadServiceLocator(null);
             var mockQueryProxy = MockDynamicQueryProxyWithFakeData(3, fakeResultConfig.Specifications.FirstOrDefault());
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup());
 
             var mockResultSqlCompiler = new Mock<IResultSqlCompiler>();
             mockResultSqlCompiler
@@ -115,9 +111,7 @@ namespace SQT.Services
             mockResultSqlCompilerLocator.Setup(x => x.Locate(fakeResultConfig.ViewTypeId)).Returns(mockResultSqlCompiler.Object);
 
             var service = new ResultService(
-                FakeRegistry(),
                 mockQueryProxy.Object,
-                mockQuerySetupBuilder.Object,
                 mockResultProjectionHandoffBuilder.Object,
                 mockResultPayloadServiceLocator.Object,
                 mockResultSqlCompilerLocator.Object
@@ -131,10 +125,6 @@ namespace SQT.Services
             mockResultProjectionHandoffBuilder.Verify(x => x.Build(fakeFacetsConfig, fakeResultConfig), Times.Once);
             mockResultSqlCompilerLocator.Verify(x => x.Locate(fakeResultConfig.ViewTypeId), Times.Once);
             mockResultSqlCompiler.Verify(x => x.Compile(handoffQuerySetup, fakeResultConfig.Facet, handoffResultFields), Times.Once);
-            mockQuerySetupBuilder.Verify(
-                x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>()),
-                Times.Never
-            );
         }
 
         [Fact]
@@ -147,7 +137,6 @@ namespace SQT.Services
             var handoffResultFields = fakeResultConfig.GetSortedFields().ToList();
             var mockResultProjectionHandoffBuilder = MockResultProjectionHandoffBuilder(fakeQuerySetup, handoffResultFields);
             var mockQueryProxy = MockDynamicQueryProxyWithFakeData(2, fakeResultConfig.Specifications.FirstOrDefault());
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup());
 
             var payload = new Dictionary<string, object> { ["view"] = "map" };
             var mockPayloadService = new Mock<IResultPayloadService>();
@@ -158,9 +147,7 @@ namespace SQT.Services
             var mockResultSqlCompilerLocator = MockResultSqlCompilerLocator("#RETURN-SQL#");
 
             var service = new ResultService(
-                FakeRegistry(),
                 mockQueryProxy.Object,
-                mockQuerySetupBuilder.Object,
                 mockResultProjectionHandoffBuilder.Object,
                 mockResultPayloadServiceLocator.Object,
                 mockResultSqlCompilerLocator.Object

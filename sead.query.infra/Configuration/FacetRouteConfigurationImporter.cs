@@ -323,7 +323,9 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                 route => new ValidationRoute(
                     route.Name,
                     route.TargetTableId,
-                    tablesById.TryGetValue(route.TargetTableId, out var targetTable) ? targetTable.TableOrUdfName : route.TargetTableId.ToString()
+                    tablesById.TryGetValue(route.TargetTableId, out var targetTable)
+                        ? targetTable.TableOrUdfName
+                        : route.TargetTableId.ToString()
                 ),
                 StringComparer.OrdinalIgnoreCase
             );
@@ -403,7 +405,10 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                 $"facet '{facetDefinition.Key}' type"
             );
             _ = ResolveRequiredLookup(tablesByName, facetDefinition.SourceTable, $"facet '{facetDefinition.Key}' source table");
-            _ = ResolveAggregateFacetId(facetDefinition.Aggregate.FacetKey, new Dictionary<string, Facet>(facetsByCode, StringComparer.OrdinalIgnoreCase));
+            _ = ResolveAggregateFacetId(
+                facetDefinition.Aggregate.FacetKey,
+                new Dictionary<string, Facet>(facetsByCode, StringComparer.OrdinalIgnoreCase)
+            );
         }
     }
 

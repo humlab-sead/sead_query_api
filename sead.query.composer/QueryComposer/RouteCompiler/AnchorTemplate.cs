@@ -18,6 +18,11 @@ public sealed class AnchorTemplate
     public IReadOnlyList<string> Route { get; init; } = [];
 
     /// <summary>
+    /// True only when the facet source table is already the anchor table.
+    /// </summary>
+    public bool IsIdentityRoute { get; init; }
+
+    /// <summary>
     /// True when the generated base query should enforce distinct source and anchor pairs.
     /// </summary>
     public bool RequiresDistinct { get; init; }

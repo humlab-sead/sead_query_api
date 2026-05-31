@@ -36,7 +36,7 @@ The immediate Phase 5 need is not a new validation concept. It is one explicit i
 
 - Bad imported route configuration should fail before the first live request.
 - Startup now validates the route graph plus every configured route name and alias through the current route-configuration startup validation path.
-- Missing deployment database runtime tables are also a startup-time failure class. The live `supersead` target currently fails here until `facet.anchor`, `facet.facet_anchor`, `facet.facet_template`, `facet.route`, `facet.route_step`, and `facet.config_revision` are prepared and imported.
+- Missing deployment database runtime tables are also a startup-time failure class. The live `supersead` target hit that failure mode before 2026-05-30, but the current prep-plus-import flow has now prepared and imported `facet.anchor`, `facet.facet_anchor`, `facet.facet_template`, `facet.route`, `facet.route_step`, and `facet.config_revision` there.
 
 ### Request-Time Unsupported-Boundary Failures
 
@@ -71,8 +71,8 @@ This is the current repeatable boundary for Phase 5. It is sufficient to catch m
 The remaining gaps are narrower than earlier in Phase 5.
 
 - There is still no single focused inventory for request-time misconfiguration outside the currently covered representative families.
-- Unsupported-boundary behavior is explicit, but the repository still needs one maintained list of unmeasured families that are expected to fall back, fail fast, or require explicit exception routes.
-- Deployment validation still depends on the target database carrying the prepared Phase 5 runtime tables plus an imported active revision; the runtime cannot make that state self-healing.
+- Unsupported-boundary behavior is explicit, but the repository still needs one maintained list of unmeasured families that are expected to fall back, fail fast, or require explicit exception routes. The current Phase 6 cutover-boundary handoff now lives in `PARITY_INVENTORY.md`, but the unmeasured-family list still needs to stay current as that boundary widens.
+- Deployment validation still depends on each target database carrying the prepared Phase 5 runtime tables plus an imported active revision; the runtime cannot make that state self-healing.
 - Validation is repeatable, but it is still layered across schema validation, semantic validation, import, startup checks, tests, and smoke gates rather than one single command for all configuration failure classes.
 
 ## Current Route-Exception Inventory
@@ -96,7 +96,7 @@ Current explicit exception state:
 - `facet.route_step` persistence remains an implementation exception because the checked-in schema still applies a global unique constraint on `route_step.table_id`; imported `facet.route.specification` remains authoritative instead
 - unsupported result requests remain explicit legacy-fallback exceptions outside the validated composed-result surface, and the fallback boundary now logs the first failing contract for those requests
 - out-of-draft species result families currently covered as explicit legacy-fallback exceptions are `palaeoentomology`, `archaeobotany`, `pollen`, and `dendrochronology`
-- families outside the current draft are not yet classified as generated-family candidates, explicit-route exceptions, SQL-override exceptions, or out-of-scope follow-up work
+- the currently known out-of-draft follow-up set is now explicit rather than unclassified: prefixed `species`, plus archaeobotany `modification_types` and archaeobotany and pollen `abundance_elements`, remain deferred until focused cutover probes confirm whether they belong in generated families or require explicit exceptions
 
 ## Phase 5 Implication
 

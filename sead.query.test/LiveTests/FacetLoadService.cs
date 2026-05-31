@@ -48,6 +48,7 @@ namespace SQT.LiveServices
                 ["sites:sites"],
                 ["sites:country@1,2,5/sites"],
                 ["ecocode:country@1,2,5/ecocode"],
+                ["feature_type:feature_type"],
                 ["feature_type:country@1,2,5/feature_type"],
                 ["ecocode_system:ecocode_system"],
                 ["ecocode_system:country@1,2,5/ecocode_system"],
@@ -451,6 +452,20 @@ namespace SQT.LiveServices
         [Theory]
         [InlineData("ecocode_system:ecocode_system")]
         public void FacetContentService_ComposedTargetOnlyEcocodeSystemSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("feature_type:feature_type")]
+        public void FacetContentService_ComposedTargetOnlyFeatureTypeSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_feature_types");
+        }
+
+        [Theory]
+        [InlineData("feature_type:feature_type")]
+        public void FacetContentService_ComposedTargetOnlyFeatureTypeSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }

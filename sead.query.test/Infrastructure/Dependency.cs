@@ -107,7 +107,8 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<ResultService>().As<IResultService>();
             builder.RegisterType<LegacyResultProjectionHandoffBuilder>().AsSelf();
-            builder.Register(_ => NullLogger<ComposedResultProjectionHandoffBuilder>.Instance)
+            builder
+                .Register(_ => NullLogger<ComposedResultProjectionHandoffBuilder>.Instance)
                 .As<ILogger<ComposedResultProjectionHandoffBuilder>>()
                 .SingleInstance();
             builder.RegisterType<ComposedResultProjectionHandoffBuilder>().As<IResultProjectionHandoffBuilder>();

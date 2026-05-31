@@ -149,7 +149,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         {
             sql.AppendLine(")");
         }
-        sql.AppendLine($"select {categoryExpression} as category, count(*)::int as count");
+        sql.AppendLine($"select {categoryExpression} as category, count(distinct composed_filter.{anchorKeyColumn})::int as count");
         sql.AppendLine($"from {targetTableName}");
         foreach (var join in targetJoins)
         {
