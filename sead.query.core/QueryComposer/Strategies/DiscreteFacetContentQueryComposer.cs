@@ -331,7 +331,7 @@ public sealed class DiscreteFacetContentQueryComposer : IFacetContentQueryCompos
         sql.AppendLine("categories(category, count_column, longitude_dd, latitude_dd) as (");
         sql.AppendLine(Indent(categoryInfoSql.Trim(), "  "));
         sql.AppendLine(")");
-        sql.AppendLine("select c.category, c.count_column, c.longitude_dd, c.latitude_dd");
+        sql.AppendLine("select distinct c.category, c.count_column, c.longitude_dd, c.latitude_dd");
         sql.AppendLine("from categories c");
         if (!string.IsNullOrWhiteSpace(anchorToTargetSql))
         {

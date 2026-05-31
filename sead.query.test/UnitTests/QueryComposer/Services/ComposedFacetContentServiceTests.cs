@@ -38,7 +38,7 @@ public class ComposedFacetContentServiceTests
 
         act.Should()
             .Throw<InvalidOperationException>()
-            .WithMessage("*predicate facet 'sample_group' does not expose a simple source key column*Call CanHandle(...)*legacy runtime*");
+            .WithMessage("*predicate facet 'sample_group' does not expose a simple source key column*Call CanHandle(...)*no longer fall back to the legacy runtime*");
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
@@ -54,7 +54,7 @@ public class ComposedFacetContentServiceTests
         act.Should()
             .Throw<InvalidOperationException>()
             .WithMessage(
-                "*predicate facet 'country' uses facet clauses that the composed predicate path cannot apply*Call CanHandle(...)*legacy runtime*"
+                "*predicate facet 'country' uses facet clauses that the composed predicate path cannot apply*Call CanHandle(...)*no longer fall back to the legacy runtime*"
             );
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
@@ -72,25 +72,35 @@ public class ComposedFacetContentServiceTests
 
         act.Should()
             .Throw<InvalidOperationException>()
-            .WithMessage("*target facet 'species' does not expose a routable target join column*Call CanHandle(...)*legacy runtime*");
+            .WithMessage("*target facet 'species' does not expose a routable target join column*Call CanHandle(...)*no longer fall back to the legacy runtime*");
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
     [Fact]
-    public void Load_WithEmptyPredicateFacetConfig_ThrowsInvalidOperationException()
+    public void Load_WithEmptyPredicateFacetConfig_IgnoresEmptySecondaryFacetConfig()
     {
-        var queryProxy = new Mock<ITypedQueryProxy>(MockBehavior.Strict);
+        var expectedItems = new List<CategoryItem>
+        {
+            new()
+            {
+                Category = "SE",
+                Count = 1,
+                Name = "SE",
+                Extent = [1],
+            },
+        };
+        var queryProxy = new Mock<ITypedQueryProxy>();
+        queryProxy
+            .Setup(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()))
+            .Returns(expectedItems);
         var service = CreateService(queryProxy.Object);
         var facetsConfig = CreateCountryToSitesFacetsConfigWithoutCountryPicks();
 
-        var act = () => service.Load(facetsConfig);
+        var result = service.Load(facetsConfig);
 
-        act.Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage(
-                "*predicate facet 'country' has no picks*remove empty secondary facet configs*Call CanHandle(...)*legacy runtime*"
-            );
-        queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
+        result.Items.Should().BeEquivalentTo(expectedItems);
+        result.SqlQuery.Should().Contain("with composed_filter as");
+        queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Once);
     }
 
     [Fact]

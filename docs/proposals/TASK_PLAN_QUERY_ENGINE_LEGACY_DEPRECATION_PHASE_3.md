@@ -4,7 +4,7 @@
 
 **Phase:** Phase 3 - Remove Runtime Fallback Branches
 
-**Status:** In progress
+**Status:** Done
 
 **Goal**
 
@@ -21,9 +21,9 @@ Make composer the only live request-execution path.
 
 - [x] Facet-content requests no longer drop to `CategoryCountService` from the supported runtime path.
 - [x] Result requests no longer drop to `LegacyResultProjectionHandoffBuilder` from the supported runtime path.
-- [ ] Unsupported requests fail explicitly with reviewable diagnostics instead of silently routing to legacy execution.
+- [x] Unsupported requests fail explicitly with reviewable diagnostics instead of silently routing to legacy execution.
 - [x] `QuerySetupBuilder` is no longer required by the authoritative runtime DI path after fallback removal.
-- [ ] Focused validation and documentation updates confirm one authoritative execution model.
+- [x] Focused validation and documentation updates confirm one authoritative execution model.
 
 ## Work Breakdown
 
@@ -78,15 +78,15 @@ Remove the remaining base-class and compatibility wiring that still keeps `Query
 
 Leave fallback removal reviewable and make the post-cutover cleanup boundary explicit for Phase 4.
 
-- [ ] Run focused validation for the touched facet-content, result handoff, and DI slices.
-- [ ] Run a broader regression check before closing the phase.
-- [ ] Update `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_PLAN.md` and `docs/proposals/QUERY_ENGIVE_LEGACY_DEPRECATION.md` to reflect the landed Phase 3 state.
-- [ ] Update the maintained Phase 1 inventory if any retained legacy class changes disposition because fallback removal has landed.
-- [ ] Capture the exact retained services and registrations that move from Phase 3 cleanup to Phase 4 deletion.
+- [x] Run focused validation for the touched facet-content, result handoff, and DI slices.
+- [x] Run a broader regression check before closing the phase.
+- [x] Update `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_PLAN.md` and `docs/proposals/QUERY_ENGIVE_LEGACY_DEPRECATION.md` to reflect the landed Phase 3 state.
+- [x] Update the maintained Phase 1 inventory if any retained legacy class changes disposition because fallback removal has landed.
+- [x] Capture the exact retained services and registrations that move from Phase 3 cleanup to Phase 4 deletion.
 
 **Completion Criteria**
 
-- [ ] Phase 3 leaves one documented runtime model and a smaller, explicit Phase 4 deletion set.
+- [x] Phase 3 leaves one documented runtime model and a smaller, explicit Phase 4 deletion set.
 
 ## Progress Tracker
 
@@ -95,31 +95,31 @@ Leave fallback removal reviewable and make the post-cutover cleanup boundary exp
 | Remove facet-content fallback from the runtime path                              | Done        | `FacetContentService` now delegates directly to `ComposedFacetContentService`; unsupported facet-content requests fail explicitly instead of dropping to `CategoryCountService`.                                                                                  |
 | Remove legacy result handoff delegation                                          | Done        | `ComposedResultProjectionHandoffBuilder` now logs and throws for unsupported requests instead of delegating to `LegacyResultProjectionHandoffBuilder`.                                                                                                            |
 | Shrink retained query-builder infrastructure from the authoritative runtime path | Done        | The main API and test DI modules no longer register `IQuerySetupBuilder` or `LegacyResultProjectionHandoffBuilder`; remaining `QuerySetupBuilder` and `QueryServiceBase` references are retained direct-test or Phase 4 cleanup surfaces such as `ReportService`. |
-| Close the phase with validation and planning alignment                           | Not started | Phase 3 still needs focused validation plus doc and inventory alignment after the code changes land.                                                                                                                                                              |
+| Close the phase with validation and planning alignment                           | Done        | The Phase 1 inventory now reflects composer-only live execution, the exact Phase 4 carry-over set is explicit, and the full `sead.query.test` project passed with `1633` tests passing and `1` skipped.                                                      |
 
 ## Definition Of Done
 
-- [ ] All Phase 3 acceptance criteria are satisfied.
-- [ ] Live facet-content and result requests execute through the composer-only runtime path.
-- [ ] Unsupported requests fail explicitly with diagnosable messages instead of silent legacy routing.
-- [ ] The authoritative runtime DI path no longer requires `QuerySetupBuilder` for fallback-era wiring.
-- [ ] Tests and diagnostics are updated to guard the composer-only execution model.
-- [ ] Proposal, phase-plan, and inventory documents reflect the landed fallback-removal boundary and the remaining Phase 4 cleanup set.
+- [x] All Phase 3 acceptance criteria are satisfied.
+- [x] Live facet-content and result requests execute through the composer-only runtime path.
+- [x] Unsupported requests fail explicitly with diagnosable messages instead of silent legacy routing.
+- [x] The authoritative runtime DI path no longer requires `QuerySetupBuilder` for fallback-era wiring.
+- [x] Tests and diagnostics are updated to guard the composer-only execution model.
+- [x] Proposal, phase-plan, and inventory documents reflect the landed fallback-removal boundary and the remaining Phase 4 cleanup set.
 
 ## Validation And Testing
 
-- [ ] Run targeted `dotnet test` coverage for the touched facet-content, result handoff, and DI suites in `sead.query.test`.
-- [ ] Run `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
-- [ ] Run workspace diagnostics on the updated Phase 3 planning and deprecation documents.
-- [ ] Confirm there is no remaining supported-path diagnostic, test, or runtime assertion that expects legacy fallback success.
+- [x] Run targeted `dotnet test` coverage for the touched facet-content, result handoff, and DI suites in `sead.query.test`.
+- [x] Run `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
+- [x] Run workspace diagnostics on the updated Phase 3 planning and deprecation documents.
+- [x] Confirm there is no remaining supported-path diagnostic, test, or runtime assertion that expects legacy fallback success.
 
 ## Deliverables
 
 | Deliverable                             | Description                                                                 | Status      | Link                                                                                                                          |
 |-----------------------------------------|-----------------------------------------------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------|
-| Phase 3 task plan                       | Execution tracker for runtime fallback removal and authoritative DI cleanup | Not started | `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_3.md`                                                         |
-| Phase-plan alignment update             | Phase 3 execution link and post-cutover sequencing update                   | Not started | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_PLAN.md`                                                                |
-| Proposal and inventory alignment update | Updated deprecation boundary after fallback removal lands                   | Not started | `docs/proposals/QUERY_ENGIVE_LEGACY_DEPRECATION.md` and `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` |
+| Phase 3 task plan                       | Execution tracker for runtime fallback removal and authoritative DI cleanup | Done        | `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_3.md`                                                         |
+| Phase-plan alignment update             | Phase 3 execution link and post-cutover sequencing update                   | Done        | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_PLAN.md`                                                                |
+| Proposal and inventory alignment update | Updated deprecation boundary after fallback removal lands and Phase 4 carry-over set capture | Done        | `docs/proposals/QUERY_ENGIVE_LEGACY_DEPRECATION.md` and `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` |
 
 ## Scope
 

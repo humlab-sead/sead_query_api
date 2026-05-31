@@ -75,6 +75,26 @@ public class DiscreteFacetContentQueryComposerTests
         };
     }
 
+    private static FacetsConfig2 CreateGeoPolygonFacetsConfig()
+    {
+        var table = new Table { TableOrUdfName = "tbl_sites", PrimaryKeyName = "site_id" };
+
+        var targetFacet = new Facet
+        {
+            FacetCode = "sites_polygon",
+            FacetTypeId = EFacetType.GeoPolygon,
+            CategoryIdExpr = "tbl_sites.site_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = table }],
+        };
+
+        return new FacetsConfig2
+        {
+            TargetCode = "sites_polygon",
+            TargetFacet = targetFacet,
+            FacetConfigs = [],
+        };
+    }
+
     private static FacetsConfig2 CreateBiblioSampleGroupsFacetsConfig()
     {
         var biblio = new Table { TableOrUdfName = "tbl_biblio", PrimaryKeyName = "biblio_id" };
@@ -133,11 +153,11 @@ public class DiscreteFacetContentQueryComposerTests
     public void Compose_WithNonDiscreteTargetFacet_ThrowsInvalidOperationException()
     {
         var facetsConfig = CreateFacetsConfig();
-        facetsConfig.TargetFacet.FacetTypeId = EFacetType.Range;
+        facetsConfig.TargetFacet.FacetTypeId = EFacetType.Unknown;
 
         Action act = () => _composer.Compose(facetsConfig, CreateComposedFilterQuery(), "site_id", string.Empty);
 
-        act.Should().Throw<InvalidOperationException>().WithMessage("*not a discrete facet*");
+        act.Should().Throw<InvalidOperationException>().WithMessage("*is not supported by the composed content composer*");
     }
 
     [Fact]
@@ -164,11 +184,27 @@ public class DiscreteFacetContentQueryComposerTests
         result.AnchorJoinColumn.Should().Be("site_id");
         result.ComposedFilterSql.Should().Be("select target_id from composed_predicates");
         result.Sql.Should().Contain("with composed_filter as");
-        result.Sql.Should().Contain("select site_tbl.country_id as category, count(*)::int as count");
+        result.Sql.Should().Contain("select site_tbl.country_id as category, count(distinct composed_filter.target_id)::int as count");
         result.Sql.Should().Contain("from tbl_sites AS site_tbl");
         result.Sql.Should().Contain("join composed_filter on composed_filter.target_id = site_tbl.site_id");
         result.Sql.Should().Contain("group by site_tbl.country_id");
         result.Sql.Should().Contain("order by site_tbl.country_id");
+    }
+
+    [Fact]
+    public void Compose_WithGeoPolygonTargetFacet_UsesDistinctCategoryRows()
+    {
+        var facetsConfig = CreateGeoPolygonFacetsConfig();
+
+        var result = _composer.Compose(
+            facetsConfig,
+            CreateComposedFilterQuery(),
+            "site_id",
+            string.Empty,
+            "select 1 as category, 2 as count_column, 3 as longitude_dd, 4 as latitude_dd"
+        );
+
+        result.Sql.Should().Contain("select distinct c.category, c.count_column, c.longitude_dd, c.latitude_dd");
     }
 
     [Fact]
