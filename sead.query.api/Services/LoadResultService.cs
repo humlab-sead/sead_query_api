@@ -8,7 +8,7 @@ namespace SeadQueryAPI.Services
     public class LoadResultService : AppServiceBase, ILoadResultService
     {
         public IResultService ResultService { get; private set; }
-        private readonly IBogusPickService BogusPickService;
+        private readonly ISupportedRequestPickSanitizer _pickSanitizer;
 
         public LoadResultService(
             ISetting config,
@@ -17,15 +17,17 @@ namespace SeadQueryAPI.Services
             ISeadQueryCache cache,
 #pragma warning restore IDE0060, RCS1163
             IResultService service,
-            IBogusPickService bogusPickService) : base(config, context)
+            ISupportedRequestPickSanitizer pickSanitizer
+        )
+            : base(config, context)
         {
             ResultService = service;
-            BogusPickService = bogusPickService;
+            _pickSanitizer = pickSanitizer;
         }
 
         public virtual ResultContentSet Load(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
         {
-            BogusPickService.Update(facetsConfig);
+            _pickSanitizer.Update(facetsConfig);
             return ResultService.Load(facetsConfig, resultConfig);
         }
     }
@@ -37,7 +39,9 @@ namespace SeadQueryAPI.Services
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultService service,
-            IBogusPickService bogusPickService) : base(config, context, cache, service, bogusPickService)
+            ISupportedRequestPickSanitizer pickSanitizer
+        )
+            : base(config, context, cache, service, pickSanitizer)
         {
             Cache = cache;
         }

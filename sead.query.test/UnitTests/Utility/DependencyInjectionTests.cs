@@ -118,11 +118,10 @@ namespace SQT.Infrastructure
                 Assert.NotNull(scope.Resolve<IFacetContext>());
                 Assert.NotNull(scope.Resolve<IRepositoryRegistry>());
                 Assert.NotNull(scope.Resolve<IPathFinder>());
-                Assert.NotNull(scope.Resolve<IQuerySetupBuilder>());
+                Assert.NotNull(scope.Resolve<ISupportedRequestQuerySetupFactory>());
                 Assert.NotNull(scope.Resolve<IResultProjectionHandoffBuilder>());
-                Assert.NotNull(scope.Resolve<IBogusPickService>());
+                Assert.NotNull(scope.Resolve<ISupportedRequestPickSanitizer>());
                 Assert.NotNull(scope.Resolve<IResultService>());
-                Assert.NotNull(scope.Resolve<ICategoryCountService>());
                 Assert.NotNull(scope.Resolve<IFacetContentService>());
                 // Assert.NotNull(scope.ResolveKeyed<ICategoryBoundSqlCompiler>(EFacetType.Range));
                 Assert.NotNull(scope.ResolveKeyed<IResultSqlCompiler>("tabular"));

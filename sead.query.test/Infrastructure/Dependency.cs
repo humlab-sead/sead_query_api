@@ -78,8 +78,8 @@ namespace SQT.Infrastructure
             builder.RegisterType<DiscreteFacetContentQueryComposer>().As<IFacetContentQueryComposer>().InstancePerLifetimeScope();
             builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
-            builder.RegisterType<BogusPickService>().As<IBogusPickService>();
+            builder.RegisterType<SupportedRequestQuerySetupFactory>().As<ISupportedRequestQuerySetupFactory>();
+            builder.RegisterType<SupportedRequestPickSanitizer>().As<ISupportedRequestPickSanitizer>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
             builder.RegisterType<FacetRouteConfigurationImporter>().As<IFacetRouteConfigurationImporter>().InstancePerLifetimeScope();
@@ -97,8 +97,6 @@ namespace SQT.Infrastructure
 
             builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
 
-            builder.RegisterType<CategoryCountService>().As<ICategoryCountService>();
-
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();
             builder.RegisterType<JoinsClauseCompiler>().As<IJoinsClauseCompiler>();
@@ -106,7 +104,6 @@ namespace SQT.Infrastructure
             builder.RegisterType<FacetContentService>().As<IFacetContentService>();
 
             builder.RegisterType<ResultService>().As<IResultService>();
-            builder.RegisterType<LegacyResultProjectionHandoffBuilder>().AsSelf();
             builder
                 .Register(_ => NullLogger<ComposedResultProjectionHandoffBuilder>.Instance)
                 .As<ILogger<ComposedResultProjectionHandoffBuilder>>()

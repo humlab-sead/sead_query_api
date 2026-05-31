@@ -8,8 +8,8 @@ This is an architecture document. It focuses on component boundaries, runtime fl
 
 - Current authoritative runtime: the checked-in .NET API, its supporting libraries, and the database-backed facet configuration it loads at runtime.
 - Current query baseline: the composer-based, anchor-centered query path is the baseline for the validated composed surface for both facet-content and result requests.
-- Retained compatibility boundary: legacy query services still exist as an explicit fallback path for request families that remain outside the validated composed contract.
-- Planned follow-up work: widen composed coverage, reduce explicit fallback cases, and continue tightening configuration and route-governance workflows.
+- Current unsupported boundary: request families outside the validated composed contract now fail explicitly instead of falling back into legacy execution.
+- Planned follow-up work: widen composed coverage and continue tightening configuration and route-governance workflows.
 
 ## System Overview
 
@@ -41,13 +41,13 @@ These boundaries matter because the system has to keep HTTP concerns, domain/que
 
 ## Runtime Baseline
 
-The current runtime is a hybrid system with a clear primary path.
+The current runtime is a composition-first system with an explicit unsupported boundary.
 
 - The baseline query model is composition-first: supported requests are handled through the composer-owned route, predicate, and anchor contracts.
-- The runtime still preserves explicit legacy fallback for unsupported request shapes so that unsupported cases fail over in a controlled way instead of mixing partial composed and legacy logic inside one request.
+- Unsupported request shapes fail explicitly instead of falling back into retained legacy runtime services.
 - Facet-content and result generation are separate runtime flows, but both now depend on the same general idea: establish the active query context first, then project that context into facet categories or result payloads.
 
-This means the architecture should be read as one current system, not as a stable legacy system plus a separate speculative redesign. The composer is already part of the runtime baseline; the remaining legacy path is a bounded compatibility surface.
+This means the architecture should be read as one current system, not as a stable legacy system plus a separate speculative redesign. The composer is the runtime baseline, and historical legacy material no longer participates in authoritative runtime execution.
 
 ## Core Domain Concepts
 
@@ -80,11 +80,11 @@ Facet-content loading is target-facet driven.
 3. Remove invalid or stale selections before query compilation begins.
 4. Decide whether the request is inside the composed support surface.
 5. For composed requests, resolve routes and predicate plans, build the composed anchor set, and generate category or interval SQL for the target facet.
-6. For unsupported requests, use the retained legacy category-count path.
+6. For unsupported requests, fail explicitly with an unsupported-request error.
 7. Compute counts, outer counts, and selection state.
 8. Assemble the final facet-content response.
 
-The important architectural point is that the runtime still presents one facet-content service boundary even though two internal execution paths exist. Capability selection happens inside the service layer, not at the HTTP boundary.
+The important architectural point is that the runtime presents one facet-content service boundary while keeping unsupported-request classification inside the service layer rather than at the HTTP boundary.
 
 ### Result Flow
 
@@ -94,7 +94,7 @@ Result generation is related to filtering but is not identical to facet-content 
 2. Normalize facet selections and resolve the result target.
 3. Build a `ResultProjectionHandoff` that separates filtering from final projection.
 4. For composed requests, emit the composed filter SQL prologue and, when required, a routed target join.
-5. For unsupported requests, build the legacy query-setup handoff.
+5. For unsupported requests, fail explicitly rather than constructing a legacy query-setup handoff.
 6. Compile final tabular or map SQL from the handoff.
 7. Execute the query and attach any view-specific payload.
 8. Return the result content set.
@@ -150,14 +150,14 @@ The current configuration boundary has two stable sides.
 - Authoring side: checked-in YAML plus schema-backed validation
 - Runtime side: one active imported configuration revision in the `facet` schema
 
-The imported runtime copy currently materializes the route and facet metadata the application depends on, including rows in `facet.anchor`, `facet.route`, `facet.facet`, `facet.facet_table`, `facet.facet_anchor`, and optional exception tables such as `facet.facet_clause` and `facet.facet_template`.
+The imported runtime copy currently materializes the route and facet metadata the application depends on, including rows in `facet.anchor`, `facet.route`, `facet.facet`, `facet.facet_table`, `facet.facet_anchor`, and optional exception tables such as `facet.facet_clause`.
 The active revision and its provenance live in `facet.config_revision`.
 
 Import-time normalization resolves human-readable authoring keys against runtime lookup tables such as `facet.table`, `facet.facet_group`, and `facet.facet_type` before the imported revision becomes active.
 
 The authoring model is intentionally asymmetric.
 Generated route families and macros are the default way to represent repeatable source-to-anchor traversal.
-Explicit routes and SQL overrides are reserved for durable exception cases rather than routine authoring.
+Explicit routes are reserved for durable exception cases rather than routine authoring.
 
 The current persisted-route boundary is also intentionally narrow.
 `facet.route.specification` is the authoritative persisted route representation for the imported runtime copy.
@@ -201,7 +201,7 @@ This has several consequences.
 
 - Unit tests validate route parsing, route compilation, predicate resolution, composed filtering, and service contracts.
 - Integration and live tests validate controller behavior, database-backed execution, and the supported composed request matrix.
-- The test project is part of the architecture because the runtime depends on explicit validation of both composed behavior and retained fallback boundaries.
+- The test project is part of the architecture because the runtime depends on explicit validation of composed behavior and unsupported-request boundaries.
 
 ## External Dependencies and Integration Points
 
@@ -248,8 +248,8 @@ The system is intentionally database-aware. It does not aim for full database po
 
 ## Known Constraints and Follow-Up Areas
 
-- The current runtime baseline is composition-first for the validated surface, but fallback remains necessary for unsupported request families.
-- Some request shapes still depend on legacy behavior because their route, join-key, or predicate contracts are not yet modeled cleanly enough for composed execution.
+- The current runtime baseline is composition-first for the validated surface, and unsupported request families now fail explicitly outside that surface.
+- Some request shapes are still outside the validated composed contract because their route, join-key, or predicate contracts are not yet modeled cleanly enough for supported execution.
 - Runtime configuration governance continues to depend on importer-managed normalization and revision tracking.
 - The supported composed matrix is broader than the historical vertical slice, but validation still needs to expand deliberately rather than by assumption.
 - Additional architecture notes or ADR-style records may still be useful for narrower subsystems. `TBD`.

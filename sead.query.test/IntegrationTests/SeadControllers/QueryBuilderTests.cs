@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Autofac;
 using SeadQueryCore;
+using SeadQueryCore.QueryBuilder;
 using Xunit;
 
 namespace IntegrationTests.Sead
@@ -30,11 +31,15 @@ namespace IntegrationTests.Sead
         protected object _lock = new();
 
         private readonly IPathFinder _pathFinder;
+        private readonly ISupportedRequestQuerySetupFactory _supportedRequestQuerySetupFactory;
+        private readonly ISupportedRequestPickSanitizer _supportedRequestPickSanitizer;
 
         public QueryBuilderTests(PathFinderFixture fixture)
             : base()
         {
             _pathFinder = fixture.PathFinder;
+            _supportedRequestQuerySetupFactory = Container.Resolve<ISupportedRequestQuerySetupFactory>();
+            _supportedRequestPickSanitizer = Container.Resolve<ISupportedRequestPickSanitizer>();
         }
 
         public static IEnumerable<object[]> Edges =>
@@ -207,7 +212,7 @@ namespace IntegrationTests.Sead
 
             var queryFields = resultConfig.GetSortedFields();
 
-            var querySetup = QuerySetupBuilder.Build(facetsConfig, resultConfig.Facet, queryFields);
+            var querySetup = _supportedRequestQuerySetupFactory.CreateForResultProjection(facetsConfig, resultConfig.Facet, queryFields);
 
             var sqlQuery = SqlCompilerLocator.Locate(resultConfig.ViewTypeId).Compile(querySetup, resultConfig.Facet, queryFields);
 

@@ -9,7 +9,6 @@ using SeadQueryCore;
 using SeadQueryCore.Model;
 using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.QueryComposer;
-using SeadQueryCore.Services.Result;
 using Xunit;
 
 namespace SQT.UnitTests.QueryComposer.Services
@@ -17,7 +16,7 @@ namespace SQT.UnitTests.QueryComposer.Services
     public class ComposedResultProjectionHandoffBuilderDiagnosticsTests
     {
         [Fact]
-        public void Build_WithUnsupportedResultFacet_LogsFallbackReasonAndReturnsLegacyHandoff()
+        public void Build_WithUnsupportedResultFacet_LogsFailureReasonAndThrows()
         {
             var aggregateFacet = CreateAggregateFacet();
             var resultFacet = CreateUnsupportedSpeciesResultFacet();
@@ -40,39 +39,29 @@ namespace SQT.UnitTests.QueryComposer.Services
             var registry = new Mock<IRepositoryRegistry>();
             registry.SetupGet(x => x.Facets).Returns(facetRepository.Object);
 
-            var legacyQuerySetup = new QuerySetup
-            {
-                Facet = resultFacet,
-                LeadingSql = "select legacy_result",
-                Joins = [],
-                Criterias = [],
-            };
-
-            var querySetupBuilder = new Mock<IQuerySetupBuilder>();
-            querySetupBuilder
-                .Setup(x => x.Build(facetsConfig, resultFacet, It.IsAny<IEnumerable<ResultSpecificationField>>()))
-                .Returns(legacyQuerySetup);
+            var querySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
 
             var logger = new TestLogger<ComposedResultProjectionHandoffBuilder>();
-            var legacyBuilder = new LegacyResultProjectionHandoffBuilder(querySetupBuilder.Object);
             var builder = new ComposedResultProjectionHandoffBuilder(
                 registry.Object,
-                querySetupBuilder.Object,
+                querySetupFactory.Object,
                 Mock.Of<IPickFilterCompilerLocator>(),
                 Mock.Of<IPathFinder>(),
                 Mock.Of<IRouteSqlCompiler>(),
                 Mock.Of<IDiscreteFacetPredicateResolver>(),
                 Mock.Of<IComposedFilterQueryComposer>(),
-                legacyBuilder,
                 logger
             );
 
-            var result = builder.Build(facetsConfig, resultConfig);
+            var action = () => builder.Build(facetsConfig, resultConfig);
 
-            result.QuerySetup.Should().BeSameAs(legacyQuerySetup);
+            action
+                .Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*routable target join column*no longer fall back to the legacy runtime*");
             logger.Entries.Should().ContainSingle();
             logger.Entries[0].Level.Should().Be(LogLevel.Information);
-            logger.Entries[0].Message.Should().Contain("Falling back to legacy result projection handoff");
+            logger.Entries[0].Message.Should().Contain("Rejecting unsupported composed result projection handoff");
             logger.Entries[0].Message.Should().Contain("result facet 'species'");
             logger.Entries[0].Message.Should().Contain("routable target join column");
         }

@@ -10,19 +10,19 @@ namespace SeadQueryAPI.Services;
 public sealed class FacetUrlSqlProbeCommand
 {
     private readonly FacetUrlFacetsConfigFactory _facetsConfigFactory;
-    private readonly IBogusPickService _bogusPickService;
+    private readonly ISupportedRequestPickSanitizer _pickSanitizer;
     private readonly IFacetContentService _facetContentService;
     private readonly IComposedFacetContentService _composedFacetContentService;
 
     public FacetUrlSqlProbeCommand(
         FacetUrlFacetsConfigFactory facetsConfigFactory,
-        IBogusPickService bogusPickService,
+        ISupportedRequestPickSanitizer pickSanitizer,
         IFacetContentService facetContentService,
         IComposedFacetContentService composedFacetContentService
     )
     {
         _facetsConfigFactory = facetsConfigFactory ?? throw new ArgumentNullException(nameof(facetsConfigFactory));
-        _bogusPickService = bogusPickService ?? throw new ArgumentNullException(nameof(bogusPickService));
+        _pickSanitizer = pickSanitizer ?? throw new ArgumentNullException(nameof(pickSanitizer));
         _facetContentService = facetContentService ?? throw new ArgumentNullException(nameof(facetContentService));
         _composedFacetContentService = composedFacetContentService ?? throw new ArgumentNullException(nameof(composedFacetContentService));
     }
@@ -37,7 +37,7 @@ public sealed class FacetUrlSqlProbeCommand
         writer ??= Console.Out;
 
         var facetsConfig = _facetsConfigFactory.Create(facetUrl);
-        var normalizedConfig = _bogusPickService.Update(facetsConfig);
+        var normalizedConfig = _pickSanitizer.Update(facetsConfig);
         var usesComposedPath = _composedFacetContentService.CanHandle(normalizedConfig);
         var facetContent = _facetContentService.Load(normalizedConfig);
 

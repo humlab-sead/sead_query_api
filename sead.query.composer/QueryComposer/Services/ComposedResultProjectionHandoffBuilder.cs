@@ -17,35 +17,32 @@ namespace SeadQueryComposer.QueryComposer.Services;
 public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHandoffBuilder
 {
     private readonly IRepositoryRegistry _registry;
-    private readonly IQuerySetupBuilder _querySetupBuilder;
+    private readonly ISupportedRequestQuerySetupFactory _querySetupFactory;
     private readonly IPickFilterCompilerLocator _pickFilterCompilerLocator;
     private readonly IPathFinder _pathFinder;
     private readonly IRouteSqlCompiler _routeSqlCompiler;
     private readonly IDiscreteFacetPredicateResolver _predicateResolver;
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
-    private readonly LegacyResultProjectionHandoffBuilder _legacyBuilder;
     private readonly ILogger<ComposedResultProjectionHandoffBuilder> _logger;
 
     public ComposedResultProjectionHandoffBuilder(
         IRepositoryRegistry registry,
-        IQuerySetupBuilder querySetupBuilder,
+        ISupportedRequestQuerySetupFactory querySetupFactory,
         IPickFilterCompilerLocator pickFilterCompilerLocator,
         IPathFinder pathFinder,
         IRouteSqlCompiler routeSqlCompiler,
         IDiscreteFacetPredicateResolver predicateResolver,
         IComposedFilterQueryComposer composedFilterQueryComposer,
-        LegacyResultProjectionHandoffBuilder legacyBuilder,
         ILogger<ComposedResultProjectionHandoffBuilder> logger
     )
     {
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
-        _querySetupBuilder = querySetupBuilder ?? throw new ArgumentNullException(nameof(querySetupBuilder));
+        _querySetupFactory = querySetupFactory ?? throw new ArgumentNullException(nameof(querySetupFactory));
         _pickFilterCompilerLocator = pickFilterCompilerLocator ?? throw new ArgumentNullException(nameof(pickFilterCompilerLocator));
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
         _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
         _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
-        _legacyBuilder = legacyBuilder ?? throw new ArgumentNullException(nameof(legacyBuilder));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
@@ -57,22 +54,19 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         if (!TryCreateRequest(facetsConfig, resultConfig, out var request, out var failureReason))
         {
             _logger.LogInformation(
-                "Falling back to legacy result projection handoff for result facet '{FacetCode}' and view '{ViewTypeId}': {FailureReason}",
+                "Rejecting unsupported composed result projection handoff for result facet '{FacetCode}' and view '{ViewTypeId}': {FailureReason}",
                 resultConfig.Facet?.FacetCode ?? resultConfig.FacetCode,
                 resultConfig.ViewTypeId ?? string.Empty,
                 failureReason
             );
 
-            return _legacyBuilder.Build(facetsConfig, resultConfig);
+            throw new InvalidOperationException(
+                $"The composed result projection handoff cannot handle this request: {failureReason} Unsupported result requests no longer fall back to the legacy runtime."
+            );
         }
 
         var resultFields = resultConfig.GetSortedFields().ToList();
-        var projectionQuerySetup = _querySetupBuilder.Build(
-            facetsConfig,
-            resultConfig.Facet,
-            resultFields.GetResultFieldTableNames().ToList(),
-            []
-        );
+        var projectionQuerySetup = _querySetupFactory.CreateForResultProjection(facetsConfig, resultConfig.Facet, resultFields);
         var composedFilterQuery = CreateComposedFilterQuery(request);
 
         projectionQuerySetup.LeadingSql = BuildLeadingSql(composedFilterQuery.Sql, request.AnchorToTargetSql);
@@ -119,7 +113,12 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             sourceTableName,
             sourceKeyColumn,
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
-            new AnchorTemplate { Route = route, IsIdentityRoute = isIdentityRoute, RequiresDistinct = true },
+            new AnchorTemplate
+            {
+                Route = route,
+                IsIdentityRoute = isIdentityRoute,
+                RequiresDistinct = true,
+            },
             request.AnchorTable,
             request.AnchorKeyColumnName,
             sourceCriteria

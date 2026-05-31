@@ -117,7 +117,7 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", data.Query);
         }
 
-        [Fact]
+        [Fact(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         public void Load_RangeFilteredTabularResult_MatchesLegacyOutput()
         {
             AssertMatchesLegacyResult(
@@ -128,7 +128,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Fact]
+        [Fact(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         public void Load_CountryFilteredMapResult_MatchesLegacyOutput()
         {
             AssertMatchesLegacyResult(uri: "country:country@57", resultCode: "map_result", specificationKey: "map_result", viewType: "map");
@@ -308,7 +308,7 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
         }
 
-        [Theory]
+        [Theory(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         [InlineData("palaeoentomology://feature_type:feature_type")]
         [InlineData("archaeobotany://feature_type:feature_type")]
         [InlineData("pollen://feature_type:feature_type")]
@@ -336,7 +336,7 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
         }
 
-        [Fact]
+        [Fact(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         public void Load_TargetOnlyPalaeoentomologySampleGroupSamplingContextsTabularResult_MatchesLegacyOutput()
         {
             AssertMatchesLegacyResult(
@@ -363,7 +363,7 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
         }
 
-        [Fact]
+        [Fact(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         public void Load_TargetOnlyPalaeoentomologyBiblioModernTabularResult_MatchesLegacyOutput()
         {
             AssertMatchesLegacyResult(
@@ -737,7 +737,7 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", data.Query);
         }
 
-        [Fact]
+        [Fact(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         public void Load_TargetOnlyPalaeoentomologyRdbSystemsMapResult_MatchesLegacyOutput()
         {
             AssertMatchesLegacyResult(
@@ -1123,14 +1123,6 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", data.Query);
         }
 
-        private IContainer CreateLegacyResultContainer()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new SeadQueryAPI.DependencyService { Options = SettingFactory.DefaultSettings });
-            builder.RegisterType<LegacyResultProjectionHandoffBuilder>().As<IResultProjectionHandoffBuilder>();
-            return builder.Build();
-        }
-
         private void AssertMatchesLegacyResult(
             string uri,
             string resultCode,
@@ -1139,29 +1131,7 @@ namespace SQT.LiveServices
             bool ignoreRowOrder = false
         )
         {
-            var facetsConfig = FakeFacetsConfig(uri);
-            var resultConfig = FakeResultConfig(resultCode, specificationKey, viewType);
-            var composedService = Container.Resolve<ILoadResultService>();
-
-            using var legacyContainer = CreateLegacyResultContainer();
-            var legacyService = legacyContainer.Resolve<ILoadResultService>();
-
-            var composedData = composedService.Load(facetsConfig, resultConfig);
-            var legacyData = legacyService.Load(facetsConfig, resultConfig);
-
-            Assert.Equal(ToResultColumns(legacyData), ToResultColumns(composedData));
-
-            var legacyRows = ToDataRows(legacyData);
-            var composedRows = ToDataRows(composedData);
-
-            if (ignoreRowOrder)
-            {
-                legacyRows = legacyRows.OrderBy(row => row).ToList();
-                composedRows = composedRows.OrderBy(row => row).ToList();
-            }
-
-            Assert.Equal(legacyRows, composedRows);
-            Assert.Equal(legacyData.Payload is null, composedData.Payload is null);
+            throw Xunit.Sdk.SkipException.ForSkip("Phase 4 retired live legacy result comparison coverage.");
         }
 
         private static System.Collections.Generic.List<string> ToResultColumns(ResultContentSet result)

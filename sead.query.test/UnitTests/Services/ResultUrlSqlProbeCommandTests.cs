@@ -28,8 +28,8 @@ public class ResultUrlSqlProbeCommandTests
         repository.Setup(x => x.GetByCode("result_facet")).Returns(resultFacet);
 
         var factory = new FacetUrlFacetsConfigFactory(registry.Object);
-        var bogusPickService = new Mock<IBogusPickService>();
-        bogusPickService.Setup(service => service.Update(It.IsAny<FacetsConfig2>())).Returns<FacetsConfig2>(config => config);
+        var pickSanitizer = new Mock<ISupportedRequestPickSanitizer>();
+        pickSanitizer.Setup(service => service.Update(It.IsAny<FacetsConfig2>())).Returns<FacetsConfig2>(config => config);
 
         var reconstituteService = new Mock<IResultConfigReconstituteService>();
         reconstituteService
@@ -72,7 +72,7 @@ public class ResultUrlSqlProbeCommandTests
         var command = new ResultUrlSqlProbeCommand(
             factory,
             reconstituteService.Object,
-            bogusPickService.Object,
+            pickSanitizer.Object,
             loadResultService.Object,
             handoffBuilder.Object
         );

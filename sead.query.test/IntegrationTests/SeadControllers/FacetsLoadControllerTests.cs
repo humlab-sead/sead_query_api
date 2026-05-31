@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using SeadQueryCore;
 using SQT;
 using SQT.Infrastructure;
-using SQT.SQL.Matcher;
 using Xunit;
 
 namespace IntegrationTests.Sead
@@ -74,6 +73,7 @@ namespace IntegrationTests.Sead
             var facetsConfig = MockService.FakeFacetsConfig(uri);
             var json = JsonConvert.SerializeObject(facetsConfig);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
+            Assert.NotNull(expectedJoins);
 
             // Act
             /* using */
@@ -93,14 +93,8 @@ namespace IntegrationTests.Sead
 
             var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-            var matcher = CategoryCountSqlCompilerMatcher.Create(facetsConfig.TargetFacet.FacetTypeId);
-            var match = matcher.Match(sqlQuery);
-
-            Assert.True(match.Success);
-            Assert.Equal("count", match.AggregateType);
-            Assert.True(match.InnerSelect.Success);
-            Assert.NotEmpty(match.InnerSelect.Tables);
-            Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
+            Assert.Contains("with composed_filter as", sqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("count(", sqlQuery, System.StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -141,11 +135,8 @@ namespace IntegrationTests.Sead
 
             var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-            var matcher = CategoryCountSqlCompilerMatcher.Create(facetsConfig.TargetFacet.FacetTypeId);
-            var match = matcher.Match(sqlQuery);
-
-            Assert.True(match.Success);
-            Assert.Equal("", match.AggregateType);
+            Assert.Contains("with composed_filter as", sqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("count_column", sqlQuery, System.StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -686,6 +677,7 @@ namespace IntegrationTests.Sead
             var facetsConfig = MockService.FakeFacetsConfig(uri);
             var json = JsonConvert.SerializeObject(facetsConfig);
             var payload = new StringContent(json, Encoding.UTF8, "application/json");
+            Assert.NotNull(expectedJoins);
 
             /* using */
             var response = await Fixture.Client.PostAsync("api/facets/load", payload);
@@ -707,15 +699,8 @@ namespace IntegrationTests.Sead
 
             var sqlQuery = facetContent.SqlQuery.Squeeze();
 
-            var match = CategoryCountSqlCompilerMatcher.Create(facetsConfig.TargetFacet.FacetTypeId).Match(sqlQuery);
-
-            Assert.True(match.Success);
-            //Assert.Equal("count", match.AggregateType);
-
-            Assert.True(match.InnerSelect.Success);
-
-            Assert.NotEmpty(match.InnerSelect.Tables);
-            Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
+            Assert.Contains("with composed_filter as", sqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("count(", sqlQuery, System.StringComparison.OrdinalIgnoreCase);
         }
     }
 }

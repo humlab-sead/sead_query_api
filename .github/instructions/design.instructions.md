@@ -48,12 +48,15 @@ Target 1000–2200 words. Stay under 3000. Move detailed subsystem material into
 
 `AGENTS.md` and `docs/DIAGRAMS.md` are the canonical references for architecture rules and visual design. Do not invent component responsibilities or integration points.
 
-Do not proactively scan the codebase to verify prose. If a claim seems inconsistent with what the user has described, flag it as an inline question rather than searching autonomously. A full design accuracy audit against the codebase is a separate explicit task.
+Use `.github/architecture-map.yaml` as the compact machine-readable overview when it exists.
+
+Do not proactively scan the codebase broadly to verify prose. For architecture work, one bounded evidence pass is allowed when needed: read the canonical design docs plus one nearby owning implementation surface or project-local `AGENTS.md` to confirm a boundary or flow. If that still leaves uncertainty, flag it inline instead of widening the search. A full design accuracy audit against the codebase is a separate explicit task.
 
 ## Working With Copilot
 
 - **Prose editing** (restructuring sections, improving wording, cutting bloat) should stay focused on the document and its stated sources.
 - **Design accuracy audits** (verifying claims against real code) should be treated as a separate explicit task with codebase access.
+- **Bounded evidence is allowed for design work.** When a structural claim depends on one owning layer, read the compact architecture map, the canonical design docs, and at most one nearby owning implementation area before drafting.
 - Draft or edit in a single pass. Do not iterate section by section across multiple turns.
 
 ## Common failure modes

@@ -106,26 +106,6 @@ ALTER TABLE ONLY facet.facet_anchor ALTER COLUMN facet_anchor_id SET DEFAULT nex
     'facet.facet_anchor_facet_anchor_id_seq'::regclass
 );
 
-CREATE TABLE IF NOT EXISTS facet.facet_template (
-    template_id integer NOT NULL,
-    facet_id integer NOT NULL,
-    anchor_name character varying(80) NOT NULL,
-    sql_template text NOT NULL
-);
-
-CREATE SEQUENCE IF NOT EXISTS facet.facet_template_template_id_seq
-AS integer
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
-
-ALTER SEQUENCE facet.facet_template_template_id_seq OWNED BY facet.facet_template.template_id;
-ALTER TABLE ONLY facet.facet_template ALTER COLUMN template_id SET DEFAULT nextval(
-    'facet.facet_template_template_id_seq'::regclass
-);
-
 DO $$
 BEGIN
     IF NOT EXISTS (
@@ -166,16 +146,6 @@ BEGIN
     ) THEN
         ALTER TABLE ONLY facet.facet_anchor
             ADD CONSTRAINT facet_anchor_pkey PRIMARY KEY (facet_anchor_id);
-    END IF;
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM pg_constraint
-        WHERE conname = 'facet_template_pkey'
-          AND conrelid = 'facet.facet_template'::regclass
-    ) THEN
-        ALTER TABLE ONLY facet.facet_template
-            ADD CONSTRAINT facet_template_pkey PRIMARY KEY (template_id);
     END IF;
 
     IF NOT EXISTS (
@@ -256,16 +226,6 @@ BEGIN
     ) THEN
         ALTER TABLE ONLY facet.facet_anchor
             ADD CONSTRAINT facet_anchor_route_id_fkey FOREIGN KEY (route_id) REFERENCES facet.route(route_id) DEFERRABLE;
-    END IF;
-
-    IF NOT EXISTS (
-        SELECT 1
-        FROM pg_constraint
-        WHERE conname = 'facet_template_facet_id_fkey'
-          AND conrelid = 'facet.facet_template'::regclass
-    ) THEN
-        ALTER TABLE ONLY facet.facet_template
-            ADD CONSTRAINT facet_template_facet_id_fkey FOREIGN KEY (facet_id) REFERENCES facet.facet(facet_id) ON DELETE CASCADE DEFERRABLE;
     END IF;
 
     IF NOT EXISTS (

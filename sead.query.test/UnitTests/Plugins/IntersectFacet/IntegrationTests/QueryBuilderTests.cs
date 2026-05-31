@@ -4,36 +4,31 @@ using Autofac;
 using Newtonsoft.Json;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Intersect;
+using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
 using Xunit;
 
 namespace SQT.Plugins.Intersect
 {
-
-
     [Collection("UsePostgresFixture")]
     public class QueryBuilderTests : IntegrationTestBase
     {
-
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]
         public void Load_VariousFacetConfigs_HasExpectedSqlQuery(string uri)
         {
             var facetsConfig = FakeFacetsConfig(uri);
             var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var querySetupFactory = Container.Resolve<ISupportedRequestQuerySetupFactory>();
 
             var queryFields = resultConfig.GetSortedFields();
 
-            var querySetup = QuerySetupBuilder
-                .Build(facetsConfig, resultConfig.Facet, queryFields);
+            var querySetup = querySetupFactory.CreateForResultProjection(facetsConfig, resultConfig.Facet, queryFields);
 
-            var sqlQuery = SqlCompilerLocator
-                .Locate(resultConfig.ViewTypeId)
-                    .Compile(querySetup, resultConfig.Facet, queryFields);
+            var sqlQuery = SqlCompilerLocator.Locate(resultConfig.ViewTypeId).Compile(querySetup, resultConfig.Facet, queryFields);
 
             Assert.NotNull(sqlQuery);
-
         }
 
         [Theory]
@@ -52,6 +47,7 @@ namespace SQT.Plugins.Intersect
             var plugin = Container.ResolveKeyed<IFacetPlugin>(facet.FacetTypeId);
 
             var categoryInfo = plugin.CategoryInfoService.GetCategoryInfo(facetsConfig, facetsConfig.TargetCode);
+            var querySetupFactory = Container.Resolve<ISupportedRequestQuerySetupFactory>();
 
             CompilePayload compilePayload = new CompilePayload()
             {
@@ -60,19 +56,18 @@ namespace SQT.Plugins.Intersect
                 AggregateFacet = aggregateFacet,
                 IntervalQuery = categoryInfo.Query,
                 CountColumn = "tbl_analysis_entities.analysis_entity_id",
-                AggregateType = facet.AggregateType ?? "count"
+                AggregateType = facet.AggregateType ?? "count",
             };
 
             var extraTableNames = plugin.CategoryCountHelper.GetTables(compilePayload);
             var facetCodes = plugin.CategoryCountHelper.GetFacetCodes(facetsConfig, compilePayload);
 
-            var querySetup = QuerySetupBuilder.Build(facetsConfig, facet, extraTableNames, facetCodes);
+            var querySetup = querySetupFactory.Create(facetsConfig, facet, extraTableNames, facetCodes);
             var sqlQuery = plugin.CategoryCountSqlCompiler.Compile(querySetup, facet, compilePayload);
 
             // Assert
             sqlQuery = sqlQuery.Squeeze();
-            var match = CategoryCountSqlCompilerMatcher
-                .Create(facet.FacetTypeId).Match(sqlQuery);
+            var match = CategoryCountSqlCompilerMatcher.Create(facet.FacetTypeId).Match(sqlQuery);
 
             Assert.True(match.Success);
 
@@ -80,7 +75,5 @@ namespace SQT.Plugins.Intersect
 
             Assert.NotEmpty(match.InnerSelect.Tables);
         }
-
-
     }
 }

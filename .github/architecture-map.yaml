@@ -1,0 +1,113 @@
+version: 1
+kind: architecture_map
+repository: sead_query_api
+runtime_status:
+  authoritative_runtime: checked-in .NET API and supporting libraries
+  query_baseline: composer-based, anchor-centered composed query path
+  unsupported_boundary: unsupported request families fail explicitly outside the validated composed contract
+  configuration_runtime: imported active configuration in the facet schema, not raw authoring YAML
+canonical_sources:
+  - path: AGENTS.md
+    role: repo-wide architecture rules and working boundaries
+  - path: .github/copilot-instructions.md
+    role: always-on repo guidance for coding agents
+  - path: docs/DESIGN.md
+    role: primary written architecture reference
+  - path: docs/DIAGRAMS.md
+    role: visual architecture and runtime flow reference
+  - path: .github/instructions/design.instructions.md
+    role: DESIGN.md editing constraints
+  - path: .github/instructions/proposal-writing-guide.instructions.md
+    role: proposal document constraints
+  - path: .github/instructions/phase-plan.instructions.md
+    role: execution sequencing guidance
+  - path: .github/instructions/task-plan.instructions.md
+    role: implementation task breakdown guidance
+projects:
+  sead.query.api:
+    owns:
+      - ASP.NET Core host and dependency wiring
+      - controllers, DTOs, serializers, middleware
+      - request-to-domain translation and HTTP orchestration
+    must_not_own:
+      - query composition logic
+      - SQL generation
+      - repository implementation behavior
+  sead.query.core:
+    owns:
+      - shared domain entities and contracts
+      - facet and result models
+      - shared query abstractions and strategies
+    must_not_own:
+      - API wiring
+      - repository or infrastructure concerns
+  sead.query.composer:
+    owns:
+      - route parsing and route resolution
+      - predicate planning
+      - composed SQL generation
+      - query-engine overhaul and composed support surface
+    must_not_own:
+      - controller transport concerns
+      - repository plumbing that belongs in infra
+  sead.query.infra:
+    owns:
+      - repositories and data access
+      - caching and supporting infrastructure helpers
+      - runtime configuration loading support
+    must_not_own:
+      - HTTP concerns
+      - domain business rules that belong in core or composer
+major_flows:
+  - name: facet_content
+    summary: reconstitute request, normalize selections, resolve target facet, build composed filtering context, compile facet SQL, return category payload
+    hotspots:
+      - request reconstruction
+      - selection cleanup
+      - composed support classification
+      - route and predicate planning
+  - name: result_generation
+    summary: reconstitute facet and result config, normalize selections, build result projection handoff, compile result SQL, return payload
+    hotspots:
+      - result projection handoff
+      - composed filter prologue
+      - target join routing
+  - name: configuration_authoring_and_activation
+    summary: validate authoring inputs, import normalized configuration, activate one revision, load active runtime copy from facet schema
+    hotspots:
+      - importer normalization
+      - config revision activation
+      - runtime determinism
+invariants:
+  - keep controllers and DTOs thin
+  - keep query logic in core or composer, not the API layer
+  - keep infrastructure logic in infra
+  - preserve explicit unsupported boundaries until parity is proven
+  - treat anchor compatibility as a core design constraint
+  - treat imported runtime configuration as authoritative for execution
+  - prefer incremental parity and focused validation over broad rewrites
+design_hotspots:
+  - anchors and route-family modeling
+  - predicate planning by facet type
+  - result projection handoff boundaries
+  - active configuration revision and import workflow
+  - parity tracking for legacy replacement work
+default_validation_surfaces:
+  - focused unit tests in sead.query.test for the owning layer
+  - narrow integration or live comparisons when behavior crosses layers or depends on database execution
+  - DESIGN, proposal, phase plan, and task plan updates when the change alters durable architecture knowledge
+artifact_selection:
+  proposal: use for design decisions and tradeoff-driven change requests
+  phase_plan: use for ordered multi-phase delivery path
+  task_plan: use for implementation breakdown of one phase
+  design_doc: use for durable current-state architecture after behavior is accepted or shipped
+agent_guidance:
+  bounded_evidence_pass:
+    - read the architecture map and repo-level guidance first
+    - read the target document instruction file
+    - read one nearby owning implementation area only when needed to ground a design claim
+    - stop unless the user explicitly asks for a broader audit
+  do_not:
+    - describe proposals as shipped behavior
+    - invent boundaries, commands, or component ownership
+    - merge proposal, phase plan, and task plan into one document by default

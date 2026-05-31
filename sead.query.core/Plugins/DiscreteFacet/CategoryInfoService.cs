@@ -2,9 +2,6 @@
 
 namespace SeadQueryCore.Plugin.Discrete;
 
-public class DiscreteCategoryInfoService(
-    IQuerySetupBuilder builder,
-    IDiscreteCategoryInfoSqlCompiler compiler
-) : Plugin.Common.CategoryInfoService(builder, compiler), IDiscreteCategoryInfoService
-{
-}
+public class DiscreteCategoryInfoService(ISupportedRequestQuerySetupFactory factory, IDiscreteCategoryInfoSqlCompiler compiler)
+    : Plugin.Common.CategoryInfoService(factory, compiler),
+        IDiscreteCategoryInfoService { }

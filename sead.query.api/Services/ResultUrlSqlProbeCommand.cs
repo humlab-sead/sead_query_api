@@ -13,14 +13,14 @@ public sealed class ResultUrlSqlProbeCommand
 {
     private readonly FacetUrlFacetsConfigFactory _facetsConfigFactory;
     private readonly IResultConfigReconstituteService _resultConfigReconstituteService;
-    private readonly IBogusPickService _bogusPickService;
+    private readonly ISupportedRequestPickSanitizer _pickSanitizer;
     private readonly ILoadResultService _loadResultService;
     private readonly IResultProjectionHandoffBuilder _resultProjectionHandoffBuilder;
 
     public ResultUrlSqlProbeCommand(
         FacetUrlFacetsConfigFactory facetsConfigFactory,
         IResultConfigReconstituteService resultConfigReconstituteService,
-        IBogusPickService bogusPickService,
+        ISupportedRequestPickSanitizer pickSanitizer,
         ILoadResultService loadResultService,
         IResultProjectionHandoffBuilder resultProjectionHandoffBuilder
     )
@@ -28,7 +28,7 @@ public sealed class ResultUrlSqlProbeCommand
         _facetsConfigFactory = facetsConfigFactory ?? throw new ArgumentNullException(nameof(facetsConfigFactory));
         _resultConfigReconstituteService =
             resultConfigReconstituteService ?? throw new ArgumentNullException(nameof(resultConfigReconstituteService));
-        _bogusPickService = bogusPickService ?? throw new ArgumentNullException(nameof(bogusPickService));
+        _pickSanitizer = pickSanitizer ?? throw new ArgumentNullException(nameof(pickSanitizer));
         _loadResultService = loadResultService ?? throw new ArgumentNullException(nameof(loadResultService));
         _resultProjectionHandoffBuilder =
             resultProjectionHandoffBuilder ?? throw new ArgumentNullException(nameof(resultProjectionHandoffBuilder));
@@ -49,7 +49,7 @@ public sealed class ResultUrlSqlProbeCommand
         writer ??= Console.Out;
 
         var facetsConfig = _facetsConfigFactory.Create(facetUrl);
-        var normalizedConfig = _bogusPickService.Update(facetsConfig);
+        var normalizedConfig = _pickSanitizer.Update(facetsConfig);
         var resultConfig = _resultConfigReconstituteService.Reconstitute(
             new ResultConfigDTO
             {

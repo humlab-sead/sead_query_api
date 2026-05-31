@@ -49,9 +49,6 @@
   <Add Test="SQT.Model.GraphRouteTests.Trail_OfAnyGraph_ReturnListOfNodesNamesInTrail" />
   <Add Test="SQT.Model.ResultAggregateTests.GetFields_WithTwoFieldsField_ReturnsFields" />
   <Add Test="SQT.Model.ResultAggregateTests.GetResultFields_WithTwoFields_ReturnsTwoResultFields" />
-  <Add Test="SQT.QueryBuilder.QuerySetupBuilderTests.Build_WithConcretePickCompilerAndVariousConfigs_GivesExpecteCriteriadCount" />
-  <Add Test="SQT.QueryBuilder.QuerySetupBuilderTests.Build_WithVariousDomainConfigs_Success" />
-  <Add Test="SQT.QueryBuilder.QuerySetupBuilderTests.SkitTest" />
   <Add Test="SQT.Infrastructure.Repository.FacetRepositoryTests.Children_FacetHasASingleChild_ReturnsThatChild" />
   <Add Test="SQT.Infrastructure.Repository.FacetRepositoryTests.FindThoseWithAlias_Success" />
   <Add Test="SQT.Infrastructure.Repository.FacetRepositoryTests.Get_ByFacetCode_Success" />
@@ -124,9 +121,7 @@
   <Add Test="SQT.QueryBuilder.ResultCompilers.ResultAggregateFieldExtensionTests.GetAggregateInnerGroupByFields_Called_Success" />
   <Add Test="SQT.QueryBuilder.ResultCompilers.ResultAggregateFieldExtensionTests.GetAggregateSortFields_Called_Success" />
   <Add Test="SQT.QueryBuilder.ResultCompilers.TabularResultSqlCompilerTests.Compile_StateUnderTest_ExpectedBehavior" />
-  <Add Test="SQT.Services.CategoryCountServiceTests.Load_UsingVariousConfigs_LoadsSuccessfully" />
   <Add Test="SQT.Services.DefaultResultServiceTests.Load_VariousConfigs_Success" />
   <Add Test="SQT.Services.DiscreteFacetContentServiceTests.Load_VariousDescreteFacets_Success" />
-  <Add Test="SQT.Services.RangeCategoryCountServiceTests.Load_OfRangeCategoryCountsForVariousFacetsConfigs_ReturnsExpectedValues" />
   <Add Test="SQT.Services.RangeFacetContentServiceTests.Load_RangeFacetWithRangePick_IsLoaded" />
 </Playlist>

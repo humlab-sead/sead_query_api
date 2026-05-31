@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Autofac;
 using FluentAssertions;
@@ -48,11 +49,11 @@ public class ResultProjectionHandoffBuilderTests : IntegrationTestBase
     public void Build_WithCountryFilteredMapResultAfterBogusPickUpdate_StillUsesTargetRouteJoin()
     {
         var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
-        var bogusPickService = Container.Resolve<IBogusPickService>();
+        var supportedRequestPickSanitizer = Container.Resolve<ISupportedRequestPickSanitizer>();
         var facetsConfig = FakeFacetsConfig("country:country@57");
         var resultConfig = FakeResultConfig("map_result", "map_result", "map");
 
-        bogusPickService.Update(facetsConfig);
+        supportedRequestPickSanitizer.Update(facetsConfig);
         var result = builder.Build(facetsConfig, resultConfig);
 
         result.QuerySetup.LeadingSql.Should().Contain("with composed_filter as");
@@ -322,24 +323,18 @@ public class ResultProjectionHandoffBuilderTests : IntegrationTestBase
     [InlineData("archaeobotany://species:species")]
     [InlineData("pollen://species:species")]
     [InlineData("dendrochronology://species:species")]
-    public void Build_WithUnsupportedOutOfDraftSpeciesTabularResult_FallsBackToLegacyHandoff(string uri)
+    public void Build_WithUnsupportedOutOfDraftSpeciesTabularResult_ThrowsExplicitFailure(string uri)
     {
         var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
-        var legacyBuilder = Container.Resolve<LegacyResultProjectionHandoffBuilder>();
         var facetsConfig = FakeFacetsConfig(uri);
         var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
 
-        var result = builder.Build(facetsConfig, resultConfig);
-        var legacyResult = legacyBuilder.Build(facetsConfig, resultConfig);
+        var action = () => builder.Build(facetsConfig, resultConfig);
 
-        result.QuerySetup.LeadingSql.Should().Be(legacyResult.QuerySetup.LeadingSql);
-        result.QuerySetup.LeadingSql.Should().NotContain("with composed_filter as");
-        result.QuerySetup.Joins.Should().BeEquivalentTo(legacyResult.QuerySetup.Joins);
-        result.QuerySetup.Criterias.Should().BeEquivalentTo(legacyResult.QuerySetup.Criterias);
-        result
-            .ResultFields.Select(field => field.ResultField.ResultFieldKey)
+        action
             .Should()
-            .Equal(legacyResult.ResultFields.Select(field => field.ResultField.ResultFieldKey));
+            .Throw<InvalidOperationException>()
+            .WithMessage("*cannot handle this request*simple source key column*no longer fall back to the legacy runtime*");
     }
 
     [Fact]

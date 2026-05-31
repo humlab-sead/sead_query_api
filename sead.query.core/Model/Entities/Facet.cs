@@ -57,7 +57,6 @@ namespace SeadQueryCore
             Clauses = [];
             Tables = [];
             Children = [];
-            Templates = [];
         }
 
         /// <summary>
@@ -192,23 +191,6 @@ namespace SeadQueryCore
         /// </remarks>
         [JsonIgnore]
         public virtual List<FacetTable> Tables { get; set; }
-
-        /// <summary>
-        /// Collection of SQL templates for different anchor combinations.
-        /// In the new route-based design, these templates can reference reusable routes
-        /// instead of containing explicit SQL for every source→anchor combination.
-        /// </summary>
-        public virtual List<FacetTemplate> Templates { get; set; }
-
-        /// <summary>
-        /// Retrieves the SQL template for a specific anchor type
-        /// </summary>
-        /// <param name="anchorKeyName">The key name of the anchor (e.g., "site", "dataset")</param>
-        /// <returns>The matching FacetTemplate or null if not found</returns>
-        public virtual FacetTemplate GetTemplate(string anchorKeyName)
-        {
-            return Templates.FirstOrDefault(x => x.AnchorName == anchorKeyName);
-        }
 
         public List<FacetAnchor> FacetAnchors { get; set; }
 
