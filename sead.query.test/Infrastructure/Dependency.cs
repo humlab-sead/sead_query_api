@@ -79,7 +79,9 @@ namespace SQT.Infrastructure
             builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
+            builder.RegisterType<SupportedRequestQuerySetupFactory>().As<ISupportedRequestQuerySetupFactory>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();
+            builder.RegisterType<SupportedRequestPickSanitizer>().As<ISupportedRequestPickSanitizer>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
             builder.RegisterType<FacetRouteConfigurationImporter>().As<IFacetRouteConfigurationImporter>().InstancePerLifetimeScope();

@@ -2,19 +2,20 @@
 
 namespace SeadQueryCore.Plugin.Discrete;
 
-public class BogusPickService : QueryServiceBase, IBogusPickService
+public class BogusPickService : IBogusPickService
 {
     public BogusPickService(
-        IRepositoryRegistry registry,
-        IQuerySetupBuilder builder,
+        ISupportedRequestQuerySetupFactory querySetupFactory,
         IValidPicksSqlCompiler picksCompiler,
         ITypedQueryProxy queryProxy
-    ) : base(registry, builder)
+    )
     {
+        QuerySetupFactory = querySetupFactory;
         PicksCompiler = picksCompiler;
         QueryProxy = queryProxy;
     }
 
+    public ISupportedRequestQuerySetupFactory QuerySetupFactory { get; }
     public IValidPicksSqlCompiler PicksCompiler { get; }
     public ITypedQueryProxy QueryProxy { get; }
 
@@ -43,7 +44,7 @@ public class BogusPickService : QueryServiceBase, IBogusPickService
 
             config.Picks = QueryProxy.QueryRows(
                 PicksCompiler.Compile(
-                    QuerySetupBuilder.Build(facetsConfig, config.Facet, null, null),
+                    QuerySetupFactory.Create(facetsConfig, config.Facet),
                     config.GetIntegerPickValues()
                 ),
                 x => new FacetConfigPick(x.GetString(0), x.GetString(1))

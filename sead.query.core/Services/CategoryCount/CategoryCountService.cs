@@ -12,12 +12,12 @@ namespace SeadQueryCore
     public class CategoryCountService(
             IFacetSetting config,
             IRepositoryRegistry registry,
-            IQuerySetupBuilder builder,
+        ISupportedRequestQuerySetupFactory querySetupFactory,
             ITypedQueryProxy queryProxy,
             IIndex<EFacetType, ICategoryCountHelper> helpers,
             IIndex<EFacetType, ICategoryCountSqlCompiler> sqlCompilers,
             IIndex<EFacetType, ICategoryInfoService> infoServices
-            ) : QueryServiceBase(registry, builder), ICategoryCountService
+        ) : ServiceBase(registry), ICategoryCountService
     {
         public class CategoryCountData
         {
@@ -31,6 +31,7 @@ namespace SeadQueryCore
         public IIndex<EFacetType, ICategoryCountSqlCompiler> SqlCompilers { get; } = sqlCompilers;
         public IIndex<EFacetType, ICategoryCountHelper> Helpers { get; } = helpers;
         public IIndex<EFacetType, ICategoryInfoService> CategoryInfoServices { get; } = infoServices;
+        public ISupportedRequestQuerySetupFactory QuerySetupFactory { get; } = querySetupFactory;
 
         public IFacetSetting Config { get; } = config;
 
@@ -66,7 +67,7 @@ namespace SeadQueryCore
             var extraTableNames = helper.GetTables(compilePayload);
             var facetCodes = helper.GetFacetCodes(facetsConfig, compilePayload);
 
-            var querySetup = QuerySetupBuilder.Build(facetsConfig, facet, extraTableNames, facetCodes);
+            var querySetup = QuerySetupFactory.Create(facetsConfig, facet, extraTableNames, facetCodes);
             var sqlQuery = compiler.Compile(querySetup, facet, compilePayload);
 
             var categoryCounts = QueryProxy.QueryRows(sqlQuery, compiler.ToItem).ToDictionary(z => z.Category ?? "(null)");

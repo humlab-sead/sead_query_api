@@ -48,16 +48,18 @@ namespace SQT.UnitTests.QueryComposer.Services
                 Criterias = [],
             };
 
-            var querySetupBuilder = new Mock<IQuerySetupBuilder>();
-            querySetupBuilder
-                .Setup(x => x.Build(facetsConfig, resultFacet, It.IsAny<IEnumerable<ResultSpecificationField>>()))
+            var legacyQuerySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
+            legacyQuerySetupFactory
+                .Setup(x => x.CreateForResultProjection(facetsConfig, resultFacet, It.IsAny<IEnumerable<ResultSpecificationField>>()))
                 .Returns(legacyQuerySetup);
 
+            var querySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
+
             var logger = new TestLogger<ComposedResultProjectionHandoffBuilder>();
-            var legacyBuilder = new LegacyResultProjectionHandoffBuilder(querySetupBuilder.Object);
+            var legacyBuilder = new LegacyResultProjectionHandoffBuilder(legacyQuerySetupFactory.Object);
             var builder = new ComposedResultProjectionHandoffBuilder(
                 registry.Object,
-                querySetupBuilder.Object,
+                querySetupFactory.Object,
                 Mock.Of<IPickFilterCompilerLocator>(),
                 Mock.Of<IPathFinder>(),
                 Mock.Of<IRouteSqlCompiler>(),

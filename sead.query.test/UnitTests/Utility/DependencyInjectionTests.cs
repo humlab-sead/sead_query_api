@@ -119,8 +119,10 @@ namespace SQT.Infrastructure
                 Assert.NotNull(scope.Resolve<IRepositoryRegistry>());
                 Assert.NotNull(scope.Resolve<IPathFinder>());
                 Assert.NotNull(scope.Resolve<IQuerySetupBuilder>());
+                Assert.NotNull(scope.Resolve<ISupportedRequestQuerySetupFactory>());
                 Assert.NotNull(scope.Resolve<IResultProjectionHandoffBuilder>());
                 Assert.NotNull(scope.Resolve<IBogusPickService>());
+                Assert.NotNull(scope.Resolve<ISupportedRequestPickSanitizer>());
                 Assert.NotNull(scope.Resolve<IResultService>());
                 Assert.NotNull(scope.Resolve<ICategoryCountService>());
                 Assert.NotNull(scope.Resolve<IFacetContentService>());
@@ -132,6 +134,8 @@ namespace SQT.Infrastructure
 
                 Assert.NotNull(scope.Resolve<ILoadFacetService>());
                 Assert.NotNull(scope.Resolve<ILoadResultService>());
+                Assert.NotNull(scope.ResolveKeyed<ICategoryInfoService>(EFacetType.Discrete));
+                Assert.NotNull(scope.ResolveKeyed<ICategoryInfoService>(EFacetType.GeoPolygon));
             }
         }
 

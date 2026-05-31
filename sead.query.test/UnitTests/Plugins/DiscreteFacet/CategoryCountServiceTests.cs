@@ -19,7 +19,7 @@ namespace SQT.Services.Plugins.Discrete
             var fakeSettings = FakeFacetSetting();
             var fakeRegistry = FakeRegistry();
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
+            var mockQuerySetupFactory = MockSupportedRequestQuerySetupFactory(new QuerySetup { /* not used */ });
             var fakeCategoryCountItems = FakeDiscreteCategoryCountItems(nCount);
             var queryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
 
@@ -30,7 +30,7 @@ namespace SQT.Services.Plugins.Discrete
             var service = new CategoryCountService(
                 fakeSettings,
                 fakeRegistry,
-                mockQuerySetupBuilder.Object,
+                mockQuerySetupFactory.Object,
                 queryProxy.Object,
                 mockHelpers.Object,
                 mockSqlCompilers.Object,

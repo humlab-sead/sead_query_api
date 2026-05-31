@@ -25,22 +25,34 @@ public class IntersectFacetPlugin(
 
     public static void RegisterPlugin(ContainerBuilder builder)
     {
+        RegisterLegacyRuntime(builder);
+        RegisterComposerRuntime(builder);
+        RegisterSharedPlugin(builder);
+    }
+
+    public static void RegisterLegacyRuntime(ContainerBuilder builder)
+    {
         builder.RegisterType<IntersectCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Intersect);
         builder.RegisterType<IntersectCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Intersect);
         builder.RegisterType<IntersectCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Intersect);
         builder.RegisterType<IntersectPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Intersect);
+    }
+
+    public static void RegisterComposerRuntime(ContainerBuilder builder)
+    {
         builder.RegisterType<IntersectOuterBoundService>().As<IIntersectOuterBoundService>();
         builder.RegisterType<IntersectCategoryInfoSqlCompiler>().As<IIntersectCategoryInfoSqlCompiler>();
         builder.RegisterType<IntersectOuterBoundSqlCompiler>().As<IIntersectOuterBoundSqlCompiler>();
 
-        // Needed by Plugin
         builder.RegisterType<IntersectCategoryCountSqlCompiler>().As<IIntersectCategoryCountSqlCompiler>();
         builder.RegisterType<IntersectCategoryCountHelper>().As<IIntersectCategoryCountHelper>();
         builder.RegisterType<IntersectCategoryInfoService>().As<IIntersectCategoryInfoService>();
         builder.RegisterType<IntersectPickFilterCompiler>().As<IIntersectPickFilterCompiler>();
+    }
 
+    public static void RegisterSharedPlugin(ContainerBuilder builder)
+    {
         builder.RegisterType<IntersectFacetPlugin>().As<IIntersectFacetPlugin>();
         builder.RegisterType<IntersectFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.Intersect);
-
     }
 }

@@ -22,7 +22,7 @@ namespace SQT.Plugins.Intersect
             var config = new SettingFactory().Create().Value.Facet;
             var facetsConfig = FakeFacetsConfig(uri);
             var mockRegistry = MockRegistryWithFacetRepository();
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(new QuerySetup { /* not used */ });
+            var mockQuerySetupFactory = MockSupportedRequestQuerySetupFactory(new QuerySetup { /* not used */ });
             var fakeResult = FakeRangeCategoryCountItems(start: 0, size: 10, count: 3);
             var mockQueryProxy = new MockTypedQueryProxyFactory().Create<CategoryItem>(fakeResult);
             var mockHelpers = MockCategoryCountHelpers();
@@ -33,7 +33,7 @@ namespace SQT.Plugins.Intersect
             var service = new CategoryCountService(
                  config,
                  mockRegistry.Object,
-                 mockQuerySetupBuilder.Object,
+                  mockQuerySetupFactory.Object,
                  mockQueryProxy.Object,
                  mockHelpers.Object,
                  mockSqlCompilers.Object,

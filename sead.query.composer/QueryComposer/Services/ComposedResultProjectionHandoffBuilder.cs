@@ -17,7 +17,7 @@ namespace SeadQueryComposer.QueryComposer.Services;
 public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHandoffBuilder
 {
     private readonly IRepositoryRegistry _registry;
-    private readonly IQuerySetupBuilder _querySetupBuilder;
+    private readonly ISupportedRequestQuerySetupFactory _querySetupFactory;
     private readonly IPickFilterCompilerLocator _pickFilterCompilerLocator;
     private readonly IPathFinder _pathFinder;
     private readonly IRouteSqlCompiler _routeSqlCompiler;
@@ -28,7 +28,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
     public ComposedResultProjectionHandoffBuilder(
         IRepositoryRegistry registry,
-        IQuerySetupBuilder querySetupBuilder,
+        ISupportedRequestQuerySetupFactory querySetupFactory,
         IPickFilterCompilerLocator pickFilterCompilerLocator,
         IPathFinder pathFinder,
         IRouteSqlCompiler routeSqlCompiler,
@@ -39,7 +39,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
     )
     {
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
-        _querySetupBuilder = querySetupBuilder ?? throw new ArgumentNullException(nameof(querySetupBuilder));
+        _querySetupFactory = querySetupFactory ?? throw new ArgumentNullException(nameof(querySetupFactory));
         _pickFilterCompilerLocator = pickFilterCompilerLocator ?? throw new ArgumentNullException(nameof(pickFilterCompilerLocator));
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
         _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
@@ -67,11 +67,10 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         }
 
         var resultFields = resultConfig.GetSortedFields().ToList();
-        var projectionQuerySetup = _querySetupBuilder.Build(
+        var projectionQuerySetup = _querySetupFactory.CreateForResultProjection(
             facetsConfig,
             resultConfig.Facet,
-            resultFields.GetResultFieldTableNames().ToList(),
-            []
+            resultFields
         );
         var composedFilterQuery = CreateComposedFilterQuery(request);
 

@@ -8,14 +8,14 @@ namespace SeadQueryAPI.Services
     }
 
     public class LoadFacetService(ISetting config, IRepositoryRegistry context,
-        IBogusPickService bogusService, IFacetContentService contentService) : AppServiceBase(config, context), ILoadFacetService
+        ISupportedRequestPickSanitizer pickSanitizer, IFacetContentService contentService) : AppServiceBase(config, context), ILoadFacetService
     {
-        public IBogusPickService BogusPickService { get; private set; } = bogusService;
+        public ISupportedRequestPickSanitizer PickSanitizer { get; private set; } = pickSanitizer;
         public IFacetContentService ContentService { get; private set; } = contentService;
 
         public virtual FacetContent Load(FacetsConfig2 facetsConfig)
         {
-            facetsConfig = BogusPickService.Update(facetsConfig);
+            facetsConfig = PickSanitizer.Update(facetsConfig);
             var facetContent = ContentService.Load(facetsConfig);
             return facetContent;
         }
@@ -25,8 +25,8 @@ namespace SeadQueryAPI.Services
         ISetting config,
         IRepositoryRegistry context,
         ISeadQueryCache cache,
-        IBogusPickService bogusService,
-        IFacetContentService contentService) : LoadFacetService(config, context, bogusService, contentService)
+        ISupportedRequestPickSanitizer pickSanitizer,
+        IFacetContentService contentService) : LoadFacetService(config, context, pickSanitizer, contentService)
     {
         public ISeadQueryCache Cache { get; } = cache;
 

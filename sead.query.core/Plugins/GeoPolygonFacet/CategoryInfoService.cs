@@ -3,8 +3,8 @@
 namespace SeadQueryCore.Plugin.GeoPolygon;
 
 public class GeoPolygonCategoryInfoService(
-    IQuerySetupBuilder builder,
+    ISupportedRequestQuerySetupFactory factory,
     IGeoPolygonCategoryInfoSqlCompiler compiler
-) : Common.CategoryInfoService(builder, compiler), IGeoPolygonCategoryInfoService
+) : Common.CategoryInfoService(factory, compiler), IGeoPolygonCategoryInfoService
 {
 }

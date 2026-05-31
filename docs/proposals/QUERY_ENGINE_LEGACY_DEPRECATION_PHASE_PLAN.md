@@ -34,10 +34,12 @@ It does not include frontend changes, release scheduling, or unrelated cleanup o
 
 - `FacetContentService` still falls back to `CategoryCountService` when the composed facet-content path cannot handle a request.
 - `ComposedResultProjectionHandoffBuilder` still falls back to `LegacyResultProjectionHandoffBuilder` for unsupported result requests.
-- `QuerySetupBuilder` still underpins the legacy runtime and some hybrid supporting services.
-- `BogusPickService` and `CategoryInfoService` still use legacy query-building logic.
+- `SupportedRequestPickSanitizer` now owns supported controller-side invalid-pick normalization and the facet/result probe normalization path, and `SupportedRequestQuerySetupFactory` now owns supported composed result projection setup, the shared category-info setup path, and the remaining direct runtime setup assembly that previously called `QuerySetupBuilder`.
+- `QuerySetupBuilder` no longer appears as a direct request-path caller in the live runtime services, but it still underpins retained base-class and compatibility infrastructure.
+- `BogusPickService` now remains only on retained compatibility paths rather than the supported facet/result controller or probe paths.
+- the facet plugin registrations are now split into explicit legacy, composer, and shared groups, which gives later phases a safe DI boundary without removing fallback yet
 - `scripts/prepare-phase5-facet-runtime-schema.sql` is still documented as an active operational schema-prep asset.
-- imported `sql_override` data is still designed to land in `facet.facet_template`, so runtime SQL templates remain part of the inventory surface.
+- imported `sql_override` data is still designed to land in `facet.facet_template`, but Phase 2 has now classified that surface as importer/schema compatibility and Phase 5 cleanup scope rather than as a live request-path blocker.
 - the `deprecated/` SQL files are expected to be historical, but they should still be explicitly classified during inventory rather than assumed safe to ignore.
 
 ## Phase Plan
@@ -62,6 +64,8 @@ Establish the exact set of legacy runtime and SQL assets that still matter to th
 - each inventoried item has a recorded disposition: migrate, remove, archive, or keep temporarily with an explicit reason
 - the detailed execution tracker for this phase is maintained in `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1.md`
 
+The published Phase 1 inventory is maintained in [QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md](QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md).
+
 ### Phase 2: Close Supported-Surface Parity Gaps
 
 **Goal**
@@ -71,7 +75,7 @@ Remove the functional need for legacy fallback on the supported request surface.
 **Focus**
 
 - migrate or explicitly retire the remaining request families that still depend on legacy fallback
-- replace hybrid helper behavior that still requires `QuerySetupBuilder` in request-time execution
+- replace the remaining hybrid helper behavior that still requires `QuerySetupBuilder` or other legacy services in request-time execution
 - keep parity validation in place while both implementations still exist
 
 **Acceptance Criteria**
@@ -79,6 +83,10 @@ Remove the functional need for legacy fallback on the supported request surface.
 - each supported request family either runs on the composed path or is explicitly removed from the supported surface
 - no supported request relies on legacy fallback as a functional dependency
 - focused validation proves composed-path behavior for the supported matrix
+
+Phase 2 has already landed the supported-path slice for controller load preprocessing, probe normalization, composed result projection setup, the shared category-info path, and the remaining direct runtime setup callers that previously used `QuerySetupBuilder`. The remaining Phase 2 work is to clear the fallback-only legacy surfaces and shrink the retained legacy base classes without reopening the supported-path boundary.
+
+The detailed execution tracker for this phase is maintained in [TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_2.md](TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_2.md).
 
 ### Phase 3: Remove Runtime Fallback Branches
 

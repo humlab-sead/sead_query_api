@@ -190,6 +190,18 @@ namespace SQT
             return mockQuerySetupBuilder;
         }
 
+        public virtual Mock<ISupportedRequestQuerySetupFactory> MockSupportedRequestQuerySetupFactory(QuerySetup querySetup)
+        {
+            var mockQuerySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
+            mockQuerySetupFactory
+                .Setup(x => x.Create(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>()))
+                .Returns(querySetup ?? new QuerySetup());
+            mockQuerySetupFactory
+                .Setup(x => x.CreateForResultProjection(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultSpecificationField>>()))
+                .Returns(querySetup ?? new QuerySetup());
+            return mockQuerySetupFactory;
+        }
+
         /// <summary>
         /// Mocks ITypedQueryProxy.QueryRows. Returns passed fake items.
         /// </summary>

@@ -7,11 +7,11 @@ namespace SeadQueryCore.Services.Result
 {
     public sealed class LegacyResultProjectionHandoffBuilder : IResultProjectionHandoffBuilder
     {
-        private readonly IQuerySetupBuilder _querySetupBuilder;
+        private readonly ISupportedRequestQuerySetupFactory _querySetupFactory;
 
-        public LegacyResultProjectionHandoffBuilder(IQuerySetupBuilder querySetupBuilder)
+        public LegacyResultProjectionHandoffBuilder(ISupportedRequestQuerySetupFactory querySetupFactory)
         {
-            _querySetupBuilder = querySetupBuilder ?? throw new ArgumentNullException(nameof(querySetupBuilder));
+            _querySetupFactory = querySetupFactory ?? throw new ArgumentNullException(nameof(querySetupFactory));
         }
 
         public ResultProjectionHandoff Build(FacetsConfig2 facetsConfig, ResultConfig resultConfig)
@@ -20,7 +20,7 @@ namespace SeadQueryCore.Services.Result
             ArgumentNullException.ThrowIfNull(resultConfig);
 
             var resultFields = resultConfig.GetSortedFields().ToList();
-            var querySetup = _querySetupBuilder.Build(facetsConfig, resultConfig.Facet, resultFields);
+            var querySetup = _querySetupFactory.CreateForResultProjection(facetsConfig, resultConfig.Facet, resultFields);
 
             return new ResultProjectionHandoff(querySetup, resultFields);
         }

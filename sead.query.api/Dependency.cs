@@ -65,7 +65,9 @@ namespace SeadQueryAPI
             //builder.RegisterType<RouteFinder>().As<IRouteFinder>();
 
             builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
+            builder.RegisterType<SupportedRequestQuerySetupFactory>().As<ISupportedRequestQuerySetupFactory>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();
+            builder.RegisterType<SupportedRequestPickSanitizer>().As<ISupportedRequestPickSanitizer>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
             builder.RegisterType<FacetRouteConfigurationImporter>().As<IFacetRouteConfigurationImporter>().InstancePerLifetimeScope();
@@ -77,10 +79,20 @@ namespace SeadQueryAPI
 
             builder.RegisterType<UndefinedPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Unknown);
 
-            DiscreteFacetPlugin.RegisterPlugin(builder);
-            GeoPolygonFacetPlugin.RegisterPlugin(builder);
-            RangeFacetPlugin.RegisterPlugin(builder);
-            IntersectFacetPlugin.RegisterPlugin(builder);
+            DiscreteFacetPlugin.RegisterLegacyRuntime(builder);
+            GeoPolygonFacetPlugin.RegisterLegacyRuntime(builder);
+            RangeFacetPlugin.RegisterLegacyRuntime(builder);
+            IntersectFacetPlugin.RegisterLegacyRuntime(builder);
+
+            DiscreteFacetPlugin.RegisterComposerRuntime(builder);
+            GeoPolygonFacetPlugin.RegisterComposerRuntime(builder);
+            RangeFacetPlugin.RegisterComposerRuntime(builder);
+            IntersectFacetPlugin.RegisterComposerRuntime(builder);
+
+            DiscreteFacetPlugin.RegisterSharedPlugin(builder);
+            GeoPolygonFacetPlugin.RegisterSharedPlugin(builder);
+            RangeFacetPlugin.RegisterSharedPlugin(builder);
+            IntersectFacetPlugin.RegisterSharedPlugin(builder);
 
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
 
