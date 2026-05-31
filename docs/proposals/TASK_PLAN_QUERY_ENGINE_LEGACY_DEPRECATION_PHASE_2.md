@@ -90,12 +90,12 @@ Resolve whether `facet.facet_template` is still a live runtime dependency or onl
 
 ## Progress Tracker
 
-| Area | Status | Notes |
-|---|---|---|
-| Remove legacy pick normalization from supported requests | Done | `LoadFacetService`, `LoadResultService`, and the facet/result probe commands now use `SupportedRequestPickSanitizer`; `BogusPickService` is no longer part of the supported or probe request path. |
-| Remove request-time `QuerySetupBuilder` dependency from supported paths | Done | `ComposedResultProjectionHandoffBuilder`, `CategoryCountService`, `LegacyResultProjectionHandoffBuilder`, `BogusPickService`, and the shared category-info path now use `SupportedRequestQuerySetupFactory`; remaining legacy builder use is now limited to retained base classes and non-request-path compatibility surfaces. |
-| Hold the DI boundary explicit while parity work proceeds | In progress | Plugin registrations remain split into explicit legacy, composer, and shared groups, and Phase 2 now records the supported-request DI boundary explicitly. |
-| Close the SQL-override ambiguity before removal planning | Done | `facet.facet_template` is now classified as importer/schema compatibility and Phase 5 cleanup scope, not as a live request-path blocker. |
+| Area                                                                    | Status      | Notes                                                                                                                                                                                                                                                                                                                          |
+|-------------------------------------------------------------------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Remove legacy pick normalization from supported requests                | Done        | `LoadFacetService`, `LoadResultService`, and the facet/result probe commands now use `SupportedRequestPickSanitizer`; `BogusPickService` is no longer part of the supported or probe request path.                                                                                                                             |
+| Remove request-time `QuerySetupBuilder` dependency from supported paths | Done        | `ComposedResultProjectionHandoffBuilder`, `CategoryCountService`, `LegacyResultProjectionHandoffBuilder`, `BogusPickService`, and the shared category-info path now use `SupportedRequestQuerySetupFactory`; remaining legacy builder use is now limited to retained base classes and non-request-path compatibility surfaces. |
+| Hold the DI boundary explicit while parity work proceeds                | In progress | Plugin registrations remain split into explicit legacy, composer, and shared groups, and Phase 2 now records the supported-request DI boundary explicitly.                                                                                                                                                                     |
+| Close the SQL-override ambiguity before removal planning                | Done        | `facet.facet_template` is now classified as importer/schema compatibility and Phase 5 cleanup scope, not as a live request-path blocker.                                                                                                                                                                                       |
 
 ## Definition Of Done
 
@@ -114,11 +114,11 @@ Resolve whether `facet.facet_template` is still a live runtime dependency or onl
 
 ## Deliverables
 
-| Deliverable | Description | Status | Link |
-|---|---|---|---|
-| Phase 2 task plan | Execution tracker for supported-surface parity and hybrid-helper removal work | In progress | `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_2.md` |
-| Updated Phase 1 inventory | Revised runtime, DI, and SQL evidence after the plugin split, supported-request slice implementation, and `facet_template` reachability proof | Done | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` |
-| Proposal and phase-plan alignment update | Boundary updates reflecting the landed Phase 2 supported-request slice | Done | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_PLAN.md` and `docs/proposals/QUERY_ENGIVE_LEGACY_DEPRECATION.md` |
+| Deliverable                              | Description                                                                                                                                   | Status      | Link                                                                                                                   |
+|------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------|
+| Phase 2 task plan                        | Execution tracker for supported-surface parity and hybrid-helper removal work                                                                 | In progress | `docs/proposals/TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_2.md`                                                  |
+| Updated Phase 1 inventory                | Revised runtime, DI, and SQL evidence after the plugin split, supported-request slice implementation, and `facet_template` reachability proof | Done        | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md`                                                  |
+| Proposal and phase-plan alignment update | Boundary updates reflecting the landed Phase 2 supported-request slice                                                                        | Done        | `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_PLAN.md` and `docs/proposals/QUERY_ENGIVE_LEGACY_DEPRECATION.md` |
 
 ## Scope
 
@@ -138,11 +138,11 @@ Resolve whether `facet.facet_template` is still a live runtime dependency or onl
 
 ## Risks And Mitigations
 
-| Risk | Mitigation |
-|---|---|
-| Removing hidden pick normalization may expose unsupported requests that were previously silently repaired. | Make the invalid-pick contract explicit and validate the supported route matrix before widening scope. |
-| `QuerySetupBuilder` callers may look equivalent while actually serving different supported-path roles. | Sequence callers explicitly and validate after each supported-path replacement instead of attempting one broad rewrite. |
-| The importer/schema presence of `facet.facet_template` may be mistaken for live runtime consumption. | Keep request-path proof separate from importer/schema evidence and record both in the maintained inventory. |
+| Risk                                                                                                       | Mitigation                                                                                                              |
+|------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| Removing hidden pick normalization may expose unsupported requests that were previously silently repaired. | Make the invalid-pick contract explicit and validate the supported route matrix before widening scope.                  |
+| `QuerySetupBuilder` callers may look equivalent while actually serving different supported-path roles.     | Sequence callers explicitly and validate after each supported-path replacement instead of attempting one broad rewrite. |
+| The importer/schema presence of `facet.facet_template` may be mistaken for live runtime consumption.       | Keep request-path proof separate from importer/schema evidence and record both in the maintained inventory.             |
 
 ## Assumptions
 

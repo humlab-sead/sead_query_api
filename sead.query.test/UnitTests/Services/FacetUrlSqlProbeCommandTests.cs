@@ -22,8 +22,8 @@ public class FacetUrlSqlProbeCommandTests
         repository.Setup(x => x.GetByCode("family")).Returns(familyFacet);
 
         var factory = new FacetUrlFacetsConfigFactory(registry.Object);
-    var pickSanitizer = new Mock<ISupportedRequestPickSanitizer>();
-    pickSanitizer.Setup(service => service.Update(It.IsAny<FacetsConfig2>())).Returns<FacetsConfig2>(config => config);
+        var pickSanitizer = new Mock<ISupportedRequestPickSanitizer>();
+        pickSanitizer.Setup(service => service.Update(It.IsAny<FacetsConfig2>())).Returns<FacetsConfig2>(config => config);
 
         var composedFacetContentService = new Mock<IComposedFacetContentService>();
         composedFacetContentService.Setup(service => service.CanHandle(It.IsAny<FacetsConfig2>())).Returns(true);

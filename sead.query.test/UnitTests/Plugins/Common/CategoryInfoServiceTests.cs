@@ -12,22 +12,22 @@ public class CategoryInfoServiceTests
     [Fact]
     public void GetCategoryInfo_UsesSupportedRequestQuerySetupFactory()
     {
-        var targetFacet = new Facet { FacetCode = "sites", DisplayTitle = "Sites", FacetTypeId = EFacetType.Discrete };
+        var targetFacet = new Facet
+        {
+            FacetCode = "sites",
+            DisplayTitle = "Sites",
+            FacetTypeId = EFacetType.Discrete,
+        };
         var facetsConfig = new FacetsConfig2
         {
             TargetCode = targetFacet.FacetCode,
             TargetFacet = targetFacet,
-            FacetConfigs =
-            [
-                new FacetConfig2(targetFacet, 0, string.Empty, [])
-            ],
+            FacetConfigs = [new FacetConfig2(targetFacet, 0, string.Empty, [])],
         };
         var querySetup = new QuerySetup { Facet = facetsConfig.TargetFacet };
 
         var querySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
-        querySetupFactory
-            .Setup(factory => factory.Create(facetsConfig, facetsConfig.TargetFacet, null, null))
-            .Returns(querySetup);
+        querySetupFactory.Setup(factory => factory.Create(facetsConfig, facetsConfig.TargetFacet, null, null)).Returns(querySetup);
 
         var compiler = new Mock<ICategoryInfoSqlCompiler>();
         compiler
@@ -44,10 +44,6 @@ public class CategoryInfoServiceTests
         compiler.Verify(x => x.Compile(querySetup, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter()), Times.Once);
     }
 
-    private sealed class TestCategoryInfoService(
-        ISupportedRequestQuerySetupFactory factory,
-        ICategoryInfoSqlCompiler compiler
-    ) : CategoryInfoService(factory, compiler)
-    {
-    }
+    private sealed class TestCategoryInfoService(ISupportedRequestQuerySetupFactory factory, ICategoryInfoSqlCompiler compiler)
+        : CategoryInfoService(factory, compiler) { }
 }

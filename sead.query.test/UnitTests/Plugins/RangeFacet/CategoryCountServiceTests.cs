@@ -1,3 +1,4 @@
+using System.Linq;
 using Autofac.Features.Indexed;
 using KellermanSoftware.CompareNetObjects;
 using Moq;
@@ -5,7 +6,6 @@ using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using SQT.Mocks;
-using System.Linq;
 using Xunit;
 
 namespace SQT.Plugins.Range
@@ -22,7 +22,11 @@ namespace SQT.Plugins.Range
             var config = new SettingFactory().Create().Value.Facet;
             var facetsConfig = FakeFacetsConfig(uri);
             var mockRegistry = MockRegistryWithFacetRepository();
-            var mockQuerySetupFactory = MockSupportedRequestQuerySetupFactory(new QuerySetup { /* not used */ });
+            var mockQuerySetupFactory = MockSupportedRequestQuerySetupFactory(
+                new QuerySetup
+                { /* not used */
+                }
+            );
             var fakeResult = FakeRangeCategoryCountItems(start: 0, size: 10, count: 3);
             var mockQueryProxy = new MockTypedQueryProxyFactory().Create<CategoryItem>(fakeResult);
             var mockHelpers = MockCategoryCountHelpers();
@@ -31,14 +35,14 @@ namespace SQT.Plugins.Range
 
             // Act
             var service = new CategoryCountService(
-                 config,
-                 mockRegistry.Object,
-                  mockQuerySetupFactory.Object,
-                 mockQueryProxy.Object,
-                 mockHelpers.Object,
-                 mockSqlCompilers.Object,
-                 mockInfoServices.Object
-             );
+                config,
+                mockRegistry.Object,
+                mockQuerySetupFactory.Object,
+                mockQueryProxy.Object,
+                mockHelpers.Object,
+                mockSqlCompilers.Object,
+                mockInfoServices.Object
+            );
             var result = service.Load(facetsConfig.TargetFacet.FacetCode, facetsConfig);
 
             // Assert

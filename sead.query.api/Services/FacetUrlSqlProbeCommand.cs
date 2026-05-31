@@ -37,7 +37,7 @@ public sealed class FacetUrlSqlProbeCommand
         writer ??= Console.Out;
 
         var facetsConfig = _facetsConfigFactory.Create(facetUrl);
-    var normalizedConfig = _pickSanitizer.Update(facetsConfig);
+        var normalizedConfig = _pickSanitizer.Update(facetsConfig);
         var usesComposedPath = _composedFacetContentService.CanHandle(normalizedConfig);
         var facetContent = _facetContentService.Load(normalizedConfig);
 

@@ -15,7 +15,7 @@ namespace SeadQueryComposer.QueryComposer.Services;
 
 /// <summary>
 /// Executes the first end-to-end composed facet-content path for discrete facets.
-/// Unsupported requests must fall back to the legacy runtime.
+/// Unsupported requests fail explicitly.
 /// </summary>
 public sealed class ComposedFacetContentService : IComposedFacetContentService
 {
@@ -72,7 +72,7 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
         if (!TryCreateRequest(facetsConfig, out var request, out var failureReason))
         {
             throw new InvalidOperationException(
-                $"The composed facet-content service cannot handle this request: {failureReason} Call CanHandle(...) before invoking Load or use FacetContentService to fall back to the legacy runtime."
+                $"The composed facet-content service cannot handle this request: {failureReason} Call CanHandle(...) before invoking Load. Unsupported facet-content requests no longer fall back to the legacy runtime."
             );
         }
 
@@ -170,7 +170,12 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             sourceTableName,
             sourceKeyColumn,
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
-            new AnchorTemplate { Route = route, IsIdentityRoute = isIdentityRoute, RequiresDistinct = true },
+            new AnchorTemplate
+            {
+                Route = route,
+                IsIdentityRoute = isIdentityRoute,
+                RequiresDistinct = true,
+            },
             request.AnchorTable,
             request.AnchorKeyColumnName,
             sourceCriteria
@@ -240,7 +245,9 @@ public sealed class ComposedFacetContentService : IComposedFacetContentService
             if (
                 domainConfig is not null
                 && (domainConfig.HasPicks() || domainConfig.HasEnforcedConstraints())
-                && affectedConfigs.All(config => !string.Equals(config.FacetCode, domainConfig.FacetCode, StringComparison.OrdinalIgnoreCase))
+                && affectedConfigs.All(config =>
+                    !string.Equals(config.FacetCode, domainConfig.FacetCode, StringComparison.OrdinalIgnoreCase)
+                )
             )
             {
                 affectedConfigs.Insert(0, domainConfig);

@@ -1,23 +1,22 @@
-using Autofac.Features.Indexed;
-using Microsoft.EntityFrameworkCore;
-using SeadQueryCore.QueryBuilder;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Autofac.Features.Indexed;
+using Microsoft.EntityFrameworkCore;
+using SeadQueryCore.QueryBuilder;
 
 namespace SeadQueryCore
 {
-
     public class CategoryCountService(
-            IFacetSetting config,
-            IRepositoryRegistry registry,
+        IFacetSetting config,
+        IRepositoryRegistry registry,
         ISupportedRequestQuerySetupFactory querySetupFactory,
-            ITypedQueryProxy queryProxy,
-            IIndex<EFacetType, ICategoryCountHelper> helpers,
-            IIndex<EFacetType, ICategoryCountSqlCompiler> sqlCompilers,
-            IIndex<EFacetType, ICategoryInfoService> infoServices
-        ) : ServiceBase(registry), ICategoryCountService
+        ITypedQueryProxy queryProxy,
+        IIndex<EFacetType, ICategoryCountHelper> helpers,
+        IIndex<EFacetType, ICategoryCountSqlCompiler> sqlCompilers,
+        IIndex<EFacetType, ICategoryInfoService> infoServices
+    ) : ServiceBase(registry), ICategoryCountService
     {
         public class CategoryCountData
         {
@@ -61,7 +60,7 @@ namespace SeadQueryCore
                 AggregateFacet = aggregateFacet,
                 IntervalQuery = categoryInfo.Query,
                 CountColumn = Config.CountColumn,
-                AggregateType = facet.AggregateType ?? "count"
+                AggregateType = facet.AggregateType ?? "count",
             };
 
             var extraTableNames = helper.GetTables(compilePayload);
@@ -82,10 +81,8 @@ namespace SeadQueryCore
                 CategoryInfo = categoryInfo,
                 SqlQuery = sqlQuery,
                 CategoryCounts = categoryCounts,
-                OuterCategoryCounts = outerCategoryCounts
+                OuterCategoryCounts = outerCategoryCounts,
             };
         }
-
     }
-
 }

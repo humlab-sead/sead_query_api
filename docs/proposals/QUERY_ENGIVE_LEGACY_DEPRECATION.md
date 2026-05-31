@@ -9,14 +9,15 @@
 ## Summary
 
 This proposal recommends full deprecation of the live legacy query runtime.
-The current `dev` branch still runs a hybrid model.
-The composer path is preferred for the validated surface, but legacy query-building and plugin-based execution remain active for unsupported requests and for some supporting or compatibility services.
+The current `dev` branch no longer uses the legacy runtime on the live facet-content or result request path.
+The composer path is now authoritative for those requests, but legacy query-building and plugin-era services still remain in retained compatibility, direct comparison tests, and later-phase cleanup surfaces.
 
 Phase 2 has now removed two supported-path dependencies from that hybrid boundary.
 Supported facet and result controller loads no longer route through `BogusPickService`, and supported composed result projection setup no longer routes through `QuerySetupBuilder`.
 Phase 2 has also moved the facet/result probe commands onto the supported invalid-pick contract and moved the shared category-info path onto `SupportedRequestQuerySetupFactory`.
 Phase 2 has now also moved `CategoryCountService`, `LegacyResultProjectionHandoffBuilder`, and `BogusPickService` off direct `QuerySetupBuilder` usage.
-Legacy fallback and retained compatibility infrastructure still keep the deprecation work incomplete.
+Phase 3 has now removed the live fallback branches from `FacetContentService` and `ComposedResultProjectionHandoffBuilder`, and the authoritative runtime DI path no longer registers `IQuerySetupBuilder` or `LegacyResultProjectionHandoffBuilder`.
+Retained compatibility infrastructure, legacy plugin groups, and legacy SQL or importer surfaces still keep the deprecation work incomplete.
 
 That hybrid model increases maintenance cost, keeps migration boundaries alive in production code, and makes it harder to reason about what is actually authoritative.
 The right next step is to move from composer-first with legacy fallback to composer-only, then remove the retained legacy code and any still-used legacy SQL assets.
@@ -24,20 +25,20 @@ Execution sequencing for that work is defined in [QUERY_ENGINE_LEGACY_DEPRECATIO
 
 ## Problem
 
-The current runtime still contains two execution models.
-The composer runtime handles the promoted slice, but the legacy runtime still matters in three ways.
+The current runtime no longer contains two live execution models on the supported request path.
+Composer now handles the live facet-content and result surface, but the legacy runtime still matters in three ways.
 
-First, unsupported facet-content and result requests still fall back to legacy execution.
-Second, some supporting and compatibility services still rely on legacy query-building even when the top-level request remains on the composed path.
+First, some supporting and compatibility services still rely on legacy query-building or legacy comparison behavior outside the authoritative request path.
+Second, some plugin registrations and retained implementation surfaces still keep legacy runtime concepts present in authoritative code even after the fallback cutover.
 Third, the repository still contains retained legacy code and possibly retained SQL assets whose operational status is not yet fully closed.
 
-The current Phase 2 execution tracker is maintained in [TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_2.md](TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_2.md).
+The current Phase 3 execution tracker is maintained in [TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_3.md](TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_3.md).
 
-This causes several problems:
+This still causes several problems:
 
 - the supported runtime boundary is harder to explain and enforce
-- new work must still account for fallback behavior and old extension points
-- validation must prove both parity and routing decisions instead of one authoritative runtime
+- new work must still account for retained legacy extension points and cleanup boundaries
+- validation must still cover both composer-only execution and the retained compatibility surfaces that have not yet been deleted
 - dead or semi-live SQL assets can remain ambiguous and therefore risky
 
 ## Scope
@@ -62,17 +63,18 @@ This proposal does not cover:
 
 ## Current Behavior
 
-The current branch still has explicit live legacy boundaries.
+The current branch now runs a composer-only live request path for facet-content and result generation.
 
-- facet-content requests fall back through `FacetContentService` when `ComposedFacetContentService.CanHandle(...)` rejects the request
-- result requests fall back through `ComposedResultProjectionHandoffBuilder` when `TryCreateRequest(...)` cannot build a composed request
-- `QuerySetupBuilder` no longer underpins supported controller preprocessing, probe normalization, composed result projection setup, legacy result setup assembly, category-count setup assembly, bogus-pick normalization, or the shared category-info path, but it still underpins retained base-class and compatibility infrastructure
+- facet-content requests now execute through `FacetContentService -> ComposedFacetContentService`, and unsupported requests fail explicitly instead of dropping to `CategoryCountService`
+- result requests now execute through `ComposedResultProjectionHandoffBuilder`, and unsupported requests fail explicitly instead of delegating to `LegacyResultProjectionHandoffBuilder`
+- `QuerySetupBuilder` no longer underpins supported controller preprocessing, probe normalization, composed result projection setup, legacy result setup assembly, category-count setup assembly, bogus-pick normalization, or the shared category-info path, and it is no longer registered in the authoritative runtime DI path; remaining uses are retained direct-test and cleanup surfaces
+- `LegacyResultProjectionHandoffBuilder` is no longer registered on the authoritative runtime path; retained uses are now explicit comparison or cleanup surfaces rather than live request dependencies
 - the facet-type plugin registrations for discrete, range, intersect, and geo-polygon remain active in DI
 - `BogusPickService` no longer sits on the supported controller or probe paths, but retained compatibility flows still keep it reachable
 - imported SQL override data written to `facet.facet_template` now appears to be importer/schema compatibility only; Phase 2 has not found a non-archived request-path consumer
 
-The result is not a dormant compatibility layer.
-The legacy runtime is still part of the live execution model on `dev`.
+The result is not yet a fully cleaned-up composer-only codebase.
+The legacy runtime is no longer part of the live request execution model on `dev`, but retained implementation surfaces still need Phase 4 and Phase 5 cleanup.
 
 The starting Phase 1 runtime inventory should explicitly review these code surfaces:
 
@@ -237,6 +239,8 @@ Make composer the only live execution path.
 - remove facet-content fallback from the runtime path
 - remove result handoff fallback from the runtime path
 - fail unsupported requests explicitly rather than silently routing to legacy code
+
+Phase 3 has now landed the facet-content and result fallback removal slices plus the authoritative DI cleanup that removed `IQuerySetupBuilder` and `LegacyResultProjectionHandoffBuilder` from the main runtime modules. The remaining Phase 3 work is broader regression coverage and documentation or inventory alignment around the cutover boundary.
 
 **Acceptance Criteria**
 

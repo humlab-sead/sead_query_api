@@ -43,10 +43,7 @@ public class BogusPickService : IBogusPickService
             }
 
             config.Picks = QueryProxy.QueryRows(
-                PicksCompiler.Compile(
-                    QuerySetupFactory.Create(facetsConfig, config.Facet),
-                    config.GetIntegerPickValues()
-                ),
+                PicksCompiler.Compile(QuerySetupFactory.Create(facetsConfig, config.Facet), config.GetIntegerPickValues()),
                 x => new FacetConfigPick(x.GetString(0), x.GetString(1))
             );
         }

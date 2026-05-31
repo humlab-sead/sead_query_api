@@ -197,7 +197,13 @@ namespace SQT
                 .Setup(x => x.Create(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>()))
                 .Returns(querySetup ?? new QuerySetup());
             mockQuerySetupFactory
-                .Setup(x => x.CreateForResultProjection(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<IEnumerable<ResultSpecificationField>>()))
+                .Setup(x =>
+                    x.CreateForResultProjection(
+                        It.IsAny<FacetsConfig2>(),
+                        It.IsAny<Facet>(),
+                        It.IsAny<IEnumerable<ResultSpecificationField>>()
+                    )
+                )
                 .Returns(querySetup ?? new QuerySetup());
             return mockQuerySetupFactory;
         }

@@ -20,29 +20,21 @@ public class IntegrationTestBase
 
     public IntegrationTestBase(InMemoryFacetContext facetConfig = null)
     {
-        DependencyService = new DependencyService(facetConfig)
-        {
-            Options = SettingFactory.DefaultSettings,
-        };
+        DependencyService = new DependencyService(facetConfig) { Options = SettingFactory.DefaultSettings };
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();
-        QuerySetupBuilder = Container.Resolve<IQuerySetupBuilder>();
+        QuerySetupBuilder = new QuerySetupBuilder(
+            Container.Resolve<IPathFinder>(),
+            Container.Resolve<IPicksFilterCompiler>(),
+            Container.Resolve<IJoinsClauseCompiler>()
+        );
         SqlCompilerLocator = Container.Resolve<IResultSqlCompilerLocator>();
         Registry = Container.Resolve<IRepositoryRegistry>();
     }
 
-    public FacetsConfig2 FakeFacetsConfig(string uri) =>
-        new MockFacetsConfigFactory(Registry.Facets).Create(uri);
+    public FacetsConfig2 FakeFacetsConfig(string uri) => new MockFacetsConfigFactory(Registry.Facets).Create(uri);
 
-    public virtual ResultConfig FakeResultConfig(
-        string facetCode,
-        string specificationKey,
-        string viewTypeId
-    ) =>
-        ResultConfigFactory.Create(
-            Registry.Facets.GetByCode(facetCode),
-            Registry.Results.GetByKey(specificationKey),
-            viewTypeId
-        );
+    public virtual ResultConfig FakeResultConfig(string facetCode, string specificationKey, string viewTypeId) =>
+        ResultConfigFactory.Create(Registry.Facets.GetByCode(facetCode), Registry.Results.GetByKey(specificationKey), viewTypeId);
 }

@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using SeadQueryCore;
-using SeadQueryCore.QueryBuilder;
+using SeadQueryCore.QueryComposer;
 using SQT.Infrastructure;
-using SQT.Mocks;
 using Xunit;
 
 namespace SQT.Plugins.Discrete
@@ -17,24 +17,22 @@ namespace SQT.Plugins.Discrete
         public void Load_VariousDescreteFacets_Success(string uri, bool hasPicks)
         {
             // Arrange
-            var fakeRegistry = FakeRegistry();
-            var fakeSettings = FakeFacetSetting();
             var facetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeCountOrContentQuerySetup(facetsConfig);
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
             var fakeValues = FakeDiscreteCategoryCountItems(5);
-            var mockQueryProxy = MockTypedQueryProxy(fakeValues);
-            var mockCategoryCountService = MockCategoryCountService(fakeValues);
+            var expected = new FacetContent
+            {
+                FacetsConfig = facetsConfig,
+                Items = fakeValues,
+                Distribution = fakeValues.ToDictionary(item => item.Category ?? "(null)"),
+                IntervalInfo = new FacetContent.CategoryInfo(),
+                SqlQuery = "select composed",
+                Picks = hasPicks ? facetsConfig.CollectUserPicks(facetsConfig.TargetCode) ?? [] : [],
+            };
+            var composedService = new Mock<IComposedFacetContentService>(MockBehavior.Strict);
+            composedService.Setup(service => service.Load(facetsConfig)).Returns(expected);
 
             // Act
-            var service = new FacetContentService(
-                fakeSettings,
-                fakeRegistry,
-                mockQuerySetupBuilder.Object,
-                mockQueryProxy.Object,
-                mockCategoryCountService.Object,
-                null
-            );
+            var service = new FacetContentService(composedService.Object);
 
             var result = service.Load(facetsConfig);
 
@@ -43,6 +41,7 @@ namespace SQT.Plugins.Discrete
             Assert.True(result.Items.Count > 0);
             Assert.Equal(fakeValues.Count, result.Items.Count);
             Assert.Equal(hasPicks, result.Picks.Count > 0);
+            composedService.Verify(service => service.Load(facetsConfig), Times.Once);
         }
     }
 }

@@ -274,12 +274,8 @@ namespace IntegrationTests.Sead
             _bogusPickService.Update(legacyFacetsConfig);
             _supportedRequestPickSanitizer.Update(supportedFacetsConfig);
 
-            var legacyPicks = legacyFacetsConfig.GetConfig("country").Picks
-                .Select(x => (x.PickValue, x.Text))
-                .ToList();
-            var supportedPicks = supportedFacetsConfig.GetConfig("country").Picks
-                .Select(x => (x.PickValue, x.Text))
-                .ToList();
+            var legacyPicks = legacyFacetsConfig.GetConfig("country").Picks.Select(x => (x.PickValue, x.Text)).ToList();
+            var supportedPicks = supportedFacetsConfig.GetConfig("country").Picks.Select(x => (x.PickValue, x.Text)).ToList();
 
             Assert.Equal(legacyPicks, supportedPicks);
         }

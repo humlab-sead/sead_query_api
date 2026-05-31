@@ -17,7 +17,9 @@ namespace SeadQueryAPI.Services
             ISeadQueryCache cache,
 #pragma warning restore IDE0060, RCS1163
             IResultService service,
-            ISupportedRequestPickSanitizer pickSanitizer) : base(config, context)
+            ISupportedRequestPickSanitizer pickSanitizer
+        )
+            : base(config, context)
         {
             ResultService = service;
             _pickSanitizer = pickSanitizer;
@@ -37,7 +39,9 @@ namespace SeadQueryAPI.Services
             IRepositoryRegistry context,
             ISeadQueryCache cache,
             IResultService service,
-            ISupportedRequestPickSanitizer pickSanitizer) : base(config, context, cache, service, pickSanitizer)
+            ISupportedRequestPickSanitizer pickSanitizer
+        )
+            : base(config, context, cache, service, pickSanitizer)
         {
             Cache = cache;
         }

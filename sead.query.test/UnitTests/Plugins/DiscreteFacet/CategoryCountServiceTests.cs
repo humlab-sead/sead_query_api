@@ -19,7 +19,11 @@ namespace SQT.Services.Plugins.Discrete
             var fakeSettings = FakeFacetSetting();
             var fakeRegistry = FakeRegistry();
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var mockQuerySetupFactory = MockSupportedRequestQuerySetupFactory(new QuerySetup { /* not used */ });
+            var mockQuerySetupFactory = MockSupportedRequestQuerySetupFactory(
+                new QuerySetup
+                { /* not used */
+                }
+            );
             var fakeCategoryCountItems = FakeDiscreteCategoryCountItems(nCount);
             var queryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
 

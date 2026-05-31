@@ -9,11 +9,7 @@ public interface ISupportedRequestQuerySetupFactory
 {
     QuerySetup Create(FacetsConfig2 facetsConfig, Facet targetFacet, List<string> extraTables = null, List<string> facetCodes = null);
 
-    QuerySetup CreateForResultProjection(
-        FacetsConfig2 facetsConfig,
-        Facet resultFacet,
-        IEnumerable<ResultSpecificationField> resultFields
-    );
+    QuerySetup CreateForResultProjection(FacetsConfig2 facetsConfig, Facet resultFacet, IEnumerable<ResultSpecificationField> resultFields);
 }
 
 public sealed class SupportedRequestQuerySetupFactory : ISupportedRequestQuerySetupFactory
@@ -71,11 +67,6 @@ public sealed class SupportedRequestQuerySetupFactory : ISupportedRequestQuerySe
             throw new ArgumentNullException(nameof(resultFields), "ResultConfig is null or is missing specification keys!");
         }
 
-        return Create(
-            facetsConfig,
-            resultFacet,
-            resultFields.GetResultFieldTableNames().ToList(),
-            null
-        );
+        return Create(facetsConfig, resultFacet, resultFields.GetResultFieldTableNames().ToList(), null);
     }
 }

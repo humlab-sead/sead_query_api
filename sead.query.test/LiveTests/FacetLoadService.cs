@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using FluentAssertions;
@@ -980,15 +981,23 @@ namespace SQT.LiveServices
             AssertMatchesLegacyFacetContent(uri);
         }
 
-        private IFacetContentService CreateLegacyFacetContentService()
+        private FacetContent LoadLegacyFacetContent(string uri)
         {
             var registry = Container.Resolve<IRepositoryRegistry>();
-            var facetSettings = Container.Resolve<IFacetSetting>();
-            var querySetupBuilder = Container.Resolve<IQuerySetupBuilder>();
-            var queryProxy = Container.Resolve<ITypedQueryProxy>();
             var categoryCountService = Container.Resolve<ICategoryCountService>();
+            var facetsConfig = UriToFacetsConfig(uri);
+            var categoryCountData = categoryCountService.Load(facetsConfig.TargetCode, facetsConfig);
+            var userPicks = facetsConfig.CollectUserPicks(facetsConfig.TargetCode);
 
-            return new FacetContentService(facetSettings, registry, querySetupBuilder, queryProxy, categoryCountService, null);
+            return new FacetContent
+            {
+                FacetsConfig = facetsConfig,
+                Items = categoryCountData.OuterCategoryCounts.Where(item => item.Count != null).ToList(),
+                Distribution = categoryCountData.CategoryCounts,
+                IntervalInfo = categoryCountData.CategoryInfo,
+                SqlQuery = categoryCountData.SqlQuery,
+                Picks = userPicks ?? [],
+            };
         }
 
         private void AssertUsesComposedFacetContentQuery(string uri, params string[] expectedSqlFragments)
@@ -1015,10 +1024,9 @@ namespace SQT.LiveServices
         private void AssertMatchesLegacyFacetContent(string uri)
         {
             var composedService = Container.Resolve<IFacetContentService>();
-            var legacyService = CreateLegacyFacetContentService();
 
             var composedData = composedService.Load(UriToFacetsConfig(uri));
-            var legacyData = legacyService.Load(UriToFacetsConfig(uri));
+            var legacyData = LoadLegacyFacetContent(uri);
 
             Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(composedData.Items));
             Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(composedData.Distribution.Values));
@@ -1030,21 +1038,14 @@ namespace SQT.LiveServices
             var facetsConfig = UriToFacetsConfig(uri);
             var composedService = Container.Resolve<IComposedFacetContentService>();
             var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
-            var legacyService = CreateLegacyFacetContentService();
 
             Assert.False(composedService.CanHandle(facetsConfig));
             Assert.NotNull(service.ComposedFacetContentService);
 
-            var data = service.Load(facetsConfig);
-            var legacyData = legacyService.Load(UriToFacetsConfig(uri));
+            var action = () => service.Load(facetsConfig);
 
-            Assert.NotNull(data);
-            Assert.DoesNotContain("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotContain("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
-            Assert.Equal(legacyData.SqlQuery, data.SqlQuery);
-            Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(data.Items));
-            Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(data.Distribution.Values));
-            Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), data.Picks.Keys.OrderBy(key => key));
+            var exception = Assert.Throws<InvalidOperationException>(action);
+            Assert.Contains("no longer fall back to the legacy runtime", exception.Message, System.StringComparison.OrdinalIgnoreCase);
         }
 
         private static List<string> ToCategoryCounts(IEnumerable<CategoryItem> items)

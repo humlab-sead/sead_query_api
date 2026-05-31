@@ -1,6 +1,8 @@
+using System.Linq;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.Plugin.Range;
+using SeadQueryCore.QueryComposer;
 using SQT.Infrastructure;
 using Xunit;
 
@@ -60,23 +62,22 @@ namespace SQT.Plugins.Range
         public void Load_RangeFacetWithRangePick_IsLoaded(string uri)
         {
             // Arrange
-            var fakeSettings = FakeFacetSetting();
             var fakeFacetsConfig = FakeFacetsConfig(uri);
-            var fakeQuerySetup = FakeCountOrContentQuerySetup(fakeFacetsConfig);
             var fakeCategoryCountItems = FakeRangeCategoryCountItems(1, 10, 10);
-            var mockQuerySetupBuilder = MockQuerySetupBuilder(fakeQuerySetup);
-            var mockQueryProxy = MockTypedQueryProxy(fakeCategoryCountItems);
-            var mockCategoryCountService = MockCategoryCountService(fakeCategoryCountItems);
+            var expected = new FacetContent
+            {
+                FacetsConfig = fakeFacetsConfig,
+                Items = fakeCategoryCountItems,
+                Distribution = fakeCategoryCountItems.ToDictionary(item => item.Category ?? "(null)"),
+                IntervalInfo = new FacetContent.CategoryInfo(),
+                SqlQuery = "select composed",
+                Picks = fakeFacetsConfig.CollectUserPicks(fakeFacetsConfig.TargetCode) ?? [],
+            };
+            var composedService = new Mock<IComposedFacetContentService>(MockBehavior.Strict);
+            composedService.Setup(service => service.Load(fakeFacetsConfig)).Returns(expected);
 
             // Act
-            var service = new FacetContentService(
-                fakeSettings,
-                Registry,
-                mockQuerySetupBuilder.Object,
-                mockQueryProxy.Object,
-                mockCategoryCountService.Object,
-                null
-            );
+            var service = new FacetContentService(composedService.Object);
 
             var result = service.Load(fakeFacetsConfig);
 
@@ -85,6 +86,7 @@ namespace SQT.Plugins.Range
             Assert.Equal(fakeCategoryCountItems.Count, result.Distribution.Count);
             Assert.Equal(fakeCategoryCountItems.Count, result.Items.Count);
             Assert.Equal(fakeCategoryCountItems.Count, result.ItemCount);
+            composedService.Verify(service => service.Load(fakeFacetsConfig), Times.Once);
         }
     }
 }

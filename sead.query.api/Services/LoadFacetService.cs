@@ -7,8 +7,12 @@ namespace SeadQueryAPI.Services
         FacetContent Load(FacetsConfig2 facetsConfig);
     }
 
-    public class LoadFacetService(ISetting config, IRepositoryRegistry context,
-        ISupportedRequestPickSanitizer pickSanitizer, IFacetContentService contentService) : AppServiceBase(config, context), ILoadFacetService
+    public class LoadFacetService(
+        ISetting config,
+        IRepositoryRegistry context,
+        ISupportedRequestPickSanitizer pickSanitizer,
+        IFacetContentService contentService
+    ) : AppServiceBase(config, context), ILoadFacetService
     {
         public ISupportedRequestPickSanitizer PickSanitizer { get; private set; } = pickSanitizer;
         public IFacetContentService ContentService { get; private set; } = contentService;
@@ -26,7 +30,8 @@ namespace SeadQueryAPI.Services
         IRepositoryRegistry context,
         ISeadQueryCache cache,
         ISupportedRequestPickSanitizer pickSanitizer,
-        IFacetContentService contentService) : LoadFacetService(config, context, pickSanitizer, contentService)
+        IFacetContentService contentService
+    ) : LoadFacetService(config, context, pickSanitizer, contentService)
     {
         public ISeadQueryCache Cache { get; } = cache;
 

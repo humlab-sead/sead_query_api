@@ -2,7 +2,8 @@
 
 namespace SeadQueryCore.Plugin.Common
 {
-    public abstract class CategoryInfoService(ISupportedRequestQuerySetupFactory factory, ICategoryInfoSqlCompiler compiler) : ICategoryInfoService
+    public abstract class CategoryInfoService(ISupportedRequestQuerySetupFactory factory, ICategoryInfoSqlCompiler compiler)
+        : ICategoryInfoService
     {
         ISupportedRequestQuerySetupFactory QuerySetupFactory { get; } = factory;
 
@@ -12,11 +13,7 @@ namespace SeadQueryCore.Plugin.Common
         {
             var querySetup = QuerySetupFactory.Create(facetsConfig, facetsConfig.TargetFacet);
             var sql = SqlCompiler.Compile(querySetup, facetsConfig.TargetFacet, facetsConfig.GetTargetTextFilter());
-            return new FacetContent.CategoryInfo
-            {
-                Count = 1,
-                Query = sql
-            };
+            return new FacetContent.CategoryInfo { Count = 1, Query = sql };
         }
     }
 }

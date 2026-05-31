@@ -10,8 +10,8 @@ To reach that state safely, the work needs an ordered path: inventory what is st
 
 ## Problem
 
-The current branch still runs a hybrid model.
-Composer is the preferred runtime for the validated surface, but legacy execution still matters through explicit fallback seams and through hybrid helper services that still depend on legacy query-building.
+The current branch no longer uses legacy fallback on the live facet-content or result request path.
+Composer is now the authoritative runtime there, but legacy code still matters through retained helper services, compatibility-oriented infrastructure, plugin groups, and SQL or importer surfaces that have not yet been deleted.
 
 That leaves two kinds of deprecation work.
 One is behavioral: supported requests must no longer depend on legacy fallback.
@@ -32,10 +32,11 @@ It does not include frontend changes, release scheduling, or unrelated cleanup o
 
 ## Current Position
 
-- `FacetContentService` still falls back to `CategoryCountService` when the composed facet-content path cannot handle a request.
-- `ComposedResultProjectionHandoffBuilder` still falls back to `LegacyResultProjectionHandoffBuilder` for unsupported result requests.
+- `FacetContentService` now delegates directly to `ComposedFacetContentService`, and unsupported facet-content requests fail explicitly instead of falling back to `CategoryCountService`.
+- `ComposedResultProjectionHandoffBuilder` now throws explicit unsupported-request failures instead of delegating to `LegacyResultProjectionHandoffBuilder`.
 - `SupportedRequestPickSanitizer` now owns supported controller-side invalid-pick normalization and the facet/result probe normalization path, and `SupportedRequestQuerySetupFactory` now owns supported composed result projection setup, the shared category-info setup path, and the remaining direct runtime setup assembly that previously called `QuerySetupBuilder`.
-- `QuerySetupBuilder` no longer appears as a direct request-path caller in the live runtime services, but it still underpins retained base-class and compatibility infrastructure.
+- `QuerySetupBuilder` no longer appears as a direct request-path caller in the live runtime services and is no longer registered in the authoritative API or shared test DI modules; its remaining uses are retained direct-test and cleanup surfaces.
+- `LegacyResultProjectionHandoffBuilder` is no longer registered in the authoritative runtime DI path and remains only as an explicit retained surface for comparison or later deletion work.
 - `BogusPickService` now remains only on retained compatibility paths rather than the supported facet/result controller or probe paths.
 - the facet plugin registrations are now split into explicit legacy, composer, and shared groups, which gives later phases a safe DI boundary without removing fallback yet
 - `scripts/prepare-phase5-facet-runtime-schema.sql` is still documented as an active operational schema-prep asset.
@@ -105,6 +106,10 @@ Make composer the only live request-execution path.
 - facet-content requests no longer drop to `CategoryCountService` from the supported runtime path
 - result requests no longer drop to `LegacyResultProjectionHandoffBuilder` from the supported runtime path
 - diagnostics and tests confirm one authoritative execution model
+
+Phase 3 is now in the cutover-and-validation stage: the fallback branches are removed, and the remaining work is broader regression coverage plus documentation and inventory alignment before Phase 4 deletion work.
+
+The detailed execution tracker for this phase is maintained in [TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_3.md](TASK_PLAN_QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_3.md).
 
 ### Phase 4: Remove Retained Legacy Implementation Surfaces
 

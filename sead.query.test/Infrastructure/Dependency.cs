@@ -78,7 +78,6 @@ namespace SQT.Infrastructure
             builder.RegisterType<DiscreteFacetContentQueryComposer>().As<IFacetContentQueryComposer>().InstancePerLifetimeScope();
             builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<QuerySetupBuilder>().As<IQuerySetupBuilder>();
             builder.RegisterType<SupportedRequestQuerySetupFactory>().As<ISupportedRequestQuerySetupFactory>();
             builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<SupportedRequestPickSanitizer>().As<ISupportedRequestPickSanitizer>();
@@ -108,7 +107,6 @@ namespace SQT.Infrastructure
             builder.RegisterType<FacetContentService>().As<IFacetContentService>();
 
             builder.RegisterType<ResultService>().As<IResultService>();
-            builder.RegisterType<LegacyResultProjectionHandoffBuilder>().AsSelf();
             builder
                 .Register(_ => NullLogger<ComposedResultProjectionHandoffBuilder>.Instance)
                 .As<ILogger<ComposedResultProjectionHandoffBuilder>>()
