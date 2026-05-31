@@ -63,8 +63,75 @@ namespace SQT.Infrastructure.Repository
             Assert.NotEmpty(anchors);
 
             Assert.All(facet.FacetAnchors, fa => anchors.Any(a => a.AnchorId == fa.AnchorId));
+        }
 
-            
+        [Fact]
+        public void GetByCode_RoutedSteps_HaveTableReferences()
+        {
+            var dbContext = (FacetContext)FacetContext;
+
+            using var transaction = dbContext.Database.BeginTransaction();
+
+            var suffix = dbContext.Tables.Max(table => table.TableId) + 1;
+            var nextRouteId = dbContext.Routes.Select(route => route.RouteId).DefaultIfEmpty().Max() + 1;
+            var nextRouteStepId = dbContext.RouteSteps.Select(step => step.RouteStepId).DefaultIfEmpty().Max() + 1;
+            var nextFacetAnchorId = dbContext.FacetAnchors.Select(current => current.FacetAnchorId).DefaultIfEmpty().Max() + 1;
+            var sourceTable = dbContext.Tables.OrderBy(table => table.TableId).First();
+            var targetTable = dbContext.Tables.OrderBy(table => table.TableId).Skip(1).First();
+            var facet = dbContext.Facets.Single(current => current.FacetCode == "sites");
+            var anchor = dbContext.Anchors.OrderBy(current => current.AnchorId).First();
+
+            var stepTable = new Table
+            {
+                TableId = suffix,
+                TableOrUdfName = $"test_route_step_table_{suffix}",
+                PrimaryKeyName = "test_id",
+                IsUdf = false,
+            };
+
+            var route = new Route
+            {
+                RouteId = nextRouteId,
+                Name = $"test-route-{suffix}",
+                SourceTableId = sourceTable.TableId,
+                TargetTableId = targetTable.TableId,
+                Specification = "test specification",
+                Steps = new List<RouteStep>
+                {
+                    new()
+                    {
+                        RouteStepId = nextRouteStepId,
+                        SequenceId = 1,
+                        RouteId = nextRouteId,
+                        TableId = stepTable.TableId,
+                        Table = stepTable,
+                        KeyName = $"test-step-{suffix}",
+                    },
+                },
+            };
+
+            dbContext.Routes.Add(route);
+            dbContext.FacetAnchors.Add(
+                new FacetAnchor
+                {
+                    FacetAnchorId = nextFacetAnchorId,
+                    FacetId = facet.FacetId,
+                    AnchorId = anchor.AnchorId,
+                    RouteId = route.RouteId,
+                    Route = route,
+                }
+            );
+
+            dbContext.SaveChanges();
+            dbContext.ChangeTracker.Clear();
+
+            var repository = new FacetRepository(Registry);
+            var reloadedFacet = repository.GetByCode("sites");
+            var reloadedFacetAnchor = reloadedFacet.FacetAnchors.Single(current => current.RouteId == route.RouteId);
+            var reloadedStep = Assert.Single(reloadedFacetAnchor.Route.Steps);
+
+            Assert.NotNull(reloadedStep.Table);
+            Assert.Equal(stepTable.TableOrUdfName, reloadedStep.Table.TableOrUdfName);
         }
 
         [Fact]
