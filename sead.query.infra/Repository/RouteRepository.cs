@@ -13,7 +13,9 @@ namespace SeadQueryInfra
         /// <returns></returns>
         protected override IQueryable<Route> GetInclude(IQueryable<Route> query)
         {
-            return query.Include(r => r.SourceTable).Include(r => r.TargetTable).Include(r => r.Steps);
+            var routeQuery = query.Include(r => r.SourceTable).Include(r => r.TargetTable);
+
+            return routeQuery.Include(r => r.Steps).ThenInclude(step => step.Table);
         }
 
         private Dictionary<string, Route> _routeLookup = null!;
