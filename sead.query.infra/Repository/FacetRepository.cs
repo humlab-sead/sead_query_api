@@ -96,7 +96,8 @@ namespace SeadQueryInfra
                 .ThenInclude(fa => fa.Anchor)
                 .Include(x => x.FacetAnchors)
                 .ThenInclude(fa => fa.Route)
-                .ThenInclude(r => r.Steps);
+                .ThenInclude(r => r.Steps)
+                .ThenInclude(step => step.Table);
         }
     }
 
