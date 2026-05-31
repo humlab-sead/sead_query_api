@@ -43,5 +43,26 @@ Use this instruction when editing tests in `sead.query.test`.
 
 ## Assertions and Test Quality
 
+- Assert observable behavior, not incidental implementation details.
+- Avoid brittle assertions against large serialized blobs or entire SQL strings when a smaller contract can be checked.
+- When SQL output is the behavior under test, assert the meaningful clauses or structure rather than unrelated formatting.
+- Prefer explicit expected values over snapshots unless the snapshot is already an established pattern in the repo.
+- Keep randomized data stable by controlling seeds or using deterministic inputs when failures would otherwise be hard to reproduce.
+
+## Maintenance and Discipline
+
+- Add or update tests when behavior changes.
+- Do not rewrite large existing test areas only to match a preferred style.
+- Reuse existing helpers and builders when they improve clarity.
+- Remove dead or obsolete test code rather than leaving ignored scaffolding behind.
+- Run focused `dotnet test` commands for the touched area after significant changes.
+
+## What To Avoid
+
+- Do not add tests that only assert that mocks were called unless that interaction is the real contract.
+- Do not overuse mocks for domain models or simple DTOs.
+- Do not make tests depend on execution order.
+- Do not leave TODO-only test placeholders committed.
+
 ## Updates
 This rule must be updated if new tools or practices are adopted in the backend project.
