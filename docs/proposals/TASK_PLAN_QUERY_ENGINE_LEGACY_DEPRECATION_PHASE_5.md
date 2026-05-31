@@ -76,11 +76,11 @@ Leave the SQL baseline, operational guidance, and deprecation inventory internal
 
 - [x] Update `docs/proposals/QUERY_ENGINE_LEGACY_DEPRECATION_PHASE_1_INVENTORY.md` for the landed SQL dispositions.
 - [x] Update `docs/OPERATIONS.md` and any other maintained runbook material affected by the SQL-asset cleanup.
-- [ ] Run focused validation for any touched importer, runtime-schema, or operational script changes and rerun `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
+- [x] Run focused validation for any touched importer, runtime-schema, or operational script changes and rerun `dotnet test sead.query.test/sead.query.test.csproj` before closing the phase.
 
 **Completion Criteria**
 
-- [ ] The maintained inventory, operations guidance, and repository validation all reflect the post-Phase-5 SQL baseline.
+- [x] The maintained inventory, operations guidance, and repository validation all reflect the post-Phase-5 SQL baseline.
 
 ## Progress Tracker
 
