@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "kind": "ai_ml_feature_catalog",
+  "description": "Candidate AI/ML features for the SEAD Query API and related authoring workflows.",
+  "features": [
+    {
+      "id": "natural-language-query-assistant",
+      "title": "Natural-Language Query Assistant",
+      "file": "natural-language-query-assistant.md",
+      "category": "end-user-query-assistance",
+      "status": "candidate",
+      "audiences": ["researcher", "browser-user", "api-client"],
+      "tags": ["nlp", "intent-mapping", "facets", "query-assistance"],
+      "system_surfaces": ["facet metadata", "result views", "active imported configuration"],
+      "summary": "Maps free-text research questions onto valid facet selections and result-view choices."
+    },
+    {
+      "id": "semantic-term-normalization",
+      "title": "Semantic Term Normalization And Entity Linking",
+      "file": "semantic-term-normalization.md",
+      "category": "end-user-query-assistance",
+      "status": "candidate",
+      "audiences": ["researcher", "browser-user", "api-client"],
+      "tags": ["entity-linking", "synonyms", "taxonomy", "term-normalization"],
+      "system_surfaces": ["facet metadata", "category labels", "controlled vocabulary"],
+      "summary": "Links user language and synonyms to the controlled facet and result vocabulary used by the API."
+    },
+    {
+      "id": "facet-recommendation-and-query-guidance",
+      "title": "Facet Recommendation And Query Guidance",
+      "file": "facet-recommendation-and-query-guidance.md",
+      "category": "end-user-guidance",
+      "status": "candidate",
+      "audiences": ["researcher", "browser-user"],
+      "tags": ["recommendation", "ranking", "facets", "query-guidance"],
+      "system_surfaces": ["facet state", "anchor support", "result refinement"],
+      "summary": "Suggests useful next facets or refinement steps based on the current query state."
+    },
+    {
+      "id": "result-summary-and-explanation",
+      "title": "Result Summary And Explanation",
+      "file": "result-summary-and-explanation.md",
+      "category": "end-user-interpretation",
+      "status": "candidate",
+      "audiences": ["researcher", "browser-user", "report-consumer"],
+      "tags": ["summarization", "explanation", "results", "interpretation"],
+      "system_surfaces": ["result metadata", "facet selections", "result views"],
+      "summary": "Generates concise explanations of the current filtered result set and its major constraints."
+    },
+    {
+      "id": "facet-configuration-authoring-assistant",
+      "title": "Facet Configuration Authoring Assistant",
+      "file": "facet-configuration-authoring-assistant.md",
+      "category": "maintainer-authoring-assistance",
+      "status": "candidate",
+      "audiences": ["maintainer", "developer", "configuration-author"],
+      "tags": ["configuration", "yaml", "authoring", "validation-assistance"],
+      "system_surfaces": ["route YAML", "facet metadata", "import validation", "facet schema"],
+      "summary": "Assists maintainers when authoring or reviewing facet and route configuration before import."
+    }
+  ]
+}
