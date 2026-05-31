@@ -119,7 +119,9 @@ namespace IntegrationTests.Sead
 
             if (ExpectsExplicitUnsupportedComposedResult(uri))
             {
-                var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => Fixture.Client.PostAsync("api/result/load", payload));
+                var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                    Fixture.Client.PostAsync("api/result/load", payload)
+                );
 
                 AssertUnsupportedComposedResultFailure(exception);
                 return;
@@ -181,7 +183,9 @@ namespace IntegrationTests.Sead
 
             if (ExpectsExplicitUnsupportedComposedResult(uri))
             {
-                var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => Fixture.Client.PostAsync("api/result/load", payload));
+                var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                    Fixture.Client.PostAsync("api/result/load", payload)
+                );
 
                 AssertUnsupportedComposedResultFailure(exception);
                 return;
@@ -236,7 +240,9 @@ namespace IntegrationTests.Sead
 
             if (ExpectsExplicitUnsupportedComposedResult(uri))
             {
-                var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => Fixture.Client.PostAsync("api/result/load", payload));
+                var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                    Fixture.Client.PostAsync("api/result/load", payload)
+                );
 
                 AssertUnsupportedComposedResultFailure(exception);
                 return;
@@ -444,10 +450,11 @@ namespace IntegrationTests.Sead
             Assert.Contains("ST_Within(", sqlQuery);
         }
 
-                [Fact]
-                public async Task LoadMap_GeoPolygonFilteredSinglePickRequest_UsesComposedFilterSql()
-                {
-                        const string payloadJson = @"{
+        [Fact]
+        public async Task LoadMap_GeoPolygonFilteredSinglePickRequest_UsesComposedFilterSql()
+        {
+            const string payloadJson =
+                @"{
     ""facetsConfig"": {
         ""RequestId"": ""1"",
         ""DomainCode"": """",
@@ -476,25 +483,25 @@ namespace IntegrationTests.Sead
     }
 }";
 
-                        using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
-                        using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+            using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
-                        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
 
-                        Assert.NotNull(result);
-                        Assert.NotNull(result.Query);
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
 
-                        var sqlQuery = result.Query.Squeeze();
+            var sqlQuery = result.Query.Squeeze();
 
-                        Assert.Contains("with composed_filter as", sqlQuery);
-                        Assert.Contains("target_route as", sqlQuery);
-                        Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
-                        Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
-                        Assert.Contains("ST_Within(", sqlQuery);
-                }
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+            Assert.Contains("ST_Within(", sqlQuery);
+        }
 
         [Fact]
         public async Task LoadMap_IntersectFilteredRequest_UsesComposedFilterSql()
@@ -525,10 +532,11 @@ namespace IntegrationTests.Sead
             Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
         }
 
-                [Fact]
-                public async Task LoadMap_IntersectFilteredRequestWithEmptySitesConfig_UsesComposedFilterSql()
-                {
-                        const string payloadJson = @"{
+        [Fact]
+        public async Task LoadMap_IntersectFilteredRequestWithEmptySitesConfig_UsesComposedFilterSql()
+        {
+            const string payloadJson =
+                @"{
     ""facetsConfig"": {
         ""RequestId"": ""1"",
         ""DomainCode"": """",
@@ -567,25 +575,25 @@ namespace IntegrationTests.Sead
     }
 }";
 
-                        using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
-                        using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+            using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
 
-                        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
 
-                        Assert.NotNull(result);
-                        Assert.NotNull(result.Query);
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
 
-                        var sqlQuery = result.Query.Squeeze();
+            var sqlQuery = result.Query.Squeeze();
 
-                        Assert.Contains("with composed_filter as", sqlQuery);
-                        Assert.Contains("target_route as", sqlQuery);
-                        Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
-                        Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
-                        Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
-                }
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+            Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
+        }
 
         [Fact]
         public async Task LoadTabular_TargetOnlyGenusRequest_UsesComposedFilterSql()

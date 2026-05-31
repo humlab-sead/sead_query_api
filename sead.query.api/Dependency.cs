@@ -65,7 +65,6 @@ namespace SeadQueryAPI
             //builder.RegisterType<RouteFinder>().As<IRouteFinder>();
 
             builder.RegisterType<SupportedRequestQuerySetupFactory>().As<ISupportedRequestQuerySetupFactory>();
-            builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<SupportedRequestPickSanitizer>().As<ISupportedRequestPickSanitizer>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
@@ -78,26 +77,14 @@ namespace SeadQueryAPI
 
             builder.RegisterType<UndefinedPickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Unknown);
 
-            DiscreteFacetPlugin.RegisterLegacyRuntime(builder);
-            GeoPolygonFacetPlugin.RegisterLegacyRuntime(builder);
-            RangeFacetPlugin.RegisterLegacyRuntime(builder);
-            IntersectFacetPlugin.RegisterLegacyRuntime(builder);
-
-            DiscreteFacetPlugin.RegisterComposerRuntime(builder);
-            GeoPolygonFacetPlugin.RegisterComposerRuntime(builder);
-            RangeFacetPlugin.RegisterComposerRuntime(builder);
-            IntersectFacetPlugin.RegisterComposerRuntime(builder);
-
-            DiscreteFacetPlugin.RegisterSharedPlugin(builder);
-            GeoPolygonFacetPlugin.RegisterSharedPlugin(builder);
-            RangeFacetPlugin.RegisterSharedPlugin(builder);
-            IntersectFacetPlugin.RegisterSharedPlugin(builder);
+            DiscreteFacetPlugin.RegisterPlugin(builder);
+            GeoPolygonFacetPlugin.RegisterPlugin(builder);
+            RangeFacetPlugin.RegisterPlugin(builder);
+            IntersectFacetPlugin.RegisterPlugin(builder);
 
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
 
             builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
-
-            builder.RegisterType<CategoryCountService>().As<ICategoryCountService>();
 
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();

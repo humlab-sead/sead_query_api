@@ -24,17 +24,8 @@ public class DiscreteFacetPlugin(
 
     public static void RegisterPlugin(ContainerBuilder builder)
     {
-        RegisterLegacyRuntime(builder);
         RegisterComposerRuntime(builder);
         RegisterSharedPlugin(builder);
-    }
-
-    public static void RegisterLegacyRuntime(ContainerBuilder builder)
-    {
-        builder.RegisterType<DiscreteCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Discrete);
-        builder.RegisterType<DiscreteCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Discrete);
-        builder.RegisterType<DiscreteCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Discrete);
-        builder.RegisterType<DiscretePickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Discrete);
     }
 
     public static void RegisterComposerRuntime(ContainerBuilder builder)
@@ -48,6 +39,7 @@ public class DiscreteFacetPlugin(
 
     public static void RegisterSharedPlugin(ContainerBuilder builder)
     {
+        builder.RegisterType<DiscretePickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Discrete);
         builder.RegisterType<DiscreteFacetPlugin>().As<IDiscreteFacetPlugin>();
         builder.RegisterType<DiscreteFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.Discrete);
     }

@@ -79,7 +79,6 @@ namespace SQT.Infrastructure
             builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
 
             builder.RegisterType<SupportedRequestQuerySetupFactory>().As<ISupportedRequestQuerySetupFactory>();
-            builder.RegisterType<BogusPickService>().As<IBogusPickService>();
             builder.RegisterType<SupportedRequestPickSanitizer>().As<ISupportedRequestPickSanitizer>();
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
@@ -97,8 +96,6 @@ namespace SQT.Infrastructure
             builder.RegisterType<PickFilterCompilerLocator>().As<IPickFilterCompilerLocator>();
 
             builder.RegisterType<PicksFilterCompiler>().As<IPicksFilterCompiler>();
-
-            builder.RegisterType<CategoryCountService>().As<ICategoryCountService>();
 
             builder.RegisterType<ValidPicksSqCompiler>().As<IValidPicksSqlCompiler>();
             builder.RegisterType<JoinSqlCompiler>().As<IJoinSqlCompiler>();

@@ -24,17 +24,8 @@ public class RangeFacetPlugin(
 
     public static void RegisterPlugin(ContainerBuilder builder)
     {
-        RegisterLegacyRuntime(builder);
         RegisterComposerRuntime(builder);
         RegisterSharedPlugin(builder);
-    }
-
-    public static void RegisterLegacyRuntime(ContainerBuilder builder)
-    {
-        builder.RegisterType<RangeCategoryCountHelper>().Keyed<ICategoryCountHelper>(EFacetType.Range);
-        builder.RegisterType<RangeCategoryCountSqlCompiler>().Keyed<ICategoryCountSqlCompiler>(EFacetType.Range);
-        builder.RegisterType<RangeCategoryInfoService>().Keyed<ICategoryInfoService>(EFacetType.Range);
-        builder.RegisterType<RangePickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
     }
 
     public static void RegisterComposerRuntime(ContainerBuilder builder)
@@ -52,6 +43,7 @@ public class RangeFacetPlugin(
 
     public static void RegisterSharedPlugin(ContainerBuilder builder)
     {
+        builder.RegisterType<RangePickFilterCompiler>().Keyed<IPickFilterCompiler>(EFacetType.Range);
         builder.RegisterType<RangeFacetPlugin>().As<IRangeFacetPlugin>();
         builder.RegisterType<RangeFacetPlugin>().Keyed<IFacetPlugin>(EFacetType.Range);
     }

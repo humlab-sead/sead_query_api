@@ -105,11 +105,7 @@ public class DiscreteFacetContentQueryComposerTests
             FacetCode = "tbl_biblio_sample_groups",
             FacetTypeId = EFacetType.Discrete,
             CategoryIdExpr = "tbl_biblio.biblio_id",
-            Tables =
-            [
-                new FacetTable { SequenceId = 1, Table = biblio },
-                new FacetTable { SequenceId = 2, Table = sampleGroupReferences },
-            ],
+            Tables = [new FacetTable { SequenceId = 1, Table = biblio }, new FacetTable { SequenceId = 2, Table = sampleGroupReferences }],
             Clauses = [new FacetClause { Clause = "facet.view_sample_group_references.biblio_id is not null", EnforceConstraint = true }],
         };
 
@@ -274,12 +270,16 @@ public class DiscreteFacetContentQueryComposerTests
                 ]
             );
         _joinsClauseCompiler
-            .Setup(x => x.Compile(It.IsAny<System.Collections.Generic.List<System.Collections.Generic.List<TableRelation>>>(), facetsConfig))
+            .Setup(x =>
+                x.Compile(It.IsAny<System.Collections.Generic.List<System.Collections.Generic.List<TableRelation>>>(), facetsConfig)
+            )
             .Returns(["join facet.view_sample_group_references on facet.view_sample_group_references.biblio_id = tbl_biblio.biblio_id"]);
 
         var result = _composer.Compose(facetsConfig, composedFilterQuery, "biblio_id", anchorToTargetSql);
 
-        result.Sql.Should().Contain("join facet.view_sample_group_references on facet.view_sample_group_references.biblio_id = tbl_biblio.biblio_id");
+        result
+            .Sql.Should()
+            .Contain("join facet.view_sample_group_references on facet.view_sample_group_references.biblio_id = tbl_biblio.biblio_id");
         result.Sql.Should().Contain("where facet.view_sample_group_references.biblio_id is not null");
         result.Sql.Should().Contain("group by tbl_biblio.biblio_id");
     }

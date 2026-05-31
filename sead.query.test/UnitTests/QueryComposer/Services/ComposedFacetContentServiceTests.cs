@@ -38,7 +38,9 @@ public class ComposedFacetContentServiceTests
 
         act.Should()
             .Throw<InvalidOperationException>()
-            .WithMessage("*predicate facet 'sample_group' does not expose a simple source key column*Call CanHandle(...)*no longer fall back to the legacy runtime*");
+            .WithMessage(
+                "*predicate facet 'sample_group' does not expose a simple source key column*Call CanHandle(...)*no longer fall back to the legacy runtime*"
+            );
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
@@ -72,7 +74,9 @@ public class ComposedFacetContentServiceTests
 
         act.Should()
             .Throw<InvalidOperationException>()
-            .WithMessage("*target facet 'species' does not expose a routable target join column*Call CanHandle(...)*no longer fall back to the legacy runtime*");
+            .WithMessage(
+                "*target facet 'species' does not expose a routable target join column*Call CanHandle(...)*no longer fall back to the legacy runtime*"
+            );
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Never);
     }
 
@@ -90,9 +94,7 @@ public class ComposedFacetContentServiceTests
             },
         };
         var queryProxy = new Mock<ITypedQueryProxy>();
-        queryProxy
-            .Setup(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()))
-            .Returns(expectedItems);
+        queryProxy.Setup(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>())).Returns(expectedItems);
         var service = CreateService(queryProxy.Object);
         var facetsConfig = CreateCountryToSitesFacetsConfigWithoutCountryPicks();
 

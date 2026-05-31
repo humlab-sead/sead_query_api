@@ -1,7 +1,6 @@
 using Autofac;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder;
 using SQT;
 using SQT.Infrastructure;
 using SQT.Mocks;
@@ -15,7 +14,6 @@ public class IntegrationTestBase
     public DependencyService DependencyService { get; }
     public IContainer Container { get; private set; }
     public IResultSqlCompilerLocator SqlCompilerLocator { get; private set; }
-    public IQuerySetupBuilder QuerySetupBuilder { get; private set; }
     public IRepositoryRegistry Registry { get; private set; }
 
     public IntegrationTestBase(InMemoryFacetContext facetConfig = null)
@@ -24,11 +22,6 @@ public class IntegrationTestBase
         var builder = new ContainerBuilder();
         builder.RegisterModule(DependencyService);
         Container = builder.Build();
-        QuerySetupBuilder = new QuerySetupBuilder(
-            Container.Resolve<IPathFinder>(),
-            Container.Resolve<IPicksFilterCompiler>(),
-            Container.Resolve<IJoinsClauseCompiler>()
-        );
         SqlCompilerLocator = Container.Resolve<IResultSqlCompilerLocator>();
         Registry = Container.Resolve<IRepositoryRegistry>();
     }

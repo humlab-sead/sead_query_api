@@ -49,11 +49,11 @@ public class ResultProjectionHandoffBuilderTests : IntegrationTestBase
     public void Build_WithCountryFilteredMapResultAfterBogusPickUpdate_StillUsesTargetRouteJoin()
     {
         var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
-        var bogusPickService = Container.Resolve<IBogusPickService>();
+        var supportedRequestPickSanitizer = Container.Resolve<ISupportedRequestPickSanitizer>();
         var facetsConfig = FakeFacetsConfig("country:country@57");
         var resultConfig = FakeResultConfig("map_result", "map_result", "map");
 
-        bogusPickService.Update(facetsConfig);
+        supportedRequestPickSanitizer.Update(facetsConfig);
         var result = builder.Build(facetsConfig, resultConfig);
 
         result.QuerySetup.LeadingSql.Should().Contain("with composed_filter as");

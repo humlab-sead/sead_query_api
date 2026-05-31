@@ -32,7 +32,6 @@ namespace IntegrationTests.Sead
 
         private readonly IPathFinder _pathFinder;
         private readonly ISupportedRequestQuerySetupFactory _supportedRequestQuerySetupFactory;
-        private readonly IBogusPickService _bogusPickService;
         private readonly ISupportedRequestPickSanitizer _supportedRequestPickSanitizer;
 
         public QueryBuilderTests(PathFinderFixture fixture)
@@ -40,7 +39,6 @@ namespace IntegrationTests.Sead
         {
             _pathFinder = fixture.PathFinder;
             _supportedRequestQuerySetupFactory = Container.Resolve<ISupportedRequestQuerySetupFactory>();
-            _bogusPickService = Container.Resolve<IBogusPickService>();
             _supportedRequestPickSanitizer = Container.Resolve<ISupportedRequestPickSanitizer>();
         }
 
@@ -214,70 +212,11 @@ namespace IntegrationTests.Sead
 
             var queryFields = resultConfig.GetSortedFields();
 
-            var querySetup = QuerySetupBuilder.Build(facetsConfig, resultConfig.Facet, queryFields);
+            var querySetup = _supportedRequestQuerySetupFactory.CreateForResultProjection(facetsConfig, resultConfig.Facet, queryFields);
 
             var sqlQuery = SqlCompilerLocator.Locate(resultConfig.ViewTypeId).Compile(querySetup, resultConfig.Facet, queryFields);
 
             Assert.NotNull(sqlQuery);
-        }
-
-        [Theory]
-        [InlineData("sites:country@1,2,5/sites")]
-        [InlineData("palaeoentomology://sites:country@5/sites")]
-        public void Create_SupportedRequestQuerySetupFactory_MatchesLegacyBuilder(string uri)
-        {
-            var facetsConfig = FakeFacetsConfig(uri);
-
-            var legacyQuerySetup = QuerySetupBuilder.Build(facetsConfig, facetsConfig.TargetFacet, new List<string>(), null);
-            var supportedQuerySetup = _supportedRequestQuerySetupFactory.Create(facetsConfig, facetsConfig.TargetFacet);
-
-            Assert.Same(legacyQuerySetup.TargetConfig, supportedQuerySetup.TargetConfig);
-            Assert.Same(legacyQuerySetup.Facet, supportedQuerySetup.Facet);
-            Assert.Equal(legacyQuerySetup.Joins, supportedQuerySetup.Joins);
-            Assert.Equal(legacyQuerySetup.Criterias, supportedQuerySetup.Criterias);
-        }
-
-        [Theory]
-        [InlineData("sites:country@1,2,5/sites", "result_facet", "site_level", "tabular")]
-        public void CreateForResultProjection_SupportedRequestQuerySetupFactory_MatchesLegacyBuilder(
-            string uri,
-            string resultFacetCode,
-            string specificationKey,
-            string viewTypeId
-        )
-        {
-            var facetsConfig = FakeFacetsConfig(uri);
-            var resultConfig = FakeResultConfig(resultFacetCode, specificationKey, viewTypeId);
-            var resultFields = resultConfig.GetSortedFields().ToList();
-
-            var legacyQuerySetup = QuerySetupBuilder.Build(facetsConfig, resultConfig.Facet, resultFields);
-            var supportedQuerySetup = _supportedRequestQuerySetupFactory.CreateForResultProjection(
-                facetsConfig,
-                resultConfig.Facet,
-                resultFields
-            );
-
-            Assert.Same(legacyQuerySetup.TargetConfig, supportedQuerySetup.TargetConfig);
-            Assert.Same(legacyQuerySetup.Facet, supportedQuerySetup.Facet);
-            Assert.Equal(legacyQuerySetup.Joins, supportedQuerySetup.Joins);
-            Assert.Equal(legacyQuerySetup.Criterias, supportedQuerySetup.Criterias);
-        }
-
-        [Fact]
-        public void Update_SupportedRequestPickSanitizer_MatchesLegacyBogusPickService()
-        {
-            const string uri = "sites:country@10/sites";
-
-            var legacyFacetsConfig = FakeFacetsConfig(uri);
-            var supportedFacetsConfig = FakeFacetsConfig(uri);
-
-            _bogusPickService.Update(legacyFacetsConfig);
-            _supportedRequestPickSanitizer.Update(supportedFacetsConfig);
-
-            var legacyPicks = legacyFacetsConfig.GetConfig("country").Picks.Select(x => (x.PickValue, x.Text)).ToList();
-            var supportedPicks = supportedFacetsConfig.GetConfig("country").Picks.Select(x => (x.PickValue, x.Text)).ToList();
-
-            Assert.Equal(legacyPicks, supportedPicks);
         }
     }
 }

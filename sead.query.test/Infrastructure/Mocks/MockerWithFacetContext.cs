@@ -146,48 +146,30 @@ namespace SQT
         public QuerySetup FakeCountOrContentQuerySetup(FacetsConfig2 facetsConfig, string pickCriteria = null)
         {
             List<string> fakeJoins = FakeJoinsClause(5);
-            var joinsCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { pickCriteria ?? "ID IN (1,2,3)" };
-            var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var pathFinder = ScaffoldUtility.DefaultRouteFinder(Registry);
 
-            // FIXME: Should be mocked
-            var compiler = new QuerySetupBuilder(pathFinder, mockPicksCompiler.Object, joinsCompiler.Object);
-
-            var querySetup = compiler.Build(facetsConfig, facetsConfig.TargetFacet, new List<string>(), null);
-
-            return querySetup;
+            return new QuerySetup
+            {
+                TargetConfig = facetsConfig.TargetConfig,
+                Facet = facetsConfig.TargetFacet,
+                Joins = fakeJoins,
+                Criterias = fakePickCriteria,
+            };
         }
 
         public QuerySetup FakeResultQuerySetup(FacetsConfig2 facetsConfig, string resultFacetCode, string specificationKey)
         {
-            var resultFields = Registry.Results.GetFieldsByKey(specificationKey);
             var fakeJoins = FakeJoinsClause(5);
-            var joinCompiler = MockJoinsClauseCompiler(fakeJoins);
             var fakePickCriteria = new List<string> { "ID IN (1,2,3)" };
-            var mockPicksCompiler = MockPicksFilterCompiler(fakePickCriteria);
-            var pathFinder = ScaffoldUtility.DefaultRouteFinder(Registry);
             var resultFacet = Registry.Facets.GetByCode(resultFacetCode);
 
-            // FIXME: Should be mocked
-            var compiler = new QuerySetupBuilder(pathFinder, mockPicksCompiler.Object, joinCompiler.Object);
-            var querySetup = compiler.Build(facetsConfig, resultFacet, resultFields);
-
-            return querySetup;
-        }
-
-        /// <summary>
-        /// Mocks IQuerySetupBuilder.Setup. Returns passed argument.
-        /// </summary>
-        /// <param name="querySetup"></param>
-        /// <returns></returns>
-        public virtual Mock<IQuerySetupBuilder> MockQuerySetupBuilder(QuerySetup querySetup)
-        {
-            var mockQuerySetupBuilder = new Mock<IQuerySetupBuilder>();
-            mockQuerySetupBuilder
-                .Setup(x => x.Build(It.IsAny<FacetsConfig2>(), It.IsAny<Facet>(), It.IsAny<List<string>>(), It.IsAny<List<string>>()))
-                .Returns(querySetup ?? new QuerySetup());
-            return mockQuerySetupBuilder;
+            return new QuerySetup
+            {
+                TargetConfig = facetsConfig.TargetConfig,
+                Facet = resultFacet,
+                Joins = fakeJoins,
+                Criterias = fakePickCriteria,
+            };
         }
 
         public virtual Mock<ISupportedRequestQuerySetupFactory> MockSupportedRequestQuerySetupFactory(QuerySetup querySetup)
@@ -463,23 +445,6 @@ namespace SQT
             var mock = new Mock<DiscreteCategoryInfoSqlCompiler>();
             mock.Setup(x => x.Compile(It.IsAny<QuerySetup>(), It.IsAny<Facet>(), It.IsAny<string>())).Returns(returnSql);
             return mock;
-        }
-
-        protected Mock<ICategoryCountService> MockCategoryCountService(List<CategoryItem> fakeCategoryCountItems)
-        {
-            var mockCategoryCountService = new Mock<ICategoryCountService>();
-            mockCategoryCountService
-                .Setup(x => x.Load(It.IsAny<string>(), It.IsAny<FacetsConfig2>(), EFacetType.Unknown))
-                .Returns(
-                    new CategoryCountService.CategoryCountData
-                    {
-                        CategoryInfo = new FacetContent.CategoryInfo { Count = fakeCategoryCountItems.Count, Query = "all-categories-sql" },
-                        CategoryCounts = fakeCategoryCountItems.ToDictionary(z => z.Category),
-                        OuterCategoryCounts = fakeCategoryCountItems,
-                        SqlQuery = "SELECT * FROM bla.bla",
-                    }
-                );
-            return mockCategoryCountService;
         }
 
         public static class RouteHelper
