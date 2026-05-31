@@ -13,18 +13,23 @@ namespace SeadQueryCore
         Dictionary<string, Facet> ToDictionary();
     }
 
+    public interface IFacetTypeRepository : IRepository<FacetType, int> { }
 
-    public interface IFacetTypeRepository : IRepository<FacetType, int>
-    {
-    }
-
-    public interface IFacetGroupRepository : IRepository<FacetGroup, int>
-    {
-    }
+    public interface IFacetGroupRepository : IRepository<FacetGroup, int> { }
 
     public interface IFacetTableRepository : IRepository<FacetTable, int>
     {
         List<FacetTable> FindThoseWithAlias();
         FacetTable GetByAlias(string aliasName);
+    }
+
+    public interface IFacetAnchorRepository : IRepository<FacetAnchor, int> { }
+
+    public interface IAnchorRepository : IRepository<Anchor, int> { }
+
+    public interface IRouteRepository : IRepository<Route, int>
+    {
+        Route GetRoute(string route);
+        bool HasRoute(string route);
     }
 }

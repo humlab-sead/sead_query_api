@@ -1,16 +1,18 @@
-﻿using SeadQueryCore.Model.Ext;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using SeadQueryCore.Model.Ext;
 
 namespace SeadQueryCore
 {
     public class TabularResultSqlCompiler : IResultSqlCompiler
     {
         string IResultSqlCompiler.ViewTypeId => "tabular";
-        
+
         public string Compile(QueryBuilder.QuerySetup querySetup, Facet notUsed, IEnumerable<ResultSpecificationField> fields)
         {
-            string sql = $@"
+            string sql =
+                $@"
+            {querySetup.LeadingSql}
             SELECT {fields.GetResultCompiledValueFields().ToList().Combine(", ")}
             FROM (
                 SELECT {fields.GetResultColumnNameAliasPairs().Select(x => $"{x.ColumnName} AS {x.Alias}").ToList().Combine(", ")}

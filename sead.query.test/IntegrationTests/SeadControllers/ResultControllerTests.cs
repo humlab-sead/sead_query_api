@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,24 +11,19 @@ using SQT;
 using SQT.CollectionFixtures;
 using SQT.Infrastructure;
 using SQT.SQL.Matcher;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace IntegrationTests.Sead
 {
-    public class ResultTestHostWithContainer : TestHostFixture<FacetDependencyService>
-    {
-    }
+    public class ResultTestHostWithContainer : TestHostFixture<FacetDependencyService> { }
 
     [Collection("UsePostgresFixture")]
     public class ResultControllerTests : ControllerTest<TestHostWithContainer>, IClassFixture<TestHostWithContainer>
     {
         public MockerWithFacetContext MockService { get; }
 
-        public ResultControllerTests(TestHostWithContainer hostBuilderFixture) : base(hostBuilderFixture)
+        public ResultControllerTests(TestHostWithContainer hostBuilderFixture)
+            : base(hostBuilderFixture)
         {
             MockService = new MockerWithFacetContext();
         }
@@ -68,8 +67,28 @@ namespace IntegrationTests.Sead
         [InlineData("genus:dataset_provider@10/sites@1985,2044,2046,2017,2045/genus@764,551")]
         [InlineData("relative_age_name:relative_age_name", "tbl_analysis_entities")]
         [InlineData("dataset_provider:dataset_provider@1", "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
-        [InlineData("country:country@10", "tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "facet.site_location_shortcut", "tbl_datasets", "tbl_methods", "tbl_record_types")]
-        [InlineData("country:country", "tbl_analysis_entities", "tbl_physical_samples", "tbl_sample_groups", "tbl_sites", "facet.site_location_shortcut", "tbl_datasets", "tbl_methods", "tbl_record_types")]
+        [InlineData(
+            "country:country@10",
+            "tbl_analysis_entities",
+            "tbl_physical_samples",
+            "tbl_sample_groups",
+            "tbl_sites",
+            "facet.site_location_shortcut",
+            "tbl_datasets",
+            "tbl_methods",
+            "tbl_record_types"
+        )]
+        [InlineData(
+            "country:country",
+            "tbl_analysis_entities",
+            "tbl_physical_samples",
+            "tbl_sample_groups",
+            "tbl_sites",
+            "facet.site_location_shortcut",
+            "tbl_datasets",
+            "tbl_methods",
+            "tbl_record_types"
+        )]
         [InlineData("sites:country@10/sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
         [InlineData("pollen://sites:sites", "tbl_analysis_entities", "tbl_sites", "tbl_sample_groups", "tbl_physical_samples")]
@@ -111,8 +130,14 @@ namespace IntegrationTests.Sead
             Assert.True(match.InnerSelect.Success);
             Assert.NotEmpty(match.InnerSelect.Tables);
 
-            Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
-
+            if (sqlQuery.Contains("with composed_filter as"))
+            {
+                Assert.True(expectedJoins.All(sqlQuery.Contains));
+            }
+            else
+            {
+                Assert.True(expectedJoins.All(x => match.InnerSelect.Tables.Contains(x)));
+            }
         }
 
         /// <summary>
@@ -123,7 +148,12 @@ namespace IntegrationTests.Sead
         /// <returns></returns>
         [Theory]
         [ClassData(typeof(CompleteSetOfSingleTabularResultUriCollection))]
-        public async Task LoadTabular_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(string uri, string resultFacetCode, string specificationKey, string viewType)
+        public async Task LoadTabular_DomainFacetsWithSingleChildFacet_HasExpectedSqlQuery(
+            string uri,
+            string resultFacetCode,
+            string specificationKey,
+            string viewType
+        )
         {
             // Arrange
             var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
@@ -165,7 +195,12 @@ namespace IntegrationTests.Sead
         [Theory]
         [InlineData("sites:data_types@5/rdb_codes@13,21/sites", "map_result", "site_level", "map")]
         [ClassData(typeof(CompleteSetOfSingleMapResultUriCollection))]
-        public async Task LoadMap_StateUnderTest_ExpectedBehavior(string uri, string resultFacetCode, string specificationKey, string viewType)
+        public async Task LoadMap_StateUnderTest_ExpectedBehavior(
+            string uri,
+            string resultFacetCode,
+            string specificationKey,
+            string viewType
+        )
         {
             // Arrange
             var payload = FakeLoadResultPayload(uri, resultFacetCode, specificationKey, viewType);
@@ -195,6 +230,1468 @@ namespace IntegrationTests.Sead
             var match = matcher.Match(sqlQuery);
 
             Assert.True(match.Success);
+        }
+
+        [Fact]
+        public async Task LoadTabular_RangeFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("sites:sites@1,2/geochronology@(0,100)", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+            Assert.Contains(" >= 0", sqlQuery);
+            Assert.Contains(" <= 100", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_CountryFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("country:country@57", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_RangeFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("sites:geochronology@(0,100)/sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+            Assert.Contains(" >= 0", sqlQuery);
+            Assert.Contains(" <= 100", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_CountryFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("country:country@57", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_IntersectFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload(
+                "analysis_entity_ages:analysis_entity_ages@850000,2350000",
+                "result_facet",
+                "site_level",
+                "tabular"
+            );
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+            Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_GeoPolygonFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload(
+                "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738",
+                "result_facet",
+                "site_level",
+                "tabular"
+            );
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+            Assert.Contains("ST_Within(", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_GeoPolygonFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload(
+                "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738",
+                "map_result",
+                "map_result",
+                "map"
+            );
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+            Assert.Contains("ST_Within(", sqlQuery);
+        }
+
+                [Fact]
+                public async Task LoadMap_GeoPolygonFilteredSinglePickRequest_UsesComposedFilterSql()
+                {
+                        const string payloadJson = @"{
+    ""facetsConfig"": {
+        ""RequestId"": ""1"",
+        ""DomainCode"": """",
+        ""RequestType"": ""populate"",
+        ""TargetCode"": ""sites_polygon"",
+        ""FacetConfigs"": [
+            {
+                ""FacetCode"": ""sites_polygon"",
+                ""Position"": 0,
+                ""TextFilter"": """",
+                ""Picks"": [
+                    {
+                        ""PickValue"": ""63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"",
+                        ""Text"": ""63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738""
+                    }
+                ]
+            }
+        ]
+    },
+    ""resultConfig"": {
+        ""RequestId"": ""1"",
+        ""SessionId"": ""1"",
+        ""FacetCode"": ""map_result"",
+        ""ViewTypeId"": ""map"",
+        ""AggregateKeys"": [""site_level""]
+    }
+}";
+
+                        using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+                        using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+                        response.EnsureSuccessStatusCode();
+
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+                        Assert.NotNull(result);
+                        Assert.NotNull(result.Query);
+
+                        var sqlQuery = result.Query.Squeeze();
+
+                        Assert.Contains("with composed_filter as", sqlQuery);
+                        Assert.Contains("target_route as", sqlQuery);
+                        Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+                        Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+                        Assert.Contains("ST_Within(", sqlQuery);
+                }
+
+        [Fact]
+        public async Task LoadMap_IntersectFilteredRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload(
+                "analysis_entity_ages:analysis_entity_ages@850000,2350000/sites",
+                "map_result",
+                "map_result",
+                "map"
+            );
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+            Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
+        }
+
+                [Fact]
+                public async Task LoadMap_IntersectFilteredRequestWithEmptySitesConfig_UsesComposedFilterSql()
+                {
+                        const string payloadJson = @"{
+    ""facetsConfig"": {
+        ""RequestId"": ""1"",
+        ""DomainCode"": """",
+        ""RequestType"": ""populate"",
+        ""TargetCode"": ""analysis_entity_ages"",
+        ""FacetConfigs"": [
+            {
+                ""FacetCode"": ""analysis_entity_ages"",
+                ""Position"": 0,
+                ""TextFilter"": """",
+                ""Picks"": [
+                    {
+                        ""PickValue"": ""850000"",
+                        ""Text"": ""850000""
+                    },
+                    {
+                        ""PickValue"": ""2350000"",
+                        ""Text"": ""2350000""
+                    }
+                ]
+            },
+            {
+                ""FacetCode"": ""sites"",
+                ""Position"": 1,
+                ""TextFilter"": """",
+                ""Picks"": []
+            }
+        ]
+    },
+    ""resultConfig"": {
+        ""RequestId"": ""1"",
+        ""SessionId"": ""1"",
+        ""FacetCode"": ""map_result"",
+        ""ViewTypeId"": ""map"",
+        ""AggregateKeys"": [""site_level""]
+    }
+}";
+
+                        using var payload = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+                        using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+                        response.EnsureSuccessStatusCode();
+
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+                        Assert.NotNull(result);
+                        Assert.NotNull(result.Query);
+
+                        var sqlQuery = result.Query.Squeeze();
+
+                        Assert.Contains("with composed_filter as", sqlQuery);
+                        Assert.Contains("target_route as", sqlQuery);
+                        Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+                        Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+                        Assert.Contains("int4range(850000, 2350000, '[]')", sqlQuery);
+                }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyGenusRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("genus:genus", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyArchaeobotanyGenusRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://genus:genus", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPollenGenusRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://genus:genus", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyDendrochronologyGenusRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://genus:genus", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPalaeoentomologyGenusRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://genus:genus", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Theory]
+        [InlineData("palaeoentomology://feature_type:feature_type")]
+        [InlineData("archaeobotany://feature_type:feature_type")]
+        [InlineData("pollen://feature_type:feature_type")]
+        [InlineData("geoarchaeology://feature_type:feature_type")]
+        [InlineData("dendrochronology://feature_type:feature_type")]
+        [InlineData("ceramic://feature_type:feature_type")]
+        public async Task LoadTabular_TargetOnlyPrefixedFeatureTypeRequest_UsesComposedFilterSql(string uri)
+        {
+            var payload = FakeLoadResultPayload(uri, "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyIsotopeSitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("isotope://sites:sites", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyIsotopeSitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("isotope://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlySitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPollenSitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyCeramicSitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("ceramic://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyGeoarchaeologySitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("geoarchaeology://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyDendrochronologySitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyArchaeobotanySitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPalaeoentomologySitesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://sites:sites", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPalaeoentomologyDataTypesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://data_types:data_types", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPalaeoentomologySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://sample_groups:sample_groups", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPalaeoentomologySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://sample_groups:sample_groups", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyArchaeobotanyDataTypesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://data_types:data_types", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPalaeoentomologyRdbCodesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://rdb_codes:rdb_codes", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPalaeoentomologyRdbCodesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://rdb_codes:rdb_codes", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPollenDataTypesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://data_types:data_types", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyAbundanceClassificationRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload(
+                "abundance_classification:abundance_classification",
+                "result_facet",
+                "site_level",
+                "tabular"
+            );
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyGeoarchaeologyDataTypesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("geoarchaeology://data_types:data_types", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyDendrochronologyDataTypesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://data_types:data_types", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyCeramicDataTypesRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("ceramic://data_types:data_types", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPalaeoentomologyRdbSystemsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://rdb_systems:rdb_systems", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPalaeoentomologyRdbSystemsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://rdb_systems:rdb_systems", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPalaeoentomologyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://country:country", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPalaeoentomologyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("palaeoentomology://country:country", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyDendrochronologyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://country:country", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyDendrochronologyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://country:country", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyCeramicCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("ceramic://country:country", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyCeramicCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("ceramic://country:country", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyArchaeobotanyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://country:country", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyArchaeobotanyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://country:country", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPollenCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://country:country", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPollenCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://country:country", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyGeoarchaeologyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("geoarchaeology://country:country", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyGeoarchaeologyCountryRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("geoarchaeology://country:country", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("facet.site_location_shortcut", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyArchaeobotanySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://sample_groups:sample_groups", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyArchaeobotanySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("archaeobotany://sample_groups:sample_groups", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyPollenSampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://sample_groups:sample_groups", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyPollenSampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("pollen://sample_groups:sample_groups", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyGeoarchaeologySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("geoarchaeology://sample_groups:sample_groups", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyGeoarchaeologySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("geoarchaeology://sample_groups:sample_groups", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyDendrochronologySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://sample_groups:sample_groups", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyDendrochronologySampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("dendrochronology://sample_groups:sample_groups", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadTabular_TargetOnlyCeramicSampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("ceramic://sample_groups:sample_groups", "result_facet", "site_level", "tabular");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", sqlQuery);
+        }
+
+        [Fact]
+        public async Task LoadMap_TargetOnlyCeramicSampleGroupsRequest_UsesComposedFilterSql()
+        {
+            var payload = FakeLoadResultPayload("ceramic://sample_groups:sample_groups", "map_result", "map_result", "map");
+
+            using var response = await Fixture.Client.PostAsync("api/result/load", payload);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResultContentSet>(responseContent);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Query);
+
+            var sqlQuery = result.Query.Squeeze();
+
+            Assert.Contains("with composed_filter as", sqlQuery);
+            Assert.Contains("from tbl_analysis_entities", sqlQuery);
+            Assert.Contains("target_route as", sqlQuery);
+            Assert.Contains("join target_route on target_route.target_id = tbl_sites.site_id", sqlQuery);
+            Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", sqlQuery);
         }
     }
 }

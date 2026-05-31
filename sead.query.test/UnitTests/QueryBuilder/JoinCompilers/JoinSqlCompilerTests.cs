@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Moq;
 using SeadQueryCore;
-using System;
 using Xunit;
-using System.Text.RegularExpressions;
 
 namespace SQT.SqlCompilers
 {
@@ -32,10 +32,10 @@ namespace SQT.SqlCompilers
                 SourceTableId = 46,
                 TargetTableId = 113,
                 Weight = 5,
-                SourceColumName = "location_id",
+                SourceColumnName = "location_id",
                 TargetColumnName = "location_id",
                 SourceTable = new Table() { TableId = 46, TableOrUdfName = "countries" },
-                TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations" }
+                TargetTable = new Table() { TableId = 113, TableOrUdfName = "tbl_site_locations" },
             };
 
             FacetTable facetTable = new FacetTable
@@ -46,7 +46,7 @@ namespace SQT.SqlCompilers
                 TableId = edge.TargetTableId,
                 Table = edge.TargetTable,
                 UdfCallArguments = null,
-                Alias = ""
+                Alias = "",
             };
 
             // Act
@@ -67,10 +67,10 @@ namespace SQT.SqlCompilers
             {
                 TableRelationId = -2151,
                 Weight = 5,
-                SourceColumName = "a",
+                SourceColumnName = "a",
                 TargetColumnName = "a",
                 SourceTable = new Table() { TableId = 1, TableOrUdfName = "A" },
-                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B" }
+                TargetTable = new Table() { TableId = 2, TableOrUdfName = "B" },
             };
 
             FacetTable facetTable = new FacetTable
@@ -81,7 +81,7 @@ namespace SQT.SqlCompilers
                 TableId = edge.TargetTableId,
                 Table = edge.TargetTable,
                 UdfCallArguments = null,
-                Alias = ""
+                Alias = "",
             };
 
             // Act

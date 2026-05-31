@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SeadQueryCore;
 
-using Route = List<TableRelation>;
+using Edges = List<TableRelation>;
 using Graph = List<TableRelation>;
 using Nodes = Dictionary<string, Table>;
 
@@ -13,9 +13,10 @@ public interface IDefaultGraphFactory
     Graph CreateGraph();
 }
 
-public class DefaultGraphFactory: IDefaultGraphFactory
+public class DefaultGraphFactory : IDefaultGraphFactory
 {
     private IRepositoryRegistry Registry;
+
     public DefaultGraphFactory(IRepositoryRegistry registry)
     {
         Registry = registry;
@@ -29,35 +30,49 @@ public class DefaultGraphFactory: IDefaultGraphFactory
 
 public class PathFinder : IPathFinder
 {
-
     public Graph Graph { get; set; }
     public Nodes Nodes { get; private set; }
 
     public PathFinder(IDefaultGraphFactory factory)
     {
-        Graph = factory.CreateGraph();
+        Graph = CreateBidirectionalGraph(factory.CreateGraph());
         Nodes = Graph.GetNodes();
     }
 
     public PathFinder(Graph edges)
     {
-        Graph = edges;
-        Nodes = edges.GetNodes();
+        Graph = CreateBidirectionalGraph(edges);
+        Nodes = Graph.GetNodes();
     }
 
-    public PathFinder(Graph edges, Nodes nodes) : this(edges)
+    public PathFinder(Graph edges, Nodes nodes)
+        : this(edges)
     {
         Nodes = nodes;
     }
 
-    public List<Route> Find(string start, List<string> targets, bool reduce = true)
+    private static Graph CreateBidirectionalGraph(Graph edges)
+    {
+        var graph = edges ?? throw new ArgumentNullException(nameof(edges));
+        var reversedEdges = graph
+            .Where(edge => edge.SourceTableId != edge.TargetTableId)
+            .Select(edge => edge.Reverse())
+            .Where(reverse =>
+                !graph.Any(existing => existing.SourceTableId == reverse.SourceTableId && existing.TargetTableId == reverse.TargetTableId)
+            )
+            .ToList();
+
+        return [.. graph, .. reversedEdges];
+    }
+
+    public List<Edges> Find(string start, List<string> targets, bool reduce = true)
     {
         var routes = targets.Where(z => z != start).Select(z => Find(start, z)).ToList();
 
         return reduce ? routes.ReduceEdges() : routes;
     }
 
-    public Route Find(string source, string target)
+    public Edges Find(string source, string target)
     {
         var sourceNode = Nodes[source];
         var destinationNode = Nodes[target];
@@ -65,7 +80,7 @@ public class PathFinder : IPathFinder
         return route;
     }
 
-    public Route Find(int source, int target)
+    public Edges Find(int source, int target)
     {
         IEnumerable<int> trail = new DijkstrasGraph<int>(Graph.ToValueTuples()).FindShortestPath(source, target);
 
@@ -76,9 +91,7 @@ public class PathFinder : IPathFinder
         return route;
     }
 
-    public Route ToRoute(IEnumerable<int> trail) => ToEdges(trail);
+    public Edges ToRoute(IEnumerable<int> trail) => ToEdges(trail);
 
-    public Route ToEdges(IEnumerable<int> trail)
-        => trail.PairWise((a, b) => Graph.GetEdge(a, b)).ToList();
-
+    public Edges ToEdges(IEnumerable<int> trail) => trail.PairWise((a, b) => Graph.GetEdge(a, b)).ToList();
 }

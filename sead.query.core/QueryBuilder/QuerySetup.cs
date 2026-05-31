@@ -6,14 +6,12 @@ namespace SeadQueryCore.QueryBuilder
     {
         public FacetConfig2 TargetConfig { get; set; }
         public Facet Facet { get; set; }
+        public string LeadingSql { get; set; } = string.Empty;
         public List<string> Joins { get; set; }
         public List<string> Criterias { get; set; }
 
         // public string CategoryTextFilter { get { return TargetConfig?.TextFilter ?? "";  } }
 
-        public QuerySetup()
-        {
-        }
-
+        public QuerySetup() { }
     }
 }

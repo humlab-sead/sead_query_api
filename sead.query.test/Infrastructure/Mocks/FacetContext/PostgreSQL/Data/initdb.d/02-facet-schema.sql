@@ -380,6 +380,38 @@ CREATE VIEW facet.abundance_taxon_shortcut AS
 SET default_table_access_method = heap;
 
 --
+-- Name: anchor; Type: TABLE; Schema: facet; Owner: -
+--
+
+CREATE TABLE facet.anchor (
+    anchor_id integer NOT NULL,
+    table_id integer,
+    name text NOT NULL,
+    description text NOT NULL
+);
+
+
+--
+-- Name: anchor_anchor_id_seq; Type: SEQUENCE; Schema: facet; Owner: -
+--
+
+CREATE SEQUENCE facet.anchor_anchor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: anchor_anchor_id_seq; Type: SEQUENCE OWNED BY; Schema: facet; Owner: -
+--
+
+ALTER SEQUENCE facet.anchor_anchor_id_seq OWNED BY facet.anchor.anchor_id;
+
+
+--
 -- Name: facet; Type: TABLE; Schema: facet; Owner: -
 --
 
@@ -399,8 +431,42 @@ CREATE TABLE facet.facet (
     is_default boolean NOT NULL,
     aggregate_type character varying(256) NOT NULL,
     aggregate_title character varying(256) NOT NULL,
-    aggregate_facet_id integer NOT NULL
+    aggregate_facet_id integer NOT NULL,
+    source_table_id integer,
+    source_udf_arguments text
 );
+
+
+--
+-- Name: facet_anchor; Type: TABLE; Schema: facet; Owner: -
+--
+
+CREATE TABLE facet.facet_anchor (
+    facet_anchor_id integer NOT NULL,
+    facet_id integer,
+    anchor_id integer,
+    route_id integer NOT NULL
+);
+
+
+--
+-- Name: facet_anchor_facet_anchor_id_seq; Type: SEQUENCE; Schema: facet; Owner: -
+--
+
+CREATE SEQUENCE facet.facet_anchor_facet_anchor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: facet_anchor_facet_anchor_id_seq; Type: SEQUENCE OWNED BY; Schema: facet; Owner: -
+--
+
+ALTER SEQUENCE facet.facet_anchor_facet_anchor_id_seq OWNED BY facet.facet_anchor.facet_anchor_id;
 
 
 --
@@ -492,6 +558,41 @@ CREATE TABLE facet.facet_group (
 
 
 --
+-- Name: config_revision; Type: TABLE; Schema: facet; Owner: -
+--
+
+CREATE TABLE facet.config_revision (
+    revision_id integer NOT NULL,
+    config_revision character varying(128) NOT NULL,
+    source_commit character varying(128) DEFAULT ''::character varying NOT NULL,
+    content_hash character varying(128) NOT NULL,
+    imported_at timestamp with time zone NOT NULL,
+    imported_by character varying(128) NOT NULL,
+    is_active boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: config_revision_revision_id_seq; Type: SEQUENCE; Schema: facet; Owner: -
+--
+
+CREATE SEQUENCE facet.config_revision_revision_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: config_revision_revision_id_seq; Type: SEQUENCE OWNED BY; Schema: facet; Owner: -
+--
+
+ALTER SEQUENCE facet.config_revision_revision_id_seq OWNED BY facet.config_revision.revision_id;
+
+
+--
 -- Name: facet_table; Type: TABLE; Schema: facet; Owner: -
 --
 
@@ -566,7 +667,8 @@ CREATE TABLE facet."table" (
     schema_name information_schema.sql_identifier DEFAULT ''::name NOT NULL,
     table_or_udf_name information_schema.sql_identifier NOT NULL,
     primary_key_name information_schema.sql_identifier DEFAULT ''::name NOT NULL,
-    is_udf boolean DEFAULT false NOT NULL
+    is_udf boolean DEFAULT false NOT NULL,
+    entity_name text DEFAULT ''::text NOT NULL
 );
 
 
@@ -733,6 +835,73 @@ CREATE TABLE facet.result_view_type (
     sql_compiler character varying(80) DEFAULT ''::character varying NOT NULL,
     specification_key character varying(40) DEFAULT ''::character varying NOT NULL
 );
+
+
+--
+-- Name: route; Type: TABLE; Schema: facet; Owner: -
+--
+
+CREATE TABLE facet.route (
+    route_id integer NOT NULL,
+    route_name text NOT NULL,
+    source_table_id integer NOT NULL,
+    target_table_id integer NOT NULL,
+    specification text,
+    route_alias text
+);
+
+
+--
+-- Name: route_route_id_seq; Type: SEQUENCE; Schema: facet; Owner: -
+--
+
+CREATE SEQUENCE facet.route_route_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: route_route_id_seq; Type: SEQUENCE OWNED BY; Schema: facet; Owner: -
+--
+
+ALTER SEQUENCE facet.route_route_id_seq OWNED BY facet.route.route_id;
+
+
+--
+-- Name: route_step; Type: TABLE; Schema: facet; Owner: -
+--
+
+CREATE TABLE facet.route_step (
+    route_step_id integer NOT NULL,
+    route_id integer NOT NULL,
+    sequence_id integer NOT NULL,
+    table_id integer NOT NULL,
+    key_name text NOT NULL
+);
+
+
+--
+-- Name: route_step_route_step_id_seq; Type: SEQUENCE; Schema: facet; Owner: -
+--
+
+CREATE SEQUENCE facet.route_step_route_step_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: route_step_route_step_id_seq; Type: SEQUENCE OWNED BY; Schema: facet; Owner: -
+--
+
+ALTER SEQUENCE facet.route_step_route_step_id_seq OWNED BY facet.route_step.route_step_id;
 
 
 --
@@ -910,6 +1079,27 @@ UNION
 
 
 --
+-- Name: anchor anchor_id; Type: DEFAULT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.anchor ALTER COLUMN anchor_id SET DEFAULT nextval('facet.anchor_anchor_id_seq'::regclass);
+
+
+--
+-- Name: config_revision revision_id; Type: DEFAULT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.config_revision ALTER COLUMN revision_id SET DEFAULT nextval('facet.config_revision_revision_id_seq'::regclass);
+
+
+--
+-- Name: facet_anchor facet_anchor_id; Type: DEFAULT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.facet_anchor ALTER COLUMN facet_anchor_id SET DEFAULT nextval('facet.facet_anchor_facet_anchor_id_seq'::regclass);
+
+
+--
 -- Name: facet_clause facet_clause_id; Type: DEFAULT; Schema: facet; Owner: -
 --
 
@@ -945,10 +1135,48 @@ ALTER TABLE ONLY facet.result_specification_field ALTER COLUMN specification_fie
 
 
 --
+-- Name: route route_id; Type: DEFAULT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route ALTER COLUMN route_id SET DEFAULT nextval('facet.route_route_id_seq'::regclass);
+
+
+--
+-- Name: route_step route_step_id; Type: DEFAULT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route_step ALTER COLUMN route_step_id SET DEFAULT nextval('facet.route_step_route_step_id_seq'::regclass);
+
+
+--
 -- Name: table_relation table_relation_id; Type: DEFAULT; Schema: facet; Owner: -
 --
 
 ALTER TABLE ONLY facet.table_relation ALTER COLUMN table_relation_id SET DEFAULT nextval('facet.table_relation_table_relation_id_seq'::regclass);
+
+
+--
+-- Name: anchor anchor_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.anchor
+    ADD CONSTRAINT anchor_pkey PRIMARY KEY (anchor_id);
+
+
+--
+-- Name: config_revision config_revision_config_revision_key; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.config_revision
+    ADD CONSTRAINT config_revision_config_revision_key UNIQUE (config_revision);
+
+
+--
+-- Name: config_revision config_revision_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.config_revision
+    ADD CONSTRAINT config_revision_pkey PRIMARY KEY (revision_id);
 
 
 --
@@ -957,6 +1185,14 @@ ALTER TABLE ONLY facet.table_relation ALTER COLUMN table_relation_id SET DEFAULT
 
 ALTER TABLE ONLY facet.facet_children
     ADD CONSTRAINT child_facet_pkey PRIMARY KEY (facet_code, child_facet_code);
+
+
+--
+-- Name: facet_anchor facet_anchor_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.facet_anchor
+    ADD CONSTRAINT facet_anchor_pkey PRIMARY KEY (facet_anchor_id);
 
 
 --
@@ -1072,6 +1308,38 @@ ALTER TABLE ONLY facet.result_view_type
 
 
 --
+-- Name: route route_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route
+    ADD CONSTRAINT route_pkey PRIMARY KEY (route_id);
+
+
+--
+-- Name: route route_route_name_key; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route
+    ADD CONSTRAINT route_route_name_key UNIQUE (route_name);
+
+
+--
+-- Name: route_step route_step_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route_step
+    ADD CONSTRAINT route_step_pkey PRIMARY KEY (route_step_id);
+
+
+--
+-- Name: route_step route_step_table_id_key; Type: CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route_step
+    ADD CONSTRAINT route_step_table_id_key UNIQUE (table_id);
+
+
+--
 -- Name: table table_pkey; Type: CONSTRAINT; Schema: facet; Owner: -
 --
 
@@ -1118,6 +1386,38 @@ CREATE INDEX idx_table_relation_fk2 ON facet.table_relation USING btree (target_
 
 
 --
+-- Name: anchor anchor_table_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.anchor
+    ADD CONSTRAINT anchor_table_id_fkey FOREIGN KEY (table_id) REFERENCES facet."table"(table_id) DEFERRABLE;
+
+
+--
+-- Name: facet_anchor facet_anchor_anchor_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.facet_anchor
+    ADD CONSTRAINT facet_anchor_anchor_id_fkey FOREIGN KEY (anchor_id) REFERENCES facet.anchor(anchor_id) DEFERRABLE;
+
+
+--
+-- Name: facet_anchor facet_anchor_facet_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.facet_anchor
+    ADD CONSTRAINT facet_anchor_facet_id_fkey FOREIGN KEY (facet_id) REFERENCES facet.facet(facet_id) DEFERRABLE;
+
+
+--
+-- Name: facet_anchor facet_anchor_route_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.facet_anchor
+    ADD CONSTRAINT facet_anchor_route_id_fkey FOREIGN KEY (route_id) REFERENCES facet.route(route_id) DEFERRABLE;
+
+
+--
 -- Name: facet_clause facet_clause_facet_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
 --
 
@@ -1155,6 +1455,14 @@ ALTER TABLE ONLY facet.facet
 
 ALTER TABLE ONLY facet.facet
     ADD CONSTRAINT facet_facet_type_id_fkey FOREIGN KEY (facet_type_id) REFERENCES facet.facet_type(facet_type_id) DEFERRABLE;
+
+
+--
+-- Name: facet facet_source_table_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.facet
+    ADD CONSTRAINT facet_source_table_id_fkey FOREIGN KEY (source_table_id) REFERENCES facet."table"(table_id) DEFERRABLE;
 
 
 --
@@ -1227,6 +1535,30 @@ ALTER TABLE ONLY facet.result_field
 
 ALTER TABLE ONLY facet.result_field
     ADD CONSTRAINT result_field_table_name_fkey FOREIGN KEY (table_name) REFERENCES facet."table"(table_or_udf_name) DEFERRABLE;
+
+
+--
+-- Name: route route_source_table_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route
+    ADD CONSTRAINT route_source_table_id_fkey FOREIGN KEY (source_table_id) REFERENCES facet."table"(table_id) DEFERRABLE;
+
+
+--
+-- Name: route_step route_step_route_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route_step
+    ADD CONSTRAINT route_step_route_id_fkey FOREIGN KEY (route_id) REFERENCES facet.route(route_id) DEFERRABLE;
+
+
+--
+-- Name: route route_target_table_id_fkey; Type: FK CONSTRAINT; Schema: facet; Owner: -
+--
+
+ALTER TABLE ONLY facet.route
+    ADD CONSTRAINT route_target_table_id_fkey FOREIGN KEY (target_table_id) REFERENCES facet."table"(table_id) DEFERRABLE;
 
 
 --

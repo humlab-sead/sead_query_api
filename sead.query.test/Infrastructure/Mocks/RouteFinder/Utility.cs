@@ -31,8 +31,8 @@ public class FakeGraphGenerator
             SourceTable = NodeMap[x],
             TargetTable = NodeMap[y],
             Weight = w,
-            SourceColumName = $"{x.ToLower()}{y.ToLower()}_key",
-            TargetColumnName = $"{x.ToLower()}{y.ToLower()}_key"
+            SourceColumnName = $"{x.ToLower()}{y.ToLower()}_key",
+            TargetColumnName = $"{x.ToLower()}{y.ToLower()}_key",
         };
         Edges.Add(edge);
         return this;

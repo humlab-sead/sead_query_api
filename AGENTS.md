@@ -9,7 +9,8 @@ When a deeper folder contains its own `AGENTS.md`, prefer the nearest one for ta
 - Prefer current files in `docs/`, the solution projects, and checked-in build/runtime assets over old chat context or archived notes.
 - Ignore `docs/archive/` unless the user asks for historical context.
 - Treat `docs/proposals/` as planned design, not shipped behavior, unless the task is proposal work.
-- Start with `README.md`, `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, `docs/TESTING.md`, `docs/OPERATIONS.md`, and `docs/DIAGRAMS.md`.
+- Start with `README.md`, `docs/DEVELOPMENT.md`, `docs/DESIGN.md`, `docs/TESTING.md`, `docs/OPERATIONS.md`, and `docs/DIAGRAMS.md`.
+- Use `docs/DEVELOPMENT.md` when you need the repository's document-placement guidance, including when to use proposals, phase plans, task plans, durable docs, or archives.
 
 ## Repository Shape
 
@@ -36,6 +37,7 @@ This repository is a .NET 9 solution with these main projects:
 - Keep edits small and aligned with current naming, nullability, async, and DI patterns.
 - Run targeted validation for the touched slice before finishing, and widen scope only when the change crosses layers.
 - Do not invent operational or CI behavior that is not defined in the repository; mark missing process as `TBD` in docs.
+- When work depends on the SEAD database model, join paths, or repository-safe SQL, use the local skill at `.github/skills/sead-database/SKILL.md`.
 
 ## Detailed Instructions
 
@@ -49,8 +51,18 @@ Use the focused instruction files under `.github/instructions/` instead of expan
 - `operations.instructions.md`
 - `readme.instructions.md`
 - `diagrams.instructions.md`
-- `proposal-writing-guide.instructions.md`
+- `proposal-writing-guide.instructions.md`: use for proposal or change-request documents under `docs/proposals/`; keep proposals decision-focused
+- `phase-plan.instructions.md`: use for ordered multi-phase implementation plans; keep phase plans separate from proposals for major efforts
+- `task-plan.instructions.md`: use for actionable per-phase task plans with work breakdown, validation, and definition of done
 - `github-workflow.instructions.md`
 - `conventional-commits.instructions.md`
+
+## Documentation Workflow
+
+- Use a proposal document when the reader needs to decide whether to do the work.
+- Use a phase plan when the decision is made and the reader needs the ordered path from current state to target state.
+- Use a task plan when one phase needs concrete implementation steps and tracked execution.
+- Move long-lived truth into `docs/REQUIREMENTS.md`, `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/OPERATIONS.md` once it should outlive a proposal.
+- Archive material that is historical and no longer authoritative.
 
 For GitHub Copilot-specific always-on guidance, also see `.github/copilot-instructions.md`.

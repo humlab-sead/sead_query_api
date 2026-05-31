@@ -35,6 +35,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
     <PackageReference Include="ObjectDumper.NET" Version="4.3.2" />
+    <PackageReference Include="SqlKata" Version="4.0.1" />
   </ItemGroup>
 
 </Project>

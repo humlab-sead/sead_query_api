@@ -7,7 +7,7 @@ Keep this file short, always-on, and repo-specific. Put detailed or task-specifi
 - Prefer current docs in `docs/` and checked-in runtime/build files over old chat context or archived notes.
 - Ignore `docs/archive/` unless the user explicitly asks for historical context.
 - Treat `docs/proposals/` as design intent, not current behavior, unless the user asks about planned changes.
-- Start with `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, `docs/TESTING.md`, `docs/OPERATIONS.md`, `docs/DIAGRAMS.md`, and `README.md`.
+- Start with `docs/DEVELOPMENT.md`, `docs/DESIGN.md`, `docs/TESTING.md`, `docs/OPERATIONS.md`, `docs/DIAGRAMS.md`, and `README.md`.
 
 ## Repository shape
 
@@ -33,6 +33,7 @@ This repository is a .NET solution centered on these projects:
 - Use the root `Makefile`, VS Code tasks, or `dotnet` commands already present in the repo.
 - Run targeted tests for the changed slice before finishing; widen validation only when the change crosses layers.
 - Keep changes small and aligned with existing naming, nullability, async, and DI patterns.
+- When a task is about the SEAD schema, table relationships, or safe SQL join paths, load the local skill at `.github/skills/sead-database/SKILL.md`.
 
 ## Task-specific instruction files
 
@@ -47,5 +48,7 @@ Use the focused instruction files instead of expanding this file:
 - `readme.instructions.md`: guidance for `README.md`
 - `diagrams.instructions.md`: Mermaid diagram conventions
 - `proposal-writing-guide.instructions.md`: proposal-writing guidance in `docs/proposals/`
+- `phase-plan.instructions.md`: guidance for ordered multi-phase implementation plans
+- `task-plan.instructions.md`: guidance for actionable per-phase task plans
 - `github-workflow.instructions.md`: issue, branch, and commit workflow guidance
 - `conventional-commits.instructions.md`: commit message format

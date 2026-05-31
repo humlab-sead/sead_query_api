@@ -13,7 +13,8 @@ public interface IRepositoryRegistry : IDisposable
     IFacetTypeRepository FacetTypes { get; }
     IFacetTableRepository FacetTables { get; }
     IViewStateRepository ViewStates { get; }
+    IAnchorRepository Anchors { get; }
+    IRouteRepository Routes { get; }
 
     int Commit();
-
 }

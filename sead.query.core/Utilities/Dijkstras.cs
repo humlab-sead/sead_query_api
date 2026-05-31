@@ -4,14 +4,16 @@ using System.Linq;
 
 namespace SeadQueryCore
 {
-
     public class NoRouteFoundException : ArgumentOutOfRangeException
     {
-        public NoRouteFoundException(string message) : base(message) { }
+        public NoRouteFoundException(string message)
+            : base(message) { }
     }
+
     public class EmptyGraphException : ArgumentOutOfRangeException
     {
-        public EmptyGraphException(string message) : base(message) { }
+        public EmptyGraphException(string message)
+            : base(message) { }
     }
 
     public static class GraphHelper
@@ -23,7 +25,8 @@ namespace SeadQueryCore
 
         public static Dictionary<N, Dictionary<N, int>> ToWeightGraph<N>(IEnumerable<(N, N, int)> edges)
         {
-            return edges.GroupBy(p => p.Item1, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.Item2, x => x.Item3)))
+            return edges
+                .GroupBy(p => p.Item1, (key, g) => (SourceId: key, TargetWeights: g.ToDictionary(x => x.Item2, x => x.Item3)))
                 .ToDictionary(x => x.SourceId, y => y.TargetWeights);
         }
     }
@@ -32,9 +35,7 @@ namespace SeadQueryCore
     {
         public Dictionary<N, Dictionary<N, int>> EdgeDict { get; set; } = [];
 
-        public DijkstrasGraph()
-        {
-        }
+        public DijkstrasGraph() { }
 
         public DijkstrasGraph(Dictionary<N, Dictionary<N, int>> weights)
         {
@@ -67,18 +68,20 @@ namespace SeadQueryCore
 
             List<N> path = null;
 
-            foreach (var vertex in EdgeDict)
+            var allNodes = EdgeDict.Keys.Union(EdgeDict.Values.SelectMany(edges => edges.Keys)).Distinct();
+
+            foreach (var vertex in allNodes)
             {
-                if (vertex.Key.Equals(start))
+                if (vertex.Equals(start))
                 {
-                    distances[vertex.Key] = 0;
+                    distances[vertex] = 0;
                 }
                 else
                 {
-                    distances[vertex.Key] = int.MaxValue;
+                    distances[vertex] = int.MaxValue;
                 }
 
-                nodes.Add(vertex.Key);
+                nodes.Add(vertex);
             }
 
             while (nodes.Count != 0)
@@ -104,7 +107,12 @@ namespace SeadQueryCore
                     break;
                 }
 
-                foreach (var neighbor in EdgeDict[smallest])
+                if (!EdgeDict.TryGetValue(smallest, out var adjacentNodes))
+                {
+                    continue;
+                }
+
+                foreach (var neighbor in adjacentNodes)
                 {
                     var alt = distances[smallest] + neighbor.Value;
                     if (alt < distances[neighbor.Key])
@@ -134,6 +142,5 @@ namespace SeadQueryCore
         {
             return destinations.Select(d => FindShortestPath(start, d, onNotFoundThrow, reverse)).ToList();
         }
-
     }
 }

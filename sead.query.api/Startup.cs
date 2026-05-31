@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System;
+using System.IO;
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,8 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using SeadQueryCore;
-using System;
-using System.IO;
 
 namespace SeadQueryAPI;
 
@@ -20,7 +20,9 @@ public class Startup
     public Startup()
     {
         var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER");
-        var appSettingsPath = string.IsNullOrEmpty(appSettingsFolder) ? "appsettings.json" : Path.Combine(appSettingsFolder, "appsettings.json");
+        var appSettingsPath = string.IsNullOrEmpty(appSettingsFolder)
+            ? "appsettings.json"
+            : Path.Combine(appSettingsFolder, "appsettings.json");
 
         Configuration = new ConfigurationBuilder()
             .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true)
@@ -48,12 +50,7 @@ public class Startup
             app.UseMiddleware<RequestLoggingMiddleware>();
         }
 
-        app.UseCors(builder => builder
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .SetPreflightMaxAge(TimeSpan.FromMinutes(665))
-        );
+        app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().SetPreflightMaxAge(TimeSpan.FromMinutes(665)));
 
         app.UseEndpoints(endpoints =>
         {
@@ -74,6 +71,7 @@ public class Startup
         _ = services
             .AddOptions()
             .AddCors()
+            .AddHostedService<Services.RouteConfigurationStartupValidationService>()
             .AddControllers()
             .AddNewtonsoftJson(options =>
             {

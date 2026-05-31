@@ -1,0 +1,76 @@
+tbl_abundance_elements -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_abundance_elements -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_abundance_elements -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_analysis_entities -> tbl_datasets
+tbl_analysis_entities -> tbl_physical_samples
+tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_analysis_entity_ages -> tbl_analysis_entities -> tbl_datasets
+tbl_analysis_entity_ages -> tbl_analysis_entities -> tbl_physical_samples
+tbl_analysis_entity_ages -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_biblio -> facet.view_taxa_biblio -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_biblio -> facet.view_taxa_biblio -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_biblio -> facet.view_taxa_biblio -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_data_types -> tbl_datasets
+tbl_data_types -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples
+tbl_data_types -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_dataset_masters -> tbl_datasets
+tbl_dataset_masters -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples
+tbl_dataset_masters -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_dataset_methods -> tbl_methods -> tbl_datasets
+tbl_dataset_methods -> tbl_methods -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples
+tbl_dataset_methods -> tbl_methods -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples
+tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_dendro_dates -> tbl_analysis_entities -> tbl_datasets
+tbl_dendro_dates -> tbl_analysis_entities -> tbl_physical_samples
+tbl_dendro_dates -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_ecocode_systems -> tbl_ecocode_groups -> tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_ecocode_systems -> tbl_ecocode_groups -> tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_ecocode_systems -> tbl_ecocode_groups -> tbl_ecocode_definitions -> tbl_ecocodes -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_feature_types -> tbl_features -> tbl_physical_sample_features -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets
+tbl_feature_types -> tbl_features -> tbl_physical_sample_features -> tbl_physical_samples
+tbl_feature_types -> tbl_features -> tbl_physical_sample_features -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_geochronology -> tbl_analysis_entities -> tbl_datasets
+tbl_geochronology -> tbl_analysis_entities -> tbl_physical_samples
+tbl_geochronology -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_location_types -> tbl_locations -> tbl_site_locations -> tbl_sites -> tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets
+tbl_location_types -> tbl_locations -> tbl_site_locations -> tbl_sites -> tbl_sample_groups -> tbl_physical_samples
+tbl_location_types -> tbl_locations -> tbl_site_locations -> tbl_sites
+tbl_modification_types -> tbl_abundance_modifications -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_modification_types -> tbl_abundance_modifications -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_modification_types -> tbl_abundance_modifications -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_rdb_codes -> tbl_rdb -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_rdb_codes -> tbl_rdb -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_rdb_codes -> tbl_rdb -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_rdb_systems -> tbl_locations -> tbl_site_locations -> tbl_sites -> tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets
+tbl_rdb_systems -> tbl_locations -> tbl_site_locations -> tbl_sites -> tbl_sample_groups -> tbl_physical_samples
+tbl_rdb_systems -> tbl_locations -> tbl_site_locations -> tbl_sites
+tbl_record_types -> tbl_methods -> tbl_datasets
+tbl_record_types -> tbl_methods -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples
+tbl_record_types -> tbl_methods -> tbl_datasets -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_relative_ages -> tbl_relative_dates -> tbl_analysis_entities -> tbl_datasets
+tbl_relative_ages -> tbl_relative_dates -> tbl_analysis_entities -> tbl_physical_samples
+tbl_relative_ages -> tbl_relative_dates -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_sample_group_sampling_contexts -> tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets
+tbl_sample_group_sampling_contexts -> tbl_sample_groups -> tbl_physical_samples
+tbl_sample_group_sampling_contexts -> tbl_sample_groups -> tbl_sites
+tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets
+tbl_sample_groups -> tbl_physical_samples
+tbl_sample_groups -> tbl_sites
+tbl_seasons -> tbl_taxa_seasonality -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_seasons -> tbl_taxa_seasonality -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_seasons -> tbl_taxa_seasonality -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_sites -> tbl_sample_groups -> tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets
+tbl_sites -> tbl_sample_groups -> tbl_physical_samples
+tbl_taxa_tree_authors -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_taxa_tree_authors -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_taxa_tree_authors -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_taxa_tree_families -> tbl_taxa_tree_orders -> tbl_record_types -> tbl_methods -> tbl_datasets
+tbl_taxa_tree_families -> tbl_taxa_tree_genera -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_taxa_tree_families -> tbl_taxa_tree_genera -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites
+tbl_taxa_tree_genera -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_datasets
+tbl_taxa_tree_genera -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples
+tbl_taxa_tree_genera -> tbl_taxa_tree_master -> tbl_abundances -> tbl_analysis_entities -> tbl_physical_samples -> tbl_sample_groups -> tbl_sites

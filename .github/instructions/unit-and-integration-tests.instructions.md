@@ -63,3 +63,6 @@ Use this instruction when editing tests in `sead.query.test`.
 - Do not overuse mocks for domain models or simple DTOs.
 - Do not make tests depend on execution order.
 - Do not leave TODO-only test placeholders committed.
+
+## Updates
+This rule must be updated if new tools or practices are adopted in the backend project.

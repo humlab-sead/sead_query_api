@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>sead.query.api</AssemblyName>
@@ -8,16 +7,13 @@
     <UserSecretsId>ce0f2374-2571-4e88-ac08-603c414fa867</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-	  <VersionPrefix>2022.04.15</VersionPrefix>
-	  <Company>Humlab, Umeå universitet</Company>
-
+    <VersionPrefix>2022.04.15</VersionPrefix>
+    <Company>Humlab, Umeå universitet</Company>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp3.1\sead.query.api.xml</DocumentationFile>
     <NoWarn>1701;1702;1705;1591;CS1591;NU1603</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.2.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
@@ -48,6 +44,7 @@
     <None Include="Services\LoadResultService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\sead.query.composer\sead.query.composer.csproj" />
     <ProjectReference Include="..\sead.query.core\sead.query.core.csproj" />
     <ProjectReference Include="..\sead.query.infra\sead.query.infra.csproj" />
   </ItemGroup>

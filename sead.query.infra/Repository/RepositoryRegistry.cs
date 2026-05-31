@@ -26,14 +26,17 @@ namespace SeadQueryInfra
         {
             var repositories = new Dictionary<Type, IRepository2>()
             {
-                { typeof(IFacetRepository),               new FacetRepository(this) },
-                { typeof(IEdgeRepository),                new EdgeRepository(this) },
-                { typeof(INodeRepository),               new NodeRepository(this) },
+                { typeof(IFacetRepository), new FacetRepository(this) },
+                { typeof(IEdgeRepository), new EdgeRepository(this) },
+                { typeof(INodeRepository), new NodeRepository(this) },
                 { typeof(IResultSpecificationRepository), new ResultSpecificationRepository(this) },
-                { typeof(IFacetGroupRepository),          new FacetGroupRepository(this) },
-                { typeof(IFacetTypeRepository),           new FacetTypeRepository(this) },
-                { typeof(IFacetTableRepository),          new FacetTableRepository(this) },
-                { typeof(IViewStateRepository),           new ViewStateRepository(this) }
+                { typeof(IFacetGroupRepository), new FacetGroupRepository(this) },
+                { typeof(IFacetTypeRepository), new FacetTypeRepository(this) },
+                { typeof(IFacetTableRepository), new FacetTableRepository(this) },
+                { typeof(IViewStateRepository), new ViewStateRepository(this) },
+                { typeof(IFacetAnchorRepository), new FacetAnchorRepository(this) },
+                { typeof(IAnchorRepository), new AnchorRepository(this) },
+                { typeof(IRouteRepository), new RouteRepository(this) },
             };
             return repositories;
         }
@@ -58,7 +61,8 @@ namespace SeadQueryInfra
         //        .FirstOrDefault();
         //}
 
-        public T GetRepository<T>() where T : IRepository2
+        public T GetRepository<T>()
+            where T : IRepository2
         {
             return (T)GetRepository(typeof(T));
         }
@@ -78,14 +82,19 @@ namespace SeadQueryInfra
         public virtual IFacetTypeRepository FacetTypes => GetRepository<IFacetTypeRepository>();
         public virtual IViewStateRepository ViewStates => GetRepository<IViewStateRepository>();
         public virtual IFacetTableRepository FacetTables => GetRepository<IFacetTableRepository>();
+        public virtual IFacetAnchorRepository FacetAnchors => GetRepository<IFacetAnchorRepository>();
+        public virtual IAnchorRepository Anchors => GetRepository<IAnchorRepository>();
+        public virtual IRouteRepository Routes => GetRepository<IRouteRepository>();
 
         public int Commit() => Context.SaveChanges();
+
         public void Dispose() => Context.Dispose();
     }
 
     public static class QueryDynamicExt
     {
-        public static IEnumerable<T> Populate<T>(this DbDataReader dr) where T : class
+        public static IEnumerable<T> Populate<T>(this DbDataReader dr)
+            where T : class
         {
             while (dr.Read())
             {
@@ -101,7 +110,8 @@ namespace SeadQueryInfra
             }
         }
 
-        public static T Populate2<T>(this DbDataReader dr, T instance) where T : class
+        public static T Populate2<T>(this DbDataReader dr, T instance)
+            where T : class
         {
             var item = Activator.CreateInstance<T>();
             foreach (var property in typeof(T).GetProperties())

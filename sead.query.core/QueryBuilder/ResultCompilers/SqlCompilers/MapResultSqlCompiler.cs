@@ -11,7 +11,9 @@ namespace SeadQueryCore
         {
             Debug.Assert(querySetup.Facet.FacetCode.Equals(facet.FacetCode), "Refactor check: Refactor away facet");
 
-            string sql = $@"
+            string sql =
+                $@"
+            {querySetup.LeadingSql}
             SELECT DISTINCT {facet.CategoryIdExpr} AS id_column, {facet.CategoryNameExpr} AS name, coalesce(latitude_dd, 0.0) AS latitude_dd, coalesce(longitude_dd, 0) AS longitude_dd
             FROM {querySetup.Facet.TargetTable.ResolvedSqlJoinName}
                  {querySetup.Joins.Combine("")}

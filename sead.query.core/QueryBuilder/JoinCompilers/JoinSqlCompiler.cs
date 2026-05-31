@@ -1,15 +1,10 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SeadQueryCore
 {
     public class JoinSqlCompiler : IJoinSqlCompiler
     {
-        public Dictionary<bool, string> Join = new Dictionary<bool, string> {
-            { true, "INNER" },
-            { false, "LEFT" }
-        };
-
+        public Dictionary<bool, string> Join = new Dictionary<bool, string> { { true, "INNER" }, { false, "LEFT" } };
 
         public string Compile(TableRelation edge, FacetTable targetTable, bool innerJoin = false)
         {
@@ -20,9 +15,10 @@ namespace SeadQueryCore
 
             // FIXME: Add optional TableRelation.Clause:
 
-            var sql = $" {Join[innerJoin]} JOIN {targetTable?.ResolvedSqlJoinName ?? edge.TargetName} " +
-                        $"ON {targetTable?.ResolvedAliasOrTableOrUdfName ?? edge.TargetName}.\"{edge.TargetColumnName}\" = " +
-                                $"{edge.SourceName}.\"{edge.SourceColumName}\" ";
+            var sql =
+                $" {Join[innerJoin]} JOIN {targetTable?.ResolvedSqlJoinName ?? edge.TargetName} "
+                + $"ON {targetTable?.ResolvedAliasOrTableOrUdfName ?? edge.TargetName}.\"{edge.TargetColumnName}\" = "
+                + $"{edge.SourceName}.\"{edge.SourceColumnName}\" ";
             //.GlueIf(edge.ExtraConstraint, " AND ");
 
             return sql;

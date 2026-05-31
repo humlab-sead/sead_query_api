@@ -9,23 +9,13 @@ namespace SeadQueryInfra
 
     public class FacetGroupRepository(RepositoryRegistry registry) : Repository<FacetGroup, int>(registry), IFacetGroupRepository { }
 
-    // "editor.semanticTokenColorCustomizations": {
-    //     "[Visual Studio Dark]": {
-    //         "rules": {
-    //             "templateType": {
-    //                 "foreground": "#ff0000",
-    //                 "fontStyle": "italic bold underline"
-    //             }
-    //         }
-    //     }
-    // }
     public class FacetTableRepository(RepositoryRegistry registry) : Repository<FacetTable, int>(registry), IFacetTableRepository
     {
-        private List<FacetTable> __aliasTables = null;
+        private List<FacetTable> _aliasTables = null;
 
         public List<FacetTable> FindThoseWithAlias()
         {
-            return __aliasTables ??= GetAll().Where(p => p.HasAlias).ToList();
+            return _aliasTables ??= GetAll().Where(p => p.HasAlias).ToList();
         }
 
         protected override IQueryable<FacetTable> GetInclude(IQueryable<FacetTable> set)
@@ -36,6 +26,8 @@ namespace SeadQueryInfra
         public FacetTable GetByAlias(string aliasName) => FindThoseWithAlias().Where(x => x.Alias == aliasName).FirstOrDefault();
     }
 
+    public class FacetAnchorRepository(RepositoryRegistry registry) : Repository<FacetAnchor, int>(registry), IFacetAnchorRepository { }
+
     public class FacetRepository(RepositoryRegistry registry) : Repository<Facet, int>(registry), IFacetRepository
     {
         public static int DOMAIN_FACET_GROUP_ID = 999;
@@ -44,7 +36,7 @@ namespace SeadQueryInfra
 
         protected override IQueryable<Facet> GetInclude(IQueryable<Facet> set)
         {
-            return set.Include(x => x.FacetGroup).Include(x => x.FacetType).Include("Tables.Table").Include(x => x.Clauses);
+            return set.ConfigureFacetQuery();
         }
 
         public Dictionary<string, Facet> ToDictionary()
@@ -64,7 +56,6 @@ namespace SeadQueryInfra
 
         public IEnumerable<Facet> Parents()
         {
-            // FIXME: Get all with children instead of magic group id
             return GetAll().Where(p => p.FacetGroupId == DOMAIN_FACET_GROUP_ID);
         }
 
@@ -75,8 +66,9 @@ namespace SeadQueryInfra
                 return GetAllUserFacets();
             }
             var children = GetSet()
-                .Include("Children.Child")
-                .Include("Children.Child.FacetGroup")
+                .Include(f => f.Children)
+                .ThenInclude(fc => fc.Child)
+                .ThenInclude(c => c.FacetGroup)
                 .Where(f => f.FacetCode == facetCode)
                 .SelectMany(z => z.Children)
                 .OrderBy(z => z.Position)
@@ -92,9 +84,20 @@ namespace SeadQueryInfra
 
     public static class FacetRepositoryEagerBuilder
     {
-        public static IQueryable<Facet> BuildFacetDefinition(this IQueryable<Facet> query)
+        public static IQueryable<Facet> ConfigureFacetQuery(this IQueryable<Facet> query)
         {
-            return query.Include(x => x.FacetGroup).Include(x => x.FacetType).Include("Tables.Table").Include(x => x.Clauses);
+            return query
+                .Include(x => x.FacetGroup)
+                .Include(x => x.FacetType)
+                .Include(x => x.Tables)
+                .ThenInclude(ft => ft.Table)
+                .Include(x => x.Clauses)
+                .Include(x => x.FacetAnchors)
+                .ThenInclude(fa => fa.Anchor)
+                .Include(x => x.FacetAnchors)
+                .ThenInclude(fa => fa.Route)
+                .ThenInclude(r => r.Steps)
+                .ThenInclude(step => step.Table);
         }
     }
 

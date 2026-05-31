@@ -55,6 +55,7 @@ public readonly struct TickerInfo(decimal dataLow, decimal dataHigh, decimal int
     public int IntervalCount => EndFactor - StartFactor + 1;
 
     public override string ToString() => $"({TickLow}, {TickHigh}, {Interval})";
+
     public Tuple<decimal, decimal, decimal> ToTuple() => new Tuple<decimal, decimal, decimal>(TickLow, TickHigh, Interval);
 }
 
@@ -65,7 +66,7 @@ public class AdaptiveTicker(
     decimal? maxInterval = null,
     int desiredNumTicks = 6,
     int numMinorTicks = 0
-    )
+)
 {
     /// <summary>
     /// This class is heavely based on the Bokeh AdaptiveTicker class
@@ -86,10 +87,11 @@ public class AdaptiveTicker(
     {
         TickerInfo ticker = GetInterval(dataLow, dataHigh, desiredNTicks);
 
-        var majorTicks = Enumerable.Range(ticker.StartFactor, ticker.IntervalCount)
-                              .Select(factor => factor * ticker.Interval)
-                              .Where(tick => dataLow <= tick && tick <= dataHigh)
-                              .ToList();
+        var majorTicks = Enumerable
+            .Range(ticker.StartFactor, ticker.IntervalCount)
+            .Select(factor => factor * ticker.Interval)
+            .Where(tick => dataLow <= tick && tick <= dataHigh)
+            .ToList();
 
         var minorTicks = GetMinorTicksNoDefaults(dataLow, dataHigh, ticker.Interval, majorTicks);
 
@@ -102,10 +104,10 @@ public class AdaptiveTicker(
         if (NumMinorTicks > 0 && majorTicks.Count != 0)
         {
             decimal minorInterval = interval / NumMinorTicks;
-            minorTicks = majorTicks.SelectMany(tick => Enumerable
-                .Range(0, NumMinorTicks)
-                .Select(x => tick + x * minorInterval)
-                .Where(mt => dataLow <= mt && mt <= dataHigh))
+            minorTicks = majorTicks
+                .SelectMany(tick =>
+                    Enumerable.Range(0, NumMinorTicks).Select(x => tick + x * minorInterval).Where(mt => dataLow <= mt && mt <= dataHigh)
+                )
                 .ToList();
         }
 
@@ -132,6 +134,11 @@ public class AdaptiveTicker(
 
     public TickerInfo GetInterval(decimal dataLow, decimal dataHigh, int desiredNumberOfTicks)
     {
+        if (dataLow == 0 && dataHigh == 0)
+        {
+            return new TickerInfo(0, 0, 1);
+        }
+
         decimal dataRange = dataHigh - dataLow;
         decimal idealInterval = GetIdealInterval(dataLow, dataHigh, desiredNumberOfTicks);
 
@@ -140,12 +147,13 @@ public class AdaptiveTicker(
 
         var candidateMantissas = ExtendedMantissas();
 
-        var errors = candidateMantissas.Select(mantissa => Math.Abs(desiredNumberOfTicks - (dataRange / (mantissa * idealMagnitude)))).ToList();
+        var errors = candidateMantissas
+            .Select(mantissa => Math.Abs(desiredNumberOfTicks - (dataRange / (mantissa * idealMagnitude))))
+            .ToList();
         decimal bestMantissa = candidateMantissas[ArgMin(errors)];
         decimal interval = Clamp(bestMantissa * idealMagnitude);
 
         return new TickerInfo(dataLow, dataHigh, interval);
-
     }
 
     private decimal Clamp(decimal interval)

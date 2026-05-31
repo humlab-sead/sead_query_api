@@ -12,38 +12,45 @@ namespace SQT.Plugins.Range
         public virtual Mock<RangeCategoryInfoSqlCompiler> MockRangeIntervalSqlCompiler(string returnSql)
         {
             var mock = new Mock<RangeCategoryInfoSqlCompiler>();
-            dynamic payload = new { Interval = It.IsAny<int>(), Lower = It.IsAny<int>(), Upper = It.IsAny<int>(), IntervalCount = It.IsAny<int>() };
-            mock.Setup(z => z.Compile(null, null, new
+            dynamic payload = new
             {
-                DataLow = It.IsAny<decimal>(),
-                DataHigh = It.IsAny<decimal>(),
-                TickLow = It.IsAny<decimal>(),
-                TickHigh = It.IsAny<decimal>(),
-                OuterLow = It.IsAny<decimal>(),
-                OuterHigh = It.IsAny<decimal>(),
-                StartFactor = It.IsAny<int>(),
-                EndFactor = It.IsAny<int>(),
+                Interval = It.IsAny<int>(),
+                Lower = It.IsAny<int>(),
+                Upper = It.IsAny<int>(),
                 IntervalCount = It.IsAny<int>(),
-                Interval = It.IsAny<decimal>()
-            })).Returns(returnSql);
+            };
+            mock.Setup(z =>
+                    z.Compile(
+                        null,
+                        null,
+                        new
+                        {
+                            DataLow = It.IsAny<decimal>(),
+                            DataHigh = It.IsAny<decimal>(),
+                            TickLow = It.IsAny<decimal>(),
+                            TickHigh = It.IsAny<decimal>(),
+                            OuterLow = It.IsAny<decimal>(),
+                            OuterHigh = It.IsAny<decimal>(),
+                            StartFactor = It.IsAny<int>(),
+                            EndFactor = It.IsAny<int>(),
+                            IntervalCount = It.IsAny<int>(),
+                            Interval = It.IsAny<decimal>(),
+                        }
+                    )
+                )
+                .Returns(returnSql);
             return mock;
         }
 
-        public virtual Mock<IRangeOuterBoundService> MockRangeOuterBoundExtentService(
-            decimal lower, decimal upper
-        )
+        public virtual Mock<IRangeOuterBoundService> MockRangeOuterBoundExtentService(decimal lower, decimal upper)
         {
             var rangeOuterBoundService = new Mock<IRangeOuterBoundService>();
 
             /* GetExtent generates an extent */
-            rangeOuterBoundService
-                .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
-                .Returns((lower, upper));
+            rangeOuterBoundService.Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>())).Returns((lower, upper));
 
             /* GetUpperLowerBounds hits the database */
-            rangeOuterBoundService
-                .Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>()))
-                .Returns((lower, upper));
+            rangeOuterBoundService.Setup(z => z.GetUpperLowerBounds(It.IsAny<Facet>())).Returns((lower, upper));
 
             return rangeOuterBoundService;
         }
@@ -67,7 +74,8 @@ namespace SQT.Plugins.Range
                 Registry,
                 mockQuerySetupBuilder.Object,
                 mockQueryProxy.Object,
-                mockCategoryCountService.Object
+                mockCategoryCountService.Object,
+                null
             );
 
             var result = service.Load(fakeFacetsConfig);

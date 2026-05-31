@@ -1,9 +1,9 @@
+using System.Linq;
 using Moq;
 using SeadQueryCore;
 using SeadQueryCore.QueryBuilder;
 using SQT.Infrastructure;
 using SQT.Mocks;
-using System.Linq;
 using Xunit;
 
 namespace SQT.Plugins.Discrete
@@ -32,8 +32,9 @@ namespace SQT.Plugins.Discrete
                 fakeRegistry,
                 mockQuerySetupBuilder.Object,
                 mockQueryProxy.Object,
-                mockCategoryCountService.Object
-             );
+                mockCategoryCountService.Object,
+                null
+            );
 
             var result = service.Load(facetsConfig);
 

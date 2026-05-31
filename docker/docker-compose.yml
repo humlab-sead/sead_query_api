@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   sead_query_api:
     build:
@@ -27,12 +27,12 @@ services:
     environment:
       - ASPNETCORE_APPSETTINGS_FOLDER=/app/config
       - ASPNETCORE_URLS=http://0.0.0.0:8089
+      - SEAD_QUERY_FACET_CONFIG_IMPORTED_BY=${SEAD_QUERY_FACET_CONFIG_IMPORTED_BY:-docker-compose}
 
-      
   redis.cache:
     image: "${REDIS_DOCKER_TAG:-redis:5-alpine}"
     container_name: redis_cache
-    command: [ "redis-server", "--appendonly", "yes" ]
+    command: ["redis-server", "--appendonly", "yes"]
     hostname: redis
     restart: always
     volumes:
@@ -46,7 +46,7 @@ services:
     # environment:
     #   - REDIS_DATA_DIR=/tmp
     expose:
-      - "6379/tcp"
+      - "6379"
 
 networks:
   sead_query_net:
