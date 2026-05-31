@@ -69,6 +69,9 @@ namespace SeadQueryAPI
             builder.RegisterType<FacetConfigReconstituteService>().As<IFacetConfigReconstituteService>();
             builder.RegisterType<ResultConfigReconstituteService>().As<IResultConfigReconstituteService>();
             builder.RegisterType<FacetRouteConfigurationImporter>().As<IFacetRouteConfigurationImporter>().InstancePerLifetimeScope();
+            builder.RegisterType<Services.FacetUrlFacetsConfigFactory>().AsSelf().InstancePerDependency();
+            builder.RegisterType<Services.FacetUrlSqlProbeCommand>().AsSelf().InstancePerDependency();
+            builder.RegisterType<Services.ResultUrlSqlProbeCommand>().AsSelf().InstancePerDependency();
             builder.RegisterType<Services.FacetRouteConfigurationImportCommand>().AsSelf().InstancePerDependency();
             builder.RegisterType<Services.FacetRouteConfigurationValidationCommand>().AsSelf().InstancePerDependency();
 

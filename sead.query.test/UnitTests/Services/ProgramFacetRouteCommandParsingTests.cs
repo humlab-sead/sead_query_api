@@ -69,4 +69,60 @@ public class ProgramFacetRouteCommandParsingTests
         configurationFilePath.Should().BeNull();
         parseError.Should().Be("--validate-facet-config requires a configuration file path.");
     }
+
+    [Fact]
+    public void TryGetFacetSqlCommand_WithArgument_ReturnsFacetUrl()
+    {
+        var result = Program.TryGetFacetSqlCommand(["--print-facet-sql", "family:family"], out var facetUrl, out var parseError);
+
+        result.Should().BeTrue();
+        facetUrl.Should().Be("family:family");
+        parseError.Should().BeNull();
+    }
+
+    [Fact]
+    public void TryGetFacetSqlCommand_WithMissingFacetUrl_ReturnsParseError()
+    {
+        var result = Program.TryGetFacetSqlCommand(["--print-facet-sql"], out var facetUrl, out var parseError);
+
+        result.Should().BeFalse();
+        facetUrl.Should().BeNull();
+        parseError.Should().Be("--print-facet-sql requires a facet URL.");
+    }
+
+    [Fact]
+    public void TryGetResultSqlCommand_WithArgumentAndOptions_ReturnsProbeConfiguration()
+    {
+        var result = Program.TryGetResultSqlCommand(
+            ["--print-result-sql", "family:family", "--view-type", "map", "--result-code", "map_result"],
+            out var facetUrl,
+            out var viewTypeId,
+            out var resultCode,
+            out var parseError
+        );
+
+        result.Should().BeTrue();
+        facetUrl.Should().Be("family:family");
+        viewTypeId.Should().Be("map");
+        resultCode.Should().Be("map_result");
+        parseError.Should().BeNull();
+    }
+
+    [Fact]
+    public void TryGetResultSqlCommand_WithMissingFacetUrl_ReturnsParseError()
+    {
+        var result = Program.TryGetResultSqlCommand(
+            ["--print-result-sql"],
+            out var facetUrl,
+            out var viewTypeId,
+            out var resultCode,
+            out var parseError
+        );
+
+        result.Should().BeFalse();
+        facetUrl.Should().BeNull();
+        viewTypeId.Should().Be("tabular");
+        resultCode.Should().BeNull();
+        parseError.Should().Be("--print-result-sql requires a facet URL.");
+    }
 }
