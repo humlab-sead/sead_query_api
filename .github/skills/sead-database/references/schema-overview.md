@@ -85,5 +85,4 @@ When the user asks a SEAD question, first decide which layer owns the answer:
 - taxonomy
 - provenance or bibliography
 
-That usually reveals the correct join path and the safest project for a schema change.
 That usually reveals the correct join path and which layer of the model actually owns the answer.
