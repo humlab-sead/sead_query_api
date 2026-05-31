@@ -86,8 +86,20 @@ For smaller efforts, a short `Delivery order` or `Implementation handoff` sectio
 - If proposal-writing rules are also captured in repo instructions, you do not need to repeat them every time.
 - **Keep proposal work focused.** Proposal writing is primarily prose; avoid unnecessary codebase exploration unless the request depends on specific files or symbols.
 - **Keep proposal and execution artifacts distinct.** If the user asks for an ordered multi-phase delivery path, create or update a separate phase plan unless the effort is small enough that a compact delivery-order section is clearly sufficient.
-- **Do not search the codebase** unless a specific file or symbol is directly referenced in the request. Write from the brief and from context already in the conversation.
+- **Use a bounded evidence pass for architecture proposals.** Start with `.github/architecture-map.yaml`, `AGENTS.md`, and the relevant design docs. Read one nearby owning implementation surface only when needed to support a concrete structural claim. Do not widen beyond that unless the user explicitly asks for a broader audit.
 - **Draft in a single pass.** Do not iterate section by section across multiple turns. Ask the user one clarifying question if needed, then produce the full draft.
+
+## Architecture Proposal Guidance
+
+When the proposal changes architecture rather than only workflow or prose, make these points explicit when relevant:
+
+- current boundary or runtime behavior
+- proposed boundary or behavior
+- owning project or layer
+- configuration, route, anchor, or handoff implications
+- migration, parity, or cutover implications
+- validation path and acceptance evidence
+- explicit non-goals and deferred cases
 
 ## Practical Rule Of Thumb
 

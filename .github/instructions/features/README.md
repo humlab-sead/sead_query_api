@@ -14,13 +14,15 @@ catalog: catalog.json
 
 This folder captures candidate AI/ML features that fit the SEAD Query API and its surrounding authoring and analysis workflows.
 
-These are product feature descriptions, not active runtime behavior and not Copilot instruction files.
+These are not active runtime behavior. They are candidate feature descriptions and local agent-facing design guidance for AI/ML feature work in this folder.
+
+Use `AGENTS.md` in this folder for the operating rules that apply when agents create, refine, compare, or plan these features.
 
 Agent discovery notes:
 
 - use `catalog.json` for deterministic discovery
 - use frontmatter on each Markdown file for lightweight classification
-- treat these files as candidate feature descriptions, not shipped behavior
+- treat these files as candidate feature descriptions and design-intent context, not shipped behavior
 
 Each document is intentionally short and grounded in the current system:
 

@@ -9,6 +9,7 @@ When a deeper folder contains its own `AGENTS.md`, prefer the nearest one for ta
 - Prefer current files in `docs/`, the solution projects, and checked-in build/runtime assets over old chat context or archived notes.
 - Ignore `docs/archive/` unless the user asks for historical context.
 - Treat `docs/proposals/` as planned design, not shipped behavior, unless the task is proposal work.
+- Use `.github/architecture-map.yaml` as the compact architecture overview for design and migration tasks.
 - Start with `README.md`, `docs/DEVELOPMENT.md`, `docs/DESIGN.md`, `docs/TESTING.md`, `docs/OPERATIONS.md`, and `docs/DIAGRAMS.md`.
 - Use `docs/DEVELOPMENT.md` when you need the repository's document-placement guidance, including when to use proposals, phase plans, task plans, durable docs, or archives.
 
@@ -37,6 +38,7 @@ This repository is a .NET 9 solution with these main projects:
 - Keep edits small and aligned with current naming, nullability, async, and DI patterns.
 - Run targeted validation for the touched slice before finishing, and widen scope only when the change crosses layers.
 - Do not invent operational or CI behavior that is not defined in the repository; mark missing process as `TBD` in docs.
+- When work is architectural or design-oriented, use the local skill at `.github/skills/sead-architecture-design/SKILL.md`.
 - When work depends on the SEAD database model, join paths, or repository-safe SQL, use the local skill at `.github/skills/sead-database/SKILL.md`.
 
 ## Detailed Instructions
