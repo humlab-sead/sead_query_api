@@ -291,8 +291,60 @@
                 },
                 "route": {
                     "$ref": "#/$defs/identifier"
+                },
+                "sql_override": {
+                    "$ref": "#/$defs/sqlExpression"
                 }
             }
+        },
+        "facetTemplateKey": {
+            "enum": [
+                "anchor_identity"
+            ]
+        },
+        "facetInlineSqlContract": {
+            "enum": [
+                "discrete",
+                "range"
+            ]
+        },
+        "facetInlineSql": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "mode",
+                "contract",
+                "base_anchor"
+            ],
+            "properties": {
+                "mode": {
+                    "const": "inline-template"
+                },
+                "contract": {
+                    "$ref": "#/$defs/facetInlineSqlContract"
+                },
+                "base_anchor": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "body": {
+                    "$ref": "#/$defs/sqlExpression"
+                },
+                "cte_sql": {
+                    "$ref": "#/$defs/sqlExpression"
+                }
+            },
+            "anyOf": [
+                {
+                    "required": [
+                        "body"
+                    ]
+                },
+                {
+                    "required": [
+                        "cte_sql"
+                    ]
+                }
+            ]
         },
         "facet": {
             "type": "object",
@@ -347,6 +399,12 @@
                 "aggregate": {
                     "$ref": "#/$defs/facetAggregate"
                 },
+                "template_key": {
+                    "$ref": "#/$defs/facetTemplateKey"
+                },
+                "sql": {
+                    "$ref": "#/$defs/facetInlineSql"
+                },
                 "clauses": {
                     "type": "array",
                     "items": {
@@ -360,7 +418,59 @@
                         "$ref": "#/$defs/facetAnchor"
                     }
                 }
-            }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "required": [
+                            "template_key"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "key": {
+                                "enum": [
+                                    "result_facet",
+                                    "map_result",
+                                    "result_datasets"
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "required": [
+                            "sql"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "type": {
+                                "$ref": "#/$defs/facetInlineSqlContract"
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "anchors": {
+                                "contains": {
+                                    "required": [
+                                        "sql_override"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "sql"
+                        ]
+                    }
+                }
+            ]
         }
     }
 }
