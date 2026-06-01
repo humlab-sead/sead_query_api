@@ -3,17 +3,13 @@ using System.Linq;
 
 namespace SeadQueryCore.Plugin.Discrete;
 
-
 public class DiscreteCategoryCountHelper : IDiscreteCategoryCountHelper
 {
     public List<string> GetFacetCodes(FacetsConfig2 facetsConfig, CompilePayload payload)
     {
         if (payload.AggregateFacet == null)
             return facetsConfig.GetFacetCodes();
-        return facetsConfig.GetFacetCodes().InsertAt(
-            facetsConfig.TargetCode,
-            payload.AggregateFacet.FacetCode
-        );
+        return facetsConfig.GetFacetCodes().InsertAt(facetsConfig.TargetCode, payload.AggregateFacet.FacetCode);
     }
 
     public List<string> GetTables(CompilePayload payload)
@@ -23,5 +19,4 @@ public class DiscreteCategoryCountHelper : IDiscreteCategoryCountHelper
             tables = tables.Union(payload.AggregateFacet.GetResolvedTableNames());
         return tables.ToList();
     }
-
 }
