@@ -184,6 +184,19 @@ facets:
       type: count
       title: Number of samples
       facet_key: result_facet
+    sql:
+      mode: inline-template
+      contract: discrete
+      base_anchor: sample
+      body: |
+        select
+          tbl_feature_types.feature_type_id as category_id,
+          tbl_feature_types.feature_type_name as category_name,
+          tbl_physical_samples.physical_sample_id as anchor_id
+        from tbl_feature_types
+        join tbl_features on tbl_features.feature_type_id = tbl_feature_types.feature_type_id
+        join tbl_physical_sample_features on tbl_physical_sample_features.feature_id = tbl_features.feature_id
+        join tbl_physical_samples on tbl_physical_samples.physical_sample_id = tbl_physical_sample_features.physical_sample_id
     clauses: []
     anchors:
       - anchor: sample
