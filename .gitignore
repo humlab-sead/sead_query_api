@@ -375,3 +375,4 @@ deployment
 bin
 tmp
 .chats
+docs/output

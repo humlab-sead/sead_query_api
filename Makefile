@@ -33,6 +33,27 @@ test:
 		
 #--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
 
+MD_FILES := $(wildcard docs/*.md)
+PDF_FILES := $(patsubst docs/%.md,docs/output/%.pdf,$(MD_FILES))
+
+LATEX_VARS ?= \
+	-V lang=en \
+	-V geometry:margin=2cm \
+	-V header-includes='\emergencystretch=3em' \
+	-V header-includes='\usepackage{fvextra}' \
+	-V header-includes='\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}'
+
+.PHONY: all-docs
+all-docs: $(PDF_FILES)
+
+.PHONY: clear-docs
+clear-docs:
+	@rm -f $(PDF_FILES)
+
+docs/output/%.pdf: docs/%.md
+	@mkdir -p "$(@D)"
+	@pandoc "$<" -o "$@" $(LATEX_VARS) -F mermaid-filter
+
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
 	time ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/create-sample $(DBNAME) --port $(DBPORT) --fixed-ids ./sead.query.test/Infrastructure/Mocks/FacetContext/PostgreSQL/Data/sample-fixture.csv
