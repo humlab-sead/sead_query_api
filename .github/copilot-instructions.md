@@ -44,6 +44,7 @@ This repository is a .NET solution centered on these projects:
 Use the focused instruction files instead of expanding this file. Each `.instructions.md` file should include `applyTo` front matter so Copilot applies it only where relevant.
 
 - `coding.instructions.md`: C# coding rules for source files
+- `csharp-summaries.instructions.md`: guidance for XML summary comments on C# types and extension points
 - `csharp-polymorphic-design.instructions.md`: guidance for using polymorphic design patterns instead of type-code conditionals in C#
 - `unit-and-integration-tests.instructions.md`: test authoring conventions in `sead.query.test`
 - `design.instructions.md`: guidance for `docs/DESIGN.md`

@@ -54,6 +54,7 @@ This repository is a .NET 9 solution with these main projects:
 Use the focused instruction files under `.github/instructions/` instead of expanding this file:
 
 * `coding.instructions.md`: C# coding instructions
+* `csharp-summaries.instructions.md`: guidance for XML summary comments on C# types
 * `csharp-polymorphic-design.instructions.md`: use polymorphic design patterns instead of type-code conditionals
 * `unit-and-integration-tests.instructions.md`: unit, integration, and live test guidance
 * `design.instructions.md`: guidance for `docs/DESIGN.md`
