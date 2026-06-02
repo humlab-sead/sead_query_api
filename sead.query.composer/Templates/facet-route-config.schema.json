@@ -278,7 +278,7 @@
                 }
             }
         },
-        "facetAnchor": {
+        "facetProjectedAnchor": {
             "type": "object",
             "additionalProperties": false,
             "required": [
@@ -291,11 +291,38 @@
                 },
                 "route": {
                     "$ref": "#/$defs/identifier"
+                }
+            }
+        },
+        "facetAnchorSqlOverride": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "anchor",
+                "route",
+                "sql_override"
+            ],
+            "properties": {
+                "anchor": {
+                    "$ref": "#/$defs/identifier"
+                },
+                "route": {
+                    "$ref": "#/$defs/identifier"
                 },
                 "sql_override": {
                     "$ref": "#/$defs/sqlExpression"
                 }
             }
+        },
+        "facetAnchor": {
+            "oneOf": [
+                {
+                    "$ref": "#/$defs/facetProjectedAnchor"
+                },
+                {
+                    "$ref": "#/$defs/facetAnchorSqlOverride"
+                }
+            ]
         },
         "facetTemplateKey": {
             "enum": [

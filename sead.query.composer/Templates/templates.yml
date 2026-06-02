@@ -17,20 +17,20 @@ facets:
         nullable: true
     anchors:
       site:
-          template_sql: |
+          body: |
             select s.site_id as target_id, s.site_id as anchor_id
             from tbl_sites s
             @criteria
           description: Site filter (no counts)
       sample_group:
-          template_sql: |
+          body: |
             select s.site_id as target_id, sg.sample_group_id as anchor_id
             from tbl_sites s
             join tbl_sample_groups sg using (site_id)
             @criteria
           description: Sites with sample group counts
       physical_sample:
-          template_sql: |
+          body: |
             select s.site_id as target_id, ps.physical_sample_id as anchor_id
             from tbl_sites s
             join tbl_sample_groups sg using (site_id)
@@ -38,7 +38,7 @@ facets:
             @criteria
           description: Sites with physical sample counts
       dataset:
-          template_sql: |
+          body: |
             select distinct s.site_id as target_id, d.dataset_id as anchor_id
             from tbl_sites s
             join tbl_sample_groups sg using (site_id)
@@ -58,27 +58,27 @@ facets:
         nullable: true
     anchors:
       site:
-          template_sql: |
+          body: |
             select sg.sample_group_id as target_id, s.site_id as anchor_id
             from tbl_sample_groups sg
             join tbl_sites s using (site_id)
             @criteria
           description: Sample group filter (site counts)
       sample_group:
-          template_sql: |
+          body: |
             select sg.sample_group_id as target_id, sg.sample_group_id as anchor_id
             from tbl_sample_groups sg
             @criteria
           description: Sample group (no counts)
       physical_sample:
-          template_sql: |
+          body: |
             select sg.sample_group_id as target_id, ps.physical_sample_id as anchor_id
             from tbl_sample_groups sg
             join tbl_physical_samples ps using (sample_group_id)
             @criteria
           description: Sample group with physical sample counts
       dataset:
-          template_sql: |
+          body: |
             select distinct sg.sample_group_id as target_id, d.dataset_id as anchor_id
             from tbl_sample_groups sg
             join tbl_physical_samples ps using (sample_group_id)
@@ -134,7 +134,7 @@ facets:
         nullable: true
     anchors:
       site:
-          template_sql: |
+          body: |
             select ft.feature_type_id as target_id, s.site_id as anchor_id
             from tbl_feature_types ft
             join tbl_features f using (feature_type_id)
@@ -144,7 +144,7 @@ facets:
             @criteria
           description: Feature type filter (site counts)
       sample_group:
-          template_sql: |
+          body: |
             select ft.feature_type_id as target_id, sg.sample_group_id as anchor_id
             from tbl_feature_types ft
             join tbl_features f using (feature_type_id)
@@ -153,7 +153,7 @@ facets:
             @criteria
           description: Feature type filter (sample group counts)
       physical_sample:
-          template_sql: |
+          body: |
             select ft.feature_type_id as target_id, ps.physical_sample_id as anchor_id
             from tbl_feature_types ft
             join tbl_features f using (feature_type_id)
@@ -161,7 +161,7 @@ facets:
             @criteria
           description: Feature type filter (physical sample counts)
       analysis:
-          template_sql: |
+          body: |
             select ft.feature_type_id as target_id, ae.analysis_entity_id as anchor_id
             from tbl_feature_types ft
             join tbl_features f using (feature_type_id)
@@ -171,7 +171,7 @@ facets:
             @criteria
           description: Feature type filter (analysis entity counts)
       dataset:
-          template_sql: |
+          body: |
             select distinct ft.feature_type_id as target_id, d.dataset_id as anchor_id
             from tbl_feature_types ft
             join tbl_features f using (feature_type_id)
