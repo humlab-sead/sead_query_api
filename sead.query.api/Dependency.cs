@@ -59,6 +59,7 @@ namespace SeadQueryAPI
             builder.RegisterType<ArrowRouteParser>().As<IArrowRouteParser>().InstancePerLifetimeScope();
             builder.RegisterType<RouteSqlCompiler>().As<IRouteSqlCompiler>().InstancePerLifetimeScope();
             builder.RegisterType<DiscreteFacetPredicateResolver>().As<IDiscreteFacetPredicateResolver>().InstancePerLifetimeScope();
+            builder.RegisterType<FacetTemplateRuntimeResolver>().As<IFacetTemplateRuntimeResolver>().InstancePerLifetimeScope();
             builder.RegisterType<IntersectComposedFilterQueryComposer>().As<IComposedFilterQueryComposer>().InstancePerLifetimeScope();
             builder.RegisterType<DiscreteFacetContentQueryComposer>().As<IFacetContentQueryComposer>().InstancePerLifetimeScope();
             builder.RegisterType<ComposedFacetContentRequestFactory>().As<IComposedFacetContentRequestFactory>().InstancePerLifetimeScope();
