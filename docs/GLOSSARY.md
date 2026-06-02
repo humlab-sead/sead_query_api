@@ -18,6 +18,14 @@ In query-composer documentation, "build" means "generate SQL text for the next s
 
 A pick-based facet whose input is one or more selected values, optionally with an operator such as `in` or `not in`. On the composed path, discrete facet picks are converted into predicate SQL that resolves matching anchor ids.
 
+## Predicate Facet
+
+A facet config that constrains a composed query because it appears before the target facet in the active facet chain and has picks or enforced constraints. In the current codebase, this is a `FacetConfig2` entry collected into `PredicateConfigs`, not a separate type.
+
+## Secondary Predicate Facet
+
+A predicate facet used on the composed facet-content path to filter the target facet. The current factory validates these facets as discrete, routable, and able to expose a simple source key column before composing SQL.
+
 ## Predicate SQL
 
 A SQL subquery that expresses one facet filter as data the composed pipeline can combine with other filters. For discrete facets on the current path, the predicate SQL yields normalized source-to-anchor pairs and is later merged into the composed anchor filter query.
