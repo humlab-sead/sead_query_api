@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NpgsqlTypes;
 using SeadQueryCore;
-using System.Threading.Tasks;
 
 namespace SeadQueryInfra
 {
@@ -28,8 +28,7 @@ namespace SeadQueryInfra
             {
                 if (dr.Read())
                 {
-                    return Enumerable.Range(0, dr.FieldCount)
-                        .Select(i => dr.IsDBNull(i) ? default : dr.GetFieldValue<T>(i)).ToList();
+                    return Enumerable.Range(0, dr.FieldCount).Select(i => dr.IsDBNull(i) ? default : dr.GetFieldValue<T>(i)).ToList();
                 }
             }
             return null;
@@ -51,7 +50,6 @@ namespace SeadQueryInfra
             using (var reader = Context.Database.ExecuteSqlQuery(sql).DbDataReader)
             {
                 return reader.Select(selector).ToList();
-
             }
         }
 
@@ -61,11 +59,13 @@ namespace SeadQueryInfra
             {
                 try
                 {
-                    return reader.Select(x => new Key2Value<K, V>(
-                        x.GetFieldValue<K>(keyIndex),
-                        x.GetFieldValue<V>(valueIndex1),
-                        x.GetFieldValue<V>(valueIndex2))
-                    ).ToList();
+                    return reader
+                        .Select(x => new Key2Value<K, V>(
+                            x.GetFieldValue<K>(keyIndex),
+                            x.GetFieldValue<V>(valueIndex1),
+                            x.GetFieldValue<V>(valueIndex2)
+                        ))
+                        .ToList();
                 }
                 catch
                 {
@@ -83,7 +83,6 @@ namespace SeadQueryInfra
             return (range.LowerBound, range.UpperBound);
         }
 
-
         public (T, T) GetRange<T>(IDataReader dr, int index)
         {
             var datareader = (DbDataReader)dr;
@@ -92,7 +91,5 @@ namespace SeadQueryInfra
                 return (default, default);
             return (range.LowerBound, range.UpperBound);
         }
-
-
     }
 }
