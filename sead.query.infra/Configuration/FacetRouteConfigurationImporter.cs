@@ -24,6 +24,16 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         "discrete",
         "range",
     };
+
+    private static readonly IReadOnlyDictionary<string, HashSet<string>> AllowedPlaceholdersByContract =
+        new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["discrete"] = new(StringComparer.OrdinalIgnoreCase) { "pick_filter_sql", "pick_values_sql" },
+            ["range"] = new(StringComparer.OrdinalIgnoreCase) { "low", "high", "range_filter_sql" },
+        };
+
+    private static readonly System.Text.RegularExpressions.Regex PlaceholderPattern =
+        new(@"\{([a-z][a-z0-9_]*)\}", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
     private static readonly HashSet<string> SupportedTemplateKeyFacets = new(StringComparer.OrdinalIgnoreCase)
     {
         "result_facet",
@@ -553,12 +563,28 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                         $"Facet '{facetDefinition.Key}' uses unsupported template_key '{facetDefinition.TemplateKey}'."
                     );
                 }
+
+                if (facetDefinition.Sql is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Facet '{facetDefinition.Key}' declares both template_key and inline sql. "
+                            + "These are mutually exclusive; use template_key for retained result-shape facets "
+                            + "and sql for inline-template facets."
+                    );
+                }
+            }
+            else if (SupportedTemplateKeyFacets.Contains(facetDefinition.Key))
+            {
+                throw new InvalidOperationException(
+                    $"Facet '{facetDefinition.Key}' is a retained result-shape facet and must declare a template_key."
+                );
             }
 
             if (facetDefinition.Sql is null)
             {
                 continue;
             }
+
 
             if (!string.Equals(facetDefinition.Sql.Mode, "inline-template", StringComparison.OrdinalIgnoreCase))
             {
@@ -590,17 +616,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                 );
             }
 
-            if (
-                !string.Equals(facetDefinition.Type, facetDefinition.Sql.Contract, StringComparison.OrdinalIgnoreCase)
-                && !(
-                    string.Equals(facetDefinition.Type, "discrete", StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(facetDefinition.Sql.Contract, "discrete", StringComparison.OrdinalIgnoreCase)
-                )
-                && !(
-                    string.Equals(facetDefinition.Type, "range", StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(facetDefinition.Sql.Contract, "range", StringComparison.OrdinalIgnoreCase)
-                )
-            )
+            if (!string.Equals(facetDefinition.Type, facetDefinition.Sql.Contract, StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException(
                     $"Facet '{facetDefinition.Key}' type '{facetDefinition.Type}' is incompatible with sql contract '{facetDefinition.Sql.Contract}'."
@@ -608,6 +624,81 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
             }
 
             ResolveRequiredLookup(anchorsByName, facetDefinition.Sql.BaseAnchor, $"facet '{facetDefinition.Key}' sql base anchor");
+
+            var facetAnchorKeys = new HashSet<string>(
+                facetDefinition.Anchors.Select(binding => binding.Anchor),
+                StringComparer.OrdinalIgnoreCase
+            );
+
+            if (!facetAnchorKeys.Contains(facetDefinition.Sql.BaseAnchor))
+            {
+                throw new InvalidOperationException(
+                    $"Facet '{facetDefinition.Key}' declares sql base_anchor '{facetDefinition.Sql.BaseAnchor}' "
+                        + "which is not listed in its anchors."
+                );
+            }
+
+            ValidatePlaceholdersInSqlBody(
+                facetDefinition.Key,
+                facetDefinition.Sql.Contract,
+                facetDefinition.Sql.GetTemplateBody(),
+                "base template"
+            );
+
+            foreach (var anchorBinding in facetDefinition.Anchors.Where(binding => !string.IsNullOrWhiteSpace(binding.SqlOverride)))
+            {
+                if (string.Equals(anchorBinding.Anchor, facetDefinition.Sql.BaseAnchor, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        $"Facet '{facetDefinition.Key}' has an explicit anchor-to-SQL override for anchor "
+                            + $"'{anchorBinding.Anchor}' which is also the base_anchor. The base template already provides SQL "
+                            + "for the base anchor; remove the override or change the base_anchor."
+                    );
+                }
+
+                ValidatePlaceholdersInSqlBody(
+                    facetDefinition.Key,
+                    facetDefinition.Sql.Contract,
+                    anchorBinding.SqlOverride,
+                    $"anchor '{anchorBinding.Anchor}' sql_override"
+                );
+            }
+        }
+    }
+
+    private static void ValidatePlaceholdersInSqlBody(
+        string facetKey,
+        string contract,
+        string sqlBody,
+        string bodyDescription
+    )
+    {
+        if (!AllowedPlaceholdersByContract.TryGetValue(contract, out var allowedPlaceholders))
+        {
+            return;
+        }
+
+        var foundPlaceholders = PlaceholderPattern.Matches(sqlBody)
+            .Select(match => match.Groups[1].Value)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        if (foundPlaceholders.Count == 0)
+        {
+            return;
+        }
+
+        var unsupportedPlaceholders = foundPlaceholders
+            .Where(placeholder => !allowedPlaceholders.Contains(placeholder))
+            .OrderBy(placeholder => placeholder)
+            .ToList();
+
+        if (unsupportedPlaceholders.Count > 0)
+        {
+            throw new InvalidOperationException(
+                $"Facet '{facetKey}' {bodyDescription} uses unsupported placeholder(s) "
+                    + $"'{string.Join("', '", unsupportedPlaceholders)}' for contract '{contract}'. "
+                    + $"Allowed placeholders: '{string.Join("', '", allowedPlaceholders.OrderBy(p => p))}'."
+            );
         }
     }
 

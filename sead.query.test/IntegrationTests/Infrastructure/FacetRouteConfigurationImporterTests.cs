@@ -321,6 +321,172 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
     }
 
     [Fact]
+    public void ValidateFile_WithBaseAnchorNotInFacetAnchors_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var baseAnchorLineStart = fileContent.IndexOf("      base_anchor: sample\n", featureTypeFacetStart, StringComparison.Ordinal);
+        baseAnchorLineStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var invalidContent =
+            fileContent[..baseAnchorLineStart]
+            + "      base_anchor: analysis_entity\n"
+            + fileContent[(baseAnchorLineStart + "      base_anchor: sample\n".Length)..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*Facet 'feature_type' declares sql base_anchor 'analysis_entity' which is not listed in its anchors.*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithSqlOverrideTargetingBaseAnchor_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var sampleAnchorEntryStart = fileContent.IndexOf(
+            "      - anchor: sample\n        route: feature_type__sample\n",
+            featureTypeFacetStart,
+            StringComparison.Ordinal
+        );
+        sampleAnchorEntryStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var replacementAnchorEntry =
+            "      - anchor: sample\n        route: feature_type__sample\n"
+            + "        sql_override: |\n"
+            + "          select\n"
+            + "            tbl_feature_types.feature_type_id as source_id,\n"
+            + "            tbl_physical_samples.physical_sample_id as target_id\n"
+            + "          from tbl_feature_types\n"
+            + "          join tbl_features on tbl_features.feature_type_id = tbl_feature_types.feature_type_id\n"
+            + "          join tbl_physical_sample_features on tbl_physical_sample_features.feature_id = tbl_features.feature_id\n"
+            + "          join tbl_physical_samples on tbl_physical_samples.physical_sample_id = tbl_physical_sample_features.physical_sample_id\n";
+        var anchorEntryEnd = sampleAnchorEntryStart + "      - anchor: sample\n        route: feature_type__sample\n".Length;
+        var invalidContent = fileContent[..sampleAnchorEntryStart] + replacementAnchorEntry + fileContent[anchorEntryEnd..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(
+                    "*Facet 'feature_type' has an explicit anchor-to-SQL override for anchor 'sample' which is also the base_anchor*"
+                );
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithUnsupportedPlaceholderInBaseTemplate_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var bodyStart = fileContent.IndexOf("      body: |\n", featureTypeFacetStart, StringComparison.Ordinal);
+        bodyStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var bodyEnd = fileContent.IndexOf("\n    clauses:", bodyStart, StringComparison.Ordinal);
+        bodyEnd.Should().BeGreaterThanOrEqualTo(bodyStart);
+
+        var originalBody = fileContent[bodyStart..bodyEnd];
+        var modifiedBody = originalBody.Replace(
+            "        select\n",
+            "        select\n          where {unsupported_placeholder}\n",
+            StringComparison.Ordinal
+        );
+        var invalidContent = fileContent[..bodyStart] + modifiedBody + fileContent[bodyEnd..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(
+                    "*Facet 'feature_type' base template uses unsupported placeholder(s) 'unsupported_placeholder' for contract 'discrete'*"
+                );
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithUnsupportedPlaceholderInSqlOverride_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var datasetAnchorEntryStart = fileContent.IndexOf(
+            "      - anchor: dataset\n        route: feature_type__dataset\n",
+            featureTypeFacetStart,
+            StringComparison.Ordinal
+        );
+        datasetAnchorEntryStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var replacementAnchorEntry =
+            "      - anchor: dataset\n        route: feature_type__dataset\n"
+            + "        sql_override: |\n"
+            + "          select\n"
+            + "            tbl_feature_types.feature_type_id as source_id,\n"
+            + "            tbl_datasets.dataset_id as target_id\n"
+            + "          from tbl_feature_types\n"
+            + "          where {unsupported_placeholder}\n";
+        var anchorEntryEnd = datasetAnchorEntryStart + "      - anchor: dataset\n        route: feature_type__dataset\n".Length;
+        var invalidContent = fileContent[..datasetAnchorEntryStart] + replacementAnchorEntry + fileContent[anchorEntryEnd..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage(
+                    "*Facet 'feature_type' anchor 'dataset' sql_override uses unsupported placeholder(s) 'unsupported_placeholder' for contract 'discrete'*"
+                );
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
     public void ImportFromFile_WithInlineTemplateMetadata_PersistsFacetTemplateRows()
     {
         var dbContext = (FacetContext)FacetContext;
@@ -329,7 +495,7 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
         var fileContent = File.ReadAllText(configurationFilePath);
         var updatedContent = fileContent.Replace(
             "    clauses: []\n    anchors:\n      - anchor: sample\n        route: feature_type__sample\n      - anchor: dataset\n        route: feature_type__dataset",
-            "    clauses: []\n    anchors:\n      - anchor: sample\n        route: feature_type__sample\n        sql_override: |\n          select\n            tbl_feature_types.feature_type_id as source_id,\n            tbl_physical_samples.physical_sample_id as target_id\n          from tbl_feature_types\n          join tbl_features on tbl_features.feature_type_id = tbl_feature_types.feature_type_id\n          join tbl_physical_sample_features on tbl_physical_sample_features.feature_id = tbl_features.feature_id\n          join tbl_physical_samples on tbl_physical_samples.physical_sample_id = tbl_physical_sample_features.physical_sample_id\n      - anchor: dataset\n        route: feature_type__dataset",
+            "    clauses: []\n    anchors:\n      - anchor: sample\n        route: feature_type__sample\n      - anchor: dataset\n        route: feature_type__dataset\n        sql_override: |\n          select\n            tbl_feature_types.feature_type_id as source_id,\n            tbl_datasets.dataset_id as target_id\n          from tbl_feature_types\n          join tbl_features on tbl_features.feature_type_id = tbl_feature_types.feature_type_id\n          join tbl_physical_sample_features on tbl_physical_sample_features.feature_id = tbl_features.feature_id\n          join tbl_physical_samples on tbl_physical_samples.physical_sample_id = tbl_physical_sample_features.physical_sample_id\n          join tbl_analysis_entities on tbl_analysis_entities.physical_sample_id = tbl_physical_samples.physical_sample_id\n          join tbl_datasets on tbl_datasets.dataset_id = tbl_analysis_entities.dataset_id",
             StringComparison.Ordinal
         );
         var temporaryFilePath = CreateTemporaryConfigurationFile(updatedContent);
@@ -339,7 +505,7 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
             importer.ImportFromFile(temporaryFilePath);
 
             var featureTypeFacetId = dbContext.Facets.Single(facet => facet.FacetCode == "feature_type").FacetId;
-            var sampleAnchorId = dbContext.Anchors.Single(anchor => anchor.Name == "sample").AnchorId;
+            var datasetAnchorId = dbContext.Anchors.Single(anchor => anchor.Name == "dataset").AnchorId;
 
             QueryScalar(
                     dbContext,
@@ -366,10 +532,334 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
                     dbContext,
                     "select sql_text from facet.facet_template where facet_id = @facet_id and anchor_id = @anchor_id and template_role = 'anchor_sql' limit 1",
                     ("@facet_id", featureTypeFacetId),
-                    ("@anchor_id", sampleAnchorId)
+                    ("@anchor_id", datasetAnchorId)
                 )
                 .Should()
                 .Contain("source_id");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithRetainedResultShapeFacetMissingTemplateKey_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+
+        var resultFacetDefinition =
+            "\n  - key: result_facet\n"
+            + "    display_title: Result facet\n"
+            + "    description: Retained result-shape facet\n"
+            + "    group_key: others\n"
+            + "    type: discrete\n"
+            + "    source_table: tbl_analysis_entities\n"
+            + "    category:\n"
+            + "      id_expr: tbl_analysis_entities.analysis_entity_id\n"
+            + "      name_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "      data_type: integer\n"
+            + "      operator: \"=\"\n"
+            + "    sort_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "    flags:\n"
+            + "      is_applicable: true\n"
+            + "      is_default: false\n"
+            + "    aggregate:\n"
+            + "      type: count\n"
+            + "      title: Number of samples\n"
+            + "    clauses: []\n"
+            + "    anchors:\n"
+            + "      - anchor: analysis_entity\n"
+            + "        route: analysis_entity_ages__analysis_entity\n";
+
+        var invalidContent = fileContent + resultFacetDefinition;
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*Facet 'result_facet' is a retained result-shape facet and must declare a template_key*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithTemplateKeyAndInlineSqlTogether_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+
+        var resultFacetDefinition =
+            "\n  - key: result_facet\n"
+            + "    display_title: Result facet\n"
+            + "    description: Retained result-shape facet\n"
+            + "    group_key: others\n"
+            + "    type: discrete\n"
+            + "    source_table: tbl_analysis_entities\n"
+            + "    category:\n"
+            + "      id_expr: tbl_analysis_entities.analysis_entity_id\n"
+            + "      name_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "      data_type: integer\n"
+            + "      operator: \"=\"\n"
+            + "    sort_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "    flags:\n"
+            + "      is_applicable: true\n"
+            + "      is_default: false\n"
+            + "    aggregate:\n"
+            + "      type: count\n"
+            + "      title: Number of samples\n"
+            + "    template_key: anchor_identity\n"
+            + "    sql:\n"
+            + "      mode: inline-template\n"
+            + "      contract: discrete\n"
+            + "      base_anchor: analysis_entity\n"
+            + "      body: |\n"
+            + "        select 1 as category_id\n"
+            + "    clauses: []\n"
+            + "    anchors:\n"
+            + "      - anchor: analysis_entity\n"
+            + "        route: analysis_entity_ages__analysis_entity\n";
+
+        var invalidContent = fileContent + resultFacetDefinition;
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Facet 'result_facet' declares both template_key and inline sql*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithValidTemplateKeyOnRetainedResultShapeFacet_Succeeds()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+
+        var resultFacetDefinition =
+            "\n  - key: result_facet\n"
+            + "    display_title: Result facet\n"
+            + "    description: Retained result-shape facet\n"
+            + "    group_key: others\n"
+            + "    type: discrete\n"
+            + "    source_table: tbl_analysis_entities\n"
+            + "    category:\n"
+            + "      id_expr: tbl_analysis_entities.analysis_entity_id\n"
+            + "      name_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "      data_type: integer\n"
+            + "      operator: \"=\"\n"
+            + "    sort_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "    flags:\n"
+            + "      is_applicable: true\n"
+            + "      is_default: false\n"
+            + "    aggregate:\n"
+            + "      type: count\n"
+            + "      title: Number of samples\n"
+            + "    template_key: anchor_identity\n"
+            + "    clauses: []\n"
+            + "    anchors:\n"
+            + "      - anchor: analysis_entity\n"
+            + "        route: analysis_entity_ages__analysis_entity\n";
+
+        var validContent = fileContent + resultFacetDefinition;
+        var temporaryFilePath = CreateTemporaryConfigurationFile(validContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should().NotThrow();
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithUnsupportedSqlContract_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var contractLineStart = fileContent.IndexOf("      contract: discrete\n", featureTypeFacetStart, StringComparison.Ordinal);
+        contractLineStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var invalidContent =
+            fileContent[..contractLineStart]
+            + "      contract: intersect\n"
+            + fileContent[(contractLineStart + "      contract: discrete\n".Length)..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*Facet 'feature_type' uses unsupported sql contract 'intersect'*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithTypeContractMismatch_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var contractLineStart = fileContent.IndexOf("      contract: discrete\n", featureTypeFacetStart, StringComparison.Ordinal);
+        contractLineStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var invalidContent =
+            fileContent[..contractLineStart]
+            + "      contract: range\n"
+            + fileContent[(contractLineStart + "      contract: discrete\n".Length)..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*Facet 'feature_type' type 'discrete' is incompatible with sql contract 'range'*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithMissingBaseAnchorInDocument_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var baseAnchorLineStart = fileContent.IndexOf("      base_anchor: sample\n", featureTypeFacetStart, StringComparison.Ordinal);
+        baseAnchorLineStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var invalidContent =
+            fileContent[..baseAnchorLineStart]
+            + "      base_anchor: nonexistent_anchor\n"
+            + fileContent[(baseAnchorLineStart + "      base_anchor: sample\n".Length)..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*facet 'feature_type' sql base anchor 'nonexistent_anchor' could not be resolved*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithMissingSqlBody_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var bodyStart = fileContent.IndexOf("      body: |\n", featureTypeFacetStart, StringComparison.Ordinal);
+        bodyStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var bodyEnd = fileContent.IndexOf("\n    clauses:", bodyStart, StringComparison.Ordinal);
+        bodyEnd.Should().BeGreaterThanOrEqualTo(bodyStart);
+
+        var originalBody = fileContent[bodyStart..bodyEnd];
+        var bodyLineCount = originalBody.Split('\n').Length;
+        var bodyLineStart = fileContent.IndexOf("        select\n", bodyStart, StringComparison.Ordinal);
+        bodyLineStart.Should().BeGreaterThanOrEqualTo(bodyStart);
+
+        var bodyContentEnd = fileContent.IndexOf("\n    clauses:", bodyLineStart, StringComparison.Ordinal);
+        bodyContentEnd.Should().BeGreaterThan(bodyLineStart);
+
+        var invalidContent = fileContent[..bodyLineStart] + "      body: \"\"\n" + fileContent[bodyContentEnd..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*facet 'feature_type' sql is missing required field 'Body'*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ValidateFile_WithUnsupportedSqlMode_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var modeLineStart = fileContent.IndexOf("      mode: inline-template\n", featureTypeFacetStart, StringComparison.Ordinal);
+        modeLineStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var invalidContent =
+            fileContent[..modeLineStart]
+            + "      mode: legacy-override\n"
+            + fileContent[(modeLineStart + "      mode: inline-template\n".Length)..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*Facet 'feature_type' uses unsupported sql mode 'legacy-override'*");
         }
         finally
         {
