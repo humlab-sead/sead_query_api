@@ -14,6 +14,10 @@ using SeadQueryCore.Services.Result;
 
 namespace SeadQueryComposer.QueryComposer.Services;
 
+/// <summary>
+/// Builds the composed result-projection handoff by validating a request, composing filter SQL,
+/// and wiring the projection query setup.
+/// </summary>
 public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHandoffBuilder
 {
     private readonly IRepositoryRegistry _registry;
@@ -21,6 +25,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
     private readonly IPickFilterCompilerLocator _pickFilterCompilerLocator;
     private readonly IPathFinder _pathFinder;
     private readonly IRouteSqlCompiler _routeSqlCompiler;
+    private readonly IFacetTemplateRuntimeResolver _facetTemplateRuntimeResolver;
     private readonly IDiscreteFacetPredicateResolver _predicateResolver;
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
     private readonly ILogger<ComposedResultProjectionHandoffBuilder> _logger;
@@ -31,6 +36,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         IPickFilterCompilerLocator pickFilterCompilerLocator,
         IPathFinder pathFinder,
         IRouteSqlCompiler routeSqlCompiler,
+        IFacetTemplateRuntimeResolver facetTemplateRuntimeResolver,
         IDiscreteFacetPredicateResolver predicateResolver,
         IComposedFilterQueryComposer composedFilterQueryComposer,
         ILogger<ComposedResultProjectionHandoffBuilder> logger
@@ -41,6 +47,8 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         _pickFilterCompilerLocator = pickFilterCompilerLocator ?? throw new ArgumentNullException(nameof(pickFilterCompilerLocator));
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
         _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
+        _facetTemplateRuntimeResolver =
+            facetTemplateRuntimeResolver ?? throw new ArgumentNullException(nameof(facetTemplateRuntimeResolver));
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
         _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -67,7 +75,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
         var resultFields = resultConfig.GetSortedFields().ToList();
         var projectionQuerySetup = _querySetupFactory.CreateForResultProjection(facetsConfig, resultConfig.Facet, resultFields);
-        var composedFilterQuery = CreateComposedFilterQuery(request);
+        var composedFilterQuery = CreateComposedFilterQuery(request, resultConfig.Facet);
 
         projectionQuerySetup.LeadingSql = BuildLeadingSql(composedFilterQuery.Sql, request.AnchorToTargetSql);
         projectionQuerySetup.Joins = CreateProjectionJoins(projectionQuerySetup, request).Concat(projectionQuerySetup.Joins ?? []).ToList();
@@ -75,7 +83,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         return new ResultProjectionHandoff(projectionQuerySetup, resultFields);
     }
 
-    private ComposedFilterQuery CreateComposedFilterQuery(ComposedResultProjectionRequest request)
+    private ComposedFilterQuery CreateComposedFilterQuery(ComposedResultProjectionRequest request, Facet resultFacet)
     {
         if (request.PredicateConfigs.Count > 0)
         {
@@ -83,12 +91,16 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             return _composedFilterQueryComposer.Compose(predicatePlans, request.AnchorTable, QueryComposerAliases.AnchorKeyColumn);
         }
 
+        var templateKeySql = CreateTemplateKeySql(resultFacet, request.AnchorTable, request.AnchorKeyColumnName);
+
         return new ComposedFilterQuery
         {
             AnchorTable = request.AnchorTable,
             AnchorKeyColumn = QueryComposerAliases.AnchorKeyColumn,
             PredicateQueries = [],
-            Sql = CreateUnfilteredAnchorSql(request.AnchorTable, request.AnchorKeyColumnName, QueryComposerAliases.AnchorKeyColumn),
+            Sql = string.IsNullOrWhiteSpace(templateKeySql)
+                ? CreateUnfilteredAnchorSql(request.AnchorTable, request.AnchorKeyColumnName, QueryComposerAliases.AnchorKeyColumn)
+                : templateKeySql,
         };
     }
 
@@ -115,6 +127,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
             new AnchorTemplate
             {
+                ExplicitSql = _facetTemplateRuntimeResolver.GetAnchorSql(sourceFacet, request.AnchorTable),
                 Route = route,
                 IsIdentityRoute = isIdentityRoute,
                 RequiresDistinct = true,
@@ -283,6 +296,11 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         {
             if (!TryResolvePredicateSourceKeyColumn(facet, out _))
             {
+                if (_facetTemplateRuntimeResolver.HasAnchorSql(facet, anchorTable))
+                {
+                    return true;
+                }
+
                 failureReason =
                     $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' does not expose a simple source key column on its target table.";
                 return false;
@@ -290,6 +308,11 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
             if (!TryResolvePredicateCriteria(facet, out _))
             {
+                if (_facetTemplateRuntimeResolver.HasAnchorSql(facet, anchorTable))
+                {
+                    return true;
+                }
+
                 failureReason =
                     $"predicate facet '{config?.FacetCode ?? facet?.FacetCode ?? "(unknown)"}' uses facet clauses that the composed result path cannot apply.";
                 return false;
@@ -509,6 +532,26 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
         sourceCriteria = normalizedClauses;
         return true;
+    }
+
+    private string CreateTemplateKeySql(Facet facet, string anchorTable, string anchorKeyColumn)
+    {
+        if (facet is null)
+        {
+            return string.Empty;
+        }
+
+        var templateKey = _facetTemplateRuntimeResolver.GetTemplateKey(facet);
+        if (string.IsNullOrWhiteSpace(templateKey))
+        {
+            return string.Empty;
+        }
+
+        return templateKey switch
+        {
+            "anchor_identity" => CreateUnfilteredAnchorSql(anchorTable, anchorKeyColumn, QueryComposerAliases.AnchorKeyColumn),
+            _ => throw new InvalidOperationException($"Unsupported template key '{templateKey}' for result projection handoff."),
+        };
     }
 
     private bool TryResolveCompiledPredicateCriteria(FacetConfig2 config, out IReadOnlyList<string> sourceCriteria)
