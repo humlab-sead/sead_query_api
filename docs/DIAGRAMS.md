@@ -13,26 +13,32 @@ Use `docs/DESIGN.md` as the primary written architecture reference. These diagra
 ## System Overview
 
 ```mermaid
-flowchart LR
-    Client[Client UI]
-    Api[sead.query.api]
-    Core[sead.query.core]
-    Infra[sead.query.infra]
-    Composer[sead.query.composer]
-    Db[(SEAD PostgreSQL)]
-    Tests[sead.query.test]
+%%{init: {
+  "themeCSS": ".edgeLabel { background-color: transparent !important; } .edgeLabel p { background-color: transparent !important; }"
+}}%%
+flowchart TB
+    Client["Client UI"]
+    Api["sead.query.api"]
+    Core["sead.query.core"]
+    Infra["sead.query.infra"]
+    Composer["sead.query.composer"]
+    Db[("SEAD PostgreSQL")]
+    Tests["sead.query.test"]
 
-    Client -->|Facet and result requests| Api
-    Api -->|Uses domain and query contracts| Core
-    Api -->|Uses composed query services| Composer
-    Api -->|Loads repositories and services| Infra
-    Core -->|Provides query contracts| Composer
-    Infra -->|Reads config and data| Db
-    Composer -->|Compiles routes and SQL| Db
-    Tests -. validates runtime behavior .-> Api
-    Tests -. validates compilers and services .-> Core
-    Tests -. validates repositories and fixtures .-> Infra
-    Tests -. validates composed query paths .-> Composer
+    Client -->|"Facet/result<br/>requests"| Api
+
+    Api -->|"Domain/query<br/>contracts"| Core
+    Api -->|"Composed query<br/>services"| Composer
+    Api -->|"Repositories<br/>and services"| Infra
+
+    Core -->|"Query<br/>contracts"| Composer
+    Infra -->|"Config<br/>and data"| Db
+    Composer -->|"Routes<br/>and SQL"| Db
+
+    Tests -. "Runtime<br/>behavior" .-> Api
+    Tests -. "Compilers<br/>and services" .-> Core
+    Tests -. "Repositories<br/>and fixtures" .-> Infra
+    Tests -. "Composed<br/>query paths" .-> Composer
 
     classDef edge fill:#edf3ff,stroke:#6c8ebf,color:#1f2d3d;
     classDef runtime fill:#e8f5ec,stroke:#5b8f6a,color:#1f3527;
@@ -50,7 +56,7 @@ flowchart LR
 ## Current Request Surface Summary
 
 ```mermaid
-flowchart LR
+flowchart TB
     Request[Client request]
     Reconstitute[Reconstitute request models]
     Clean[Normalize active selections]
