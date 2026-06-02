@@ -8,4 +8,6 @@ public interface IComposedFacetContentRequestFactory
         out ComposedFacetContentRequest request,
         out string failureReason
     );
+
+    ComposedFacetContentRequest Create(SeadQueryCore.FacetsConfig2 facetsConfig, IComposedFacetContentHandler handler);
 }

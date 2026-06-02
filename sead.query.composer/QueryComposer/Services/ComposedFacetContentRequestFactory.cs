@@ -111,6 +111,16 @@ public sealed class ComposedFacetContentRequestFactory : IComposedFacetContentRe
         return true;
     }
 
+    public ComposedFacetContentRequest Create(FacetsConfig2 facetsConfig, IComposedFacetContentHandler handler)
+    {
+        if (TryCreate(facetsConfig, handler, out var request, out var failureReason))
+        {
+            return request;
+        }
+
+        throw new InvalidOperationException($"Cannot create composed facet-content request: {failureReason}");
+    }
+
     private List<FacetConfig2> ResolvePredicateConfigs(FacetsConfig2 facetsConfig)
     {
         var affectedConfigs = facetsConfig.GetConfigsThatAffectsTarget(facetsConfig.TargetCode, facetsConfig.GetFacetCodes());
