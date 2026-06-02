@@ -36,6 +36,17 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
     }
 
+    /// <summary>
+    /// Resolves SQL that maps discrete facet picks to matching anchor records based on the provided parameters.
+    /// </summary>
+    /// <param name="targetTable">The name of the target table.</param>
+    /// <param name="targetId">The name of the target ID column.</param>
+    /// <param name="userInput">The user input containing the selected discrete facet values.</param>
+    /// <param name="anchorTemplate">The anchor template defining the route and SQL for the anchor table.</param>
+    /// <param name="anchorTable">The name of the anchor table.</param>
+    /// <param name="anchorId">The name of the anchor ID column.</param>
+    /// <param name="sourceCriteria">Optional list of source criteria for filtering.</param>
+    /// <returns>The generated SQL string.</returns>
     public string ResolveSql(
         string targetTable,
         string targetId,
@@ -61,9 +72,9 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         }
 
         var baseSql =
-            anchorTemplate.IsIdentityRoute
-                ? BuildIdentitySql(targetTable, targetId, anchorId, anchorTemplate.RequiresDistinct, sourceCriteria)
-                : BuildRouteSql(targetTable, targetId, anchorTemplate.Route, anchorTable, anchorId, sourceCriteria);
+            anchorTemplate.Route.Count > 0
+                ? BuildRouteSql(targetTable, targetId, anchorTemplate.Route, anchorTable, anchorId, sourceCriteria)
+                : BuildIdentitySql(targetTable, targetId, anchorId, anchorTemplate.RequiresDistinct, sourceCriteria);
 
         if (!userInput.HasPicks)
         {
@@ -73,6 +84,16 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
         return WrapWithSourceFilter(baseSql, userInput);
     }
 
+    /// <summary>
+    /// Builds SQL that joins the target table to the anchor table through the specified route of intermediate tables.
+    /// </summary>
+    /// <param name="targetTable">The name of the target table.</param>
+    /// <param name="sourceKeyColumn">The name of the source key column in the target table.</param>
+    /// <param name="route">The list of intermediate tables to join.</param>
+    /// <param name="anchorTable">The name of the anchor table.</param>
+    /// <param name="anchorId">The name of the anchor ID column.</param>
+    /// <param name="sourceCriteria">Optional list of source criteria for filtering.</param>
+    /// <returns>The generated SQL string.</returns>
     private string BuildRouteSql(
         string targetTable,
         string sourceKeyColumn,
@@ -91,6 +112,16 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
             : _routeSqlCompiler.Compile(tableChain, sourceKeyColumn, anchorId);
     }
 
+
+    /// <summary>
+    /// Builds SQL that directly links the target table to the anchor table without any intermediate route tables.
+    /// </summary>
+    /// <param name="targetTable">The name of the target table.</param>
+    /// <param name="targetId">The name of the target ID column.</param>
+    /// <param name="anchorId">The name of the anchor ID column.</param>
+    /// <param name="requiresDistinct">Indicates whether the SQL should include a DISTINCT clause.</param>
+    /// <param name="sourceCriteria">Optional list of source criteria for filtering.</param>
+    /// <returns>The generated SQL string.</returns>
     private static string BuildIdentitySql(
         string targetTable,
         string targetId,

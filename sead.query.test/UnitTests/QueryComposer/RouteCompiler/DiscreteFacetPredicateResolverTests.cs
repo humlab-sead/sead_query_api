@@ -145,7 +145,7 @@ public class DiscreteFacetPredicateResolverTests
     public void ResolveSql_WithoutRouteAndWithSourceCriteria_AliasesSourceTableAndAppliesCriteria()
     {
         var input = new DiscreteFacetUserInput { Picks = [1] };
-        var anchorTemplate = new AnchorTemplate { RequiresDistinct = true, IsIdentityRoute = true };
+        var anchorTemplate = new AnchorTemplate { RequiresDistinct = true };
 
         var sql = _resolver.ResolveSql(
             "facet.site_location_shortcut",
@@ -167,7 +167,7 @@ public class DiscreteFacetPredicateResolverTests
     public void ResolveSql_WithoutRoute_BuildsIdentitySql()
     {
         var input = new DiscreteFacetUserInput();
-        var anchorTemplate = new AnchorTemplate { RequiresDistinct = true, IsIdentityRoute = true };
+        var anchorTemplate = new AnchorTemplate { RequiresDistinct = true };
 
         var sql = _resolver.ResolveSql("tbl_sites", "site_id", input, anchorTemplate, "tbl_sites", "site_id");
 
