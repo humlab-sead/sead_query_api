@@ -58,11 +58,13 @@ In the current model, the runtime flow is:
 2. Resolve the target facet and any trigger facet from the request context.
 3. Remove invalid or stale picks before compiling SQL.
 4. Select the facet-content service based on facet type.
-5. Compile interval or category SQL for the target facet.
-6. Compute category counts and outer counts.
-7. Reattach user selections and build the final facet-content response.
+5. On the composed path, let `ComposedFacetContentService` select a target-facet handler by `EFacetType`.
+6. Ask the composed request factory to validate the request, resolve the anchor and target join contract, and build any routed anchor-to-target SQL.
+7. Ask the composed filter-query factory to turn the secondary predicate facets into one composed anchor-filter query.
+8. Delegate target-facet-specific content loading to the selected handler.
+9. Reattach user selections and build the final facet-content response.
 
-This design keeps facet-type-specific behavior behind dedicated services and compilers, but the overall query model is still tightly coupled to explicit SQL templates and large join assemblies.
+This design keeps facet-type-specific behavior behind dedicated services and compilers. In the composed slice, that split is now explicit inside the composed path itself rather than being concentrated in one large `ComposedFacetContentService.Load(...)` method.
 
 ## Current Design Constraints
 
@@ -135,10 +137,21 @@ The current composed path depends on a small contract surface that is already ac
 ### Facet-Content Contract
 
 - Target facet content is generated from the composed anchor set, not from a re-expanded global join template.
+- `ComposedFacetContentService` now acts as an orchestrator for the composed facet-content path rather than as the owner of all target-facet-specific branching.
+- The orchestrator selects a handler by target `EFacetType`, asks a request factory to build the routable composed request, asks a filter-query factory to build the composed anchor filter, and then delegates content loading to the selected handler.
+- Target-facet-specific content behavior now lives in `IComposedFacetContentHandler` implementations for discrete, range, intersect, and geo-polygon targets.
 - The current composed content path supports direct aggregate/result targets and routed visible targets whose category expression can be resolved either on the routed target table or on joined target-facet tables.
 - The current composed content path also supports target-only discrete requests by using an explicit unfiltered anchor-set query instead of requiring prior picked predicates.
 - Routed target-only discrete requests now overlay legacy-style discrete category-info rows onto composed counts so the composed result can retain zero-count categories where the legacy discrete path exposes them.
 - The currently validated target set includes the baseline visible-target slices, multiple adjacent discrete targets, and the first validated range-target families recorded in the phase-0 tracker.
+
+### Composed Facet-Content Orchestration Contract
+
+- Request validation and route/request construction are now separated from target-facet rendering.
+- `IComposedFacetContentRequestFactory` owns composed request creation, including anchor resolution, target join-column derivation, predicate compatibility checks, and anchor-to-target route SQL generation.
+- `IComposedFacetContentFilterQueryFactory` owns composed anchor-filter SQL construction from the validated predicate set.
+- `IComposedFacetContentHandler` implementations own target-facet-specific category-info lookup, row mapping, distribution construction, and any target-type-specific post-processing such as interval outer-row overlays or target-only discrete overlays.
+- Shared low-level helper rules, such as simple-column resolution and predicate-clause normalization, remain centralized so handlers do not duplicate contract logic.
 
 ### Unsupported-Request Boundary
 
@@ -163,6 +176,9 @@ The current composed path depends on a small contract surface that is already ac
 - The current unsupported GIS polygon fallback boundary is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent`.
 - The runtime handoff between composed and legacy behavior is anchored in `sead.query.core/Services/FacetContent/FacetContentService.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`.
 - The current direct unsupported-load boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
+- The current composed request-construction boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs`.
+- The current composed filter-query construction boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs`.
+- The current target-facet handler split is anchored in `sead.query.composer/QueryComposer/Services/DiscreteComposedFacetContentHandler.cs`, `RangeComposedFacetContentHandler.cs`, `IntersectComposedFacetContentHandler.cs`, and `GeoPolygonComposedFacetContentHandler.cs`.
 - The current same-table target-only discrete contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
 - The current routed target-only discrete outer-category overlay contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
 - The current composed-query alias contract is anchored in `sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs` and `sead.query.test/UnitTests/QueryComposer/Strategies/IntersectComposedFilterQueryComposerTests.cs`.
@@ -177,6 +193,9 @@ The overhaul introduces or formalizes the following responsibilities.
 - Facet predicate resolvers: strategy-style implementations per facet type
 - Route parser and route graph: resolve reusable route definitions into concrete table relationships
 - Anchor-aware query contract: ensures every active facet returns compatible anchor keys
+- Composed facet-content request factory: validates and assembles the routable composed request before target rendering starts
+- Composed facet-content filter-query factory: builds the composed anchor filter from validated predicate plans
+- Composed facet-content target handlers: own target-facet-specific rendering behavior behind a per-`EFacetType` strategy boundary
 - Facet content query generation: produces grouped category output for UI population without breaking the anchor model
 
 This is a change in architectural style, not only in SQL syntax. The goal is to move from large, facet-specific join templates to a composable system where relationship traversal is encoded once and reused.

@@ -153,6 +153,9 @@ sequenceDiagram
     participant BP as BogusPickService
     participant FS as FacetContentService
     participant CFS as ComposedFacetContentService
+    participant RF as Composed request factory
+    participant FF as Composed filter-query factory
+    participant TH as Target facet handler
     participant LGC as Legacy facet compiler
     participant DB as PostgreSQL
 
@@ -166,8 +169,15 @@ sequenceDiagram
     FS->>FS: Check composed support boundary
     alt Supported composed request
         FS->>CFS: Load composed facet content
-        CFS->>DB: Execute composed facet and count SQL
-        DB-->>CFS: Category rows and counts
+        CFS->>CFS: Select handler by target facet type
+        CFS->>RF: Build composed request
+        RF-->>CFS: Anchor and target request contract
+        CFS->>FF: Build composed anchor filter
+        FF-->>CFS: composed_filter SQL
+        CFS->>TH: Load target facet content
+        TH->>DB: Execute target-specific content SQL
+        DB-->>TH: Category rows and counts
+        TH-->>CFS: FacetContent
         CFS-->>FS: FacetContent
     else Unsupported request
         FS->>LGC: Compile legacy facet SQL
@@ -188,15 +198,19 @@ sequenceDiagram
     participant FL as FacetLoadService
     participant FS as FacetContentService
     participant CFS as ComposedFacetContentService
+    participant RF as Composed request factory
     participant LEG as Legacy category path
 
     FL->>FS: Load(facetsConfig, targetFacet)
     FS->>CFS: CanHandle(request)
     alt Supported composed request
+        CFS->>RF: TryCreate(request)
+        RF-->>CFS: Valid composed request
         CFS-->>FS: true
         FS->>CFS: Load composed content
         CFS-->>FS: FacetContent
     else Unsupported request
+        RF-->>CFS: Unsupported or invalid request
         CFS-->>FS: false
         FS->>LEG: Load legacy category content
         LEG-->>FS: FacetContent
@@ -364,18 +378,59 @@ sequenceDiagram
     autonumber
     actor UI as Client UI
     participant API as API Controller
-    participant QC as Query Composer
-    participant FR as Facet Resolver
+    participant CFS as ComposedFacetContentService
+    participant RF as Composed request factory
+    participant FF as Composed filter-query factory
+    participant TH as Target facet handler
     participant DB as PostgreSQL
 
     UI->>API: Populate target facet
-    API->>QC: Compose active filter set
-    QC->>FR: Build target facet predicate and content query
-    FR-->>QC: Anchor-filtered FCQ inputs
-    QC->>DB: Execute composed anchor filter and FCQ
-    DB-->>QC: Category rows and counts
-    QC-->>API: FacetContent
+    API->>CFS: Load composed facet content
+    CFS->>CFS: Select handler by target facet type
+    CFS->>RF: Build composed request
+    RF-->>CFS: Anchor and target request contract
+    CFS->>FF: Build composed anchor filter
+    FF-->>CFS: composed_filter SQL
+    CFS->>TH: Build and execute target content path
+    TH->>DB: Execute content and category-info SQL
+    DB-->>TH: Category rows and counts
+    TH-->>CFS: FacetContent
+    CFS-->>API: FacetContent
     API-->>UI: Updated facet categories
+```
+
+## Current Composed Facet-Content Component Model
+
+```mermaid
+flowchart LR
+    Request[FacetsConfig]
+    Service[ComposedFacetContentService]
+    HandlerSel[Handler selection by EFacetType]
+    RequestFactory[ComposedFacetContentRequestFactory]
+    FilterFactory[ComposedFacetContentFilterQueryFactory]
+    Handlers[IComposedFacetContentHandler set]
+    QueryDb[(SEAD PostgreSQL)]
+    Response[FacetContent]
+
+    Request --> Service
+    Service --> HandlerSel
+    HandlerSel --> RequestFactory
+    RequestFactory --> FilterFactory
+    FilterFactory --> Handlers
+    Handlers --> QueryDb
+    QueryDb --> Response
+
+    classDef input fill:#edf3ff,stroke:#6c8ebf,color:#1f2d3d;
+    classDef orchestrate fill:#fff4df,stroke:#c28b2c,color:#4a3620;
+    classDef compose fill:#e8f5ec,stroke:#5b8f6a,color:#1f3527;
+    classDef store fill:#f3f3f3,stroke:#8a8a8a,color:#333333;
+    classDef output fill:#f7e8f0,stroke:#b56a8a,color:#472734;
+
+    class Request input;
+    class Service,HandlerSel orchestrate;
+    class RequestFactory,FilterFactory,Handlers compose;
+    class QueryDb store;
+    class Response output;
 ```
 
 ## Reading Guide

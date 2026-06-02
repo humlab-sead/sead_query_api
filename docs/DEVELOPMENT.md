@@ -189,6 +189,8 @@ Important local conventions visible in the current repo:
 - keep changes focused rather than mixing unrelated cleanup with feature work
 - treat `sead.query.composer` as active redesign work, not yet the sole authoritative implementation path
 - keep tests in `sead.query.test`, usually under `UnitTests/` or the existing integration-oriented folders already in the repo
+- when behavior varies by facet type or another domain discriminator, prefer handler, strategy, resolver, or factory abstractions over adding new `FacetTypeId` branches in a central service
+- keep central services orchestration-focused: select the implementation once near the boundary, compose shared state, and delegate type-specific behavior to the selected implementation
 
 The release workflow depends on conventional commits, so use commit messages that follow the repository’s conventional-commit instruction.
 
@@ -419,7 +421,7 @@ Start from the closest existing facet family rather than from an abstract templa
 	- `IFacetPlugin`
 3. Register the new plugin in `sead.query.api/Dependency.cs` and the mirrored test container wiring in `sead.query.test/Infrastructure/Dependency.cs`.
 4. Decide whether the new type is supported only on the legacy path first or whether it also needs composed-path support.
-5. If it needs composed support, implement that contract in composer or query-strategy code rather than in controllers or request models.
+5. If it needs composed support, add the composed-path implementations at the relevant extension points rather than editing a central `switch` or `if` chain. The normal shape is: keep `ComposedFacetContentService` orchestration-only, add an `IComposedFacetContentHandler` implementation for target-specific content loading, and extend request, filter, resolver, or result-handoff collaborators only where the new type changes those contracts.
 6. Add or update facet authoring in `sead.query.composer/Templates/route_v1.yaml`, then run validation and import through the documented CLI path.
 7. Add focused tests before widening to grouped live or controller coverage.
 
@@ -435,18 +437,24 @@ If the new facet type should run on the composed path, define that contract expl
 
 - predicate-side filtering belongs in composer resolver logic, not in controllers
 - composed anchor-set combination belongs in query-composition strategies, not in plugin wiring
+- target facet content orchestration belongs in `ComposedFacetContentService`, but target-type-specific content loading belongs in `IComposedFacetContentHandler` implementations
 - target facet content SQL belongs in `IFacetContentQueryComposer` or closely related query services
 - result handoff behavior belongs in the composed result-projection boundary, not in ad hoc result-controller branching
 
 The current concrete seams are:
 
 - `sead.query.composer/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolver.cs` for the first active predicate resolver pattern
-- `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` for request capability checks and composed facet-content loading
+- `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` for shared composed facet-content orchestration and handler selection
+- `sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs` for composed request creation, anchor resolution, predicate compatibility checks, and anchor-to-target route SQL generation
+- `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs` for composed anchor-filter SQL construction
+- `sead.query.composer/QueryComposer/Services/IComposedFacetContentHandler.cs` and the concrete handler classes for target-facet-specific category-info lookup, row mapping, and post-processing
 - `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs` for composed result filtering and target-route handoff
 - `sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs` for anchor-set composition
 - `sead.query.core/QueryComposer/Strategies/DiscreteFacetContentQueryComposer.cs` for target facet content SQL generation across the currently supported facet families
 
-Do not force a new facet type through the discrete resolver or discrete content assumptions if its input contract is materially different. Add a dedicated resolver, category-info service, or composer support surface when the facet semantics require it.
+Do not force a new facet type through the discrete resolver or discrete content assumptions if its input contract is materially different. Add a dedicated resolver, handler, category-info service, or composer support surface when the facet semantics require it.
+
+For this codebase, treat growing `FacetTypeId` conditionals in shared services as a design smell unless the branch is a small, stable guard clause. Adding a new facet type should usually mean adding a new implementation class and registering it, not editing one large central service.
 
 #### Validation workflow for a new facet type
 
