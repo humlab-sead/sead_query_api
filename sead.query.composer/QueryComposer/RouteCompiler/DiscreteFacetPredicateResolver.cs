@@ -21,8 +21,12 @@ public interface IDiscreteFacetPredicateResolver
 }
 
 /// <summary>
-/// Builds anchor-key predicate SQL for discrete facets on the active route-compiler path.
+/// Resolves SQL that maps discrete facet picks to matching anchor records.
 /// </summary>
+/// <remarks>
+/// Example: if the user picks category IDs 1 and 2, the generated SQL returns the
+/// anchor records linked to those selected values.
+/// </remarks>
 public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateResolver
 {
     private readonly IRouteSqlCompiler _routeSqlCompiler;
