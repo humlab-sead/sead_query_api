@@ -10,21 +10,22 @@ Use this instruction when writing or editing XML `<summary>` comments in C# sour
 
 Write summaries so a junior developer can answer this question quickly:
 
-Why does this type exist?
+What does this type do, and what does it produce?
 
 ## Core rules
 
-- State the type's main responsibility first.
+- State the type's main responsibility and the thing it produces first.
 - Use plain language and keep the summary easy to scan.
 - Keep the summary to one sentence when practical.
-- Focus on purpose, boundary, and primary output or behavior.
+- Focus on purpose, boundary, and the primary output or behavior.
 - Prefer active verbs such as `Builds`, `Loads`, `Resolves`, `Maps`, `Compiles`, `Selects`, `Validates`, or `Orchestrates`.
 - Keep the `<summary>` short; put examples or extra clarification in `<remarks>` when needed.
 
 ## What to include
 
 - What the type does
-- What it builds, loads, resolves, maps, validates, or orchestrates
+- What it builds, loads, resolves, maps, validates, orchestrates, or returns
+- The concrete result, output, or handoff it produces when that matters
 - The scope or boundary when that context matters
 - The variant or domain type it is responsible for, when relevant
 
@@ -49,9 +50,9 @@ Keep `<remarks>` brief. Prefer one small example or one clarifying note, not a s
 
 ## Type-specific guidance
 
-- For orchestrators and central services: say that they orchestrate shared workflow and delegate specialized work.
-- For factories: say what they build.
-- For handlers or strategies: say which case or domain type they handle.
+- For orchestrators and central services: say that they orchestrate shared workflow, delegate specialized work, and produce a specific result type.
+- For factories: say what they build and what the returned object represents.
+- For handlers or strategies: say which case or domain type they handle and what they load, compute, or return.
 - For resolvers or compilers: say what input they turn into what output.
 - For mappers: say what source shape they map into what destination shape.
 
@@ -59,7 +60,7 @@ Keep `<remarks>` brief. Prefer one small example or one clarifying note, not a s
 
 ```csharp
 /// <summary>
-/// [Verb] [main thing] for [specific scope or boundary].
+/// [Verb] [main thing] and produces [result] for [specific scope or boundary].
 /// </summary>
 ```
 
@@ -67,7 +68,7 @@ Keep `<remarks>` brief. Prefer one small example or one clarifying note, not a s
 
 ```csharp
 /// <summary>
-/// Orchestrates composed facet-content loading for supported target facet types.
+/// Builds composed facet-content handoffs for supported target facet types.
 /// </summary>
 ```
 
@@ -79,13 +80,13 @@ Keep `<remarks>` brief. Prefer one small example or one clarifying note, not a s
 
 ```csharp
 /// <summary>
-/// Loads composed facet content for discrete target facets.
+/// Loads composed facet content and returns counted items for discrete target facets.
 /// </summary>
 ```
 
 ```csharp
 /// <summary>
-/// Resolves predicate SQL for discrete facet picks on the route-compiler path.
+/// Resolves predicate SQL for discrete facet picks and returns routable SQL for the route-compiler path.
 /// </summary>
 ```
 
