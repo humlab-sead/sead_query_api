@@ -112,7 +112,6 @@ public sealed class DiscreteFacetPredicateResolver : IDiscreteFacetPredicateReso
             : _routeSqlCompiler.Compile(tableChain, sourceKeyColumn, anchorId);
     }
 
-
     /// <summary>
     /// Builds SQL that directly links the target table to the anchor table without any intermediate route tables.
     /// </summary>
