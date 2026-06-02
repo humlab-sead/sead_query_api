@@ -61,6 +61,15 @@ namespace SeadQueryAPI
             builder.RegisterType<DiscreteFacetPredicateResolver>().As<IDiscreteFacetPredicateResolver>().InstancePerLifetimeScope();
             builder.RegisterType<IntersectComposedFilterQueryComposer>().As<IComposedFilterQueryComposer>().InstancePerLifetimeScope();
             builder.RegisterType<DiscreteFacetContentQueryComposer>().As<IFacetContentQueryComposer>().InstancePerLifetimeScope();
+            builder.RegisterType<ComposedFacetContentRequestFactory>().As<IComposedFacetContentRequestFactory>().InstancePerLifetimeScope();
+            builder
+                .RegisterType<ComposedFacetContentFilterQueryFactory>()
+                .As<IComposedFacetContentFilterQueryFactory>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<DiscreteComposedFacetContentHandler>().As<IComposedFacetContentHandler>().InstancePerLifetimeScope();
+            builder.RegisterType<RangeComposedFacetContentHandler>().As<IComposedFacetContentHandler>().InstancePerLifetimeScope();
+            builder.RegisterType<IntersectComposedFacetContentHandler>().As<IComposedFacetContentHandler>().InstancePerLifetimeScope();
+            builder.RegisterType<GeoPolygonComposedFacetContentHandler>().As<IComposedFacetContentHandler>().InstancePerLifetimeScope();
             builder.RegisterType<ComposedFacetContentService>().As<IComposedFacetContentService>().InstancePerLifetimeScope();
             //builder.RegisterType<RouteFinder>().As<IRouteFinder>();
 
