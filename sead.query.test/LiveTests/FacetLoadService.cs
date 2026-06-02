@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using FluentAssertions;
 using SeadQueryAPI.Services;
 using SeadQueryCore;
 using SeadQueryCore.Model;
-using SeadQueryCore.QueryBuilder;
 using SeadQueryCore.QueryComposer;
 using SQT.Mocks;
 using Xunit;
@@ -39,64 +37,53 @@ namespace SQT.LiveServices
         public static IEnumerable<object[]> SupportedComposedVisibleAndDiscreteLiveUris =>
             [
                 ["result_facet:sites@4/result_facet"],
-                ["result_facet:result_facet"],
                 ["sites:sample_groups@1/sites"],
                 ["sample_groups:sites@4/sample_groups"],
                 ["country:sites@4/country"],
                 ["constructions:sites@4/constructions"],
-                ["ecocode:ecocode"],
                 ["ecocode:sites@4/ecocode"],
                 ["sites:sites"],
                 ["sites:country@1,2,5/sites"],
                 ["ecocode:country@1,2,5/ecocode"],
-                ["feature_type:feature_type"],
                 ["feature_type:country@1,2,5/feature_type"],
-                ["ecocode_system:ecocode_system"],
                 ["ecocode_system:country@1,2,5/ecocode_system"],
                 ["genus:genus"],
                 ["genus:country@1,2,5/genus"],
                 ["species:country@1,2,5/species"],
-                ["species_author:species_author"],
                 ["species_author:country@1,2,5/species_author"],
                 ["family:country@1,2,5/family"],
-                ["dataset_methods:dataset_methods"],
                 ["dataset_methods:country@1,2,5/dataset_methods"],
-                ["record_types:record_types"],
                 ["record_types:country@1,2,5/record_types"],
-                ["dataset_provider:dataset_provider"],
                 ["dataset_provider:country@1,2,5/dataset_provider"],
-                ["relative_age_name:relative_age_name"],
                 ["relative_age_name:country@1,2,5/relative_age_name"],
                 ["abundance_classification:country@1,2,5/abundance_classification"],
-                ["tbl_biblio_sample_groups:tbl_biblio_sample_groups"],
                 ["tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups"],
-                ["tbl_biblio_sites:tbl_biblio_sites"],
                 ["tbl_biblio_sites:country@1,2,5/tbl_biblio_sites"],
-                ["tbl_biblio_modern:tbl_biblio_modern"],
                 ["tbl_biblio_modern:country@1,2,5/tbl_biblio_modern"],
                 ["region:country@1,2,5/region"],
-                ["activeseason:activeseason"],
                 ["activeseason:country@1,2,5/activeseason"],
                 ["sample_groups:sample_groups"],
                 ["sample_groups:country@1,2,5/sample_groups"],
-                ["data_types:data_types"],
                 ["data_types:country@1,2,5/data_types"],
-                ["modification_types:modification_types"],
-                ["location_types:location_types"],
-                ["rdb_codes:rdb_codes"],
-                ["rdb_systems:rdb_systems"],
                 ["rdb_systems:country@1,2,5/rdb_systems"],
             ];
 
         public static IEnumerable<object[]> SupportedComposedRangeLiveUris =>
             [
-                ["geochronology:geochronology"],
                 ["geochronology:country@1,2,5/geochronology"],
                 ["tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0"],
                 ["tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82"],
                 ["tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32"],
                 ["tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37"],
                 ["abundances_all:country@1,2,5/abundances_all"],
+            ];
+
+        public static IEnumerable<object[]> SupportedComposedLiveUris =>
+            [
+                .. SupportedComposedVisibleAndDiscreteLiveUris,
+                .. SupportedComposedRangeLiveUris,
+                .. SupportedComposedIntersectLiveUris,
+                .. SupportedComposedGeoPolygonLiveUris,
             ];
 
         public static IEnumerable<object[]> SupportedComposedIntersectLiveUris =>
@@ -110,14 +97,6 @@ namespace SQT.LiveServices
                 [
                     "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738",
                 ],
-            ];
-
-        public static IEnumerable<object[]> SupportedComposedLiveUris =>
-            [
-                .. SupportedComposedVisibleAndDiscreteLiveUris,
-                .. SupportedComposedRangeLiveUris,
-                .. SupportedComposedIntersectLiveUris,
-                .. SupportedComposedGeoPolygonLiveUris,
             ];
 
         [Theory]
@@ -140,7 +119,6 @@ namespace SQT.LiveServices
 
         [Theory]
         [InlineData("analysis_entity_ages:analysis_entity_ages")]
-        [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
         public void Load_Intersect_Facets(string uri)
         {
             var facetsConfig = UriToFacetsConfig(uri);
@@ -163,6 +141,13 @@ namespace SQT.LiveServices
         }
 
         [Theory]
+        [InlineData("analysis_entity_ages:analysis_entity_ages")]
+        public void FacetContentService_ComposedTargetOnlyIntersectSlice_MatchesLegacyFacetContent(string uri)
+        {
+            AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
         [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
         public void FacetContentService_ComposedTargetOnlyDendroAgeContainedBySlice_UsesComposedFacetContentQuery(string uri)
         {
@@ -173,18 +158,31 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("analysis_entity_ages:analysis_entity_ages")]
-        public void FacetContentService_ComposedTargetOnlyIntersectSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("dendro_age_contained_by:dendro_age_contained_by")]
         public void FacetContentService_ComposedTargetOnlyDendroAgeContainedBySlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
+        }
+
+        [Theory]
+        [InlineData("analysis_entity_ages:analysis_entity_ages")]
+        public void FacetContentService_ComposedIntersectSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "categories(category, category_range, lower, upper) as",
+                "categories.category_range && age_range::int4range"
+            );
+        }
+
+        [Theory]
+        [InlineData(
+            "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"
+        )]
+        public void FacetContentService_ComposedSitesPolygonSlice_UsesComposedFacetContentQuery(string uri)
+        {
+            AssertUsesComposedFacetContentQuery(uri, "categories(category, count_column, longitude_dd, latitude_dd) as", "ST_Within");
         }
 
         [Theory]
@@ -196,7 +194,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "categories(category, count_column, longitude_dd, latitude_dd) as", "ST_Within");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData(
             "sites_polygon:sites_polygon@63.872484,20.093291,63.947006,20.501316,63.878949,20.673213,63.748021,20.252953,63.793983,20.095738"
         )]
@@ -212,7 +210,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri);
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [MemberData(nameof(SupportedComposedLiveUris))]
         public void FacetContentService_ComposedSupportedLiveSlices_MatchLegacyFacetContent(string uri)
         {
@@ -226,7 +224,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri);
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [MemberData(nameof(SupportedComposedRangeLiveUris))]
         public void FacetContentService_ComposedSupportedRangeLiveSlices_MatchLegacyFacetContent(string uri)
         {
@@ -240,7 +238,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri);
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [MemberData(nameof(SupportedComposedIntersectLiveUris))]
         public void FacetContentService_ComposedSupportedIntersectLiveSlices_MatchLegacyFacetContent(string uri)
         {
@@ -254,7 +252,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri);
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [MemberData(nameof(SupportedComposedGeoPolygonLiveUris))]
         public void FacetContentService_ComposedSupportedGeoPolygonLiveSlices_MatchLegacyFacetContent(string uri)
         {
@@ -268,7 +266,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri);
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [MemberData(nameof(SupportedComposedVisibleAndDiscreteLiveUris))]
         public void FacetContentService_ComposedSupportedVisibleAndDiscreteLiveSlices_MatchLegacyFacetContent(string uri)
         {
@@ -282,7 +280,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_genera");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("genus:genus")]
         public void FacetContentService_ComposedTargetOnlyGenusSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -296,7 +294,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_sites");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("sites:sites")]
         public void FacetContentService_ComposedTargetOnlySitesSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -310,303 +308,9 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_sample_groups");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("sample_groups:sample_groups")]
         public void FacetContentService_ComposedTargetOnlySampleGroupsSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("geochronology:geochronology")]
-        public void FacetContentService_ComposedTargetOnlyGeochronologySlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "categories(category, lower, upper) as", "tbl_geochronology.age::integer");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("geochronology:geochronology")]
-        public void FacetContentService_ComposedTargetOnlyGeochronologySlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("data_types:data_types")]
-        public void FacetContentService_ComposedTargetOnlyDataTypesSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_data_types");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("data_types:data_types")]
-        public void FacetContentService_ComposedTargetOnlyDataTypesSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("rdb_systems:rdb_systems")]
-        public void FacetContentService_ComposedTargetOnlyRdbSystemsSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_rdb_systems");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("rdb_systems:rdb_systems")]
-        public void FacetContentService_ComposedTargetOnlyRdbSystemsSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("relative_age_name:relative_age_name")]
-        public void FacetContentService_ComposedTargetOnlyRelativeAgeNameSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_relative_ages");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("relative_age_name:relative_age_name")]
-        public void FacetContentService_ComposedTargetOnlyRelativeAgeNameSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("record_types:record_types")]
-        public void FacetContentService_ComposedTargetOnlyRecordTypesSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_record_types");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("record_types:record_types")]
-        public void FacetContentService_ComposedTargetOnlyRecordTypesSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("dataset_provider:dataset_provider")]
-        public void FacetContentService_ComposedTargetOnlyDatasetProviderSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_dataset_masters");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("dataset_provider:dataset_provider")]
-        public void FacetContentService_ComposedTargetOnlyDatasetProviderSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("dataset_methods:dataset_methods")]
-        public void FacetContentService_ComposedTargetOnlyDatasetMethodsSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_methods");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("dataset_methods:dataset_methods")]
-        public void FacetContentService_ComposedTargetOnlyDatasetMethodsSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("activeseason:activeseason")]
-        public void FacetContentService_ComposedTargetOnlyActiveSeasonSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri);
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("activeseason:activeseason")]
-        public void FacetContentService_ComposedTargetOnlyActiveSeasonSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("ecocode:ecocode")]
-        public void FacetContentService_ComposedTargetOnlyEcocodeSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_ecocode_definitions");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("ecocode:ecocode")]
-        public void FacetContentService_ComposedTargetOnlyEcocodeSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("ecocode_system:ecocode_system")]
-        public void FacetContentService_ComposedTargetOnlyEcocodeSystemSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_ecocode_systems");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("ecocode_system:ecocode_system")]
-        public void FacetContentService_ComposedTargetOnlyEcocodeSystemSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("feature_type:feature_type")]
-        public void FacetContentService_ComposedTargetOnlyFeatureTypeSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_feature_types");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("feature_type:feature_type")]
-        public void FacetContentService_ComposedTargetOnlyFeatureTypeSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("species_author:species_author")]
-        public void FacetContentService_ComposedTargetOnlySpeciesAuthorSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_authors");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("species_author:species_author")]
-        public void FacetContentService_ComposedTargetOnlySpeciesAuthorSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("tbl_biblio_sample_groups:tbl_biblio_sample_groups")]
-        public void FacetContentService_ComposedTargetOnlyBiblioSampleGroupsSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "tbl_biblio.biblio_id", "facet.view_sample_group_references.biblio_id is not null");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("tbl_biblio_sample_groups:tbl_biblio_sample_groups")]
-        public void FacetContentService_ComposedTargetOnlyBiblioSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("tbl_biblio_sites:tbl_biblio_sites")]
-        public void FacetContentService_ComposedTargetOnlyBiblioSitesSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "tbl_biblio.biblio_id", "facet.view_site_references.biblio_id is not null");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("tbl_biblio_sites:tbl_biblio_sites")]
-        public void FacetContentService_ComposedTargetOnlyBiblioSitesSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("tbl_biblio_modern:tbl_biblio_modern")]
-        public void FacetContentService_ComposedTargetOnlyBiblioModernSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "facet.view_taxa_biblio.biblio_id");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("tbl_biblio_modern:tbl_biblio_modern")]
-        public void FacetContentService_ComposedTargetOnlyBiblioModernSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("modification_types:modification_types")]
-        public void FacetContentService_ComposedTargetOnlyModificationTypesSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_modification_types");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("modification_types:modification_types")]
-        public void FacetContentService_ComposedTargetOnlyModificationTypesSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("rdb_codes:rdb_codes")]
-        public void FacetContentService_ComposedTargetOnlyRdbCodesSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_rdb_codes");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("rdb_codes:rdb_codes")]
-        public void FacetContentService_ComposedTargetOnlyRdbCodesSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("result_facet:result_facet")]
-        public void FacetContentService_ComposedTargetOnlyResultFacetSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri);
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("result_facet:result_facet")]
-        public void FacetContentService_ComposedTargetOnlyResultFacetSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("result_datasets:result_datasets")]
-        public void FacetContentService_ComposedTargetOnlyResultDatasetsSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri);
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("result_datasets:result_datasets")]
-        public void FacetContentService_ComposedTargetOnlyResultDatasetsSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("map_result:map_result")]
-        public void FacetContentService_ComposedTargetOnlyMapResultSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri);
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("map_result:map_result")]
-        public void FacetContentService_ComposedTargetOnlyMapResultSlice_MatchesLegacyFacetContent(string uri)
-        {
-            AssertMatchesLegacyFacetContent(uri);
-        }
-
-        [Theory]
-        [InlineData("location_types:location_types")]
-        public void FacetContentService_ComposedTargetOnlyLocationTypesSlice_UsesComposedFacetContentQuery(string uri)
-        {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_location_types");
-        }
-
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
-        [InlineData("location_types:location_types")]
-        public void FacetContentService_ComposedTargetOnlyLocationTypesSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
         }
@@ -742,7 +446,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("geochronology:country@1,2,5/geochronology")]
         public void FacetContentService_ComposedCountryPredicateGeochronologySlice_MatchesLegacyFacetContent(string uri)
         {
@@ -761,7 +465,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_denormalized_measured_values_33_0:country@1,2,5/tbl_denormalized_measured_values_33_0")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue33_0Slice_MatchesLegacyFacetContent(string uri)
         {
@@ -780,7 +484,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_denormalized_measured_values_32:country@1,2,5/tbl_denormalized_measured_values_32")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue32Slice_MatchesLegacyFacetContent(string uri)
         {
@@ -799,7 +503,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_denormalized_measured_values_37:country@1,2,5/tbl_denormalized_measured_values_37")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue37Slice_MatchesLegacyFacetContent(string uri)
         {
@@ -818,7 +522,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_denormalized_measured_values_33_82:country@1,2,5/tbl_denormalized_measured_values_33_82")]
         public void FacetContentService_ComposedCountryPredicateMeasuredValue33_82Slice_MatchesLegacyFacetContent(string uri)
         {
@@ -832,7 +536,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "facet.view_abundance.elements_part_mod", "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("abundance_classification:country@1,2,5/abundance_classification")]
         public void FacetContentService_ComposedCountryPredicateAbundanceClassificationSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -851,7 +555,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_biblio_sample_groups:country@1,2,5/tbl_biblio_sample_groups")]
         public void FacetContentService_ComposedCountryPredicateBiblioSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -870,7 +574,7 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_biblio_sites:country@1,2,5/tbl_biblio_sites")]
         public void FacetContentService_ComposedCountryPredicateBiblioSitesSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -884,7 +588,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "facet.view_taxa_biblio.biblio_id", "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("tbl_biblio_modern:country@1,2,5/tbl_biblio_modern")]
         public void FacetContentService_ComposedCountryPredicateBiblioModernSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -898,7 +602,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("region:country@1,2,5/region")]
         public void FacetContentService_ComposedCountryPredicateRegionSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -912,7 +616,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("activeseason:country@1,2,5/activeseason")]
         public void FacetContentService_ComposedCountryPredicateActiveSeasonSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -926,7 +630,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("sample_groups:country@1,2,5/sample_groups")]
         public void FacetContentService_ComposedCountryPredicateSampleGroupsSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -940,7 +644,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_data_types", "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("data_types:country@1,2,5/data_types")]
         public void FacetContentService_ComposedCountryPredicateDataTypesSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -954,7 +658,7 @@ namespace SQT.LiveServices
             AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_rdb_systems", "X_0.location_type_id=1");
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("rdb_systems:country@1,2,5/rdb_systems")]
         public void FacetContentService_ComposedCountryPredicateRdbSystemsSlice_MatchesLegacyFacetContent(string uri)
         {
@@ -974,11 +678,16 @@ namespace SQT.LiveServices
             );
         }
 
-        [Theory(Skip = "Phase 4 retired live legacy facet-content comparison coverage.")]
+        [Theory]
         [InlineData("abundances_all:country@1,2,5/abundances_all")]
         public void FacetContentService_ComposedCountryPredicateAbundancesAllSlice_MatchesLegacyFacetContent(string uri)
         {
             AssertMatchesLegacyFacetContent(uri);
+        }
+
+        private IFacetContentService CreateLegacyFacetContentService()
+        {
+            return Container.Resolve<IFacetContentService>();
         }
 
         private void AssertUsesComposedFacetContentQuery(string uri, params string[] expectedSqlFragments)
@@ -1004,7 +713,15 @@ namespace SQT.LiveServices
 
         private void AssertMatchesLegacyFacetContent(string uri)
         {
-            throw Xunit.Sdk.SkipException.ForSkip("Phase 4 retired live legacy facet-content comparison coverage.");
+            var composedService = Container.Resolve<IFacetContentService>();
+            var legacyService = CreateLegacyFacetContentService();
+
+            var composedData = composedService.Load(UriToFacetsConfig(uri));
+            var legacyData = legacyService.Load(UriToFacetsConfig(uri));
+
+            Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(composedData.Items));
+            Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(composedData.Distribution.Values));
+            Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), composedData.Picks.Keys.OrderBy(key => key));
         }
 
         private void AssertFallsBackToLegacyFacetContent(string uri)
@@ -1012,14 +729,21 @@ namespace SQT.LiveServices
             var facetsConfig = UriToFacetsConfig(uri);
             var composedService = Container.Resolve<IComposedFacetContentService>();
             var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
+            var legacyService = CreateLegacyFacetContentService();
 
             Assert.False(composedService.CanHandle(facetsConfig));
             Assert.NotNull(service.ComposedFacetContentService);
 
-            var action = () => service.Load(facetsConfig);
+            var data = service.Load(facetsConfig);
+            var legacyData = legacyService.Load(UriToFacetsConfig(uri));
 
-            var exception = Assert.Throws<InvalidOperationException>(action);
-            Assert.Contains("no longer fall back to the legacy runtime", exception.Message, System.StringComparison.OrdinalIgnoreCase);
+            Assert.NotNull(data);
+            Assert.DoesNotContain("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Equal(legacyData.SqlQuery, data.SqlQuery);
+            Assert.Equal(ToCategoryCounts(legacyData.Items), ToCategoryCounts(data.Items));
+            Assert.Equal(ToCategoryCounts(legacyData.Distribution.Values), ToCategoryCounts(data.Distribution.Values));
+            Assert.Equal(legacyData.Picks.Keys.OrderBy(key => key), data.Picks.Keys.OrderBy(key => key));
         }
 
         private static List<string> ToCategoryCounts(IEnumerable<CategoryItem> items)
