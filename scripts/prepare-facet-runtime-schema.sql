@@ -93,6 +93,17 @@ CREATE TABLE IF NOT EXISTS facet.facet_anchor (
     route_id integer NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS facet.facet_template (
+    facet_template_id integer NOT NULL,
+    facet_id integer NOT NULL,
+    anchor_id integer,
+    template_role text NOT NULL,
+    sql_text text,
+    template_key text,
+    template_contract text,
+    base_anchor text
+);
+
 CREATE SEQUENCE IF NOT EXISTS facet.facet_anchor_facet_anchor_id_seq
 AS integer
 START WITH 1
@@ -104,6 +115,19 @@ CACHE 1;
 ALTER SEQUENCE facet.facet_anchor_facet_anchor_id_seq OWNED BY facet.facet_anchor.facet_anchor_id;
 ALTER TABLE ONLY facet.facet_anchor ALTER COLUMN facet_anchor_id SET DEFAULT nextval(
     'facet.facet_anchor_facet_anchor_id_seq'::regclass
+);
+
+CREATE SEQUENCE IF NOT EXISTS facet.facet_template_facet_template_id_seq
+AS integer
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+ALTER SEQUENCE facet.facet_template_facet_template_id_seq OWNED BY facet.facet_template.facet_template_id;
+ALTER TABLE ONLY facet.facet_template ALTER COLUMN facet_template_id SET DEFAULT nextval(
+    'facet.facet_template_facet_template_id_seq'::regclass
 );
 
 DO $$
@@ -146,6 +170,16 @@ BEGIN
     ) THEN
         ALTER TABLE ONLY facet.facet_anchor
             ADD CONSTRAINT facet_anchor_pkey PRIMARY KEY (facet_anchor_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'facet_template_pkey'
+          AND conrelid = 'facet.facet_template'::regclass
+    ) THEN
+        ALTER TABLE ONLY facet.facet_template
+            ADD CONSTRAINT facet_template_pkey PRIMARY KEY (facet_template_id);
     END IF;
 
     IF NOT EXISTS (
@@ -226,6 +260,26 @@ BEGIN
     ) THEN
         ALTER TABLE ONLY facet.facet_anchor
             ADD CONSTRAINT facet_anchor_route_id_fkey FOREIGN KEY (route_id) REFERENCES facet.route(route_id) DEFERRABLE;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'facet_template_anchor_id_fkey'
+          AND conrelid = 'facet.facet_template'::regclass
+    ) THEN
+        ALTER TABLE ONLY facet.facet_template
+            ADD CONSTRAINT facet_template_anchor_id_fkey FOREIGN KEY (anchor_id) REFERENCES facet.anchor(anchor_id) DEFERRABLE;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_constraint
+        WHERE conname = 'facet_template_facet_id_fkey'
+          AND conrelid = 'facet.facet_template'::regclass
+    ) THEN
+        ALTER TABLE ONLY facet.facet_template
+            ADD CONSTRAINT facet_template_facet_id_fkey FOREIGN KEY (facet_id) REFERENCES facet.facet(facet_id) DEFERRABLE;
     END IF;
 
     IF NOT EXISTS (
