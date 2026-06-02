@@ -14,24 +14,24 @@ namespace Microsoft.EntityFrameworkCore
 {
     public static class RDFacadeExtensions
     {
-        public static RelationalDataReader ExecuteSqlQuery(this DatabaseFacade databaseFacade, string sql,
-            params object[] parameters)
+        public static RelationalDataReader ExecuteSqlQuery(this DatabaseFacade databaseFacade, string sql, params object[] parameters)
         {
             try
             {
                 var concurrencyDetector = databaseFacade.GetService<IConcurrencyDetector>();
                 using (concurrencyDetector.EnterCriticalSection())
                 {
-                    var rawSqlCommand = databaseFacade
-                        .GetService<IRawSqlCommandBuilder>()
-                        .Build(sql, parameters);
+                    var rawSqlCommand = databaseFacade.GetService<IRawSqlCommandBuilder>().Build(sql, parameters);
 
-                    return rawSqlCommand
-                        .RelationalCommand
-                        .ExecuteReader(
-                            new RelationalCommandParameterObject(databaseFacade.GetService<IRelationalConnection>(), rawSqlCommand.ParameterValues, null,
-                                null, null)
-                        );
+                    return rawSqlCommand.RelationalCommand.ExecuteReader(
+                        new RelationalCommandParameterObject(
+                            databaseFacade.GetService<IRelationalConnection>(),
+                            rawSqlCommand.ParameterValues,
+                            null,
+                            null,
+                            null
+                        )
+                    );
                 }
             }
             catch (System.Exception ex)
@@ -41,10 +41,12 @@ namespace Microsoft.EntityFrameworkCore
             }
         }
 
-        public static async Task<RelationalDataReader> ExecuteSqlQueryAsync(this DatabaseFacade databaseFacade,
+        public static async Task<RelationalDataReader> ExecuteSqlQueryAsync(
+            this DatabaseFacade databaseFacade,
             string sql,
             CancellationToken cancellationToken = default,
-            params object[] parameters)
+            params object[] parameters
+        )
         {
             try
             {
@@ -53,16 +55,18 @@ namespace Microsoft.EntityFrameworkCore
 
                 using (concurrencyDetector.EnterCriticalSection())
                 {
-                    var rawSqlCommand = databaseFacade
-                        .GetService<IRawSqlCommandBuilder>()
-                        .Build(sql, parameters);
+                    var rawSqlCommand = databaseFacade.GetService<IRawSqlCommandBuilder>().Build(sql, parameters);
 
-                    return await rawSqlCommand
-                        .RelationalCommand
-                        .ExecuteReaderAsync(
-                            new RelationalCommandParameterObject(databaseFacade.GetService<IRelationalConnection>(), rawSqlCommand.ParameterValues, null,
-                                null, null),
-                            cancellationToken: cancellationToken);
+                    return await rawSqlCommand.RelationalCommand.ExecuteReaderAsync(
+                        new RelationalCommandParameterObject(
+                            databaseFacade.GetService<IRelationalConnection>(),
+                            rawSqlCommand.ParameterValues,
+                            null,
+                            null,
+                            null
+                        ),
+                        cancellationToken: cancellationToken
+                    );
                 }
             }
             catch (System.Exception ex)
@@ -71,6 +75,7 @@ namespace Microsoft.EntityFrameworkCore
                 throw;
             }
         }
+
         public static IEnumerable<T> Select<T>(this DbDataReader reader, System.Func<DbDataReader, T> selector)
         {
             while (reader.Read())
