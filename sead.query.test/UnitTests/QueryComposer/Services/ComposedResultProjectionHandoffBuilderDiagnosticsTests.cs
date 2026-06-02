@@ -48,6 +48,7 @@ namespace SQT.UnitTests.QueryComposer.Services
                 Mock.Of<IPickFilterCompilerLocator>(),
                 Mock.Of<IPathFinder>(),
                 Mock.Of<IRouteSqlCompiler>(),
+                Mock.Of<IFacetTemplateRuntimeResolver>(),
                 Mock.Of<IDiscreteFacetPredicateResolver>(),
                 Mock.Of<IComposedFilterQueryComposer>(),
                 logger
