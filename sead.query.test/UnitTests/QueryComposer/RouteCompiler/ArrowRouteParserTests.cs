@@ -49,9 +49,17 @@ public class ArrowRouteParserTests
     [Fact]
     public void ResolveRoute_ExposesReadOnlyRouteContract()
     {
-        typeof(IArrowRouteParser).GetMethod(nameof(IArrowRouteParser.ResolveRoute))!.ReturnType.Should().Be(typeof(IReadOnlyList<string>));
+        typeof(IArrowRouteParser)
+            .GetMethod(nameof(IArrowRouteParser.ResolveRoute))!
+            .ReturnType
+            .Should()
+            .Be(typeof(IReadOnlyList<string>));
 
-        typeof(ArrowRouteParser).GetMethod(nameof(ArrowRouteParser.ResolveRoute))!.ReturnType.Should().Be(typeof(IReadOnlyList<string>));
+        typeof(ArrowRouteParser)
+            .GetMethod(nameof(ArrowRouteParser.ResolveRoute))!
+            .ReturnType
+            .Should()
+            .Be(typeof(IReadOnlyList<string>));
     }
 
     #endregion
@@ -198,7 +206,7 @@ public class ArrowRouteParserTests
     }
 
     [Fact]
-    public void ResolveRoute_WithEmptyMacroDefinition_ThrowsInvalidOperationException()
+    public void ResolveRoute_WithEmptyMacroDefinition_SkipsMacro()
     {
         // Arrange
         var emptyMacro = new Route { Name = "{empty}", Specification = "" };
@@ -208,13 +216,16 @@ public class ArrowRouteParserTests
         _repository.Setup(x => x.GetRoute("{empty}")).Returns(emptyMacro);
         _repository.Setup(x => x.HasRoute("c")).Returns(false);
 
-        // Act & Assert
-        Action act = () => _parser.ResolveRoute("a -> {empty} -> c");
-        act.Should().Throw<InvalidOperationException>().WithMessage("*Route macro '{empty}' has an empty specification*");
+        // Act
+        var result = _parser.ResolveRoute("a -> {empty} -> c");
+
+        // Assert
+        result.Should().HaveCount(2);
+        result.Should().ContainInOrder("a", "c");
     }
 
     [Fact]
-    public void ResolveRoute_WithNullMacroDefinition_ThrowsInvalidOperationException()
+    public void ResolveRoute_WithNullMacroDefinition_SkipsMacro()
     {
         // Arrange
         var nullMacro = new Route { Name = "NULL", Specification = null };
@@ -224,9 +235,12 @@ public class ArrowRouteParserTests
         _repository.Setup(x => x.GetRoute("NULL")).Returns(nullMacro);
         _repository.Setup(x => x.HasRoute("c")).Returns(false);
 
-        // Act & Assert
-        Action act = () => _parser.ResolveRoute("a -> NULL -> c");
-        act.Should().Throw<InvalidOperationException>().WithMessage("*Route macro 'NULL' has an empty specification*");
+        // Act
+        var result = _parser.ResolveRoute("a -> NULL -> c");
+
+        // Assert
+        result.Should().HaveCount(2);
+        result.Should().ContainInOrder("a", "c");
     }
 
     #endregion
@@ -342,7 +356,7 @@ public class ArrowRouteParserTests
     #region Edge Cases and Error Scenarios
 
     [Fact]
-    public void ResolveRoute_WithRepositoryReturningNull_ThrowsInvalidOperationException()
+    public void ResolveRoute_WithRepositoryReturningNull_SkipsMacro()
     {
         // Arrange
         _repository.Setup(x => x.HasRoute("a")).Returns(false);
@@ -350,24 +364,12 @@ public class ArrowRouteParserTests
         _repository.Setup(x => x.GetRoute("NULL_MACRO")).Returns((Route)null);
         _repository.Setup(x => x.HasRoute("c")).Returns(false);
 
-        // Act & Assert
-        Action act = () => _parser.ResolveRoute("a -> NULL_MACRO -> c");
-        act.Should()
-            .Throw<InvalidOperationException>()
-            .WithMessage("*Route macro 'NULL_MACRO' is registered but could not be loaded from the route repository*");
-    }
+        // Act
+        var result = _parser.ResolveRoute("a -> NULL_MACRO -> c");
 
-    [Fact]
-    public void ResolveRoute_WithMissingMacroToken_ThrowsInvalidOperationException()
-    {
-        // Arrange
-        _repository.Setup(x => x.HasRoute("a")).Returns(false);
-        _repository.Setup(x => x.HasRoute("{missing}")).Returns(false);
-        _repository.Setup(x => x.HasRoute("c")).Returns(false);
-
-        // Act & Assert
-        Action act = () => _parser.ResolveRoute("a -> {missing} -> c");
-        act.Should().Throw<InvalidOperationException>().WithMessage("*Route macro '{missing}' is not defined*");
+        // Assert
+        result.Should().HaveCount(2);
+        result.Should().ContainInOrder("a", "c");
     }
 
     [Fact]
