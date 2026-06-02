@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
@@ -288,6 +289,94 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
         }
     }
 
+    [Fact]
+    public void ValidateFile_WithUnsupportedTemplateKeyOnRegularFacet_ThrowsInvalidOperationException()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var featureTypeFacetStart = fileContent.IndexOf("  - key: feature_type\n", StringComparison.Ordinal);
+        featureTypeFacetStart.Should().BeGreaterThanOrEqualTo(0);
+
+        var featureTypeClausesStart = fileContent.IndexOf("    clauses: []\n", featureTypeFacetStart, StringComparison.Ordinal);
+        featureTypeClausesStart.Should().BeGreaterThanOrEqualTo(featureTypeFacetStart);
+
+        var invalidContent =
+            fileContent[..featureTypeClausesStart] + "    template_key: anchor_identity\n" + fileContent[featureTypeClausesStart..];
+        var temporaryFilePath = CreateTemporaryConfigurationFile(invalidContent);
+
+        try
+        {
+            var act = () => importer.ValidateFile(temporaryFilePath);
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*Facet 'feature_type' cannot declare template_key 'anchor_identity'*");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
+    public void ImportFromFile_WithInlineTemplateMetadata_PersistsFacetTemplateRows()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+        var updatedContent = fileContent.Replace(
+            "    clauses: []\n    anchors:\n      - anchor: sample\n        route: feature_type__sample\n      - anchor: dataset\n        route: feature_type__dataset",
+            "    clauses: []\n    anchors:\n      - anchor: sample\n        route: feature_type__sample\n        sql_override: |\n          select\n            tbl_feature_types.feature_type_id as source_id,\n            tbl_physical_samples.physical_sample_id as target_id\n          from tbl_feature_types\n          join tbl_features on tbl_features.feature_type_id = tbl_feature_types.feature_type_id\n          join tbl_physical_sample_features on tbl_physical_sample_features.feature_id = tbl_features.feature_id\n          join tbl_physical_samples on tbl_physical_samples.physical_sample_id = tbl_physical_sample_features.physical_sample_id\n      - anchor: dataset\n        route: feature_type__dataset",
+            StringComparison.Ordinal
+        );
+        var temporaryFilePath = CreateTemporaryConfigurationFile(updatedContent);
+
+        try
+        {
+            importer.ImportFromFile(temporaryFilePath);
+
+            var featureTypeFacetId = dbContext.Facets.Single(facet => facet.FacetCode == "feature_type").FacetId;
+            var sampleAnchorId = dbContext.Anchors.Single(anchor => anchor.Name == "sample").AnchorId;
+
+            QueryScalar(
+                    dbContext,
+                    "select template_contract from facet.facet_template where facet_id = @facet_id and template_role = 'base_sql' limit 1",
+                    ("@facet_id", featureTypeFacetId)
+                )
+                .Should()
+                .Be("discrete");
+            QueryScalar(
+                    dbContext,
+                    "select base_anchor from facet.facet_template where facet_id = @facet_id and template_role = 'base_sql' limit 1",
+                    ("@facet_id", featureTypeFacetId)
+                )
+                .Should()
+                .Be("sample");
+            QueryScalar(
+                    dbContext,
+                    "select sql_text from facet.facet_template where facet_id = @facet_id and template_role = 'base_sql' limit 1",
+                    ("@facet_id", featureTypeFacetId)
+                )
+                .Should()
+                .Contain("category_id");
+            QueryScalar(
+                    dbContext,
+                    "select sql_text from facet.facet_template where facet_id = @facet_id and anchor_id = @anchor_id and template_role = 'anchor_sql' limit 1",
+                    ("@facet_id", featureTypeFacetId),
+                    ("@anchor_id", sampleAnchorId)
+                )
+                .Should()
+                .Contain("source_id");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
     private static string GetConfigurationFilePath()
     {
         return Path.GetFullPath(Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "route_v1.yaml"));
@@ -298,5 +387,27 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
         var temporaryFilePath = Path.Combine(Path.GetTempPath(), $"facet-route-config-{Guid.NewGuid():N}.yaml");
         File.WriteAllText(temporaryFilePath, fileContent);
         return temporaryFilePath;
+    }
+
+    private static string QueryScalar(FacetContext dbContext, string sql, params (string Name, object Value)[] parameters)
+    {
+        using var command = dbContext.Database.GetDbConnection().CreateCommand();
+        command.CommandText = sql;
+
+        foreach (var parameter in parameters)
+        {
+            var dbParameter = command.CreateParameter();
+            dbParameter.ParameterName = parameter.Name;
+            dbParameter.Value = parameter.Value;
+            command.Parameters.Add(dbParameter);
+        }
+
+        if (command.Connection?.State != ConnectionState.Open)
+        {
+            command.Connection?.Open();
+        }
+
+        var value = command.ExecuteScalar();
+        return value?.ToString() ?? string.Empty;
     }
 }

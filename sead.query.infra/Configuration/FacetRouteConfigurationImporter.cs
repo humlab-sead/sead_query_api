@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,10 +12,25 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace SeadQueryInfra;
 
+/// <summary>
+/// Validates and imports facet route configuration files into the runtime facet schema.
+/// </summary>
 public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationImporter
 {
     private const string ExpectedTargetSchema = "facet";
     private const string ExpectedImportMode = "merge-into-existing";
+    private static readonly HashSet<string> SupportedInlineTemplateContracts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "discrete",
+        "range",
+    };
+    private static readonly HashSet<string> SupportedTemplateKeyFacets = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "result_facet",
+        "map_result",
+        "result_datasets",
+    };
+    private static readonly HashSet<string> SupportedTemplateKeys = new(StringComparer.OrdinalIgnoreCase) { "anchor_identity" };
 
     private readonly IFacetContext _context;
     private ImportIdAllocator _idAllocator;
@@ -67,6 +83,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         UpsertFacetTables(document, facetsByCode, tablesByName);
         UpsertFacetAnchors(document, facetsByCode, anchorsByName, routesByName);
         UpsertFacetClauses(document, facetsByCode);
+        UpsertFacetTemplates(document, facetsByCode, anchorsByName);
         UpsertConfigRevision(document, filePath, contentHash);
 
         _context.SaveChanges();
@@ -95,6 +112,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
 
         ValidateFacetDefinitions(document, facetsByCode, facetGroupsByKey, facetTypesByName, tablesByName);
         ValidateFacetAnchorBindings(document, anchorsByName, routesByName);
+        ValidateFacetTemplateDefinitions(document, anchorsByName);
     }
 
     private static IDeserializer CreateDeserializer()
@@ -499,14 +517,6 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         {
             foreach (var anchorBinding in facetDefinition.Anchors)
             {
-                if (!string.IsNullOrWhiteSpace(anchorBinding.SqlOverride))
-                {
-                    throw new InvalidOperationException(
-                        $"Facet '{facetDefinition.Key}' anchor '{anchorBinding.Anchor}' uses unsupported sql_override content. "
-                            + "Import-time SQL overrides were removed in Phase 5."
-                    );
-                }
-
                 var anchor = ResolveRequiredLookup(anchorsByName, anchorBinding.Anchor, $"facet '{facetDefinition.Key}' anchor");
                 var route = ResolveRequiredLookup(routesByName, anchorBinding.Route, $"facet '{facetDefinition.Key}' route");
 
@@ -518,6 +528,86 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                     );
                 }
             }
+        }
+    }
+
+    private static void ValidateFacetTemplateDefinitions(
+        FacetRouteConfigurationDocument document,
+        IReadOnlyDictionary<string, Anchor> anchorsByName
+    )
+    {
+        foreach (var facetDefinition in document.Facets)
+        {
+            if (!string.IsNullOrWhiteSpace(facetDefinition.TemplateKey))
+            {
+                if (!SupportedTemplateKeyFacets.Contains(facetDefinition.Key))
+                {
+                    throw new InvalidOperationException(
+                        $"Facet '{facetDefinition.Key}' cannot declare template_key '{facetDefinition.TemplateKey}'."
+                    );
+                }
+
+                if (!SupportedTemplateKeys.Contains(facetDefinition.TemplateKey))
+                {
+                    throw new InvalidOperationException(
+                        $"Facet '{facetDefinition.Key}' uses unsupported template_key '{facetDefinition.TemplateKey}'."
+                    );
+                }
+            }
+
+            if (facetDefinition.Sql is null)
+            {
+                continue;
+            }
+
+            if (!string.Equals(facetDefinition.Sql.Mode, "inline-template", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    $"Facet '{facetDefinition.Key}' uses unsupported sql mode '{facetDefinition.Sql.Mode}'."
+                );
+            }
+
+            ValidateRequiredValue(
+                facetDefinition.Sql.Contract,
+                nameof(FacetInlineSqlDefinition.Contract),
+                $"facet '{facetDefinition.Key}' sql"
+            );
+            ValidateRequiredValue(
+                facetDefinition.Sql.BaseAnchor,
+                nameof(FacetInlineSqlDefinition.BaseAnchor),
+                $"facet '{facetDefinition.Key}' sql"
+            );
+            ValidateRequiredValue(
+                facetDefinition.Sql.GetTemplateBody(),
+                nameof(FacetInlineSqlDefinition.Body),
+                $"facet '{facetDefinition.Key}' sql"
+            );
+
+            if (!SupportedInlineTemplateContracts.Contains(facetDefinition.Sql.Contract))
+            {
+                throw new InvalidOperationException(
+                    $"Facet '{facetDefinition.Key}' uses unsupported sql contract '{facetDefinition.Sql.Contract}'."
+                );
+            }
+
+            if (
+                !string.Equals(facetDefinition.Type, facetDefinition.Sql.Contract, StringComparison.OrdinalIgnoreCase)
+                && !(
+                    string.Equals(facetDefinition.Type, "discrete", StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(facetDefinition.Sql.Contract, "discrete", StringComparison.OrdinalIgnoreCase)
+                )
+                && !(
+                    string.Equals(facetDefinition.Type, "range", StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(facetDefinition.Sql.Contract, "range", StringComparison.OrdinalIgnoreCase)
+                )
+            )
+            {
+                throw new InvalidOperationException(
+                    $"Facet '{facetDefinition.Key}' type '{facetDefinition.Type}' is incompatible with sql contract '{facetDefinition.Sql.Contract}'."
+                );
+            }
+
+            ResolveRequiredLookup(anchorsByName, facetDefinition.Sql.BaseAnchor, $"facet '{facetDefinition.Key}' sql base anchor");
         }
     }
 
@@ -556,6 +646,143 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                 existingClause.EnforceConstraint = false;
             }
         }
+    }
+
+    private void UpsertFacetTemplates(
+        FacetRouteConfigurationDocument document,
+        IReadOnlyDictionary<string, Facet> facetsByCode,
+        IReadOnlyDictionary<string, Anchor> anchorsByName
+    )
+    {
+        var dbContext =
+            _context as DbContext
+            ?? throw new InvalidOperationException("Facet template import requires an EF DbContext-backed facet context.");
+
+        EnsureFacetTemplateTable(dbContext);
+
+        foreach (var facetDefinition in document.Facets)
+        {
+            var facet = ResolveRequiredLookup(facetsByCode, facetDefinition.Key, $"facet '{facetDefinition.Key}'");
+            ExecuteNonQuery(
+                dbContext,
+                "delete from facet.facet_template where facet_id = @facet_id",
+                new Dictionary<string, object> { ["@facet_id"] = facet.FacetId }
+            );
+
+            if (facetDefinition.Sql is not null)
+            {
+                InsertFacetTemplate(
+                    dbContext,
+                    facet.FacetId,
+                    null,
+                    "base_sql",
+                    facetDefinition.Sql.GetTemplateBody(),
+                    string.Empty,
+                    facetDefinition.Sql.Contract,
+                    facetDefinition.Sql.BaseAnchor
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(facetDefinition.TemplateKey))
+            {
+                InsertFacetTemplate(
+                    dbContext,
+                    facet.FacetId,
+                    null,
+                    "template_key",
+                    string.Empty,
+                    facetDefinition.TemplateKey,
+                    string.Empty,
+                    string.Empty
+                );
+            }
+
+            foreach (var anchorBinding in facetDefinition.Anchors.Where(binding => !string.IsNullOrWhiteSpace(binding.SqlOverride)))
+            {
+                var anchor = ResolveRequiredLookup(anchorsByName, anchorBinding.Anchor, $"facet '{facetDefinition.Key}' anchor");
+                InsertFacetTemplate(
+                    dbContext,
+                    facet.FacetId,
+                    anchor.AnchorId,
+                    "anchor_sql",
+                    anchorBinding.SqlOverride,
+                    string.Empty,
+                    facetDefinition.Sql?.Contract ?? string.Empty,
+                    facetDefinition.Sql?.BaseAnchor ?? string.Empty
+                );
+            }
+        }
+    }
+
+    private static void EnsureFacetTemplateTable(DbContext dbContext)
+    {
+        const string sql = """
+            create table if not exists facet.facet_template (
+                facet_template_id integer generated by default as identity primary key,
+                facet_id integer not null references facet.facet(facet_id),
+                anchor_id integer null references facet.anchor(anchor_id),
+                template_role text not null,
+                sql_text text null,
+                template_key text null,
+                template_contract text null,
+                base_anchor text null
+            )
+            """;
+
+        dbContext.Database.ExecuteSqlRaw(sql);
+    }
+
+    private static void InsertFacetTemplate(
+        DbContext dbContext,
+        int facetId,
+        int? anchorId,
+        string templateRole,
+        string sqlText,
+        string templateKey,
+        string templateContract,
+        string baseAnchor
+    )
+    {
+        const string sql = """
+            insert into facet.facet_template (facet_id, anchor_id, template_role, sql_text, template_key, template_contract, base_anchor)
+            values (@facet_id, @anchor_id, @template_role, @sql_text, @template_key, @template_contract, @base_anchor)
+            """;
+
+        ExecuteNonQuery(
+            dbContext,
+            sql,
+            new Dictionary<string, object>
+            {
+                ["@facet_id"] = facetId,
+                ["@anchor_id"] = anchorId ?? (object)DBNull.Value,
+                ["@template_role"] = templateRole,
+                ["@sql_text"] = string.IsNullOrWhiteSpace(sqlText) ? (object)DBNull.Value : sqlText,
+                ["@template_key"] = string.IsNullOrWhiteSpace(templateKey) ? (object)DBNull.Value : templateKey,
+                ["@template_contract"] = string.IsNullOrWhiteSpace(templateContract) ? (object)DBNull.Value : templateContract,
+                ["@base_anchor"] = string.IsNullOrWhiteSpace(baseAnchor) ? (object)DBNull.Value : baseAnchor,
+            }
+        );
+    }
+
+    private static void ExecuteNonQuery(DbContext dbContext, string sql, IReadOnlyDictionary<string, object> parameters)
+    {
+        using var command = dbContext.Database.GetDbConnection().CreateCommand();
+        command.CommandText = sql;
+
+        foreach (var parameter in parameters)
+        {
+            var dbParameter = command.CreateParameter();
+            dbParameter.ParameterName = parameter.Key;
+            dbParameter.Value = parameter.Value;
+            command.Parameters.Add(dbParameter);
+        }
+
+        if (command.Connection?.State != ConnectionState.Open)
+        {
+            command.Connection?.Open();
+        }
+
+        command.ExecuteNonQuery();
     }
 
     private void UpsertConfigRevision(FacetRouteConfigurationDocument document, string filePath, string contentHash)
@@ -780,6 +1007,10 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
 
         public FacetAggregateDefinition Aggregate { get; set; } = new();
 
+        public string TemplateKey { get; set; } = string.Empty;
+
+        public FacetInlineSqlDefinition? Sql { get; set; }
+
         public List<string> Clauses { get; set; } = [];
 
         public List<FacetAnchorBindingDefinition> Anchors { get; set; } = [];
@@ -810,6 +1041,24 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         public string Title { get; set; } = string.Empty;
 
         public string FacetKey { get; set; } = string.Empty;
+    }
+
+    private sealed class FacetInlineSqlDefinition
+    {
+        public string Mode { get; set; } = string.Empty;
+
+        public string Contract { get; set; } = string.Empty;
+
+        public string BaseAnchor { get; set; } = string.Empty;
+
+        public string Body { get; set; } = string.Empty;
+
+        public string CteSql { get; set; } = string.Empty;
+
+        public string GetTemplateBody()
+        {
+            return !string.IsNullOrWhiteSpace(Body) ? Body : CteSql;
+        }
     }
 
     private sealed class FacetAnchorBindingDefinition
