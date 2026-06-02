@@ -23,15 +23,16 @@ Use this priority order when deciding what to include:
 ## Default Structure
 
 1. Phase Summary — Essential
-2. Work Breakdown — Essential
-3. Progress Tracker — Essential
-4. Definition Of Done — Essential
-5. Validation And Testing — Recommended
-6. Deliverables — Recommended
-7. Scope — Recommended
-8. Risks And Mitigations — Optional
-9. Open Questions — Optional
-10. Assumptions — Optional
+2. Execution Rules — Essential for multi-task implementation plans
+3. Work Breakdown — Essential
+4. Progress Tracker — Essential
+5. Definition Of Done — Essential
+6. Validation And Testing — Recommended
+7. Deliverables — Recommended
+8. Scope — Recommended
+9. Risks And Mitigations — Optional
+10. Open Questions — Optional
+11. Assumptions — Optional
 
 ## Rules
 
@@ -57,9 +58,40 @@ Use this priority order when deciding what to include:
 
 Include phase title, goal, focus, and acceptance criteria as a checklist. Include status only when useful. Include owner only if provided; otherwise omit it or mark `TBD`. Skip dates, links, branch, or PR fields unless provided or useful.
 
+### Execution Rules — Essential For Multi-Task Plans
+
+Include this section when the phase has multiple checklist tasks or will be executed incrementally by an AI coding assistant.
+
+Use concise global rules such as:
+
+- Treat each unchecked checkbox as one implementation task unless the task explicitly says otherwise.
+- Complete only the named checkbox and the smallest supporting changes needed to make it valid.
+- Do not continue into the next unchecked checkbox after completing the current task.
+- Do not widen scope into adjacent work areas unless the current checkbox explicitly requires it.
+- If related work is discovered, record it as a follow-up rather than silently expanding the current task.
+- Prefer focused tests that prove the current checkbox over broad refactors, broad migrations, or unrelated cleanup.
+- At the end of each task, update checkbox status, progress notes, validation evidence, and deferred follow-up.
+
 ### Work Breakdown — Essential
 
 Create 3-6 work areas based on the phase focus. For each area include objective, checklist tasks, and completion criteria. End each area with an observable completion condition. Prefer tasks that can reasonably be implemented and reviewed independently. For very small phases, use 1-2 work areas.
+
+For broad or easy-to-misread checklist items, add short implementation notes under the task.
+
+Use implementation notes to define boundaries, required validation cases, exclusions, or follow-up handling. Do not use them for detailed step-by-step coding instructions.
+
+Example:
+
+```md
+- [ ] extend schema validation for inline SQL fields, base-anchor references, and explicit anchor-to-SQL mappings
+
+  Implementation notes:
+  - validate the inline `sql` authoring block shape
+  - validate base-anchor references
+  - validate explicit anchor-to-SQL mapping shape
+  - add focused valid and invalid validation tests
+  - keep placeholder validation for the next checkbox
+```
 
 ### Progress Tracker — Essential
 
@@ -76,6 +108,8 @@ Keep this section compact. It should summarize area status, not repeat the full 
 ### Definition Of Done — Essential
 
 Use a final checklist that confirms acceptance criteria coverage, validation, review, and follow-up capture.
+
+For multi-task plans, include confirmation that adjacent tasks were not silently absorbed into completed work and that deferred work is recorded explicitly.
 
 ### Validation And Testing — Recommended
 
@@ -95,9 +129,11 @@ For documentation or inventory deliverables, include the target file or document
 
 Include when boundaries matter. Use **In scope** and **Out of scope**. Skip for simple phases where scope is obvious from the work breakdown.
 
+Use this section to prevent task drift when the phase has adjacent validation, persistence, runtime, compiler, migration, or documentation work.
+
 ### Risks And Mitigations — Optional
 
-Include only when there are meaningful risks, such as undocumented legacy behavior, contract drift, stale inventory, ambiguous unsupported behavior, or insufficient regression coverage.
+Include only when there are meaningful risks, such as undocumented legacy behavior, contract drift, stale inventory, ambiguous unsupported behavior, task-boundary drift, uncontrolled migration scope, or insufficient regression coverage.
 
 ### Open Questions — Optional
 
