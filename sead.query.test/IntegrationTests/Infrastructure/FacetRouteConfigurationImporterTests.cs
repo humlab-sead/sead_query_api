@@ -544,6 +544,62 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
     }
 
     [Fact]
+    public void ImportFromFile_WithTemplateKeyAndInlineSql_PersistsFacetTemplateRows()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+        var fileContent = File.ReadAllText(configurationFilePath);
+
+        var updatedContent = fileContent.Replace(
+            "    aggregate:\n      type: count\n      title: Number of samples\n    template_key: anchor_identity\n    clauses: []\n    anchors:\n      - anchor: analysis_entity\n        route: analysis_entity_ages__analysis_entity",
+            "    aggregate:\n      type: count\n      title: Number of samples\n    template_key: anchor_identity\n    sql:\n      mode: inline-template\n      contract: discrete\n      base_anchor: analysis_entity\n      body: |\n        select\n          tbl_analysis_entities.analysis_entity_id as category_id,\n          tbl_analysis_entities.analysis_entity_id as anchor_id\n    clauses: []\n    anchors:\n      - anchor: analysis_entity\n        route: analysis_entity_ages__analysis_entity",
+            StringComparison.Ordinal
+        );
+        var temporaryFilePath = CreateTemporaryConfigurationFile(updatedContent);
+
+        try
+        {
+            importer.ImportFromFile(temporaryFilePath);
+
+            var resultFacetId = dbContext.Facets.Single(facet => facet.FacetCode == "result_facet").FacetId;
+
+            QueryScalar(
+                    dbContext,
+                    "select template_key from facet.facet_template where facet_id = @facet_id and template_role = 'template_key' limit 1",
+                    ("@facet_id", resultFacetId)
+                )
+                .Should()
+                .Be("anchor_identity");
+            QueryScalar(
+                    dbContext,
+                    "select template_contract from facet.facet_template where facet_id = @facet_id and template_role = 'base_sql' limit 1",
+                    ("@facet_id", resultFacetId)
+                )
+                .Should()
+                .Be("discrete");
+            QueryScalar(
+                    dbContext,
+                    "select base_anchor from facet.facet_template where facet_id = @facet_id and template_role = 'base_sql' limit 1",
+                    ("@facet_id", resultFacetId)
+                )
+                .Should()
+                .Be("analysis_entity");
+            QueryScalar(
+                    dbContext,
+                    "select sql_text from facet.facet_template where facet_id = @facet_id and template_role = 'base_sql' limit 1",
+                    ("@facet_id", resultFacetId)
+                )
+                .Should()
+                .Contain("category_id");
+        }
+        finally
+        {
+            File.Delete(temporaryFilePath);
+        }
+    }
+
+    [Fact]
     public void ValidateFile_WithRetainedResultShapeFacetMissingTemplateKey_ThrowsInvalidOperationException()
     {
         var dbContext = (FacetContext)FacetContext;
@@ -593,7 +649,7 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
     }
 
     [Fact]
-    public void ValidateFile_WithTemplateKeyAndInlineSqlTogether_ThrowsInvalidOperationException()
+    public void ValidateFile_WithTemplateKeyAndInlineSqlTogether_Succeeds()
     {
         var dbContext = (FacetContext)FacetContext;
         var importer = new FacetRouteConfigurationImporter(dbContext);
@@ -638,7 +694,7 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
         {
             var act = () => importer.ValidateFile(temporaryFilePath);
 
-            act.Should().Throw<InvalidOperationException>().WithMessage("*Facet 'result_facet' declares both template_key and inline sql*");
+            act.Should().NotThrow();
         }
         finally
         {

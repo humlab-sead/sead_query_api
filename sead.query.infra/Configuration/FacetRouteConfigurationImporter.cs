@@ -563,15 +563,6 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                         $"Facet '{facetDefinition.Key}' uses unsupported template_key '{facetDefinition.TemplateKey}'."
                     );
                 }
-
-                if (facetDefinition.Sql is not null)
-                {
-                    throw new InvalidOperationException(
-                        $"Facet '{facetDefinition.Key}' declares both template_key and inline sql. "
-                            + "These are mutually exclusive; use template_key for retained result-shape facets "
-                            + "and sql for inline-template facets."
-                    );
-                }
             }
             else if (SupportedTemplateKeyFacets.Contains(facetDefinition.Key))
             {

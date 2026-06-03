@@ -38,7 +38,7 @@ Completion criteria: invalid inline-template authoring fails in validation with 
 
 Objective: persist template metadata into the existing runtime configuration model and make it loadable by the compiler path.
 
-- [ ] remove the current importer rejection of supported inline template content
+- [x] remove the current importer rejection of supported inline template content
 - [ ] persist base-template metadata and explicit anchor-to-SQL exception data in runtime storage
 - [ ] persist constrained `template_key` metadata for retained result-shape facets
 - [ ] load template metadata through the active configuration and runtime service path without regressing non-template facets
