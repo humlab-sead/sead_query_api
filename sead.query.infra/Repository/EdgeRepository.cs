@@ -11,18 +11,18 @@ namespace SeadQueryInfra
 
     public class EdgeRepository(IRepositoryRegistry registry) : Repository<TableRelation, int>(registry), IEdgeRepository
     {
-
         public class EdgesLookup(Route edges)
         {
             public Dictionary<Tuple<string, string>, TableRelation> NameLookup { get; private set; } = edges.ToDictionary(z => z.Key);
             public Dictionary<Tuple<int, int>, TableRelation> IdLookup { get; private set; } = edges.ToDictionary(z => z.IdKey);
+
             public TableRelation GetEdge(string source, string target) => NameLookup[Tuple.Create(source, target)];
+
             public TableRelation GetEdge(int sourceId, int targetId) => IdLookup[Tuple.Create(sourceId, targetId)];
         }
 
         private Route __edges = null;
         public EdgesLookup __Lookup { get; private set; }
-
 
         public Route GetEdges(bool bidirectional = true)
         {
@@ -84,7 +84,6 @@ namespace SeadQueryInfra
                 aliasEdges.AddRange(
                     targetEdges.Select(z => z.Alias(tableLookup[facetTable.TableOrUdfName], tableLookup[facetTable.Alias]))
                 );
-
             }
             return aliasEdges.Where(x => !edges.Contains(x)).Distinct().ToList();
         }
@@ -95,7 +94,6 @@ namespace SeadQueryInfra
         //     => trail
         //         .Select(x => Registry.Tables.GetNode(x))
         //         .PairWise((a, b) => FindByName(a.TableOrUdfName, b.TableOrUdfName)).ToList();
-
     }
 
     public static class EdgeRepositoryEagerBuilder
