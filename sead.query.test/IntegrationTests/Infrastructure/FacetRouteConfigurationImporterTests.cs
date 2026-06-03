@@ -551,12 +551,38 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
         var configurationFilePath = GetConfigurationFilePath();
         var fileContent = File.ReadAllText(configurationFilePath);
 
-        var updatedContent = fileContent.Replace(
-            "    aggregate:\n      type: count\n      title: Number of samples\n    template_key: anchor_identity\n    clauses: []\n    anchors:\n      - anchor: analysis_entity\n        route: analysis_entity_ages__analysis_entity",
-            "    aggregate:\n      type: count\n      title: Number of samples\n    template_key: anchor_identity\n    sql:\n      mode: inline-template\n      contract: discrete\n      base_anchor: analysis_entity\n      body: |\n        select\n          tbl_analysis_entities.analysis_entity_id as category_id,\n          tbl_analysis_entities.analysis_entity_id as anchor_id\n    clauses: []\n    anchors:\n      - anchor: analysis_entity\n        route: analysis_entity_ages__analysis_entity",
-            StringComparison.Ordinal
-        );
-        var temporaryFilePath = CreateTemporaryConfigurationFile(updatedContent);
+        var resultFacetDefinition =
+            "\n  - key: result_facet\n"
+            + "    display_title: Result facet\n"
+            + "    description: Retained result-shape facet\n"
+            + "    group_key: others\n"
+            + "    type: discrete\n"
+            + "    source_table: tbl_analysis_entities\n"
+            + "    category:\n"
+            + "      id_expr: tbl_analysis_entities.analysis_entity_id\n"
+            + "      name_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "      data_type: integer\n"
+            + "      operator: \"=\"\n"
+            + "    sort_expr: tbl_analysis_entities.analysis_entity_id::text\n"
+            + "    flags:\n"
+            + "      is_applicable: true\n"
+            + "      is_default: false\n"
+            + "    aggregate:\n"
+            + "      type: count\n"
+            + "      title: Number of samples\n"
+            + "    template_key: anchor_identity\n"
+            + "    sql:\n"
+            + "      mode: inline-template\n"
+            + "      contract: discrete\n"
+            + "      base_anchor: analysis_entity\n"
+            + "      body: |\n"
+            + "        select 1 as category_id\n"
+            + "    clauses: []\n"
+            + "    anchors:\n"
+            + "      - anchor: analysis_entity\n"
+            + "        route: analysis_entity_ages__analysis_entity\n";
+
+        var temporaryFilePath = CreateTemporaryConfigurationFile(fileContent + resultFacetDefinition);
 
         try
         {
