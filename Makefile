@@ -52,7 +52,12 @@ clear-docs:
 
 docs/output/%.pdf: docs/%.md
 	@mkdir -p "$(@D)"
-	@pandoc "$<" -o "$@" $(LATEX_VARS) -F mermaid-filter
+	@pandoc "$<" -o "$@" $(LATEX_VARS) --pdf-engine=xelatex -F mermaid-filter
+
+do-graphifyy:
+	@pipx install graphifyy
+	@dotnet tool install -g graphify-dotnet
+	@${HOME}/.local/share/pipx/venvs/graphifyy/bin/graphify install --project --platform codex
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
