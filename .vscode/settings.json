@@ -1,5 +1,6 @@
 {
     "editor.minimap.enabled": false,
+    "dotnet.defaultSolution": "sead.query.slnx",
     "rest-client.environmentVariables": {
         "$shared": {
             "version": "v1",

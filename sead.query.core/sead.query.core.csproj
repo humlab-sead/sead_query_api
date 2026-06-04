@@ -1,26 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>SeadQueryCore</RootNamespace>
     <AssemblyName>sead.query.core</AssemblyName>
     <!-- <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> -->
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netcoreapp31\sead.query.core.xml</DocumentationFile>
     <NoWarn>1701;1702;1705;1591;CS1591;NU1603;SQL80001;RCS1036;</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="CategoryDistributionLoader.cs" />
-    <Compile Remove="Deprecated\DumpUtility.cs" />
-    <Compile Remove="Deprecated\ICategoryBoundsService.cs" />
-    <Compile Remove="Deprecated\QuerySetupHelper.cs" />
-    <Compile Remove="Deprecated\RangeCategoryBoundsService.cs" />
-    <Compile Remove="Deprecated\Utility.cs" />
+    <Compile Remove="Deprecated\**\*.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Deprecated\DumpUtility.cs" />
     <None Include="Deprecated\ICategoryBoundsService.cs" />
@@ -28,14 +20,12 @@
     <None Include="Deprecated\RangeCategoryBoundsService.cs" />
     <None Include="Deprecated\Utility.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
     <PackageReference Include="ObjectDumper.NET" Version="4.3.2" />
     <PackageReference Include="SqlKata" Version="4.0.1" />
   </ItemGroup>
-
 </Project>

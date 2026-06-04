@@ -1,0 +1,17 @@
+<Solution>
+
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="README.md" />
+    <File Path="docker-build.sh" />
+    <File Path="setup/pg_grant_read_to_db.bash" />
+  </Folder>
+
+  <Project Path="sead.query.api/sead.query.api.csproj" />
+  <Project Path="sead.query.composer/sead.query.composer.csproj" />
+  <Project Path="sead.query.core/sead.query.core.csproj" />
+  <Project Path="sead.query.infra/sead.query.infra.csproj" />
+  <Project Path="sead.query.test/sead.query.test.csproj" />
+
+</Solution>

@@ -1,26 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="8.2.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Autofac" Version="9.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Autofac.Extras.AggregateService" Version="6.1.2" />
-    <PackageReference Include="Bogus" Version="35.6.3" />
-    <PackageReference Include="CacheManager.Core" Version="2.0.0" />
-    <PackageReference Include="CacheManager.Microsoft.Extensions.Caching.Memory" Version="2.0.0" />
-    <PackageReference Include="CacheManager.Serialization.Json" Version="2.0.0" />
-    <PackageReference Include="CacheManager.StackExchange.Redis" Version="2.0.0" />
+    <PackageReference Include="Bogus" Version="35.6.5" />
+    <PackageReference Include="CacheManager.Core" Version="3.0.0" />
+    <PackageReference Include="CacheManager.Microsoft.Extensions.Caching.Memory" Version="3.0.0" />
+    <PackageReference Include="CacheManager.Serialization.Json" Version="3.0.0" />
+    <PackageReference Include="CacheManager.StackExchange.Redis" Version="3.0.0" />
     <PackageReference Include="Castle.Core" Version="5.2.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    <PackageReference Include="YamlDotNet" Version="18.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\sead.query.core\sead.query.core.csproj" />
