@@ -1,3 +1,11 @@
+---
+format:
+  pdf:
+    pdf-engine: xelatex
+    geometry:
+      - landscape
+      - margin=1.5cm
+---
 # Architecture Diagrams
 
 This document provides visual diagrams for the SEAD Query API.
