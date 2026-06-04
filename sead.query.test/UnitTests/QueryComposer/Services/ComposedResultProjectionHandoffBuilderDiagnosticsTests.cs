@@ -67,6 +67,68 @@ namespace SQT.UnitTests.QueryComposer.Services
             logger.Entries[0].Message.Should().Contain("routable target join column");
         }
 
+        [Fact]
+        public void Build_WithTemplateSnapshot_UsesSnapshotInsteadOfLegacyTemplateLookups()
+        {
+            var resultFacet = CreateResultFacet();
+            var aggregateFacet = CreateAggregateFacet();
+            var facetsConfig = new FacetsConfig2
+            {
+                TargetCode = resultFacet.FacetCode,
+                TargetFacet = resultFacet,
+                FacetConfigs = [],
+            };
+            var resultConfig = new ResultConfig
+            {
+                FacetCode = resultFacet.FacetCode,
+                Facet = resultFacet,
+                ViewTypeId = "tabular",
+            };
+
+            var facetRepository = new Mock<IFacetRepository>();
+            facetRepository.Setup(x => x.Get(resultFacet.AggregateFacetId)).Returns(aggregateFacet);
+
+            var registry = new Mock<IRepositoryRegistry>();
+            registry.SetupGet(x => x.Facets).Returns(facetRepository.Object);
+
+            var querySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
+            querySetupFactory
+                .Setup(x => x.CreateForResultProjection(facetsConfig, resultFacet, It.IsAny<IEnumerable<ResultSpecificationField>>()))
+                .Returns(new QuerySetup { Facet = resultFacet, Joins = [] });
+
+            var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+            templateResolver
+                .Setup(x => x.GetTemplateSnapshot(resultFacet))
+                .Returns(
+                    new FacetTemplateRuntimeSnapshot(
+                        "anchor_identity",
+                        "select base_sql",
+                        "discrete",
+                        "analysis_entity",
+                        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    )
+                );
+
+            var builder = new ComposedResultProjectionHandoffBuilder(
+                registry.Object,
+                querySetupFactory.Object,
+                Mock.Of<IPickFilterCompilerLocator>(),
+                Mock.Of<IPathFinder>(),
+                Mock.Of<IRouteSqlCompiler>(),
+                templateResolver.Object,
+                Mock.Of<IDiscreteFacetPredicateResolver>(),
+                Mock.Of<IComposedFilterQueryComposer>(),
+                Mock.Of<ILogger<ComposedResultProjectionHandoffBuilder>>()
+            );
+
+            var result = builder.Build(facetsConfig, resultConfig);
+
+            result.QuerySetup.LeadingSql.Should().Contain("from tbl_analysis_entities");
+            templateResolver.Verify(x => x.GetTemplateSnapshot(resultFacet), Times.Once);
+            templateResolver.Verify(x => x.GetTemplateKey(It.IsAny<Facet>()), Times.Never);
+            templateResolver.Verify(x => x.GetAnchorSql(It.IsAny<Facet>(), It.IsAny<string>()), Times.Never);
+        }
+
         private static Facet CreateUnsupportedSpeciesResultFacet()
         {
             var speciesTable = new Table
@@ -83,6 +145,26 @@ namespace SQT.UnitTests.QueryComposer.Services
                 AggregateFacetId = 10,
                 CategoryIdExpr = "coalesce(facet.abundance_taxon_shortcut.taxon_id, 0)",
                 Tables = [new FacetTable { SequenceId = 1, Table = speciesTable }],
+            };
+        }
+
+        private static Facet CreateResultFacet()
+        {
+            var analysisEntitiesTable = new Table
+            {
+                TableId = 4,
+                TableOrUdfName = "tbl_analysis_entities",
+                PrimaryKeyName = "analysis_entity_id",
+            };
+
+            return new Facet
+            {
+                FacetId = 20,
+                FacetCode = "result_facet",
+                FacetTypeId = EFacetType.Discrete,
+                AggregateFacetId = 10,
+                CategoryIdExpr = "tbl_analysis_entities.analysis_entity_id",
+                Tables = [new FacetTable { SequenceId = 1, Table = analysisEntitiesTable }],
             };
         }
 

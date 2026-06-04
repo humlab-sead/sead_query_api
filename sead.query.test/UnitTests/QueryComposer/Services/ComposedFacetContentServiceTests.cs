@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using FluentAssertions;
 using Moq;
+using SeadQueryComposer.QueryComposer.Inputs;
 using SeadQueryComposer.QueryComposer.Services;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
@@ -108,6 +110,90 @@ public class ComposedFacetContentServiceTests
         result.SqlQuery.Should().Contain("join target_route on target_route.target_id = site_tbl.site_id");
         result.SqlQuery.Should().Contain("join composed_filter on composed_filter.target_id = target_route.source_id");
         queryProxy.Verify(proxy => proxy.QueryRows(It.IsAny<string>(), It.IsAny<Func<IDataReader, CategoryItem>>()), Times.Once);
+    }
+
+    [Fact]
+    public void Load_WithSnapshotBackedExplicitAnchorSql_UsesSnapshotSql()
+    {
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(It.IsAny<Facet>()))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_sites"] =
+                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where tbl_sites.site_id > 0",
+                        ["site_tbl"] =
+                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where tbl_sites.site_id > 0",
+                    }
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select snapshot_result");
+
+        var pathFinder = new Mock<IPathFinder>();
+        pathFinder.Setup(finder => finder.Find(It.IsAny<string>(), It.IsAny<string>())).Returns([]);
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var facetsConfig = CreateCountryToSitesFacetsConfig();
+        var request = new ComposedFacetContentRequest(
+            "tbl_sites",
+            "site_id",
+            "site_id",
+            string.Empty,
+            [facetsConfig.GetConfig("country")]
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select snapshot_result");
+        capturedExplicitSql.Should().Be(
+            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where tbl_sites.site_id > 0"
+        );
+        templateResolver.Verify(resolver => resolver.GetTemplateSnapshot(It.IsAny<Facet>()), Times.AtLeastOnce);
     }
 
     [Fact]
@@ -732,7 +818,8 @@ public class ComposedFacetContentServiceTests
         IDiscreteCategoryInfoService discreteCategoryInfoService = null,
         IGeoPolygonCategoryInfoService geoPolygonCategoryInfoService = null,
         IRangeCategoryInfoService rangeCategoryInfoService = null,
-        IIntersectCategoryInfoService intersectCategoryInfoService = null
+        IIntersectCategoryInfoService intersectCategoryInfoService = null,
+        IFacetTemplateRuntimeResolver templateResolver = null
     )
     {
         var sites = CreateTable(1, "tbl_sites", "site_id");
@@ -795,6 +882,15 @@ public class ComposedFacetContentServiceTests
         var defaultIntersectInfoService = intersectCategoryInfoService ?? Mock.Of<IIntersectCategoryInfoService>();
         var pathFinder = new PathFinder([.. graph, .. graph.ReversedEdges()]);
         var facetContentQueryComposer = new DiscreteFacetContentQueryComposer(pathFinder, joinsClauseCompiler.Object);
+        var defaultTemplateResolver = templateResolver;
+        if (defaultTemplateResolver is null)
+        {
+            var emptyTemplateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+            emptyTemplateResolver
+                .Setup(resolver => resolver.GetTemplateSnapshot(It.IsAny<Facet>()))
+                .Returns(FacetTemplateRuntimeSnapshot.Empty);
+            defaultTemplateResolver = emptyTemplateResolver.Object;
+        }
 
         return new ComposedFacetContentService(
             [
@@ -823,6 +919,7 @@ public class ComposedFacetContentServiceTests
             new ComposedFacetContentFilterQueryFactory(
                 pathFinder,
                 new DiscreteFacetPredicateResolver(routeSqlCompiler),
+                defaultTemplateResolver,
                 new IntersectComposedFilterQueryComposer()
             )
         );

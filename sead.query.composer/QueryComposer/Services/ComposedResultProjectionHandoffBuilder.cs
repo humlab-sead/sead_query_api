@@ -91,7 +91,8 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             return _composedFilterQueryComposer.Compose(predicatePlans, request.AnchorTable, QueryComposerAliases.AnchorKeyColumn);
         }
 
-        var templateKeySql = CreateTemplateKeySql(resultFacet, request.AnchorTable, request.AnchorKeyColumnName);
+        var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(resultFacet);
+        var templateKeySql = CreateTemplateKeySql(templateSnapshot, request.AnchorTable, request.AnchorKeyColumnName);
 
         return new ComposedFilterQuery
         {
@@ -120,6 +121,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         var sourceCriteria = ResolvePredicateCriteria(sourceFacet);
         var isIdentityRoute = string.Equals(sourceTableName, request.AnchorTable, StringComparison.OrdinalIgnoreCase);
         var route = isIdentityRoute ? [] : _pathFinder.Find(sourceTableName, request.AnchorTable).ToTrail().Skip(1).SkipLast(1).ToList();
+        var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(sourceFacet);
 
         var predicateSql = _predicateResolver.ResolveSql(
             sourceTableName,
@@ -127,7 +129,9 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
             new AnchorTemplate
             {
-                ExplicitSql = _facetTemplateRuntimeResolver.GetAnchorSql(sourceFacet, request.AnchorTable),
+                ExplicitSql = templateSnapshot.AnchorSqlByTable.TryGetValue(request.AnchorTable, out var explicitSql)
+                    ? explicitSql
+                    : string.Empty,
                 Route = route,
                 IsIdentityRoute = isIdentityRoute,
                 RequiresDistinct = true,
@@ -534,14 +538,14 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         return true;
     }
 
-    private string CreateTemplateKeySql(Facet facet, string anchorTable, string anchorKeyColumn)
+    private static string CreateTemplateKeySql(FacetTemplateRuntimeSnapshot templateSnapshot, string anchorTable, string anchorKeyColumn)
     {
-        if (facet is null)
+        if (templateSnapshot is null)
         {
             return string.Empty;
         }
 
-        var templateKey = _facetTemplateRuntimeResolver.GetTemplateKey(facet);
+        var templateKey = templateSnapshot.TemplateKey;
         if (string.IsNullOrWhiteSpace(templateKey))
         {
             return string.Empty;

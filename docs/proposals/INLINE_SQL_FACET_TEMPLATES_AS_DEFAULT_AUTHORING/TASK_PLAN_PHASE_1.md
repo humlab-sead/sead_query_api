@@ -7,7 +7,7 @@
 - Acceptance Criteria:
   - [ ] the maintained YAML contract supports inline SQL, base anchors, and explicit anchor-to-SQL exception mappings
   - [x] the importer validates and persists inline template metadata instead of rejecting it
-  - [ ] runtime services can load inline template metadata without requiring immediate migration of unchanged facets
+  - [x] runtime services can load inline template metadata without requiring immediate migration of unchanged facets
   - [x] retained result-shape facets have a constrained `template_key` path for inner CTE composition SQL
 
 ## Work Breakdown
@@ -39,9 +39,9 @@ Completion criteria: invalid inline-template authoring fails in validation with 
 Objective: persist template metadata into the existing runtime configuration model and make it loadable by the compiler path.
 
 - [x] remove the current importer rejection of supported inline template content
-- [ ] persist base-template metadata and explicit anchor-to-SQL exception data in runtime storage
-- [ ] persist constrained `template_key` metadata for retained result-shape facets
-- [ ] load template metadata through the active configuration and runtime service path without regressing non-template facets
+- [x] persist base-template metadata and explicit anchor-to-SQL exception data in runtime storage
+- [x] persist constrained `template_key` metadata for retained result-shape facets
+- [x] load template metadata through the active configuration and runtime service path without regressing non-template facets
 
 Completion criteria: imported inline-template data survives authoring validation, import, and runtime loading as first-class configuration.
 
@@ -50,7 +50,7 @@ Completion criteria: imported inline-template data survives authoring validation
 Objective: give the compiler path one stable way to discover and consume imported template metadata.
 
 - [ ] define the runtime contract that compiler services read for inline templates and template keys
-- [ ] route discrete compiler lookup through the new template contract when template metadata is present
+- [x] route discrete compiler lookup through the new template contract when template metadata is present
 - [ ] keep unchanged facets on the existing relational path until later phases move them
 - [ ] define the minimum runtime checks for missing template metadata, unsupported contract types, and unknown template keys
 
@@ -74,16 +74,16 @@ Completion criteria: the next implementation phase has named driver facets, incl
 |---------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Authoring contract              | In Progress | `sead.query.composer/Templates/facet-route-config.schema.json` now carries the inline `sql` block with canonical `body` support plus explicit projected-anchor, anchor-to-SQL exception, and constrained `template_key` shapes. Fixed placeholder-set documentation is now complete: `discrete` (`{pick_filter_sql}`, `{pick_values_sql}`), `range` (`{low}`, `{high}`, `{range_filter_sql}`), `intersect` (`{range_filter_sql}`), `geopolygon` (`{polygon_filter_sql}`, `{polygon_wkt}`, `{srid}`). |
 | Schema and import validation    | In Progress | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` now validates inline-template metadata and `sead.query.test/IntegrationTests/Infrastructure/FacetRouteConfigurationImporterTests.cs` covers persisted rows, placeholder validation, template_key validation, unsupported contract types, type/contract mismatch, missing base anchor references, missing sql body, and unsupported sql mode failure cases.                                                                          |
-| Runtime persistence and loading | In Progress | `scripts/prepare-facet-runtime-schema.sql` adds `facet.facet_template`, `sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs` reads it, and `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs` consumes it, but runtime loading remains narrow.                                                                                                                                                                                                       |
-| Compiler entry contract         | In Progress | `sead.query.core/Interfaces/IFacetTemplateRuntimeResolver.cs` and `sead.query.api/Dependency.cs` add the runtime resolver contract, but only `anchor_identity` is supported so far in `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs`.                                                                                                                                                                                                                        |
+| Runtime persistence and loading | In Progress | `scripts/prepare-facet-runtime-schema.sql` adds `facet.facet_template`, `sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs` loads a runtime snapshot, and both `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs` now consume it.                                                                                                                                       |
+| Compiler entry contract         | In Progress | `sead.query.core/Interfaces/IFacetTemplateRuntimeResolver.cs` and `sead.query.api/Dependency.cs` add the runtime resolver contract, and the composer paths now read `anchor_identity` from the runtime snapshot rather than separate lookups.                                                                                                                                                                                                                        |
 | Driver-slice readiness          | Not started | Start with `result_facet`, `family`, and `tbl_biblio_sample_groups`, and queue required non-discrete restoration drivers `analysis_entity_ages` (intersect) and `sites_polygon` (geopolygon).                                                                                                                                                                                                                                                                                                        |
 
 ## Definition Of Done
 
 - [ ] Phase 1 acceptance criteria are still accurate and fully covered by the work breakdown
 - [ ] the approved YAML inline-template contract is documented in the proposal and reflected in the active implementation work
-- [ ] schema and importer validation rules exist for inline templates, base anchors, explicit anchor-to-SQL exceptions, and template keys
-- [ ] runtime services can load imported template metadata without regressing unchanged facets
+- [x] schema and importer validation rules exist for inline templates, base anchors, explicit anchor-to-SQL exceptions, and template keys
+- [x] runtime services can load imported template metadata without regressing unchanged facets
 - [ ] the first driver facets for Phase 2 are named and recorded in this task plan, including required intersect/geopolygon restoration drivers
 - [ ] focused validation evidence is recorded for the contract and runtime-loading path
 - [ ] any deferred behavior stays on an explicit follow-up list rather than being implied as already supported
@@ -93,6 +93,7 @@ Completion criteria: the next implementation phase has named driver facets, incl
 - validate the proposal-owned authoring shape against the maintained schema and importer rules
 - run focused tests for the importer and runtime-loading path once inline-template persistence lands
 - run focused compiler-contract tests for template lookup, placeholder validation, and unknown template-key failure paths
+- validate the snapshot-backed composer path for both result projection and facet content
 - use `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` when the first authored inline-template slice is added
 
 ## Deliverables
@@ -112,6 +113,7 @@ Completion criteria: the next implementation phase has named driver facets, incl
 - constrained `template_key` support for retained result-shape facets
 - naming the first driver facets for later proof slices
 - explicitly queuing `analysis_entity_ages` and `sites_polygon` as required restoration drivers for the next phase
+- snapshot-backed composer consumption for result projection and facet content
 
 **Out of scope**
 

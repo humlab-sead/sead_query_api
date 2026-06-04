@@ -15,16 +15,20 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
 {
     private readonly IPathFinder _pathFinder;
     private readonly IDiscreteFacetPredicateResolver _predicateResolver;
+    private readonly IFacetTemplateRuntimeResolver _facetTemplateRuntimeResolver;
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
 
     public ComposedFacetContentFilterQueryFactory(
         IPathFinder pathFinder,
         IDiscreteFacetPredicateResolver predicateResolver,
+        IFacetTemplateRuntimeResolver facetTemplateRuntimeResolver,
         IComposedFilterQueryComposer composedFilterQueryComposer
     )
     {
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
+        _facetTemplateRuntimeResolver =
+            facetTemplateRuntimeResolver ?? throw new ArgumentNullException(nameof(facetTemplateRuntimeResolver));
         _composedFilterQueryComposer = composedFilterQueryComposer ?? throw new ArgumentNullException(nameof(composedFilterQueryComposer));
     }
 
@@ -68,6 +72,7 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
         var sourceCriteria = ComposedFacetContentSupport.ResolvePredicateCriteria(sourceFacet);
         var isIdentityRoute = string.Equals(sourceTableName, request.AnchorTable, StringComparison.OrdinalIgnoreCase);
         var route = isIdentityRoute ? [] : _pathFinder.Find(sourceTableName, request.AnchorTable).ToTrail().Skip(1).SkipLast(1).ToList();
+        var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(sourceFacet) ?? FacetTemplateRuntimeSnapshot.Empty;
 
         var predicateSql = _predicateResolver.ResolveSql(
             sourceTableName,
@@ -75,6 +80,9 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
             new AnchorTemplate
             {
+                ExplicitSql = templateSnapshot.AnchorSqlByTable.TryGetValue(request.AnchorTable, out var explicitSql)
+                    ? explicitSql
+                    : string.Empty,
                 Route = route,
                 IsIdentityRoute = isIdentityRoute,
                 RequiresDistinct = true,
