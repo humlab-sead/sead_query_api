@@ -88,5 +88,6 @@
     "explorer.sortOrderLexicographicOptions": "lower",
     "workbench.editor.highlightModifiedTabs": true,
     "files.participants.timeout": 0,
-    "makefile.configureOnOpen": false
+    "makefile.configureOnOpen": false,
+    "chat.agent.maxRequests": 10
 }
