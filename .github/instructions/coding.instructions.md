@@ -8,10 +8,11 @@ Use this instruction when editing C# source files in this repository.
 
 ## Core Principles
 
-- Follow the Microsoft C# coding conventions: https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+- Use C# 13 and .NET 10 conventions.
 - Prefer small, explicit, composable code over framework-heavy or overly abstract designs.
 - Preserve the existing style of the file unless there is a clear reason to normalize it as part of the change.
 - Fix root causes rather than layering workarounds on top of unclear behavior.
+- Keep changes minimal and focused.
 
 ## Naming and Structure
 
