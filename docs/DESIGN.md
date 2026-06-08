@@ -318,6 +318,7 @@ The system is intentionally database-aware. It is not designed around full datab
 ## Related Documents
 
 - `README.md`: short project overview
+- `docs/GLOSSARY.md`: a glossary of system terminology.
 - `docs/DIAGRAMS.md`: visual overview of core interactions and workflows
 - `docs/REQUIREMENTS.md`: durable system requirements for the active architecture direction
 - `docs/proposals/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`: top-level change request and bird's-eye overview of the overhaul

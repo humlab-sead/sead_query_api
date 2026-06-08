@@ -134,6 +134,7 @@ The following remain required but not yet fully delivered:
 
 ## Related Documents
 
-- `docs/DESIGN.md`
-- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`
-- `docs/proposals/done/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_0.md`
+- `README.md`: short project overview
+- `docs/GLOSSARY.md`: a glossary of system terminology.
+- `docs/DIAGRAMS.md`: visual overview of core interactions and workflows
+- `docs/DESIGN.md`: a description of the system's architecture and boundaries

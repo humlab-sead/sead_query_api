@@ -1,321 +1,740 @@
-# SEAD Query API Architectural Glossary
+# Glossary
 
-This glossary is intended for junior developers working with the SEAD Query API and the query-engine overhaul.
+This glossary defines the canonical terminology for the SEAD Query API.
 
-## Active Route-Compiler Path
+Concepts are classified as either:
 
-The current query-composer runtime path that generates SQL using route definitions, anchor templates, route discovery, and route compilation services. It is the modern replacement for older approaches that relied heavily on manually written join templates.
+- **Domain Concepts** — concepts from the problem domain, independent of implementation.
+- **Architectural Concepts** — concepts describing software organization, responsibilities, interactions, and implementation patterns.
 
-## Anchor
+## Terminology Rules
 
-The common entity that all active facet filters must resolve to before they can be combined.
+- Define each concept once.
+- Use canonical names.
+- Prefer references to existing concepts over repeating definitions.
+- Relationships should reference other glossary concepts whenever possible.
+- Implementation classes, DTOs, tables, services, and APIs are examples, not concepts.
+- Domain concepts describe the problem domain.
+- Architectural concepts describe software organization and responsibilities.
+- Mermaid diagrams must not introduce undefined concepts.
 
-Think of an anchor as the "thing we are actually filtering". Examples might be sites, samples, or taxa.
+---
 
-## Anchor-Based Composition
+## Concept Map
 
-A query-composition approach where every facet filter produces anchor keys. These anchor-key sets are then combined to determine the final filtered result.
+### Query Composition
 
-## Anchor Key
+```mermaid
+flowchart LR
 
-The identifier column for the anchor entity.
+    Facet --> Predicate
+    Predicate --> PredicatePlan
+    PredicatePlan --> PredicateSQL
 
-For example, if the anchor is a site, the anchor key might be `site_id`. All composed predicates eventually resolve to anchor keys so they can be combined consistently.
-
-## API Layer
-
-The part of the application responsible for receiving HTTP requests and returning HTTP responses.
-
-The API layer should not contain query-composition logic.
-
-## Build (Query-Composer Context)
-
-In query-composer documentation, "build" means "generate SQL for the next stage of processing."
-
-It does **not** mean:
-- execute the SQL
-- query the database
-- return an API response
-
-## Category
-
-A value displayed in a facet.
-
-Examples:
-- Sweden
-- Mesolithic
-- Pinus
-
-## Category Count
-
-The number of matching records associated with a category.
-
-Example:
-
-| Category | Count |
-|----------|-------|
-| Sweden   | 234   |
-| Norway   | 51    |
-
-## Component Boundary
-
-A clearly defined separation of responsibility between parts of the system.
-
-Examples:
-- API Layer
-- Core Layer
-- Infrastructure Layer
-- Composer Layer
-
-## Composition
-
-The process of combining multiple filters into one query result.
-
-## Composition Contract
-
-A documented agreement about how components interact.
-
-Examples:
-- what inputs are required
-- what outputs are produced
-- what validation rules apply
-
-## Composer
-
-The subsystem responsible for assembling queries from facet configurations, routes, predicates, and anchor definitions.
-
-## Contract
-
-A formal rule describing how a component can be used.
-
-Good contracts make systems easier to understand, test, and maintain.
-
-## CTE (Common Table Expression)
-
-A named intermediate SQL query created using `WITH`.
-
-CTEs make large queries easier to read and debug.
-
-## Discrete Facet
-
-A pick-based facet where users select one or more predefined values.
-
-Examples:
-- Country
-- Species
-- Material
-
-On the composed path, selected values are translated into predicate SQL that eventually resolves matching anchor keys.
-
-## Domain Model
-
-The collection of business concepts represented in code.
-
-Examples:
-- Facet
-- Anchor
-- Route
-- Facet Type
-
-## Facet
-
-A configurable filter shown in the user interface.
-
-Examples:
-- Country
-- Time Period
-- Species
-
-## Facet Content
-
-The information returned to populate a facet.
-
-Examples:
-- categories
-- counts
-- ranges
-
-## Facet Type
-
-A category of facet behavior.
-
-Examples:
-- Discrete
-- Range
-- Intersect
-- Geo Polygon
-
-## Filter
-
-A condition that restricts the result set.
-
-Example:
-
-```sql
-country = 'Sweden'
+    PredicateSQL --> FilterContract
+    FilterContract --> Composition
+    Composition --> FacetContent
 ```
 
-## Handoff
+### Processing Pipeline
 
-The transfer of responsibility, data, or results from one component to another.
+```mermaid
+flowchart LR
 
-Example:
-- filter composition produces a filtered anchor set
-- result generation consumes that anchor set
+    Producer --> Handoff
+    Handoff --> Consumer
 
-## Infrastructure Layer
+    Contract --> Handoff
 
-The layer responsible for persistence and external resources.
-
-Examples:
-- repositories
-- database access
-- configuration loading
-
-## Intersect Composition
-
-Combining multiple anchor sets by keeping only anchors that appear in all sets.
-
-## Join
-
-A database operation that connects related tables.
-
-## Legacy Path
-
-The older implementation that remains authoritative until replacement functionality is fully validated.
-
-## Orchestrator
-
-A component whose main job is coordinating other components rather than performing all work itself.
-
-## Predicate
-
-A condition used to filter data.
-
-Examples:
-
-```sql
-country = 'Sweden'
-age > 1000
+    Orchestrator --> Producer
+    Orchestrator --> Consumer
 ```
 
-## Predicate Facet
+---
 
-A facet configuration that actively contributes filtering logic to a composed query.
+# Part A — Domain Concepts
 
-In the current implementation this is a normal `FacetConfig2` that participates in filtering.
 
-## Predicate Plan
+## Concept: Request Contract
 
-An intermediate representation of filtering logic before final SQL generation.
+### Type
 
-Think of it as a blueprint for a query.
+Architectural Concept
 
-## Predicate SQL
+### Definition
 
-A SQL subquery that represents one facet filter.
+A contract describing everything required to initiate a unit of work.
 
-The composed query engine combines predicate SQL from multiple facets to produce the final anchor set.
+### Description
 
-## Projection
+A Request Contract contains the validated information required to process a request. It acts as the entry point to the processing pipeline and provides a stable interface between request construction and request execution.
 
-The process of transforming filtered data into the final result shape.
+### Relationships
 
-Examples:
-- facet counts
-- result rows
-- summaries
+| Relationship | Concept |
+|--------------|----------|
+| enters | Validation Boundary |
+| enters | Pipeline |
+| specialized from | Contract |
 
-## Query Compilation
+### Implementation Examples
 
-The process of converting configuration and query models into executable SQL.
+- ComposedFacetContentRequest
 
-## Query Composer
+---
 
-The subsystem responsible for assembling composed queries from routes, predicates, anchors, and facet definitions.
+## Concept: Validation Boundary
 
-## Range Facet
+### Type
 
-A facet that filters values within an interval.
+Architectural Concept
 
-Examples:
-- Date Range
-- Elevation Range
-- Sample Depth
+### Definition
 
-## Resolver
+The point where requests are validated before further processing.
 
-A component that converts one representation into another.
+### Description
 
-Example:
-A facet resolver converts facet configuration into a predicate plan.
+The Validation Boundary ensures that requests are structurally complete and satisfy all required invariants before they are allowed to proceed downstream.
 
-## Result Projection
+### Relationships
 
-The final stage that converts filtered anchors into rows, counts, summaries, or aggregations.
+| Relationship | Concept |
+|--------------|----------|
+| validates | Request Contract |
+| precedes | Trust Boundary |
+| enforces | Invariant |
 
-## Route
+---
 
-A defined traversal path through related database tables.
+## Concept: Trust Boundary
 
-Routes describe how one entity can be reached from another.
+### Type
 
-## Route Graph
+Architectural Concept
 
-A representation of the available table relationships and routes in the schema.
+### Definition
 
-## Route Resolver
+The point after which downstream components may assume that inputs are valid.
 
-A component responsible for selecting or resolving the route used during query composition.
+### Description
 
-## Secondary Predicate Facet
+After crossing the Trust Boundary, components can rely on the correctness of routes, anchors, predicates, and request structure without performing additional defensive validation.
 
-A predicate facet that is used specifically to filter the currently requested target facet.
+### Relationships
 
-The current composed path requires these facets to be routable and capable of exposing a simple source key.
+| Relationship | Concept |
+|--------------|----------|
+| follows | Validation Boundary |
+| precedes | Pipeline |
 
-## Source Id
+---
 
-The normalized alias representing the facet-side value or key produced by a predicate query.
+## Concept: Pipeline
 
-It identifies the source-side value before the query is reduced to matching anchors.
+### Type
 
-## SQL Compiler
+Architectural Concept
 
-A component that converts query models into SQL statements.
+### Definition
 
-## Strategy Pattern
+An ordered sequence of transformations that converts a request into facet content.
 
-A design pattern where different implementations handle different behaviors behind a common interface.
+### Description
 
-Examples:
-- Discrete handlers
-- Range handlers
-- Geo handlers
+The Pipeline coordinates the transformation of validated requests through multiple intermediate representations until the final result is produced.
 
-## Target Facet
+### Relationships
 
-The facet currently being populated.
+| Relationship | Concept |
+|--------------|----------|
+| consumes | Request Contract |
+| produces | Result Contract |
+| uses | Intermediate Representation (IR) |
+| coordinated by | Orchestrator |
 
-If the UI is loading category counts for Country, then Country is the target facet.
+### Diagram
 
-## Target Id
+```mermaid
+flowchart LR
 
-The normalized alias representing the anchor-side identifier emitted by a predicate query.
+    RequestContract
+        --> ValidationBoundary
 
-This value later participates in anchor-set composition.
+    ValidationBoundary
+        --> TrustBoundary
 
-## Validation
+    TrustBoundary
+        --> Pipeline
 
-The process of verifying that inputs satisfy required rules before processing continues.
+    Pipeline
+        --> ResultContract
+```
 
-Examples:
-- valid routes
-- matching anchor types
-- required operators
+---
 
-## Vertical Slice
+## Concept: Predicate Plan
 
-A complete end-to-end implementation of a specific piece of functionality.
+### Type
 
-A vertical slice includes all layers needed to make that feature work.
+Domain Concept
+
+### Definition
+
+A technology-independent representation of a predicate.
+
+### Description
+
+A Predicate Plan describes filtering intent before it is translated into executable SQL. It serves as an intermediate representation between user intent and query execution.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| produced from | Predicate |
+| compiled into | Predicate SQL |
+| is a | Intermediate Representation (IR) |
+
+---
+
+## Concept: Predicate SQL
+
+### Type
+
+Domain Concept
+
+### Definition
+
+The executable SQL representation of a predicate.
+
+### Description
+
+Predicate SQL is the database-specific form of a predicate used during query execution.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| produced from | Predicate Plan |
+| contributes to | Filter Contract |
+
+### Diagram
+
+```mermaid
+flowchart LR
+
+    Predicate
+        --> PredicatePlan
+
+    PredicatePlan
+        --> PredicateSQL
+
+    PredicateSQL
+        --> FilterContract
+```
+
+---
+
+## Concept: Filter Contract
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+A contract describing the filtered anchor set produced by active predicates.
+
+### Description
+
+The Filter Contract represents the combined filtering state after all predicates have been resolved and composed.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| produced from | Predicate SQL |
+| consumed by | Composition |
+| specialized from | Contract |
+
+### Implementation Examples
+
+- ComposedFilterQuery
+
+---
+
+## Concept: Composition
+
+### Type
+
+Domain Concept
+
+### Definition
+
+The process of combining predicate results into a unified result set.
+
+### Description
+
+Composition merges all predicate results at a common anchor and produces the information required to populate facet content.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| consumes | Filter Contract |
+| produces | Facet Content |
+| requires | Anchor |
+
+### Diagram
+
+```mermaid
+flowchart LR
+
+    PredicateFacet
+        --> PredicatePlan
+
+    SecondaryPredicateFacet
+        --> PredicatePlan
+
+    PredicatePlan
+        --> PredicateSQL
+
+    PredicateSQL
+        --> FilterContract
+
+    FilterContract
+        --> Composition
+
+    Composition
+        --> FacetContent
+```
+
+---
+
+## Concept: Anchor
+
+### Type
+
+Domain Concept
+
+### Definition
+
+The common entity to which all predicates must resolve before composition.
+
+### Description
+
+The Anchor acts as the convergence point for all filter paths. Predicate results cannot be composed until they have been resolved to a common anchor.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| required by | Composition |
+| constrained by | Invariant |
+| referenced by | Filter Contract |
+
+### Diagram
+
+```mermaid
+flowchart TB
+
+    PredicateFacet1[Predicate Facet]
+    PredicateFacet2[Predicate Facet]
+    PredicateFacet3[Predicate Facet]
+
+    PredicateFacet1 --> Anchor
+    PredicateFacet2 --> Anchor
+    PredicateFacet3 --> Anchor
+
+    Anchor --> Composition
+```
+
+---
+
+## Concept: Contract
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+An explicit agreement between components specifying inputs, outputs, and guarantees.
+
+### Description
+
+Contracts define how components interact while remaining independent of each other's internal implementation.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| specialized by | Request Contract |
+| specialized by | Filter Contract |
+| specialized by | Result Contract |
+| implemented by | DTO |
+
+### Diagram
+
+```mermaid
+classDiagram
+
+    Contract <|-- RequestContract
+    Contract <|-- FilterContract
+    Contract <|-- ResultContract
+```
+
+---
+
+## Concept: Orchestrator
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+A component responsible for coordinating the work of other components.
+
+### Description
+
+The Orchestrator delegates work to specialized components and assembles their results into a completed operation.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| coordinates | Pipeline |
+| delegates to | Producer |
+| delegates to | Consumer |
+
+### Diagram
+
+```mermaid
+flowchart LR
+
+    Orchestrator
+        --> RequestContract
+
+    Orchestrator
+        --> Pipeline
+
+    Pipeline
+        --> FilterContract
+
+    Pipeline
+        --> ResultContract
+```
+
+### Implementation Examples
+
+- ComposedFacetContentService
+
+---
+
+
+## Concept: Facet
+
+### Type
+
+Domain Concept
+
+### Definition
+
+A configurable filter dimension that users interact with to narrow query results.
+
+### Description
+
+Facets are the central filtering concept in the system. Common examples include Country, Taxon, and Time Period. Each facet presents categories with associated counts, allowing users to progressively refine their search.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| validated by | Request Contract |
+| transformed by | Consumer |
+| contains | Category |
+
+### Diagram
+
+```mermaid
+flowchart LR
+
+    Facet --> Category
+    Category --> CategoryCount
+```
+
+### Implementation Examples
+
+- FacetConfig
+
+### Notes
+
+A facet is a domain concept. Configuration objects are implementation details that represent facets.
+
+---
+
+## Concept: Target Facet
+
+### Type
+
+Domain Concept
+
+### Definition
+
+The facet currently being populated with category counts.
+
+### Description
+
+While loading categories for the Country facet, Country is the target facet. The target facet determines which resolution strategy and handler are used.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| participates in | Request Contract |
+| processed by | Pipeline |
+| selected from | Facet |
+
+---
+
+## Concept: Predicate Facet
+
+### Type
+
+Domain Concept
+
+### Definition
+
+A facet that actively contributes filtering logic by narrowing the result set.
+
+### Description
+
+When a user selects Country = Sweden while browsing the Taxon facet, Country acts as a predicate facet.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| transformed into | Predicate Plan |
+| contributes to | Filter Contract |
+| specializes | Facet |
+
+---
+
+## Concept: Anchor
+
+### Type
+
+Domain Concept
+
+### Definition
+
+The common entity to which all facets must resolve before their predicates can be combined.
+
+### Description
+
+An anchor is the convergence point for all filter paths. Common anchors include site, sample, and taxon.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| constrained by | Invariant |
+| referenced by | Request Contract |
+| referenced by | Filter Contract |
+
+### Diagram
+
+```mermaid
+flowchart TB
+
+    PredicateFacet1 --> Anchor
+    PredicateFacet2 --> Anchor
+    PredicateFacet3 --> Anchor
+```
+
+### Implementation Examples
+
+- site
+- sample
+- taxon
+
+---
+
+## Concept: Predicate Plan
+
+### Type
+
+Domain Concept
+
+### Definition
+
+An intermediate, technology-independent representation of a predicate.
+
+### Description
+
+A Predicate Plan describes filtering intent before it is translated into executable SQL.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| compiled into | Predicate SQL |
+| is a | Intermediate Representation (IR) |
+| produced from | Predicate |
+
+---
+
+# Part B — Architectural Concepts
+
+## Concept: Contract
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+An explicit agreement between components specifying inputs, outputs, and guarantees.
+
+### Description
+
+Contracts allow components to collaborate without knowledge of each other's internal implementation.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| implemented by | DTO |
+| specialized by | Request Contract |
+| specialized by | Filter Contract |
+| specialized by | Result Contract |
+
+### Diagram
+
+```mermaid
+flowchart TB
+
+    Contract
+    RequestContract --> Contract
+    FilterContract --> Contract
+    ResultContract --> Contract
+```
+
+---
+
+## Concept: Handoff
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+The transfer of responsibility from one component to another.
+
+### Description
+
+A handoff marks the point where one component completes its work and another assumes responsibility.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| occurs at | Boundary |
+| transfers between | Producer |
+| transfers between | Consumer |
+| carries | DTO |
+
+### Diagram
+
+```mermaid
+flowchart LR
+
+    Producer --> Handoff
+    Handoff --> Consumer
+```
+
+---
+
+## Concept: Pipeline
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+An ordered sequence of transformations that converts input into output.
+
+### Description
+
+The pipeline transforms requests into results through a series of stages connected by intermediate representations.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| coordinated by | Orchestrator |
+| uses | Intermediate Representation (IR) |
+| produces | Result Contract |
+| consumes | Request Contract |
+
+### Implementation Examples
+
+- FacetsConfig → ComposedFacetContentRequest → ComposedFilterQuery → FacetContent
+
+---
+
+## Concept: Intermediate Representation (IR)
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+A data structure used to transfer information between stages in a pipeline.
+
+### Description
+
+IRs decouple pipeline stages by providing a stable representation between transformations.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| used by | Pipeline |
+| includes | Predicate Plan |
+| includes | Request Contract |
+
+---
+
+## Concept: Invariant
+
+### Type
+
+Architectural Concept
+
+### Definition
+
+A condition that must always hold true for the system to produce correct results.
+
+### Description
+
+Invariants define correctness rules that are enforced throughout the system.
+
+### Relationships
+
+| Relationship | Concept |
+|--------------|----------|
+| enforced at | Validation Boundary |
+| constrains | Anchor |
+
+### Examples
+
+- All predicates must resolve to the same anchor.
+- Every valid request must contain a target facet.
+
+---

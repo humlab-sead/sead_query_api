@@ -189,3 +189,277 @@ In the current runtime, unsupported facet-content requests fail explicitly in th
 So the key idea is:
 
 > The redesign turns facet-content loading into an explicit orchestration pipeline: reconstitute request, normalize picks, validate a routable anchor contract, compose an anchor filter, delegate target rendering to a facet-type handler, and optionally inject imported inline SQL exceptions where the facet authoring model requires them.
+
+
+The updated use case is much more detailed than the earlier sequence diagrams because it exposes the **actual orchestration contracts** and the **request factory / filter factory / handler split**. 
+
+I would visualize it using **three diagrams at different zoom levels**.
+
+---
+
+# 1. High-Level Business Flow
+
+This is the diagram I would put near the top of the document.
+
+```mermaid
+flowchart LR
+
+    UI[UI requests facet content]
+
+    RC[Reconstitute request]
+    SAN[Normalize picks]
+
+    ORCH[ComposedFacetContentService]
+
+    REQ[Build composed request contract]
+    FIL[Build composed anchor filter]
+
+    HANDLER[Target facet handler]
+
+    SQL[Build target SQL]
+    DB[(PostgreSQL)]
+
+    RESP[FacetContent]
+
+    UI --> RC
+    RC --> SAN
+    SAN --> ORCH
+
+    ORCH --> REQ
+    REQ --> FIL
+    FIL --> HANDLER
+
+    HANDLER --> SQL
+    SQL --> DB
+    DB --> RESP
+
+    RESP --> UI
+```
+
+Key message:
+
+> Reconstitute → Normalize → Build Request Contract → Build Anchor Filter → Render Target Facet
+
+---
+
+# 2. Detailed Runtime Sequence
+
+This is the actual runtime story.
+
+```mermaid
+sequenceDiagram
+    autonumber
+
+    actor UI
+
+    participant FC as FacetsController
+    participant RC as FacetConfigReconstituteService
+    participant LF as LoadFacetService
+
+    participant FS as FacetContentService
+    participant CFS as ComposedFacetContentService
+
+    participant RF as ComposedFacetContentRequestFactory
+    participant FF as ComposedFacetContentFilterQueryFactory
+
+    participant TH as IComposedFacetContentHandler
+
+    participant DB as PostgreSQL
+
+    UI->>FC: POST FacetsConfig2
+
+    FC->>RC: Reconstitute request
+
+    RC-->>FC: FacetsConfig2
+
+    FC->>LF: Load facet
+
+    LF->>LF: Normalize picks
+
+    LF->>FS: Load target facet
+
+    FS->>CFS: Load composed facet content
+
+    CFS->>CFS: Select handler
+
+    CFS->>RF: Build request contract
+
+    RF->>RF: Resolve anchor
+    RF->>RF: Resolve target join
+    RF->>RF: Collect predicates
+    RF->>RF: Validate routes
+
+    RF-->>CFS: ComposedFacetContentRequest
+
+    CFS->>FF: Build composed filter
+
+    FF->>FF: Create predicate plans
+
+    loop For each predicate facet
+        FF->>FF: Resolve source table
+        FF->>FF: Resolve source key
+        FF->>FF: Resolve route
+        FF->>FF: Generate predicate SQL
+    end
+
+    FF->>FF: Compose anchor filter
+
+    FF-->>CFS: ComposedFilterQuery
+
+    CFS->>TH: Load content
+
+    TH->>TH: Build target SQL
+
+    TH->>DB: Execute query
+
+    DB-->>TH: Category rows + counts
+
+    TH-->>CFS: FacetContent
+
+    CFS-->>FS: FacetContent
+
+    FS-->>LF: FacetContent
+
+    LF-->>FC: FacetContent
+
+    FC-->>UI: JSON response
+```
+
+Key message:
+
+> The orchestrator itself does very little work. It delegates request construction, filter construction, and target rendering.
+
+---
+
+# 3. Internal Query-Composition View
+
+This is the most useful diagram for developers working on the overhaul.
+
+```mermaid
+flowchart TB
+
+    FACETS[Predicate Facets]
+
+    PLAN[PredicateQueryPlans]
+
+    FILTER[ComposedFilterQuery]
+
+    TARGET[Target Handler]
+
+    TARGETSQL[Target Query]
+
+    RESULT[FacetContent]
+
+    subgraph RequestFactory
+        ANCHOR[Resolve Anchor]
+        TARGETJOIN[Resolve Target Join]
+        ROUTE[Build anchorToTargetSql]
+    end
+
+    FACETS --> PLAN
+
+    PLAN --> FILTER
+
+    FILTER --> TARGET
+
+    TARGET --> TARGETSQL
+
+    TARGETSQL --> RESULT
+
+    ANCHOR -. provides contract .-> TARGET
+    TARGETJOIN -. provides contract .-> TARGET
+    ROUTE -. provides contract .-> TARGET
+```
+
+Key message:
+
+> The system is really two separate phases:
+
+### Phase 1 — Build the filtering contract
+
+* Resolve anchor
+* Resolve target
+* Resolve routes
+* Build predicate plans
+* Compose anchor filter
+
+### Phase 2 — Render the target facet
+
+* Select handler
+* Build target SQL
+* Execute query
+* Produce `FacetContent`
+
+---
+
+# 4. Contract-Oriented View (My Favorite)
+
+Since the redesign is centered on contracts, this diagram explains the architecture better than a pure sequence diagram.
+
+```mermaid
+flowchart LR
+
+    A[FacetsConfig2]
+
+    B[ComposedFacetContentRequest]
+
+    C[ComposedFilterQuery]
+
+    D[FacetContent]
+
+    A -->|Request Factory| B
+
+    B -->|Filter Factory| C
+
+    C -->|Handler| D
+```
+
+Where:
+
+### FacetsConfig2
+
+Contains:
+
+* target facet
+* domain facet
+* predicate facets
+* user picks
+
+### ComposedFacetContentRequest
+
+Contains:
+
+* anchor table
+* anchor key
+* target join column
+* target route
+* predicate configs
+
+### ComposedFilterQuery
+
+Contains:
+
+* composed_filter SQL
+* anchor alias
+* anchor contract
+
+### FacetContent
+
+Contains:
+
+* categories
+* counts
+* distribution
+* SQL
+* user picks
+
+This last diagram communicates the redesign's core architectural idea:
+
+> The system is no longer "one service builds one giant query". It is a pipeline of progressively richer contracts:
+>
+> `FacetsConfig2`
+> → `ComposedFacetContentRequest`
+> → `ComposedFilterQuery`
+> → `FacetContent`
+
+That is the mental model I would teach new developers first.

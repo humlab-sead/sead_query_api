@@ -98,7 +98,7 @@ flowchart TB
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Ops as Host process
+    participant Ops as Host process
     participant Host as Program and Startup
     participant CFG as App configuration
     participant DI as DI container
@@ -114,12 +114,17 @@ sequenceDiagram
     DI-->>Host: Service graph
     Host->>API: Start HTTP pipeline
     API-->>Ops: Runtime ready
+    
     API->>DI: Resolve scoped services per request
     DI-->>API: Controllers, services, repositories
     API->>SVC: Execute request flow
     SVC->>INF: Load config and data as needed
     INF->>DB: Query runtime data and facet config
     DB-->>INF: Rows and active configuration
+    
+    INF-->>SVC: Data models
+    SVC-->>API: Response payload
+    API-->>Ops: HTTP Response (200 OK)
 ```
 
 ## Configuration Authoring, Import, And Runtime Use
@@ -127,7 +132,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Author as Maintainer
+    participant Author as Maintainer
     participant Host as Host entry point
     participant VAL as Config validator
     participant IMP as Config importer
@@ -154,7 +159,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    actor UI as Client UI
+    participant UI as Client UI
     participant API as API Controller
     participant RC as ReconstituteConfigService
     participant FL as FacetLoadService
@@ -231,7 +236,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    actor UI as Client UI
+    participant UI as Client UI
     participant API as ResultController
     participant RC as ReconstituteConfigService
     participant LRS as LoadResultService
@@ -353,7 +358,7 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     autonumber
-    actor UI as Client UI
+    participant UI as Client UI
     participant API as API Controller
     participant QC as Query Composer
     participant RP as Arrow Route Parser
@@ -384,7 +389,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    actor UI as Client UI
+    participant UI as Client UI
     participant API as API Controller
     participant CFS as ComposedFacetContentService
     participant RF as Composed request factory
