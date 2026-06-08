@@ -89,5 +89,6 @@
     "workbench.editor.highlightModifiedTabs": true,
     "files.participants.timeout": 0,
     "makefile.configureOnOpen": false,
-    "chat.agent.maxRequests": 10
+    "chat.agent.maxRequests": 10,
+    "chat.tools.compressOutput.enabled": true
 }
