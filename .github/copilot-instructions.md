@@ -58,3 +58,4 @@ Use the focused instruction files instead of expanding this file. Each `.instruc
 - `task-plan.instructions.md`: guidance for actionable per-phase task plans
 - `github-workflow.instructions.md`: issue, branch, and commit workflow guidance
 - `conventional-commits.instructions.md`: commit message format
+- `glossary.instructions.md`: guidance for `docs/GLOSSARY.md`
