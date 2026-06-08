@@ -11,7 +11,7 @@ DBPASSWORD:=$(shell cat ~/vault/.default.sead.password)
 SOLUTION=sead_query_api.sln
 API_PROJECT=sead.query.api/sead.query.api.csproj
 TEST_PROJECT=sead.query.test/sead.query.test.csproj
-TARGET_FRAMEWORK=net9.0
+TARGET_FRAMEWORK=net10.0
 SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
 FACET_CONFIG_FILE?=sead.query.composer/Templates/route_v1.yaml
 FACET_CONFIG_SOURCE_COMMIT?=$(shell git rev-parse HEAD 2>/dev/null || echo unknown)
@@ -32,6 +32,10 @@ test:
 		&& dotnet test $(TEST_PROJECT) -l "console;verbosity=detailed"
 		
 #--settings conf/appsettings.Test.json sead.query.test/sead.query.test.csproj
+
+####################################################################################################
+# Markdown documentation targets
+####################################################################################################
 
 MD_FILES := $(wildcard docs/*.md)
 PDF_FILES := $(patsubst docs/%.md,docs/output/%.pdf,$(MD_FILES))
@@ -54,10 +58,29 @@ docs/output/%.pdf: docs/%.md
 	@mkdir -p "$(@D)"
 	@pandoc "$<" -o "$@" $(LATEX_VARS) --pdf-engine=xelatex -F mermaid-filter
 
-do-graphifyy:
+####################################################################################################
+# Graphify targets
+####################################################################################################
+
+purge-graphify:
+	@graphify uninstall --project --purge
+
+install-graphify:
 	@pipx install graphifyy
-	@dotnet tool install -g graphify-dotnet
-	@${HOME}/.local/share/pipx/venvs/graphifyy/bin/graphify install --project --platform codex
+	
+#	@dotnet tool install -g graphify-dotnet
+
+run-graphify:
+	@rm -rf graphify-out && mkdir -p graphify-out
+	@graphify run .
+	@graphify export callflow-html
+
+codex-graphify:
+	@graphify install codex --project
+
+####################################################################################################
+# TestContainer PostgreSQL database targets
+####################################################################################################
 
 # Creates SQL DDL/DML for a TestContainer PostgreSQL database
 test-data:
