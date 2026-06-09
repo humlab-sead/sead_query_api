@@ -1,329 +1,929 @@
+# Design
+
 ## Purpose
 
-This document describes how the SEAD Query API is structured, how its major components interact, and which design constraints govern the current system and the in-progress query-engine overhaul.
+This document describes the architecture of the SEAD Query API, the core concepts that shape its behavior, and the responsibilities of the major runtime components.
 
-This is an architecture document, not a developer setup guide, testing guide, or operations runbook.
+The document focuses on the conceptual model, architectural structure, design decisions, and implementation responsibilities of the system.
+
+This is an architecture document. It is not a developer setup guide, testing guide, deployment guide, or operational runbook.
+
+The terminology used in this document is defined in `docs/GLOSSARY.md`, which is the authoritative source of system terminology.
+
+---
 
 ## Design Status
 
-- Current authoritative runtime: the existing faceted query API implemented in the solution projects and described by the current request-flow notes.
-- In progress: the query-engine overhaul on branch `query-engine-overhaul`, centered on the new composer and route-based query model.
-- Current validated overhaul state: one compiled, tested discrete vertical slice is integrated into `FacetContentService`, and widening across adjacent discrete and range targets is in progress.
-- TBD: the exact cutover plan, final route configuration format, and any companion diagrams or ADRs.
+### Current Runtime
 
-## System Overview
+The current authoritative runtime is the existing faceted query API implemented in the solution projects.
 
-The repository provides a .NET-based REST API for faceted browsing over the SEAD database.
+This runtime supports faceted browsing over the SEAD database and remains the production implementation for all supported query scenarios.
 
-At a high level, the system accepts a client facet-selection request, reconstructs query state, resolves the active facet and result configuration, compiles SQL against the SEAD PostgreSQL database, and returns either facet content or result sets.
+### Query-Engine Overhaul
 
-The design is currently split between:
+A query-engine overhaul is currently in progress on branch `query-engine-overhaul`.
 
-- a stable, existing query pipeline that powers the current API behavior
-- a new query-composition architecture intended to replace the monolithic join-heavy approach with a route-based, anchor-centered model
+The overhaul introduces:
+
+* Route-based query modeling
+* Anchor-centered query composition
+* Predicate planning and compilation
+* Composed Query execution
+* Facet-type-specific content generation strategies
+
+The goal of the overhaul is to replace the existing join-template-driven query model with a more composable and maintainable architecture based on Routes, Anchors, Predicates, and Composed Queries.
+
+### Current Overhaul Status
+
+The overhaul is no longer purely conceptual.
+
+The current branch runtime includes:
+
+* a compiled and validated discrete vertical slice
+* integration with `FacetContentService`
+* route-based predicate resolution
+* anchor-based query composition
+* composed facet-content generation
+
+The validated composed slice currently operates alongside the legacy runtime.
+
+Requests that fall outside the validated composed contract continue to use the legacy execution path.
+
+### Open Items
+
+The following areas remain under active development:
+
+* widening support across additional discrete targets
+* widening support across range targets
+* final route-definition format
+* final migration and cutover strategy
+* companion ADRs and subsystem documentation
+
+---
+
+## Conceptual Model
+
+The architecture is centered on a small set of domain entities, domain processes, and architectural concepts.
+
+### Domain Entities
+
+The primary domain entities are:
+
+* Facet
+* Category
+* Category Value
+* Category Value Count
+* Predicate
+* Predicate Plan
+* Predicate SQL
+* Anchor
+* Route
+* Route Graph
+* Composed Query
+* Facet Content
+
+These concepts describe the problem domain independently of implementation details.
+
+### Domain Processes
+
+The primary domain processes are:
+
+* Route Resolution
+* Predicate Resolution
+* Query Composition
+* Facet Content Generation
+* Category Value Count Calculation
+
+These processes transform domain entities into other domain entities.
+
+### Architectural Concepts
+
+The primary architectural concepts are:
+
+* Request Contract
+* Filter Contract
+* Result Contract
+* Validation Boundary
+* Trust Boundary
+* Pipeline
+* Orchestrator
+* DTO
+* Producer
+* Consumer
+
+These concepts describe how the software is organized and how responsibilities are distributed.
+
+---
+
+## Conceptual Flow
+
+At a conceptual level, the system transforms user selections into Facet Content through a series of domain processes.
+
+```mermaid
+flowchart LR
+
+    CategoryValue[Category Value]
+        --> Predicate
+
+    Predicate
+        --> PredicateResolution[Predicate Resolution]
+
+    PredicateResolution
+        --> PredicatePlan[Predicate Plan]
+
+    PredicatePlan
+        --> PredicateSQL[Predicate SQL]
+
+    PredicateSQL
+        --> QueryComposition[Query Composition]
+
+    Route
+        --> QueryComposition
+
+    Anchor
+        --> QueryComposition
+
+    QueryComposition
+        --> ComposedQuery[Composed Query]
+
+    ComposedQuery
+        --> FacetContentGeneration[Facet Content Generation]
+
+    FacetContentGeneration
+        --> CategoryValueCountCalculation[Category Value Count Calculation]
+
+    CategoryValueCountCalculation
+        --> FacetContent[Facet Content]
+```
+
+The resulting Facet Content is represented by a Result Contract and returned to the caller.
+
+---
+
+## Architectural Flow
+
+At runtime, the domain processes are implemented through a set of coordinated architectural components.
+
+```mermaid
+flowchart LR
+
+    RequestContract[Request Contract]
+        --> ValidationBoundary[Validation Boundary]
+
+    ValidationBoundary
+        --> TrustBoundary[Trust Boundary]
+
+    TrustBoundary
+        --> Pipeline
+
+    Pipeline
+        --> ResultContract[Result Contract]
+```
+
+After a request crosses the Validation Boundary, downstream components may assume that required invariants have been satisfied.
+
+The Pipeline then coordinates the domain processes required to transform the incoming Request Contract into a Result Contract.
+
+---
+
+## Central Design Principle
+
+The central design principle of the query-engine overhaul is Anchor-based Query Composition.
+
+All Predicates participating in a Composed Query must resolve to the same Anchor.
+
+Query Composition combines compatible Predicates through this common Anchor contract to create a Composed Query.
+
+Facet Content is then generated from the resulting Composed Query rather than from a large pre-assembled join structure.
+
+This design separates:
+
+* relationship traversal
+* predicate evaluation
+* query composition
+* facet-content generation
+
+The separation of these concerns is the primary mechanism used to improve maintainability, testability, and extensibility of the query engine.
+
+## Domain Model
+
+The SEAD Query API is built around a domain model that describes how users navigate, filter, and explore information within the SEAD database.
+
+The model separates:
+
+* Domain Entities — the things that exist within the query domain.
+* Domain Processes — the activities that transform those entities.
+
+The purpose of the query engine is to transform user selections into Facet Content through a sequence of well-defined domain processes.
+
+---
+
+### Facets, Categories, and Category Values
+
+The user-facing navigation model begins with Facets.
+
+A Facet is a user-facing filtering and navigation mechanism that represents a Category.
+
+Examples include:
+
+| Facet              | Category     |
+| ------------------ | ------------ |
+| Country Facet      | Country      |
+| Taxon Facet        | Taxon        |
+| Time Period Facet  | Time Period  |
+| Feature Type Facet | Feature Type |
+
+A Category defines a classification dimension.
+
+Each Category contains one or more Category Values.
+
+Examples:
+
+| Category    | Category Values         |
+| ----------- | ----------------------- |
+| Country     | Sweden, Norway, Finland |
+| Taxon       | Betula, Pinus, Quercus  |
+| Time Period | Neolithic, Bronze Age   |
+
+Category Values are the elements users browse and select when interacting with Facets.
+
+---
+
+### Target and Predicate Facets
+
+A Facet may participate in a request in different roles.
+
+#### Target Facet
+
+The Target Facet is the Facet currently being populated.
+
+Facet Content is generated for the Target Facet.
+
+Examples:
+
+```text
+Country Facet
+    ← Target Facet
+```
+
+```text
+Taxon Facet
+    ← Target Facet
+```
+
+#### Predicate Facet
+
+A Predicate Facet contributes filtering logic to a request.
+
+Selections made in Predicate Facets become Predicates that constrain the resulting Composed Query.
+
+Examples:
+
+```text
+Country = Sweden
+Taxon = Betula
+```
+
+#### Secondary Predicate Facet
+
+A Secondary Predicate Facet contributes filtering logic but is not the Target Facet.
+
+For example:
+
+```text
+Target Facet:
+    Taxon
+
+Secondary Predicate Facets:
+    Country = Sweden
+    Time Period = Neolithic
+```
+
+The same Facet may act as a Target Facet in one request and a Secondary Predicate Facet in another.
+
+Roles are request-specific.
+
+---
+
+### Predicates
+
+A Predicate is a filtering condition derived from a selected Category Value.
+
+Examples:
+
+```text
+Country = Sweden
+```
+
+```text
+Taxon = Betula
+```
+
+```text
+Sample Date between 5000 BCE and 4000 BCE
+```
+
+Predicates express filtering intent.
+
+They describe what should be filtered but not how that filtering will be performed.
+
+Predicates are transformed into Predicate Plans and ultimately into Predicate SQL before execution.
+
+---
+
+### Anchors
+
+An Anchor is the common entity to which all Predicates must resolve before they can participate in the same Composed Query.
+
+Examples of Anchors include:
+
+```text
+Site
+Sample
+Taxon
+```
+
+The Anchor is one of the most important concepts in the system.
+
+The query engine requires all active Predicates within a Composed Query to resolve to the same Anchor.
+
+This rule is a fundamental domain invariant.
+
+Without a common Anchor, query composition is not possible.
+
+---
+
+### Routes and Route Graphs
+
+A Route describes how a Category connects to an Anchor.
+
+Examples:
+
+```text
+Country → Site
+```
+
+```text
+Taxon → Analysis Entity → Sample
+```
+
+A Route is a logical traversal.
+
+It is not a SQL query.
+
+The complete set of known Routes forms the Route Graph.
+
+The Route Graph provides the structural knowledge required for Predicate Resolution and Query Composition.
+
+---
+
+### Composed Queries
+
+A Composed Query represents the combined filtering state of a request.
+
+It is created by combining multiple Predicates through a common Anchor.
+
+For example:
+
+```text
+Country = Sweden
+AND
+Taxon = Betula
+AND
+Time Period = Neolithic
+```
+
+may become a Composed Query anchored on:
+
+```text
+Site
+```
+
+The Composed Query is the central domain entity of the query-engine overhaul.
+
+It represents the complete filtering context used to generate Facet Content.
+
+---
+
+### Facet Content
+
+Facet Content is the information generated for a Target Facet from a Composed Query.
+
+Facet Content contains:
+
+* Category Values
+* Category Value Counts
+
+Example:
+
+| Category Value | Count |
+| -------------- | ----- |
+| Sweden         | 234   |
+| Norway         | 118   |
+| Finland        | 57    |
+
+Facet Content is the primary domain result produced by the query engine.
+
+---
+
+## Domain Processes
+
+Domain Processes transform domain entities into other domain entities.
+
+The query engine is primarily a sequence of domain processes that convert user selections into Facet Content.
+
+---
+
+### Route Resolution
+
+Route Resolution determines how a Predicate's Category connects to the Anchor required by a Composed Query.
+
+Inputs:
+
+* Predicate
+* Category
+* Anchor
+* Route Graph
+
+Output:
+
+* Route
+
+Route Resolution answers the question:
+
+> How does this Predicate reach the required Anchor?
+
+---
+
+### Predicate Resolution
+
+Predicate Resolution transforms a Predicate into a Predicate Plan.
+
+Inputs:
+
+* Predicate
+* Route
+* Anchor
+
+Output:
+
+* Predicate Plan
+
+Predicate Resolution determines how a Predicate can be applied to the required Anchor.
+
+The resulting Predicate Plan is independent of SQL and execution technology.
+
+---
+
+### Query Composition
+
+Query Composition creates a Composed Query.
+
+Inputs:
+
+* Predicate
+* Route
+* Anchor
+
+Output:
+
+* Composed Query
+
+Query Composition combines all compatible Predicates that have resolved to a common Anchor.
+
+The result is a single query context representing the active filtering state.
+
+```mermaid
+flowchart LR
+
+    Predicate
+        --> QueryComposition
+
+    Route
+        --> QueryComposition
+
+    Anchor
+        --> QueryComposition
+
+    QueryComposition
+        --> ComposedQuery
+```
+
+---
+
+### Facet Content Generation
+
+Facet Content Generation produces Facet Content for a Target Facet.
+
+Inputs:
+
+* Composed Query
+* Target Facet
+
+Output:
+
+* Facet Content
+
+Facet Content Generation determines which Category Values belong in the Target Facet and prepares the information required for presentation.
+
+Facet Content Generation includes Category Value Count Calculation as a sub-process.
+
+---
+
+### Category Value Count Calculation
+
+Category Value Count Calculation determines the number of Anchors associated with each Category Value.
+
+Inputs:
+
+* Composed Query
+* Target Facet
+* Category Value
+
+Outputs:
+
+* Category Value Count
+
+The resulting counts become part of the generated Facet Content.
+
+```mermaid
+flowchart LR
+
+    ComposedQuery
+        --> FacetContentGeneration
+
+    FacetContentGeneration
+        --> CategoryValueCountCalculation
+
+    CategoryValueCountCalculation
+        --> CategoryValueCount
+
+    CategoryValueCount
+        --> FacetContent
+```
+
+---
+
+## Domain Process Overview
+
+The complete domain flow can be summarized as:
+
+```mermaid
+flowchart LR
+
+    CategoryValue
+        --> Predicate
+
+    Predicate
+        --> RouteResolution
+
+    RouteResolution
+        --> Route
+
+    Route
+        --> PredicateResolution
+
+    PredicateResolution
+        --> PredicatePlan
+
+    PredicatePlan
+        --> QueryComposition
+
+    QueryComposition
+        --> ComposedQuery
+
+    ComposedQuery
+        --> FacetContentGeneration
+
+    FacetContentGeneration
+        --> CategoryValueCountCalculation
+
+    CategoryValueCountCalculation
+        --> FacetContent
+```
+
+This conceptual model is independent of implementation details and provides the foundation for the runtime architecture described in the following sections.
+
+## Runtime Architecture
+
+The runtime architecture implements the domain model through a set of components with clearly separated responsibilities.
+
+At a high level, the runtime:
+
+1. Receives a client request.
+2. Reconstructs the Request Contract.
+3. Validates the request.
+4. Resolves Facets, Predicates, Routes, and Anchors.
+5. Creates or executes a Composed Query.
+6. Generates Facet Content.
+7. Returns a Result Contract.
+
+The runtime should be understood as an implementation of the domain processes described earlier, not as a separate conceptual model.
+
+---
 
 ## Main Runtime Components
 
-The solution is organized around a small set of runtime responsibilities.
+The solution is organized around the following runtime responsibilities.
 
-- `sead.query.api`: API entry point, request handling, and application startup/wiring
-- `sead.query.core`: domain entities, query model, facet model, and shared contracts used by the runtime
-- `sead.query.infra`: infrastructure and repository concerns, including access to persisted configuration and database-backed metadata
-- `sead.query.composer`: in-progress query-engine redesign for route compilation and new composition rules
-- `sead.query.test`: unit and integration tests for existing and new query behavior
+| Project               | Responsibility                                                                                |
+| --------------------- | --------------------------------------------------------------------------------------------- |
+| `sead.query.api`      | HTTP entry points, request handling, application startup, and API-level response formatting   |
+| `sead.query.core`     | shared domain entities, query model, facet model, service contracts, and runtime abstractions |
+| `sead.query.infra`    | infrastructure concerns, persisted configuration, repositories, and database-backed metadata  |
+| `sead.query.composer` | route-based Predicate Resolution, Query Composition, and Composed Query execution             |
+| `sead.query.test`     | unit, integration, and live tests for legacy and composed query behavior                      |
 
-These boundaries matter because the system’s main design problem is not HTTP transport. It is the translation from facet configuration into correct, composable SQL over a large relational schema.
+The key design problem is not HTTP transport. The key design problem is translating Facets, Category Values, Predicates, Routes, and Anchors into correct and composable database queries.
 
-## Core Domain Concepts
+---
 
-The following concepts shape both the current system and the redesign.
+## Architectural Concepts Used at Runtime
 
-- Facet: a configurable filter definition that can be rendered in the UI and translated into SQL predicates
-- Facet type: the behavior family for a facet, such as discrete, range, intersect, or geo-polygon
-- Facet source: the table, view, or function where a facet’s category values originate
-- Target facet: the facet currently being populated for UI content
-- Result facet: the entity or aggregate used when producing final result sets
-- Anchor: the common entity key used to compose multiple facet predicates into one query context
-- Route: the path that connects a facet source to an anchor through schema relationships
+The runtime is described using the following architectural concepts from `docs/GLOSSARY.md`.
 
-The redesign treats anchor resolution as the primary composition contract. That is the central design decision behind the new query engine.
+| Concept             | Runtime Meaning                                                                        |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| Request Contract    | The validated input required to construct or execute a Composed Query                  |
+| Filter Contract     | The representation of a Composed Query after Predicate filtering has been resolved     |
+| Result Contract     | The returned representation of generated Facet Content                                 |
+| Validation Boundary | The point where incomplete or invalid requests are rejected                            |
+| Trust Boundary      | The point after which downstream components assume the request is valid                |
+| Pipeline            | The ordered runtime flow from Request Contract to Result Contract                      |
+| Orchestrator        | A component that coordinates specialized components without owning their internal work |
+| DTO                 | A data structure used to carry contract data across boundaries                         |
+| Producer            | A component that creates information for downstream use                                |
+| Consumer            | A component that receives and uses information created upstream                        |
 
-## Current Runtime Flow
+---
 
-The current request flow is centered on reconstructing a facet request, selecting the correct facet-content service by facet type, and compiling SQL for the active target facet.
+## Request Contract Construction
 
-In the current model, the runtime flow is:
+Request Contract construction converts incoming API state into a stable runtime input.
 
-1. Reconstitute the request payload into a `FacetsConfig` model.
-2. Resolve the target facet and any trigger facet from the request context.
-3. Remove invalid or stale picks before compiling SQL.
-4. Select the facet-content service based on facet type.
-5. On the composed path, let `ComposedFacetContentService` select a target-facet handler by `EFacetType`.
-6. Ask the composed request factory to validate the request, resolve the anchor and target join contract, and build any routed anchor-to-target SQL.
-7. Ask the composed filter-query factory to turn the secondary predicate facets into one composed anchor-filter query.
-8. Delegate target-facet-specific content loading to the selected handler.
-9. Reattach user selections and build the final facet-content response.
+This includes:
 
-This design keeps facet-type-specific behavior behind dedicated services and compilers. In the composed slice, that split is now explicit inside the composed path itself rather than being concentrated in one large `ComposedFacetContentService.Load(...)` method.
+* reconstituting facet configuration
+* resolving the Target Facet
+* identifying active Predicate Facets
+* normalizing selected Category Values
+* removing invalid or stale selections
+* preparing the input needed for Predicate Resolution and Query Composition
 
-## Current Design Constraints
+The Request Contract is the architectural representation of the request that will be used to construct or execute a Composed Query.
 
-The existing query pipeline has a few defining characteristics.
+### Main Components
 
-- Facet loading is target-facet driven: the runtime compiles content for one active facet in the context of the other selected facets.
-- Behavior is strongly split by facet type: discrete, range, intersect, and geo facets do not share one universal SQL compiler.
-- SQL assembly is configuration-heavy: facet definitions, expressions, and templates drive much of the runtime behavior.
-- Result generation is related to filtering but not identical to it: facet content and result payloads follow different compilation paths.
+| Component                            | Responsibility                                                        |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| `FacetsController.Load`              | HTTP entry point for facet loading                                    |
+| `FacetConfigReconstituteService`     | rebuilds facet configuration from request state                       |
+| `LoadFacetService`                   | normalizes picks and prepares the load request                        |
+| `ComposedFacetContentRequestFactory` | creates the composed Request Contract for supported composed requests |
 
-The main weakness of the current design is that the system must repeatedly encode relationship knowledge in SQL templates and joins, which becomes difficult to maintain as the number of supported anchors and facets grows.
+---
 
-## Query-Engine Overhaul
+## Validation Boundary
 
-The in-progress query-engine overhaul introduces a different composition model.
+The Validation Boundary protects the composed pipeline from invalid requests.
 
-Its architectural center is the anchor-based predicate contract:
+Before a request crosses this boundary, the system must verify that the request satisfies required invariants.
 
-- every active facet must resolve to the same anchor type within one composed query
-- every facet predicate returns anchor keys, not arbitrary result shapes
-- the final filtered set is produced by composing those anchor-key queries
+Examples include:
 
-The overhaul replaces template explosion with a route-based model and uses CTE-based composition to make the generated SQL more modular and easier to reason about.
+* a Target Facet is present
+* selected Category Values are valid
+* Predicate Facets can be resolved
+* required Routes exist
+* all active Predicates can resolve to the same Anchor
+* unsupported composed requests are detected before composed execution begins
 
-## Overhaul Runtime Status
+After the request crosses the Validation Boundary, downstream components operate inside the Trust Boundary.
 
-The overhaul is no longer only a design direction.
+---
 
-- The first compiled vertical slice is integrated into the branch runtime.
-- The legacy runtime still remains authoritative outside the supported composed slice.
-- The current widening work is extending the same contract across adjacent discrete targets and the first range-target families.
+## Trust Boundary
 
-This means `docs/DESIGN.md` should describe both the current authoritative runtime and the intended architectural destination, while keeping the delivery state explicit.
+The Trust Boundary begins after validation.
 
-## Current Overhaul Contract Surface
+Inside the Trust Boundary, components may assume:
 
-The current composed path depends on a small contract surface that is already active in the branch runtime.
+* the Request Contract is complete
+* the Target Facet is known
+* active Predicate Facets are valid
+* required Routes have been resolved or are resolvable
+* the Anchor is compatible with the Composed Query
+* unsupported requests have already been rejected or routed to legacy fallback
 
-### Route Contract
+This avoids repeated defensive checks in lower-level components and keeps validation responsibility centralized.
 
-- Route definitions are explicit traversal inputs, not inferred global join searches.
-- The active route contract is owned by the route parser, route graph, route resolver, and route SQL compiler in `sead.query.composer/QueryComposer/RouteCompiler/`.
-- The arrow-route parser resolves route expressions to a read-only table-chain contract before graph resolution and SQL compilation continue.
-- Route compilation expects an explicit table chain before SQL generation and is responsible for emitting the table-traversal SQL used by composed filtering and target joins.
-- The current route compiler interface accepts that table chain as a read-only input contract rather than requiring callers to provide a mutable collection.
-- Missing route table chains are explicit input-validation failures at the route compiler boundary, not incidental null dereferences.
-- The anchor-template route segments used to construct that table chain are also exposed as a read-only contract.
+---
 
-### Anchor Contract
+## Composed Query Orchestration
 
-- One composed query context uses one anchor type.
-- Active facet predicates must resolve to the same anchor identity before they can be composed.
-- Anchor mismatches are validation failures, not cases for silent repair.
+The composed query path is coordinated by an Orchestrator.
 
-### Facet-Resolver Contract
+The Orchestrator does not own all detailed behavior itself. Instead, it delegates to specialized Producers and Consumers.
 
-- Facet-type-specific resolver logic is responsible for turning facet configuration into anchor-key-producing predicate plans.
-- The currently integrated picked-filter resolver path is the discrete-facet path used by the composed runtime slice.
-- The discrete picked-filter input now exposes selected values as a read-only contract rather than a mutable collection.
-- The discrete picked-filter operator must be non-empty; missing operators are explicit argument-validation failures rather than incidental null references or malformed SQL.
-- Predicate planning now also supports same-table source-key overrides and enforced same-table facet clauses for the validated discrete predicate scenarios.
-
-### Composed-Query Contract
-
-- Predicate plans are composed through one anchor-key contract rather than through one global join shape.
-- The current implementation combines compatible predicate plans through `INTERSECT`-style anchor-set composition.
-- The composed filter must preserve the active anchor-key alias through the final composed SQL, including non-default aliases carried by validated predicate plans.
-- Zero-filter, single-filter, and incompatible-anchor cases are treated as explicit contract cases rather than incidental SQL side effects.
-
-### Facet-Content Contract
+In the current overhaul, `ComposedFacetContentService` acts as the main orchestrator for composed facet-content loading.
 
-- Target facet content is generated from the composed anchor set, not from a re-expanded global join template.
-- `ComposedFacetContentService` now acts as an orchestrator for the composed facet-content path rather than as the owner of all target-facet-specific branching.
-- The orchestrator selects a handler by target `EFacetType`, asks a request factory to build the routable composed request, asks a filter-query factory to build the composed anchor filter, and then delegates content loading to the selected handler.
-- Target-facet-specific content behavior now lives in `IComposedFacetContentHandler` implementations for discrete, range, intersect, and geo-polygon targets.
-- The current composed content path supports direct aggregate/result targets and routed visible targets whose category expression can be resolved either on the routed target table or on joined target-facet tables.
-- The current composed content path also supports target-only discrete requests by using an explicit unfiltered anchor-set query instead of requiring prior picked predicates.
-- Routed target-only discrete requests now overlay legacy-style discrete category-info rows onto composed counts so the composed result can retain zero-count categories where the legacy discrete path exposes them.
-- The currently validated target set includes the baseline visible-target slices, multiple adjacent discrete targets, and the first validated range-target families recorded in the phase-0 tracker.
+Its responsibilities are to:
 
-### Composed Facet-Content Orchestration Contract
+* decide whether a request can use the composed path
+* coordinate Request Contract creation
+* coordinate Filter Contract creation
+* select the correct Target Facet handler
+* delegate Facet Content Generation
+* return the Result Contract
 
-- Request validation and route/request construction are now separated from target-facet rendering.
-- `IComposedFacetContentRequestFactory` owns composed request creation, including anchor resolution, target join-column derivation, predicate compatibility checks, and anchor-to-target route SQL generation.
-- `IComposedFacetContentFilterQueryFactory` owns composed anchor-filter SQL construction from the validated predicate set.
-- `IComposedFacetContentHandler` implementations own target-facet-specific category-info lookup, row mapping, distribution construction, and any target-type-specific post-processing such as interval outer-row overlays or target-only discrete overlays.
-- Shared low-level helper rules, such as simple-column resolution and predicate-clause normalization, remain centralized so handlers do not duplicate contract logic.
+It should not own all target-facet-specific behavior directly.
 
-### Unsupported-Request Boundary
+---
 
-- Unsupported composed requests must remain explicit.
-- `FacetContentService.Load` uses the composed path only when `ComposedFacetContentService.CanHandle(...)` returns `true`; otherwise it falls back to the legacy category-count path.
-- Predicate-side clauses that cannot be normalized onto the predicate source table, including joined-table clause references, remain outside the composed contract and continue to fall back before composed execution starts.
-- Discrete targets whose join key cannot be derived from a simple target expression and that do not expose a real target primary key also remain outside the composed contract and fall back before composed execution starts.
-- Target-only discrete requests remain outside the composed contract when routed zero-predicate execution still cannot derive the target-side join key, resolve the target route, or enumerate the legacy-compatible outer category set.
-- `ComposedFacetContentService.Load` throws for direct unsupported use with an actionable error that tells callers to check `CanHandle(...)` first or to use `FacetContentService` for legacy fallback.
-- The current boundary is still the legacy category-count path for requests outside the validated composed contract.
-- Remaining unsupported visible facets are the ones whose predicate side still does not resolve cleanly to a source-table key or whose target-side join key cannot yet be derived from the routed target contract.
+## Predicate and Route Responsibilities
 
-### Current Validation Anchors
+Predicate and Route responsibilities are separated so that relationship traversal does not become duplicated across SQL templates.
 
-- The current route-parser contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/ArrowRouteParser.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/ArrowRouteParserTests.cs`.
-- The current discrete resolver input-validation contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolver.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolverTests.cs`.
-- The grouped live support matrix is maintained in `sead.query.test/LiveTests/FacetLoadService.cs` through `SupportedComposedLiveUris`.
-- The supported visible and discrete subset is also grouped explicitly in that file through `SupportedComposedVisibleAndDiscreteLiveUris` and the `FacetContentService_ComposedSupportedVisibleAndDiscreteLiveSlices_*` tests.
-- The supported range subset is also grouped explicitly in that file through `SupportedComposedRangeLiveUris` and the `FacetContentService_ComposedSupportedRangeLiveSlices_*` tests.
-- The active composed-path assertions in that file are `FacetContentService_ComposedSupportedLiveSlices_UseComposedFacetContentQuery` and `FacetContentService_ComposedSupportedLiveSlices_MatchLegacyFacetContent`.
-- The current unsupported intersect fallback boundary is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_UnsupportedIntersectSlice_FallsBackToLegacyFacetContent`.
-- The current unsupported GIS polygon fallback boundary is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_UnsupportedSitesPolygonSlice_FallsBackToLegacyFacetContent`.
-- The runtime handoff between composed and legacy behavior is anchored in `sead.query.core/Services/FacetContent/FacetContentService.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs`.
-- The current direct unsupported-load boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
-- The current composed request-construction boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs`.
-- The current composed filter-query construction boundary is anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs`.
-- The current target-facet handler split is anchored in `sead.query.composer/QueryComposer/Services/DiscreteComposedFacetContentHandler.cs`, `RangeComposedFacetContentHandler.cs`, `IntersectComposedFacetContentHandler.cs`, and `GeoPolygonComposedFacetContentHandler.cs`.
-- The current same-table target-only discrete contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
-- The current routed target-only discrete outer-category overlay contract is also anchored in `sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs` and `sead.query.test/UnitTests/QueryComposer/Services/ComposedFacetContentServiceTests.cs`.
-- The current composed-query alias contract is anchored in `sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs` and `sead.query.test/UnitTests/QueryComposer/Strategies/IntersectComposedFilterQueryComposerTests.cs`.
-- The current route compiler input-validation contract is anchored in `sead.query.composer/QueryComposer/RouteCompiler/RouteSqlCompiler.cs` and `sead.query.test/UnitTests/QueryComposer/RouteCompiler/RouteSqlCompilerTests.cs`.
-- The current routed zero-predicate genus validation is anchored in `sead.query.test/LiveTests/FacetLoadService.cs` through `FacetContentService_ComposedTargetOnlyGenusSlice_*` and the grouped `SupportedComposedVisibleAndDiscreteLiveUris` matrix.
+### Route Resolution
 
-## Planned Overhaul Components
+Route Resolution determines how a Predicate's Category connects to the required Anchor.
 
-The overhaul introduces or formalizes the following responsibilities.
+Runtime responsibilities include:
 
-- Query composer: orchestrates query assembly from facet configuration and route definitions
-- Facet predicate resolvers: strategy-style implementations per facet type
-- Route parser and route graph: resolve reusable route definitions into concrete table relationships
-- Anchor-aware query contract: ensures every active facet returns compatible anchor keys
-- Composed facet-content request factory: validates and assembles the routable composed request before target rendering starts
-- Composed facet-content filter-query factory: builds the composed anchor filter from validated predicate plans
-- Composed facet-content target handlers: own target-facet-specific rendering behavior behind a per-`EFacetType` strategy boundary
-- Facet content query generation: produces grouped category output for UI population without breaking the anchor model
+* parsing route expressions
+* resolving route fragments
+* validating route table chains
+* selecting valid Routes from the Route Graph
+* preparing route information for Predicate Resolution and SQL generation
 
-This is a change in architectural style, not only in SQL syntax. The goal is to move from large, facet-specific join templates to a composable system where relationship traversal is encoded once and reused.
+### Predicate Resolution
 
-## Planned Query Composition Model
+Predicate Resolution transforms a Predicate into a Predicate Plan.
 
-The target composition flow is:
+Runtime responsibilities include:
 
-1. Identify the active anchor type for the request.
-2. Resolve each active facet into a facet predicate query that returns anchor keys.
-3. Materialize each predicate as a CTE or equivalent intermediate result.
-4. Combine active facet predicates using `INTERSECT` or equivalent anchor-set composition.
-5. Use the composed anchor set for either facet content queries or result generation.
+* interpreting selected Category Values
+* applying facet-type-specific predicate rules
+* resolving the Predicate to the required Anchor
+* creating a Predicate Plan
+* rejecting unsupported or invalid predicate configurations
 
-This model separates three concerns that are more entangled in the current runtime:
+### Predicate SQL Generation
 
-- relationship traversal
-- facet-specific filtering logic
-- final result projection
+Predicate SQL Generation compiles Predicate Plans into executable SQL fragments.
 
-That separation is the main design lever for maintainability and testability.
+Runtime responsibilities include:
 
-## Component Boundaries
+* producing anchor-key-returning SQL
+* preserving anchor aliases
+* enforcing valid predicate operators
+* generating SQL compatible with Query Composition
 
-The important component boundaries are:
+---
 
-- API layer boundary: request parsing and response formatting belong in the API layer, not in query-model classes
-- Domain/query-model boundary: facet definitions, anchor semantics, and composition contracts belong in core abstractions
-- Infrastructure boundary: repository access, persisted configuration, and database metadata lookup belong in infra
-- Composer boundary: route resolution and new query composition logic belong in the composer, not in controllers or transport models
+## Filter Contract Construction
 
-The system should continue to keep SQL-generation decisions close to query-specific services and compilers rather than spreading them across request handlers.
+The Filter Contract represents the filtering state of a Composed Query after active Predicates have been resolved and combined.
 
-## Data and Persistence Design
+In the composed runtime path, `ComposedFacetContentFilterQueryFactory` owns construction of the composed anchor filter.
 
-The system depends on a PostgreSQL-backed SEAD schema and configuration-driven facet metadata.
+Its responsibilities include:
 
-From the current design and proposal, the important persistence assumptions are:
+* consuming validated Predicate Plans
+* compiling or receiving Predicate SQL
+* combining compatible predicate filters
+* preserving the active Anchor key
+* handling zero-filter and single-filter cases explicitly
+* rejecting incompatible-anchor cases
 
-- facet definitions carry expressions, type metadata, and grouping/display behavior
-- relationship data between tables can be modeled as graph edges or route fragments
-- result generation is downstream from anchor filtering rather than the primary filtering mechanism itself
-- range and geo facets rely on database capabilities such as range operators and spatial functions
+The Filter Contract should represent the Composed Query filtering context, not the final Facet Content itself.
 
-This means the database is not just a passive store. It is an active execution environment whose supported operators materially shape the application design.
+---
 
-## Cross-Cutting Concerns
+## Facet Content Generation
 
-### Validation
+Facet Content Generation produces Facet Content for the Target Facet from the Composed Query.
 
-- Request payloads must be reconstituted into valid facet configuration before query compilation begins.
-- Invalid or stale picks should be removed early so downstream compilers work from normalized input.
-- Under the new model, anchor-type mismatches are a first-class validation failure.
+This stage is target-facet-specific because different facet types have different behavior.
 
-### Error Handling
+Examples include:
 
-- Failures should be attributed to the correct layer: request reconstruction, facet resolution, route resolution, or SQL compilation.
-- The redesign should prefer explicit route and anchor validation errors over silent query fallbacks.
+* discrete facets
+* range facets
+* intersect facets
+* geo-polygon facets
 
-### Logging and Debuggability
+The composed runtime therefore delegates target-specific behavior to handler implementations.
 
-- Generated SQL and the query-compilation path are important debugging surfaces.
-- The move toward CTE-based composition is partly a debuggability decision because smaller named query pieces are easier to inspect than one large assembled statement.
+### Main Components
 
-### Performance
+| Component                               | Responsibility                                          |
+| --------------------------------------- | ------------------------------------------------------- |
+| `IComposedFacetContentHandler`          | target-facet-specific Facet Content Generation boundary |
+| `DiscreteComposedFacetContentHandler`   | discrete target Facet Content Generation                |
+| `RangeComposedFacetContentHandler`      | range target Facet Content Generation                   |
+| `IntersectComposedFacetContentHandler`  | intersect target Facet Content Generation               |
+| `GeoPolygonComposedFacetContentHandler` | geo-polygon target Facet Content Generation             |
 
-- Facet content queries must remain responsive because they drive interactive UI updates.
-- The existing design pays complexity cost in template management; the new design pays some upfront modeling cost in routes and anchors to reduce long-term SQL complexity.
-- Range, geo, and aggregate queries should continue to rely on database-native capabilities where that improves correctness and performance.
+Handlers own:
 
-### Configuration
+* category information lookup
+* Category Value discovery
+* Category Value Count Calculation
+* result row mapping
+* distribution construction
+* target-type-specific post-processing
 
-- The system is heavily configuration-driven, especially for facet behavior.
-- The redesign increases the importance of configuration quality because route definitions and anchor mappings become architectural inputs rather than incidental SQL details.
+---
 
-## External Dependencies and Integration Points
+## Result Contract Assembly
 
-The key external integration point is the SEAD PostgreSQL database.
+The Result Contract is the architectural representation of generated Facet Content returned to the caller.
 
-Other notable dependencies, based on the current repo and project direction, include:
+It should expose the result of Facet Content Generation without leaking unnecessary implementation details from:
 
-- ASP.NET Core hosting for the API runtime
-- configuration files for environment-specific behavior
-- database features such as range operators and spatial functions for advanced facet types
+* Predicate Resolution
+* Route Resolution
+* Predicate SQL Generation
+* Query Composition
+* handler-specific internals
 
-The system is intentionally database-aware. It is not designed around full database portability.
+The Result Contract may be implemented by DTOs such as `FacetContent` or `ResultContentSet`.
 
-## Major Design Decisions and Tradeoffs
+---
 
-### Decision: Anchor-based composition
+## Legacy and Composed Runtime Boundary
 
-- Why: makes multi-facet composition predictable
-- Benefit: every active facet participates through the same output contract
-- Tradeoff: the system must reject mixed-anchor combinations instead of trying to infer or repair them implicitly
+The legacy runtime remains authoritative for requests outside the validated composed contract.
 
-### Decision: Strategy-style facet behavior
+The composed path is used only when the request can be handled safely by the composed query architecture.
 
-- Why: discrete, range, intersect, and geo facets have materially different compilation rules
-- Benefit: type-specific logic remains localized
-- Tradeoff: more component types and interfaces to manage
+The boundary is explicit:
 
-### Decision: Route-based traversal instead of repeated join templates
+* `FacetContentService.Load` is the runtime entry point.
+* `ComposedFacetContentService.CanHandle(...)` determines whether the composed path applies.
+* Unsupported requests fall back to the legacy category-count path.
+* Direct unsupported calls to the composed service should fail with actionable errors.
 
-- Why: repeated explicit join SQL does not scale across anchors and facet sources
-- Benefit: lower template duplication and clearer relationship ownership
-- Tradeoff: route modeling becomes a core design artifact and must be kept accurate
+This preserves existing API behavior while allowing the composed architecture to widen incrementally.
 
-### Decision: Decouple filtering from result projection
+---
 
-- Why: facet filtering and result rendering change at different rates and have different performance needs
-- Benefit: one filtered anchor set can support multiple result formats
-- Tradeoff: the runtime must maintain a clear handoff between composed filters and final result queries
+## Component Responsibility Summary
 
-## Known Constraints and Open Items
+| Responsibility                                       | Primary Component                              |
+| ---------------------------------------------------- | ---------------------------------------------- |
+| HTTP entry point                                     | `FacetsController.Load`                        |
+| Facet configuration reconstruction                   | `FacetConfigReconstituteService`               |
+| Pick normalization                                   | `LoadFacetService`                             |
+| Runtime handoff between legacy and composed behavior | `FacetContentService.Load`                     |
+| Composed Query orchestration                         | `ComposedFacetContentService`                  |
+| Request Contract construction                        | `ComposedFacetContentRequestFactory`           |
+| Filter Contract construction                         | `ComposedFacetContentFilterQueryFactory`       |
+| Route parsing and resolution                         | route parser, Route Graph, route resolver      |
+| Predicate Resolution                                 | facet predicate resolvers                      |
+| Predicate SQL generation                             | route and predicate SQL compilers              |
+| Facet Content Generation                             | `IComposedFacetContentHandler` implementations |
+| Category Value Count Calculation                     | target-facet-specific content handlers         |
+| Result Contract assembly                             | facet-content services and handlers            |
 
-- The composer architecture is in progress and should not be documented as fully authoritative runtime behavior yet.
-- Final route-definition format and migration sequencing remain TBD.
-- Final documentation split between `docs/DESIGN.md` and any future ADRs or subsystem notes is TBD.
+---
 
-## Related Documents
+## Runtime Architecture Diagram
 
-- `README.md`: short project overview
-- `docs/GLOSSARY.md`: a glossary of system terminology.
-- `docs/DIAGRAMS.md`: visual overview of core interactions and workflows
-- `docs/REQUIREMENTS.md`: durable system requirements for the active architecture direction
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/QUERY_ENGINE_OVERHAL.md`: top-level change request and bird's-eye overview of the overhaul
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/TASK_PLAN_PHASE_0.md`: phase-0 execution tracker for the vertical slice and widening work
-- `docs/proposals/QUERY_ENGINE_OVERHAUL/archive/system_requirements_specification.md`: archived proposal-era technical source material for the overhaul
-- `docs/DEVELOPMENT.md`: contributor workflow and local development guidance
-- `docs/TESTING.md`: test strategy and validation guidance
-- `docs/OPERATIONS.md`: runtime and deployment guidance
+```mermaid
+flowchart LR
+
+    FacetsController[FacetsController.Load]
+        --> Reconstitution[FacetConfigReconstituteService]
+
+    Reconstitution
+        --> LoadFacetService[LoadFacetService]
+
+    LoadFacetService
+        --> FacetContentService[FacetContentService.Load]
+
+    FacetContentService
+        --> CanHandle{Can handle composed?}
+
+    CanHandle
+        -->|No| LegacyPath[Legacy Facet Content Path]
+
+    CanHandle
+        -->|Yes| ComposedService[ComposedFacetContentService]
+
+    ComposedService
+        --> RequestFactory[ComposedFacetContentRequestFactory]
+
+    RequestFactory
+        --> FilterFactory[ComposedFacetContentFilterQueryFactory]
+
+    FilterFactory
+        --> Handler[IComposedFacetContentHandler]
+
+    Handler
+        --> ResultContract[Result Contract]
+```
+
+This diagram shows implementation responsibilities. The glossary defines the concepts that these components implement.
