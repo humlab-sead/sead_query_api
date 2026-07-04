@@ -68,13 +68,27 @@ Use the focused instruction files under `.github/instructions/` instead of expan
 * `task-plan.instructions.md`: actionable per-phase task plans with work breakdown, validation, and definition of done
 * `github-workflow.instructions.md`: issue, branch, and commit workflow guidance
 * `conventional-commits.instructions.md`: commit message format
+* `glossary.instructions.md`: guidance for `docs/GLOSSARY.md`
 
 ## Documentation workflow
 
 * Use a proposal document when the reader needs to decide whether to do the work.
 * Use a phase plan when the decision is made and the reader needs the ordered path from current state to target state.
 * Use a task plan when one phase needs concrete implementation steps and tracked execution.
-* Move long-lived truth into `docs/REQUIREMENTS.md`, `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/OPERATIONS.md` once it should outlive a proposal.
+* Move long-lived truth into `docs/GLOSSARY.md`, `docs/REQUIREMENTS.md`, `docs/DESIGN.md`, `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/OPERATIONS.md` once it should outlive a proposal.
 * Archive material that is historical and no longer authoritative.
 
 For GitHub Copilot-specific always-on guidance, also see `.github/copilot-instructions.md`.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+When the user types `/graphify`, invoke the `skill` tool with `skill: "graphify"` before doing anything else.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
