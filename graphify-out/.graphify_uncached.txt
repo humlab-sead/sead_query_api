@@ -1,0 +1,466 @@
+/home/roger/source/sead_query_api/.codex/hooks.json
+/home/roger/source/sead_query_api/.github/instructions/features/catalog.json
+/home/roger/source/sead_query_api/.vscode/launch.json
+/home/roger/source/sead_query_api/.vscode/settings.json
+/home/roger/source/sead_query_api/.vscode/tasks.json
+/home/roger/source/sead_query_api/appsettings.json
+/home/roger/source/sead_query_api/bin/_db_utils.sh
+/home/roger/source/sead_query_api/bin/add-change-request
+/home/roger/source/sead_query_api/bin/add-cr
+/home/roger/source/sead_query_api/bin/add-issue
+/home/roger/source/sead_query_api/bin/add-issue-ref
+/home/roger/source/sead_query_api/bin/add-topic-to-repository
+/home/roger/source/sead_query_api/bin/commit-submission
+/home/roger/source/sead_query_api/bin/copy-database
+/home/roger/source/sead_query_api/bin/copy-table
+/home/roger/source/sead_query_api/bin/create-docs/csv-to-sql
+/home/roger/source/sead_query_api/bin/create-docs/generate-docs
+/home/roger/source/sead_query_api/bin/create-docs/sync-comments
+/home/roger/source/sead_query_api/bin/dbforge-data-diff
+/home/roger/source/sead_query_api/bin/deploy-clearinghouse
+/home/roger/source/sead_query_api/bin/deploy-clearinghouse-commit
+/home/roger/source/sead_query_api/bin/deploy-staging
+/home/roger/source/sead_query_api/bin/dev/common
+/home/roger/source/sead_query_api/bin/dev/reset-2025
+/home/roger/source/sead_query_api/bin/dev/reset-adna
+/home/roger/source/sead_query_api/bin/dev/reset-clearinghouse
+/home/roger/source/sead_query_api/bin/dev/reset-dev
+/home/roger/source/sead_query_api/bin/dev/reset-living-tree
+/home/roger/source/sead_query_api/bin/dev/update-adna-cr
+/home/roger/source/sead_query_api/bin/dev/update-subsystems
+/home/roger/source/sead_query_api/bin/docker-sqitch
+/home/roger/source/sead_query_api/bin/dump-database
+/home/roger/source/sead_query_api/bin/dump-schema
+/home/roger/source/sead_query_api/bin/dump-table-data
+/home/roger/source/sead_query_api/bin/dump-tables-ddl
+/home/roger/source/sead_query_api/bin/export-database
+/home/roger/source/sead_query_api/bin/file-versions
+/home/roger/source/sead_query_api/bin/import-geonames
+/home/roger/source/sead_query_api/bin/install-templates
+/home/roger/source/sead_query_api/bin/ls-columns
+/home/roger/source/sead_query_api/bin/ls-cr
+/home/roger/source/sead_query_api/bin/make-completion
+/home/roger/source/sead_query_api/bin/mv-cr
+/home/roger/source/sead_query_api/bin/patch-cr
+/home/roger/source/sead_query_api/bin/psql.sh
+/home/roger/source/sead_query_api/bin/rename-cr
+/home/roger/source/sead_query_api/bin/rm-cr
+/home/roger/source/sead_query_api/bin/sqitch
+/home/roger/source/sead_query_api/bin/submission
+/home/roger/source/sead_query_api/bin/tag-projects
+/home/roger/source/sead_query_api/bin/tbls.sh
+/home/roger/source/sead_query_api/bin/test-cr
+/home/roger/source/sead_query_api/bin/update-cr-header
+/home/roger/source/sead_query_api/bin/utility.sh
+/home/roger/source/sead_query_api/conf/appsettings.Development.json
+/home/roger/source/sead_query_api/conf/appsettings.Production.json
+/home/roger/source/sead_query_api/conf/appsettings.Test.json
+/home/roger/source/sead_query_api/conf/appsettings.supersead.json
+/home/roger/source/sead_query_api/conf/hosting.json
+/home/roger/source/sead_query_api/global.json
+/home/roger/source/sead_query_api/omnisharp.json
+/home/roger/source/sead_query_api/publish/hosting.json
+/home/roger/source/sead_query_api/publish/logging.json
+/home/roger/source/sead_query_api/publish/sead.query.api.deps.json
+/home/roger/source/sead_query_api/publish/sead.query.api.runtimeconfig.json
+/home/roger/source/sead_query_api/publish/sead.query.api.staticwebassets.endpoints.json
+/home/roger/source/sead_query_api/sead.query.api/Controllers/CacheController.cs
+/home/roger/source/sead_query_api/sead.query.api/Controllers/FacetsController.cs
+/home/roger/source/sead_query_api/sead.query.api/Controllers/MetaController.cs
+/home/roger/source/sead_query_api/sead.query.api/Controllers/ResultController.cs
+/home/roger/source/sead_query_api/sead.query.api/Controllers/ValuesController.cs
+/home/roger/source/sead_query_api/sead.query.api/Controllers/VersionController.cs
+/home/roger/source/sead_query_api/sead.query.api/Controllers/ViewStateController.cs
+/home/roger/source/sead_query_api/sead.query.api/DTOs/ResultConfigDTO.cs
+/home/roger/source/sead_query_api/sead.query.api/Dependency.cs
+/home/roger/source/sead_query_api/sead.query.api/Middleware/LoggingMiddleware.cs
+/home/roger/source/sead_query_api/sead.query.api/Program.cs
+/home/roger/source/sead_query_api/sead.query.api/Properties/launchSettings.json
+/home/roger/source/sead_query_api/sead.query.api/Serializers/CustomSerializerResolver.cs
+/home/roger/source/sead_query_api/sead.query.api/Serializers/PropertyFilterResolver.cs
+/home/roger/source/sead_query_api/sead.query.api/Serializers/SeadQueryResolver.cs
+/home/roger/source/sead_query_api/sead.query.api/Serializers/Utility.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/AppServiceBase.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/FacetRouteConfigurationImportCommand.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/FacetUrlFacetsConfigFactory.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/FacetUrlSqlProbeCommand.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/ILoadResultService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/LoadFacetService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/LoadResultService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/Reconstitute/FacetConfigReconstituteService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/Reconstitute/IFacetConfigReconstituteService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/Reconstitute/IResultConfigReconstituteService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/Reconstitute/ReconstituteService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/Reconstitute/ResultConfigReconstituteService.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/ResultUrlSqlProbeCommand.cs
+/home/roger/source/sead_query_api/sead.query.api/Services/RouteConfigurationStartupValidationService.cs
+/home/roger/source/sead_query_api/sead.query.api/Setting.cs
+/home/roger/source/sead_query_api/sead.query.api/Startup.cs
+/home/roger/source/sead_query_api/sead.query.api/hosting.json
+/home/roger/source/sead_query_api/sead.query.api/logging.json
+/home/roger/source/sead_query_api/sead.query.api/sead.query.api.csproj
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Inputs/DiscreteFacetUserInput.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/RouteCompiler/AnchorTemplate.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/RouteCompiler/ArrowRouteParser.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/RouteCompiler/DiscreteFacetPredicateResolver.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/RouteCompiler/RouteResolver.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/RouteCompiler/RouteSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/ComposedFacetContentRequest.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/ComposedFacetContentSupport.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/DiscreteComposedFacetContentHandler.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/GeoPolygonComposedFacetContentHandler.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/IComposedFacetContentFilterQueryFactory.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/IComposedFacetContentHandler.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/IComposedFacetContentRequestFactory.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/IntersectComposedFacetContentHandler.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/IntervalComposedFacetContentHandlerBase.cs
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/Services/RangeComposedFacetContentHandler.cs
+/home/roger/source/sead_query_api/sead.query.composer/Templates/facet-route-config.schema.json
+/home/roger/source/sead_query_api/sead.query.composer/Templates/route.sql
+/home/roger/source/sead_query_api/sead.query.composer/Utility/TemplateLoader.cs
+/home/roger/source/sead_query_api/sead.query.composer/sead.query.composer.csproj
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IDatabaseQueryProxy.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IEncryptService.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IFacetContext.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IFacetRepository.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IFacetSetting.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IFacetTemplateRuntimeResolver.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IPathFinder.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IRelationRepository.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IRepository.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IRepositoryRegistry.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IResultData.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IResultSpecificationRepository.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/ISeadQueryCache.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/ISetting.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/ITableRepository.cs
+/home/roger/source/sead_query_api/sead.query.core/Interfaces/IViewStateRepository.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/Anchor.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/Facet.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetAnchor.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetChild.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetClause.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetConfigRevision.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetGroup.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetTable.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/FacetType.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/ResultField.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/ResultFieldType.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/ResultSpecification.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/ResultSpecificationField.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/ResultViewType.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/Route.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/Table.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/TableRelation.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Entities/ViewState.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Extensions/GraphExtensions.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Extensions/ResultFieldExtensions.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Extensions/ResultViewTypeExt.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetContent.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetTemplateRuntimeSnapshot.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetsConfig/FacetConfig2.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetsConfig/FacetConfigFactory.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetsConfig/FacetConfigPick.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetsConfig/FacetsConfig2.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/FacetsConfig/FacetsConfigSpecification.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/PathFinder/PathFinder.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Result/ResultConfig.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Result/ResultContentSet.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Result/SourceColumnType.cs
+/home/roger/source/sead_query_api/sead.query.core/Model/Result/TabularResultContentSet.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/Common/CategoryInfoService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/Common/ICategoryInfoService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/Common/ICategoryInfoSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/CategoryCountHelper.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/CategoryInfoService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/Interface.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/Plugin.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/SqlCompilers/CategoryCountSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/SqlCompilers/CategoryInfoSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/SqlCompilers/PickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/DiscreteFacet/SqlCompilers/ValidPicksSqCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/CategoryCountHelper.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/CategoryInfoService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/Interface.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/Plugin.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/SqlCompilers/CategoryCountSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/SqlCompilers/CategoryInfoSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/GeoPolygonFacet/SqlCompilers/PickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/CategoryCountHelper.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/CategoryInfoService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/Interface.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/OuterBound/Interface.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/OuterBound/OuterBoundService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/OuterBound/OuterBoundSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/Plugin.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/SqlCompilers/CategoryCountSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/SqlCompilers/CategoryInfoSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/IntersectFacet/SqlCompilers/PickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/Plugin.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/CategoryCountHelper.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/CategoryInfoService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/Interface.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/OuterBound/Interface.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/OuterBound/OuterBoundService.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/OuterBound/OuterBoundSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/Plugin.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/SqlCompilers/CategoryCountSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/SqlCompilers/CategoryInfoSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/Plugins/RangeFacet/SqlCompilers/PickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/ISqlFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/AvgFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/CountFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/DefaultFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/SqlFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/SumFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/TemplateFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/FieldCompilers/SqlCompilers/TextAggFieldCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/ISqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/JoinCompilers/IJoinSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/JoinCompilers/IJoinsClauseCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/JoinCompilers/JoinSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/JoinCompilers/JoinsClauseCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/PickCompilers/AbstractPickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/PickCompilers/IPickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/PickCompilers/IPicksFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/PickCompilers/PickFilterCompilerLocator.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/PickCompilers/PicksFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/PickCompilers/UndefinedFacetPickFilterCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/QuerySetup.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/QuerySetupExtensions.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/ResultCompilers/IResultSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/ResultCompilers/IResultSqlCompilerLocator.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/ResultCompilers/ResultSqlCompilerLocator.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/ResultCompilers/SqlCompilers/MapResultSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/ResultCompilers/SqlCompilers/TabularResultSqlCompiler.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryBuilder/SupportedRequestQuerySetupFactory.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/ComposedFilterQuery.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/FacetContentQueryPlan.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/IComposedFacetContentService.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/IComposedFilterQueryComposer.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/IFacetContentQueryComposer.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/PredicateQueryPlan.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/QueryComposerAliases.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/Strategies/DiscreteFacetContentQueryComposer.cs
+/home/roger/source/sead_query_api/sead.query.core/QueryComposer/Strategies/IntersectComposedFilterQueryComposer.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/BogusPicks/ISupportedRequestPickSanitizer.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/CategoryCount/CategoryItem.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/FacetContent/FacetContentService.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/FacetContent/IFacetContentService.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/IResultService.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/IResultProjectionHandoffBuilder.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/PayloadService/IResultPayloadService.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/PayloadService/IResultPayloadServiceLocator.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/PayloadService/NullPayloadService.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/PayloadService/ResultPayloadServiceLocator.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/ResultProjectionHandoff.cs
+/home/roger/source/sead_query_api/sead.query.core/Services/Result/Services/ResultService.cs
+/home/roger/source/sead_query_api/sead.query.core/Settings.cs
+/home/roger/source/sead_query_api/sead.query.core/SharedKernel/Enum.cs
+/home/roger/source/sead_query_api/sead.query.core/SharedKernel/QuerySeadException.cs
+/home/roger/source/sead_query_api/sead.query.core/SharedKernel/QuerySeadSpecification.cs
+/home/roger/source/sead_query_api/sead.query.core/SharedKernel/ServiceBase.cs
+/home/roger/source/sead_query_api/sead.query.core/SharedKernel/ValueObjects.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/DataReaderExtension.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/Dijkstras.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/EnumerableExtensions.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/Interval.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/ListExtensions.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/SqlCompileUtility.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/StringExtension.cs
+/home/roger/source/sead_query_api/sead.query.core/Utilities/adaptive_ticker.cs
+/home/roger/source/sead_query_api/sead.query.core/sead.query.core.csproj
+/home/roger/source/sead_query_api/sead.query.infra/Cache/NullCache.cs
+/home/roger/source/sead_query_api/sead.query.infra/Cache/Providers/MemoryCacheFactory.cs
+/home/roger/source/sead_query_api/sead.query.infra/Cache/Providers/NullCacheFactory.cs
+/home/roger/source/sead_query_api/sead.query.infra/Cache/Providers/RedisCacheFactory.cs
+/home/roger/source/sead_query_api/sead.query.infra/Cache/SeadQueryCache.cs
+/home/roger/source/sead_query_api/sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs
+/home/roger/source/sead_query_api/sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs
+/home/roger/source/sead_query_api/sead.query.infra/Encryption/EncryptService.cs
+/home/roger/source/sead_query_api/sead.query.infra/Encryption/EncryptUtility.cs
+/home/roger/source/sead_query_api/sead.query.infra/Extensions.cs
+/home/roger/source/sead_query_api/sead.query.infra/InfraUtility.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/AnchorRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/DatabaseQueryProxy.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/DbExecuteSql.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/EdgeRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/FacetContext.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/FacetContextExtensions.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/FacetContextFactory.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/FacetRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/IFacetContextFactory.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/NodeRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/Repository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/RepositoryRegistry.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/ResultSpecificationRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/RouteRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/Repository/ViewStateRepository.cs
+/home/roger/source/sead_query_api/sead.query.infra/sead.query.infra.csproj
+/home/roger/source/sead_query_api/tmp/CHATS/20250625.json
+/home/roger/source/sead_query_api/tmp/CHATS/20250702.json
+/home/roger/source/sead_query_api/tmp/CHATS/20250818.json
+/home/roger/source/sead_query_api/tmp/CHATS/20250826.json
+/home/roger/source/sead_query_api/tmp/CHATS/20250827.json
+/home/roger/source/sead_query_api/tmp/CHATS/chat-250705.json
+/home/roger/source/sead_query_api/tmp/CHATS/chat.json
+/home/roger/source/sead_query_api/tmp/a.sql
+/home/roger/source/sead_query_api/tmp/apa.json
+/home/roger/source/sead_query_api/tmp/apa.sql
+/home/roger/source/sead_query_api/tmp/b.sql
+/home/roger/source/sead_query_api/tmp/country:country.json
+/home/roger/source/sead_query_api/tmp/country:country@1.json
+/home/roger/source/sead_query_api/tmp/ignore/sead_staging.session.sql
+/home/roger/source/sead_query_api/tmp/ignore/with anchors (anchor) as.sql
+/home/roger/source/sead_query_api/tmp/output/01_tables.sql
+/home/roger/source/sead_query_api/tmp/output/02_sequences.sql
+/home/roger/source/sead_query_api/tmp/output/03_functions.sql
+/home/roger/source/sead_query_api/tmp/output/04_views.sql
+/home/roger/source/sead_query_api/tmp/output/05_constraints.sql
+/home/roger/source/sead_query_api/tmp/output/06_indexes.sql
+/home/roger/source/sead_query_api/tmp/output/07_comments.sql
+/home/roger/source/sead_query_api/.agents/skills/graphify/SKILL.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/add-watch.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/exports.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/extraction-spec.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/github-and-merge.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/hooks.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/query.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/transcribe.md
+/home/roger/source/sead_query_api/.agents/skills/graphify/references/update.md
+/home/roger/source/sead_query_api/.chglog/CHANGELOG.tpl.md
+/home/roger/source/sead_query_api/.chglog/config.yml
+/home/roger/source/sead_query_api/.clinerules/baby-steps.md
+/home/roger/source/sead_query_api/.clinerules/codebase-onboarding.md
+/home/roger/source/sead_query_api/.clinerules/mermaid-plans.md
+/home/roger/source/sead_query_api/.clinerules/new-task-automation.md
+/home/roger/source/sead_query_api/.clinerules/project.md
+/home/roger/source/sead_query_api/.clinerules/self-improving-cline.md
+/home/roger/source/sead_query_api/.clinerules/workflows/create-new-workflow.md
+/home/roger/source/sead_query_api/.clinerules/workflows/self-improving-cline.md
+/home/roger/source/sead_query_api/.github/architecture-map.yaml
+/home/roger/source/sead_query_api/.github/copilot-instructions.md
+/home/roger/source/sead_query_api/.github/instructions/coding.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/conventional-commits.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/csharp-polymorphic-design.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/csharp-summaries.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/design.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/development.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/diagrams.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/features/AGENTS.md
+/home/roger/source/sead_query_api/.github/instructions/features/README.md
+/home/roger/source/sead_query_api/.github/instructions/features/facet-configuration-authoring-assistant.md
+/home/roger/source/sead_query_api/.github/instructions/features/facet-recommendation-and-query-guidance.md
+/home/roger/source/sead_query_api/.github/instructions/features/natural-language-query-assistant.md
+/home/roger/source/sead_query_api/.github/instructions/features/result-summary-and-explanation.md
+/home/roger/source/sead_query_api/.github/instructions/features/semantic-term-normalization.md
+/home/roger/source/sead_query_api/.github/instructions/github-workflow.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/operations.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/phase-plan.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/proposal-writing-guide.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/readme.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/task-plan.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/testing.instructions.md
+/home/roger/source/sead_query_api/.github/instructions/unit-and-integration-tests.instructions.md
+/home/roger/source/sead_query_api/.github/prompts/dotnet.prompt.md
+/home/roger/source/sead_query_api/.github/skills/sead-architecture-design/SKILL.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/SKILL.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/references/core-entities.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/references/glossary.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/references/join-patterns.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/references/schema-overview.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/references/sead-schema-summary.md
+/home/roger/source/sead_query_api/.github/skills/sead-database/references/sql-style-guide.md
+/home/roger/source/sead_query_api/.github/workflows/release.yml
+/home/roger/source/sead_query_api/.releaserc.yml
+/home/roger/source/sead_query_api/.travis.yml
+/home/roger/source/sead_query_api/AGENTS.md
+/home/roger/source/sead_query_api/CHANGELOG.md
+/home/roger/source/sead_query_api/LICENSE.txt
+/home/roger/source/sead_query_api/README.md
+/home/roger/source/sead_query_api/TODO.md
+/home/roger/source/sead_query_api/bin/README.md
+/home/roger/source/sead_query_api/bin/create-docs/resources/column.html
+/home/roger/source/sead_query_api/bin/create-docs/resources/main.html
+/home/roger/source/sead_query_api/bin/create-docs/resources/tables/table.html
+/home/roger/source/sead_query_api/bin/deploy-staging.md
+/home/roger/source/sead_query_api/get-facets.md
+/home/roger/source/sead_query_api/issues.md
+/home/roger/source/sead_query_api/request-flow.md
+/home/roger/source/sead_query_api/sead.query.api/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.api/Controllers/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.api/Services/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.composer/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.composer/QueryComposer/RouteCompiler/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.composer/Templates/route_library.yaml
+/home/roger/source/sead_query_api/sead.query.composer/Templates/route_v1.yaml
+/home/roger/source/sead_query_api/sead.query.composer/Templates/templates.yml
+/home/roger/source/sead_query_api/sead.query.core/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.infra/AGENTS.md
+/home/roger/source/sead_query_api/sead.query.infra/Repository/AGENTS.md
+/home/roger/source/sead_query_api/tmp/CHATS/01_requirements.md
+/home/roger/source/sead_query_api/tmp/CHATS/02_architectural_proposal.md
+/home/roger/source/sead_query_api/tmp/CHATS/03_initial_refactoring_plan.md
+/home/roger/source/sead_query_api/tmp/CHATS/04_refactoring_plan.md
+/home/roger/source/sead_query_api/tmp/CHATS/05_design_overview.md
+/home/roger/source/sead_query_api/tmp/CHATS/09_route_management.md
+/home/roger/source/sead_query_api/tmp/CHATS/20250704.md
+/home/roger/source/sead_query_api/tmp/CHATS/99_design_decisions.md
+/home/roger/source/sead_query_api/tmp/CHATS/archived/00_glossary.md
+/home/roger/source/sead_query_api/tmp/CHATS/query-overhaul-resume-20250826.md
+/home/roger/source/sead_query_api/tmp/CHATS/system_requirements_specification.md
+/home/roger/source/sead_query_api/tmp/a.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/ai-dlc-adaptive-workflow.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/audio-plugin-developer.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/ba.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/baby-steps.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/c#-guide.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/claude-code-subagents.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/cline-architecture.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/cline-continuous-improvement-protocol.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/cline-for-research.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/cline-for-slides.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/cline-for-webdev-ui.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/code-review.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/codebase-onboarding.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/comprehensive-slide-dev-guide.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/create-documentation.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/gemini-comprehensive-software-engineering-guide.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/general-development-rules.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/google-apps-script-developer.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/helm-chart-developer.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/mcp-development-protocol.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/mcp_env_configuration.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/memory-bank.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/mermaid-plans.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/new-task-automation.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/next-js-supabase.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/security-audit.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/self-improving-cline.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/sequential-thinking.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/temporal-memory-bank.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/testing-strategy.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/uv-python-usage-guide.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/vercel-deploy.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/version-increment.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/web-developer-vanilla-stack.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/workflow-rules.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/.clinerules/writing-effective-clinerules.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/README.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/ai-dlc-construction.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/ai-dlc-inception.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/ci-cd-with-cline-cli.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/create-new-workflow.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/pr-review-cline.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/self-improving-cline.md
+/home/roger/source/sead_query_api/tmp/clinerules copy/workflows/setup-ci-cd-pipeline.md
+/home/roger/source/sead_query_api/tmp/frontend.instructions.md
+/home/roger/source/sead_query_api/tmp/shapeshifter-configuration.instructions.md
+/home/roger/source/sead_query_api/tmp/user-guide.instructions.md

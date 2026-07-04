@@ -1,0 +1,3183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sead_query_api — Complete Call Flow &amp; Architecture Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --border: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+  --warn: #fbbf24; --err: #f87171; --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-size: 2.4rem; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 1.7rem; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h3 { font-size: 1.25rem; margin: 32px 0 12px; color: var(--accent); }
+h4 { font-size: 1.05rem; margin: 20px 0 8px; color: var(--warn); }
+p { margin: 8px 0; color: var(--muted); }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 32px; }
+.mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; position: relative; }
+.mermaid.is-enhanced { padding: 0; overflow: hidden; min-height: 260px; }
+.mermaid-viewport { padding: 54px 24px 24px; overflow: hidden; cursor: grab; touch-action: none; min-height: 260px; }
+.mermaid-viewport.is-dragging { cursor: grabbing; }
+.mermaid-viewport svg { max-width: none !important; height: auto; transform-origin: 0 0; transition: transform 120ms ease; }
+.mermaid-toolbar { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 6px; background: rgba(15,23,42,0.92); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+.mermaid-toolbar button, .mermaid-toolbar .zoom-level { height: 28px; min-width: 32px; border: 1px solid var(--border); border-radius: 6px; background: #1e293b; color: var(--text); font: 600 0.78rem system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; }
+.mermaid-toolbar button { cursor: pointer; }
+.mermaid-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+.mermaid-toolbar .zoom-level { min-width: 52px; color: var(--muted); background: transparent; }
+.call-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+.call-table th { background: #1a2744; color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+.call-table td { padding: 8px 14px; border: 1px solid var(--border); vertical-align: top; }
+.call-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.tag-async { background: #7c3aed33; color: #a78bfa; }
+.tag-class { background: #05966933; color: var(--ok); }
+.tag-func { background: #2563eb33; color: var(--accent); }
+.tag-cmd { background: #d9770633; color: var(--warn); }
+.tag-endpoint { background: #dc262633; color: var(--err); }
+.tag-hook { background: #db277733; color: #f472b6; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin: 16px 0; }
+.arrow-chain { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent); padding: 10px; background: rgba(56,189,248,0.06); border-radius: 6px; }
+code { font-family: 'Fira Code', 'Cascadia Code', monospace; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; font-size: 0.88em; }
+ul, ol { margin: 8px 0 8px 24px; color: var(--muted); }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+.nav { position: sticky; top: 0; background: var(--bg); z-index: 10; padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .container { padding: 16px; } h1 { font-size: 1.8rem; } }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>sead_query_api — Complete Call Flow &amp; Architecture Documentation</h1>
+<p class="subtitle">Generated from graphify knowledge graph: 3267 nodes, 5314 edges, 258 communities. Commit: 0b1c2d5</p>
+
+<div class="nav">
+    <a href="#overview">Architecture Overview</a>
+    <a href="#extract-pipeline">Extraction Pipeline</a>
+    <a href="#build-graph">Graph Build</a>
+    <a href="#analysis-clustering">Analysis &amp; Clustering</a>
+    <a href="#outputs-docs">Outputs &amp; Docs</a>
+    <a href="#cli-skills">CLI &amp; Skill Installers</a>
+    <a href="#ingest-cache-update">Ingestion &amp; Updates</a>
+    <a href="#serve-api">Serving API</a>
+    <a href="#security-global">Security &amp; Global Graph</a>
+    <a href="#node-and-table-repositories">Node and Table Repositories</a>
+    <a href="#community-212">Community 212</a>
+    <a href="#community-214">Community 214</a>
+    <a href="#community-216">Community 216</a>
+    <a href="#community-224">Community 224</a>
+    <a href="#community-226">Community 226</a>
+    <a href="#other">Other</a>
+</div>
+
+<!-- ====== Architecture Overview ====== -->
+<h2 id="overview">1. Architecture Overview</h2>
+
+<div class="mermaid">
+
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    EXTRACT_PIPELINE_5F350230("Extraction Pipeline<br/><small>2 nodes</small>")
+    class EXTRACT_PIPELINE_5F350230 module;
+    BUILD_GRAPH_321CBB04("Graph Build<br/><small>726 nodes</small>")
+    class BUILD_GRAPH_321CBB04 module;
+    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>2317 nodes</small>")
+    class ANALYSIS_CLUSTERING_C79796DA module;
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>7 nodes</small>")
+    class OUTPUTS_DOCS_ED82387C module;
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>6 nodes</small>")
+    class CLI_SKILLS_9964CBB8 module;
+    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>1 nodes</small>")
+    class INGEST_CACHE_UPDATE_FF457338 module;
+    SERVE_API_35EC8E86("Serving API<br/><small>62 nodes</small>")
+    class SERVE_API_35EC8E86 module;
+    SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>1 nodes</small>")
+    class SECURITY_GLOBAL_5B9C6A04 module;
+    NODE_AND_TABLE_REPOSITORIES_E526127E("Node and Table Repositories<br/><small>39 nodes</small>")
+    class NODE_AND_TABLE_REPOSITORIES_E526127E module;
+    COMMUNITY_212_5147B7E4("Community 212<br/><small>11 nodes</small>")
+    class COMMUNITY_212_5147B7E4 module;
+    COMMUNITY_214_A3C991A4("Community 214<br/><small>10 nodes</small>")
+    class COMMUNITY_214_A3C991A4 module;
+    COMMUNITY_216_1EC61F92("Community 216<br/><small>9 nodes</small>")
+    class COMMUNITY_216_1EC61F92 module;
+    COMMUNITY_224_E0F79545("Community 224<br/><small>7 nodes</small>")
+    class COMMUNITY_224_E0F79545 module;
+    COMMUNITY_226_69408D88("Community 226<br/><small>6 nodes</small>")
+    class COMMUNITY_226_69408D88 module;
+    OTHER_D0941E68("Other<br/><small>63 nodes</small>")
+    class OTHER_D0941E68 module;
+    BUILD_GRAPH_321CBB04 -->|contains x55| ANALYSIS_CLUSTERING_C79796DA
+    ANALYSIS_CLUSTERING_C79796DA -->|contains x35| BUILD_GRAPH_321CBB04
+    BUILD_GRAPH_321CBB04 -->|contains x4| SERVE_API_35EC8E86
+    SERVE_API_35EC8E86 -->|contains x2| BUILD_GRAPH_321CBB04
+    ANALYSIS_CLUSTERING_C79796DA -->|contains| OTHER_D0941E68
+    OTHER_D0941E68 -->|contains| COMMUNITY_216_1EC61F92
+    ANALYSIS_CLUSTERING_C79796DA -->|contains| COMMUNITY_226_69408D88
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h4>Architecture Layers</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
+      <tr><td>Extraction Pipeline</td><td>2</td><td><code>160, 195</code></td></tr><tr><td>Graph Build</td><td>726</td><td><code>3, 4, 24, 12, 31, 1, 66, 102, 26, 78, 87, 28, 29, 30, 112, 113, 92, 210, 205, 69, 70, 218, 219, 220, 100, 117, 119, 122, 132, 137, 139, 179, 180</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>2317</td><td><code>0, 2, 46, 5, 13, 10, 22, 14, 71, 43, 9, 16, 17, 20, 15, 21, 60, 8, 32, 23, 25, 27, 36, 7, 6, 38, 40, 41, 48, 35, 39, 11, 19, 33, 82, 34, 42, 52, 47, 62, 125, 18, 50, 54, 55, 61, 118, 127, 44, 49, 51, 56, 57, 58, 63, 64, 156, 37, 190, 201, 59, 203, 204, 75, 79, 206, 207, 208, 209, 65, 67, 72, 73, 77, 83, 84, 211, 74, 89, 97, 213, 215, 68, 86, 88, 90, 217, 81, 85, 93, 94, 95, 96, 99, 101, 107, 221, 222, 91, 223, 53, 76, 98, 104, 106, 108, 109, 186, 225, 227, 228, 105, 114, 115, 116, 229, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 121, 126, 130, 245, 246, 120, 123, 129, 134, 135, 136, 138, 249, 133, 140, 141, 162, 173, 252, 253, 254, 184, 185, 258</code></td></tr><tr><td>Outputs &amp; Docs</td><td>7</td><td><code>146, 147, 148, 158, 168, 170, 255</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>6</td><td><code>110, 175, 181</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>1</td><td><code>167</code></td></tr><tr><td>Serving API</td><td>62</td><td><code>103, 202, 80, 183, 128</code></td></tr><tr><td>Security &amp; Global Graph</td><td>1</td><td><code>188</code></td></tr><tr><td>Node and Table Repositories</td><td>39</td><td><code>45</code></td></tr><tr><td>Community 212</td><td>11</td><td><code>212</code></td></tr><tr><td>Community 214</td><td>10</td><td><code>214</code></td></tr><tr><td>Community 216</td><td>9</td><td><code>216</code></td></tr><tr><td>Community 224</td><td>7</td><td><code>224</code></td></tr><tr><td>Community 226</td><td>6</td><td><code>226</code></td></tr><tr><td>Other</td><td>63</td><td><code>230, 111, 247, 124, 248, 131, 250, 251, 142, 143, 144, 145, 149, 150, 151, 152, 153, 154, 155, 157, 159, 161, 163, 164, 165, 166, 169, 171, 172, 174, 176, 177, 178, 182, 187, 191, 192, 193, 194, 196, 197, 198, 199, 200, 256, 257</code></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Core Flow</h4>
+    <div class="arrow-chain">Extraction Pipeline -&gt; Graph Build -&gt; Analysis &amp; Clustering -&gt; Other -&gt; Community 216 -&gt; Outputs &amp; Docs -&gt; CLI &amp; Skill Installers</div>
+  </div>
+</div>
+<div class="grid">
+  <div class="card">
+    <h4>Graph Report Highlights</h4>
+    <ul>
+      <li>3267 nodes · 5314 edges · 258 communities (178 shown, 80 thin omitted)</li>
+      <li>Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.85)</li>
+      <li>Token cost: 0 input · 0 output</li>
+      <li>1. `.NETCoreApp,Version=v9.0` - 114 edges</li>
+      <li>2. `runtime` - 67 edges</li>
+      <li>3. `ComposedResultProjectionHandoffBuilder` - 43 edges</li>
+    </ul>
+  </div>
+</div>
+<hr>
+<!-- ====== 2. Extraction Pipeline ====== -->
+<h2 id="extract-pipeline">2. Extraction Pipeline</h2>
+<p>Extraction Pipeline groups implementation around clinerules, python, guide, tmp, mostly in clinerules copy/.clinerules/c#-guide.md, clinerules copy/.clinerules/uv-python-usage-guide.md. This section covers 2 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Extraction Pipeline (2 nodes, 0 edges)
+    csharp_guide_60d124ce("C Guide for Python and TypeScript Deve...<br/><small>clinerules copy/.clinerules/c-guide.md</small>")
+    uv_python_usage_guide_uv_dfa67e3f("UV Python Project Management Guide<br/><small>clinerules copy/.clinerules/uv-python-usage-guide.md</small>")
+    class csharp_guide_60d124ce concept;
+    class uv_python_usage_guide_uv_dfa67e3f concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>C# Guide for Python and TypeScript Developers</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/c#-guide.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing C# Guide for Python and TypeScript Developers.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>UV Python Project Management Guide</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/uv-python-usage-guide.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing UV Python Project Management Guide.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>clinerules copy/.clinerules/c#-guide.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/uv-python-usage-guide.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 3. Graph Build ====== -->
+<h2 id="build-graph">3. Graph Build</h2>
+<p>Graph Build groups implementation around publish, seadqueryapidepsjson, facet, route, mostly in publish/sead.query.api.deps.json, sead.query.composer/Templates/facet-route-config.schema.json, sead.query.api/Properties/launchSettings.json. This section covers 726 nodes and 1151 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Graph Build (726 nodes, 1151 edges)
+    sead_query_infra_sead_query_infra_b4c4fec5("sead.query.infra<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_bogus_79cd18b0("Bogus (35.6.5)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_cachemanager_core_ac7bd07d("CacheManager.Core (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_cachemanager_microsoft_extensions_caching_ca301708("CacheManager.Microsoft.Extensions.Cachi...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_cachemanager_serialization_json_817e7b14("CacheManager.Serialization.Json (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_cachemanager_stackexchange_redis_4d4f1596("CacheManager.StackExchange.Redis (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_castle_core_bc5843b2("Castle.Core (5.2.1)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_yamldotnet_8181a5fc("YamlDotNet (18.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_a_c88d2593("Autofac (9.1.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_a_4d7025ae("Autofac.Extensions.DependencyInjection...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_a_1e3a91dd("Autofac.Extras.AggregateService (6.1.2)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_m_34e2588a("Microsoft.EntityFrameworkCore.Relationa...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_n_b5b6200a("Npgsql.EntityFrameworkCore.PostgreSQL (...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_s_30233f50("Serilog.AspNetCore (10.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_s_21846d47("Serilog.Enrichers.Environment (3.0.1)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_s_d1eb1a55("Serilog.Exceptions (8.4.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_s_3bdbd52a("Serilog.Sinks.Async (2.1.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_s_563ff24f("Serilog.Sinks.Console (6.1.1)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_bogus_79cd18b0
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_cachemanager_core_ac7bd07d
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_cachemanager_microsoft_extensions_caching_ca301708
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_cachemanager_serialization_json_817e7b14
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_cachemanager_stackexchange_redis_4d4f1596
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_castle_core_bc5843b2
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| nuget_yamldotnet_8181a5fc
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_a_c88d2593
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_a_4d7025ae
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_a_1e3a91dd
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_m_34e2588a
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_n_b5b6200a
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_30233f50
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_21846d47
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_d1eb1a55
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_3bdbd52a
+    sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_563ff24f
+    %% Omitted for readability: 708 nodes, 0 edges
+    class sead_query_infra_sead_query_infra_b4c4fec5 function;
+    class nuget_bogus_79cd18b0 klass;
+    class nuget_cachemanager_core_ac7bd07d klass;
+    class nuget_cachemanager_microsoft_extensions_caching_ca301708 klass;
+    class nuget_cachemanager_serialization_json_817e7b14 klass;
+    class nuget_cachemanager_stackexchange_redis_4d4f1596 klass;
+    class nuget_castle_core_bc5843b2 klass;
+    class nuget_yamldotnet_8181a5fc klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_a_c88d2593 klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_a_4d7025ae klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_a_1e3a91dd klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_m_34e2588a klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_n_b5b6200a klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_s_30233f50 klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_s_21846d47 klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_s_d1eb1a55 klass;
+    class sead_query_infra_sead_query_infra_csproj_nuget_s_3bdbd52a async;
+    class sead_query_infra_sead_query_infra_csproj_nuget_s_563ff24f klass;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>lib/net8.0/Autofac.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net8.0/Autofac.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>lib/net8.0/Autofac.Extensions.DependencyInjection.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Builds dependency relationships and graph data.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>lib/netstandard2.1/Autofac.Extras.AggregateService.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/netstandard2.1/Autofac.Extras.AggregateService.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Bogus/35.6.3</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Bogus/35.6.3 node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>runtime</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>runtime node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>lib/net6.0/Bogus.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net6.0/Bogus.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>lib/net8.0/CacheManager.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>lib/net8.0/CacheManager.Microsoft.Extensions.Caching.Memory.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>lib/net8.0/CacheManager.Serialization.Json.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>lib/net8.0/CacheManager.StackExchange.Redis.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>313 nodes</td></tr>
+<tr><td><code>sead.query.composer/Templates/facet-route-config.schema.json</code></td><td>198 nodes</td></tr>
+<tr><td><code>conf/appsettings.Test.json</code></td><td>26 nodes</td></tr>
+<tr><td><code>sead.query.api/Properties/launchSettings.json</code></td><td>26 nodes</td></tr>
+<tr><td><code>appsettings.json</code></td><td>23 nodes</td></tr>
+<tr><td><code>conf/appsettings.Development.json</code></td><td>23 nodes</td></tr>
+<tr><td><code>conf/appsettings.Production.json</code></td><td>23 nodes</td></tr>
+<tr><td><code>conf/appsettings.supersead.json</code></td><td>23 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1131, imports x18, references x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 4. Analysis & Clustering ====== -->
+<h2 id="analysis-clustering">4. Analysis &amp; Clustering</h2>
+<p>Analysis &amp; Clustering groups implementation around seadquerycore, services, seadqueryinfra, seadqueryapi, mostly in publish/sead.query.api.deps.json, sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs, QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs. This section covers 2317 nodes and 3907 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Analysis &amp; Clustering (2317 nodes, 3907 edges)
+    subgraph analysis_clustering_sead_query_api_Controllers_F_4b4d0bff["sead.query.api/Controllers/FacetsController.cs"]
+        controllers_facetscontroller_b928ad11("FacetsController.cs")
+        controllers_facetscontroller_facetscontroller_ge_125fa682("Get()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_ge_8afb77f5("GetDomainFacetChildren()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_ge_cc2bdfc0("GetDomainFacets()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_lo_165fbdfa("Load()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_lo_6fb20a16("Load2()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_lo_a8c946c6("Load3()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_mi_ead58d76("Mirror()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+        controllers_facetscontroller_facetscontroller_b808a6e0("FacetsController<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+    end
+    subgraph analysis_clustering_sead_query_api_Controllers_C_72164a03["sead.query.api/Controllers/CacheController.cs"]
+        controllers_cachecontroller_eb522ed9("CacheController.cs")
+        controllers_cachecontroller_cachecontroller_clea_42d955eb("Clear()<br/><small>sead.query.api/Controllers/CacheController.cs</small>")
+        controllers_cachecontroller_cachecontroller_44793f6d("CacheController<br/><small>sead.query.api/Controllers/CacheController.cs</small>")
+    end
+    subgraph analysis_clustering_QueryComposer_Services_Compo_018b768d["QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs"]
+        services_composedresultprojectionhandoffbuilder_c27aa3f0("ComposedResultProjectionHandoffBuilder.cs")
+        services_composedresultprojectionhandoffbuilder_9faee6fd("ComposedResultProjectionHandoffBuilder<br/><small>QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs</small>")
+    end
+    subgraph analysis_clustering_sead_query_infra_Configurati_223d1c39["sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs"]
+        configuration_facetrouteconfigurationimporter_fa_86008b28("FacetRouteConfigurationImporter<br/><small>sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small>")
+        configuration_facetrouteconfigurationimporter_8e152111("FacetRouteConfigurationImporter.cs")
+    end
+    facetsconfig_facetsconfig2_facetsconfig2_25f188ef("FacetsConfig2<br/><small>Model/FacetsConfig/FacetsConfig2.cs</small>")
+    repository_repository_1afc2598("Repository.cs")
+    controllers_cachecontroller_eb522ed9 -->|method| controllers_cachecontroller_cachecontroller_clea_42d955eb
+    controllers_cachecontroller_cachecontroller_44793f6d -->|method| controllers_cachecontroller_cachecontroller_clea_42d955eb
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_ge_125fa682
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_ge_8afb77f5
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_ge_cc2bdfc0
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_lo_165fbdfa
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_lo_6fb20a16
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_lo_a8c946c6
+    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_mi_ead58d76
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_ge_125fa682
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_ge_8afb77f5
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_ge_cc2bdfc0
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_lo_165fbdfa
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_lo_6fb20a16
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_lo_a8c946c6
+    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_mi_ead58d76
+    controllers_facetscontroller_facetscontroller_lo_165fbdfa -->|calls| controllers_facetscontroller_facetscontroller_lo_6fb20a16
+    controllers_facetscontroller_facetscontroller_lo_165fbdfa -->|calls| controllers_facetscontroller_facetscontroller_lo_a8c946c6
+    %% Omitted for readability: 2299 nodes, 0 edges
+    class controllers_facetscontroller_b928ad11 klass;
+    class controllers_facetscontroller_facetscontroller_ge_125fa682 function;
+    class controllers_facetscontroller_facetscontroller_ge_8afb77f5 function;
+    class controllers_facetscontroller_facetscontroller_ge_cc2bdfc0 function;
+    class controllers_facetscontroller_facetscontroller_lo_165fbdfa function;
+    class controllers_facetscontroller_facetscontroller_lo_6fb20a16 function;
+    class controllers_facetscontroller_facetscontroller_lo_a8c946c6 function;
+    class controllers_facetscontroller_facetscontroller_mi_ead58d76 function;
+    class controllers_facetscontroller_facetscontroller_b808a6e0 klass;
+    class controllers_cachecontroller_eb522ed9 klass;
+    class controllers_cachecontroller_cachecontroller_clea_42d955eb function;
+    class controllers_cachecontroller_cachecontroller_44793f6d klass;
+    class services_composedresultprojectionhandoffbuilder_c27aa3f0 klass;
+    class services_composedresultprojectionhandoffbuilder_9faee6fd klass;
+    class configuration_facetrouteconfigurationimporter_fa_86008b28 api;
+    class configuration_facetrouteconfigurationimporter_8e152111 api;
+    class facetsconfig_facetsconfig2_facetsconfig2_25f188ef klass;
+    class repository_repository_1afc2598 klass;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>FacetRouteConfigurationImportCommand.cs</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>FacetRouteConfigurationImportCommand</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>.Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImportCommand</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small><br><code>FacetRouteConfigurationImportCommand.cs</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td>No direct outbound edge</td>
+  <td>.Run() node in sead.query.api/Services/FacetRouteConfigurationImportCommand.cs.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>IFacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small><br><code>ValidateFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>.ValidateFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td>No direct outbound edge</td>
+  <td>.ValidateFile() node in sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>.ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td>No direct outbound edge</td>
+  <td>.ImportFromFile() node in sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ComputeContentHash()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateValidationAnchors()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+30 more</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ComputeContentHash()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateValidationAnchors()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+31 more</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)"></small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>string</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>string node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>HashSet</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>IReadOnlyDictionary</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>IReadOnlyDictionary node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Regex</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Regex node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>IFacetContext</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>IFacetContext node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>ImportIdAllocator</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>GetNextId()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>NextAnchorId()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>NextConfigRevisionId()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+6 more</td>
+  <td>ImportIdAllocator node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>.ValidateFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><code>LoadValidatedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>ValidateResolvedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td>.ValidateFile() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>.ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><code>ComputeContentHash()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>GenerateRoutes()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>LoadLookup()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+10 more</td>
+  <td>.ImportFromFile() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>.ValidateResolvedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+1 more</td>
+  <td><code>CreateValidationAnchors()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateValidationRoutes()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>LoadLookup()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+3 more</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>FacetRouteConfigurationDocument</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>.CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><code>LoadValidatedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td>.CreateDeserializer() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>IDeserializer</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>IDeserializer node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>.LoadValidatedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+2 more</td>
+  <td><code>ValidateDocument()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>LoadedFacetRouteConfiguration</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-endpoint">API</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Reads, resolves, or persists project configuration.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>.LoadLookup()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>.LoadLookup() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>IEnumerable</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>IEnumerable node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>T</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>T node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Func</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Func node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>Dictionary</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Dictionary node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>102 nodes</td></tr>
+<tr><td><code>sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</code></td><td>89 nodes</td></tr>
+<tr><td><code>QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs</code></td><td>56 nodes</td></tr>
+<tr><td><code>CHANGELOG.md</code></td><td>45 nodes</td></tr>
+<tr><td><code>sead.query.infra/Repository/FacetRepository.cs</code></td><td>33 nodes</td></tr>
+<tr><td><code>Model/Entities/TableRelation.cs</code></td><td>32 nodes</td></tr>
+<tr><td><code>sead.query.core/Interfaces/IFacetRepository.cs</code></td><td>31 nodes</td></tr>
+<tr><td><code>Model/FacetsConfig/FacetsConfig2.cs</code></td><td>31 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: references x1420, method x1092, contains x729, calls x325. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 5. Outputs & Docs ====== -->
+<h2 id="outputs-docs">5. Outputs &amp; Docs</h2>
+<p>Outputs &amp; Docs groups implementation around create, clinerules, mermaid, resource, mostly in create-docs/resources/column.html, create-docs/resources/main.html, resources/tables/table.html. This section covers 7 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Outputs &amp; Docs (7 nodes, 0 edges)
+    clinerules_mermaid_plans_ddd8532b("mermaid-plans.md")
+    create_documentation_8b683aef("Create Documentation<br/><small>clinerules copy/.clinerules/create-documentation.md</small>")
+    mermaid_plans_3835ae0c("Mermaid Plans Guidelines<br/><small>clinerules copy/.clinerules/mermaid-plans.md</small>")
+    bin_create_docs_resources_column_html_a4e6dde1("Columns HTML Resource<br/><small>create-docs/resources/column.html</small>")
+    bin_create_docs_resources_main_html_08c4039f("Main HTML Resource<br/><small>create-docs/resources/main.html</small>")
+    graphify_to_wiki_494c373a("graphify-to-wiki.py")
+    bin_create_docs_resources_tables_table_html_11d12251("Table HTML Resource<br/><small>resources/tables/table.html</small>")
+    class clinerules_mermaid_plans_ddd8532b concept;
+    class create_documentation_8b683aef concept;
+    class mermaid_plans_3835ae0c concept;
+    class bin_create_docs_resources_column_html_a4e6dde1 klass;
+    class bin_create_docs_resources_main_html_08c4039f klass;
+    class graphify_to_wiki_494c373a module;
+    class bin_create_docs_resources_tables_table_html_11d12251 klass;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Columns HTML Resource</code><br><small style="color:var(--muted)">create-docs/resources/column.html</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Main HTML Resource</code><br><small style="color:var(--muted)">create-docs/resources/main.html</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Table HTML Resource</code><br><small style="color:var(--muted)">resources/tables/table.html</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Exports documentation data to a target format.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Create Documentation</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/create-documentation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Create Documentation.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>graphify-to-wiki.py</code><br><small style="color:var(--muted)">graphify-to-wiki.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in graphify-to-wiki.py.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Mermaid Plans Guidelines</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/mermaid-plans.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Mermaid Plans Guidelines.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>mermaid-plans.md</code><br><small style="color:var(--muted)">.clinerules/mermaid-plans.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing mermaid-plans.md.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>.clinerules/mermaid-plans.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>create-docs/resources/column.html</code></td><td>1 nodes</td></tr>
+<tr><td><code>create-docs/resources/main.html</code></td><td>1 nodes</td></tr>
+<tr><td><code>resources/tables/table.html</code></td><td>1 nodes</td></tr>
+<tr><td><code>graphify-to-wiki.py</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/create-documentation.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/mermaid-plans.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 6. CLI & Skill Installers ====== -->
+<h2 id="cli-skills">6. CLI &amp; Skill Installers</h2>
+<p>CLI &amp; Skill Installers groups implementation around clinerules, tmp, copy, mcp, mostly in clinerules copy/.clinerules/claude-code-subagents.md, clinerules copy/.clinerules/cline-architecture.md, clinerules copy/.clinerules/mcp-development-protocol.md. This section covers 6 nodes and 3 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: CLI &amp; Skill Installers (6 nodes, 3 edges)
+    claude_code_subagents_545b2d3a("Claude Code Subagent Rules<br/><small>clinerules copy/.clinerules/claude-code-subagents.md</small>")
+    cline_extension_architecture_14378efa("Cline Extension Architecture &amp; Developm...<br/><small>clinerules copy/.clinerules/cline-architecture.md</small>")
+    mcp_server_development_protocol_9ca6c43b("MCP Server Development Protocol<br/><small>clinerules copy/.clinerules/mcp-development-protocol.md</small>")
+    mcp_env_configuration_f64f5305("Environment Configuration in MCP Servers<br/><small>clinerules copy/.clinerules/mcp_env_configuration.md</small>")
+    sead_architecture_design_skill_7270cb9a("SEAD Architecture Design Skill<br/><small>skills/sead-architecture-design/SKILL.md</small>")
+    sead_database_skill_1c170bc0("SEAD Database Skill<br/><small>skills/sead-database/SKILL.md</small>")
+    claude_code_subagents_545b2d3a -->|references| cline_extension_architecture_14378efa
+    cline_extension_architecture_14378efa -->|references| mcp_env_configuration_f64f5305
+    cline_extension_architecture_14378efa -->|references| mcp_server_development_protocol_9ca6c43b
+    class claude_code_subagents_545b2d3a concept;
+    class cline_extension_architecture_14378efa concept;
+    class mcp_server_development_protocol_9ca6c43b concept;
+    class mcp_env_configuration_f64f5305 concept;
+    class sead_architecture_design_skill_7270cb9a concept;
+    class sead_database_skill_1c170bc0 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Claude Code Subagent Rules</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/claude-code-subagents.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Claude Code Subagent Rules.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Cline Extension Architecture &amp; Development Guide</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/cline-architecture.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Cline Extension Architecture &amp; Development Guide.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>MCP Server Development Protocol</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/mcp-development-protocol.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing MCP Server Development Protocol.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Environment Configuration in MCP Servers</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/mcp_env_configuration.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Environment Configuration in MCP Servers.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>SEAD Architecture Design Skill</code><br><small style="color:var(--muted)">skills/sead-architecture-design/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SEAD Architecture Design Skill.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>SEAD Database Skill</code><br><small style="color:var(--muted)">skills/sead-database/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SEAD Database Skill.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>skills/sead-architecture-design/SKILL.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>skills/sead-database/SKILL.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/claude-code-subagents.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/cline-architecture.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/mcp-development-protocol.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/mcp_env_configuration.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: references x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 7. Ingestion & Updates ====== -->
+<h2 id="ingest-cache-update">7. Ingestion &amp; Updates</h2>
+<p>Ingestion &amp; Updates groups implementation around google, apps, script, clinerules, mostly in clinerules copy/.clinerules/google-apps-script-developer.md. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Ingestion &amp; Updates (1 nodes, 0 edges)
+    google_apps_script_developer_0c3d7ca3("Elite Google Apps Script (GAS) Develope...<br/><small>clinerules copy/.clinerules/google-apps-script-developer.md</small>")
+    class google_apps_script_developer_0c3d7ca3 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Elite Google Apps Script (GAS) Developer Protocol</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/google-apps-script-developer.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Elite Google Apps Script (GAS) Developer Protocol.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>clinerules copy/.clinerules/google-apps-script-developer.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 8. Serving API ====== -->
+<h2 id="serve-api">8. Serving API</h2>
+<p>Serving API groups implementation around agentsmd, request, flowmd, seadqueryapidepsjson, mostly in request-flow.md, publish/sead.query.api.deps.json, README.md. This section covers 62 nodes and 60 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Serving API (62 nodes, 60 edges)
+    subgraph serve_api_publish_sead_query_api_deps_json_d30d5dbf["publish/sead.query.api.deps.json"]
+        publish_sead_query_api_deps_netcoreapp_version_v_66a3ecc4("Microsoft.Win32.SystemEvents/6.0.0<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimes_win_lib_net_a19dfdfe("assemblyVersion<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimes_win_lib_net_e5394136("assetType<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_compilationoptions_49f661c2("compilationOptions<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimes_win_lib_net_7a1cbe13("fileVersion<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimetarget_name_014af757("name<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimes_win_lib_net_c7c025e2("rid<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_microsoft_win32_syst_b34d975c("runtime<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimetarget_f6e8657f("runtimeTarget<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_microsoft_win32_syst_b4f458d8("runtimeTargets<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_runtimetargets_runti_d00c02ac("runtimes/win/lib/net6.0/Microsoft.Win32...<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_51fa4b8c("sead.query.api.deps.json")
+        publish_sead_query_api_deps_runtimetarget_signat_ffa595c9("signature<br/><small>publish/sead.query.api.deps.json</small>")
+        publish_sead_query_api_deps_targets_c9db38a5("targets<br/><small>publish/sead.query.api.deps.json</small>")
+    end
+    subgraph serve_api_sead_query_api_Services_FacetRouteConf_5f0e56cf["sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs"]
+        services_facetrouteconfigurationvalidationcomman_c8078941("FacetRouteConfigurationValidationComman...<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
+        services_facetrouteconfigurationvalidationcomman_1630fd2a("FacetRouteConfigurationValidationCommand<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
+        services_facetrouteconfigurationvalidationcomman_6b7cc535("Run()<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
+        sead_query_api_services_facetrouteconfigurationv_a719477a("IFacetRouteConfigurationImporter<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
+    end
+    services_facetrouteconfigurationvalidationcomman_c8078941 -->|method| services_facetrouteconfigurationvalidationcomman_6b7cc535
+    services_facetrouteconfigurationvalidationcomman_1630fd2a -->|method| services_facetrouteconfigurationvalidationcomman_6b7cc535
+    %% Omitted for readability: 44 nodes, 0 edges
+    class publish_sead_query_api_deps_netcoreapp_version_v_66a3ecc4 klass;
+    class publish_sead_query_api_deps_runtimes_win_lib_net_a19dfdfe async;
+    class publish_sead_query_api_deps_runtimes_win_lib_net_e5394136 async;
+    class publish_sead_query_api_deps_compilationoptions_49f661c2 function;
+    class publish_sead_query_api_deps_runtimes_win_lib_net_7a1cbe13 function;
+    class publish_sead_query_api_deps_runtimetarget_name_014af757 function;
+    class publish_sead_query_api_deps_runtimes_win_lib_net_c7c025e2 function;
+    class publish_sead_query_api_deps_microsoft_win32_syst_b34d975c function;
+    class publish_sead_query_api_deps_runtimetarget_f6e8657f function;
+    class publish_sead_query_api_deps_microsoft_win32_syst_b4f458d8 function;
+    class publish_sead_query_api_deps_runtimetargets_runti_d00c02ac function;
+    class publish_sead_query_api_deps_51fa4b8c api;
+    class publish_sead_query_api_deps_runtimetarget_signat_ffa595c9 function;
+    class publish_sead_query_api_deps_targets_c9db38a5 function;
+    class services_facetrouteconfigurationvalidationcomman_c8078941 api;
+    class services_facetrouteconfigurationvalidationcomman_1630fd2a api;
+    class services_facetrouteconfigurationvalidationcomman_6b7cc535 function;
+    class sead_query_api_services_facetrouteconfigurationv_a719477a api;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>AGENTS.md</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AGENTS.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>SEAD Query API Agent Guide</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SEAD Query API Agent Guide.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Instruction precedence</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Instruction precedence.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Source of truth</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Source of truth.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Repository shape</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Repository shape.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Architecture rules</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Architecture rules.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Working style</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Working style.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Detailed instructions</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Detailed instructions.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Documentation workflow</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Documentation workflow.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>graphify</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing graphify.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>README.md</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing README.md.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>SEAD Faceted Query API</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SEAD Faceted Query API.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>What This Repository Contains</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing What This Repository Contains.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Prerequisites</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Prerequisites.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Quick Start</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Quick Start.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>API Note</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing API Note.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>Documentation</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Documentation.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Status</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Status.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Changelog</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Changelog.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>License</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing License.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Authorship</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Authorship.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>CHANGELOG</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing CHANGELOG.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Request Flow</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Request Flow.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Issues List</code><br><small style="color:var(--muted)">issues.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Issues List.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>request-flow.md</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing request-flow.md.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>Control Flow 📌🚩👀🦴🦷👁️✨🔔📀💡🔦🔖🏷️✂️⏳📍</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Control Flow 📌🚩👀🦴🦷👁️✨🔔📀💡🔦🔖🏷️✂️⏳📍.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>Load facet</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Load facet.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>Terminology</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Terminology.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>The request&#x27;s result configuration data</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing The request&#x27;s result configuration data.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>URI general format</code><br><small style="color:var(--muted)">request-flow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing URI general format.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>request-flow.md</code></td><td>15 nodes</td></tr>
+<tr><td><code>publish/sead.query.api.deps.json</code></td><td>14 nodes</td></tr>
+<tr><td><code>README.md</code></td><td>11 nodes</td></tr>
+<tr><td><code>AGENTS.md</code></td><td>10 nodes</td></tr>
+<tr><td><code>sead.query.api/AGENTS.md</code></td><td>6 nodes</td></tr>
+<tr><td><code>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</code></td><td>4 nodes</td></tr>
+<tr><td><code>CHANGELOG.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>issues.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x52, references x6, method x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 9. Security & Global Graph ====== -->
+<h2 id="security-global">9. Security &amp; Global Graph</h2>
+<p>Security &amp; Global Graph groups implementation around security, clinerules, audit, threat, mostly in clinerules copy/.clinerules/security-audit.md. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Security &amp; Global Graph (1 nodes, 0 edges)
+    security_audit_b5d753a0("Security Audit &amp; Threat Modeling Protocol<br/><small>clinerules copy/.clinerules/security-audit.md</small>")
+    class security_audit_b5d753a0 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Security Audit &amp; Threat Modeling Protocol</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/security-audit.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Security Audit &amp; Threat Modeling Protocol.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>clinerules copy/.clinerules/security-audit.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 10. Node and Table Repositories ====== -->
+<h2 id="node-and-table-repositories">10. Node and Table Repositories</h2>
+<p>Node and Table Repositories groups implementation around task, new, automationmd, clinerules, mostly in .clinerules/new-task-automation.md. This section covers 39 nodes and 38 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Node and Table Repositories (39 nodes, 38 edges)
+    clinerules_new_task_automation_task_continuation_daf5af0b("Task Continuation: [Brief Task Title]<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_best_practices_fo_a5f5fffc("Best Practices for Effective Handoffs -...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_task_continuation_e6d82db2("Task Continuation: Implement User Authe...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_ccf0f444("new-task-automation.md")
+    clinerules_new_task_automation_5_detailed_contex_986b4846("5. Detailed Context Transfer - MANDATOR...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_task_breakdown_in_64e45edb("Task Breakdown in Plan Mode - REQUIRED...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_task_implementati_8e43362b("Task Implementation and Handoff Process...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_context_window_us_1464fd04("Context Window Usage<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_example_task_hand_7dc95d17("Example Task Handoff<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_reference_informa_49ab2760("Reference Information<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_reference_informa_75988333("Reference Information<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_you_must_use_the_49d21ca9("You MUST use the new_task tool: Task...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_1_focused_impleme_8ca86619("1. Focused Implementation - REQUIRED<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_1_initial_task_an_ab8aa72f("1. Initial Task Analysis - REQUIRED<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_1_maintain_contin_25819a3d("1. Maintain Continuity - REQUIRED<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_2_preserve_contex_6b3958a4("2. Preserve Context - REQUIRED<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_2_recognizing_com_1e3c6786("2. Recognizing Completion Points - CRIT...<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_2_strategic_task_ea104e2d("2. Strategic Task Decomposition - REQUIRED<br/><small>.clinerules/new-task-automation.md</small>")
+    clinerules_new_task_automation_ccf0f444 -->|contains| clinerules_new_task_automation_context_window_us_1464fd04
+    clinerules_new_task_automation_ccf0f444 -->|contains| clinerules_new_task_automation_task_continuation_daf5af0b
+    clinerules_new_task_automation_ccf0f444 -->|contains| clinerules_new_task_automation_task_continuation_e6d82db2
+    clinerules_new_task_automation_ccf0f444 -->|contains| clinerules_new_task_automation_you_must_use_the_49d21ca9
+    clinerules_new_task_automation_context_window_us_1464fd04 -->|contains| clinerules_new_task_automation_task_breakdown_in_64e45edb
+    clinerules_new_task_automation_context_window_us_1464fd04 -->|contains| clinerules_new_task_automation_task_implementati_8e43362b
+    clinerules_new_task_automation_task_breakdown_in_64e45edb -->|contains| clinerules_new_task_automation_1_initial_task_an_ab8aa72f
+    clinerules_new_task_automation_task_breakdown_in_64e45edb -->|contains| clinerules_new_task_automation_2_strategic_task_ea104e2d
+    clinerules_new_task_automation_task_implementati_8e43362b -->|contains| clinerules_new_task_automation_1_focused_impleme_8ca86619
+    clinerules_new_task_automation_task_implementati_8e43362b -->|contains| clinerules_new_task_automation_2_recognizing_com_1e3c6786
+    clinerules_new_task_automation_task_continuation_daf5af0b -->|contains| clinerules_new_task_automation_best_practices_fo_a5f5fffc
+    clinerules_new_task_automation_task_continuation_daf5af0b -->|contains| clinerules_new_task_automation_example_task_hand_7dc95d17
+    clinerules_new_task_automation_task_continuation_daf5af0b -->|contains| clinerules_new_task_automation_reference_informa_49ab2760
+    clinerules_new_task_automation_reference_informa_49ab2760 -->|contains| clinerules_new_task_automation_5_detailed_contex_986b4846
+    clinerules_new_task_automation_best_practices_fo_a5f5fffc -->|contains| clinerules_new_task_automation_1_maintain_contin_25819a3d
+    clinerules_new_task_automation_best_practices_fo_a5f5fffc -->|contains| clinerules_new_task_automation_2_preserve_contex_6b3958a4
+    clinerules_new_task_automation_task_continuation_e6d82db2 -->|contains| clinerules_new_task_automation_reference_informa_75988333
+    %% Omitted for readability: 21 nodes, 0 edges
+    class clinerules_new_task_automation_task_continuation_daf5af0b concept;
+    class clinerules_new_task_automation_best_practices_fo_a5f5fffc concept;
+    class clinerules_new_task_automation_task_continuation_e6d82db2 concept;
+    class clinerules_new_task_automation_ccf0f444 concept;
+    class clinerules_new_task_automation_5_detailed_contex_986b4846 concept;
+    class clinerules_new_task_automation_task_breakdown_in_64e45edb concept;
+    class clinerules_new_task_automation_task_implementati_8e43362b concept;
+    class clinerules_new_task_automation_context_window_us_1464fd04 concept;
+    class clinerules_new_task_automation_example_task_hand_7dc95d17 concept;
+    class clinerules_new_task_automation_reference_informa_49ab2760 concept;
+    class clinerules_new_task_automation_reference_informa_75988333 concept;
+    class clinerules_new_task_automation_you_must_use_the_49d21ca9 concept;
+    class clinerules_new_task_automation_1_focused_impleme_8ca86619 concept;
+    class clinerules_new_task_automation_1_initial_task_an_ab8aa72f concept;
+    class clinerules_new_task_automation_1_maintain_contin_25819a3d concept;
+    class clinerules_new_task_automation_2_preserve_contex_6b3958a4 concept;
+    class clinerules_new_task_automation_2_recognizing_com_1e3c6786 concept;
+    class clinerules_new_task_automation_2_strategic_task_ea104e2d concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>new-task-automation.md</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing new-task-automation.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>You MUST use the `new_task` tool: Task Handoff Strategy Guide</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing You MUST use the `new_task` tool: Task Handoff Strategy Guide.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>⚠️ CONTEXT WINDOW MONITORING - MANDATORY ACTION REQUIRED ⚠️</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing ⚠️ CONTEXT WINDOW MONITORING - MANDATORY ACTION REQUIRED ⚠️.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Context Window Usage</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Context Window Usage.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Task Breakdown in Plan Mode - REQUIRED PROCESS</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task Breakdown in Plan Mode - REQUIRED PROCESS.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>1. Initial Task Analysis - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1. Initial Task Analysis - REQUIRED.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>2. Strategic Task Decomposition - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2. Strategic Task Decomposition - REQUIRED.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>3. Creating a Task Roadmap - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Creating a Task Roadmap - REQUIRED.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>4. Getting User Approval - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4. Getting User Approval - REQUIRED.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Task Implementation and Handoff Process - MANDATORY PROCEDURES</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task Implementation and Handoff Process - MANDATORY PROCEDURES.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>1. Focused Implementation - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1. Focused Implementation - REQUIRED.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>2. Recognizing Completion Points - CRITICAL</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2. Recognizing Completion Points - CRITICAL.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>3. Initiating the Handoff Process - MANDATORY ACTION</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Initiating the Handoff Process - MANDATORY ACTION.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>4. Creating a New Task with Context - REQUIRED ACTION</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4. Creating a New Task with Context - REQUIRED ACTION.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Task Continuation: [Brief Task Title]</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task Continuation: [Brief Task Title].</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Completed Work</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Completed Work.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>Current State</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Current State.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Next Steps</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Next Steps.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Reference Information</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Reference Information.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>5. Detailed Context Transfer - MANDATORY COMPONENTS</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 5. Detailed Context Transfer - MANDATORY COMPONENTS.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Project Context - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Project Context - REQUIRED.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>Implementation Details - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Implementation Details - REQUIRED.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Progress Tracking - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Progress Tracking - REQUIRED.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>User Preferences - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing User Preferences - REQUIRED.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>Best Practices for Effective Handoffs - MANDATORY GUIDELINES</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Best Practices for Effective Handoffs - MANDATORY GUIDELINES.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>1. Maintain Continuity - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1. Maintain Continuity - REQUIRED.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>2. Preserve Context - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2. Preserve Context - REQUIRED.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>3. Set Clear Next Actions - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Set Clear Next Actions - REQUIRED.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>4. Document Assumptions - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4. Document Assumptions - REQUIRED.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>5. Optimize for Resumability - REQUIRED</code><br><small style="color:var(--muted)">.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 5. Optimize for Resumability - REQUIRED.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>.clinerules/new-task-automation.md</code></td><td>39 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x38. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 11. Community 212 ====== -->
+<h2 id="community-212">11. Community 212</h2>
+<p>Community 212 groups implementation around self, improving, clinemd, clinerules, mostly in .clinerules/workflows/self-improving-cline.md. This section covers 11 nodes and 10 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 212 (11 nodes, 10 edges)
+    workflows_self_improving_cline_self_improving_cl_8c88d494("Self‑Improving Cline Reflection — Detai...<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_991dbacd("self-improving-cline.md")
+    workflows_self_improving_cline_1_applicability_c_6241cb88("1) Applicability Check<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_2_offer_reflectio_ce90e87d("2) Offer Reflection<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_3_identify_active_ee0ca106("3) Identify Active Rules (Best‑Effort)<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_4_load_accessible_0f1252ec("4) Load Accessible Rule Files<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_5_review_and_synt_0bb5e09b("5) Review and Synthesize Opportunities<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_6_present_proposa_d1d3a493("6) Present Proposals<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_7_approval_to_act_9ceb6178("7) Approval to Act<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_8_execute_or_repo_c6071cb5("8) Execute or Report<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_9_conclude_bee65dfd("9) Conclude<br/><small>.clinerules/workflows/self-improving-cline.md</small>")
+    workflows_self_improving_cline_991dbacd -->|contains| workflows_self_improving_cline_self_improving_cl_8c88d494
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_1_applicability_c_6241cb88
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_2_offer_reflectio_ce90e87d
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_3_identify_active_ee0ca106
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_4_load_accessible_0f1252ec
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_5_review_and_synt_0bb5e09b
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_6_present_proposa_d1d3a493
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_7_approval_to_act_9ceb6178
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_8_execute_or_repo_c6071cb5
+    workflows_self_improving_cline_self_improving_cl_8c88d494 -->|contains| workflows_self_improving_cline_9_conclude_bee65dfd
+    class workflows_self_improving_cline_self_improving_cl_8c88d494 concept;
+    class workflows_self_improving_cline_991dbacd concept;
+    class workflows_self_improving_cline_1_applicability_c_6241cb88 concept;
+    class workflows_self_improving_cline_2_offer_reflectio_ce90e87d concept;
+    class workflows_self_improving_cline_3_identify_active_ee0ca106 concept;
+    class workflows_self_improving_cline_4_load_accessible_0f1252ec concept;
+    class workflows_self_improving_cline_5_review_and_synt_0bb5e09b concept;
+    class workflows_self_improving_cline_6_present_proposa_d1d3a493 concept;
+    class workflows_self_improving_cline_7_approval_to_act_9ceb6178 concept;
+    class workflows_self_improving_cline_8_execute_or_repo_c6071cb5 concept;
+    class workflows_self_improving_cline_9_conclude_bee65dfd concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>self-improving-cline.md</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing self-improving-cline.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Self‑Improving Cline Reflection — Detailed Sequence of Steps</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Self‑Improving Cline Reflection — Detailed Sequence of Steps.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>1) Applicability Check</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1) Applicability Check.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>2) Offer Reflection</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2) Offer Reflection.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>3) Identify Active Rules (Best‑Effort)</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3) Identify Active Rules (Best‑Effort).</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>4) Load Accessible Rule Files</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4) Load Accessible Rule Files.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>5) Review and Synthesize Opportunities</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 5) Review and Synthesize Opportunities.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>6) Present Proposals</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 6) Present Proposals.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>7) Approval to Act</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 7) Approval to Act.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>8) Execute or Report</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 8) Execute or Report.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>9) Conclude</code><br><small style="color:var(--muted)">.clinerules/workflows/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 9) Conclude.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>.clinerules/workflows/self-improving-cline.md</code></td><td>11 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x10. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 12. Community 214 ====== -->
+<h2 id="community-214">12. Community 214</h2>
+<p>Community 214 groups implementation around codebase, onboardingmd, clinerules, onboarding, mostly in .clinerules/codebase-onboarding.md. This section covers 10 nodes and 9 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 214 (10 nodes, 9 edges)
+    clinerules_codebase_onboarding_what_to_cover_55eea0b9("What to Cover<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_codebase_onboardi_95c42382("Codebase Onboarding<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_8bdf8e24("codebase-onboarding.md")
+    clinerules_codebase_onboarding_analysis_process_a9e5b330("Analysis Process<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_output_format_14211c21("Output Format<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_architecture_e6a62718("Architecture<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_dependencies_013603d7("Dependencies<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_key_files_entry_p_a3c19828("Key Files &amp; Entry Points<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_patterns_conventi_67761b9d("Patterns &amp; Conventions<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_project_overview_f18b4520("Project Overview<br/><small>.clinerules/codebase-onboarding.md</small>")
+    clinerules_codebase_onboarding_8bdf8e24 -->|contains| clinerules_codebase_onboarding_codebase_onboardi_95c42382
+    clinerules_codebase_onboarding_codebase_onboardi_95c42382 -->|contains| clinerules_codebase_onboarding_analysis_process_a9e5b330
+    clinerules_codebase_onboarding_codebase_onboardi_95c42382 -->|contains| clinerules_codebase_onboarding_output_format_14211c21
+    clinerules_codebase_onboarding_codebase_onboardi_95c42382 -->|contains| clinerules_codebase_onboarding_what_to_cover_55eea0b9
+    clinerules_codebase_onboarding_what_to_cover_55eea0b9 -->|contains| clinerules_codebase_onboarding_architecture_e6a62718
+    clinerules_codebase_onboarding_what_to_cover_55eea0b9 -->|contains| clinerules_codebase_onboarding_dependencies_013603d7
+    clinerules_codebase_onboarding_what_to_cover_55eea0b9 -->|contains| clinerules_codebase_onboarding_key_files_entry_p_a3c19828
+    clinerules_codebase_onboarding_what_to_cover_55eea0b9 -->|contains| clinerules_codebase_onboarding_patterns_conventi_67761b9d
+    clinerules_codebase_onboarding_what_to_cover_55eea0b9 -->|contains| clinerules_codebase_onboarding_project_overview_f18b4520
+    class clinerules_codebase_onboarding_what_to_cover_55eea0b9 concept;
+    class clinerules_codebase_onboarding_codebase_onboardi_95c42382 concept;
+    class clinerules_codebase_onboarding_8bdf8e24 concept;
+    class clinerules_codebase_onboarding_analysis_process_a9e5b330 concept;
+    class clinerules_codebase_onboarding_output_format_14211c21 concept;
+    class clinerules_codebase_onboarding_architecture_e6a62718 concept;
+    class clinerules_codebase_onboarding_dependencies_013603d7 concept;
+    class clinerules_codebase_onboarding_key_files_entry_p_a3c19828 concept;
+    class clinerules_codebase_onboarding_patterns_conventi_67761b9d concept;
+    class clinerules_codebase_onboarding_project_overview_f18b4520 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>codebase-onboarding.md</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing codebase-onboarding.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Codebase Onboarding</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Codebase Onboarding.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Analysis Process</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Analysis Process.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>What to Cover</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing What to Cover.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Project Overview</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Project Overview.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Architecture</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Architecture.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Key Files &amp; Entry Points</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Key Files &amp; Entry Points.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Patterns &amp; Conventions</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Patterns &amp; Conventions.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Dependencies</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Dependencies.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Output Format</code><br><small style="color:var(--muted)">.clinerules/codebase-onboarding.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Output Format.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>.clinerules/codebase-onboarding.md</code></td><td>10 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x9. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 13. Community 216 ====== -->
+<h2 id="community-216">13. Community 216</h2>
+<p>Community 216 groups implementation around changelogmd, facet, release, 202003, mostly in CHANGELOG.md. This section covers 9 nodes and 8 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 216 (9 nodes, 8 edges)
+    changelog_release_2020_03_v1_1_0_9285a9ed("Release @2020.03 (v1.1.0)<br/><small>CHANGELOG.md</small>")
+    changelog_breaking_changes_7cab85ba("Breaking changes<br/><small>CHANGELOG.md</small>")
+    changelog_domain_facet_configuration_56374806("Domain facet configuration<br/><small>CHANGELOG.md</small>")
+    changelog_enhancements_843a3e17("Enhancements<br/><small>CHANGELOG.md</small>")
+    changelog_fixes_81c76ddb("Fixes<br/><small>CHANGELOG.md</small>")
+    changelog_orphaned_facets_7c70fa7a("Orphaned facets<br/><small>CHANGELOG.md</small>")
+    changelog_other_noteworthy_things_28f44aee("Other noteworthy things<br/><small>CHANGELOG.md</small>")
+    changelog_pending_not_implemented_7eaf9086("Pending / Not implemented<br/><small>CHANGELOG.md</small>")
+    changelog_renamed_facet_display_names_5102cfcd("Renamed facet display names<br/><small>CHANGELOG.md</small>")
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_breaking_changes_7cab85ba
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_domain_facet_configuration_56374806
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_enhancements_843a3e17
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_fixes_81c76ddb
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_orphaned_facets_7c70fa7a
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_other_noteworthy_things_28f44aee
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_pending_not_implemented_7eaf9086
+    changelog_release_2020_03_v1_1_0_9285a9ed -->|contains| changelog_renamed_facet_display_names_5102cfcd
+    class changelog_release_2020_03_v1_1_0_9285a9ed concept;
+    class changelog_breaking_changes_7cab85ba concept;
+    class changelog_domain_facet_configuration_56374806 concept;
+    class changelog_enhancements_843a3e17 concept;
+    class changelog_fixes_81c76ddb concept;
+    class changelog_orphaned_facets_7c70fa7a concept;
+    class changelog_other_noteworthy_things_28f44aee concept;
+    class changelog_pending_not_implemented_7eaf9086 concept;
+    class changelog_renamed_facet_display_names_5102cfcd concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Release @2020.03 (v1.1.0)</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Release @2020.03 (v1.1.0).</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Enhancements</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Enhancements.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Breaking changes</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Breaking changes.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Fixes</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Fixes.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Other noteworthy things</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Other noteworthy things.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Domain facet configuration</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Domain facet configuration.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Renamed facet display names</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Renamed facet display names.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Pending / Not implemented</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Pending / Not implemented.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Orphaned facets</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Orphaned facets.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>CHANGELOG.md</code></td><td>9 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 14. Community 224 ====== -->
+<h2 id="community-224">14. Community 224</h2>
+<p>Community 224 groups implementation around create, new, workflowmd, clinerules, mostly in .clinerules/workflows/create-new-workflow.md. This section covers 7 nodes and 6 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 224 (7 nodes, 6 edges)
+    workflows_create_new_workflow_create_new_workflo_a013f513("Create New Workflow Process - Detailed...<br/><small>.clinerules/workflows/create-new-workflow.md</small>")
+    workflows_create_new_workflow_5cbd15c3("create-new-workflow.md")
+    workflows_create_new_workflow_1_define_workflow_83909f9f("1. Define Workflow Purpose<br/><small>.clinerules/workflows/create-new-workflow.md</small>")
+    workflows_create_new_workflow_2_define_task_obje_315bb969("2. Define Task Objective<br/><small>.clinerules/workflows/create-new-workflow.md</small>")
+    workflows_create_new_workflow_3_outline_major_st_b1debc2f("3. Outline Major Steps<br/><small>.clinerules/workflows/create-new-workflow.md</small>")
+    workflows_create_new_workflow_4_define_detailed_3f5ff527("4. Define Detailed Substeps<br/><small>.clinerules/workflows/create-new-workflow.md</small>")
+    workflows_create_new_workflow_5_generate_workflo_2552194d("5. Generate Workflow File<br/><small>.clinerules/workflows/create-new-workflow.md</small>")
+    workflows_create_new_workflow_5cbd15c3 -->|contains| workflows_create_new_workflow_create_new_workflo_a013f513
+    workflows_create_new_workflow_create_new_workflo_a013f513 -->|contains| workflows_create_new_workflow_1_define_workflow_83909f9f
+    workflows_create_new_workflow_create_new_workflo_a013f513 -->|contains| workflows_create_new_workflow_2_define_task_obje_315bb969
+    workflows_create_new_workflow_create_new_workflo_a013f513 -->|contains| workflows_create_new_workflow_3_outline_major_st_b1debc2f
+    workflows_create_new_workflow_create_new_workflo_a013f513 -->|contains| workflows_create_new_workflow_4_define_detailed_3f5ff527
+    workflows_create_new_workflow_create_new_workflo_a013f513 -->|contains| workflows_create_new_workflow_5_generate_workflo_2552194d
+    class workflows_create_new_workflow_create_new_workflo_a013f513 concept;
+    class workflows_create_new_workflow_5cbd15c3 concept;
+    class workflows_create_new_workflow_1_define_workflow_83909f9f concept;
+    class workflows_create_new_workflow_2_define_task_obje_315bb969 concept;
+    class workflows_create_new_workflow_3_outline_major_st_b1debc2f concept;
+    class workflows_create_new_workflow_4_define_detailed_3f5ff527 concept;
+    class workflows_create_new_workflow_5_generate_workflo_2552194d concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>create-new-workflow.md</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing create-new-workflow.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Create New Workflow Process - Detailed Sequence of Steps</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Create New Workflow Process - Detailed Sequence of Steps.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>1. Define Workflow Purpose</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1. Define Workflow Purpose.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>2. Define Task Objective</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2. Define Task Objective.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>3. Outline Major Steps</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Outline Major Steps.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>4. Define Detailed Substeps</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4. Define Detailed Substeps.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>5. Generate Workflow File</code><br><small style="color:var(--muted)">.clinerules/workflows/create-new-workflow.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 5. Generate Workflow File.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>.clinerules/workflows/create-new-workflow.md</code></td><td>7 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x6. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 15. Community 226 ====== -->
+<h2 id="community-226">15. Community 226</h2>
+<p>Community 226 groups implementation around changelogmd, v100, 2020, refacorings, mostly in CHANGELOG.md. This section covers 6 nodes and 5 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Community 226 (6 nodes, 5 edges)
+    changelog_v1_0_0_2020_04_23_32f6940d("v1.0.0 (2020-04-23)<br/><small>CHANGELOG.md</small>")
+    changelog_pull_requests_704_3de4a64b("Pull Requests<br/><small>CHANGELOG.md</small>")
+    changelog_refacorings_5c4df3c9("Refacorings<br/><small>CHANGELOG.md</small>")
+    changelog_refactor_675_df1bd13b("Refactor<br/><small>CHANGELOG.md</small>")
+    changelog_refactoring_0ae51f13("Refactoring<br/><small>CHANGELOG.md</small>")
+    changelog_refactorings_e7c98403("Refactorings<br/><small>CHANGELOG.md</small>")
+    changelog_v1_0_0_2020_04_23_32f6940d -->|contains| changelog_pull_requests_704_3de4a64b
+    changelog_v1_0_0_2020_04_23_32f6940d -->|contains| changelog_refacorings_5c4df3c9
+    changelog_v1_0_0_2020_04_23_32f6940d -->|contains| changelog_refactor_675_df1bd13b
+    changelog_v1_0_0_2020_04_23_32f6940d -->|contains| changelog_refactoring_0ae51f13
+    changelog_v1_0_0_2020_04_23_32f6940d -->|contains| changelog_refactorings_e7c98403
+    class changelog_v1_0_0_2020_04_23_32f6940d concept;
+    class changelog_pull_requests_704_3de4a64b concept;
+    class changelog_refacorings_5c4df3c9 concept;
+    class changelog_refactor_675_df1bd13b concept;
+    class changelog_refactoring_0ae51f13 concept;
+    class changelog_refactorings_e7c98403 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>v1.0.0 (2020-04-23)</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing v1.0.0 (2020-04-23).</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Refacorings</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Refacorings.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Refactor</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Refactor.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Refactoring</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Refactoring.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Refactorings</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Refactorings.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Pull Requests</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Pull Requests.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>CHANGELOG.md</code></td><td>6 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x5. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 16. Other ====== -->
+<h2 id="other">16. Other</h2>
+<p>Other groups implementation around clinerules, tmp, copy, get, mostly in get-facets.md, .chglog/CHANGELOG.tpl.md, CHANGELOG.md. This section covers 63 nodes and 18 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Other (63 nodes, 18 edges)
+    subgraph other_get_facets_md_dcfbf1dc["get-facets.md"]
+        get_facets_get_geo_count_query_a82a7548("get_geo_count_query<br/><small>get-facets.md</small>")
+        get_facets_get_geo_filter_clauses_ca6f3cc3("get_geo_filter_clauses<br/><small>get-facets.md</small>")
+        get_facets_get_facet_content_32b4d145("get_facet_content<br/><small>get-facets.md</small>")
+        get_facets_get_counts_063055d6("get_counts<br/><small>get-facets.md</small>")
+        get_facets_get_geo_box_from_selection_0b409f27("get_geo_box_from_selection<br/><small>get-facets.md</small>")
+        get_facets_site_name_enhancer_379518fd("site_name_enhancer<br/><small>get-facets.md</small>")
+    end
+    subgraph other_chglog_CHANGELOG_tpl_md_eeeb2d82[".chglog/CHANGELOG.tpl.md"]
+        chglog_changelog_tpl_e99f0640("CHANGELOG.tpl.md")
+        chglog_changelog_tpl_pull_requests_2845c497("Pull Requests<br/><small>.chglog/CHANGELOG.tpl.md</small>")
+        chglog_changelog_tpl_title_dd57f666(".Title<br/><small>.chglog/CHANGELOG.tpl.md</small>")
+        chglog_changelog_tpl_title_23_b72f43df(".Title<br/><small>.chglog/CHANGELOG.tpl.md</small>")
+        chglog_changelog_tpl_if_tag_previous_tag_name_in_a0631572("if .Tag.Previous [ .Tag.Name ]...<br/><small>.chglog/CHANGELOG.tpl.md</small>")
+    end
+    subgraph other_clinerules_baby_steps_md_46d0d2f6[".clinerules/baby-steps.md"]
+        clinerules_baby_steps_core_operational_directive_09a40eb7("Core Operational Directive: The Baby St...<br/><small>.clinerules/baby-steps.md</small>")
+        clinerules_baby_steps_the_unbreakable_rules_of_b_d165918d("The Unbreakable Rules of Baby Steps™<br/><small>.clinerules/baby-steps.md</small>")
+        clinerules_baby_steps_93890392("baby-steps.md")
+    end
+    subgraph other_clinerules_project_md_1285a089[".clinerules/project.md"]
+        clinerules_project_shared_project_instructions_f56afa82("Shared project instructions<br/><small>.clinerules/project.md</small>")
+        clinerules_project_edc27c8f("project.md")
+    end
+    release_workflow_release_yml_ea5da4fe("Release Workflow<br/><small>.github/workflows/release.yml</small>")
+    utilities_interval_cf095bb4("Interval.cs")
+    get_facets_get_geo_filter_clauses_ca6f3cc3 -->|calls| get_facets_get_facet_content_32b4d145
+    get_facets_get_geo_count_query_a82a7548 -->|calls| get_facets_get_counts_063055d6
+    get_facets_get_geo_count_query_a82a7548 -->|calls| get_facets_get_facet_content_32b4d145
+    get_facets_get_facet_content_32b4d145 -->|calls| get_facets_get_counts_063055d6
+    %% Omitted for readability: 45 nodes, 0 edges
+    class get_facets_get_geo_count_query_a82a7548 function;
+    class get_facets_get_geo_filter_clauses_ca6f3cc3 function;
+    class get_facets_get_facet_content_32b4d145 function;
+    class get_facets_get_counts_063055d6 function;
+    class get_facets_get_geo_box_from_selection_0b409f27 function;
+    class get_facets_site_name_enhancer_379518fd function;
+    class chglog_changelog_tpl_e99f0640 concept;
+    class chglog_changelog_tpl_pull_requests_2845c497 concept;
+    class chglog_changelog_tpl_title_dd57f666 concept;
+    class chglog_changelog_tpl_title_23_b72f43df concept;
+    class chglog_changelog_tpl_if_tag_previous_tag_name_in_a0631572 concept;
+    class clinerules_baby_steps_core_operational_directive_09a40eb7 concept;
+    class clinerules_baby_steps_the_unbreakable_rules_of_b_d165918d concept;
+    class clinerules_baby_steps_93890392 concept;
+    class clinerules_project_shared_project_instructions_f56afa82 concept;
+    class clinerules_project_edc27c8f concept;
+    class release_workflow_release_yml_ea5da4fe klass;
+    class utilities_interval_cf095bb4 klass;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>CHANGELOG.tpl.md</code><br><small style="color:var(--muted)">.chglog/CHANGELOG.tpl.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing CHANGELOG.tpl.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>{{ if .Tag.Previous }}[{{ .Tag.Name }}]({{ $.Info.RepositoryURL }}/compare/{{ .Tag.Previous.Name }}...{{ .Tag.Name }}){{ else }}{{ .Tag.Name }}{{ end }} ({{ datetime &quot;2006-01-02&quot; .Tag.Date }})</code><br><small style="color:var(--muted)">.chglog/CHANGELOG.tpl.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing {{ if .Tag.Previous }}[{{ .Tag.Name }}]({{ $.Info.RepositoryURL }}/compare/{{ .Tag.Previous.Name }}...{{ .Tag.Name }}){{ else }}{{ .Tag.Name }}{{ end }} ({{ datetime &quot;2006-01-02&quot; .Tag.Date }}).</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>{{ .Title }}</code><br><small style="color:var(--muted)">.chglog/CHANGELOG.tpl.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing {{ .Title }}.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Pull Requests</code><br><small style="color:var(--muted)">.chglog/CHANGELOG.tpl.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Pull Requests.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>{{ .Title }}</code><br><small style="color:var(--muted)">.chglog/CHANGELOG.tpl.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing {{ .Title }}.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>get_geo_filter_clauses</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>get_facet_content</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td>get_geo_filter_clauses node in get-facets.md.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>get_geo_count_query</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>get_counts</code><br><small style="color:var(--muted)">get-facets.md</small><br><code>get_facet_content</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td>get_geo_count_query node in get-facets.md.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>get_facet_content</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>get_geo_count_query</code><br><small style="color:var(--muted)">get-facets.md</small><br><code>get_geo_filter_clauses</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td><code>get_counts</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td>get_facet_content node in get-facets.md.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>get_counts</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>get_facet_content</code><br><small style="color:var(--muted)">get-facets.md</small><br><code>get_geo_count_query</code><br><small style="color:var(--muted)">get-facets.md</small></td>
+  <td>No direct outbound edge</td>
+  <td>get_counts node in get-facets.md.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Changelog</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Changelog.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Release @2024.05</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Release @2024.05.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>Enhancement</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Enhancement.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>Release @2023.12</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Release @2023.12.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Cline&#x27;s Memory Bank</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/memory-bank.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Cline&#x27;s Memory Bank.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Task Handoff Strategy Guide</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/new-task-automation.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task Handoff Strategy Guide.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Cline&#x27;s Memory Bank (Time-Aware Version)</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/temporal-memory-bank.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Cline&#x27;s Memory Bank (Time-Aware Version).</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>baby-steps.md</code><br><small style="color:var(--muted)">.clinerules/baby-steps.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing baby-steps.md.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Core Operational Directive: The Baby Steps™ Methodology</code><br><small style="color:var(--muted)">.clinerules/baby-steps.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Core Operational Directive: The Baby Steps™ Methodology.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>The Unbreakable Rules of Baby Steps™</code><br><small style="color:var(--muted)">.clinerules/baby-steps.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing The Unbreakable Rules of Baby Steps™.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>Integrate Cline CLI into a CI/CD Pipeline</code><br><small style="color:var(--muted)">clinerules copy/workflows/ci-cd-with-cline-cli.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Integrate Cline CLI into a CI/CD Pipeline.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Set Up a CI/CD Pipeline for Your Project</code><br><small style="color:var(--muted)">clinerules copy/workflows/setup-ci-cd-pipeline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Set Up a CI/CD Pipeline for Your Project.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>project.md</code><br><small style="color:var(--muted)">.clinerules/project.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing project.md.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Shared project instructions</code><br><small style="color:var(--muted)">.clinerules/project.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Shared project instructions.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>self-improving-cline.md</code><br><small style="color:var(--muted)">.clinerules/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing self-improving-cline.md.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>Self-Improving Cline Reflection</code><br><small style="color:var(--muted)">.clinerules/self-improving-cline.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Self-Improving Cline Reflection.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>AI DLC Construction Phase</code><br><small style="color:var(--muted)">clinerules copy/workflows/ai-dlc-construction.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AI DLC Construction Phase.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>AI DLC Inception Phase</code><br><small style="color:var(--muted)">clinerules copy/workflows/ai-dlc-inception.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AI DLC Inception Phase.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>AI Assistant Guide for BAs</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/ba.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AI Assistant Guide for BAs.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Baby Steps™ Methodology</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/baby-steps.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Baby Steps™ Methodology.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>bin/deploy-staging Reference</code><br><small style="color:var(--muted)">bin/deploy-staging.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing bin/deploy-staging Reference.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>get-facets.md</code></td><td>7 nodes</td></tr>
+<tr><td><code>.chglog/CHANGELOG.tpl.md</code></td><td>5 nodes</td></tr>
+<tr><td><code>CHANGELOG.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>.clinerules/baby-steps.md</code></td><td>3 nodes</td></tr>
+<tr><td><code>.clinerules/project.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>.clinerules/self-improving-cline.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>instructions/features/semantic-term-normalization.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>.github/prompts/dotnet.prompt.md</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x11, calls x4, references x2, semantically similar to x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<h2 id="stats">Project Statistics</h2>
+
+<div class="grid">
+  <div class="card">
+    <h4>Graph</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>Nodes</td><td>3267</td></tr>
+      <tr><td>Edges</td><td>5314</td></tr>
+      <tr><td>Hyperedges</td><td>0</td></tr>
+      <tr><td>Communities</td><td>258</td></tr>
+      <tr><td>Documented Sections</td><td>15</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Edge Confidence</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>EXTRACTED</td><td>5308</td></tr>
+      <tr><td>INFERRED</td><td>6</td></tr>
+      <tr><td>AMBIGUOUS</td><td>0</td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
+  <p>sead_query_api — Architecture Documentation</p>
+  <p>Generated: 2026-07-04 11:02 UTC · graphify callflow-html</p>
+</div>
+
+</div><!-- .container -->
+
+<script>
+(function () {
+  const mermaidConfig = {
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: { htmlLabels: true, useMaxWidth: true },
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#38bdf8',
+      secondaryColor: '#0f172a',
+      tertiaryColor: '#334155',
+      lineColor: '#64748b',
+      textColor: '#e2e8f0',
+    }
+  };
+
+  mermaid.initialize(mermaidConfig);
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function enhanceMermaidDiagrams() {
+    document.querySelectorAll('.mermaid').forEach((container) => {
+      if (container.dataset.zoomReady === 'true') return;
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      container.dataset.zoomReady = 'true';
+      container.classList.add('is-enhanced');
+
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid-viewport';
+      svg.parentNode.insertBefore(viewport, svg);
+      viewport.appendChild(svg);
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mermaid-toolbar';
+      toolbar.innerHTML = [
+        '<button type="button" data-action="zoom-out" title="Zoom out">-</button>',
+        '<span class="zoom-level" data-role="level">100%</span>',
+        '<button type="button" data-action="zoom-in" title="Zoom in">+</button>',
+        '<button type="button" data-action="fit" title="Fit width">Fit</button>',
+        '<button type="button" data-action="reset" title="Reset view">Reset</button>'
+      ].join('');
+      container.insertBefore(toolbar, viewport);
+
+      const state = { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+      const level = toolbar.querySelector('[data-role="level"]');
+
+      function applyTransform() {
+        svg.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+        level.textContent = `${Math.round(state.scale * 100)}%`;
+      }
+
+      function zoomBy(delta) {
+        state.scale = clamp(state.scale + delta, 0.25, 3);
+        applyTransform();
+      }
+
+      function reset() {
+        state.scale = 1;
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      function fitWidth() {
+        const rawWidth = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width
+          ? svg.viewBox.baseVal.width
+          : svg.getBoundingClientRect().width / state.scale;
+        if (!rawWidth) {
+          reset();
+          return;
+        }
+        state.scale = clamp((viewport.clientWidth - 48) / rawWidth, 0.25, 1.4);
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      toolbar.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+        const action = button.dataset.action;
+        if (action === 'zoom-in') zoomBy(0.15);
+        if (action === 'zoom-out') zoomBy(-0.15);
+        if (action === 'fit') fitWidth();
+        if (action === 'reset') reset();
+      });
+
+      viewport.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        zoomBy(event.deltaY < 0 ? 0.1 : -0.1);
+      }, { passive: false });
+
+      viewport.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        state.dragging = true;
+        state.startX = event.clientX;
+        state.startY = event.clientY;
+        state.originX = state.x;
+        state.originY = state.y;
+        viewport.classList.add('is-dragging');
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener('pointermove', (event) => {
+        if (!state.dragging) return;
+        state.x = state.originX + event.clientX - state.startX;
+        state.y = state.originY + event.clientY - state.startY;
+        applyTransform();
+      });
+
+      function endDrag(event) {
+        if (!state.dragging) return;
+        state.dragging = false;
+        viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      applyTransform();
+    });
+  }
+
+  function renderMermaid() {
+    const result = mermaid.run
+      ? mermaid.run({ querySelector: '.mermaid' })
+      : Promise.resolve();
+    Promise.resolve(result)
+      .then(enhanceMermaidDiagrams)
+      .catch((error) => {
+        console.error('Mermaid render failed:', error);
+        enhanceMermaidDiagrams();
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaid);
+  } else {
+    renderMermaid();
+  }
+})();
+</script>
+
+</body>
+</html>
