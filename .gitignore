@@ -376,4 +376,6 @@ bin
 tmp
 .chats
 docs/output
-graphify-out/
+graphify-out/*-*-*
+graphify-out/cost.json 
+graphify-out/manifest.json 
