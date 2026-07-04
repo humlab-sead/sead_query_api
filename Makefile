@@ -75,8 +75,26 @@ run-graphify:
 	@graphify run .
 	@graphify export callflow-html
 
-codex-graphify:
+graphify-install-agents-skill:
 	@graphify install codex --project
+	@git add .codex .agents AGENTS.md
+	@if git diff --cached --quiet -- .codex .agents; then \
+		echo "No changes in .agents"; \
+	else \
+		git commit -m "chore: updated graphify .codex/.agents skill"; \
+	fi
+
+graphify-install-copilot:
+	@graphify install copilot --project
+
+graphify-update:
+	@graphify update $(HOME)/source/sead_shape_shifter  --force
+	@git add graphify-out
+	@if git diff --cached --quiet -- graphify-out; then \
+		echo "No changes in graphify-out"; \
+	else \
+		git commit -m "chore: updated graphify graph"; \
+	fi
 
 ####################################################################################################
 # TestContainer PostgreSQL database targets
