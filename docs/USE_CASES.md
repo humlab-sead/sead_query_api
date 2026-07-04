@@ -2,17 +2,13 @@
 
 ## Use case: Load content for a selected target facet (query-engine overhaul path)
 
-This use case describes the composed facet-content runtime introduced by
-[COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md](proposals/done/COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md),
-extended by
-[INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md](proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md),
-and summarized in [DESIGN.md](DESIGN.md).
+This use case describes the composed facet-content runtime introduced by [COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md](proposals/done/COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md), extended by [INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md](proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md), and summarized in [DESIGN.md](DESIGN.md).
 
-It describes the current composed facet-content path as implemented in code. It is not a legacy fallback scenario.
+It describes the new **anchor-based composed path for retrieving a facet's content** as implemented in code.
 
 ### Goal
 
-The UI needs the content for one target facet, such as category rows and counts for `country`, while respecting the current request context, the active predicate facets, the target facet type, and any imported inline facet-template metadata.
+The UI needs the content for one target facet, such as category rows and counts for `country`, while taking into account the current request context, the active predicate facets, the target facet type, and any imported inline facet-template metadata.
 
 ### Primary actors
 
@@ -25,43 +21,41 @@ The UI needs the content for one target facet, such as category rows and counts 
 - [ComposedFacetContentRequestFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs)
 - [ComposedFacetContentFilterQueryFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs)
 - The target-specific handlers:
-  [DiscreteComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/DiscreteComposedFacetContentHandler.cs),
-  [RangeComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/RangeComposedFacetContentHandler.cs),
-  [IntersectComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/IntersectComposedFacetContentHandler.cs),
-  and [GeoPolygonComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/GeoPolygonComposedFacetContentHandler.cs)
+  - [DiscreteComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/DiscreteComposedFacetContentHandler.cs)
+  - [RangeComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/RangeComposedFacetContentHandler.cs)
+  - [IntersectComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/IntersectComposedFacetContentHandler.cs)
+  - [GeoPolygonComposedFacetContentHandler](../sead.query.composer/QueryComposer/Services/GeoPolygonComposedFacetContentHandler.cs)
 - PostgreSQL, reached through `ITypedQueryProxy`
 
 ### Main code path
 
-- The HTTP entry point is [FacetsController.Load](../sead.query.api/Controllers/FacetsController.cs).
-- Request reconstitution happens in [FacetConfigReconstituteService](../sead.query.api/Services/Reconstitute/FacetConfigReconstituteService.cs).
-- Pick normalization happens in [LoadFacetService](../sead.query.api/Services/LoadFacetService.cs).
-- The runtime handoff into composed execution is [FacetContentService.Load](../sead.query.core/Services/FacetContent/FacetContentService.cs).
-- The composed orchestrator is [ComposedFacetContentService](../sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs).
-- The target request contract is built in [ComposedFacetContentRequestFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs).
-- The composed anchor filter is built in [ComposedFacetContentFilterQueryFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs).
-- The target SQL plan is assembled by [DiscreteFacetContentQueryComposer](../sead.query.core/QueryComposer/Strategies/DiscreteFacetContentQueryComposer.cs), which now also covers range, intersect, and geo-polygon target SQL shapes.
-- Imported inline template metadata is persisted by [FacetRouteConfigurationImporter](../sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs) and loaded at runtime by [FacetTemplateRuntimeResolver](../sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs).
+This section shows the main path a facet-content request follows through the system, from the HTTP API to SQL generation.
+
+1. The request enters the API through [FacetsController.Load](../sead.query.api/Controllers/FacetsController.cs).
+2. The API rebuilds the facet configuration using [FacetConfigReconstituteService](../sead.query.api/Services/Reconstitute/FacetConfigReconstituteService.cs).
+3. The selected facet values, or picks, are normalized by [LoadFacetService](../sead.query.api/Services/LoadFacetService.cs).
+4. Processing is handed over to the core **facet-content pipeline** by [FacetContentService.Load](../sead.query.core/Services/FacetContent/FacetContentService.cs). This is the runtime entry point into composed execution.
+5. [ComposedFacetContentService](../sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs) acts as the composed orchestrator. It coordinates the components that build the request, create the filter, and assemble the final facet-content query.
+6. [ComposedFacetContentRequestFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs) builds the target request contract. This contract describes what facet is being loaded and which predicates are active.
+7. [ComposedFacetContentFilterQueryFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs) builds the composed anchor filter. This filter represents the combined effect of all active predicate facets.
+8. [DiscreteFacetContentQueryComposer](../sead.query.core/QueryComposer/Strategies/DiscreteFacetContentQueryComposer.cs) assembles the target SQL plan. Despite its name, this composer now also handles range, intersect, and geo-polygon target SQL shapes.
+9. Template metadata used by the runtime is imported and stored by [FacetRouteConfigurationImporter](../sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs), then loaded during execution by [FacetTemplateRuntimeResolver](../sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs).
 
 ### Main scenario
 
 1. **The UI asks to populate one target facet.**
    The client posts a `FacetsConfig2` payload to [FacetsController.Load](../sead.query.api/Controllers/FacetsController.cs).
-
 2. **The API reconstitutes the runtime request model.**
    [FacetConfigReconstituteService](../sead.query.api/Services/Reconstitute/FacetConfigReconstituteService.cs) resolves `TargetFacet`, `DomainFacet`, and each `FacetConfig2.Facet` from repository-backed facet metadata, then validates the reconstituted `FacetsConfig2`.
-
 3. **The load service normalizes picks before content loading begins.**
    [LoadFacetService](../sead.query.api/Services/LoadFacetService.cs) applies `ISupportedRequestPickSanitizer.Update(...)` and then delegates to [FacetContentService.Load](../sead.query.core/Services/FacetContent/FacetContentService.cs).
-
 4. **The facet-content service enters the composed runtime directly.**
    [FacetContentService](../sead.query.core/Services/FacetContent/FacetContentService.cs) no longer chooses between a live legacy path and a composed path here. It delegates directly to [ComposedFacetContentService.Load](../sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs).
-
 5. **The composed orchestrator resolves the target handler.**
    [ComposedFacetContentService](../sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs) selects an `IComposedFacetContentHandler` by `TargetFacet.FacetTypeId`. This is the strategy split introduced by the redesign.
-
 6. **The composed request contract is validated and built.**
    [ComposedFacetContentRequestFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentRequestFactory.cs) performs the request-construction work that used to be mixed into the service:
+
    - resolve the aggregate facet and its anchor table
    - derive the anchor key column from the aggregate facet
    - derive the target join column through the selected handler
@@ -69,51 +63,45 @@ The UI needs the content for one target facet, such as category rows and counts 
    - include the domain config when it has picks or enforced constraints
    - validate each secondary predicate facet against the composed contract
    - compile `anchorToTargetSql` when the target table is not the anchor table
-
 7. **The request factory rejects unsupported predicate shapes early.**
    The same factory currently limits secondary predicates to supported discrete predicate facets. It fails explicitly when:
+
    - the predicate facet type is not supported as a secondary predicate
    - the predicate facet does not expose a simple source key column
    - the predicate criteria cannot be normalized for the composed predicate path
    - the predicate source table cannot be routed to the anchor table
    - the target join column or target route cannot be derived
-
 8. **The composed anchor filter is built from predicate plans.**
    [ComposedFacetContentFilterQueryFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs) turns the validated predicate configs into `PredicateQueryPlan` instances.
-
 9. **Each predicate plan resolves its own source-side SQL contract.**
    For each predicate facet, the filter-query factory:
+
    - resolves the source table
    - resolves the source key column
    - resolves supported predicate criteria
    - determines whether the route to the anchor is an identity route or a routed trail
    - delegates SQL generation to `IDiscreteFacetPredicateResolver`
-
 10. **Imported inline template metadata can override the predicate SQL shape.**
     Before calling the predicate resolver, [ComposedFacetContentFilterQueryFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs) loads a runtime snapshot from [FacetTemplateRuntimeResolver](../sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs). If the facet has an anchor-specific SQL exception for the current anchor table, that SQL is passed into `AnchorTemplate.ExplicitSql` and becomes the predicate source for that route.
-
 11. **If the request has no predicate facets, the runtime still creates an anchor set.**
     [ComposedFacetContentFilterQueryFactory](../sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs) emits an explicit unfiltered anchor query through `ComposedFacetContentSupport.CreateUnfilteredAnchorSql(...)`. This is the basis for target-only composed requests.
-
 12. **The composed filter query is materialized.**
     When one or more predicate plans exist, `IComposedFilterQueryComposer` combines them into one composed anchor-set SQL contract. The output keeps the anchor table and anchor key alias that downstream target rendering expects.
-
 13. **The selected target handler builds the target facet-content query.**
     The handler receives:
+
     - the normalized `FacetsConfig2`
     - the `ComposedFacetContentRequest`
     - the `ComposedFilterQuery`
-
 14. **The target query composer builds the SQL plan.**
     [DiscreteFacetContentQueryComposer](../sead.query.core/QueryComposer/Strategies/DiscreteFacetContentQueryComposer.cs) materializes the final target query. Depending on target type, the plan may include:
+
     - `composed_filter` as the anchor-set CTE
     - `target_route` when the target table differs from the anchor table
     - `categories` and `outerbounds` for range and intersect targets
     - target-table joins and enforced target-side criteria
-
 15. **The handler executes the SQL and maps rows into `FacetContent`.**
     The selected handler uses `ITypedQueryProxy.QueryRows(...)` to execute the plan and map rows into `CategoryItem` values, then returns a `FacetContent` object with items, distribution, SQL, and user picks.
-
 16. **The API returns the facet response to the UI.**
     The `FacetContent` result flows back through [ComposedFacetContentService](../sead.query.composer/QueryComposer/Services/ComposedFacetContentService.cs), [FacetContentService](../sead.query.core/Services/FacetContent/FacetContentService.cs), and [LoadFacetService](../sead.query.api/Services/LoadFacetService.cs) to [FacetsController.Load](../sead.query.api/Controllers/FacetsController.cs), which returns JSON to the client.
 
@@ -190,8 +178,7 @@ So the key idea is:
 
 > The redesign turns facet-content loading into an explicit orchestration pipeline: reconstitute request, normalize picks, validate a routable anchor contract, compose an anchor filter, delegate target rendering to a facet-type handler, and optionally inject imported inline SQL exceptions where the facet authoring model requires them.
 
-
-The updated use case is much more detailed than the earlier sequence diagrams because it exposes the **actual orchestration contracts** and the **request factory / filter factory / handler split**. 
+The updated use case is much more detailed than the earlier sequence diagrams because it exposes the **actual orchestration contracts** and the **request factory / filter factory / handler split**.
 
 I would visualize it using **three diagrams at different zoom levels**.
 
@@ -392,7 +379,7 @@ Key message:
 
 ---
 
-# 4. Contract-Oriented View (My Favorite)
+# 4. Contract-Oriented View
 
 Since the redesign is centered on contracts, this diagram explains the architecture better than a pure sequence diagram.
 
