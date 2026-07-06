@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "/bin/sh -lc 'PATH=$HOME/source/sead_shape_shifter/.venv/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.dotnet/tools:$HOME/.local/bin:$HOME/bin/go/bin:$HOME/.npm/lib/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin; export PATH; command -v rtk >/dev/null 2>&1 || { echo rtk_not_found >&2; exit 127; }; exec rtk hook copilot'",
+        "cwd": ".",
+        "timeout": 5
+      }
+    ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "PATH=$HOME/source/sead_shape_shifter/.venv/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$HOME/.dotnet/tools:$HOME/.local/bin:$HOME/bin/go/bin:$HOME/.npm/lib/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin; export PATH; command -v rtk >/dev/null 2>&1 || { echo rtk_not_found >&2; exit 127; }; exec rtk hook copilot",
+        "powershell": "if (Get-Command rtk -ErrorAction SilentlyContinue) { rtk hook copilot } elseif (Test-Path \"$HOME/.local/bin/rtk\") { & \"$HOME/.local/bin/rtk\" hook copilot } else { Write-Error \"rtk not found\"; exit 127 }",
+        "cwd": ".",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}
