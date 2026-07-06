@@ -32,7 +32,7 @@ This repository is a .NET solution centered on these projects:
 
 ## Workflow expectations
 
-- Target .NET 9 and the existing solution/project structure.
+- Target .NET 10 and the existing solution/project structure.
 - Use the root `Makefile`, VS Code tasks, or `dotnet` commands already present in the repo.
 - Run targeted tests for the changed slice before finishing; widen validation only when the change crosses layers.
 - Keep changes small and aligned with existing naming, nullability, async, and DI patterns.
@@ -59,3 +59,27 @@ Use the focused instruction files instead of expanding this file. Each `.instruc
 - `github-workflow.instructions.md`: issue, branch, and commit workflow guidance
 - `conventional-commits.instructions.md`: commit message format
 - `glossary.instructions.md`: guidance for `docs/GLOSSARY.md`
+- `wricting-style.instructions.md` - concrete wording for docs, comments, and PR text
+
+## graphify
+
+For repo architecture or relationship questions, follow the graphify quick start in `AGENTS.md`.
+
+<!-- rtk-instructions v2 -->
+**rtk** is a CLI proxy that filters and compresses command outputs, saving 60-90% tokens.
+
+Use `rtk` for shell commands unless raw output, shell built-ins, or interactive commands require otherwise.
+
+Examples:
+```bash
+rtk uv run pytest
+rtk make test
+rtk pylint src/
+rtk git status
+rtk git log -10
+```
+
+If `rtk` fails, retry without it.
+
+Meta: `rtk gain`, `rtk gain --history`, `rtk discover`, `rtk proxy <cmd>`
+<!-- /rtk-instructions -->
