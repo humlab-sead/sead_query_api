@@ -113,7 +113,7 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
-    public void Load_WithSnapshotBackedExplicitAnchorSql_UsesSnapshotSql()
+    public void Load_WithSnapshotBackedExplicitAnchorSql_RendersPlaceholderSql()
     {
         var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
         templateResolver
@@ -127,9 +127,9 @@ public class ComposedFacetContentServiceTests
                     new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                     {
                         ["tbl_sites"] =
-                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where tbl_sites.site_id > 0",
+                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where {pick_filter_sql}",
                         ["site_tbl"] =
-                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where tbl_sites.site_id > 0",
+                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where {pick_filter_sql}",
                     }
                 )
             );
@@ -173,6 +173,7 @@ public class ComposedFacetContentServiceTests
 
         var factory = new ComposedFacetContentFilterQueryFactory(
             pathFinder.Object,
+            Mock.Of<IRouteSqlCompiler>(),
             predicateResolver.Object,
             templateResolver.Object,
             composedFilterQueryComposer.Object
@@ -190,10 +191,478 @@ public class ComposedFacetContentServiceTests
         var result = factory.Create(request);
 
         result.Sql.Should().Be("select snapshot_result");
-        capturedExplicitSql.Should().Be(
-            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where tbl_sites.site_id > 0"
-        );
+        capturedExplicitSql.Should().Contain("where category_id in (1, 2, 5)");
+        capturedExplicitSql.Should().NotContain("{pick_filter_sql}");
         templateResolver.Verify(resolver => resolver.GetTemplateSnapshot(It.IsAny<Facet>()), Times.AtLeastOnce);
+    }
+
+    [Fact]
+    public void Load_WithSnapshotBackedExplicitAnchorSqlAndUnknownPlaceholder_ThrowsInvalidOperationException()
+    {
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(It.IsAny<Facet>()))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_sites"] =
+                            "select tbl_sites.site_id as source_id, tbl_sites.site_id as target_id from tbl_sites where {pick_filter_sql_typo}",
+                    }
+                )
+            );
+
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>(MockBehavior.Strict);
+
+        var pathFinder = new Mock<IPathFinder>();
+        pathFinder.Setup(finder => finder.Find(It.IsAny<string>(), It.IsAny<string>())).Returns([]);
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            Mock.Of<IRouteSqlCompiler>(),
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var facetsConfig = CreateCountryToSitesFacetsConfig();
+        var request = new ComposedFacetContentRequest(
+            "tbl_sites",
+            "site_id",
+            "site_id",
+            string.Empty,
+            [facetsConfig.GetConfig("country")]
+        );
+
+        var action = () => factory.Create(request);
+
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*Template SQL contains unresolved placeholder tokens*");
+    }
+
+    [Fact]
+    public void Create_WithUnsupportedTemplateContract_ThrowsInvalidOperationException()
+    {
+        var analysisEntityTable = new Table
+        {
+            TableId = 210,
+            TableOrUdfName = "tbl_analysis_entities",
+            PrimaryKeyName = "analysis_entity_id",
+        };
+        var familyTable = new Table
+        {
+            TableId = 211,
+            TableOrUdfName = "tbl_taxa_tree_families",
+            PrimaryKeyName = "family_id",
+        };
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "family",
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_taxa_tree_families.family_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = familyTable }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntityTable },
+                    Route = new Route { Specification = "tbl_analysis_entities -> tbl_analysis_entities" },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([1]));
+        var request = new ComposedFacetContentRequest("tbl_analysis_entities", "analysis_entity_id", "analysis_entity_id", string.Empty, [config]);
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    "select tf.family_id as category_id, ae.analysis_entity_id as anchor_id from tbl_taxa_tree_families tf join tbl_analysis_entities ae on 1 = 1 where {pick_filter_sql}",
+                    "range",
+                    "analysis_entity",
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                )
+            );
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            Mock.Of<IPathFinder>(),
+            Mock.Of<IRouteSqlCompiler>(),
+            Mock.Of<IDiscreteFacetPredicateResolver>(),
+            templateResolver.Object,
+            Mock.Of<IComposedFilterQueryComposer>()
+        );
+
+        var action = () => factory.Create(request);
+
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*uses unsupported template contract 'range' for discrete composition.*");
+    }
+
+    [Fact]
+    public void Create_WithoutTemplateMetadata_UsesRelationalFallbackPredicateInputs()
+    {
+        var sitesTable = new Table
+        {
+            TableId = 220,
+            TableOrUdfName = "tbl_sites",
+            PrimaryKeyName = "site_id",
+        };
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "site",
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_sites.site_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = sitesTable }],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([99]));
+        var request = new ComposedFacetContentRequest("tbl_sites", "site_id", "site_id", string.Empty, [config]);
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(FacetTemplateRuntimeSnapshot.Empty);
+
+        string capturedSourceKeyColumn = null;
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, sourceKeyColumn, _, anchorTemplate, _, _, _) =>
+                {
+                    capturedSourceKeyColumn = sourceKeyColumn;
+                    capturedExplicitSql = anchorTemplate.ExplicitSql;
+                }
+            )
+            .Returns("select relational_path_sql");
+
+        var routeSqlCompiler = new Mock<IRouteSqlCompiler>(MockBehavior.Strict);
+        var pathFinder = new Mock<IPathFinder>(MockBehavior.Strict);
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            routeSqlCompiler.Object,
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select relational_path_sql");
+        capturedSourceKeyColumn.Should().Be("site_id", "fallback path should resolve source key from category expression");
+        capturedExplicitSql.Should().BeEmpty("fallback path should not provide template SQL when template metadata is absent");
+        routeSqlCompiler.VerifyNoOtherCalls();
+        pathFinder.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public void Create_WithSnapshotBackedBaseTemplateAndProjectedAnchor_UsesProjectedTemplateSql()
+    {
+        var analysisEntityTable = new Table
+        {
+            TableId = 200,
+            TableOrUdfName = "tbl_analysis_entities",
+            PrimaryKeyName = "analysis_entity_id",
+        };
+        var datasetTable = new Table
+        {
+            TableId = 201,
+            TableOrUdfName = "tbl_datasets",
+            PrimaryKeyName = "dataset_id",
+        };
+        var familyTable = new Table
+        {
+            TableId = 202,
+            TableOrUdfName = "tbl_taxa_tree_families",
+            PrimaryKeyName = "family_id",
+        };
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "family",
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_taxa_tree_families.family_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = familyTable }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntityTable },
+                    Route = new Route { Specification = "tbl_analysis_entities -> tbl_analysis_entities" },
+                },
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "dataset", Table = datasetTable },
+                    Route = new Route { Specification = "tbl_analysis_entities -> tbl_datasets" },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([11, 12]));
+        var request = new ComposedFacetContentRequest("tbl_datasets", "dataset_id", "dataset_id", string.Empty, [config]);
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    "select tf.family_id as category_id, ae.analysis_entity_id as anchor_id from tbl_taxa_tree_families tf join tbl_analysis_entities ae on 1 = 1 where {pick_filter_sql}",
+                    "discrete",
+                    "analysis_entity",
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select projected_template_sql");
+
+        var routeSqlCompiler = new Mock<IRouteSqlCompiler>();
+        routeSqlCompiler
+            .Setup(
+                compiler =>
+                    compiler.Compile(
+                        It.Is<IReadOnlyList<string>>(tables =>
+                            tables.Count == 2
+                            && tables[0] == "tbl_analysis_entities"
+                            && tables[1] == "tbl_datasets"
+                        ),
+                        "analysis_entity_id",
+                        "dataset_id"
+                    )
+            )
+            .Returns("select analysis_entity_id as source_id, dataset_id as target_id from tbl_analysis_entities join tbl_datasets on tbl_datasets.dataset_id = tbl_analysis_entities.dataset_id");
+
+        var pathFinder = new Mock<IPathFinder>();
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            routeSqlCompiler.Object,
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select projected_template_sql");
+        capturedExplicitSql.Should().Contain("category_id in (11, 12)");
+        capturedExplicitSql.Should().Contain("base.category_id as source_id");
+        capturedExplicitSql.Should().Contain("projected.target_id as target_id");
+        routeSqlCompiler.VerifyAll();
+    }
+
+    [Fact]
+    public void Create_WithJoinedDiscreteBaseTemplate_UsesSampleToDatasetProjectionRouteChain()
+    {
+        var sampleTable = new Table
+        {
+            TableId = 300,
+            TableOrUdfName = "tbl_physical_samples",
+            PrimaryKeyName = "physical_sample_id",
+        };
+        var datasetTable = new Table
+        {
+            TableId = 301,
+            TableOrUdfName = "tbl_datasets",
+            PrimaryKeyName = "dataset_id",
+        };
+        var biblioTable = new Table
+        {
+            TableId = 302,
+            TableOrUdfName = "tbl_biblio",
+            PrimaryKeyName = "biblio_id",
+        };
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "tbl_biblio_sample_groups",
+            FacetTypeId = EFacetType.Discrete,
+            CategoryIdExpr = "tbl_biblio.biblio_id",
+            Tables = [new FacetTable { SequenceId = 1, Table = biblioTable }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "sample", Table = sampleTable },
+                    Route = new Route { Specification = "tbl_physical_samples -> tbl_physical_samples" },
+                },
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "dataset", Table = datasetTable },
+                    Route = new Route { Specification = "tbl_physical_samples -> tbl_analysis_entities -> tbl_datasets" },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([55]));
+        var request = new ComposedFacetContentRequest("tbl_datasets", "dataset_id", "dataset_id", string.Empty, [config]);
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    "select tbl_biblio.biblio_id as category_id, tbl_physical_samples.physical_sample_id as anchor_id from tbl_biblio join tbl_physical_samples on 1 = 1 where {pick_filter_sql}",
+                    "discrete",
+                    "sample",
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select joined_projection_sql");
+
+        var routeSqlCompiler = new Mock<IRouteSqlCompiler>();
+        routeSqlCompiler
+            .Setup(
+                compiler =>
+                    compiler.Compile(
+                        It.Is<IReadOnlyList<string>>(tables =>
+                            tables.Count == 3
+                            && tables[0] == "tbl_physical_samples"
+                            && tables[1] == "tbl_analysis_entities"
+                            && tables[2] == "tbl_datasets"
+                        ),
+                        "physical_sample_id",
+                        "dataset_id"
+                    )
+            )
+            .Returns("select physical_sample_id as source_id, dataset_id as target_id from tbl_physical_samples join tbl_analysis_entities on 1 = 1 join tbl_datasets on 1 = 1");
+
+        var pathFinder = new Mock<IPathFinder>();
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            routeSqlCompiler.Object,
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select joined_projection_sql");
+        capturedExplicitSql.Should().Contain("category_id in (55)");
+        capturedExplicitSql.Should().Contain("projected.target_id as target_id");
+        routeSqlCompiler.VerifyAll();
     }
 
     [Fact]
@@ -918,6 +1387,7 @@ public class ComposedFacetContentServiceTests
             new ComposedFacetContentRequestFactory(registry.Object, pathFinder, routeSqlCompiler),
             new ComposedFacetContentFilterQueryFactory(
                 pathFinder,
+                routeSqlCompiler,
                 new DiscreteFacetPredicateResolver(routeSqlCompiler),
                 defaultTemplateResolver,
                 new IntersectComposedFilterQueryComposer()

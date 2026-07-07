@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using SeadQueryComposer.QueryComposer.Inputs;
+using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
 
 namespace SeadQueryComposer.QueryComposer.Services;
@@ -12,6 +15,79 @@ namespace SeadQueryComposer.QueryComposer.Services;
 /// </summary>
 internal static class ComposedFacetContentSupport
 {
+    public static bool TryCreateDiscreteTemplateSql(
+        Facet sourceFacet,
+        FacetTemplateRuntimeSnapshot templateSnapshot,
+        string requestedAnchorTable,
+        string requestedAnchorKeyColumn,
+        DiscreteFacetUserInput userInput,
+        IPathFinder pathFinder,
+        IRouteSqlCompiler routeSqlCompiler,
+        out string sql
+    )
+    {
+        sql = string.Empty;
+
+        if (sourceFacet is null || templateSnapshot is null || string.IsNullOrWhiteSpace(requestedAnchorTable))
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(templateSnapshot.TemplateContract)
+            && !string.Equals(templateSnapshot.TemplateContract, "discrete", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                $"Facet '{sourceFacet.FacetCode}' uses unsupported template contract '{templateSnapshot.TemplateContract}' for discrete composition."
+            );
+        }
+
+        if (templateSnapshot.AnchorSqlByTable.TryGetValue(requestedAnchorTable, out var anchorOverrideSql)
+            && !string.IsNullOrWhiteSpace(anchorOverrideSql))
+        {
+            sql = RenderDiscreteTemplateSql(anchorOverrideSql, userInput);
+            return true;
+        }
+
+        if (string.IsNullOrWhiteSpace(templateSnapshot.BaseSql) || string.IsNullOrWhiteSpace(templateSnapshot.BaseAnchor))
+        {
+            return false;
+        }
+
+        if (!TryResolveAnchorBindingByName(sourceFacet, templateSnapshot.BaseAnchor, out var baseAnchorBinding))
+        {
+            return false;
+        }
+
+        var baseAnchorTable = baseAnchorBinding.Anchor?.Table?.TableOrUdfName;
+        var baseAnchorKeyColumn = baseAnchorBinding.Anchor?.Table?.PrimaryKeyName;
+        if (string.IsNullOrWhiteSpace(baseAnchorTable) || string.IsNullOrWhiteSpace(baseAnchorKeyColumn))
+        {
+            return false;
+        }
+
+        var renderedBaseSql = RenderDiscreteTemplateSql(templateSnapshot.BaseSql, userInput);
+        var normalizedBaseSql = NormalizeBaseTemplateSql(renderedBaseSql);
+
+        if (string.Equals(baseAnchorTable, requestedAnchorTable, StringComparison.OrdinalIgnoreCase))
+        {
+            sql = normalizedBaseSql;
+            return true;
+        }
+
+        var routeTables = ResolveProjectionRouteTables(sourceFacet, baseAnchorTable, requestedAnchorTable, pathFinder);
+        if (routeTables.Count < 2)
+        {
+            return false;
+        }
+
+        var routeSql = routeSqlCompiler.Compile(routeTables, baseAnchorKeyColumn, requestedAnchorKeyColumn);
+        sql =
+            $"select distinct base_template.source_id as source_id, projected.target_id as target_id{Environment.NewLine}"
+            + $"from ({Environment.NewLine}{Indent(normalizedBaseSql, "  ")}{Environment.NewLine}) as base_template{Environment.NewLine}"
+            + $"join ({Environment.NewLine}{Indent(routeSql, "  ")}{Environment.NewLine}) as projected on projected.source_id = base_template.target_id";
+        return true;
+    }
+
     public static string ResolveSimpleTargetJoinColumn(Facet targetFacet)
     {
         if (TryResolveSimpleColumnOnTable(targetFacet.CategoryIdExpr, targetFacet.TargetTable, out var targetJoinColumn))
@@ -201,6 +277,154 @@ internal static class ComposedFacetContentSupport
     private static bool HasSimpleColumnExpression(string categoryExpression)
     {
         return !string.IsNullOrWhiteSpace(categoryExpression) && categoryExpression.Trim().IndexOfAny([' ', '(', ')']) < 0;
+    }
+
+    private static bool TryResolveAnchorBindingByName(Facet sourceFacet, string anchorName, out FacetAnchor binding)
+    {
+        binding = sourceFacet.FacetAnchors?.FirstOrDefault(facetAnchor =>
+            string.Equals(facetAnchor.Anchor?.Name, anchorName, StringComparison.OrdinalIgnoreCase)
+        );
+
+        return binding is not null;
+    }
+
+    private static bool TryResolveAnchorBindingByTable(Facet sourceFacet, string anchorTable, out FacetAnchor binding)
+    {
+        binding = sourceFacet.FacetAnchors?.FirstOrDefault(facetAnchor =>
+            string.Equals(facetAnchor.Anchor?.Table?.TableOrUdfName, anchorTable, StringComparison.OrdinalIgnoreCase)
+        );
+
+        return binding is not null;
+    }
+
+    private static IReadOnlyList<string> ResolveProjectionRouteTables(
+        Facet sourceFacet,
+        string baseAnchorTable,
+        string requestedAnchorTable,
+        IPathFinder pathFinder
+    )
+    {
+        if (TryResolveAnchorBindingByTable(sourceFacet, requestedAnchorTable, out var requestedAnchorBinding))
+        {
+            var routeSpecification = requestedAnchorBinding.Route?.Specification ?? string.Empty;
+            var parsedRoute = ParseRouteSpecification(routeSpecification);
+
+            if (parsedRoute.Count >= 2
+                && string.Equals(parsedRoute[0], baseAnchorTable, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(parsedRoute[^1], requestedAnchorTable, StringComparison.OrdinalIgnoreCase))
+            {
+                return parsedRoute;
+            }
+        }
+
+        return pathFinder.Find(baseAnchorTable, requestedAnchorTable).ToTrail();
+    }
+
+    private static IReadOnlyList<string> ParseRouteSpecification(string specification)
+    {
+        if (string.IsNullOrWhiteSpace(specification))
+        {
+            return [];
+        }
+
+        return specification
+            .Split("->", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(step => step.Trim())
+            .Where(step => step.Length > 0)
+            .ToList();
+    }
+
+    private static string RenderDiscreteTemplateSql(string templateSql, DiscreteFacetUserInput userInput)
+    {
+        if (string.IsNullOrWhiteSpace(templateSql))
+        {
+            return string.Empty;
+        }
+
+        userInput ??= new DiscreteFacetUserInput();
+
+        var pickValuesSql = userInput.HasPicks
+            ? string.Join(", ", userInput.Picks.Select(FormatLiteral))
+            : "null";
+
+        var pickFilterSql = BuildPickFilterSql(userInput, pickValuesSql);
+
+        var renderedSql = templateSql
+            .Replace("{pick_values_sql}", pickValuesSql, StringComparison.OrdinalIgnoreCase)
+            .Replace("{pick_filter_sql}", pickFilterSql, StringComparison.OrdinalIgnoreCase);
+
+        if (ContainsUnresolvedPickPlaceholder(renderedSql))
+        {
+            throw new InvalidOperationException(
+                "Template SQL contains unresolved placeholder tokens. Supported placeholders are {pick_filter_sql} and {pick_values_sql}."
+            );
+        }
+
+        return renderedSql;
+    }
+
+    private static bool ContainsUnresolvedPickPlaceholder(string sql)
+    {
+        return !string.IsNullOrWhiteSpace(sql)
+            && sql.IndexOf("{pick_", StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    private static string NormalizeBaseTemplateSql(string renderedBaseSql)
+    {
+        return
+            $"select base.category_id as source_id, base.anchor_id as target_id{Environment.NewLine}"
+            + $"from ({Environment.NewLine}{Indent(renderedBaseSql, "  ")}{Environment.NewLine}) as base";
+    }
+
+    private static string BuildPickFilterSql(DiscreteFacetUserInput userInput, string pickValuesSql)
+    {
+        if (userInput is null || !userInput.HasPicks)
+        {
+            return "1=1";
+        }
+
+        var normalizedOperator = (userInput.Operator ?? string.Empty).Trim().ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(normalizedOperator))
+        {
+            throw new ArgumentException("Discrete facet operators must be non-empty.", nameof(userInput));
+        }
+
+        if (normalizedOperator is "in" or "not in")
+        {
+            return $"category_id {normalizedOperator} ({pickValuesSql})";
+        }
+
+        if (userInput.Picks.Count != 1)
+        {
+            throw new ArgumentException("Non-set operators require exactly one selected value.", nameof(userInput));
+        }
+
+        return $"category_id {userInput.Operator} {FormatLiteral(userInput.Picks[0])}";
+    }
+
+    private static string FormatLiteral(object value)
+    {
+        if (value is null)
+        {
+            return "null";
+        }
+
+        return value switch
+        {
+            string text => $"'{text.Replace("'", "''", StringComparison.Ordinal)}'",
+            char ch => $"'{ch.ToString().Replace("'", "''", StringComparison.Ordinal)}'",
+            bool boolean => boolean ? "true" : "false",
+            Enum enumValue => Convert.ToInt64(enumValue, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
+            IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture),
+            _ => $"'{value.ToString()?.Replace("'", "''", StringComparison.Ordinal)}'",
+        };
+    }
+
+    private static string Indent(string text, string indent)
+    {
+        var lines = text.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n');
+        return string.Join(Environment.NewLine, lines.Select(line => $"{indent}{line}"));
     }
 
     private static bool TryNormalizePredicateClause(FacetTable sourceTable, string clause, out string normalizedClause)

@@ -117,6 +117,50 @@ namespace SQT.LiveServices
             Assert.Contains("join composed_filter on composed_filter.target_id = target_route.source_id", data.Query);
         }
 
+        [Fact]
+        public void Load_FamilyFilteredTabularResult_UsesTemplateDrivenComposedFilterSql()
+        {
+            var fakeFacetsConfig = FakeFacetsConfig("family:family@1,2");
+            var fakeResultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var service = Container.Resolve<ILoadResultService>();
+
+            var data = service.Load(fakeFacetsConfig, fakeResultConfig);
+
+            Assert.NotNull(data);
+            Assert.NotNull(data.Query);
+            Assert.Contains("with composed_filter as", data.Query);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
+            Assert.DoesNotContain("target_route as", data.Query);
+        }
+
+        [Fact]
+        public void Load_ResultFacetAnchorIdentityTemplatePath_UsesAnalysisEntityAnchorWithoutTargetRoute()
+        {
+            var fakeFacetsConfig = FakeFacetsConfig("genus:genus");
+            var fakeResultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var service = Container.Resolve<ILoadResultService>();
+
+            var data = service.Load(fakeFacetsConfig, fakeResultConfig);
+
+            Assert.NotNull(data);
+            Assert.NotNull(data.Query);
+            Assert.Contains("with composed_filter as", data.Query);
+            Assert.Contains("from tbl_analysis_entities", data.Query);
+            Assert.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id", data.Query);
+            Assert.DoesNotContain("target_route as", data.Query);
+        }
+
+        [Fact]
+        public void Load_BiblioSampleGroupsFilteredTabularResult_ThrowsUnsupportedClauseError()
+        {
+            var fakeFacetsConfig = FakeFacetsConfig("tbl_biblio_sample_groups:tbl_biblio_sample_groups@1,2");
+            var fakeResultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+            var service = Container.Resolve<ILoadResultService>();
+
+            var exception = Assert.Throws<System.InvalidOperationException>(() => service.Load(fakeFacetsConfig, fakeResultConfig));
+            Assert.Contains("predicate facet 'tbl_biblio_sample_groups' uses facet clauses that the composed result path cannot apply", exception.Message);
+        }
+
         [Fact(Skip = "Phase 4 retired live legacy result comparison coverage.")]
         public void Load_RangeFilteredTabularResult_MatchesLegacyOutput()
         {

@@ -347,38 +347,38 @@ Treat the route inventory as part of the maintained facet-configuration authorin
 
 The current route inventory has two categories:
 
-- generated route families, where one family expands to one concrete route per supported anchor
+- generated route templates, where one template expands to one concrete route per supported anchor
 - explicit exception routes, which are reserved for hand-maintained special cases and should remain exceptional
 
-Prefer generated route families whenever the source-to-anchor traversal follows one repeatable pattern. Use explicit `routes` only when the traversal cannot be expressed cleanly as a generated family or when a durable exception must stay explicit.
+Prefer generated route templates whenever the source-to-anchor traversal follows one repeatable pattern. Use explicit `routes` only when the traversal cannot be expressed cleanly as a generated template or when a durable exception must stay explicit.
 
-#### Add a route family
+#### Add a route template
 
 Use this flow when introducing a new repeatable source-to-anchor traversal.
 
-1. Add the family to `route_v1.yaml` with one source table and one anchor entry per supported anchor.
-2. Reuse existing macros where possible instead of duplicating path segments.
-3. Keep the family declarative: route families should expand to table paths, not raw SQL.
-4. Ensure the resulting concrete route keys remain deterministic, using the existing `<family>__<anchor>` naming rule.
+1. Add the template to `route_v1.yaml` with one source table and one anchor entry per supported anchor.
+2. Reuse existing named `paths` where possible instead of duplicating path segments.
+3. Keep the template declarative: route templates should expand to table paths, not raw SQL.
+4. Ensure the resulting concrete route keys remain deterministic, using the existing `<template>__<anchor>` naming rule.
 5. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`.
 6. Run focused tests for the affected route parsing, route compilation, facet-content, or result-handoff slice.
 7. Import only when you intend to materialize the updated inventory in the target database copy.
 
 #### Update existing route inventory
 
-Use this flow when changing path segments, macro expansion, supported anchors, or the family-to-facet bindings.
+Use this flow when changing named paths, include expansion, supported anchors, or the template-to-facet bindings.
 
-1. Edit the route family, macro, or explicit route in `route_v1.yaml`.
+1. Edit the route template, named path, or explicit route in `route_v1.yaml`.
 2. Update any dependent facet-anchor bindings in the same change so facets do not point at stale route keys.
 3. Revalidate with `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`.
 4. Run the narrowest relevant tests first, especially route parser, route SQL compiler, composed facet-content, or result-handoff coverage if the route change affects composed execution.
 5. Import only when you want the changed route inventory reflected in the runtime database copy.
 
-#### Remove a route family or explicit route
+#### Remove a route template or explicit route
 
 Use this flow when retiring traversal paths that are no longer needed.
 
-1. Remove the family or explicit route from `route_v1.yaml`.
+1. Remove the template or explicit route from `route_v1.yaml`.
 2. Remove or update any facet-anchor bindings, templates, or exceptions that referenced the removed route keys.
 3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` to catch unresolved bindings before import.
 4. Run focused tests for nearby request families so the removal does not leave an accidental runtime fallback or broken composed contract.
@@ -388,11 +388,11 @@ Use this flow when retiring traversal paths that are no longer needed.
 
 Keep these rules explicit when reviewing route changes:
 
-- each route family should declare one source table
+- each route template should declare one source table
 - each anchor entry should expand to one valid concrete route
-- macros should expand only to path items and should not carry facet semantics
+- named `paths` should expand only to path items and should not carry facet semantics
 - explicit `routes` should stay reserved for exceptions, not become the default authoring style
-- unsupported source-to-anchor traversals should be absent from generated families and called out explicitly as exceptions or follow-up work
+- unsupported source-to-anchor traversals should be absent from generated templates and called out explicitly as exceptions or follow-up work
 - route-inventory changes should be accompanied by the facet-anchor or support-boundary updates they require
 
 Do not edit `facet.route` or related runtime tables by hand as a normal maintenance path. Keep the checked-in YAML inventory authoritative, validate it, and then import it.

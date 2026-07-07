@@ -108,7 +108,7 @@ Implementation notes:
 - added `tbl_biblio_sample_groups` as clause-bearing joined discrete driver with inline SQL template using `base_anchor: sample` and multi-table join structure
 - updated `analysis_entity_ages` and `sites_polygon` facet descriptions to document their roles as Phase 3 restoration drivers
 - added YAML comment block at end of facets section documenting queued Phase 3 non-discrete drivers (`geochronology`, `tbl_denormalized_measured_values_33_0`) and restoration drivers (`analysis_entity_ages`, `sites_polygon`) with explicit purpose statements
-- commented out anchor projection routes in driver facets pending Phase 2 route family definitions (sample__dataset, sample__sites, sample__analysis_entity, analysis_entity__dataset, analysis_entity__sample)
+- commented out anchor projection routes in driver facets pending Phase 2 route template definitions (sample__dataset, sample__sites, sample__analysis_entity, analysis_entity__dataset, analysis_entity__sample)
 
 ## Progress Tracker
 
@@ -155,8 +155,8 @@ Implementation notes:
 
 ## Deferred to Phase 2
 
-### Route Family Definitions
-**Description:** Driver facets reference routes not yet defined in route_families section
+### Route Template Definitions
+**Description:** Driver facets reference routes not yet defined in route_templates section
 
 **Deferred routes:**
 - `sample__dataset`, `sample__sites`, `sample__analysis_entity`

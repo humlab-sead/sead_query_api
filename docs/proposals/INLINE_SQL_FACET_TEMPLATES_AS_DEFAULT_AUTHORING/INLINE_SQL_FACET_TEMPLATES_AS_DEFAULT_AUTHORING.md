@@ -69,7 +69,7 @@ This proposal does not:
 Relevant current state:
 
 - `route_v1.yaml` is the maintained YAML authoring source of truth for the current v1 configuration draft
-- the active importer validates anchors, route families, and facet-anchor bindings, then materializes one active runtime copy in the `facet` schema
+- the active importer validates anchors, route templates, and facet-anchor bindings, then materializes one active runtime copy in the `facet` schema
 - the importer currently rejects anchor-level `sql_override` content as unsupported
 - the active route compiler already has an `AnchorTemplate.ExplicitSql` field and the discrete predicate resolver already returns `ExplicitSql` directly when present
 - the repository also contains an older YAML experiment in `sead.query.composer/Templates/templates.yml` that used `template_sql`, but that experiment was rejected as the default model because it required full per-anchor SQL templates everywhere

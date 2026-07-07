@@ -118,9 +118,19 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         var sourceTable = sourceFacet.TargetTable;
         var sourceTableName = sourceTable.TableOrUdfName;
         var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(sourceFacet);
+        var userInput = new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() };
 
-        // Check if template metadata provides explicit anchor SQL
-        var hasExplicitSql = templateSnapshot.AnchorSqlByTable.TryGetValue(request.AnchorTable, out var explicitSql);
+        // Prefer template-driven anchor SQL when available (override or base+projection).
+        var hasExplicitSql = ComposedFacetContentSupport.TryCreateDiscreteTemplateSql(
+            sourceFacet,
+            templateSnapshot,
+            request.AnchorTable,
+            request.AnchorKeyColumnName,
+            userInput,
+            _pathFinder,
+            _routeSqlCompiler,
+            out var explicitSql
+        );
 
         // Only resolve relational metadata if template metadata is not present
         var sourceKeyColumn = hasExplicitSql ? string.Empty : ResolvePredicateSourceKeyColumn(sourceFacet);
@@ -131,7 +141,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         var predicateSql = _predicateResolver.ResolveSql(
             sourceTableName,
             sourceKeyColumn,
-            new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
+            userInput,
             new AnchorTemplate
             {
                 ExplicitSql = explicitSql ?? string.Empty,
@@ -301,9 +311,11 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
         if (facet.FacetTypeId == EFacetType.Discrete)
         {
+            var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(facet);
+
             if (!TryResolvePredicateSourceKeyColumn(facet, out _))
             {
-                if (_facetTemplateRuntimeResolver.HasAnchorSql(facet, anchorTable))
+                if (CanComposeDiscretePredicateFromTemplate(config, facet, anchorTable, templateSnapshot))
                 {
                     return true;
                 }
@@ -315,7 +327,7 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
 
             if (!TryResolvePredicateCriteria(facet, out _))
             {
-                if (_facetTemplateRuntimeResolver.HasAnchorSql(facet, anchorTable))
+                if (CanComposeDiscretePredicateFromTemplate(config, facet, anchorTable, templateSnapshot))
                 {
                     return true;
                 }
@@ -692,6 +704,55 @@ public sealed class ComposedResultProjectionHandoffBuilder : IResultProjectionHa
         return route.Count > 0
             ? _routeSqlCompiler.Compile([sourceTableName, .. route, anchorTable], sourceKeyColumn, anchorKeyColumnName, sourceCriteria)
             : CreateIdentityPredicateSql(sourceTableName, sourceKeyColumn, anchorKeyColumnName, sourceCriteria);
+    }
+
+    private bool CanComposeDiscretePredicateFromTemplate(
+        FacetConfig2 config,
+        Facet facet,
+        string anchorTable,
+        FacetTemplateRuntimeSnapshot templateSnapshot
+    )
+    {
+        if (facet is null || string.IsNullOrWhiteSpace(anchorTable) || templateSnapshot is null)
+        {
+            return false;
+        }
+
+        if (!TryResolveAnchorPrimaryKey(facet, anchorTable, out var anchorKeyColumn))
+        {
+            return false;
+        }
+
+        var userInput = new DiscreteFacetUserInput { Picks = config?.GetPickValues().Cast<object>().ToList() ?? [] };
+
+        return ComposedFacetContentSupport.TryCreateDiscreteTemplateSql(
+            facet,
+            templateSnapshot,
+            anchorTable,
+            anchorKeyColumn,
+            userInput,
+            _pathFinder,
+            _routeSqlCompiler,
+            out _
+        );
+    }
+
+    private static bool TryResolveAnchorPrimaryKey(Facet facet, string anchorTable, out string anchorKeyColumn)
+    {
+        anchorKeyColumn = string.Empty;
+
+        var matchedAnchor = facet?.FacetAnchors?.FirstOrDefault(facetAnchor =>
+            string.Equals(facetAnchor.Anchor?.Table?.TableOrUdfName, anchorTable, StringComparison.OrdinalIgnoreCase)
+        );
+
+        var primaryKey = matchedAnchor?.Anchor?.Table?.PrimaryKeyName;
+        if (string.IsNullOrWhiteSpace(primaryKey) || IsPlaceholderPrimaryKey(primaryKey))
+        {
+            return false;
+        }
+
+        anchorKeyColumn = primaryKey;
+        return true;
     }
 
     private static string CreateIdentityPredicateSql(

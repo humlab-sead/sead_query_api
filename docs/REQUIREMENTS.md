@@ -75,7 +75,7 @@ It is not a proposal and not an implementation log. It describes the requirement
 - The runtime must execute against one imported, normalized configuration copy in the `facet` schema rather than interpreting raw authoring files during requests.
 - Exactly one active configuration revision must be authoritative for runtime reads at a time.
 - Import and validation must resolve authoring keys through runtime lookup tables rather than relying on hard-coded database ids in authoring files.
-- Generated route families and macros must be the default authoring model for repeatable source-to-anchor traversal, while explicit routes and SQL overrides remain reserved for true exceptions.
+- Generated route templates and named `paths` must be the default authoring model for repeatable source-to-anchor traversal, while explicit routes and SQL overrides remain reserved for true exceptions.
 - A configuration revision that fails validation or import must not become active partially.
 - Explicit SQL overrides may exist for exception cases, but they must remain exceptional rather than becoming the primary authoring model.
 

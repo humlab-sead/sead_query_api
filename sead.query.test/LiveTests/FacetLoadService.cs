@@ -403,7 +403,35 @@ namespace SQT.LiveServices
         [InlineData("family:country@1,2,5/family")]
         public void FacetContentService_ComposedCountryPredicateFamilySlice_UsesComposedFacetContentQuery(string uri)
         {
-            AssertUsesComposedFacetContentQuery(uri, "target_route as", "tbl_taxa_tree_families", "X_0.location_type_id=1");
+            AssertUsesComposedFacetContentQuery(
+                uri,
+                "target_route as",
+                "tbl_taxa_tree_families",
+                "tbl_taxa_tree_genera",
+                "X_0.location_type_id=1"
+            );
+        }
+
+        [Fact]
+        public void FacetContentService_ComposedFamilyPredicateDatasetMethodsSlice_UsesAnchorSqlOverride()
+        {
+            var uri = "dataset_methods:family@1,2/dataset_methods";
+            var facetsConfig = UriToFacetsConfig(uri);
+            var composedService = Container.Resolve<IComposedFacetContentService>();
+            var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
+
+            Assert.True(composedService.CanHandle(facetsConfig));
+            Assert.NotNull(service.ComposedFacetContentService);
+
+            var data = service.Load(facetsConfig);
+
+            Assert.NotNull(data);
+            Assert.Contains("with composed_filter as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("join composed_filter", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("target_route as", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("tbl_methods", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("tbl_datasets", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("projected.target_id as target_id", data.SqlQuery, System.StringComparison.OrdinalIgnoreCase);
         }
 
         [Theory]
@@ -552,6 +580,21 @@ namespace SQT.LiveServices
                 "tbl_biblio.biblio_id",
                 "facet.view_sample_group_references.biblio_id is not null",
                 "X_0.location_type_id=1"
+            );
+        }
+
+        [Theory]
+        [InlineData("dataset_methods:tbl_biblio_sample_groups@1,2/dataset_methods")]
+        public void FacetContentService_ComposedBiblioSampleGroupsPredicateDatasetMethodsSlice_ThrowsUnsupportedClauseError(string uri)
+        {
+            var facetsConfig = UriToFacetsConfig(uri);
+            var service = Assert.IsType<FacetContentService>(Container.Resolve<IFacetContentService>());
+
+            var exception = Assert.Throws<System.InvalidOperationException>(() => service.Load(facetsConfig));
+            Assert.Contains(
+                "predicate facet 'tbl_biblio_sample_groups' uses facet clauses that the composed predicate path cannot apply",
+                exception.Message,
+                System.StringComparison.OrdinalIgnoreCase
             );
         }
 

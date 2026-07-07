@@ -14,18 +14,21 @@ namespace SeadQueryComposer.QueryComposer.Services;
 public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetContentFilterQueryFactory
 {
     private readonly IPathFinder _pathFinder;
+    private readonly IRouteSqlCompiler _routeSqlCompiler;
     private readonly IDiscreteFacetPredicateResolver _predicateResolver;
     private readonly IFacetTemplateRuntimeResolver _facetTemplateRuntimeResolver;
     private readonly IComposedFilterQueryComposer _composedFilterQueryComposer;
 
     public ComposedFacetContentFilterQueryFactory(
         IPathFinder pathFinder,
+        IRouteSqlCompiler routeSqlCompiler,
         IDiscreteFacetPredicateResolver predicateResolver,
         IFacetTemplateRuntimeResolver facetTemplateRuntimeResolver,
         IComposedFilterQueryComposer composedFilterQueryComposer
     )
     {
         _pathFinder = pathFinder ?? throw new ArgumentNullException(nameof(pathFinder));
+        _routeSqlCompiler = routeSqlCompiler ?? throw new ArgumentNullException(nameof(routeSqlCompiler));
         _predicateResolver = predicateResolver ?? throw new ArgumentNullException(nameof(predicateResolver));
         _facetTemplateRuntimeResolver =
             facetTemplateRuntimeResolver ?? throw new ArgumentNullException(nameof(facetTemplateRuntimeResolver));
@@ -69,9 +72,19 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
         var sourceFacet = config.Facet;
         var sourceTableName = sourceFacet.TargetTable.TableOrUdfName;
         var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(sourceFacet) ?? FacetTemplateRuntimeSnapshot.Empty;
+        var userInput = new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() };
 
-        // Check if template metadata provides explicit anchor SQL
-        var hasExplicitSql = templateSnapshot.AnchorSqlByTable.TryGetValue(request.AnchorTable, out var explicitSql);
+        // Prefer template-driven anchor SQL when available (override or base+projection).
+        var hasExplicitSql = ComposedFacetContentSupport.TryCreateDiscreteTemplateSql(
+            sourceFacet,
+            templateSnapshot,
+            request.AnchorTable,
+            request.AnchorKeyColumnName,
+            userInput,
+            _pathFinder,
+            _routeSqlCompiler,
+            out var explicitSql
+        );
 
         // Only resolve relational metadata if template metadata is not present
         var sourceKeyColumn = hasExplicitSql ? string.Empty : ComposedFacetContentSupport.ResolvePredicateSourceKeyColumn(sourceFacet);
@@ -82,7 +95,7 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
         var predicateSql = _predicateResolver.ResolveSql(
             sourceTableName,
             sourceKeyColumn,
-            new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
+            userInput,
             new AnchorTemplate
             {
                 ExplicitSql = explicitSql ?? string.Empty,

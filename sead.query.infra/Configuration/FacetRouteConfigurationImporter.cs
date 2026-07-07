@@ -186,8 +186,8 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         if (document.Anchors.Count == 0)
             throw new InvalidOperationException($"Facet route configuration file '{filePath}' does not define any anchors.");
 
-        if (document.RouteFamilies.Count == 0)
-            throw new InvalidOperationException($"Facet route configuration file '{filePath}' does not define any route families.");
+        if (document.RouteTemplates.Count == 0)
+            throw new InvalidOperationException($"Facet route configuration file '{filePath}' does not define any route templates.");
 
         if (document.Facets.Count == 0)
             throw new InvalidOperationException($"Facet route configuration file '{filePath}' does not define any facets.");
@@ -258,17 +258,17 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         var macrosByName = document.RouteMacros.ToDictionary(macro => macro.Key, macro => macro, StringComparer.OrdinalIgnoreCase);
         var generatedRoutes = new Dictionary<string, GeneratedRouteDefinition>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var family in document.RouteFamilies)
+        foreach (var family in document.RouteTemplates)
         {
-            ValidateRequiredValue(family.Key, nameof(family.Key), "route family");
-            ValidateRequiredValue(family.SourceTable, nameof(family.SourceTable), $"route family '{family.Key}'");
-            ValidateRequiredValue(family.GeneratedRouteKeyPattern, nameof(family.GeneratedRouteKeyPattern), $"route family '{family.Key}'");
+            ValidateRequiredValue(family.Key, nameof(family.Key), "route template");
+            ValidateRequiredValue(family.SourceTable, nameof(family.SourceTable), $"route template '{family.Key}'");
+            ValidateRequiredValue(family.GeneratedRouteKeyPattern, nameof(family.GeneratedRouteKeyPattern), $"route template '{family.Key}'");
 
-            var sourceTable = ResolveRequiredLookup(tablesByName, family.SourceTable, $"route family '{family.Key}' source table");
+            var sourceTable = ResolveRequiredLookup(tablesByName, family.SourceTable, $"route template '{family.Key}' source table");
 
             foreach (var (anchorKey, binding) in family.Anchors)
             {
-                var anchor = ResolveRequiredLookup(anchorsByName, anchorKey, $"route family '{family.Key}' anchor");
+                var anchor = ResolveRequiredLookup(anchorsByName, anchorKey, $"route template '{family.Key}' anchor");
                 var expandedPath = ExpandPath(binding.Path, macrosByName, new HashSet<string>(StringComparer.OrdinalIgnoreCase));
                 var fullPath = new List<string> { sourceTable.TableOrUdfName };
                 fullPath.AddRange(expandedPath);
@@ -278,7 +278,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
                         $"Generated route '{family.Key}' for anchor '{anchorKey}' must contain at least two tables."
                     );
 
-                var targetTable = ResolveRequiredLookup(tablesByName, fullPath[^1], $"route family '{family.Key}' target table");
+                var targetTable = ResolveRequiredLookup(tablesByName, fullPath[^1], $"route template '{family.Key}' target table");
                 if (targetTable.TableId != anchor.TableId)
                 {
                     throw new InvalidOperationException(
@@ -914,12 +914,12 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
             }
 
             if (string.IsNullOrWhiteSpace(step.Macro))
-                throw new InvalidOperationException("Route path step must define either a table or a macro reference.");
+                throw new InvalidOperationException("Route path step must define either a table or an include reference.");
 
             if (!expansionStack.Add(step.Macro))
-                throw new InvalidOperationException($"Route macro expansion cycle detected at '{step.Macro}'.");
+                throw new InvalidOperationException($"Route path include expansion cycle detected at '{step.Macro}'.");
 
-            var macro = ResolveRequiredLookup(macrosByName, step.Macro, $"route macro '{step.Macro}'");
+            var macro = ResolveRequiredLookup(macrosByName, step.Macro, $"route path '{step.Macro}'");
             expandedPath.AddRange(ExpandPath(macro.Path, macrosByName, expansionStack));
             expansionStack.Remove(step.Macro);
         }
@@ -1013,9 +1013,11 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
 
         public List<AnchorDefinition> Anchors { get; set; } = [];
 
+        [YamlMember(Alias = "paths")]
         public List<RouteMacroDefinition> RouteMacros { get; set; } = [];
 
-        public List<RouteFamilyDefinition> RouteFamilies { get; set; } = [];
+        [YamlMember(Alias = "route_templates")]
+        public List<RouteFamilyDefinition> RouteTemplates { get; set; } = [];
 
         public List<FacetDefinition> Facets { get; set; } = [];
     }
@@ -1067,6 +1069,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
     {
         public string Table { get; set; } = string.Empty;
 
+        [YamlMember(Alias = "include")]
         public string Macro { get; set; } = string.Empty;
     }
 
