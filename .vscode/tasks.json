@@ -6,7 +6,7 @@
         {
             "label": "dotnet:restore:sead_query_api",
             "group": "build",
-            "command": "dotnet restore sead_query_api.sln",
+            "command": "dotnet restore sead.query.slnx",
             "type": "shell",
             "presentation": {
                 "reveal": "always"
@@ -19,7 +19,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "command": "dotnet build sead_query_api.sln",
+            "command": "dotnet build sead.query.slnx",
             "type": "shell",
             "presentation": {
                 "reveal": "always"

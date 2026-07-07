@@ -29,7 +29,7 @@ Optional but useful:
 
 ## Repository Layout
 
-The main solution file is `sead_query_api.sln`.
+The main solution file is `sead.query.slnx`.
 
 The important projects and folders are:
 
@@ -52,13 +52,13 @@ Start from the repository root.
 Restore the solution:
 
 ```bash
-dotnet restore sead_query_api.sln
+dotnet restore sead.query.slnx
 ```
 
 Build the solution:
 
 ```bash
-dotnet build sead_query_api.sln
+dotnet build sead.query.slnx
 ```
 
 If you prefer the repository helper targets, the `Makefile` also exposes:
@@ -113,7 +113,7 @@ From the repository root, the most useful commands are:
 Build everything:
 
 ```bash
-dotnet build sead_query_api.sln
+dotnet build sead.query.slnx
 ```
 
 Build only tests:
@@ -198,7 +198,7 @@ The release workflow depends on conventional commits, so use commit messages tha
 
 The practical local quality checks for this repository are:
 
-- `dotnet build sead_query_api.sln`
+- `dotnet build sead.query.slnx`
 - `dotnet test sead.query.test/sead.query.test.csproj`
 - `dotnet format`
 

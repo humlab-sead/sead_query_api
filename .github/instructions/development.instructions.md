@@ -46,7 +46,7 @@ When editing an existing document, preserve its structure unless reorganization 
 ## Sources to trust
 
 - `Makefile` — supported development commands
-- `sead_query_api.sln` and `*.csproj` — solution structure, target frameworks, and project relationships
+- `sead.query.slnx` and `*.csproj` — solution structure, target frameworks, and project relationships
 - `.vscode/tasks.json` — editor-supported restore, build, and test commands
 - `AGENTS.md` — canonical conventions and architecture rules
 - `README.md` — project overview and entry-point links

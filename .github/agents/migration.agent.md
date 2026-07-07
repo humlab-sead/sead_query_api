@@ -19,7 +19,7 @@ You are a specialist at codebase migration and deprecation tasks in the SEAD Que
 1. **Map references first**: Before removing or moving any code, search for all call sites, DI registrations, and imports of the target symbol or file.
 2. **Verify composed coverage**: Confirm that the functionality being removed has a validated composed replacement path active in the current runtime.
 3. **Stage changes cleanly**: Prefer small, atomic edits — remove the target, update references, verify no broken imports remain.
-4. **Build-validate after each step**: Run `dotnet build sead_query_api.sln` after each logical change; do not batch unrelated changes into one build cycle.
+4. **Build-validate after each step**: Run `dotnet build sead.query.slnx` after each logical change; do not batch unrelated changes into one build cycle.
 5. **Update only affected docs**: If a migration step changes a documented behavior, update the corresponding doc file, but never rewrite docs speculatively.
 
 ## Migration Patterns

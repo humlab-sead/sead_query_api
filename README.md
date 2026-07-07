@@ -28,7 +28,7 @@ SEAD Faceted Query API is a .NET 9 REST service for faceted browsing over the SE
 ```bash
 git clone https://github.com/humlab-sead/sead_query_api.git
 cd sead_query_api
-dotnet restore sead_query_api.sln
+dotnet restore sead.query.slnx
 make build
 make serve
 ```
