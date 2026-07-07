@@ -143,7 +143,7 @@ import-facet-config:
 
 .PHONY: prepare-facet-runtime-schema
 prepare-facet-runtime-schema:
-	@PGPASSWORD="$(DBPASSWORD)" psql \
+	@psql \
 		-h "$(DBHOST)" \
 		-p "$(DBPORT)" \
 		-U "$(DBUSER)" \
