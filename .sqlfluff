@@ -1,2 +1,4 @@
 [sqlfluff]
 exclude_rules = ST07, LT09, LT15, AM05, CP02
+max_line_length = 120
+output_line_length = 120
