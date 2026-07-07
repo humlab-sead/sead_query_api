@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS facet;
 CREATE TABLE IF NOT EXISTS facet.anchor (
     anchor_id integer NOT NULL,
     table_id integer,
-    name text NOT NULL,
+    name text NOT NULL, -- noqa: RF04
     description text NOT NULL
 );
 
