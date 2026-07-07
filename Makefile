@@ -8,7 +8,7 @@ DBNAME:=sead_staging
 DBPORT:=5433
 DBPASSWORD:=$(shell cat ~/vault/.default.sead.password)
 
-SOLUTION=sead_query_api.sln
+SOLUTION=sead.query.slnx
 API_PROJECT=sead.query.api/sead.query.api.csproj
 TEST_PROJECT=sead.query.test/sead.query.test.csproj
 TARGET_FRAMEWORK=net10.0
