@@ -28,48 +28,31 @@ anchors:
     key_column: analysis_entity_id
     description: Analysis-entity anchor for representative composed result and facet slices
 
-route_macros:
-  - key: feature_type_context
+paths:
+  - key: features_to_sample
     path:
       - table: tbl_features
       - table: tbl_physical_sample_features
       - table: tbl_physical_samples
 
-  - key: dataset_method_dataset_context
+  - key: methods_to_dataset
     path:
       - table: tbl_methods
       - table: tbl_datasets
 
-  - key: dataset_method_sample_context
+  - key: methods_to_sample
     path:
-      - macro: dataset_method_dataset_context
+      - include: methods_to_dataset
       - table: tbl_analysis_entities
       - table: tbl_physical_samples
 
-  - key: data_type_sample_context
+  - key: dataset_to_sample
     path:
       - table: tbl_datasets
       - table: tbl_analysis_entities
       - table: tbl_physical_samples
 
-  - key: dataset_provider_sample_context
-    path:
-      - table: tbl_datasets
-      - table: tbl_analysis_entities
-      - table: tbl_physical_samples
-
-  - key: record_type_dataset_context
-    path:
-      - table: tbl_methods
-      - table: tbl_datasets
-
-  - key: record_type_sample_context
-    path:
-      - macro: record_type_dataset_context
-      - table: tbl_analysis_entities
-      - table: tbl_physical_samples
-
-route_families:
+route_templates:
   - key: feature_type
     source_table: tbl_feature_types
     source_key_column: feature_type_id
@@ -77,10 +60,10 @@ route_families:
     anchors:
       sample:
         path:
-          - macro: feature_type_context
+          - include: features_to_sample
       dataset:
         path:
-          - macro: feature_type_context
+          - include: features_to_sample
           - table: tbl_analysis_entities
           - table: tbl_datasets
 
@@ -91,10 +74,10 @@ route_families:
     anchors:
       sample:
         path:
-          - macro: dataset_method_sample_context
+          - include: methods_to_sample
       dataset:
         path:
-          - macro: dataset_method_dataset_context
+          - include: methods_to_dataset
 
   - key: data_types
     source_table: tbl_data_types
@@ -103,7 +86,7 @@ route_families:
     anchors:
       sample:
         path:
-          - macro: data_type_sample_context
+          - include: dataset_to_sample
       dataset:
         path:
           - table: tbl_datasets
@@ -115,7 +98,7 @@ route_families:
     anchors:
       sample:
         path:
-          - macro: dataset_provider_sample_context
+          - include: dataset_to_sample
       dataset:
         path:
           - table: tbl_datasets
@@ -127,10 +110,10 @@ route_families:
     anchors:
       sample:
         path:
-          - macro: record_type_sample_context
+          - include: methods_to_sample
       dataset:
         path:
-          - macro: record_type_dataset_context
+          - include: methods_to_dataset
 
   - key: country
     source_table: facet.site_location_shortcut
@@ -163,6 +146,35 @@ route_families:
       analysis_entity:
         path:
           - table: tbl_analysis_entities
+
+  - key: sample
+    source_table: tbl_physical_samples
+    source_key_column: physical_sample_id
+    generated_route_key_pattern: sample__{anchor}
+    anchors:
+      dataset:
+        path:
+          - table: tbl_analysis_entities
+          - table: tbl_datasets
+      sites:
+        path:
+          - table: tbl_sample_groups
+          - table: tbl_sites
+      analysis_entity:
+        path:
+          - table: tbl_analysis_entities
+
+  - key: analysis_entity
+    source_table: tbl_analysis_entities
+    source_key_column: analysis_entity_id
+    generated_route_key_pattern: analysis_entity__{anchor}
+    anchors:
+      dataset:
+        path:
+          - table: tbl_datasets
+      sample:
+        path:
+          - table: tbl_physical_samples
 
 facets:
   - key: feature_type
@@ -405,14 +417,12 @@ facets:
     anchors:
       - anchor: sample
         mode: identity
-      # TODO Phase 2: Add route-based anchor projections once sample__dataset, sample__sites,
-      # and sample__analysis_entity routes are defined in route_families section
-      # - anchor: dataset
-      #   route: sample__dataset
-      # - anchor: sites
-      #   route: sample__sites
-      # - anchor: analysis_entity
-      #   route: sample__analysis_entity
+      - anchor: dataset
+        route: sample__dataset
+      - anchor: sites
+        route: sample__sites
+      - anchor: analysis_entity
+        route: sample__analysis_entity
 
   - key: family
     display_title: Family
@@ -451,12 +461,20 @@ facets:
     anchors:
       - anchor: analysis_entity
         mode: identity
-      # TODO Phase 2: Add route-based anchor projections once analysis_entity__dataset
-      # and analysis_entity__sample routes are defined in route_families section
-      # - anchor: dataset
-      #   route: analysis_entity__dataset
-      # - anchor: sample
-      #   route: analysis_entity__sample
+      - anchor: dataset
+        route: analysis_entity__dataset
+        sql_override: |
+          select
+            tf.family_id as source_id,
+            ds.dataset_id as target_id
+          from facet.abundance_taxon_shortcut ats
+          join tbl_taxa_tree_genera tg on tg.genus_id = ats.genus_id
+          join tbl_taxa_tree_families tf on tf.family_id = tg.family_id
+          join tbl_analysis_entities ae on ae.analysis_entity_id = ats.analysis_entity_id
+          join tbl_datasets ds on ds.dataset_id = ae.dataset_id
+          where {pick_filter_sql}
+      - anchor: sample
+        route: analysis_entity__sample
 
   - key: tbl_biblio_sample_groups
     display_title: Sample group bibliography
@@ -495,9 +513,12 @@ facets:
     anchors:
       - anchor: sample
         mode: identity
-      # TODO Phase 2: Add route-based anchor projection once sample__dataset route is defined
-      # - anchor: dataset
-      #   route: sample__dataset
+      - anchor: dataset
+        route: sample__dataset
+      - anchor: sites
+        route: sample__sites
+      - anchor: analysis_entity
+        route: sample__analysis_entity
 
 # Queued Phase 3 Non-Discrete Drivers (not yet implemented):
 #

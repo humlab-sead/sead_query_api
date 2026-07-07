@@ -9,8 +9,8 @@
         "config_revision",
         "runtime_import",
         "anchors",
-        "route_macros",
-        "route_families",
+        "paths",
+        "route_templates",
         "facets"
     ],
     "properties": {
@@ -46,13 +46,13 @@
                 "$ref": "#/$defs/anchor"
             }
         },
-        "route_macros": {
+        "paths": {
             "type": "array",
             "items": {
                 "$ref": "#/$defs/routeMacro"
             }
         },
-        "route_families": {
+        "route_templates": {
             "type": "array",
             "minItems": 1,
             "items": {
@@ -133,10 +133,10 @@
                     "type": "object",
                     "additionalProperties": false,
                     "required": [
-                        "macro"
+                        "include"
                     ],
                     "properties": {
-                        "macro": {
+                        "include": {
                             "$ref": "#/$defs/identifier"
                         }
                     }
