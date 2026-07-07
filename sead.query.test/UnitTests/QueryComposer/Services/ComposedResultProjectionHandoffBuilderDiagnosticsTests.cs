@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
+using SeadQueryComposer.QueryComposer.Inputs;
 using SeadQueryComposer.QueryComposer.Services;
 using SeadQueryComposer.RouteCompiler;
 using SeadQueryCore;
@@ -129,6 +130,99 @@ namespace SQT.UnitTests.QueryComposer.Services
             templateResolver.Verify(x => x.GetAnchorSql(It.IsAny<Facet>(), It.IsAny<string>()), Times.Never);
         }
 
+        [Fact]
+        public void Build_WithoutTemplateMetadata_UsesRelationalFallbackPath()
+        {
+            var sourceFacet = CreateTaxonFacet();
+            var resultFacet = CreateResultFacet();
+            var aggregateFacet = CreateAggregateFacet();
+            var picks = FacetConfigPick.CreateByList([1, 2]);
+            var facetsConfig = new FacetsConfig2
+            {
+                TargetCode = resultFacet.FacetCode,
+                TargetFacet = resultFacet,
+                FacetConfigs = [new FacetConfig2(sourceFacet, 1, string.Empty, picks)],
+            };
+            var resultConfig = new ResultConfig
+            {
+                FacetCode = resultFacet.FacetCode,
+                Facet = resultFacet,
+                ViewTypeId = "tabular",
+            };
+
+            var facetRepository = new Mock<IFacetRepository>();
+            facetRepository.Setup(x => x.Get(resultFacet.AggregateFacetId)).Returns(aggregateFacet);
+
+            var registry = new Mock<IRepositoryRegistry>();
+            registry.SetupGet(x => x.Facets).Returns(facetRepository.Object);
+
+            var querySetupFactory = new Mock<ISupportedRequestQuerySetupFactory>();
+            querySetupFactory
+                .Setup(x => x.CreateForResultProjection(facetsConfig, resultFacet, It.IsAny<IEnumerable<ResultSpecificationField>>()))
+                .Returns(new QuerySetup { Facet = resultFacet, Joins = [] });
+
+            var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+            templateResolver
+                .Setup(x => x.GetTemplateSnapshot(It.IsAny<Facet>()))
+                .Returns(FacetTemplateRuntimeSnapshot.Empty);
+
+            var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+            predicateResolver
+                .Setup(
+                    x => x.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+                )
+                .Returns("select taxon_id as source_key, analysis_entity_id as anchor_key from facet.taxon_to_analysis_entity where taxon_id in (1, 2)");
+
+            var pathFinder = new Mock<IPathFinder>();
+            pathFinder
+                .Setup(x => x.Find(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<TableRelation>());
+
+            var composedFilterComposer = new Mock<IComposedFilterQueryComposer>();
+            composedFilterComposer
+                .Setup(x => x.Compose(It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ComposedFilterQuery { AnchorTable = "tbl_analysis_entities", AnchorKeyColumn = "anchor_key", PredicateQueries = [], Sql = "select anchor_key from composed_filter" });
+
+            var builder = new ComposedResultProjectionHandoffBuilder(
+                registry.Object,
+                querySetupFactory.Object,
+                Mock.Of<IPickFilterCompilerLocator>(),
+                pathFinder.Object,
+                Mock.Of<IRouteSqlCompiler>(),
+                templateResolver.Object,
+                predicateResolver.Object,
+                composedFilterComposer.Object,
+                Mock.Of<ILogger<ComposedResultProjectionHandoffBuilder>>()
+            );
+
+            var result = builder.Build(facetsConfig, resultConfig);
+
+            result.Should().NotBeNull();
+            result.QuerySetup.Should().NotBeNull();
+            templateResolver.Verify(x => x.GetTemplateSnapshot(It.IsAny<Facet>()), Times.AtLeastOnce);
+            predicateResolver.Verify(
+                x => x.ResolveSql(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<DiscreteFacetUserInput>(),
+                    It.Is<AnchorTemplate>(t => string.IsNullOrEmpty(t.ExplicitSql)),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<IReadOnlyList<string>>()
+                ),
+                Times.Once,
+                "Predicate resolver should be called with empty ExplicitSql when no template metadata exists"
+            );
+        }
+
         private static Facet CreateUnsupportedSpeciesResultFacet()
         {
             var speciesTable = new Table
@@ -187,11 +281,30 @@ namespace SQT.UnitTests.QueryComposer.Services
             };
         }
 
+        private static Facet CreateTaxonFacet()
+        {
+            var taxonTable = new Table
+            {
+                TableId = 99,
+                TableOrUdfName = "tbl_taxa_tree_master",
+                PrimaryKeyName = "taxon_id",
+            };
+
+            return new Facet
+            {
+                FacetId = 42,
+                FacetCode = "taxon",
+                FacetTypeId = EFacetType.Discrete,
+                CategoryIdExpr = "tbl_taxa_tree_master.taxon_id",
+                Tables = [new FacetTable { SequenceId = 1, Table = taxonTable }],
+            };
+        }
+
         private sealed class TestLogger<T> : ILogger<T>
         {
             public List<LogEntry> Entries { get; } = [];
 
-            public IDisposable BeginScope<TState>(TState state)
+            public IDisposable BeginScope<TState>(TState state) where TState : notnull
             {
                 return NullScope.Instance;
             }

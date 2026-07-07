@@ -43,7 +43,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
     private static readonly HashSet<string> SupportedTemplateKeys = new(StringComparer.OrdinalIgnoreCase) { "anchor_identity" };
 
     private readonly IFacetContext _context;
-    private ImportIdAllocator _idAllocator;
+    private ImportIdAllocator _idAllocator = null!; // Initialized during import
 
     public FacetRouteConfigurationImporter(IFacetContext context)
     {
@@ -392,8 +392,11 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
 
             if (!facetsByCode.TryGetValue(facetDefinition.Key, out var facet))
             {
-                facet = new Facet { FacetCode = facetDefinition.Key };
-                facet.FacetId = _idAllocator.NextFacetId();
+                facet = new Facet
+                {
+                    FacetCode = facetDefinition.Key,
+                    FacetId = _idAllocator.NextFacetId()
+                };
                 _context.Facets.Add(facet);
                 facetsByCode[facetDefinition.Key] = facet;
             }
@@ -954,20 +957,20 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
     private static string ResolveSourceCommit()
     {
         return FirstNonEmpty(
-            Environment.GetEnvironmentVariable("SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT"),
-            Environment.GetEnvironmentVariable("GIT_COMMIT"),
-            Environment.GetEnvironmentVariable("BUILD_SOURCEVERSION"),
-            Environment.GetEnvironmentVariable("SOURCE_COMMIT")
+            Environment.GetEnvironmentVariable("SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT") ?? string.Empty,
+            Environment.GetEnvironmentVariable("GIT_COMMIT") ?? string.Empty,
+            Environment.GetEnvironmentVariable("BUILD_SOURCEVERSION") ?? string.Empty,
+            Environment.GetEnvironmentVariable("SOURCE_COMMIT") ?? string.Empty
         );
     }
 
     private static string ResolveImportedBy(string filePath)
     {
         return FirstNonEmpty(
-            Environment.GetEnvironmentVariable("SEAD_QUERY_FACET_CONFIG_IMPORTED_BY"),
-            Environment.GetEnvironmentVariable("USER"),
-            Environment.GetEnvironmentVariable("USERNAME"),
-            Environment.UserName,
+            Environment.GetEnvironmentVariable("SEAD_QUERY_FACET_CONFIG_IMPORTED_BY") ?? string.Empty,
+            Environment.GetEnvironmentVariable("USER") ?? string.Empty,
+            Environment.GetEnvironmentVariable("USERNAME") ?? string.Empty,
+            Environment.UserName ?? string.Empty,
             Path.GetFileName(filePath)
         );
     }
@@ -1091,7 +1094,7 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
 
         public string TemplateKey { get; set; } = string.Empty;
 
-        public FacetInlineSqlDefinition? Sql { get; set; }
+        public FacetInlineSqlDefinition Sql { get; set; }
 
         public List<string> Clauses { get; set; } = [];
 

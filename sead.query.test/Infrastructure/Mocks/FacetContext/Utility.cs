@@ -37,15 +37,17 @@ public static class Utility
         {
             var tableName = Path.GetFileNameWithoutExtension(csvFile);
             var headerLine = File.ReadLines(csvFile).FirstOrDefault();
+            if (headerLine == null)
+                continue;
             var columns = headerLine.Split(',').Select(c => c.Trim()).ToArray();
 
             var copySql = $"COPY {schema}.\"{tableName}\" ({string.Join(", ", columns)}) FROM STDIN (FORMAT csv, HEADER true)";
             await using var importer = conn.BeginTextImport(copySql);
 
             using var reader = File.OpenText(csvFile);
-            while (!reader.EndOfStream)
+            string line;
+            while ((line = await reader.ReadLineAsync()) is not null)
             {
-                var line = await reader.ReadLineAsync();
                 await importer.WriteAsync(line + "\n");
             }
 

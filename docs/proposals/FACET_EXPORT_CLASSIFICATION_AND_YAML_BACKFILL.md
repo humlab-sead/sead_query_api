@@ -14,7 +14,7 @@ Under that baseline, the migration gap is real but materially smaller than the e
 
 The recommendation is to treat `facets.json` as an inventory input, not as a direct serialization source. Backfill should proceed bucket by bucket, with explicit support, exception, and contract decisions recorded in the same change.
 
-See `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md` for the new baseline design this classification now assumes.
+See `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md` for the new baseline design this classification now assumes.
 
 ## Problem
 
@@ -69,7 +69,7 @@ What changes with the new baseline is the representational fit. Many facets that
 
 Use the staging export as an inventory input for controlled YAML backfill.
 
-Use `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md` as the authoring baseline for that backfill.
+Use `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md` as the authoring baseline for that backfill.
 
 Apply this rule:
 

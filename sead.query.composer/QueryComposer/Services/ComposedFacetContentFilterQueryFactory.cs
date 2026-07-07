@@ -68,11 +68,16 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
     {
         var sourceFacet = config.Facet;
         var sourceTableName = sourceFacet.TargetTable.TableOrUdfName;
-        var sourceKeyColumn = ComposedFacetContentSupport.ResolvePredicateSourceKeyColumn(sourceFacet);
-        var sourceCriteria = ComposedFacetContentSupport.ResolvePredicateCriteria(sourceFacet);
-        var isIdentityRoute = string.Equals(sourceTableName, request.AnchorTable, StringComparison.OrdinalIgnoreCase);
-        var route = isIdentityRoute ? [] : _pathFinder.Find(sourceTableName, request.AnchorTable).ToTrail().Skip(1).SkipLast(1).ToList();
         var templateSnapshot = _facetTemplateRuntimeResolver.GetTemplateSnapshot(sourceFacet) ?? FacetTemplateRuntimeSnapshot.Empty;
+
+        // Check if template metadata provides explicit anchor SQL
+        var hasExplicitSql = templateSnapshot.AnchorSqlByTable.TryGetValue(request.AnchorTable, out var explicitSql);
+
+        // Only resolve relational metadata if template metadata is not present
+        var sourceKeyColumn = hasExplicitSql ? string.Empty : ComposedFacetContentSupport.ResolvePredicateSourceKeyColumn(sourceFacet);
+        var sourceCriteria = hasExplicitSql ? Array.Empty<string>() : ComposedFacetContentSupport.ResolvePredicateCriteria(sourceFacet);
+        var isIdentityRoute = string.Equals(sourceTableName, request.AnchorTable, StringComparison.OrdinalIgnoreCase);
+        var route = isIdentityRoute || hasExplicitSql ? [] : _pathFinder.Find(sourceTableName, request.AnchorTable).ToTrail().Skip(1).SkipLast(1).ToList();
 
         var predicateSql = _predicateResolver.ResolveSql(
             sourceTableName,
@@ -80,9 +85,7 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
             new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() },
             new AnchorTemplate
             {
-                ExplicitSql = templateSnapshot.AnchorSqlByTable.TryGetValue(request.AnchorTable, out var explicitSql)
-                    ? explicitSql
-                    : string.Empty,
+                ExplicitSql = explicitSql ?? string.Empty,
                 Route = route,
                 IsIdentityRoute = isIdentityRoute,
                 RequiresDistinct = true,

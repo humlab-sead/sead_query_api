@@ -2,7 +2,7 @@
 
 ## Use case: Load content for a selected target facet (query-engine overhaul path)
 
-This use case describes the composed facet-content runtime introduced by [COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md](proposals/done/COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md), extended by [INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md](proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md), and summarized in [DESIGN.md](DESIGN.md).
+This use case describes the composed facet-content runtime introduced by [COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md](proposals/done/COMPOSED_FACET_CONTENT_SERVICE_REDESIGN.md), extended by [INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md](proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md), and summarized in [DESIGN.md](DESIGN.md).
 
 It describes the new **anchor-based composed path for retrieving a facet's content** as implemented in code.
 

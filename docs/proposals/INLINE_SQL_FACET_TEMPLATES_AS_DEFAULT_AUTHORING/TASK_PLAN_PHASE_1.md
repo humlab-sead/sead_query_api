@@ -49,10 +49,44 @@ Completion criteria: imported inline-template data survives authoring validation
 
 Objective: give the compiler path one stable way to discover and consume imported template metadata.
 
-- [ ] define the runtime contract that compiler services read for inline templates and template keys
+- [x] define the runtime contract that compiler services read for inline templates and template keys
+
+  Implementation notes:
+  - document the lookup sequence for each compiler type (discrete, range, intersect, geopolygon)
+  - specify the precedence order: template_key → inline SQL (base_sql + anchor_sql) → relational fallback
+  - define what each compiler must validate when template metadata is present vs. absent
+  - capture this as a structured checklist in this section, not a separate document
+
+  **Runtime Compiler Contract Checklist**:
+
+  **For result projection (e.g., `ComposedResultProjectionHandoffBuilder`)**:
+  - [x] if `template_key` is present, use `CreateTemplateKeySql(templateSnapshot, anchorTable, anchorKeyColumn)` to generate anchor-identity SQL
+  - [x] if `template_key` is absent but `HasAnchorSql(facet, anchorTable)` is true, use `GetAnchorSql(facet, anchorTable)` as explicit anchor SQL
+  - [x] if both are absent, fall back to relational reconstruction via `AnchorTemplate` with source key columns and criteria
+  - [ ] validate that `template_key` is only used on `result_facet`, `map_result`, or `result_datasets` facets (validation exists in importer, runtime should enforce or document assumption)
+  - [x] validate that the only supported `template_key` value is `"anchor_identity"` — throw `InvalidOperationException` for unknown keys
+
+  **For facet content (e.g., `ComposedFacetContentFilterQueryFactory`)**:
+  - [x] call `GetTemplateSnapshot(sourceFacet) ?? FacetTemplateRuntimeSnapshot.Empty` to retrieve base SQL and anchor SQL map
+  - [x] if `AnchorSqlByTable.TryGetValue(anchorTable, out var explicitSql)` succeeds, populate `AnchorTemplate.ExplicitSql` with the returned SQL
+  - [x] if no anchor SQL exists for the requested anchor, populate `AnchorTemplate.ExplicitSql` as empty string and rely on relational reconstruction
+  - [x] the `AnchorTemplate` already has precedence logic: if `ExplicitSql` is non-empty, use it; otherwise reconstruct from source key and criteria
+  - [x] do NOT use `template_key` in facet content paths — that's result-projection-only
+
+  **For all compiler paths**:
+  - [x] if a facet has no template metadata and no relational metadata, fail with a clear diagnostic (handled by `ResolvePredicateSourceKeyColumn` throwing `InvalidOperationException` when relational metadata is missing and template metadata is not present)
+  - [x] log or throw when `template_contract` in the database doesn't match any known compiler type (`discrete`, `range`, `intersect`, `geopolygon`) — added `ValidateTemplateContract` in resolver
+  - [x] ensure facets without template metadata continue to use the existing relational path with zero behavior change (compiler services now check for template metadata first, then fall back to relational)
+
 - [x] route discrete compiler lookup through the new template contract when template metadata is present
-- [ ] keep unchanged facets on the existing relational path until later phases move them
-- [ ] define the minimum runtime checks for missing template metadata, unsupported contract types, and unknown template keys
+- [x] keep unchanged facets on the existing relational path until later phases move them
+- [x] define the minimum runtime checks for missing template metadata, unsupported contract types, and unknown template keys
+
+  Implementation notes:
+  - added `ValidateTemplateContract` to `FacetTemplateRuntimeResolver` — throws when `template_contract` is not in `SupportedTemplateContracts` (`discrete`, `range`, `intersect`, `geopolygon`)
+  - refactored `CreateDiscretePredicateQueryPlan` in both `ComposedResultProjectionHandoffBuilder` and `ComposedFacetContentFilterQueryFactory` to check for explicit anchor SQL before resolving relational metadata
+  - facets with template metadata no longer throw on missing relational metadata; facets without template metadata still throw clear diagnostics when relational metadata is missing
+  - added test `Build_WithoutTemplateMetadata_UsesRelationalFallbackPath` validating that facets without template metadata use the relational path with empty `ExplicitSql` in the `AnchorTemplate`
 
 Completion criteria: compiler services can distinguish inline-template facets, retained result-shape template-key facets, and unchanged legacy-mode facets without ambiguous fallback.
 
@@ -73,9 +107,9 @@ Completion criteria: the next implementation phase has named driver facets, incl
 | Area                            | Status      | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 |---------------------------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Authoring contract              | In Progress | `sead.query.composer/Templates/facet-route-config.schema.json` now carries the inline `sql` block with canonical `body` support plus explicit projected-anchor, anchor-to-SQL exception, and constrained `template_key` shapes. Fixed placeholder-set documentation is now complete: `discrete` (`{pick_filter_sql}`, `{pick_values_sql}`), `range` (`{low}`, `{high}`, `{range_filter_sql}`), `intersect` (`{range_filter_sql}`), `geopolygon` (`{polygon_filter_sql}`, `{polygon_wkt}`, `{srid}`). |
-| Schema and import validation    | In Progress | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` now validates inline-template metadata and `sead.query.test/IntegrationTests/Infrastructure/FacetRouteConfigurationImporterTests.cs` covers persisted rows, placeholder validation, template_key validation, unsupported contract types, type/contract mismatch, missing base anchor references, missing sql body, and unsupported sql mode failure cases.                                                                          |
-| Runtime persistence and loading | In Progress | `scripts/prepare-facet-runtime-schema.sql` adds `facet.facet_template`, `sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs` loads a runtime snapshot, and both `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs` now consume it.                                                                                                                                       |
-| Compiler entry contract         | In Progress | `sead.query.core/Interfaces/IFacetTemplateRuntimeResolver.cs` and `sead.query.api/Dependency.cs` add the runtime resolver contract, and the composer paths now read `anchor_identity` from the runtime snapshot rather than separate lookups.                                                                                                                                                                                                                        |
+| Schema and import validation    | In Progress | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` now validates inline-template metadata and `sead.query.test/IntegrationTests/Infrastructure/FacetRouteConfigurationImporterTests.cs` covers persisted rows, placeholder validation, template_key validation, unsupported contract types, type/contract mismatch, missing base anchor references, missing sql body, and unsupported sql mode failure cases.                                                                       |
+| Runtime persistence and loading | In Progress | `scripts/prepare-facet-runtime-schema.sql` adds `facet.facet_template`, `sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs` loads a runtime snapshot, and both `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs` now consume it.                                                                                                                        |
+| Compiler entry contract         | In Progress | `sead.query.core/Interfaces/IFacetTemplateRuntimeResolver.cs` and `sead.query.api/Dependency.cs` add the runtime resolver contract, and the composer paths now read `anchor_identity` from the runtime snapshot rather than separate lookups.                                                                                                                                                                                                                                                        |
 | Driver-slice readiness          | Not started | Start with `result_facet`, `family`, and `tbl_biblio_sample_groups`, and queue required non-discrete restoration drivers `analysis_entity_ages` (intersect) and `sites_polygon` (geopolygon).                                                                                                                                                                                                                                                                                                        |
 
 ## Definition Of Done
@@ -98,12 +132,12 @@ Completion criteria: the next implementation phase has named driver facets, incl
 
 ## Deliverables
 
-| Deliverable           | Description                                                           | Status      | Link                                                                                    |
-|-----------------------|-----------------------------------------------------------------------|-------------|-----------------------------------------------------------------------------------------|
-| Phase 1 task plan     | Active execution tracker for Phase 1                                  | Not started | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/TASK_PLAN_PHASE_1.md`   |
-| Implementation plan   | Ordered phase sequence for the inline SQL feature                     | Not started | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/IMPLEMENTATION_PLAN.md` |
-| Proposal update       | Approved baseline for hybrid anchors and retained result-shape facets | Not started | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md`                     |
-| Classification update | Backfill classification aligned with retained result-shape facets     | Not started | `docs/proposals/FACET_EXPORT_CLASSIFICATION_AND_YAML_BACKFILL.md`                       |
+| Deliverable           | Description                                                           | Status      | Link                                                                                                                |
+|-----------------------|-----------------------------------------------------------------------|-------------|---------------------------------------------------------------------------------------------------------------------|
+| Phase 1 task plan     | Active execution tracker for Phase 1                                  | Not started | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/TASK_PLAN_PHASE_1.md`                               |
+| Implementation plan   | Ordered phase sequence for the inline SQL feature                     | Not started | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/IMPLEMENTATION_PLAN.md`                             |
+| Proposal update       | Approved baseline for hybrid anchors and retained result-shape facets | Not started | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING.md` |
+| Classification update | Backfill classification aligned with retained result-shape facets     | Not started | `docs/proposals/FACET_EXPORT_CLASSIFICATION_AND_YAML_BACKFILL.md`                                                   |
 
 ## Scope
 

@@ -18,10 +18,10 @@ public class SmartPostgresFixture : IAsyncLifetime
     private static bool _containerInitialized = false;
     private static readonly object _lock = new object();
     private static readonly string CachedDataFolder = Path.Combine(ScaffoldUtility.GetProjectRoot(), "tmp", "sead-query-pgdata-cache");
-
+    private static readonly string ImageName = "postgis/postgis:16-3.5-alpine";
 
     public string ConnectionString => Container.GetConnectionString();
-    public PostgreSqlContainer Container => _container;
+    public PostgreSqlContainer Container => _container ?? throw new InvalidOperationException("PostgreSQL container is not initialized.");
 
     public SmartPostgresFixture()
     {
@@ -47,11 +47,11 @@ public class SmartPostgresFixture : IAsyncLifetime
             var uid = ScaffoldUtility.GetHostUserId();
             var gid = ScaffoldUtility.GetHostGroupId();
 
-            _container = new PostgreSqlBuilder()
-                .WithImage("postgis/postgis:16-3.5-alpine")
+            _container = new PostgreSqlBuilder(ImageName)
+                // .WithImage(ImageName)
                 .WithName($"sead-query-test-postgres-{runId}")
-                .WithUsername(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username"))
-                .WithPassword(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password"))
+                .WithUsername(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Username") ?? string.Empty)
+                .WithPassword(Environment.GetEnvironmentVariable("QueryBuilderSetting__Store__Password") ?? string.Empty)
                 .WithDatabase(options.Store.Database)
                 // .WithHostname("testcontainer_postgres")
                 .WithCleanUp(true)

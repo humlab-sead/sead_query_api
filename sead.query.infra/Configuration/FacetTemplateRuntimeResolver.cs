@@ -18,6 +18,14 @@ public sealed class FacetTemplateRuntimeResolver : IFacetTemplateRuntimeResolver
     private readonly Dictionary<int, string> _templateKeyCache = [];
     private bool? _tableExists;
 
+    private static readonly HashSet<string> SupportedTemplateContracts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "discrete",
+        "range",
+        "intersect",
+        "geopolygon",
+    };
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FacetTemplateRuntimeResolver"/> class.
     /// </summary>
@@ -169,6 +177,7 @@ public sealed class FacetTemplateRuntimeResolver : IFacetTemplateRuntimeResolver
     {
         var templateKey = LoadTemplateKey(facet.FacetId);
         var baseSql = LoadBaseTemplateSql(facet.FacetId);
+        ValidateTemplateContract(facet, baseSql.TemplateContract);
         var anchorSqlByTable = LoadAnchorSqlByTable(facet.FacetId);
         return new FacetTemplateRuntimeSnapshot(
             templateKey,
@@ -298,6 +307,22 @@ public sealed class FacetTemplateRuntimeResolver : IFacetTemplateRuntimeResolver
 
         var value = command.ExecuteScalar();
         return value == null || value == DBNull.Value ? string.Empty : value.ToString() ?? string.Empty;
+    }
+
+    private static void ValidateTemplateContract(Facet facet, string templateContract)
+    {
+        if (string.IsNullOrWhiteSpace(templateContract))
+        {
+            return;
+        }
+
+        if (!SupportedTemplateContracts.Contains(templateContract))
+        {
+            throw new InvalidOperationException(
+                $"Unsupported template_contract '{templateContract}' for facet '{facet.FacetCode}' (facet_id={facet.FacetId}). " +
+                $"Supported contracts: {string.Join(", ", SupportedTemplateContracts)}."
+            );
+        }
     }
 
     private sealed record TemplateRow(string SqlText, string TemplateContract, string BaseAnchor)
