@@ -333,9 +333,10 @@ facets:
       - anchor: analysis_entity
         route: country__analysis_entity
 
+  # Phase 3 Restoration Driver: Geopolygon facet requiring composed facet-content restoration
   - key: sites_polygon
     display_title: Sites (map)
-    description: General name for the excavation or sampling location
+    description: "Geopolygon restoration driver for Phase 3: requires composed facet-content handling for map-result targets"
     group_key: space_time
     type: geopolygon
     source_table: tbl_sites
@@ -357,9 +358,10 @@ facets:
       - anchor: analysis_entity
         route: sites_polygon__analysis_entity
 
+  # Phase 3 Restoration Driver: Intersect facet requiring composed facet-content restoration
   - key: analysis_entity_ages
     display_title: Analysis entity ages
-    description: Age range assigned to analysis entities based on dating evidence; uses range-intersection matching
+    description: "Intersect restoration driver for Phase 3: requires composed facet-content handling for range-intersection matching"
     group_key: space_time
     type: intersect
     source_table: tbl_analysis_entity_ages
@@ -380,3 +382,143 @@ facets:
     anchors:
       - anchor: analysis_entity
         route: analysis_entity_ages__analysis_entity
+
+  # Phase 1 Driver Facets: Retained Result-Shape And Discrete Implementation Drivers
+
+  - key: result_facet
+    display_title: Result facet
+    description: Retained result-shape facet using constrained template_key for anchor-identity projection
+    group_key: result
+    type: discrete
+    source_table: tbl_physical_samples
+    category:
+      id_expr: tbl_physical_samples.physical_sample_id
+      name_expr: tbl_physical_samples.sample_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_physical_samples.sample_name
+    flags:
+      is_applicable: true
+      is_default: false
+    template_key: anchor_identity
+    clauses: []
+    anchors:
+      - anchor: sample
+        mode: identity
+      # TODO Phase 2: Add route-based anchor projections once sample__dataset, sample__sites,
+      # and sample__analysis_entity routes are defined in route_families section
+      # - anchor: dataset
+      #   route: sample__dataset
+      # - anchor: sites
+      #   route: sample__sites
+      # - anchor: analysis_entity
+      #   route: sample__analysis_entity
+
+  - key: family
+    display_title: Family
+    description: Routed discrete driver for parity-risk proof slice using inline SQL template
+    group_key: taxonomy
+    type: discrete
+    source_table: tbl_taxa_tree_families
+    category:
+      id_expr: tbl_taxa_tree_families.family_id
+      name_expr: tbl_taxa_tree_families.family_name
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_taxa_tree_families.family_name
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of analysis entities
+      facet_key: result_facet
+    sql:
+      mode: inline-template
+      contract: discrete
+      base_anchor: analysis_entity
+      body: |
+        select
+          tf.family_id as category_id,
+          tf.family_name as category_name,
+          ae.analysis_entity_id as anchor_id
+        from facet.abundance_taxon_shortcut ats
+        join tbl_taxa_tree_genera tg on tg.genus_id = ats.genus_id
+        join tbl_taxa_tree_families tf on tf.family_id = tg.family_id
+        join tbl_analysis_entities ae on ae.analysis_entity_id = ats.analysis_entity_id
+        where {pick_filter_sql}
+    clauses: []
+    anchors:
+      - anchor: analysis_entity
+        mode: identity
+      # TODO Phase 2: Add route-based anchor projections once analysis_entity__dataset
+      # and analysis_entity__sample routes are defined in route_families section
+      # - anchor: dataset
+      #   route: analysis_entity__dataset
+      # - anchor: sample
+      #   route: analysis_entity__sample
+
+  - key: tbl_biblio_sample_groups
+    display_title: Sample group bibliography
+    description: Clause-bearing joined discrete driver demonstrating facet-owned SQL replacing indirect clause reconstruction
+    group_key: bibliography
+    type: discrete
+    source_table: tbl_biblio
+    category:
+      id_expr: tbl_biblio.biblio_id
+      name_expr: tbl_biblio.title
+      data_type: integer
+      operator: "="
+    sort_expr: tbl_biblio.title
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    sql:
+      mode: inline-template
+      contract: discrete
+      base_anchor: sample
+      body: |
+        select
+          tbl_biblio.biblio_id as category_id,
+          tbl_biblio.title as category_name,
+          tbl_physical_samples.physical_sample_id as anchor_id
+        from tbl_biblio
+        join tbl_biblio_sample_groups on tbl_biblio_sample_groups.biblio_id = tbl_biblio.biblio_id
+        join tbl_sample_group_sampling_contexts on tbl_sample_group_sampling_contexts.sampling_context_id = tbl_biblio_sample_groups.sampling_context_id
+        join tbl_physical_samples on tbl_physical_samples.sample_group_id = tbl_sample_group_sampling_contexts.sample_group_id
+        where {pick_filter_sql}
+    clauses: []
+    anchors:
+      - anchor: sample
+        mode: identity
+      # TODO Phase 2: Add route-based anchor projection once sample__dataset route is defined
+      # - anchor: dataset
+      #   route: sample__dataset
+
+# Queued Phase 3 Non-Discrete Drivers (not yet implemented):
+#
+# These facets are identified as required drivers for Phase 3 but are NOT included
+# in Phase 1 scope. They will be added when Phase 3 extends inline SQL to non-discrete
+# facet types (range, intersect, geopolygon).
+#
+# - geochronology: routed range driver for base-anchor template plus projection
+#     type: range
+#     purpose: prove range compiler with projected anchor support
+#
+# - tbl_denormalized_measured_values_33_0: denormalized or function-backed range driver
+#     type: range
+#     purpose: prove range compiler with denormalized source or UDF-backed content
+#
+# Restoration Drivers (already present above with updated descriptions):
+#
+# - analysis_entity_ages: intersect restoration driver
+#     type: intersect
+#     purpose: restore composed facet-content handling for range-intersection matching
+#
+# - sites_polygon: geopolygon restoration driver
+#     type: geopolygon
+#     purpose: restore composed facet-content handling for map-result targets

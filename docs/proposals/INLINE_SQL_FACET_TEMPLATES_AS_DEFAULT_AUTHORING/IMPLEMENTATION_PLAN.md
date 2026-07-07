@@ -63,7 +63,7 @@ Make inline SQL a first-class authored and imported configuration path without b
 - the maintained YAML contract supports inline SQL as a first-class facet authoring path
 - the importer validates and persists inline template metadata instead of rejecting it
 - runtime services can load imported template metadata without forcing immediate migration of all existing facets
-- the detailed execution tracker for this phase is maintained in `TASK_PLAN_PHASE_1.md`
+- the detailed execution tracker for this phase is maintained in `PHASE_1_TASK_PLAN.md`
 
 ### Phase 2: Discrete Driver Slices
 

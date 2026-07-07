@@ -254,6 +254,24 @@ That means:
 
 This keeps result-shape behavior governed by the same catalog while avoiding a second authoring surface for inner result composition.
 
+Example of a result-shape facet using `template_key`:
+
+```yaml
+facets:
+  - key: result_facet
+    display_title: Result facet
+    description: Retained result-shape facet using template_key for anchor-identity projection
+    type: discrete
+    template_key: anchor_identity
+    anchors:
+      - anchor: sample
+        mode: identity
+      - anchor: dataset
+        route: sample__dataset
+```
+
+The `anchor_identity` template key tells the compiler to generate anchor-identity SQL (e.g., `SELECT sample_id AS category_id, sample_id AS anchor_id FROM anchor_table`) rather than requiring the facet to define its own inline SQL body.
+
 ## Alternatives Considered
 
 ### Keep relational YAML as the default and use inline SQL only as an override
