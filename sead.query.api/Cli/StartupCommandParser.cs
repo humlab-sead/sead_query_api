@@ -209,6 +209,12 @@ public sealed class StartupCommandParser
         }
 
         var viewTypeOptionResult = parseResult.GetResult(_viewTypeOption);
+        if (viewTypeOptionResult is not null && viewTypeOptionResult.Tokens.Count == 0)
+        {
+            parseError = $"{ViewTypeArgument} requires a non-empty view type when provided.";
+            return false;
+        }
+
         var viewTypeId = viewTypeOptionResult?.GetValueOrDefault<string>() ?? "tabular";
         if (string.IsNullOrWhiteSpace(viewTypeId))
         {
@@ -217,6 +223,12 @@ public sealed class StartupCommandParser
         }
 
         var resultCodeOptionResult = parseResult.GetResult(_resultCodeOption);
+        if (resultCodeOptionResult is not null && resultCodeOptionResult.Tokens.Count == 0)
+        {
+            parseError = $"{ResultCodeArgument} requires a non-empty result code when provided.";
+            return false;
+        }
+
         var resultCode = resultCodeOptionResult?.GetValueOrDefault<string>();
         if (resultCode is not null && string.IsNullOrWhiteSpace(resultCode))
         {
