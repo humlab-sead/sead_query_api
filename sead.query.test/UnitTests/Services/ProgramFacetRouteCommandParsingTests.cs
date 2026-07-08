@@ -107,4 +107,22 @@ public class ProgramFacetRouteCommandParsingTests
         command.Should().BeOfType<RunWebHostCommand>();
         command.HostArgs.Should().Equal("--urls", "http://localhost:5000");
     }
+
+    [Fact]
+    public void Parse_WithMissingViewTypeValue_ThrowsArgumentException()
+    {
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--print-result-sql", "family:family", "--view-type"]);
+
+        action.Should().Throw<ArgumentException>().WithMessage("--view-type requires a non-empty view type when provided.");
+    }
+
+    [Fact]
+    public void Parse_WithMissingResultCodeValue_ThrowsArgumentException()
+    {
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--print-result-sql", "family:family", "--result-code"]);
+
+        action.Should().Throw<ArgumentException>().WithMessage("--result-code requires a non-empty result code when provided.");
+    }
 }

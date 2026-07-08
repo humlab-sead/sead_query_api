@@ -18,6 +18,18 @@ public sealed class FacetRouteConfigurationImportCommand
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("Facet route configuration import requires a file path.", nameof(filePath));
 
-        _importer.ImportFromFile(Path.GetFullPath(filePath));
+        _importer.ImportFromFile(ResolvePath(filePath));
+    }
+
+    private static string ResolvePath(string filePath)
+    {
+        var absolutePath = Path.GetFullPath(filePath);
+        if (File.Exists(absolutePath))
+        {
+            return absolutePath;
+        }
+
+        var parentRelativePath = Path.GetFullPath(Path.Combine("..", filePath));
+        return File.Exists(parentRelativePath) ? parentRelativePath : absolutePath;
     }
 }
