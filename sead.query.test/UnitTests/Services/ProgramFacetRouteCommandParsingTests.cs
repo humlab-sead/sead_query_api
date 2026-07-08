@@ -1,5 +1,6 @@
+using System;
 using FluentAssertions;
-using SeadQueryAPI;
+using SeadQueryAPI.Cli;
 using Xunit;
 
 namespace SQT.UnitTests.Services;
@@ -7,122 +8,103 @@ namespace SQT.UnitTests.Services;
 public class ProgramFacetRouteCommandParsingTests
 {
     [Fact]
-    public void TryGetFacetRouteCommand_WithImportArgument_ReturnsImportCommandAndPath()
+    public void Parse_WithImportArgument_ReturnsImportCommandAndPath()
     {
-        var result = Program.TryGetFacetRouteCommand(
-            ["--import-facet-config", "sead.query.composer/Templates/route_v1.yaml"],
-            out var commandType,
-            out var configurationFilePath,
-            out var parseError
-        );
+        var parser = new StartupCommandParser();
+        var command = parser.Parse(["--import-facet-config", "sead.query.composer/Templates/route_v1.yaml"]);
 
-        result.Should().BeTrue();
-        commandType.Should().Be(Program.FacetRouteConfigurationCommandType.Import);
-        configurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
-        parseError.Should().BeNull();
+        command.Should().BeOfType<ImportFacetConfigCommand>();
+        var importCommand = (ImportFacetConfigCommand)command;
+        importCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
     }
 
     [Fact]
-    public void TryGetFacetRouteCommand_WithValidateArgument_ReturnsValidationCommandAndPath()
+    public void Parse_WithValidateArgument_ReturnsValidationCommandAndPath()
     {
-        var result = Program.TryGetFacetRouteCommand(
-            ["--validate-facet-config", "sead.query.composer/Templates/route_v1.yaml"],
-            out var commandType,
-            out var configurationFilePath,
-            out var parseError
-        );
+        var parser = new StartupCommandParser();
+        var command = parser.Parse(["--validate-facet-config", "sead.query.composer/Templates/route_v1.yaml"]);
 
-        result.Should().BeTrue();
-        commandType.Should().Be(Program.FacetRouteConfigurationCommandType.Validate);
-        configurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
-        parseError.Should().BeNull();
+        command.Should().BeOfType<ValidateFacetConfigCommand>();
+        var validateCommand = (ValidateFacetConfigCommand)command;
+        validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
     }
 
     [Fact]
-    public void TryGetFacetRouteCommand_WithConflictingArguments_ReturnsParseError()
+    public void Parse_WithConflictingFacetRouteArguments_ThrowsArgumentException()
     {
-        var result = Program.TryGetFacetRouteCommand(
-            ["--import-facet-config", "import.yaml", "--validate-facet-config", "validate.yaml"],
-            out var commandType,
-            out var configurationFilePath,
-            out var parseError
-        );
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--import-facet-config", "import.yaml", "--validate-facet-config", "validate.yaml"]);
 
-        result.Should().BeFalse();
-        commandType.Should().Be(Program.FacetRouteConfigurationCommandType.None);
-        configurationFilePath.Should().BeNull();
-        parseError.Should().Be("--import-facet-config and --validate-facet-config cannot be used together.");
+        action.Should().Throw<ArgumentException>().WithMessage("--import-facet-config and --validate-facet-config cannot be used together.");
     }
 
     [Fact]
-    public void TryGetFacetRouteCommand_WithMissingPath_ReturnsParseError()
+    public void Parse_WithMissingFacetRoutePath_ThrowsArgumentException()
     {
-        var result = Program.TryGetFacetRouteCommand(
-            ["--validate-facet-config"],
-            out var commandType,
-            out var configurationFilePath,
-            out var parseError
-        );
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--validate-facet-config"]);
 
-        result.Should().BeFalse();
-        commandType.Should().Be(Program.FacetRouteConfigurationCommandType.Validate);
-        configurationFilePath.Should().BeNull();
-        parseError.Should().Be("--validate-facet-config requires a configuration file path.");
+        action.Should().Throw<ArgumentException>().WithMessage("--validate-facet-config requires a configuration file path.");
     }
 
     [Fact]
-    public void TryGetFacetSqlCommand_WithArgument_ReturnsFacetUrl()
+    public void Parse_WithFacetSqlArgument_ReturnsFacetSqlCommand()
     {
-        var result = Program.TryGetFacetSqlCommand(["--print-facet-sql", "family:family"], out var facetUrl, out var parseError);
+        var parser = new StartupCommandParser();
+        var command = parser.Parse(["--print-facet-sql", "family:family"]);
 
-        result.Should().BeTrue();
-        facetUrl.Should().Be("family:family");
-        parseError.Should().BeNull();
+        command.Should().BeOfType<PrintFacetSqlCommand>();
+        var facetSqlCommand = (PrintFacetSqlCommand)command;
+        facetSqlCommand.FacetUrl.Should().Be("family:family");
     }
 
     [Fact]
-    public void TryGetFacetSqlCommand_WithMissingFacetUrl_ReturnsParseError()
+    public void Parse_WithMissingFacetSqlFacetUrl_ThrowsArgumentException()
     {
-        var result = Program.TryGetFacetSqlCommand(["--print-facet-sql"], out var facetUrl, out var parseError);
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--print-facet-sql"]);
 
-        result.Should().BeFalse();
-        facetUrl.Should().BeNull();
-        parseError.Should().Be("--print-facet-sql requires a facet URL.");
+        action.Should().Throw<ArgumentException>().WithMessage("--print-facet-sql requires a facet URL.");
     }
 
     [Fact]
-    public void TryGetResultSqlCommand_WithArgumentAndOptions_ReturnsProbeConfiguration()
+    public void Parse_WithResultSqlArgumentAndOptions_ReturnsResultSqlCommand()
     {
-        var result = Program.TryGetResultSqlCommand(
-            ["--print-result-sql", "family:family", "--view-type", "map", "--result-code", "map_result"],
-            out var facetUrl,
-            out var viewTypeId,
-            out var resultCode,
-            out var parseError
-        );
+        var parser = new StartupCommandParser();
+        var command = parser.Parse(["--print-result-sql", "family:family", "--view-type", "map", "--result-code", "map_result"]);
 
-        result.Should().BeTrue();
-        facetUrl.Should().Be("family:family");
-        viewTypeId.Should().Be("map");
-        resultCode.Should().Be("map_result");
-        parseError.Should().BeNull();
+        command.Should().BeOfType<PrintResultSqlCommand>();
+        var resultSqlCommand = (PrintResultSqlCommand)command;
+        resultSqlCommand.FacetUrl.Should().Be("family:family");
+        resultSqlCommand.ViewTypeId.Should().Be("map");
+        resultSqlCommand.ResultCode.Should().Be("map_result");
     }
 
     [Fact]
-    public void TryGetResultSqlCommand_WithMissingFacetUrl_ReturnsParseError()
+    public void Parse_WithMissingResultSqlFacetUrl_ThrowsArgumentException()
     {
-        var result = Program.TryGetResultSqlCommand(
-            ["--print-result-sql"],
-            out var facetUrl,
-            out var viewTypeId,
-            out var resultCode,
-            out var parseError
-        );
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--print-result-sql"]);
 
-        result.Should().BeFalse();
-        facetUrl.Should().BeNull();
-        viewTypeId.Should().Be("tabular");
-        resultCode.Should().BeNull();
-        parseError.Should().Be("--print-result-sql requires a facet URL.");
+        action.Should().Throw<ArgumentException>().WithMessage("--print-result-sql requires a facet URL.");
+    }
+
+    [Fact]
+    public void Parse_WithConflictingSqlCommands_ThrowsArgumentException()
+    {
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--print-facet-sql", "family:family", "--print-result-sql", "family:family"]);
+
+        action.Should().Throw<ArgumentException>().WithMessage("--print-facet-sql and --print-result-sql cannot be used together.");
+    }
+
+    [Fact]
+    public void Parse_WithNoCommandArguments_ReturnsRunWebHostCommand()
+    {
+        var parser = new StartupCommandParser();
+        var command = parser.Parse(["--urls", "http://localhost:5000"]);
+
+        command.Should().BeOfType<RunWebHostCommand>();
+        command.HostArgs.Should().Equal("--urls", "http://localhost:5000");
     }
 }
