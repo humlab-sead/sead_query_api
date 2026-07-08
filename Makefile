@@ -16,6 +16,7 @@ SCAFFOLD_CONTEXT_FOLDER=tmp/SeadQueryCore
 FACET_CONFIG_FILE?=sead.query.composer/Templates/route_v1.yaml
 FACET_CONFIG_SOURCE_COMMIT?=$(shell git rev-parse HEAD 2>/dev/null || echo unknown)
 FACET_CONFIG_IMPORTED_BY?=make-import-facet-config
+FACET_CONFIG_DB_HOST?=
 FACET_RUNTIME_SCHEMA_FILE?=scripts/prepare-facet-runtime-schema.sql
 SEAD_QUERY_API_BASE_URL?=http://localhost:8090
 
@@ -158,7 +159,17 @@ validate-facet-config:
 		&& set +a \
 		&& SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT="$(FACET_CONFIG_SOURCE_COMMIT)" \
 		SEAD_QUERY_FACET_CONFIG_IMPORTED_BY="$(FACET_CONFIG_IMPORTED_BY)" \
+		$(if $(strip $(FACET_CONFIG_DB_HOST)),QueryBuilderSetting__Store__Host="$(FACET_CONFIG_DB_HOST)",) \
 		dotnet run --project $(API_PROJECT) -- --validate-facet-config "$(FACET_CONFIG_FILE)"
+
+.PHONY: validate-facet-config-offline
+validate-facet-config-offline:
+	@set -a \
+		&& source conf/.env \
+		&& set +a \
+		&& SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT="$(FACET_CONFIG_SOURCE_COMMIT)" \
+		SEAD_QUERY_FACET_CONFIG_IMPORTED_BY="$(FACET_CONFIG_IMPORTED_BY)" \
+		dotnet run --project $(API_PROJECT) -- --validate-facet-config "$(FACET_CONFIG_FILE)" --validate-facet-config-offline
 
 .PHONY: default-cutover-smoke-check
 default-cutover-smoke-check:
