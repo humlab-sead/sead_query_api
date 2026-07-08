@@ -43,6 +43,7 @@ This repository is a .NET 9 solution with these main projects:
 ## Working style
 
 * Use the existing solution structure, root `Makefile`, VS Code tasks, and `dotnet` commands already present in the repo.
+* For facet-config validation in CI/bootstrap flows, follow `docs/TESTING.md`: use `make validate-facet-config` for database-reachable semantic checks (optionally with `FACET_CONFIG_DB_HOST=...`), and `make validate-facet-config-offline` when connectivity is intentionally unavailable.
 * Keep edits small and aligned with current naming, nullability, async, and DI patterns.
 * Run targeted validation for the touched slice before finishing, and widen scope only when the change crosses layers.
 * Do not invent operational or CI behavior that is not defined in the repository; mark missing process as `TBD` in docs.

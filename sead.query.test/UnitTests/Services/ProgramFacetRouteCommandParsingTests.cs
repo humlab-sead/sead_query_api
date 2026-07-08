@@ -27,6 +27,21 @@ public class ProgramFacetRouteCommandParsingTests
         command.Should().BeOfType<ValidateFacetConfigCommand>();
         var validateCommand = (ValidateFacetConfigCommand)command;
         validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
+        validateCommand.Offline.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Parse_WithValidateArgumentAndOfflineFlag_ReturnsValidationCommandWithOfflineMode()
+    {
+        var parser = new StartupCommandParser();
+        var command = parser.Parse(
+            ["--validate-facet-config", "sead.query.composer/Templates/route_v1.yaml", "--validate-facet-config-offline"]
+        );
+
+        command.Should().BeOfType<ValidateFacetConfigCommand>();
+        var validateCommand = (ValidateFacetConfigCommand)command;
+        validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
+        validateCommand.Offline.Should().BeTrue();
     }
 
     [Fact]
@@ -45,6 +60,18 @@ public class ProgramFacetRouteCommandParsingTests
         var action = () => parser.Parse(["--validate-facet-config"]);
 
         action.Should().Throw<ArgumentException>().WithMessage("--validate-facet-config requires a configuration file path.");
+    }
+
+    [Fact]
+    public void Parse_WithOfflineFlagWithoutValidate_ThrowsArgumentException()
+    {
+        var parser = new StartupCommandParser();
+        var action = () => parser.Parse(["--validate-facet-config-offline"]);
+
+        action
+            .Should()
+            .Throw<ArgumentException>()
+            .WithMessage("--validate-facet-config-offline can only be used together with --validate-facet-config.");
     }
 
     [Fact]

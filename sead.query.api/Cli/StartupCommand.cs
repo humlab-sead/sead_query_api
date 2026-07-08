@@ -6,7 +6,8 @@ public sealed record RunWebHostCommand(string[] HostArgs) : StartupCommand(HostA
 
 public sealed record ImportFacetConfigCommand(string ConfigurationFilePath, string[] HostArgs) : StartupCommand(HostArgs);
 
-public sealed record ValidateFacetConfigCommand(string ConfigurationFilePath, string[] HostArgs) : StartupCommand(HostArgs);
+public sealed record ValidateFacetConfigCommand(string ConfigurationFilePath, bool Offline, string[] HostArgs)
+    : StartupCommand(HostArgs);
 
 public sealed record PrintFacetSqlCommand(string FacetUrl, string[] HostArgs) : StartupCommand(HostArgs);
 

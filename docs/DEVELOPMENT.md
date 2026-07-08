@@ -265,9 +265,27 @@ For a non-mutating YAML check through the same host entry point, use:
 make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
 ```
 
-This runs the `--validate-facet-config` command path and stops after deserialization and importer-contract validation.
+This runs the semantic `--validate-facet-config` command path.
 
 The validation path is now semantic as well as structural. In addition to deserialization and importer-contract checks, it resolves anchor tables, generated route endpoints, facet source-table references, and facet-anchor route bindings against the current facet schema without mutating the database.
+
+If your local defaults resolve to an unreachable host (for example `postgresql` outside docker-compose), override the host for validation:
+
+```bash
+make validate-facet-config \
+	FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml \
+	FACET_CONFIG_DB_HOST=127.0.0.1
+```
+
+This injects `QueryBuilderSetting__Store__Host` for the command run only.
+
+For disconnected or bootstrap checks that should skip database-backed resolved validation, use offline schema-only mode:
+
+```bash
+make validate-facet-config-offline FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+```
+
+Offline mode still deserializes and enforces the importer configuration contract, but does not query runtime facet-schema tables.
 
 ### Print SQL for a facet URL
 

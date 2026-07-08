@@ -34,6 +34,7 @@ This repository is a .NET solution centered on these projects:
 
 - Target .NET 10 and the existing solution/project structure.
 - Use the root `Makefile`, VS Code tasks, or `dotnet` commands already present in the repo.
+- For facet-config checks in CI/bootstrap contexts, follow `docs/TESTING.md`: use semantic validation (`make validate-facet-config`, optionally `FACET_CONFIG_DB_HOST=...`) when PostgreSQL is reachable, and offline validation (`make validate-facet-config-offline`) when connectivity is intentionally unavailable.
 - Run targeted tests for the changed slice before finishing; widen validation only when the change crosses layers.
 - Keep changes small and aligned with existing naming, nullability, async, and DI patterns.
 - For architecture or design work, read and follow `.github/skills/sead-architecture-design/SKILL.md`.

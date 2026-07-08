@@ -31,10 +31,11 @@ public static class StartupCommandDispatcher
                 validateFacetConfigCommand.HostArgs,
                 service =>
                 {
-                    service.Run(validateFacetConfigCommand.ConfigurationFilePath);
+                    service.Run(validateFacetConfigCommand.ConfigurationFilePath, validateFacetConfigCommand.Offline);
                     Log.Information(
-                        "Validated facet route configuration from {ConfigurationFilePath}",
-                        validateFacetConfigCommand.ConfigurationFilePath
+                        "Validated facet route configuration from {ConfigurationFilePath} (offline: {Offline})",
+                        validateFacetConfigCommand.ConfigurationFilePath,
+                        validateFacetConfigCommand.Offline
                     );
                 }
             ),

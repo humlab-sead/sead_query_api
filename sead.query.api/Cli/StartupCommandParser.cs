@@ -10,6 +10,7 @@ public sealed class StartupCommandParser
 {
     private const string ImportFacetConfigArgument = "--import-facet-config";
     private const string ValidateFacetConfigArgument = "--validate-facet-config";
+    private const string ValidateFacetConfigOfflineArgument = "--validate-facet-config-offline";
     private const string PrintFacetSqlArgument = "--print-facet-sql";
     private const string PrintResultSqlArgument = "--print-result-sql";
     private const string ViewTypeArgument = "--view-type";
@@ -18,6 +19,7 @@ public sealed class StartupCommandParser
     private readonly RootCommand _rootCommand;
     private readonly Option<string> _importFacetConfigOption;
     private readonly Option<string> _validateFacetConfigOption;
+    private readonly Option<bool> _validateFacetConfigOfflineOption;
     private readonly Option<string> _printFacetSqlOption;
     private readonly Option<string> _printResultSqlOption;
     private readonly Option<string> _viewTypeOption;
@@ -27,6 +29,7 @@ public sealed class StartupCommandParser
     {
         _importFacetConfigOption = new Option<string>(ImportFacetConfigArgument);
         _validateFacetConfigOption = new Option<string>(ValidateFacetConfigArgument);
+        _validateFacetConfigOfflineOption = new Option<bool>(ValidateFacetConfigOfflineArgument);
         _printFacetSqlOption = new Option<string>(PrintFacetSqlArgument);
         _printResultSqlOption = new Option<string>(PrintResultSqlArgument);
         _viewTypeOption = new Option<string>(ViewTypeArgument);
@@ -39,6 +42,7 @@ public sealed class StartupCommandParser
 
         _rootCommand.Options.Add(_importFacetConfigOption);
         _rootCommand.Options.Add(_validateFacetConfigOption);
+        _rootCommand.Options.Add(_validateFacetConfigOfflineOption);
         _rootCommand.Options.Add(_printFacetSqlOption);
         _rootCommand.Options.Add(_printResultSqlOption);
         _rootCommand.Options.Add(_viewTypeOption);
@@ -106,12 +110,26 @@ public sealed class StartupCommandParser
         var validateOptionResult = parseResult.GetResult(_validateFacetConfigOption);
         var importArgumentIndex = Array.IndexOf(args, ImportFacetConfigArgument);
         var validateArgumentIndex = Array.IndexOf(args, ValidateFacetConfigArgument);
+        var validateOfflineArgumentIndex = Array.IndexOf(args, ValidateFacetConfigOfflineArgument);
+        var hasValidateOfflineOption = validateOfflineArgumentIndex >= 0;
         var hasImportOption = importOptionResult is not null;
         var hasValidateOption = validateOptionResult is not null;
+
+        if (hasValidateOfflineOption && !hasValidateOption)
+        {
+            parseError = $"{ValidateFacetConfigOfflineArgument} can only be used together with {ValidateFacetConfigArgument}.";
+            return false;
+        }
 
         if (hasImportOption && hasValidateOption)
         {
             parseError = $"{ImportFacetConfigArgument} and {ValidateFacetConfigArgument} cannot be used together.";
+            return false;
+        }
+
+        if (hasImportOption && hasValidateOfflineOption)
+        {
+            parseError = $"{ValidateFacetConfigOfflineArgument} cannot be used together with {ImportFacetConfigArgument}.";
             return false;
         }
 
@@ -141,7 +159,7 @@ public sealed class StartupCommandParser
         var hostArgs = RemoveFacetRouteConfigurationCommandArguments(args);
         command = hasImportOption
             ? new ImportFacetConfigCommand(configurationFilePath, hostArgs)
-            : new ValidateFacetConfigCommand(configurationFilePath, hostArgs);
+            : new ValidateFacetConfigCommand(configurationFilePath, hasValidateOfflineOption, hostArgs);
 
         return true;
     }
@@ -244,8 +262,16 @@ public sealed class StartupCommandParser
     {
         var importArgumentIndex = Array.IndexOf(args, ImportFacetConfigArgument);
         var validateArgumentIndex = Array.IndexOf(args, ValidateFacetConfigArgument);
+        var validateOfflineArgumentIndex = Array.IndexOf(args, ValidateFacetConfigOfflineArgument);
 
-        return RemoveCommandArguments(args, importArgumentIndex, importArgumentIndex + 1, validateArgumentIndex, validateArgumentIndex + 1);
+        return RemoveCommandArguments(
+            args,
+            importArgumentIndex,
+            importArgumentIndex + 1,
+            validateArgumentIndex,
+            validateArgumentIndex + 1,
+            validateOfflineArgumentIndex
+        );
     }
 
     private static string[] RemoveFacetSqlCommandArguments(string[] args)

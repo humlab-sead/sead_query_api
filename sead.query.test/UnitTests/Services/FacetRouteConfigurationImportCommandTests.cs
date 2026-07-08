@@ -81,6 +81,19 @@ public class FacetRouteConfigurationValidationCommandTests
     }
 
     [Fact]
+    public void Run_WithOfflineFlag_ValidatesUsingSchemaOnlyPath()
+    {
+        var importer = new Mock<IFacetRouteConfigurationImporter>();
+        var command = new FacetRouteConfigurationValidationCommand(importer.Object);
+        var relativePath = "sead.query.composer/Templates/route_v1.yaml";
+
+        command.Run(relativePath, offline: true);
+
+        importer.Verify(service => service.ValidateFileSchemaOnly(System.IO.Path.GetFullPath(relativePath)), Times.Once);
+        importer.Verify(service => service.ValidateFile(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
     public void Run_WithEmptyPath_ThrowsArgumentException()
     {
         var importer = new Mock<IFacetRouteConfigurationImporter>();
@@ -90,6 +103,7 @@ public class FacetRouteConfigurationValidationCommandTests
 
         action.Should().Throw<ArgumentException>();
         importer.Verify(service => service.ValidateFile(It.IsAny<string>()), Times.Never);
+        importer.Verify(service => service.ValidateFileSchemaOnly(It.IsAny<string>()), Times.Never);
     }
 
     [Fact]

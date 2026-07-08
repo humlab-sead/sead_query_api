@@ -18,6 +18,7 @@ Use this guide when working inside `sead.query.api/`.
 
 - Prefer targeted controller or host-backed tests in `sead.query.test/IntegrationTests/`.
 - If the change is only wiring, validate the narrowest affected integration slice.
+- For `--validate-facet-config` workflows in bootstrap/CI contexts, choose semantic validation when PostgreSQL is reachable (`make validate-facet-config`, optional `FACET_CONFIG_DB_HOST=...`) and offline validation when connectivity is intentionally unavailable (`make validate-facet-config-offline`).
 
 ## Ignore Unless Asked
 

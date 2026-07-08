@@ -218,6 +218,26 @@ Document the current CI test-gating situation as `TBD` rather than claiming a fu
 
 Until that is formalized, local validation remains the primary documented contributor workflow.
 
+For CI bootstrap jobs that validate facet configuration before environment wiring is complete:
+
+- use semantic validation (`make validate-facet-config`) when the job can reach the configured PostgreSQL host and should verify resolved anchor/route/table bindings
+Example:
+
+```bash
+make validate-facet-config \
+	FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml \
+	FACET_CONFIG_DB_HOST=127.0.0.1
+```
+
+- use offline validation (`make validate-facet-config-offline`) when the job is intentionally disconnected or database connectivity is not yet available, and you only need schema/importer-contract checks
+
+```bash
+make validate-facet-config-offline FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+```
+
+This mode validates file structure and importer contract rules without querying database-backed resolved bindings.
+
+
 ## Common Pitfalls
 
 Common causes of confusing test failures in this repository include:

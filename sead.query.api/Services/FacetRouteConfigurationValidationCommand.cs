@@ -13,12 +13,20 @@ public sealed class FacetRouteConfigurationValidationCommand
         _importer = importer ?? throw new ArgumentNullException(nameof(importer));
     }
 
-    public void Run(string filePath)
+    public void Run(string filePath, bool offline = false)
     {
         if (string.IsNullOrWhiteSpace(filePath))
             throw new ArgumentException("Facet route configuration validation requires a file path.", nameof(filePath));
 
-        _importer.ValidateFile(ResolvePath(filePath));
+        var resolvedPath = ResolvePath(filePath);
+
+        if (offline)
+        {
+            _importer.ValidateFileSchemaOnly(resolvedPath);
+            return;
+        }
+
+        _importer.ValidateFile(resolvedPath);
     }
 
     private static string ResolvePath(string filePath)

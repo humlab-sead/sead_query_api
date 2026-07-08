@@ -37,7 +37,7 @@ public class ProgramEntryPointDispatchTests
         }
 
         var configurationPath = "sead.query.composer/Templates/route_v1.yaml";
-        var command = new ValidateFacetConfigCommand(configurationPath, ["--urls", "http://localhost:5000"]);
+        var command = new ValidateFacetConfigCommand(configurationPath, false, ["--urls", "http://localhost:5000"]);
 
         var exitCode = ProgramEntryPoint.Run(
             ["ignored-by-injected-parser"],
@@ -49,6 +49,42 @@ public class ProgramEntryPointDispatchTests
         exitCode.Should().Be(0);
         receivedHostArgs.Should().Equal("--urls", "http://localhost:5000");
         importer.Verify(service => service.ValidateFile(Path.GetFullPath(configurationPath)), Times.Once);
+    }
+
+    [Fact]
+    public void Run_WithOfflineValidationCommand_DispatchesToSchemaOnlyValidationServiceUsingHostFactory()
+    {
+        var importer = new Mock<IFacetRouteConfigurationImporter>(MockBehavior.Strict);
+        importer
+            .Setup(service => service.ValidateFileSchemaOnly(It.IsAny<string>()))
+            .Verifiable();
+
+        var services = new ServiceCollection();
+        services.AddSingleton(importer.Object);
+        services.AddTransient<FacetRouteConfigurationValidationCommand>();
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        string[] receivedHostArgs = null;
+        IHost HostFactory(string[] hostArgs)
+        {
+            receivedHostArgs = hostArgs;
+            return new TestHost(serviceProvider);
+        }
+
+        var configurationPath = "sead.query.composer/Templates/route_v1.yaml";
+        var command = new ValidateFacetConfigCommand(configurationPath, true, ["--urls", "http://localhost:5000"]);
+
+        var exitCode = ProgramEntryPoint.Run(
+            ["ignored-by-injected-parser"],
+            _ => command,
+            StartupCommandDispatcher.Run,
+            HostFactory
+        );
+
+        exitCode.Should().Be(0);
+        receivedHostArgs.Should().Equal("--urls", "http://localhost:5000");
+        importer.Verify(service => service.ValidateFileSchemaOnly(Path.GetFullPath(configurationPath)), Times.Once);
     }
 
     private sealed class TestHost : IHost
