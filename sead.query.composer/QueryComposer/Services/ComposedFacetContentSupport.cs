@@ -88,6 +88,101 @@ internal static class ComposedFacetContentSupport
         return true;
     }
 
+    public static bool TryCreateRangeTemplateSql(
+        Facet sourceFacet,
+        FacetTemplateRuntimeSnapshot templateSnapshot,
+        string requestedAnchorTable,
+        string requestedAnchorKeyColumn,
+        RangeFacetUserInput userInput,
+        IPathFinder pathFinder,
+        IRouteSqlCompiler routeSqlCompiler,
+        out string sql
+    )
+    {
+        sql = string.Empty;
+
+        if (sourceFacet is null || templateSnapshot is null || string.IsNullOrWhiteSpace(requestedAnchorTable))
+        {
+            return false;
+        }
+
+        var expectedContract = sourceFacet.FacetTypeId == EFacetType.Intersect ? "intersect" : "range";
+        if (!string.IsNullOrWhiteSpace(templateSnapshot.TemplateContract)
+            && !string.Equals(templateSnapshot.TemplateContract, expectedContract, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                $"Facet '{sourceFacet.FacetCode}' uses unsupported template contract '{templateSnapshot.TemplateContract}' for {expectedContract} composition."
+            );
+        }
+
+        if (!TryValidateRangeOutputShape(sourceFacet, requestedAnchorTable, out var outputShapeFailure))
+        {
+            throw new InvalidOperationException(
+                $"Facet '{sourceFacet.FacetCode}' range template output-shape validation failed: {outputShapeFailure}"
+            );
+        }
+
+        if (templateSnapshot.AnchorSqlByTable.TryGetValue(requestedAnchorTable, out var anchorOverrideSql)
+            && !string.IsNullOrWhiteSpace(anchorOverrideSql))
+        {
+            if (!TryValidateRangeTemplatePlaceholders(anchorOverrideSql, out var placeholderFailure))
+            {
+                throw new InvalidOperationException(
+                    $"Facet '{sourceFacet.FacetCode}' range template placeholder validation failed: {placeholderFailure}"
+                );
+            }
+
+            sql = RenderRangeTemplateSql(anchorOverrideSql, userInput);
+            return true;
+        }
+
+        if (string.IsNullOrWhiteSpace(templateSnapshot.BaseSql) || string.IsNullOrWhiteSpace(templateSnapshot.BaseAnchor))
+        {
+            return false;
+        }
+
+        if (!TryResolveAnchorBindingByName(sourceFacet, templateSnapshot.BaseAnchor, out var baseAnchorBinding))
+        {
+            return false;
+        }
+
+        var baseAnchorTable = baseAnchorBinding.Anchor?.Table?.TableOrUdfName;
+        var baseAnchorKeyColumn = baseAnchorBinding.Anchor?.Table?.PrimaryKeyName;
+        if (string.IsNullOrWhiteSpace(baseAnchorTable) || string.IsNullOrWhiteSpace(baseAnchorKeyColumn))
+        {
+            return false;
+        }
+
+        if (!TryValidateRangeTemplatePlaceholders(templateSnapshot.BaseSql, out var basePlaceholderFailure))
+        {
+            throw new InvalidOperationException(
+                $"Facet '{sourceFacet.FacetCode}' range template placeholder validation failed: {basePlaceholderFailure}"
+            );
+        }
+
+        var renderedBaseSql = RenderRangeTemplateSql(templateSnapshot.BaseSql, userInput);
+        var normalizedBaseSql = NormalizeBaseRangeTemplateSql(renderedBaseSql);
+
+        if (string.Equals(baseAnchorTable, requestedAnchorTable, StringComparison.OrdinalIgnoreCase))
+        {
+            sql = normalizedBaseSql;
+            return true;
+        }
+
+        var routeTables = ResolveProjectionRouteTables(sourceFacet, baseAnchorTable, requestedAnchorTable, pathFinder);
+        if (routeTables.Count < 2)
+        {
+            return false;
+        }
+
+        var routeSql = routeSqlCompiler.Compile(routeTables, baseAnchorKeyColumn, requestedAnchorKeyColumn);
+        sql =
+            $"select distinct base_template.source_id as source_id, projected.target_id as target_id{Environment.NewLine}"
+            + $"from ({Environment.NewLine}{Indent(normalizedBaseSql, "  ")}{Environment.NewLine}) as base_template{Environment.NewLine}"
+            + $"join ({Environment.NewLine}{Indent(routeSql, "  ")}{Environment.NewLine}) as projected on projected.source_id = base_template.target_id";
+        return true;
+    }
+
     public static string ResolveSimpleTargetJoinColumn(Facet targetFacet)
     {
         if (TryResolveSimpleColumnOnTable(targetFacet.CategoryIdExpr, targetFacet.TargetTable, out var targetJoinColumn))
@@ -452,5 +547,164 @@ internal static class ComposedFacetContentSupport
             && !normalizedClause.Contains("tbl_", StringComparison.OrdinalIgnoreCase)
             && !normalizedClause.Contains("countries.", StringComparison.OrdinalIgnoreCase)
             && !normalizedClause.Contains("facet.", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string RenderRangeTemplateSql(string templateSql, RangeFacetUserInput userInput)
+    {
+        if (string.IsNullOrWhiteSpace(templateSql))
+        {
+            return string.Empty;
+        }
+
+        userInput ??= new RangeFacetUserInput();
+
+        var lowSql = userInput.Lower.HasValue ? userInput.Lower.Value.ToString(CultureInfo.InvariantCulture) : "null";
+        var highSql = userInput.Upper.HasValue ? userInput.Upper.Value.ToString(CultureInfo.InvariantCulture) : "null";
+        var rangeExpressionSql = BuildRangeExpressionSql(userInput);
+        var rangeFilterSql = BuildRangeFilterSql(userInput);
+
+        var renderedSql = templateSql
+            .Replace("{low}", lowSql, StringComparison.OrdinalIgnoreCase)
+            .Replace("{high}", highSql, StringComparison.OrdinalIgnoreCase)
+            .Replace("{range_expression_sql}", rangeExpressionSql, StringComparison.OrdinalIgnoreCase)
+            .Replace("{range_filter_sql}", rangeFilterSql, StringComparison.OrdinalIgnoreCase);
+
+        if (ContainsUnresolvedRangePlaceholder(renderedSql))
+        {
+            throw new InvalidOperationException(
+                "Template SQL contains unresolved placeholder tokens. Supported placeholders are {low}, {high}, and {range_filter_sql}."
+            );
+        }
+
+        return renderedSql;
+    }
+
+    private static string BuildRangeExpressionSql(RangeFacetUserInput userInput)
+    {
+        if (userInput is null || !userInput.HasPicks)
+        {
+            return "int4range(0, 0)";
+        }
+
+        var lower = userInput.Lower.HasValue ? userInput.Lower.Value.ToString(CultureInfo.InvariantCulture) : "null";
+        var upper = userInput.Upper.HasValue ? userInput.Upper.Value.ToString(CultureInfo.InvariantCulture) : "null";
+
+        return $"int4range({lower}, {upper})";
+    }
+
+    private static string BuildRangeFilterSql(RangeFacetUserInput userInput)
+    {
+        if (userInput is null || !userInput.HasPicks)
+        {
+            return "1=1";
+        }
+
+        var rangeExpr = BuildRangeExpressionSql(userInput);
+        var normalizedOperator = (userInput.Operator ?? string.Empty).Trim().ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(normalizedOperator))
+        {
+            throw new ArgumentException("Range facet operators must be non-empty.", nameof(userInput));
+        }
+
+        return $"category_range {normalizedOperator} {rangeExpr}";
+    }
+
+    private static bool ContainsUnresolvedRangePlaceholder(string sql)
+    {
+        return !string.IsNullOrWhiteSpace(sql)
+            && (sql.IndexOf("{range_", StringComparison.OrdinalIgnoreCase) >= 0
+                || sql.IndexOf("{low}", StringComparison.OrdinalIgnoreCase) >= 0
+                || sql.IndexOf("{high}", StringComparison.OrdinalIgnoreCase) >= 0);
+    }
+
+    private static string NormalizeBaseRangeTemplateSql(string renderedBaseSql)
+    {
+        return
+            $"select base.category_id as source_id, base.anchor_id as target_id{Environment.NewLine}"
+            + $"from ({Environment.NewLine}{Indent(renderedBaseSql, "  ")}{Environment.NewLine}) as base";
+    }
+
+    /// <summary>
+    /// Validates that a range template uses only supported placeholders.
+    /// Supported placeholders: {low}, {high}, {range_filter_sql}
+    /// </summary>
+    public static bool TryValidateRangeTemplatePlaceholders(string templateSql, out string failureReason)
+    {
+        failureReason = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(templateSql))
+        {
+            return true;
+        }
+
+        // Find all placeholder patterns
+        var placeholderIndices = new List<int>();
+        var searchStart = 0;
+        while ((searchStart = templateSql.IndexOf('{', searchStart)) >= 0)
+        {
+            placeholderIndices.Add(searchStart);
+            searchStart++;
+        }
+
+        foreach (var index in placeholderIndices)
+        {
+            var closeBrace = templateSql.IndexOf('}', index);
+            if (closeBrace < 0)
+            {
+                failureReason = $"Malformed placeholder at position {index}: missing closing brace.";
+                return false;
+            }
+
+            var placeholder = templateSql.Substring(index, closeBrace - index + 1).ToLowerInvariant();
+            if (placeholder != "{low}"
+                && placeholder != "{high}"
+                && placeholder != "{range_filter_sql}"
+                && placeholder != "{range_expression_sql}")
+            {
+                failureReason = $"Unsupported range placeholder '{placeholder}' found at position {index}. Supported placeholders: {{low}}, {{high}}, {{range_filter_sql}}";
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Validates that a range facet's output shape is supported by the template contract.
+    /// Ensures the target facet exposes the required columns for range aggregation.
+    /// </summary>
+    public static bool TryValidateRangeOutputShape(Facet sourceFacet, string requestedAnchorTable, out string failureReason)
+    {
+        failureReason = string.Empty;
+
+        if (sourceFacet is null)
+        {
+            failureReason = "Source facet is null.";
+            return false;
+        }
+
+        if (sourceFacet.FacetTypeId is not (EFacetType.Range or EFacetType.Intersect))
+        {
+            failureReason =
+                $"Facet '{sourceFacet.FacetCode}' is not an interval facet (supported types: Range, Intersect; actual type: {sourceFacet.FacetTypeId}).";
+            return false;
+        }
+
+        var targetTable = sourceFacet.TargetTable;
+        if (targetTable is null || string.IsNullOrWhiteSpace(targetTable.TableOrUdfName))
+        {
+            failureReason = $"Facet '{sourceFacet.FacetCode}' has no valid target table.";
+            return false;
+        }
+
+        // Range facets require a category expression that evaluates to a range type
+        if (string.IsNullOrWhiteSpace(sourceFacet.CategoryIdExpr))
+        {
+            failureReason = $"Facet '{sourceFacet.FacetCode}' does not define a category_id expression required for range composition.";
+            return false;
+        }
+
+        return true;
     }
 }

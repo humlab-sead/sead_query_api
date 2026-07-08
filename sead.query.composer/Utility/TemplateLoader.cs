@@ -11,7 +11,7 @@ public static class TemplateLoader
     {
         // name examples: "route.sql.sbn" or "subfolder.my-template.sql.sbn"
         string wanted = "SqlTemplates." + name;
-        string? resName = _asm.GetManifestResourceNames()
+        string resName = _asm.GetManifestResourceNames()
             .FirstOrDefault(n => n.Equals(wanted, StringComparison.Ordinal) || n.EndsWith("." + name, StringComparison.Ordinal));
         if (resName is null)
             throw new FileNotFoundException(

@@ -50,6 +50,11 @@ public sealed class FacetRouteConfigurationImporter : IFacetRouteConfigurationIm
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    public void ValidateFileSchemaOnly(string filePath)
+    {
+        _ = LoadValidatedConfiguration(filePath);
+    }
+
     public void ValidateFile(string filePath)
     {
         var loadedConfiguration = LoadValidatedConfiguration(filePath);

@@ -261,6 +261,403 @@ public class ComposedFacetContentServiceTests
     }
 
     [Fact]
+    public void Load_WithSnapshotBackedRangeExplicitAnchorSql_RendersRangePlaceholders()
+    {
+        var analysisEntities = CreateTable(210, "tbl_analysis_entities", "analysis_entity_id");
+        var geochronology = CreateTable(211, "tbl_geochronology", "geochron_id");
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "geochronology",
+            FacetTypeId = EFacetType.Range,
+            CategoryIdExpr = "tbl_geochronology.age::integer",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = geochronology }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntities },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([100, 200]));
+        var request = new ComposedFacetContentRequest(
+            "tbl_analysis_entities",
+            "analysis_entity_id",
+            "analysis_entity_id",
+            string.Empty,
+            [config]
+        );
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    "range",
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_analysis_entities"] =
+                            "select g.geochron_id as source_id, g.analysis_entity_id as target_id from tbl_geochronology g where {range_filter_sql} and g.age::integer between {low} and {high}",
+                    }
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select range_snapshot_result");
+
+        var pathFinder = new Mock<IPathFinder>();
+        pathFinder.Setup(finder => finder.Find(It.IsAny<string>(), It.IsAny<string>())).Returns([]);
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            Mock.Of<IRouteSqlCompiler>(),
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select range_snapshot_result");
+        capturedExplicitSql.Should().Contain("category_range && int4range(100, 200)");
+        capturedExplicitSql.Should().Contain("age::integer between 100 and 200");
+        capturedExplicitSql.Should().NotContain("{range_filter_sql}");
+        capturedExplicitSql.Should().NotContain("{low}");
+        capturedExplicitSql.Should().NotContain("{high}");
+    }
+
+    [Fact]
+    public void Load_WithSnapshotBackedRangeExplicitAnchorSqlAndUnknownPlaceholder_ThrowsInvalidOperationException()
+    {
+        var analysisEntities = CreateTable(220, "tbl_analysis_entities", "analysis_entity_id");
+        var geochronology = CreateTable(221, "tbl_geochronology", "geochron_id");
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "geochronology",
+            FacetTypeId = EFacetType.Range,
+            CategoryIdExpr = "tbl_geochronology.age::integer",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = geochronology }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntities },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([100, 200]));
+        var request = new ComposedFacetContentRequest(
+            "tbl_analysis_entities",
+            "analysis_entity_id",
+            "analysis_entity_id",
+            string.Empty,
+            [config]
+        );
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    "range",
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_analysis_entities"] =
+                            "select g.geochron_id as source_id, g.analysis_entity_id as target_id from tbl_geochronology g where {range_filter_sql_typo}",
+                    }
+                )
+            );
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            Mock.Of<IPathFinder>(),
+            Mock.Of<IRouteSqlCompiler>(),
+            Mock.Of<IDiscreteFacetPredicateResolver>(MockBehavior.Strict),
+            templateResolver.Object,
+            Mock.Of<IComposedFilterQueryComposer>()
+        );
+
+        var action = () => factory.Create(request);
+
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*range template placeholder validation failed*Unsupported range placeholder*{range_filter_sql_typo}*");
+    }
+
+    [Fact]
+    public void Create_WithRangeTemplateAndInvalidOutputShape_ThrowsInvalidOperationException()
+    {
+        var analysisEntities = CreateTable(230, "tbl_analysis_entities", "analysis_entity_id");
+        var geochronology = CreateTable(231, "tbl_geochronology", "geochron_id");
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "geochronology",
+            FacetTypeId = EFacetType.Range,
+            CategoryIdExpr = string.Empty,
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = geochronology }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntities },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([100, 200]));
+        var request = new ComposedFacetContentRequest(
+            "tbl_analysis_entities",
+            "analysis_entity_id",
+            "analysis_entity_id",
+            string.Empty,
+            [config]
+        );
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    "range",
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_analysis_entities"] =
+                            "select g.geochron_id as source_id, g.analysis_entity_id as target_id from tbl_geochronology g where {range_filter_sql}",
+                    }
+                )
+            );
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            Mock.Of<IPathFinder>(),
+            Mock.Of<IRouteSqlCompiler>(),
+            Mock.Of<IDiscreteFacetPredicateResolver>(MockBehavior.Strict),
+            templateResolver.Object,
+            Mock.Of<IComposedFilterQueryComposer>()
+        );
+
+        var action = () => factory.Create(request);
+
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*range template output-shape validation failed*category_id expression*required for range composition*");
+    }
+
+    [Fact]
+    public void Load_WithSnapshotBackedIntersectExplicitAnchorSql_RendersRangePlaceholders()
+    {
+        var analysisEntities = CreateTable(240, "tbl_analysis_entities", "analysis_entity_id");
+        var analysisEntityAges = CreateTable(241, "tbl_analysis_entity_ages", "analysis_entity_age_id");
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "analysis_entity_ages",
+            FacetTypeId = EFacetType.Intersect,
+            CategoryIdExpr = "tbl_analysis_entity_ages.age_range",
+            CategoryIdType = "int4range",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = analysisEntityAges }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntities },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([100, 200]));
+        var request = new ComposedFacetContentRequest(
+            "tbl_analysis_entities",
+            "analysis_entity_id",
+            "analysis_entity_id",
+            string.Empty,
+            [config]
+        );
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    "intersect",
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_analysis_entities"] =
+                            "select a.analysis_entity_age_id as source_id, a.analysis_entity_id as target_id, a.age_range as category_range from tbl_analysis_entity_ages a where {range_filter_sql}",
+                    }
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select intersect_snapshot_result");
+
+        var pathFinder = new Mock<IPathFinder>();
+        pathFinder.Setup(finder => finder.Find(It.IsAny<string>(), It.IsAny<string>())).Returns([]);
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            Mock.Of<IRouteSqlCompiler>(),
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select intersect_snapshot_result");
+        capturedExplicitSql.Should().Contain("category_range && int4range(100, 200)");
+        capturedExplicitSql.Should().NotContain("{range_filter_sql}");
+    }
+
+    [Fact]
+    public void Load_WithIntersectTemplateUsingWrongContract_ThrowsInvalidOperationException()
+    {
+        var analysisEntities = CreateTable(250, "tbl_analysis_entities", "analysis_entity_id");
+        var analysisEntityAges = CreateTable(251, "tbl_analysis_entity_ages", "analysis_entity_age_id");
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "analysis_entity_ages",
+            FacetTypeId = EFacetType.Intersect,
+            CategoryIdExpr = "tbl_analysis_entity_ages.age_range",
+            CategoryIdType = "int4range",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = analysisEntityAges }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntities },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([100, 200]));
+        var request = new ComposedFacetContentRequest(
+            "tbl_analysis_entities",
+            "analysis_entity_id",
+            "analysis_entity_id",
+            string.Empty,
+            [config]
+        );
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    string.Empty,
+                    "range",
+                    string.Empty,
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ["tbl_analysis_entities"] =
+                            "select a.analysis_entity_age_id as source_id, a.analysis_entity_id as target_id from tbl_analysis_entity_ages a where {range_filter_sql}",
+                    }
+                )
+            );
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            Mock.Of<IPathFinder>(),
+            Mock.Of<IRouteSqlCompiler>(),
+            Mock.Of<IDiscreteFacetPredicateResolver>(MockBehavior.Strict),
+            templateResolver.Object,
+            Mock.Of<IComposedFilterQueryComposer>()
+        );
+
+        var action = () => factory.Create(request);
+
+        action
+            .Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*uses unsupported template contract 'range' for intersect composition.*");
+    }
+
+    [Fact]
     public void Create_WithUnsupportedTemplateContract_ThrowsInvalidOperationException()
     {
         var analysisEntityTable = new Table
@@ -663,6 +1060,247 @@ public class ComposedFacetContentServiceTests
         capturedExplicitSql.Should().Contain("category_id in (55)");
         capturedExplicitSql.Should().Contain("projected.target_id as target_id");
         routeSqlCompiler.VerifyAll();
+    }
+
+    [Fact]
+    public void Create_WithSnapshotBackedRangeBaseTemplateAndProjectedAnchor_UsesProjectedTemplateSql()
+    {
+        var analysisEntityTable = new Table
+        {
+            TableId = 400,
+            TableOrUdfName = "tbl_analysis_entities",
+            PrimaryKeyName = "analysis_entity_id",
+        };
+        var datasetTable = new Table
+        {
+            TableId = 401,
+            TableOrUdfName = "tbl_datasets",
+            PrimaryKeyName = "dataset_id",
+        };
+        var geochronologyTable = new Table
+        {
+            TableId = 402,
+            TableOrUdfName = "tbl_geochronology",
+            PrimaryKeyName = "geochron_id",
+        };
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "geochronology",
+            FacetTypeId = EFacetType.Range,
+            CategoryIdExpr = "tbl_geochronology.age::integer",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = geochronologyTable }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntityTable },
+                    Route = new Route { Specification = "tbl_analysis_entities -> tbl_analysis_entities" },
+                },
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "dataset", Table = datasetTable },
+                    Route = new Route { Specification = "tbl_analysis_entities -> tbl_datasets" },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([110, 220]));
+        var request = new ComposedFacetContentRequest("tbl_datasets", "dataset_id", "dataset_id", string.Empty, [config]);
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    "select g.geochron_id as category_id, g.analysis_entity_id as anchor_id from tbl_geochronology g where {range_filter_sql}",
+                    "range",
+                    "analysis_entity",
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select projected_range_template_sql");
+
+        var routeSqlCompiler = new Mock<IRouteSqlCompiler>();
+        routeSqlCompiler
+            .Setup(
+                compiler =>
+                    compiler.Compile(
+                        It.Is<IReadOnlyList<string>>(tables =>
+                            tables.Count == 2
+                            && tables[0] == "tbl_analysis_entities"
+                            && tables[1] == "tbl_datasets"
+                        ),
+                        "analysis_entity_id",
+                        "dataset_id"
+                    )
+            )
+            .Returns("select analysis_entity_id as source_id, dataset_id as target_id from tbl_analysis_entities join tbl_datasets on tbl_datasets.dataset_id = tbl_analysis_entities.dataset_id");
+
+        var pathFinder = new Mock<IPathFinder>();
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            routeSqlCompiler.Object,
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select projected_range_template_sql");
+        capturedExplicitSql.Should().Contain("category_range && int4range(110, 220)");
+        capturedExplicitSql.Should().Contain("base.category_id as source_id");
+        capturedExplicitSql.Should().Contain("projected.target_id as target_id");
+        routeSqlCompiler.VerifyAll();
+    }
+
+    [Fact]
+    public void Create_WithFunctionBackedRangeBaseTemplateOnIdentityAnchor_UsesTemplateSql()
+    {
+        var analysisEntityTable = new Table
+        {
+            TableId = 410,
+            TableOrUdfName = "tbl_analysis_entities",
+            PrimaryKeyName = "analysis_entity_id",
+        };
+        var measuredValuesTable = new Table
+        {
+            TableId = 411,
+            TableOrUdfName = "facet.method_measured_values(33,0)",
+            PrimaryKeyName = "analysis_entity_id",
+            IsUdf = true,
+        };
+
+        var sourceFacet = new Facet
+        {
+            FacetCode = "tbl_denormalized_measured_values_33_0",
+            FacetTypeId = EFacetType.Range,
+            CategoryIdExpr = "method_values_33.measured_value",
+            CategoryIdOperator = "&&",
+            Tables = [new FacetTable { SequenceId = 1, Table = measuredValuesTable, Alias = "method_values_33" }],
+            FacetAnchors =
+            [
+                new FacetAnchor
+                {
+                    Anchor = new Anchor { Name = "analysis_entity", Table = analysisEntityTable },
+                    Route = new Route { Specification = "tbl_analysis_entities -> tbl_analysis_entities" },
+                },
+            ],
+        };
+
+        var config = new FacetConfig2(sourceFacet, 0, string.Empty, FacetConfigPick.CreateByList([110, 2904]));
+        var request = new ComposedFacetContentRequest(
+            "tbl_analysis_entities",
+            "analysis_entity_id",
+            "analysis_entity_id",
+            string.Empty,
+            [config]
+        );
+
+        var templateResolver = new Mock<IFacetTemplateRuntimeResolver>();
+        templateResolver
+            .Setup(resolver => resolver.GetTemplateSnapshot(sourceFacet))
+            .Returns(
+                new FacetTemplateRuntimeSnapshot(
+                    string.Empty,
+                    "select method_values_33.measured_value::integer as category_id, method_values_33.analysis_entity_id as anchor_id, int4range(method_values_33.measured_value::integer, method_values_33.measured_value::integer + 1) as category_range from facet.method_measured_values(33,0) as method_values_33 where {range_filter_sql}",
+                    "range",
+                    "analysis_entity",
+                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                )
+            );
+
+        string capturedExplicitSql = null;
+        var predicateResolver = new Mock<IDiscreteFacetPredicateResolver>();
+        predicateResolver
+            .Setup(
+                resolver =>
+                    resolver.ResolveSql(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DiscreteFacetUserInput>(),
+                        It.IsAny<AnchorTemplate>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<IReadOnlyList<string>>()
+                    )
+            )
+            .Callback<string, string, DiscreteFacetUserInput, AnchorTemplate, string, string, IReadOnlyList<string>>(
+                (_, _, _, anchorTemplate, _, _, _) => capturedExplicitSql = anchorTemplate.ExplicitSql
+            )
+            .Returns("select denormalized_range_sql");
+
+        var routeSqlCompiler = new Mock<IRouteSqlCompiler>(MockBehavior.Strict);
+        var pathFinder = new Mock<IPathFinder>(MockBehavior.Strict);
+        var composedFilterQueryComposer = new Mock<IComposedFilterQueryComposer>();
+        composedFilterQueryComposer
+            .Setup(
+                composer =>
+                    composer.Compose(
+                        It.IsAny<IReadOnlyCollection<PredicateQueryPlan>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()
+                    )
+            )
+            .Returns<IReadOnlyCollection<PredicateQueryPlan>, string, string>((predicateQueries, _, _) => new ComposedFilterQuery
+            {
+                Sql = predicateQueries.First().Sql,
+            });
+
+        var factory = new ComposedFacetContentFilterQueryFactory(
+            pathFinder.Object,
+            routeSqlCompiler.Object,
+            predicateResolver.Object,
+            templateResolver.Object,
+            composedFilterQueryComposer.Object
+        );
+
+        var result = factory.Create(request);
+
+        result.Sql.Should().Be("select denormalized_range_sql");
+        capturedExplicitSql.Should().Contain("facet.method_measured_values(33,0)");
+        capturedExplicitSql.Should().Contain("category_range && int4range(110, 2904)");
+        capturedExplicitSql.Should().Contain("base.category_id as source_id");
+        capturedExplicitSql.Should().Contain("base.anchor_id as target_id");
+        routeSqlCompiler.VerifyNoOtherCalls();
+        pathFinder.VerifyNoOtherCalls();
     }
 
     [Fact]

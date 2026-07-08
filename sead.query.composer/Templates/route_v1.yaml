@@ -390,6 +390,18 @@ facets:
       type: count
       title: Number of samples
       facet_key: result_facet
+    sql:
+      mode: inline-template
+      contract: intersect
+      base_anchor: analysis_entity
+      body: |
+        select
+          tbl_analysis_entity_ages.analysis_entity_age_id as category_id,
+          int4range(lower(tbl_analysis_entity_ages.age_range) - 10000, upper(tbl_analysis_entity_ages.age_range) - 10000) as category_name,
+          tbl_analysis_entity_ages.analysis_entity_id as anchor_id,
+          tbl_analysis_entity_ages.age_range::int4range as category_range
+        from tbl_analysis_entity_ages
+        where {range_filter_sql}
     clauses: []
     anchors:
       - anchor: analysis_entity
@@ -520,19 +532,92 @@ facets:
       - anchor: analysis_entity
         route: sample__analysis_entity
 
+  # Phase 3 Range Driver: Routed range driver using base-anchor template plus projection
+  - key: geochronology
+    display_title: Geochronology
+    description: Routed range driver for Phase 3 proving base-anchor template execution plus projected anchor routing
+    group_key: chronology
+    type: range
+    source_table: tbl_geochronology
+    category:
+      id_expr: tbl_geochronology.age::integer
+      name_expr: tbl_geochronology.age::varchar
+      data_type: integer
+      operator: "&&"
+    sort_expr: tbl_geochronology.age
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of analysis entities
+      facet_key: result_facet
+    sql:
+      mode: inline-template
+      contract: range
+      base_anchor: analysis_entity
+      body: |
+        select
+          tbl_geochronology.geochron_id as category_id,
+          tbl_geochronology.age::varchar as category_name,
+          tbl_geochronology.analysis_entity_id as anchor_id,
+          int4range(tbl_geochronology.age::integer, tbl_geochronology.age::integer + 1) as category_range
+        from tbl_geochronology
+        where {range_filter_sql}
+    clauses: []
+    anchors:
+      - anchor: analysis_entity
+        mode: identity
+      - anchor: dataset
+        route: analysis_entity__dataset
+      - anchor: sample
+        route: analysis_entity__sample
+
+  # Phase 3 Range Driver: Denormalized/function-backed range driver
+  - key: tbl_denormalized_measured_values_33_0
+    display_title: Magnetic sus.
+    description: Denormalized or function-backed range driver for Phase 3 proving inline-template execution on measured-value sources
+    group_key: measurements
+    type: range
+    source_table: facet.method_measured_values(33,0)
+    category:
+      id_expr: method_values_33.measured_value
+      name_expr: method_values_33.measured_value::varchar
+      data_type: integer
+      operator: "&&"
+    sort_expr: method_values_33.measured_value
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Number of samples
+      facet_key: result_facet
+    sql:
+      mode: inline-template
+      contract: range
+      base_anchor: analysis_entity
+      body: |
+        select
+          method_values_33.measured_value::integer as category_id,
+          method_values_33.measured_value::varchar as category_name,
+          method_values_33.analysis_entity_id as anchor_id,
+          int4range(method_values_33.measured_value::integer, method_values_33.measured_value::integer + 1) as category_range
+        from facet.method_measured_values(33,0) as method_values_33
+        where {range_filter_sql}
+    clauses: []
+    anchors:
+      - anchor: analysis_entity
+        mode: identity
+      - anchor: dataset
+        route: analysis_entity__dataset
+      - anchor: sample
+        route: analysis_entity__sample
+
 # Queued Phase 3 Non-Discrete Drivers (not yet implemented):
 #
-# These facets are identified as required drivers for Phase 3 but are NOT included
-# in Phase 1 scope. They will be added when Phase 3 extends inline SQL to non-discrete
-# facet types (range, intersect, geopolygon).
-#
-# - geochronology: routed range driver for base-anchor template plus projection
-#     type: range
-#     purpose: prove range compiler with projected anchor support
-#
-# - tbl_denormalized_measured_values_33_0: denormalized or function-backed range driver
-#     type: range
-#     purpose: prove range compiler with denormalized source or UDF-backed content
+# Remaining queued facets are identified as required drivers for Phase 3 but are
+# not yet authored in this revision.
 #
 # Restoration Drivers (already present above with updated descriptions):
 #

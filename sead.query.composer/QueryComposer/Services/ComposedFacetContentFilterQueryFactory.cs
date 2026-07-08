@@ -75,14 +75,12 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
         var userInput = new DiscreteFacetUserInput { Picks = config.GetPickValues().Cast<object>().ToList() };
 
         // Prefer template-driven anchor SQL when available (override or base+projection).
-        var hasExplicitSql = ComposedFacetContentSupport.TryCreateDiscreteTemplateSql(
+        var hasExplicitSql = TryCreateTemplateSql(
             sourceFacet,
+            config,
             templateSnapshot,
             request.AnchorTable,
             request.AnchorKeyColumnName,
-            userInput,
-            _pathFinder,
-            _routeSqlCompiler,
             out var explicitSql
         );
 
@@ -116,5 +114,66 @@ public sealed class ComposedFacetContentFilterQueryFactory : IComposedFacetConte
             AnchorKeyColumn = QueryComposerAliases.AnchorKeyColumn,
             Sql = predicateSql,
         };
+    }
+
+    private bool TryCreateTemplateSql(
+        Facet sourceFacet,
+        FacetConfig2 config,
+        FacetTemplateRuntimeSnapshot templateSnapshot,
+        string anchorTable,
+        string anchorKeyColumn,
+        out string explicitSql
+    )
+    {
+        explicitSql = string.Empty;
+
+        if (sourceFacet is null)
+        {
+            return false;
+        }
+
+        if (sourceFacet.FacetTypeId == EFacetType.Discrete)
+        {
+            var discreteUserInput = new DiscreteFacetUserInput
+            {
+                Picks = config.GetPickValues().Cast<object>().ToList(),
+                Operator = sourceFacet.CategoryIdOperator,
+            };
+
+            return ComposedFacetContentSupport.TryCreateDiscreteTemplateSql(
+                sourceFacet,
+                templateSnapshot,
+                anchorTable,
+                anchorKeyColumn,
+                discreteUserInput,
+                _pathFinder,
+                _routeSqlCompiler,
+                out explicitSql
+            );
+        }
+
+        if (sourceFacet.FacetTypeId is EFacetType.Range or EFacetType.Intersect)
+        {
+            var picks = config.GetPickValues(sort: true);
+            var rangeUserInput = new RangeFacetUserInput
+            {
+                Lower = picks.Count > 0 ? (int?)decimal.ToInt32(picks[0]) : null,
+                Upper = picks.Count > 1 ? (int?)decimal.ToInt32(picks[1]) : null,
+                Operator = sourceFacet.CategoryIdOperator,
+            };
+
+            return ComposedFacetContentSupport.TryCreateRangeTemplateSql(
+                sourceFacet,
+                templateSnapshot,
+                anchorTable,
+                anchorKeyColumn,
+                rangeUserInput,
+                _pathFinder,
+                _routeSqlCompiler,
+                out explicitSql
+            );
+        }
+
+        return false;
     }
 }
