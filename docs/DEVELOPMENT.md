@@ -317,6 +317,8 @@ The result probe prints the resolved view type, result facet, specification keys
 
 Treat facet maintenance as a configuration change with one checked-in authoring source and one imported runtime copy.
 
+For the canonical step-by-step user workflow, use `docs/FACET_CONFIGURATION_GUIDE.md`.
+
 - authoring source: `sead.query.composer/Templates/facet_configuration.yml`
 - authoring contract: `sead.query.composer/Templates/facet-configuration-schema.json`
 - runtime copy: the active imported rows in schema `facet`

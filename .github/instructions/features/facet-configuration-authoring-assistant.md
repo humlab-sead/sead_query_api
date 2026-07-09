@@ -31,7 +31,7 @@ Assist maintainers while authoring or reviewing facet and route configuration by
 
 ## Why It Fits This System
 
-The current system depends on checked-in YAML authoring plus importer-managed normalization into the `facet` schema. That creates a strong maintainer-facing opportunity for AI assistance that accelerates configuration work without bypassing validation or review.
+The current system depends on checked-in YAML authoring in `sead.query.composer/Templates/facet_configuration.yml` plus importer-managed normalization into the `facet` schema. That creates a strong maintainer-facing opportunity for AI assistance that accelerates configuration work without bypassing validation or review.
 
 ## User Value
 
@@ -41,10 +41,10 @@ The current system depends on checked-in YAML authoring plus importer-managed no
 
 ## Likely Inputs
 
-- existing route YAML and facet definitions
+- existing route and facet definitions from `sead.query.composer/Templates/facet_configuration.yml`
 - imported configuration metadata and lookup tables
 - schema and relationship documentation for relevant source and anchor tables
-- current validation errors or importer failures
+- current semantic or offline validation errors, or importer failures
 
 ## Expected Outputs
 
@@ -61,9 +61,11 @@ The current system depends on checked-in YAML authoring plus importer-managed no
 
 ## Guardrails
 
-- generated configuration must still pass the repository's validation and import path
+- generated configuration must still pass the repository's semantic and offline validation plus the normal import path
 - suggestions should cite nearby existing patterns rather than inventing new conventions casually
 - AI assistance should support maintainer review, not silently mutate authoritative configuration
+- suggestions should preserve import provenance expectations (`SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT` and `SEAD_QUERY_FACET_CONFIG_IMPORTED_BY`) when proposing import steps
+- suggestions should align with the canonical workflow in `docs/FACET_CONFIGURATION_GUIDE.md`
 
 ## Success Signals
 

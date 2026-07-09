@@ -218,6 +218,8 @@ Document the current CI test-gating situation as `TBD` rather than claiming a fu
 
 Until that is formalized, local validation remains the primary documented contributor workflow.
 
+For the full facet-config authoring, validation, import, and verification workflow, use `docs/FACET_CONFIGURATION_GUIDE.md` and use this document for test-scope decisions.
+
 For CI bootstrap jobs that validate facet configuration before environment wiring is complete:
 
 - use semantic validation (`make validate-facet-config`) when the job can reach the configured PostgreSQL host and should verify resolved anchor/route/table bindings
@@ -254,5 +256,6 @@ When test behavior seems inconsistent, first confirm whether the scenario is int
 
 - `docs/DEVELOPMENT.md` — local setup, contributor workflow, and common commands
 - `docs/DESIGN.md` — architecture and query-engine boundaries
+- `docs/FACET_CONFIGURATION_GUIDE.md` — canonical facet-config change workflow
 - `README.md` — short overview and entry point
 - `docs/OPERATIONS.md` — TBD

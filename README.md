@@ -45,6 +45,7 @@ Then open the local URL reported by ASP.NET Core at startup.
 
 - [Architecture](docs/DESIGN.md)
 - [Development](docs/DEVELOPMENT.md)
+- [Facet configuration guide](docs/FACET_CONFIGURATION_GUIDE.md)
 - [Testing](docs/TESTING.md)
 - [Diagrams](docs/DIAGRAMS.md)
 - [Requirements](docs/REQUIREMENTS.md)
