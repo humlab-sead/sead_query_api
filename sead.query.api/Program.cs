@@ -12,6 +12,7 @@ public static class Program
 {
     public static int Main(string[] args)
     {
+        StartupEnvironment.LoadDotEnv();
         Log.Logger = BootstrapLogger.Create();
 
         Log.Information("Starting application");
