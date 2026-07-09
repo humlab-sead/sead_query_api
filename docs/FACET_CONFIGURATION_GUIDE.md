@@ -14,13 +14,13 @@ Use this guide when adding, changing, or reviewing facet configuration before va
 ## Canonical Files
 
 | Purpose                 | File or location                                                    |
-| ----------------------- | ------------------------------------------------------------------- |
+|-------------------------|---------------------------------------------------------------------|
 | Authoring source        | `sead.query.composer/Templates/facet_configuration.yml`             |
 | Authoring contract      | `sead.query.composer/Templates/facet-configuration-schema.json`     |
 | Importer implementation | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` |
 | Runtime copy            | Imported rows in schema `facet`, including `facet.config_revision`  |
 
-## File Anatomy
+File Anatomy
 
 The configuration has these top-level sections:
 
@@ -32,7 +32,7 @@ The configuration has these top-level sections:
 6. `route_templates`
 7. `facets`
 
-Minimal shape:
+Smallest valid shape:
 
 ```yaml
 schema_version: 1
@@ -42,10 +42,49 @@ runtime_import:
   target_schema: facet
   mode: merge-into-existing
 
-anchors: []
-paths: []
-route_templates: []
-facets: []
+anchors:
+  - key: sample
+    table: tbl_physical_samples
+    key_column: physical_sample_id
+    description: Sample anchor
+
+paths:
+  - key: sample_to_self
+    path:
+      - table: tbl_physical_samples
+
+route_templates:
+  - key: sample_routes
+    source_table: tbl_physical_samples
+    source_key_column: physical_sample_id
+    generated_route_key_pattern: sample_routes__{anchor}
+    anchors:
+      sample:
+        path:
+          - include: sample_to_self
+
+facets:
+  - key: sample
+    display_title: Sample
+    description: Sample facet
+    group_key: others
+    type: discrete
+    source_table: tbl_physical_samples
+    category:
+      id_expr: tbl_physical_samples.physical_sample_id
+      name_expr: tbl_physical_samples.physical_sample_id
+      data_type: integer
+      operator: equals
+    sort_expr: tbl_physical_samples.physical_sample_id
+    flags:
+      is_applicable: true
+      is_default: false
+    aggregate:
+      type: count
+      title: Count
+    anchors:
+      - anchor: sample
+        route: sample_routes__sample
 ```
 
 ## Top-Level Sections
@@ -103,7 +142,7 @@ Semantic meaning:
 Required values:
 
 | Property        | Required value        | Meaning                                                 |
-| --------------- | --------------------- | ------------------------------------------------------- |
+|-----------------|-----------------------|---------------------------------------------------------|
 | `target_schema` | `facet`               | Import into the runtime `facet` schema                  |
 | `mode`          | `merge-into-existing` | Merge authored configuration into existing runtime data |
 
@@ -128,7 +167,7 @@ anchors:
 Required properties per anchor:
 
 | Property      | Meaning                                                                           |
-| ------------- | --------------------------------------------------------------------------------- |
+|---------------|-----------------------------------------------------------------------------------|
 | `key`         | Anchor name used by route templates and facets, for example `sample` or `dataset` |
 | `table`       | Terminal table that routes to this anchor must end on                             |
 | `key_column`  | Identity column for the anchor table                                              |
@@ -159,7 +198,7 @@ paths:
 Required properties per path:
 
 | Property | Meaning                     |
-| -------- | --------------------------- |
+|----------|-----------------------------|
 | `key`    | Macro name                  |
 | `path`   | Ordered list of route steps |
 
@@ -192,6 +231,19 @@ A route template defines a route family from one source table to one or more anc
 Example shape:
 
 ```yaml
+paths:
+  - key: country_to_sample
+    path:
+      - table: tbl_countries
+      - table: tbl_analysis_entities
+      - table: tbl_physical_samples
+
+  - key: country_to_dataset
+    path:
+      - table: tbl_countries
+      - table: tbl_analysis_entities
+      - table: tbl_datasets
+
 route_templates:
   - key: country_routes
     source_table: tbl_countries
@@ -209,7 +261,7 @@ route_templates:
 Required properties per route template:
 
 | Property                      | Meaning                                           |
-| ----------------------------- | ------------------------------------------------- |
+|-------------------------------|---------------------------------------------------|
 | `key`                         | Route template identifier                         |
 | `source_table`                | Source table for the generated routes             |
 | `source_key_column`           | Identity column on the source table               |
@@ -227,7 +279,7 @@ __{anchor}
 Each `anchors.<anchor_key>` binding requires:
 
 | Property | Meaning                                              |
-| -------- | ---------------------------------------------------- |
+|----------|------------------------------------------------------|
 | `path`   | Route path from the source table to the anchor table |
 
 Semantic meaning:
@@ -282,7 +334,7 @@ facets:
 Required properties per facet:
 
 | Property        | Meaning                                                |
-| --------------- | ------------------------------------------------------ |
+|-----------------|--------------------------------------------------------|
 | `key`           | Stable facet identifier used by runtime wiring         |
 | `display_title` | UI-facing title                                        |
 | `description`   | Maintainer and user intent text                        |
@@ -313,7 +365,7 @@ Authoring rule:
 ### Metadata and identity
 
 | Property        | Meaning                                            |
-| --------------- | -------------------------------------------------- |
+|-----------------|----------------------------------------------------|
 | `key`           | Stable identifier used in route/facet wiring       |
 | `display_title` | Title shown to users                               |
 | `description`   | Human-readable intent                              |
@@ -330,7 +382,7 @@ Authoring rule:
 Required fields:
 
 | Property    | Meaning                                           |
-| ----------- | ------------------------------------------------- |
+|-------------|---------------------------------------------------|
 | `id_expr`   | SQL expression for category identity              |
 | `name_expr` | SQL expression for category label                 |
 | `data_type` | Value type used by category and filter processing |
@@ -363,7 +415,7 @@ Use an expression that is valid in the category query context.
 Required fields:
 
 | Property        | Meaning                                                    |
-| --------------- | ---------------------------------------------------------- |
+|-----------------|------------------------------------------------------------|
 | `is_applicable` | Whether the facet is applicable in runtime/client behavior |
 | `is_default`    | Whether the facet is treated as a default facet            |
 
@@ -376,14 +428,14 @@ These flags control applicability and default behavior as consumed by runtime co
 Required fields:
 
 | Property | Meaning           |
-| -------- | ----------------- |
+|----------|-------------------|
 | `type`   | Aggregation type  |
 | `title`  | Aggregation title |
 
 Optional field:
 
 | Property    | Meaning                     |
-| ----------- | --------------------------- |
+|-------------|-----------------------------|
 | `facet_key` | Dependency on another facet |
 
 Semantic meaning:
@@ -436,7 +488,7 @@ sql:
 Required fields when `sql` is present:
 
 | Property            | Required value or meaning                    |
-| ------------------- | -------------------------------------------- |
+|---------------------|----------------------------------------------|
 | `mode`              | Must be `inline-template`                    |
 | `contract`          | Currently `discrete` or `range`              |
 | `base_anchor`       | Anchor key emitted by the SQL as `anchor_id` |
@@ -502,14 +554,14 @@ anchors:
 Required fields per binding:
 
 | Property | Meaning                                          |
-| -------- | ------------------------------------------------ |
+|----------|--------------------------------------------------|
 | `anchor` | Declared anchor key                              |
 | `route`  | Concrete route key generated by a route template |
 
 Optional field:
 
 | Property       | Meaning                      |
-| -------------- | ---------------------------- |
+|----------------|------------------------------|
 | `sql_override` | Explicit anchor-specific SQL |
 
 Semantic meaning:
@@ -628,7 +680,7 @@ WHERE is_active = true;
 ## Related Documents
 
 | Document              | Purpose                                                             |
-| --------------------- | ------------------------------------------------------------------- |
+|-----------------------|---------------------------------------------------------------------|
 | `docs/DEVELOPMENT.md` | Contributor workflow and route/facet maintenance patterns           |
 | `docs/TESTING.md`     | Validation-mode guidance for local, CI, and bootstrap contexts      |
 | `docs/OPERATIONS.md`  | Deployment-time import provenance and promotion checks              |
