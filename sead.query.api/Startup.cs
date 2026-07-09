@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using SeadQueryAPI.Infrastructure;
 using SeadQueryCore;
 
 namespace SeadQueryAPI;
@@ -19,37 +19,12 @@ public class Startup
 
     public Startup()
     {
-        var appSettingsFolder = Environment.GetEnvironmentVariable("ASPNETCORE_APPSETTINGS_FOLDER");
-        var appSettingsPath = ResolveAppSettingsPath(appSettingsFolder);
+        var appSettingsPath = StartupEnvironment.ResolveAppSettingsPath();
 
         Configuration = new ConfigurationBuilder()
             .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true)
             .AddEnvironmentVariables()
             .Build();
-    }
-
-    private static string ResolveAppSettingsPath(string appSettingsFolder)
-    {
-        if (!string.IsNullOrEmpty(appSettingsFolder))
-        {
-            return Path.GetFullPath(Path.Combine(appSettingsFolder, "appsettings.json"));
-        }
-
-        const string appSettingsFileName = "appsettings.json";
-        var localPath = appSettingsFileName;
-
-        if (File.Exists(localPath))
-        {
-            return Path.GetFullPath(localPath);
-        }
-
-        var repositoryRootPath = Path.Combine("..", appSettingsFileName);
-        if (File.Exists(repositoryRootPath))
-        {
-            return Path.GetFullPath(repositoryRootPath);
-        }
-
-        return Path.GetFullPath(localPath);
     }
 
     private Setting GetOptions()
