@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>sead_query_api — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 3267 nodes, 5314 edges, 258 communities. Commit: 0b1c2d5</p>
+<p class="subtitle">Generated from graphify knowledge graph: 3397 nodes, 5475 edges, 278 communities. Commit: 656ea85</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -90,17 +90,17 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 flowchart LR
     EXTRACT_PIPELINE_5F350230("Extraction Pipeline<br/><small>2 nodes</small>")
     class EXTRACT_PIPELINE_5F350230 module;
-    BUILD_GRAPH_321CBB04("Graph Build<br/><small>726 nodes</small>")
+    BUILD_GRAPH_321CBB04("Graph Build<br/><small>734 nodes</small>")
     class BUILD_GRAPH_321CBB04 module;
-    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>2317 nodes</small>")
+    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>2386 nodes</small>")
     class ANALYSIS_CLUSTERING_C79796DA module;
-    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>7 nodes</small>")
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>14 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
-    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>6 nodes</small>")
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>36 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
-    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>1 nodes</small>")
+    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>12 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>62 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>64 nodes</small>")
     class SERVE_API_35EC8E86 module;
     SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>1 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
@@ -116,10 +116,10 @@ flowchart LR
     class COMMUNITY_224_E0F79545 module;
     COMMUNITY_226_69408D88("Community 226<br/><small>6 nodes</small>")
     class COMMUNITY_226_69408D88 module;
-    OTHER_D0941E68("Other<br/><small>63 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>66 nodes</small>")
     class OTHER_D0941E68 module;
-    BUILD_GRAPH_321CBB04 -->|contains x55| ANALYSIS_CLUSTERING_C79796DA
-    ANALYSIS_CLUSTERING_C79796DA -->|contains x35| BUILD_GRAPH_321CBB04
+    BUILD_GRAPH_321CBB04 -->|contains x52| ANALYSIS_CLUSTERING_C79796DA
+    ANALYSIS_CLUSTERING_C79796DA -->|contains x40| BUILD_GRAPH_321CBB04
     BUILD_GRAPH_321CBB04 -->|contains x4| SERVE_API_35EC8E86
     SERVE_API_35EC8E86 -->|contains x2| BUILD_GRAPH_321CBB04
     ANALYSIS_CLUSTERING_C79796DA -->|contains| OTHER_D0941E68
@@ -141,7 +141,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Extraction Pipeline</td><td>2</td><td><code>160, 195</code></td></tr><tr><td>Graph Build</td><td>726</td><td><code>3, 4, 24, 12, 31, 1, 66, 102, 26, 78, 87, 28, 29, 30, 112, 113, 92, 210, 205, 69, 70, 218, 219, 220, 100, 117, 119, 122, 132, 137, 139, 179, 180</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>2317</td><td><code>0, 2, 46, 5, 13, 10, 22, 14, 71, 43, 9, 16, 17, 20, 15, 21, 60, 8, 32, 23, 25, 27, 36, 7, 6, 38, 40, 41, 48, 35, 39, 11, 19, 33, 82, 34, 42, 52, 47, 62, 125, 18, 50, 54, 55, 61, 118, 127, 44, 49, 51, 56, 57, 58, 63, 64, 156, 37, 190, 201, 59, 203, 204, 75, 79, 206, 207, 208, 209, 65, 67, 72, 73, 77, 83, 84, 211, 74, 89, 97, 213, 215, 68, 86, 88, 90, 217, 81, 85, 93, 94, 95, 96, 99, 101, 107, 221, 222, 91, 223, 53, 76, 98, 104, 106, 108, 109, 186, 225, 227, 228, 105, 114, 115, 116, 229, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 121, 126, 130, 245, 246, 120, 123, 129, 134, 135, 136, 138, 249, 133, 140, 141, 162, 173, 252, 253, 254, 184, 185, 258</code></td></tr><tr><td>Outputs &amp; Docs</td><td>7</td><td><code>146, 147, 148, 158, 168, 170, 255</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>6</td><td><code>110, 175, 181</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>1</td><td><code>167</code></td></tr><tr><td>Serving API</td><td>62</td><td><code>103, 202, 80, 183, 128</code></td></tr><tr><td>Security &amp; Global Graph</td><td>1</td><td><code>188</code></td></tr><tr><td>Node and Table Repositories</td><td>39</td><td><code>45</code></td></tr><tr><td>Community 212</td><td>11</td><td><code>212</code></td></tr><tr><td>Community 214</td><td>10</td><td><code>214</code></td></tr><tr><td>Community 216</td><td>9</td><td><code>216</code></td></tr><tr><td>Community 224</td><td>7</td><td><code>224</code></td></tr><tr><td>Community 226</td><td>6</td><td><code>226</code></td></tr><tr><td>Other</td><td>63</td><td><code>230, 111, 247, 124, 248, 131, 250, 251, 142, 143, 144, 145, 149, 150, 151, 152, 153, 154, 155, 157, 159, 161, 163, 164, 165, 166, 169, 171, 172, 174, 176, 177, 178, 182, 187, 191, 192, 193, 194, 196, 197, 198, 199, 200, 256, 257</code></td></tr>
+      <tr><td>Extraction Pipeline</td><td>2</td><td><code>160, 195</code></td></tr><tr><td>Graph Build</td><td>734</td><td><code>3, 24, 4, 31, 12, 66, 1, 78, 112, 26, 87, 102, 92, 28, 29, 30, 113, 205, 210, 69, 70, 218, 219, 220, 100, 117, 119, 122, 271, 132, 137, 139, 179, 180</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>2386</td><td><code>0, 2, 5, 25, 6, 13, 10, 22, 14, 43, 71, 9, 16, 20, 15, 21, 60, 201, 8, 23, 32, 27, 36, 7, 40, 41, 48, 35, 168, 17, 19, 82, 11, 34, 42, 52, 38, 46, 47, 62, 125, 18, 50, 54, 55, 61, 118, 127, 156, 44, 49, 51, 56, 57, 58, 63, 64, 189, 37, 39, 59, 203, 204, 75, 79, 190, 206, 207, 208, 209, 65, 67, 72, 73, 77, 83, 84, 211, 222, 74, 89, 97, 213, 215, 68, 86, 88, 90, 217, 81, 85, 93, 94, 95, 96, 99, 101, 107, 221, 227, 234, 91, 235, 236, 259, 260, 76, 98, 104, 106, 108, 109, 186, 225, 261, 262, 263, 105, 114, 115, 116, 229, 231, 232, 233, 237, 238, 239, 240, 241, 242, 243, 244, 264, 265, 33, 121, 126, 130, 223, 245, 246, 266, 269, 120, 123, 129, 134, 135, 136, 138, 249, 133, 140, 141, 162, 173, 252, 253, 254, 274, 184, 185, 258, 276</code></td></tr><tr><td>Outputs &amp; Docs</td><td>14</td><td><code>228, 146, 147, 148, 158, 170, 255</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>36</td><td><code>53, 110, 268, 275, 175, 181</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>12</td><td><code>267, 270, 272, 167</code></td></tr><tr><td>Serving API</td><td>64</td><td><code>103, 202, 80, 183, 128</code></td></tr><tr><td>Security &amp; Global Graph</td><td>1</td><td><code>188</code></td></tr><tr><td>Node and Table Repositories</td><td>39</td><td><code>45</code></td></tr><tr><td>Community 212</td><td>11</td><td><code>212</code></td></tr><tr><td>Community 214</td><td>10</td><td><code>214</code></td></tr><tr><td>Community 216</td><td>9</td><td><code>216</code></td></tr><tr><td>Community 224</td><td>7</td><td><code>224</code></td></tr><tr><td>Community 226</td><td>6</td><td><code>226</code></td></tr><tr><td>Other</td><td>66</td><td><code>230, 111, 247, 124, 248, 131, 250, 251, 273, 142, 143, 144, 145, 149, 150, 151, 152, 153, 154, 155, 157, 159, 161, 163, 164, 165, 166, 169, 171, 172, 174, 176, 177, 178, 182, 187, 191, 192, 193, 194, 196, 197, 198, 199, 200, 256, 257, 277</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -153,12 +153,12 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>3267 nodes · 5314 edges · 258 communities (178 shown, 80 thin omitted)</li>
+      <li>3397 nodes · 5475 edges · 278 communities (191 shown, 87 thin omitted)</li>
       <li>Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.85)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `.NETCoreApp,Version=v9.0` - 114 edges</li>
       <li>2. `runtime` - 67 edges</li>
-      <li>3. `ComposedResultProjectionHandoffBuilder` - 43 edges</li>
+      <li>3. `ComposedResultProjectionHandoffBuilder` - 45 edges</li>
     </ul>
   </div>
 </div>
@@ -232,12 +232,12 @@ flowchart LR
 
 <!-- ====== 3. Graph Build ====== -->
 <h2 id="build-graph">3. Graph Build</h2>
-<p>Graph Build groups implementation around publish, seadqueryapidepsjson, facet, route, mostly in publish/sead.query.api.deps.json, sead.query.composer/Templates/facet-route-config.schema.json, sead.query.api/Properties/launchSettings.json. This section covers 726 nodes and 1151 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Graph Build groups implementation around publish, seadqueryapidepsjson, facet, route, mostly in publish/sead.query.api.deps.json, sead.query.composer/Templates/facet-route-config.schema.json, sead.query.api/Properties/launchSettings.json. This section covers 734 nodes and 1149 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Graph Build (726 nodes, 1151 edges)
+    %% Section: Graph Build (734 nodes, 1149 edges)
     sead_query_infra_sead_query_infra_b4c4fec5("sead.query.infra<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     nuget_bogus_79cd18b0("Bogus (35.6.5)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     nuget_cachemanager_core_ac7bd07d("CacheManager.Core (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
@@ -245,10 +245,10 @@ flowchart LR
     nuget_cachemanager_serialization_json_817e7b14("CacheManager.Serialization.Json (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     nuget_cachemanager_stackexchange_redis_4d4f1596("CacheManager.StackExchange.Redis (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     nuget_castle_core_bc5843b2("Castle.Core (5.2.1)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
-    nuget_yamldotnet_8181a5fc("YamlDotNet (18.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
-    sead_query_infra_sead_query_infra_csproj_nuget_a_c88d2593("Autofac (9.1.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    nuget_yamldotnet_8181a5fc("YamlDotNet (18.1.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_a_c88d2593("Autofac (9.3.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     sead_query_infra_sead_query_infra_csproj_nuget_a_4d7025ae("Autofac.Extensions.DependencyInjection...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
-    sead_query_infra_sead_query_infra_csproj_nuget_a_1e3a91dd("Autofac.Extras.AggregateService (6.1.2)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
+    sead_query_infra_sead_query_infra_csproj_nuget_a_1e3a91dd("Autofac.Extras.AggregateService (7.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     sead_query_infra_sead_query_infra_csproj_nuget_m_34e2588a("Microsoft.EntityFrameworkCore.Relationa...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     sead_query_infra_sead_query_infra_csproj_nuget_n_b5b6200a("Npgsql.EntityFrameworkCore.PostgreSQL (...<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     sead_query_infra_sead_query_infra_csproj_nuget_s_30233f50("Serilog.AspNetCore (10.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
@@ -273,7 +273,7 @@ flowchart LR
     sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_d1eb1a55
     sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_3bdbd52a
     sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_563ff24f
-    %% Omitted for readability: 708 nodes, 0 edges
+    %% Omitted for readability: 716 nodes, 0 edges
     class sead_query_infra_sead_query_infra_b4c4fec5 function;
     class nuget_bogus_79cd18b0 klass;
     class nuget_cachemanager_core_ac7bd07d klass;
@@ -315,11 +315,11 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>lib/net8.0/Autofac.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/netstandard2.1/Autofac.Extras.AggregateService.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/net8.0/Autofac.dll node in publish/sead.query.api.deps.json.</td>
+  <td>lib/netstandard2.1/Autofac.Extras.AggregateService.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>2</td>
@@ -339,54 +339,6 @@ flowchart LR
 </tr>
 <tr>
   <td>4</td>
-  <td><code>lib/net8.0/Autofac.Extensions.DependencyInjection.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Builds dependency relationships and graph data.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>lib/netstandard2.1/Autofac.Extras.AggregateService.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>lib/netstandard2.1/Autofac.Extras.AggregateService.dll node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-async">Async</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>10</td>
   <td><code>Bogus/35.6.3</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -394,7 +346,7 @@ flowchart LR
   <td>Bogus/35.6.3 node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>5</td>
   <td><code>runtime</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -402,12 +354,60 @@ flowchart LR
   <td>runtime node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>6</td>
   <td><code>lib/net6.0/Bogus.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>lib/net6.0/Bogus.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>lib/net8.0/CacheManager.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-async">Async</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>lib/net8.0/CacheManager.Serialization.Json.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Caches analysis results or computes cache keys.</td>
 </tr>
 <tr>
   <td>13</td>
@@ -427,11 +427,11 @@ flowchart LR
 </tr>
 <tr>
   <td>15</td>
-  <td><code>lib/net8.0/CacheManager.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net6.0/Castle.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
+  <td>lib/net6.0/Castle.Core.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>16</td>
@@ -451,11 +451,11 @@ flowchart LR
 </tr>
 <tr>
   <td>18</td>
-  <td><code>lib/net8.0/CacheManager.Microsoft.Extensions.Caching.Memory.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
+  <td>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>19</td>
@@ -475,11 +475,11 @@ flowchart LR
 </tr>
 <tr>
   <td>21</td>
-  <td><code>lib/net8.0/CacheManager.Serialization.Json.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
+  <td>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>22</td>
@@ -499,11 +499,11 @@ flowchart LR
 </tr>
 <tr>
   <td>24</td>
-  <td><code>lib/net8.0/CacheManager.StackExchange.Redis.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net8.0/Microsoft.EntityFrameworkCore.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
+  <td>lib/net8.0/Microsoft.EntityFrameworkCore.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>25</td>
@@ -523,14 +523,22 @@ flowchart LR
 </tr>
 <tr>
   <td>27</td>
-  <td><code>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>runtime</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll node in publish/sead.query.api.deps.json.</td>
+  <td>runtime node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>28</td>
+  <td><code>lib/net9.0/Microsoft.Extensions.Caching.Memory.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net9.0/Microsoft.Extensions.Caching.Memory.dll node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>29</td>
   <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -538,20 +546,12 @@ flowchart LR
   <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>fileVersion node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 </table>
 
@@ -560,7 +560,7 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>313 nodes</td></tr>
+      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>318 nodes</td></tr>
 <tr><td><code>sead.query.composer/Templates/facet-route-config.schema.json</code></td><td>198 nodes</td></tr>
 <tr><td><code>conf/appsettings.Test.json</code></td><td>26 nodes</td></tr>
 <tr><td><code>sead.query.api/Properties/launchSettings.json</code></td><td>26 nodes</td></tr>
@@ -572,82 +572,79 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x1131, imports x18, references x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1129, imports x18, references x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 4. Analysis & Clustering ====== -->
 <h2 id="analysis-clustering">4. Analysis &amp; Clustering</h2>
-<p>Analysis &amp; Clustering groups implementation around seadquerycore, services, seadqueryinfra, seadqueryapi, mostly in publish/sead.query.api.deps.json, sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs, QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs. This section covers 2317 nodes and 3907 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Analysis &amp; Clustering groups implementation around seadquerycore, services, seadqueryinfra, seadqueryapi, mostly in publish/sead.query.api.deps.json, sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs, QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs. This section covers 2386 nodes and 4022 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Analysis &amp; Clustering (2317 nodes, 3907 edges)
-    subgraph analysis_clustering_sead_query_api_Controllers_F_4b4d0bff["sead.query.api/Controllers/FacetsController.cs"]
-        controllers_facetscontroller_b928ad11("FacetsController.cs")
-        controllers_facetscontroller_facetscontroller_ge_125fa682("Get()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_ge_8afb77f5("GetDomainFacetChildren()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_ge_cc2bdfc0("GetDomainFacets()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_lo_165fbdfa("Load()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_lo_6fb20a16("Load2()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_lo_a8c946c6("Load3()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_mi_ead58d76("Mirror()<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
-        controllers_facetscontroller_facetscontroller_b808a6e0("FacetsController<br/><small>sead.query.api/Controllers/FacetsController.cs</small>")
+    %% Section: Analysis &amp; Clustering (2386 nodes, 4022 edges)
+    subgraph analysis_clustering_sead_query_api_Cli_StartupCo_d466144d["sead.query.api/Cli/StartupCommandParser.cs"]
+        cli_startupcommandparser_startupcommandparser_2ece6377("StartupCommandParser<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
+        cli_startupcommandparser_startupcommandparser_pa_ff63ba91("Parse()<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
+        cli_startupcommandparser_startupcommandparser_re_bfdf11f5("RemoveCommandArguments()<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
+        cli_startupcommandparser_startupcommandparser_re_333a0ec4("RemoveFacetRouteConfigurationCommandArguments()<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
+        cli_startupcommandparser_startupcommandparser_re_439190ef("RemoveFacetSqlCommandArguments()<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
     end
-    subgraph analysis_clustering_sead_query_api_Controllers_C_72164a03["sead.query.api/Controllers/CacheController.cs"]
-        controllers_cachecontroller_eb522ed9("CacheController.cs")
-        controllers_cachecontroller_cachecontroller_clea_42d955eb("Clear()<br/><small>sead.query.api/Controllers/CacheController.cs</small>")
-        controllers_cachecontroller_cachecontroller_44793f6d("CacheController<br/><small>sead.query.api/Controllers/CacheController.cs</small>")
+    subgraph analysis_clustering_sead_query_api_Cli_StartupCo_5bea3549["sead.query.api/Cli/StartupCommandDispatcher.cs"]
+        cli_startupcommanddispatcher_startupcommanddispa_09223a85("StartupCommandDispatcher<br/><small>sead.query.api/Cli/StartupCommandDispatcher.cs</small>")
+        cli_startupcommanddispatcher_startupcommanddispa_4d1dcedb("Run()<br/><small>sead.query.api/Cli/StartupCommandDispatcher.cs</small>")
+        cli_startupcommanddispatcher_startupcommanddispa_d578982e("RunWebHost()<br/><small>sead.query.api/Cli/StartupCommandDispatcher.cs</small>")
     end
     subgraph analysis_clustering_QueryComposer_Services_Compo_018b768d["QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs"]
-        services_composedresultprojectionhandoffbuilder_c27aa3f0("ComposedResultProjectionHandoffBuilder.cs")
         services_composedresultprojectionhandoffbuilder_9faee6fd("ComposedResultProjectionHandoffBuilder<br/><small>QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs</small>")
+        services_composedresultprojectionhandoffbuilder_c27aa3f0("ComposedResultProjectionHandoffBuilder.cs")
+    end
+    subgraph analysis_clustering_sead_query_api_Cli_CommandHo_52fd3b0d["sead.query.api/Cli/CommandHostRunner.cs"]
+        cli_commandhostrunner_commandhostrunner_94a246ce("CommandHostRunner<br/><small>sead.query.api/Cli/CommandHostRunner.cs</small>")
+        cli_commandhostrunner_commandhostrunner_runscope_8ede750c("RunScoped()<br/><small>sead.query.api/Cli/CommandHostRunner.cs</small>")
+    end
+    subgraph analysis_clustering_sead_query_api_Cli_ProgramEn_50531af5["sead.query.api/Cli/ProgramEntryPoint.cs"]
+        cli_programentrypoint_programentrypoint_61726387("ProgramEntryPoint<br/><small>sead.query.api/Cli/ProgramEntryPoint.cs</small>")
+        cli_programentrypoint_programentrypoint_run_1c440fd9("Run()<br/><small>sead.query.api/Cli/ProgramEntryPoint.cs</small>")
     end
     subgraph analysis_clustering_sead_query_infra_Configurati_223d1c39["sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs"]
         configuration_facetrouteconfigurationimporter_fa_86008b28("FacetRouteConfigurationImporter<br/><small>sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small>")
         configuration_facetrouteconfigurationimporter_8e152111("FacetRouteConfigurationImporter.cs")
     end
     facetsconfig_facetsconfig2_facetsconfig2_25f188ef("FacetsConfig2<br/><small>Model/FacetsConfig/FacetsConfig2.cs</small>")
-    repository_repository_1afc2598("Repository.cs")
-    controllers_cachecontroller_eb522ed9 -->|method| controllers_cachecontroller_cachecontroller_clea_42d955eb
-    controllers_cachecontroller_cachecontroller_44793f6d -->|method| controllers_cachecontroller_cachecontroller_clea_42d955eb
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_ge_125fa682
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_ge_8afb77f5
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_ge_cc2bdfc0
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_lo_165fbdfa
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_lo_6fb20a16
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_lo_a8c946c6
-    controllers_facetscontroller_b928ad11 -->|method| controllers_facetscontroller_facetscontroller_mi_ead58d76
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_ge_125fa682
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_ge_8afb77f5
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_ge_cc2bdfc0
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_lo_165fbdfa
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_lo_6fb20a16
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_lo_a8c946c6
-    controllers_facetscontroller_facetscontroller_b808a6e0 -->|method| controllers_facetscontroller_facetscontroller_mi_ead58d76
-    controllers_facetscontroller_facetscontroller_lo_165fbdfa -->|calls| controllers_facetscontroller_facetscontroller_lo_6fb20a16
-    controllers_facetscontroller_facetscontroller_lo_165fbdfa -->|calls| controllers_facetscontroller_facetscontroller_lo_a8c946c6
-    %% Omitted for readability: 2299 nodes, 0 edges
-    class controllers_facetscontroller_b928ad11 klass;
-    class controllers_facetscontroller_facetscontroller_ge_125fa682 function;
-    class controllers_facetscontroller_facetscontroller_ge_8afb77f5 function;
-    class controllers_facetscontroller_facetscontroller_ge_cc2bdfc0 function;
-    class controllers_facetscontroller_facetscontroller_lo_165fbdfa function;
-    class controllers_facetscontroller_facetscontroller_lo_6fb20a16 function;
-    class controllers_facetscontroller_facetscontroller_lo_a8c946c6 function;
-    class controllers_facetscontroller_facetscontroller_mi_ead58d76 function;
-    class controllers_facetscontroller_facetscontroller_b808a6e0 klass;
-    class controllers_cachecontroller_eb522ed9 klass;
-    class controllers_cachecontroller_cachecontroller_clea_42d955eb function;
-    class controllers_cachecontroller_cachecontroller_44793f6d klass;
-    class services_composedresultprojectionhandoffbuilder_c27aa3f0 klass;
+    services_composedfacetcontentsupport_composedfac_9bf2a823("ComposedFacetContentSupport<br/><small>QueryComposer/Services/ComposedFacetContentSupport.cs</small>")
+    cli_commandhostrunner_commandhostrunner_94a246ce -->|method| cli_commandhostrunner_commandhostrunner_runscope_8ede750c
+    cli_programentrypoint_programentrypoint_61726387 -->|method| cli_programentrypoint_programentrypoint_run_1c440fd9
+    cli_startupcommanddispatcher_startupcommanddispa_09223a85 -->|method| cli_startupcommanddispatcher_startupcommanddispa_4d1dcedb
+    cli_startupcommanddispatcher_startupcommanddispa_09223a85 -->|method| cli_startupcommanddispatcher_startupcommanddispa_d578982e
+    cli_startupcommanddispatcher_startupcommanddispa_4d1dcedb -->|calls| cli_startupcommanddispatcher_startupcommanddispa_d578982e
+    cli_startupcommandparser_startupcommandparser_2ece6377 -->|method| cli_startupcommandparser_startupcommandparser_pa_ff63ba91
+    cli_startupcommandparser_startupcommandparser_2ece6377 -->|method| cli_startupcommandparser_startupcommandparser_re_bfdf11f5
+    cli_startupcommandparser_startupcommandparser_2ece6377 -->|method| cli_startupcommandparser_startupcommandparser_re_333a0ec4
+    cli_startupcommandparser_startupcommandparser_2ece6377 -->|method| cli_startupcommandparser_startupcommandparser_re_439190ef
+    cli_startupcommandparser_startupcommandparser_re_333a0ec4 -->|calls| cli_startupcommandparser_startupcommandparser_re_bfdf11f5
+    cli_startupcommandparser_startupcommandparser_re_439190ef -->|calls| cli_startupcommandparser_startupcommandparser_re_bfdf11f5
+    %% Omitted for readability: 2368 nodes, 0 edges
+    class cli_startupcommandparser_startupcommandparser_2ece6377 entry;
+    class cli_startupcommandparser_startupcommandparser_pa_ff63ba91 function;
+    class cli_startupcommandparser_startupcommandparser_re_bfdf11f5 entry;
+    class cli_startupcommandparser_startupcommandparser_re_333a0ec4 api;
+    class cli_startupcommandparser_startupcommandparser_re_439190ef entry;
+    class cli_startupcommanddispatcher_startupcommanddispa_09223a85 entry;
+    class cli_startupcommanddispatcher_startupcommanddispa_4d1dcedb function;
+    class cli_startupcommanddispatcher_startupcommanddispa_d578982e function;
     class services_composedresultprojectionhandoffbuilder_9faee6fd klass;
+    class services_composedresultprojectionhandoffbuilder_c27aa3f0 klass;
+    class cli_commandhostrunner_commandhostrunner_94a246ce entry;
+    class cli_commandhostrunner_commandhostrunner_runscope_8ede750c function;
+    class cli_programentrypoint_programentrypoint_61726387 klass;
+    class cli_programentrypoint_programentrypoint_run_1c440fd9 function;
     class configuration_facetrouteconfigurationimporter_fa_86008b28 api;
     class configuration_facetrouteconfigurationimporter_8e152111 api;
     class facetsconfig_facetsconfig2_facetsconfig2_25f188ef klass;
-    class repository_repository_1afc2598 klass;
+    class services_composedfacetcontentsupport_composedfac_9bf2a823 klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -682,7 +679,7 @@ flowchart LR
   <td><code>FacetRouteConfigurationImportCommand</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td><code>ResolvePath()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small><br><code>Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
@@ -698,11 +695,19 @@ flowchart LR
   <td><code>.Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>FacetRouteConfigurationImportCommand</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small><br><code>FacetRouteConfigurationImportCommand.cs</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
-  <td>No direct outbound edge</td>
+  <td><code>ResolvePath()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
   <td>.Run() node in sead.query.api/Services/FacetRouteConfigurationImportCommand.cs.</td>
 </tr>
 <tr>
   <td>5</td>
+  <td><code>.ResolvePath()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImportCommand</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small><br><code>Run()</code><br><small style="color:var(--muted)">sead.query.api/Services/FacetRouteConfigurationImportCommand.cs</small></td>
+  <td>No direct outbound edge</td>
+  <td>.ResolvePath() node in sead.query.api/Services/FacetRouteConfigurationImportCommand.cs.</td>
+</tr>
+<tr>
+  <td>6</td>
   <td><code>IFacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -710,15 +715,23 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>7</td>
   <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small><br><code>ValidateFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small><br><code>ValidateFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small><br><code>ValidateFileSchemaOnly()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>8</td>
+  <td><code>.ValidateFileSchemaOnly()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
+  <td>No direct outbound edge</td>
+  <td>.ValidateFileSchemaOnly() node in sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>9</td>
   <td><code>.ValidateFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
@@ -726,7 +739,7 @@ flowchart LR
   <td>.ValidateFile() node in sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>10</td>
   <td><code>.ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs</small></td>
@@ -734,7 +747,7 @@ flowchart LR
   <td>.ImportFromFile() node in sead.query.core/Interfaces/IFacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>11</td>
   <td><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -742,15 +755,15 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>12</td>
   <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>ComputeContentHash()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateValidationAnchors()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+31 more</td>
+  <td><code>ComputeContentHash()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>CreateValidationAnchors()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+32 more</td>
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>13</td>
   <td><code>IFacetRouteConfigurationImporter</code><br><small style="color:var(--muted)"></small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -758,7 +771,7 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>14</td>
   <td><code>string</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -766,7 +779,7 @@ flowchart LR
   <td>string node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>15</td>
   <td><code>HashSet</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -774,7 +787,7 @@ flowchart LR
   <td>Caches analysis results or computes cache keys.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>16</td>
   <td><code>IReadOnlyDictionary</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -782,7 +795,7 @@ flowchart LR
   <td>IReadOnlyDictionary node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>17</td>
   <td><code>Regex</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -790,7 +803,7 @@ flowchart LR
   <td>Regex node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>18</td>
   <td><code>IFacetContext</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -798,7 +811,7 @@ flowchart LR
   <td>IFacetContext node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>19</td>
   <td><code>ImportIdAllocator</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -806,7 +819,15 @@ flowchart LR
   <td>ImportIdAllocator node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>20</td>
+  <td><code>.ValidateFileSchemaOnly()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td><code>LoadValidatedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
+  <td>.ValidateFileSchemaOnly() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
+</tr>
+<tr>
+  <td>21</td>
   <td><code>.ValidateFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
@@ -814,7 +835,7 @@ flowchart LR
   <td>.ValidateFile() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>22</td>
   <td><code>.ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
@@ -822,7 +843,7 @@ flowchart LR
   <td>.ImportFromFile() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>23</td>
   <td><code>.ValidateResolvedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+1 more</td>
@@ -830,7 +851,7 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>24</td>
   <td><code>FacetRouteConfigurationDocument</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -838,7 +859,7 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>25</td>
   <td><code>.CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
@@ -846,7 +867,7 @@ flowchart LR
   <td>.CreateDeserializer() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>26</td>
   <td><code>IDeserializer</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -854,15 +875,15 @@ flowchart LR
   <td>IDeserializer node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>27</td>
   <td><code>.LoadValidatedConfiguration()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+2 more</td>
+  <td><code>CreateDeserializer()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+3 more</td>
   <td><code>ValidateDocument()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>28</td>
   <td><code>LoadedFacetRouteConfiguration</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-endpoint">API</span></td>
   <td>External entry / no inbound edge</td>
@@ -870,7 +891,7 @@ flowchart LR
   <td>Reads, resolves, or persists project configuration.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>29</td>
   <td><code>.LoadLookup()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>FacetRouteConfigurationImporter</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>FacetRouteConfigurationImporter.cs</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br><code>ImportFromFile()</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small><br>+1 more</td>
@@ -878,36 +899,12 @@ flowchart LR
   <td>.LoadLookup() node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>30</td>
   <td><code>IEnumerable</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>IEnumerable node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>T</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>T node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>Func</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Func node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>Dictionary</code><br><small style="color:var(--muted)">sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Dictionary node in sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs.</td>
 </tr>
 </table>
 
@@ -916,44 +913,67 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>102 nodes</td></tr>
-<tr><td><code>sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</code></td><td>89 nodes</td></tr>
-<tr><td><code>QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs</code></td><td>56 nodes</td></tr>
+      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>97 nodes</td></tr>
+<tr><td><code>sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</code></td><td>90 nodes</td></tr>
+<tr><td><code>QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs</code></td><td>58 nodes</td></tr>
+<tr><td><code>QueryComposer/Services/ComposedFacetContentSupport.cs</code></td><td>46 nodes</td></tr>
 <tr><td><code>CHANGELOG.md</code></td><td>45 nodes</td></tr>
 <tr><td><code>sead.query.infra/Repository/FacetRepository.cs</code></td><td>33 nodes</td></tr>
 <tr><td><code>Model/Entities/TableRelation.cs</code></td><td>32 nodes</td></tr>
 <tr><td><code>sead.query.core/Interfaces/IFacetRepository.cs</code></td><td>31 nodes</td></tr>
-<tr><td><code>Model/FacetsConfig/FacetsConfig2.cs</code></td><td>31 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: references x1420, method x1092, contains x729, calls x325. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: references x1475, method x1121, contains x738, calls x346. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 5. Outputs & Docs ====== -->
 <h2 id="outputs-docs">5. Outputs &amp; Docs</h2>
-<p>Outputs &amp; Docs groups implementation around create, clinerules, mermaid, resource, mostly in create-docs/resources/column.html, create-docs/resources/main.html, resources/tables/table.html. This section covers 7 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Outputs &amp; Docs groups implementation around exportsmd, graphify, codex, skills, mostly in graphify/references/exports.md, create-docs/resources/column.html, create-docs/resources/main.html. This section covers 14 nodes and 7 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Outputs &amp; Docs (7 nodes, 0 edges)
+    %% Section: Outputs &amp; Docs (14 nodes, 7 edges)
+    subgraph outputs_docs_graphify_references_exports_md_145be2aa["graphify/references/exports.md"]
+        references_exports_graphify_reference_extra_expo_ee448005("graphify reference: extra exports and b...<br/><small>graphify/references/exports.md</small>")
+        references_exports_f50c662b("exports.md")
+        references_exports_step_6b_wiki_only_if_wiki_fla_f09198df("Step 6b - Wiki (only if --wiki flag)<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7_neo4j_export_only_if_n_4506a260("Step 7 - Neo4j export (only if --neo4j...<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7b_svg_export_only_if_sv_f5c26580("Step 7b - SVG export (only if --svg flag)<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7c_graphml_export_only_i_4cc5e08c("Step 7c - GraphML export (only if --gra...<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7d_mcp_server_only_if_mc_bc22e883("Step 7d - MCP server (only if --mcp flag)<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_8_token_reduction_benchm_d4b739be("Step 8 - Token reduction benchmark (onl...<br/><small>graphify/references/exports.md</small>")
+    end
     clinerules_mermaid_plans_ddd8532b("mermaid-plans.md")
     create_documentation_8b683aef("Create Documentation<br/><small>clinerules copy/.clinerules/create-documentation.md</small>")
     mermaid_plans_3835ae0c("Mermaid Plans Guidelines<br/><small>clinerules copy/.clinerules/mermaid-plans.md</small>")
     bin_create_docs_resources_column_html_a4e6dde1("Columns HTML Resource<br/><small>create-docs/resources/column.html</small>")
     bin_create_docs_resources_main_html_08c4039f("Main HTML Resource<br/><small>create-docs/resources/main.html</small>")
-    graphify_to_wiki_494c373a("graphify-to-wiki.py")
     bin_create_docs_resources_tables_table_html_11d12251("Table HTML Resource<br/><small>resources/tables/table.html</small>")
+    references_exports_f50c662b -->|contains| references_exports_graphify_reference_extra_expo_ee448005
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_6b_wiki_only_if_wiki_fla_f09198df
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7_neo4j_export_only_if_n_4506a260
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7b_svg_export_only_if_sv_f5c26580
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7c_graphml_export_only_i_4cc5e08c
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7d_mcp_server_only_if_mc_bc22e883
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_8_token_reduction_benchm_d4b739be
+    class references_exports_graphify_reference_extra_expo_ee448005 concept;
+    class references_exports_f50c662b concept;
+    class references_exports_step_6b_wiki_only_if_wiki_fla_f09198df concept;
+    class references_exports_step_7_neo4j_export_only_if_n_4506a260 concept;
+    class references_exports_step_7b_svg_export_only_if_sv_f5c26580 concept;
+    class references_exports_step_7c_graphml_export_only_i_4cc5e08c concept;
+    class references_exports_step_7d_mcp_server_only_if_mc_bc22e883 concept;
+    class references_exports_step_8_token_reduction_benchm_d4b739be concept;
     class clinerules_mermaid_plans_ddd8532b concept;
     class create_documentation_8b683aef concept;
     class mermaid_plans_3835ae0c concept;
     class bin_create_docs_resources_column_html_a4e6dde1 klass;
     class bin_create_docs_resources_main_html_08c4039f klass;
-    class graphify_to_wiki_494c373a module;
     class bin_create_docs_resources_tables_table_html_11d12251 klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -978,6 +998,70 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>exports.md</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing exports.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>graphify reference: extra exports and benchmark</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing graphify reference: extra exports and benchmark.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Step 6b - Wiki (only if --wiki flag)</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 6b - Wiki (only if --wiki flag).</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag)</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag).</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Step 7b - SVG export (only if --svg flag)</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 7b - SVG export (only if --svg flag).</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Step 7c - GraphML export (only if --graphml flag)</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 7c - GraphML export (only if --graphml flag).</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Step 7d - MCP server (only if --mcp flag)</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 7d - MCP server (only if --mcp flag).</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Step 8 - Token reduction benchmark (only if total_words &gt; 5000)</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 8 - Token reduction benchmark (only if total_words &gt; 5000).</td>
+</tr>
+<tr>
+  <td>9</td>
   <td><code>Columns HTML Resource</code><br><small style="color:var(--muted)">create-docs/resources/column.html</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -985,7 +1069,7 @@ flowchart LR
   <td>Exports documentation data to a target format.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>10</td>
   <td><code>Main HTML Resource</code><br><small style="color:var(--muted)">create-docs/resources/main.html</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -993,7 +1077,7 @@ flowchart LR
   <td>Exports documentation data to a target format.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>11</td>
   <td><code>Table HTML Resource</code><br><small style="color:var(--muted)">resources/tables/table.html</small></td>
   <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
@@ -1001,7 +1085,7 @@ flowchart LR
   <td>Exports documentation data to a target format.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>12</td>
   <td><code>Create Documentation</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/create-documentation.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1009,15 +1093,7 @@ flowchart LR
   <td>Documentation node describing Create Documentation.</td>
 </tr>
 <tr>
-  <td>5</td>
-  <td><code>graphify-to-wiki.py</code><br><small style="color:var(--muted)">graphify-to-wiki.py</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in graphify-to-wiki.py.</td>
-</tr>
-<tr>
-  <td>6</td>
+  <td>13</td>
   <td><code>Mermaid Plans Guidelines</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/mermaid-plans.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1025,7 +1101,7 @@ flowchart LR
   <td>Documentation node describing Mermaid Plans Guidelines.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>14</td>
   <td><code>mermaid-plans.md</code><br><small style="color:var(--muted)">.clinerules/mermaid-plans.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1039,45 +1115,87 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>.clinerules/mermaid-plans.md</code></td><td>1 nodes</td></tr>
+      <tr><td><code>graphify/references/exports.md</code></td><td>8 nodes</td></tr>
+<tr><td><code>.clinerules/mermaid-plans.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>create-docs/resources/column.html</code></td><td>1 nodes</td></tr>
 <tr><td><code>create-docs/resources/main.html</code></td><td>1 nodes</td></tr>
 <tr><td><code>resources/tables/table.html</code></td><td>1 nodes</td></tr>
-<tr><td><code>graphify-to-wiki.py</code></td><td>1 nodes</td></tr>
 <tr><td><code>clinerules copy/.clinerules/create-documentation.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>clinerules copy/.clinerules/mermaid-plans.md</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x7. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 6. CLI & Skill Installers ====== -->
 <h2 id="cli-skills">6. CLI &amp; Skill Installers</h2>
-<p>CLI &amp; Skill Installers groups implementation around clinerules, tmp, copy, mcp, mostly in clinerules copy/.clinerules/claude-code-subagents.md, clinerules copy/.clinerules/cline-architecture.md, clinerules copy/.clinerules/mcp-development-protocol.md. This section covers 6 nodes and 3 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>CLI &amp; Skill Installers groups implementation around graphify, skills, codex, skillmd, mostly in skills/graphify/SKILL.md, graphify/references/hooks.md, graphify/references/extraction-spec.md. This section covers 36 nodes and 30 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: CLI &amp; Skill Installers (6 nodes, 3 edges)
+    %% Section: CLI &amp; Skill Installers (36 nodes, 30 edges)
+    subgraph cli_skills_skills_graphify_SKILL_md_ba798e49["skills/graphify/SKILL.md"]
+        graphify_skill_what_you_must_do_when_invoked_5af525ab("What You Must Do When Invoked<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_graphify_00571124("/graphify<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_step_3_extract_entities_and_relat_7f871a40("Step 3 - Extract entities and relations...<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_for_update_and_cluster_only_aec26e88("For --update and --cluster-only<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_for_graphify_add_and_watch_da99f7f4("For /graphify add and --watch<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_for_graphify_query_aff19be5("For /graphify query<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_for_the_commit_hook_and_native_cl_97c86c4a("For the commit hook and native CLAUDE.m...<br/><small>skills/graphify/SKILL.md</small>")
+        graphify_skill_honesty_rules_0fcfec44("Honesty Rules<br/><small>skills/graphify/SKILL.md</small>")
+    end
+    subgraph cli_skills_graphify_references_hooks_md_03244d09["graphify/references/hooks.md"]
+        references_hooks_graphify_reference_commit_hook_cb1d2d0d("graphify reference: commit hook and nat...<br/><small>graphify/references/hooks.md</small>")
+        references_hooks_for_git_commit_hook_83bb6657("For git commit hook<br/><small>graphify/references/hooks.md</small>")
+        references_hooks_for_native_claude_md_integratio_841f0fb9("For native CLAUDE.md integration<br/><small>graphify/references/hooks.md</small>")
+        references_hooks_43367180("hooks.md")
+    end
+    subgraph cli_skills_graphify_references_extraction_spec_m_05f41a46["graphify/references/extraction-spec.md"]
+        references_extraction_spec_f904b2c5("extraction-spec.md")
+        references_extraction_spec_graphify_reference_ex_beb8e818("graphify reference: extraction subagent...<br/><small>graphify/references/extraction-spec.md</small>")
+    end
     claude_code_subagents_545b2d3a("Claude Code Subagent Rules<br/><small>clinerules copy/.clinerules/claude-code-subagents.md</small>")
     cline_extension_architecture_14378efa("Cline Extension Architecture &amp; Developm...<br/><small>clinerules copy/.clinerules/cline-architecture.md</small>")
     mcp_server_development_protocol_9ca6c43b("MCP Server Development Protocol<br/><small>clinerules copy/.clinerules/mcp-development-protocol.md</small>")
     mcp_env_configuration_f64f5305("Environment Configuration in MCP Servers<br/><small>clinerules copy/.clinerules/mcp_env_configuration.md</small>")
-    sead_architecture_design_skill_7270cb9a("SEAD Architecture Design Skill<br/><small>skills/sead-architecture-design/SKILL.md</small>")
-    sead_database_skill_1c170bc0("SEAD Database Skill<br/><small>skills/sead-database/SKILL.md</small>")
     claude_code_subagents_545b2d3a -->|references| cline_extension_architecture_14378efa
     cline_extension_architecture_14378efa -->|references| mcp_env_configuration_f64f5305
     cline_extension_architecture_14378efa -->|references| mcp_server_development_protocol_9ca6c43b
+    graphify_skill_graphify_00571124 -->|contains| graphify_skill_for_graphify_add_and_watch_da99f7f4
+    graphify_skill_graphify_00571124 -->|contains| graphify_skill_for_graphify_query_aff19be5
+    graphify_skill_graphify_00571124 -->|contains| graphify_skill_for_the_commit_hook_and_native_cl_97c86c4a
+    graphify_skill_graphify_00571124 -->|contains| graphify_skill_for_update_and_cluster_only_aec26e88
+    graphify_skill_graphify_00571124 -->|contains| graphify_skill_honesty_rules_0fcfec44
+    graphify_skill_graphify_00571124 -->|contains| graphify_skill_what_you_must_do_when_invoked_5af525ab
+    graphify_skill_what_you_must_do_when_invoked_5af525ab -->|contains| graphify_skill_step_3_extract_entities_and_relat_7f871a40
+    references_extraction_spec_f904b2c5 -->|contains| references_extraction_spec_graphify_reference_ex_beb8e818
+    references_hooks_43367180 -->|contains| references_hooks_graphify_reference_commit_hook_cb1d2d0d
+    references_hooks_graphify_reference_commit_hook_cb1d2d0d -->|contains| references_hooks_for_git_commit_hook_83bb6657
+    references_hooks_graphify_reference_commit_hook_cb1d2d0d -->|contains| references_hooks_for_native_claude_md_integratio_841f0fb9
+    %% Omitted for readability: 18 nodes, 0 edges
+    class graphify_skill_what_you_must_do_when_invoked_5af525ab concept;
+    class graphify_skill_graphify_00571124 concept;
+    class graphify_skill_step_3_extract_entities_and_relat_7f871a40 concept;
+    class graphify_skill_for_update_and_cluster_only_aec26e88 concept;
+    class graphify_skill_for_graphify_add_and_watch_da99f7f4 concept;
+    class graphify_skill_for_graphify_query_aff19be5 concept;
+    class graphify_skill_for_the_commit_hook_and_native_cl_97c86c4a concept;
+    class graphify_skill_honesty_rules_0fcfec44 concept;
+    class references_hooks_graphify_reference_commit_hook_cb1d2d0d concept;
+    class references_hooks_for_git_commit_hook_83bb6657 concept;
+    class references_hooks_for_native_claude_md_integratio_841f0fb9 concept;
+    class references_hooks_43367180 concept;
+    class references_extraction_spec_f904b2c5 concept;
+    class references_extraction_spec_graphify_reference_ex_beb8e818 concept;
     class claude_code_subagents_545b2d3a concept;
     class cline_extension_architecture_14378efa concept;
     class mcp_server_development_protocol_9ca6c43b concept;
     class mcp_env_configuration_f64f5305 concept;
-    class sead_architecture_design_skill_7270cb9a concept;
-    class sead_database_skill_1c170bc0 concept;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1101,6 +1219,198 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>SKILL.md</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SKILL.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>/graphify</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing /graphify.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Usage</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Usage.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>What graphify is for</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing What graphify is for.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>What You Must Do When Invoked</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing What You Must Do When Invoked.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 0 - GitHub repos and multi-path merge (only if a URL or several paths).</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Step 1 - Ensure graphify is installed</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 1 - Ensure graphify is installed.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>Step 2 - Detect files</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 2 - Detect files.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Step 2.5 - Video and audio (only if video files detected)</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 2.5 - Video and audio (only if video files detected).</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Step 3 - Extract entities and relationships</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 3 - Extract entities and relationships.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Part A - Structural extraction for code files</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Part A - Structural extraction for code files.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>Part B - Semantic extraction (parallel subagents)</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Part B - Semantic extraction (parallel subagents).</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>Part C - Merge AST + semantic into final extraction</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Part C - Merge AST + semantic into final extraction.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Step 4 - Build graph, cluster, analyze, generate outputs</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 4 - Build graph, cluster, analyze, generate outputs.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Step 5 - Label communities</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 5 - Label communities.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Step 6 - Generate Obsidian vault (opt-in) + HTML</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 6 - Generate Obsidian vault (opt-in) + HTML.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>Steps 6b-8 - Wiki, Neo4j, SVG, GraphML, MCP, benchmark (only on their flags)</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Steps 6b-8 - Wiki, Neo4j, SVG, GraphML, MCP, benchmark (only on their flags).</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Step 9 - Save manifest, update cost tracker, clean up, and report</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 9 - Save manifest, update cost tracker, clean up, and report.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>Interpreter guard for subcommands</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Interpreter guard for subcommands.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>For --update and --cluster-only</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For --update and --cluster-only.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>For /graphify query</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For /graphify query.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>For /graphify add and --watch</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For /graphify add and --watch.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>For the commit hook and native CLAUDE.md integration</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For the commit hook and native CLAUDE.md integration.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>Honesty Rules</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Honesty Rules.</td>
+</tr>
+<tr>
+  <td>25</td>
   <td><code>Claude Code Subagent Rules</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/claude-code-subagents.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1108,7 +1418,7 @@ flowchart LR
   <td>Documentation node describing Claude Code Subagent Rules.</td>
 </tr>
 <tr>
-  <td>2</td>
+  <td>26</td>
   <td><code>Cline Extension Architecture &amp; Development Guide</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/cline-architecture.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1116,7 +1426,7 @@ flowchart LR
   <td>Documentation node describing Cline Extension Architecture &amp; Development Guide.</td>
 </tr>
 <tr>
-  <td>3</td>
+  <td>27</td>
   <td><code>MCP Server Development Protocol</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/mcp-development-protocol.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1124,7 +1434,7 @@ flowchart LR
   <td>Documentation node describing MCP Server Development Protocol.</td>
 </tr>
 <tr>
-  <td>4</td>
+  <td>28</td>
   <td><code>Environment Configuration in MCP Servers</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/mcp_env_configuration.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1132,20 +1442,20 @@ flowchart LR
   <td>Documentation node describing Environment Configuration in MCP Servers.</td>
 </tr>
 <tr>
-  <td>5</td>
-  <td><code>SEAD Architecture Design Skill</code><br><small style="color:var(--muted)">skills/sead-architecture-design/SKILL.md</small></td>
+  <td>29</td>
+  <td><code>hooks.md</code><br><small style="color:var(--muted)">graphify/references/hooks.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing SEAD Architecture Design Skill.</td>
+  <td>Documentation node describing hooks.md.</td>
 </tr>
 <tr>
-  <td>6</td>
-  <td><code>SEAD Database Skill</code><br><small style="color:var(--muted)">skills/sead-database/SKILL.md</small></td>
+  <td>30</td>
+  <td><code>graphify reference: commit hook and native CLAUDE.md integration</code><br><small style="color:var(--muted)">graphify/references/hooks.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Documentation node describing SEAD Database Skill.</td>
+  <td>Documentation node describing graphify reference: commit hook and native CLAUDE.md integration.</td>
 </tr>
 </table>
 
@@ -1154,30 +1464,68 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>skills/sead-architecture-design/SKILL.md</code></td><td>1 nodes</td></tr>
+      <tr><td><code>skills/graphify/SKILL.md</code></td><td>24 nodes</td></tr>
+<tr><td><code>graphify/references/hooks.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>graphify/references/extraction-spec.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>skills/sead-architecture-design/SKILL.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>skills/sead-database/SKILL.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>clinerules copy/.clinerules/claude-code-subagents.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>clinerules copy/.clinerules/cline-architecture.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>clinerules copy/.clinerules/mcp-development-protocol.md</code></td><td>1 nodes</td></tr>
-<tr><td><code>clinerules copy/.clinerules/mcp_env_configuration.md</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: references x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x27, references x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 7. Ingestion & Updates ====== -->
 <h2 id="ingest-cache-update">7. Ingestion &amp; Updates</h2>
-<p>Ingestion &amp; Updates groups implementation around google, apps, script, clinerules, mostly in clinerules copy/.clinerules/google-apps-script-developer.md. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Ingestion &amp; Updates groups implementation around graphify, codex, skills, references, mostly in graphify/references/add-watch.md, graphify/references/update.md, graphify/references/transcribe.md. This section covers 12 nodes and 8 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Ingestion &amp; Updates (1 nodes, 0 edges)
+    %% Section: Ingestion &amp; Updates (12 nodes, 8 edges)
+    subgraph ingest_cache_update_graphify_references_add_watc_ad4a876c["graphify/references/add-watch.md"]
+        references_add_watch_graphify_reference_add_a_ur_df000dfb("graphify reference: add a URL and watch...<br/><small>graphify/references/add-watch.md</small>")
+        references_add_watch_a882e130("add-watch.md")
+        references_add_watch_for_watch_6ae398fb("For --watch<br/><small>graphify/references/add-watch.md</small>")
+        references_add_watch_for_graphify_add_4d2c1e86("For /graphify add<br/><small>graphify/references/add-watch.md</small>")
+    end
+    subgraph ingest_cache_update_graphify_references_update_m_5902f3df["graphify/references/update.md"]
+        references_update_graphify_reference_incremental_e7189a5d("graphify reference: incremental update...<br/><small>graphify/references/update.md</small>")
+        references_update_c8e72156("update.md")
+        references_update_for_cluster_only_5e9f2f93("For --cluster-only<br/><small>graphify/references/update.md</small>")
+        references_update_for_update_incremental_re_extr_46861e8c("For --update (incremental re-extraction)<br/><small>graphify/references/update.md</small>")
+    end
+    subgraph ingest_cache_update_graphify_references_transcri_94aa8e73["graphify/references/transcribe.md"]
+        references_transcribe_f4c653e5("transcribe.md")
+        references_transcribe_graphify_reference_transcr_aa389265("graphify reference: transcribe video an...<br/><small>graphify/references/transcribe.md</small>")
+        references_transcribe_step_2_5_transcribe_video_21771e20("Step 2.5 - Transcribe video / audio fil...<br/><small>graphify/references/transcribe.md</small>")
+    end
     google_apps_script_developer_0c3d7ca3("Elite Google Apps Script (GAS) Develope...<br/><small>clinerules copy/.clinerules/google-apps-script-developer.md</small>")
+    references_add_watch_a882e130 -->|contains| references_add_watch_graphify_reference_add_a_ur_df000dfb
+    references_add_watch_graphify_reference_add_a_ur_df000dfb -->|contains| references_add_watch_for_graphify_add_4d2c1e86
+    references_add_watch_graphify_reference_add_a_ur_df000dfb -->|contains| references_add_watch_for_watch_6ae398fb
+    references_transcribe_f4c653e5 -->|contains| references_transcribe_graphify_reference_transcr_aa389265
+    references_transcribe_graphify_reference_transcr_aa389265 -->|contains| references_transcribe_step_2_5_transcribe_video_21771e20
+    references_update_c8e72156 -->|contains| references_update_graphify_reference_incremental_e7189a5d
+    references_update_graphify_reference_incremental_e7189a5d -->|contains| references_update_for_cluster_only_5e9f2f93
+    references_update_graphify_reference_incremental_e7189a5d -->|contains| references_update_for_update_incremental_re_extr_46861e8c
+    class references_add_watch_graphify_reference_add_a_ur_df000dfb concept;
+    class references_add_watch_a882e130 concept;
+    class references_add_watch_for_watch_6ae398fb concept;
+    class references_add_watch_for_graphify_add_4d2c1e86 concept;
+    class references_update_graphify_reference_incremental_e7189a5d concept;
+    class references_update_c8e72156 concept;
+    class references_update_for_cluster_only_5e9f2f93 concept;
+    class references_update_for_update_incremental_re_extr_46861e8c concept;
+    class references_transcribe_f4c653e5 concept;
+    class references_transcribe_graphify_reference_transcr_aa389265 concept;
+    class references_transcribe_step_2_5_transcribe_video_21771e20 concept;
     class google_apps_script_developer_0c3d7ca3 concept;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -1202,6 +1550,94 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
+  <td><code>add-watch.md</code><br><small style="color:var(--muted)">graphify/references/add-watch.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing add-watch.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>graphify reference: add a URL and watch a folder</code><br><small style="color:var(--muted)">graphify/references/add-watch.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing graphify reference: add a URL and watch a folder.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>For /graphify add</code><br><small style="color:var(--muted)">graphify/references/add-watch.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For /graphify add.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>For --watch</code><br><small style="color:var(--muted)">graphify/references/add-watch.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For --watch.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>update.md</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing update.md.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>graphify reference: incremental update and cluster-only</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing graphify reference: incremental update and cluster-only.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>For --update (incremental re-extraction)</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For --update (incremental re-extraction).</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>For --cluster-only</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing For --cluster-only.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>transcribe.md</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing transcribe.md.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>graphify reference: transcribe video and audio</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing graphify reference: transcribe video and audio.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Step 2.5 - Transcribe video / audio files (only if video files detected)</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Step 2.5 - Transcribe video / audio files (only if video files detected).</td>
+</tr>
+<tr>
+  <td>12</td>
   <td><code>Elite Google Apps Script (GAS) Developer Protocol</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/google-apps-script-developer.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1215,24 +1651,27 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>clinerules copy/.clinerules/google-apps-script-developer.md</code></td><td>1 nodes</td></tr>
+      <tr><td><code>graphify/references/add-watch.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>graphify/references/update.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>graphify/references/transcribe.md</code></td><td>3 nodes</td></tr>
+<tr><td><code>clinerules copy/.clinerules/google-apps-script-developer.md</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 8. Serving API ====== -->
 <h2 id="serve-api">8. Serving API</h2>
-<p>Serving API groups implementation around agentsmd, request, flowmd, seadqueryapidepsjson, mostly in request-flow.md, publish/sead.query.api.deps.json, README.md. This section covers 62 nodes and 60 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around agentsmd, request, flowmd, seadqueryapidepsjson, mostly in request-flow.md, publish/sead.query.api.deps.json, AGENTS.md. This section covers 64 nodes and 63 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (62 nodes, 60 edges)
+    %% Section: Serving API (64 nodes, 63 edges)
     subgraph serve_api_publish_sead_query_api_deps_json_d30d5dbf["publish/sead.query.api.deps.json"]
         publish_sead_query_api_deps_netcoreapp_version_v_66a3ecc4("Microsoft.Win32.SystemEvents/6.0.0<br/><small>publish/sead.query.api.deps.json</small>")
         publish_sead_query_api_deps_runtimes_win_lib_net_a19dfdfe("assemblyVersion<br/><small>publish/sead.query.api.deps.json</small>")
@@ -1250,14 +1689,16 @@ flowchart LR
         publish_sead_query_api_deps_targets_c9db38a5("targets<br/><small>publish/sead.query.api.deps.json</small>")
     end
     subgraph serve_api_sead_query_api_Services_FacetRouteConf_5f0e56cf["sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs"]
-        services_facetrouteconfigurationvalidationcomman_c8078941("FacetRouteConfigurationValidationComman...<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
         services_facetrouteconfigurationvalidationcomman_1630fd2a("FacetRouteConfigurationValidationCommand<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
+        services_facetrouteconfigurationvalidationcomman_c8078941("FacetRouteConfigurationValidationComman...<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
         services_facetrouteconfigurationvalidationcomman_6b7cc535("Run()<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
-        sead_query_api_services_facetrouteconfigurationv_a719477a("IFacetRouteConfigurationImporter<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
+        services_facetrouteconfigurationvalidationcomman_f9b15cc9("ResolvePath()<br/><small>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</small>")
     end
     services_facetrouteconfigurationvalidationcomman_c8078941 -->|method| services_facetrouteconfigurationvalidationcomman_6b7cc535
+    services_facetrouteconfigurationvalidationcomman_1630fd2a -->|method| services_facetrouteconfigurationvalidationcomman_f9b15cc9
     services_facetrouteconfigurationvalidationcomman_1630fd2a -->|method| services_facetrouteconfigurationvalidationcomman_6b7cc535
-    %% Omitted for readability: 44 nodes, 0 edges
+    services_facetrouteconfigurationvalidationcomman_6b7cc535 -->|calls| services_facetrouteconfigurationvalidationcomman_f9b15cc9
+    %% Omitted for readability: 46 nodes, 0 edges
     class publish_sead_query_api_deps_netcoreapp_version_v_66a3ecc4 klass;
     class publish_sead_query_api_deps_runtimes_win_lib_net_a19dfdfe async;
     class publish_sead_query_api_deps_runtimes_win_lib_net_e5394136 async;
@@ -1272,10 +1713,10 @@ flowchart LR
     class publish_sead_query_api_deps_51fa4b8c api;
     class publish_sead_query_api_deps_runtimetarget_signat_ffa595c9 function;
     class publish_sead_query_api_deps_targets_c9db38a5 function;
-    class services_facetrouteconfigurationvalidationcomman_c8078941 api;
     class services_facetrouteconfigurationvalidationcomman_1630fd2a api;
+    class services_facetrouteconfigurationvalidationcomman_c8078941 api;
     class services_facetrouteconfigurationvalidationcomman_6b7cc535 function;
-    class sead_query_api_services_facetrouteconfigurationv_a719477a api;
+    class services_facetrouteconfigurationvalidationcomman_f9b15cc9 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -1379,6 +1820,14 @@ flowchart LR
 </tr>
 <tr>
   <td>11</td>
+  <td><code>rtk (Token Optimization)</code><br><small style="color:var(--muted)">AGENTS.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing rtk (Token Optimization).</td>
+</tr>
+<tr>
+  <td>12</td>
   <td><code>README.md</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1386,7 +1835,7 @@ flowchart LR
   <td>Documentation node describing README.md.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>13</td>
   <td><code>SEAD Faceted Query API</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1394,7 +1843,7 @@ flowchart LR
   <td>Documentation node describing SEAD Faceted Query API.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>14</td>
   <td><code>What This Repository Contains</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1402,7 +1851,7 @@ flowchart LR
   <td>Documentation node describing What This Repository Contains.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>15</td>
   <td><code>Prerequisites</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1410,7 +1859,7 @@ flowchart LR
   <td>Documentation node describing Prerequisites.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>16</td>
   <td><code>Quick Start</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1418,7 +1867,7 @@ flowchart LR
   <td>Documentation node describing Quick Start.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>17</td>
   <td><code>API Note</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1426,7 +1875,7 @@ flowchart LR
   <td>Documentation node describing API Note.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>18</td>
   <td><code>Documentation</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1434,7 +1883,7 @@ flowchart LR
   <td>Documentation node describing Documentation.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>19</td>
   <td><code>Status</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1442,7 +1891,7 @@ flowchart LR
   <td>Documentation node describing Status.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>20</td>
   <td><code>Changelog</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1450,7 +1899,7 @@ flowchart LR
   <td>Documentation node describing Changelog.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>21</td>
   <td><code>License</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1458,7 +1907,7 @@ flowchart LR
   <td>Documentation node describing License.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>22</td>
   <td><code>Authorship</code><br><small style="color:var(--muted)">README.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1466,7 +1915,7 @@ flowchart LR
   <td>Documentation node describing Authorship.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>23</td>
   <td><code>CHANGELOG</code><br><small style="color:var(--muted)">CHANGELOG.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1474,7 +1923,7 @@ flowchart LR
   <td>Documentation node describing CHANGELOG.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>24</td>
   <td><code>Request Flow</code><br><small style="color:var(--muted)">request-flow.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1482,7 +1931,7 @@ flowchart LR
   <td>Documentation node describing Request Flow.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>25</td>
   <td><code>Issues List</code><br><small style="color:var(--muted)">issues.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1490,7 +1939,7 @@ flowchart LR
   <td>Documentation node describing Issues List.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>26</td>
   <td><code>request-flow.md</code><br><small style="color:var(--muted)">request-flow.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1498,7 +1947,7 @@ flowchart LR
   <td>Documentation node describing request-flow.md.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>27</td>
   <td><code>Control Flow 📌🚩👀🦴🦷👁️✨🔔📀💡🔦🔖🏷️✂️⏳📍</code><br><small style="color:var(--muted)">request-flow.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1506,7 +1955,7 @@ flowchart LR
   <td>Documentation node describing Control Flow 📌🚩👀🦴🦷👁️✨🔔📀💡🔦🔖🏷️✂️⏳📍.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>28</td>
   <td><code>Load facet</code><br><small style="color:var(--muted)">request-flow.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1514,7 +1963,7 @@ flowchart LR
   <td>Documentation node describing Load facet.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>29</td>
   <td><code>Terminology</code><br><small style="color:var(--muted)">request-flow.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1522,20 +1971,12 @@ flowchart LR
   <td>Documentation node describing Terminology.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>The request&#x27;s result configuration data</code><br><small style="color:var(--muted)">request-flow.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>Documentation node describing The request&#x27;s result configuration data.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>URI general format</code><br><small style="color:var(--muted)">request-flow.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing URI general format.</td>
 </tr>
 </table>
 
@@ -1546,17 +1987,17 @@ flowchart LR
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>request-flow.md</code></td><td>15 nodes</td></tr>
 <tr><td><code>publish/sead.query.api.deps.json</code></td><td>14 nodes</td></tr>
+<tr><td><code>AGENTS.md</code></td><td>11 nodes</td></tr>
 <tr><td><code>README.md</code></td><td>11 nodes</td></tr>
-<tr><td><code>AGENTS.md</code></td><td>10 nodes</td></tr>
 <tr><td><code>sead.query.api/AGENTS.md</code></td><td>6 nodes</td></tr>
-<tr><td><code>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</code></td><td>4 nodes</td></tr>
+<tr><td><code>sead.query.api/Services/FacetRouteConfigurationValidationCommand.cs</code></td><td>5 nodes</td></tr>
 <tr><td><code>CHANGELOG.md</code></td><td>1 nodes</td></tr>
 <tr><td><code>issues.md</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x52, references x6, method x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x53, references x6, method x3, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -2657,12 +3098,12 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around clinerules, tmp, copy, get, mostly in get-facets.md, .chglog/CHANGELOG.tpl.md, CHANGELOG.md. This section covers 63 nodes and 18 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around clinerules, tmp, copy, get, mostly in get-facets.md, .chglog/CHANGELOG.tpl.md, CHANGELOG.md. This section covers 66 nodes and 19 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (63 nodes, 18 edges)
+    %% Section: Other (66 nodes, 19 edges)
     subgraph other_get_facets_md_dcfbf1dc["get-facets.md"]
         get_facets_get_geo_count_query_a82a7548("get_geo_count_query<br/><small>get-facets.md</small>")
         get_facets_get_geo_filter_clauses_ca6f3cc3("get_geo_filter_clauses<br/><small>get-facets.md</small>")
@@ -2683,9 +3124,9 @@ flowchart LR
         clinerules_baby_steps_the_unbreakable_rules_of_b_d165918d("The Unbreakable Rules of Baby Steps™<br/><small>.clinerules/baby-steps.md</small>")
         clinerules_baby_steps_93890392("baby-steps.md")
     end
-    subgraph other_clinerules_project_md_1285a089[".clinerules/project.md"]
-        clinerules_project_shared_project_instructions_f56afa82("Shared project instructions<br/><small>.clinerules/project.md</small>")
-        clinerules_project_edc27c8f("project.md")
+    subgraph other_reinstall_csharp_dev_kit_sh_0e1ad457["reinstall-csharp-dev-kit.sh"]
+        reinstall_csharp_dev_kit_d9ef466b("reinstall-csharp-dev-kit.sh")
+        home_roger_source_sead_query_api_reinstall_cshar_6959595c("reinstall-csharp-dev-kit.sh script<br/><small>reinstall-csharp-dev-kit.sh</small>")
     end
     release_workflow_release_yml_ea5da4fe("Release Workflow<br/><small>.github/workflows/release.yml</small>")
     utilities_interval_cf095bb4("Interval.cs")
@@ -2693,7 +3134,7 @@ flowchart LR
     get_facets_get_geo_count_query_a82a7548 -->|calls| get_facets_get_counts_063055d6
     get_facets_get_geo_count_query_a82a7548 -->|calls| get_facets_get_facet_content_32b4d145
     get_facets_get_facet_content_32b4d145 -->|calls| get_facets_get_counts_063055d6
-    %% Omitted for readability: 45 nodes, 0 edges
+    %% Omitted for readability: 48 nodes, 0 edges
     class get_facets_get_geo_count_query_a82a7548 function;
     class get_facets_get_geo_filter_clauses_ca6f3cc3 function;
     class get_facets_get_facet_content_32b4d145 function;
@@ -2708,8 +3149,8 @@ flowchart LR
     class clinerules_baby_steps_core_operational_directive_09a40eb7 concept;
     class clinerules_baby_steps_the_unbreakable_rules_of_b_d165918d concept;
     class clinerules_baby_steps_93890392 concept;
-    class clinerules_project_shared_project_instructions_f56afa82 concept;
-    class clinerules_project_edc27c8f concept;
+    class reinstall_csharp_dev_kit_d9ef466b function;
+    class home_roger_source_sead_query_api_reinstall_cshar_6959595c function;
     class release_workflow_release_yml_ea5da4fe klass;
     class utilities_interval_cf095bb4 klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
@@ -2935,6 +3376,22 @@ flowchart LR
 </tr>
 <tr>
   <td>26</td>
+  <td><code>reinstall-csharp-dev-kit.sh</code><br><small style="color:var(--muted)">reinstall-csharp-dev-kit.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>reinstall-csharp-dev-kit.sh node in reinstall-csharp-dev-kit.sh.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>reinstall-csharp-dev-kit.sh script</code><br><small style="color:var(--muted)">reinstall-csharp-dev-kit.sh</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>reinstall-csharp-dev-kit.sh script node in reinstall-csharp-dev-kit.sh.</td>
+</tr>
+<tr>
+  <td>28</td>
   <td><code>AI DLC Construction Phase</code><br><small style="color:var(--muted)">clinerules copy/workflows/ai-dlc-construction.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -2942,7 +3399,7 @@ flowchart LR
   <td>Documentation node describing AI DLC Construction Phase.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>29</td>
   <td><code>AI DLC Inception Phase</code><br><small style="color:var(--muted)">clinerules copy/workflows/ai-dlc-inception.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -2950,28 +3407,12 @@ flowchart LR
   <td>Documentation node describing AI DLC Inception Phase.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>30</td>
   <td><code>AI Assistant Guide for BAs</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/ba.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>Documentation node describing AI Assistant Guide for BAs.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>Baby Steps™ Methodology</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/baby-steps.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Baby Steps™ Methodology.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>bin/deploy-staging Reference</code><br><small style="color:var(--muted)">bin/deploy-staging.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing bin/deploy-staging Reference.</td>
 </tr>
 </table>
 
@@ -2986,13 +3427,13 @@ flowchart LR
 <tr><td><code>.clinerules/baby-steps.md</code></td><td>3 nodes</td></tr>
 <tr><td><code>.clinerules/project.md</code></td><td>2 nodes</td></tr>
 <tr><td><code>.clinerules/self-improving-cline.md</code></td><td>2 nodes</td></tr>
+<tr><td><code>reinstall-csharp-dev-kit.sh</code></td><td>2 nodes</td></tr>
 <tr><td><code>instructions/features/semantic-term-normalization.md</code></td><td>1 nodes</td></tr>
-<tr><td><code>.github/prompts/dotnet.prompt.md</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x11, calls x4, references x2, semantically similar to x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x12, calls x4, references x2, semantically similar to x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3003,17 +3444,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>3267</td></tr>
-      <tr><td>Edges</td><td>5314</td></tr>
+      <tr><td>Nodes</td><td>3397</td></tr>
+      <tr><td>Edges</td><td>5475</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>258</td></tr>
+      <tr><td>Communities</td><td>278</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>5308</td></tr>
+      <tr><td>EXTRACTED</td><td>5469</td></tr>
       <tr><td>INFERRED</td><td>6</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -3022,7 +3463,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>sead_query_api — Architecture Documentation</p>
-  <p>Generated: 2026-07-04 11:02 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-07-08 21:01 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
