@@ -3,12 +3,12 @@
 ## Status
 
 - Proposed feature / change request
-- Scope: classify the staging `facet` export in `docs/proposals/facets.json` against the maintained YAML authoring surface in `sead.query.composer/Templates/route_v1.yaml`
+- Scope: classify the staging `facet` export in `docs/proposals/facets.json` against the maintained YAML authoring surface in `sead.query.composer/Templates/facet_configuration.yml`
 - Goal: define which exported facets should move into YAML now, which need additional modeling first, and which should stay explicit exceptions or policy decisions
 
 ## Summary
 
-`sead.query.composer/Templates/route_v1.yaml` is now the maintained authoring source of truth, but the migration baseline should now assume inline SQL facet templates as the default authoring model rather than the current purely relational YAML-v1 shape.
+`sead.query.composer/Templates/facet_configuration.yml` is now the maintained authoring source of truth, but the migration baseline should now assume inline SQL facet templates as the default authoring model rather than the current purely relational YAML-v1 shape.
 
 Under that baseline, the migration gap is real but materially smaller than the earlier relational-only classification suggested. The export contains 52 facet rows. The current YAML draft authors 8 of them directly. Of the remaining 44, 39 become plausible inline-SQL backfill candidates once facet-owned CTE SQL is first-class, 3 should stay as facet-authored result-shape entries, and only 2 remain in a helper-only bucket.
 
@@ -18,7 +18,7 @@ See `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/INLINE_SQL_F
 
 ## Problem
 
-The repository now treats `route_v1.yaml` as the checked-in authoring source of truth for maintained facet, anchor, and route configuration, while the runtime still executes the imported database copy.
+The repository now treats `facet_configuration.yml` as the checked-in authoring source of truth for maintained facet, anchor, and route configuration, while the runtime still executes the imported database copy.
 
 That leaves one migration question open: what should happen to the historical or staging facet rows exported in `docs/proposals/facets.json`?
 
@@ -34,7 +34,7 @@ A blind one-to-one conversion would create several problems.
 This change request covers:
 
 - classification of the 52 exported staging facets
-- a recommended migration policy for bringing facet rows into `route_v1.yaml`
+- a recommended migration policy for bringing facet rows into `facet_configuration.yml`
 - an updated bucketed list using inline SQL facet templates as the migration baseline
 
 ## Non-Goals
@@ -51,8 +51,8 @@ This change request does not:
 
 The current durable split is:
 
-- authoring source: `sead.query.composer/Templates/route_v1.yaml`
-- authoring contract: `sead.query.composer/Templates/facet-route-config.schema.json`
+- authoring source: `sead.query.composer/Templates/facet_configuration.yml`
+- authoring contract: `sead.query.composer/Templates/facet-configuration-schema.json`
 - runtime copy: imported active rows in the `facet` schema
 
 The repository docs already treat YAML as the maintained authoring surface and the imported database revision as the maintained runtime surface.
@@ -83,7 +83,7 @@ Do not apply this rule:
 
 This first-pass classification used the checked-in staging export and compared it with the current YAML draft using these signals:
 
-- whether the facet code already exists in `route_v1.yaml`
+- whether the facet code already exists in `facet_configuration.yml`
 - whether the facet is marked non-applicable in the export
 - whether the exported facet is really a helper or result-shape artifact rather than a visible maintained facet
 - whether the new inline-SQL baseline makes the old relational blockers no longer decisive
@@ -94,7 +94,7 @@ This is a migration triage under the new inline-SQL baseline, not a proof that e
 
 Total exported facets: 52
 
-Already authored in `route_v1.yaml` and should stay there unless intentionally removed: 8
+Already authored in `facet_configuration.yml` and should stay there unless intentionally removed: 8
 
 - `feature_type`, `dataset_methods`, `data_types`, `dataset_provider`, `record_types`, `country`, `sites_polygon`, `analysis_entity_ages`
 
@@ -116,7 +116,7 @@ The old route-modeling, denormalized-source, clause, alias, and UDF buckets no l
 
 For the inline-SQL backfill candidates:
 
-- add the facet definitions to `route_v1.yaml` using inline SQL as the default facet-authoring model
+- add the facet definitions to `facet_configuration.yml` using inline SQL as the default facet-authoring model
 - add or confirm required base-anchor and projected-anchor bindings in the same change
 - validate and import only after focused tests cover the affected support slice
 
@@ -162,9 +162,9 @@ That would undermine the Phase 5 governance decision that checked-in YAML is the
 
 Validate this work in three layers:
 
-- keep the classification aligned with `docs/proposals/facets.json` and the current `route_v1.yaml` draft
+- keep the classification aligned with `docs/proposals/facets.json` and the current `facet_configuration.yml` draft
 - validate each backfill batch against the inline-SQL authoring contract once that proposal lands
-- use `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` for each backfill batch
+- use `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` for each backfill batch
 - run focused composer, facet-content, or result-path tests for the exact bucket being promoted before importing a new runtime revision
 
 ## Acceptance Criteria
@@ -191,4 +191,4 @@ Validate this work in three layers:
 
 Create and maintain one explicit YAML-backfill classification for the staging facet export, and use that classification to drive controlled migration work.
 
-Do not convert all exported facets into `route_v1.yaml` in one step. Treat the export as an inventory, keep YAML as the maintained authoring source of truth, use inline SQL facet templates as the default migration baseline, keep the result-shape entries as facets through a constrained `template_key` path, and move the rest of the catalog in controlled batches with explicit policy decisions for the remaining helper-only facets.
+Do not convert all exported facets into `facet_configuration.yml` in one step. Treat the export as an inventory, keep YAML as the maintained authoring source of truth, use inline SQL facet templates as the default migration baseline, keep the result-shape entries as facets through a constrained `template_key` path, and move the rest of the catalog in controlled batches with explicit policy decisions for the remaining helper-only facets.

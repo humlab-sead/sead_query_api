@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://sead.local/schemas/facet-route-config.schema.json",
+    "$id": "https://sead.local/schemas/facet-configuration-schema.json",
     "title": "SEAD facet route configuration v1",
     "type": "object",
     "additionalProperties": false,

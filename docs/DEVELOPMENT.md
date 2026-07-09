@@ -250,7 +250,7 @@ If those files are not present on your machine, scaffold-related commands will n
 The `Makefile` now also includes:
 
 ```bash
-make import-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+make import-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml
 ```
 
 This runs the API host through the `--import-facet-config` command path instead of starting the web server.
@@ -262,7 +262,7 @@ Use it only against a database you intend to update. It is a scripted import pat
 For a non-mutating YAML check through the same host entry point, use:
 
 ```bash
-make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml
 ```
 
 This runs the semantic `--validate-facet-config` command path.
@@ -273,7 +273,7 @@ If your local defaults resolve to an unreachable host (for example `postgresql` 
 
 ```bash
 make validate-facet-config \
-	FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml \
+	FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml \
 	FACET_CONFIG_DB_HOST=127.0.0.1
 ```
 
@@ -282,7 +282,7 @@ This injects `QueryBuilderSetting__Store__Host` for the command run only.
 For disconnected or bootstrap checks that should skip database-backed resolved validation, use offline schema-only mode:
 
 ```bash
-make validate-facet-config-offline FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+make validate-facet-config-offline FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml
 ```
 
 Offline mode still deserializes and enforces the importer configuration contract, but does not query runtime facet-schema tables.
@@ -317,8 +317,8 @@ The result probe prints the resolved view type, result facet, specification keys
 
 Treat facet maintenance as a configuration change with one checked-in authoring source and one imported runtime copy.
 
-- authoring source: `sead.query.composer/Templates/route_v1.yaml`
-- authoring contract: `sead.query.composer/Templates/facet-route-config.schema.json`
+- authoring source: `sead.query.composer/Templates/facet_configuration.yml`
+- authoring contract: `sead.query.composer/Templates/facet-configuration-schema.json`
 - runtime copy: the active imported rows in schema `facet`
 
 Do not edit the runtime tables by hand as a normal development workflow. Make the change in YAML, validate it, test the affected slice, and import it only when you intend to update the target database copy.
@@ -327,19 +327,19 @@ Do not edit the runtime tables by hand as a normal development workflow. Make th
 
 Use this flow when introducing a new visible facet, result facet, or route-backed target.
 
-1. Add the new facet definition to `route_v1.yaml`, including the facet metadata, facet type, source table or expression, and any anchor or route bindings the facet needs.
+1. Add the new facet definition to `facet_configuration.yml`, including the facet metadata, facet type, source table or expression, and any anchor or route bindings the facet needs.
 2. If the facet depends on a new anchor mapping, route, or template, add that configuration in the same YAML change so the facet and its traversal contract stay in sync.
-3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`.
+3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml`.
 4. Run the narrowest focused tests for the touched path, especially composer, facet-content, or live-slice tests if the new facet extends the validated support surface.
-5. Import with `make import-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` only when you intend to update the target database copy.
+5. Import with `make import-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` only when you intend to update the target database copy.
 
 #### Update a facet
 
 Use this flow when changing facet labels, expressions, clauses, supported anchors, routes, or other query-shaping behavior.
 
-1. Edit the existing facet entry in `route_v1.yaml`.
+1. Edit the existing facet entry in `facet_configuration.yml`.
 2. If the change affects traversal, anchor compatibility, or target joins, update the linked route or anchor configuration in the same change.
-3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`.
+3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml`.
 4. Run focused tests for the exact affected request family before widening to broader live or regression checks.
 5. Import only when you need the changed configuration materialized in the runtime database.
 
@@ -347,9 +347,9 @@ Use this flow when changing facet labels, expressions, clauses, supported anchor
 
 Use this flow when retiring a facet or removing an obsolete route-backed target.
 
-1. Remove the facet definition from `route_v1.yaml`.
+1. Remove the facet definition from `facet_configuration.yml`.
 2. Remove or update any dependent route, anchor binding, or template entries that are no longer referenced by the remaining configuration.
-3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` to catch dangling bindings before import.
+3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` to catch dangling bindings before import.
 4. Run focused tests for nearby request families so the removal does not leave broken references in the composed or fallback path.
 5. Import only when you want the removal reflected in the runtime database copy.
 
@@ -359,8 +359,8 @@ When a facet change alters the validated composed support surface, update the su
 
 Treat the route inventory as part of the maintained facet-configuration authoring surface.
 
-- authoring source: `sead.query.composer/Templates/route_v1.yaml`
-- validation contract: `sead.query.composer/Templates/facet-route-config.schema.json` plus `make validate-facet-config`
+- authoring source: `sead.query.composer/Templates/facet_configuration.yml`
+- validation contract: `sead.query.composer/Templates/facet-configuration-schema.json` plus `make validate-facet-config`
 - runtime copy: imported rows in `facet.route`, `facet.facet_anchor`, and related `facet` tables
 
 The current route inventory has two categories:
@@ -374,11 +374,11 @@ Prefer generated route templates whenever the source-to-anchor traversal follows
 
 Use this flow when introducing a new repeatable source-to-anchor traversal.
 
-1. Add the template to `route_v1.yaml` with one source table and one anchor entry per supported anchor.
+1. Add the template to `facet_configuration.yml` with one source table and one anchor entry per supported anchor.
 2. Reuse existing named `paths` where possible instead of duplicating path segments.
 3. Keep the template declarative: route templates should expand to table paths, not raw SQL.
 4. Ensure the resulting concrete route keys remain deterministic, using the existing `<template>__<anchor>` naming rule.
-5. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`.
+5. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml`.
 6. Run focused tests for the affected route parsing, route compilation, facet-content, or result-handoff slice.
 7. Import only when you intend to materialize the updated inventory in the target database copy.
 
@@ -386,9 +386,9 @@ Use this flow when introducing a new repeatable source-to-anchor traversal.
 
 Use this flow when changing named paths, include expansion, supported anchors, or the template-to-facet bindings.
 
-1. Edit the route template, named path, or explicit route in `route_v1.yaml`.
+1. Edit the route template, named path, or explicit route in `facet_configuration.yml`.
 2. Update any dependent facet-anchor bindings in the same change so facets do not point at stale route keys.
-3. Revalidate with `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`.
+3. Revalidate with `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml`.
 4. Run the narrowest relevant tests first, especially route parser, route SQL compiler, composed facet-content, or result-handoff coverage if the route change affects composed execution.
 5. Import only when you want the changed route inventory reflected in the runtime database copy.
 
@@ -396,9 +396,9 @@ Use this flow when changing named paths, include expansion, supported anchors, o
 
 Use this flow when retiring traversal paths that are no longer needed.
 
-1. Remove the template or explicit route from `route_v1.yaml`.
+1. Remove the template or explicit route from `facet_configuration.yml`.
 2. Remove or update any facet-anchor bindings, templates, or exceptions that referenced the removed route keys.
-3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` to catch unresolved bindings before import.
+3. Run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` to catch unresolved bindings before import.
 4. Run focused tests for nearby request families so the removal does not leave an accidental runtime fallback or broken composed contract.
 5. Import only when you want the removal reflected in the runtime database copy.
 
@@ -440,7 +440,7 @@ Start from the closest existing facet family rather than from an abstract templa
 3. Register the new plugin in `sead.query.api/Dependency.cs` and the mirrored test container wiring in `sead.query.test/Infrastructure/Dependency.cs`.
 4. Decide whether the new type is supported only on the legacy path first or whether it also needs composed-path support.
 5. If it needs composed support, add the composed-path implementations at the relevant extension points rather than editing a central `switch` or `if` chain. The normal shape is: keep `ComposedFacetContentService` orchestration-only, add an `IComposedFacetContentHandler` implementation for target-specific content loading, and extend request, filter, resolver, or result-handoff collaborators only where the new type changes those contracts.
-6. Add or update facet authoring in `sead.query.composer/Templates/route_v1.yaml`, then run validation and import through the documented CLI path.
+6. Add or update facet authoring in `sead.query.composer/Templates/facet_configuration.yml`, then run validation and import through the documented CLI path.
 7. Add focused tests before widening to grouped live or controller coverage.
 
 #### Legacy runtime extension points

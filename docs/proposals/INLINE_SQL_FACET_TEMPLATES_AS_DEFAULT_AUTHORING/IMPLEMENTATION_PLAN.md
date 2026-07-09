@@ -36,7 +36,7 @@ It does not include broad catalog migration, frontend changes, or release schedu
 
 ## Current Position
 
-- `sead.query.composer/Templates/route_v1.yaml` is the maintained authoring surface and imports materialize one active runtime copy in the `facet` schema
+- `sead.query.composer/Templates/facet_configuration.yml` is the maintained authoring surface and imports materialize one active runtime copy in the `facet` schema
 - the current importer still rejects inline SQL overrides instead of treating them as supported authoring
 - the route compiler already has an `ExplicitSql` precedent, so the runtime path is not starting from zero
 - the approved baseline is one base-anchor template plus projected anchors by default, with explicit anchor-to-SQL mappings allowed for exceptions

@@ -418,7 +418,7 @@ Observed `supersead` target readiness on 2026-05-30:
 
 - a deployment-like schema probe on staging confirmed that `sead_staging` already carried the required runtime tables `facet.anchor`, `facet.facet_anchor`, `facet.route`, `facet.route_step`, and `facet.config_revision`, together with one active imported revision (`phase5-runtime-slices-draft-06`)
 - the live `supersead` PostgreSQL service originally lacked the required runtime additions, so the repository runtime schema prep SQL was applied directly to the target database through the running `supersead-postgresql-1` container
-- a current-branch validation run on the `supersead_sead_network` then passed with `--validate-facet-config` against the mounted live appsettings and current `route_v1.yaml`
+- a current-branch validation run on the `supersead_sead_network` then passed with `--validate-facet-config` against the mounted live appsettings and current `facet_configuration.yml`
 - a current-branch import run on the same network then materialized one active `facet.config_revision` row on the live target: `phase5-runtime-slices-draft-06`, source commit `267b4bcf55cfc42e820edf6a17d9919e104b0074`, imported by `phase6-supersead-import`
 - a live-network branch probe on `http://127.0.0.1:8098` then served HTTP successfully and passed both `make default-cutover-http-smoke-check` and `make default-cutover-http-measure`
 - the live `supersead` service was then promoted by replacing `supersead-sead_query_api:latest` with `supersead-sead_query_api:phase6-cutover-20260530` on the existing `sead_query_api` network alias, after which the published `https://supersead.humlab.umu.se/query` route passed both `make default-cutover-http-smoke-check` and `make default-cutover-http-measure`

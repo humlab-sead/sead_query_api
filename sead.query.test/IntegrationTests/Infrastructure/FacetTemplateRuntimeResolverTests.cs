@@ -58,7 +58,7 @@ public class FacetTemplateRuntimeResolverTests : MockerWithFacetContext
     private static string GetConfigurationFilePath()
     {
         return Path.GetFullPath(
-            Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "route_v1.yaml")
+            Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "facet_configuration.yml")
         );
     }
 

@@ -11,22 +11,22 @@ public class ProgramFacetRouteCommandParsingTests
     public void Parse_WithImportArgument_ReturnsImportCommandAndPath()
     {
         var parser = new StartupCommandParser();
-        var command = parser.Parse(["--import-facet-config", "sead.query.composer/Templates/route_v1.yaml"]);
+        var command = parser.Parse(["--import-facet-config", "sead.query.composer/Templates/facet_configuration.yml"]);
 
         command.Should().BeOfType<ImportFacetConfigCommand>();
         var importCommand = (ImportFacetConfigCommand)command;
-        importCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
+        importCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/facet_configuration.yml");
     }
 
     [Fact]
     public void Parse_WithValidateArgument_ReturnsValidationCommandAndPath()
     {
         var parser = new StartupCommandParser();
-        var command = parser.Parse(["--validate-facet-config", "sead.query.composer/Templates/route_v1.yaml"]);
+        var command = parser.Parse(["--validate-facet-config", "sead.query.composer/Templates/facet_configuration.yml"]);
 
         command.Should().BeOfType<ValidateFacetConfigCommand>();
         var validateCommand = (ValidateFacetConfigCommand)command;
-        validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
+        validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/facet_configuration.yml");
         validateCommand.Offline.Should().BeFalse();
     }
 
@@ -35,12 +35,12 @@ public class ProgramFacetRouteCommandParsingTests
     {
         var parser = new StartupCommandParser();
         var command = parser.Parse(
-            ["--validate-facet-config", "sead.query.composer/Templates/route_v1.yaml", "--validate-facet-config-offline"]
+            ["--validate-facet-config", "sead.query.composer/Templates/facet_configuration.yml", "--validate-facet-config-offline"]
         );
 
         command.Should().BeOfType<ValidateFacetConfigCommand>();
         var validateCommand = (ValidateFacetConfigCommand)command;
-        validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/route_v1.yaml");
+        validateCommand.ConfigurationFilePath.Should().Be("sead.query.composer/Templates/facet_configuration.yml");
         validateCommand.Offline.Should().BeTrue();
     }
 

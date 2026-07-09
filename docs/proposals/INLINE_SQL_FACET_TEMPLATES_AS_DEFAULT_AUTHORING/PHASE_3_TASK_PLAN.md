@@ -111,7 +111,7 @@ Dependencies: Work Areas 1-3.
 ## Validation And Testing
 
 - [ ] run configuration validation after non-discrete template authoring updates:
-  - `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml`
+  - `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml`
 - [x] run focused unit coverage for composed template rendering and diagnostics in non-discrete handlers
 - [ ] run focused integration slices for geochronology, tbl_denormalized_measured_values_33_0, analysis_entity_ages, and sites_polygon
 - [ ] run focused parity checks against legacy relational path for routed and denormalized range drivers

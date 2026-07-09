@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>sead_query_api — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 3397 nodes, 5475 edges, 278 communities. Commit: 656ea85</p>
+<p class="subtitle">Generated from graphify knowledge graph: 3395 nodes, 5474 edges, 275 communities. Commit: d9ade5f</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -90,9 +90,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 flowchart LR
     EXTRACT_PIPELINE_5F350230("Extraction Pipeline<br/><small>2 nodes</small>")
     class EXTRACT_PIPELINE_5F350230 module;
-    BUILD_GRAPH_321CBB04("Graph Build<br/><small>734 nodes</small>")
+    BUILD_GRAPH_321CBB04("Graph Build<br/><small>725 nodes</small>")
     class BUILD_GRAPH_321CBB04 module;
-    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>2386 nodes</small>")
+    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>2395 nodes</small>")
     class ANALYSIS_CLUSTERING_C79796DA module;
     OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>14 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
@@ -116,10 +116,10 @@ flowchart LR
     class COMMUNITY_224_E0F79545 module;
     COMMUNITY_226_69408D88("Community 226<br/><small>6 nodes</small>")
     class COMMUNITY_226_69408D88 module;
-    OTHER_D0941E68("Other<br/><small>66 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>64 nodes</small>")
     class OTHER_D0941E68 module;
     BUILD_GRAPH_321CBB04 -->|contains x52| ANALYSIS_CLUSTERING_C79796DA
-    ANALYSIS_CLUSTERING_C79796DA -->|contains x40| BUILD_GRAPH_321CBB04
+    ANALYSIS_CLUSTERING_C79796DA -->|contains x42| BUILD_GRAPH_321CBB04
     BUILD_GRAPH_321CBB04 -->|contains x4| SERVE_API_35EC8E86
     SERVE_API_35EC8E86 -->|contains x2| BUILD_GRAPH_321CBB04
     ANALYSIS_CLUSTERING_C79796DA -->|contains| OTHER_D0941E68
@@ -141,7 +141,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Extraction Pipeline</td><td>2</td><td><code>160, 195</code></td></tr><tr><td>Graph Build</td><td>734</td><td><code>3, 24, 4, 31, 12, 66, 1, 78, 112, 26, 87, 102, 92, 28, 29, 30, 113, 205, 210, 69, 70, 218, 219, 220, 100, 117, 119, 122, 271, 132, 137, 139, 179, 180</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>2386</td><td><code>0, 2, 5, 25, 6, 13, 10, 22, 14, 43, 71, 9, 16, 20, 15, 21, 60, 201, 8, 23, 32, 27, 36, 7, 40, 41, 48, 35, 168, 17, 19, 82, 11, 34, 42, 52, 38, 46, 47, 62, 125, 18, 50, 54, 55, 61, 118, 127, 156, 44, 49, 51, 56, 57, 58, 63, 64, 189, 37, 39, 59, 203, 204, 75, 79, 190, 206, 207, 208, 209, 65, 67, 72, 73, 77, 83, 84, 211, 222, 74, 89, 97, 213, 215, 68, 86, 88, 90, 217, 81, 85, 93, 94, 95, 96, 99, 101, 107, 221, 227, 234, 91, 235, 236, 259, 260, 76, 98, 104, 106, 108, 109, 186, 225, 261, 262, 263, 105, 114, 115, 116, 229, 231, 232, 233, 237, 238, 239, 240, 241, 242, 243, 244, 264, 265, 33, 121, 126, 130, 223, 245, 246, 266, 269, 120, 123, 129, 134, 135, 136, 138, 249, 133, 140, 141, 162, 173, 252, 253, 254, 274, 184, 185, 258, 276</code></td></tr><tr><td>Outputs &amp; Docs</td><td>14</td><td><code>228, 146, 147, 148, 158, 170, 255</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>36</td><td><code>53, 110, 268, 275, 175, 181</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>12</td><td><code>267, 270, 272, 167</code></td></tr><tr><td>Serving API</td><td>64</td><td><code>103, 202, 80, 183, 128</code></td></tr><tr><td>Security &amp; Global Graph</td><td>1</td><td><code>188</code></td></tr><tr><td>Node and Table Repositories</td><td>39</td><td><code>45</code></td></tr><tr><td>Community 212</td><td>11</td><td><code>212</code></td></tr><tr><td>Community 214</td><td>10</td><td><code>214</code></td></tr><tr><td>Community 216</td><td>9</td><td><code>216</code></td></tr><tr><td>Community 224</td><td>7</td><td><code>224</code></td></tr><tr><td>Community 226</td><td>6</td><td><code>226</code></td></tr><tr><td>Other</td><td>66</td><td><code>230, 111, 247, 124, 248, 131, 250, 251, 273, 142, 143, 144, 145, 149, 150, 151, 152, 153, 154, 155, 157, 159, 161, 163, 164, 165, 166, 169, 171, 172, 174, 176, 177, 178, 182, 187, 191, 192, 193, 194, 196, 197, 198, 199, 200, 256, 257, 277</code></td></tr>
+      <tr><td>Extraction Pipeline</td><td>2</td><td><code>160, 195</code></td></tr><tr><td>Graph Build</td><td>725</td><td><code>3, 24, 4, 12, 31, 87, 1, 66, 78, 102, 26, 28, 29, 30, 113, 92, 205, 69, 70, 210, 219, 220, 81, 100, 112, 168, 217, 234, 117, 119, 122, 271, 132, 137, 139, 179, 180</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>2395</td><td><code>0, 2, 23, 5, 25, 13, 10, 22, 14, 43, 71, 9, 16, 17, 19, 20, 15, 21, 60, 8, 32, 201, 27, 36, 7, 89, 38, 40, 41, 48, 35, 39, 11, 34, 42, 6, 82, 44, 52, 97, 190, 46, 47, 18, 50, 54, 55, 61, 118, 127, 156, 211, 49, 51, 56, 57, 58, 63, 64, 189, 37, 62, 59, 76, 203, 204, 75, 79, 206, 207, 208, 209, 65, 67, 72, 73, 77, 83, 84, 96, 74, 213, 215, 68, 86, 88, 85, 93, 94, 95, 99, 101, 107, 221, 222, 227, 91, 223, 235, 259, 260, 90, 98, 104, 106, 108, 109, 125, 186, 225, 261, 262, 105, 114, 115, 116, 218, 229, 231, 232, 233, 236, 237, 238, 239, 240, 241, 242, 243, 244, 249, 33, 121, 126, 130, 245, 246, 263, 266, 269, 120, 123, 129, 134, 135, 136, 138, 133, 140, 141, 162, 173, 252, 253, 254, 274, 184, 185, 258, 276</code></td></tr><tr><td>Outputs &amp; Docs</td><td>14</td><td><code>228, 146, 147, 148, 158, 170, 255</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>36</td><td><code>53, 110, 268, 275, 175, 181</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>12</td><td><code>267, 270, 272, 167</code></td></tr><tr><td>Serving API</td><td>64</td><td><code>103, 202, 80, 183, 128</code></td></tr><tr><td>Security &amp; Global Graph</td><td>1</td><td><code>188</code></td></tr><tr><td>Node and Table Repositories</td><td>39</td><td><code>45</code></td></tr><tr><td>Community 212</td><td>11</td><td><code>212</code></td></tr><tr><td>Community 214</td><td>10</td><td><code>214</code></td></tr><tr><td>Community 216</td><td>9</td><td><code>216</code></td></tr><tr><td>Community 224</td><td>7</td><td><code>224</code></td></tr><tr><td>Community 226</td><td>6</td><td><code>226</code></td></tr><tr><td>Other</td><td>64</td><td><code>230, 111, 247, 124, 248, 131, 250, 251, 142, 143, 144, 145, 149, 150, 151, 152, 153, 154, 155, 157, 159, 161, 163, 164, 165, 166, 169, 171, 172, 174, 176, 177, 178, 182, 187, 191, 192, 193, 194, 196, 197, 198, 199, 200, 256, 257, 277</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -153,7 +153,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>3397 nodes · 5475 edges · 278 communities (191 shown, 87 thin omitted)</li>
+      <li>3395 nodes · 5474 edges · 275 communities (191 shown, 84 thin omitted)</li>
       <li>Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.85)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `.NETCoreApp,Version=v9.0` - 114 edges</li>
@@ -232,12 +232,12 @@ flowchart LR
 
 <!-- ====== 3. Graph Build ====== -->
 <h2 id="build-graph">3. Graph Build</h2>
-<p>Graph Build groups implementation around publish, seadqueryapidepsjson, facet, route, mostly in publish/sead.query.api.deps.json, sead.query.composer/Templates/facet-route-config.schema.json, sead.query.api/Properties/launchSettings.json. This section covers 734 nodes and 1149 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Graph Build groups implementation around publish, seadqueryapidepsjson, facet, route, mostly in publish/sead.query.api.deps.json, sead.query.composer/Templates/facet-route-config.schema.json, sead.query.api/Properties/launchSettings.json. This section covers 725 nodes and 1141 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Graph Build (734 nodes, 1149 edges)
+    %% Section: Graph Build (725 nodes, 1141 edges)
     sead_query_infra_sead_query_infra_b4c4fec5("sead.query.infra<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     nuget_bogus_79cd18b0("Bogus (35.6.5)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
     nuget_cachemanager_core_ac7bd07d("CacheManager.Core (3.0.0)<br/><small>sead.query.infra/sead.query.infra.csproj</small>")
@@ -273,7 +273,7 @@ flowchart LR
     sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_d1eb1a55
     sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_3bdbd52a
     sead_query_infra_sead_query_infra_b4c4fec5 -->|imports| sead_query_infra_sead_query_infra_csproj_nuget_s_563ff24f
-    %% Omitted for readability: 716 nodes, 0 edges
+    %% Omitted for readability: 707 nodes, 0 edges
     class sead_query_infra_sead_query_infra_b4c4fec5 function;
     class nuget_bogus_79cd18b0 klass;
     class nuget_cachemanager_core_ac7bd07d klass;
@@ -315,11 +315,11 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>lib/netstandard2.1/Autofac.Extras.AggregateService.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net8.0/Autofac.Extensions.DependencyInjection.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/netstandard2.1/Autofac.Extras.AggregateService.dll node in publish/sead.query.api.deps.json.</td>
+  <td>Builds dependency relationships and graph data.</td>
 </tr>
 <tr>
   <td>2</td>
@@ -339,30 +339,14 @@ flowchart LR
 </tr>
 <tr>
   <td>4</td>
-  <td><code>Bogus/35.6.3</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-class">Class</span></td>
+  <td><code>lib/netstandard2.1/Autofac.Extras.AggregateService.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Bogus/35.6.3 node in publish/sead.query.api.deps.json.</td>
+  <td>lib/netstandard2.1/Autofac.Extras.AggregateService.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>runtime</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>runtime node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>lib/net6.0/Bogus.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>lib/net6.0/Bogus.dll node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>7</td>
   <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -370,7 +354,7 @@ flowchart LR
   <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>6</td>
   <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -378,12 +362,28 @@ flowchart LR
   <td>fileVersion node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
-  <td>9</td>
-  <td><code>lib/net8.0/CacheManager.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td>7</td>
+  <td><code>Bogus/35.6.3</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Bogus/35.6.3 node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>runtime</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Caches analysis results or computes cache keys.</td>
+  <td>runtime node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>lib/net6.0/Bogus.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net6.0/Bogus.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>10</td>
@@ -403,7 +403,7 @@ flowchart LR
 </tr>
 <tr>
   <td>12</td>
-  <td><code>lib/net8.0/CacheManager.Serialization.Json.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net8.0/CacheManager.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
@@ -427,11 +427,11 @@ flowchart LR
 </tr>
 <tr>
   <td>15</td>
-  <td><code>lib/net6.0/Castle.Core.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net8.0/CacheManager.Serialization.Json.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/net6.0/Castle.Core.dll node in publish/sead.query.api.deps.json.</td>
+  <td>Caches analysis results or computes cache keys.</td>
 </tr>
 <tr>
   <td>16</td>
@@ -451,11 +451,11 @@ flowchart LR
 </tr>
 <tr>
   <td>18</td>
-  <td><code>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net8.0/CacheManager.StackExchange.Redis.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll node in publish/sead.query.api.deps.json.</td>
+  <td>Caches analysis results or computes cache keys.</td>
 </tr>
 <tr>
   <td>19</td>
@@ -475,11 +475,11 @@ flowchart LR
 </tr>
 <tr>
   <td>21</td>
-  <td><code>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll node in publish/sead.query.api.deps.json.</td>
+  <td>lib/net9.0/Microsoft.AspNetCore.JsonPatch.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>22</td>
@@ -499,11 +499,11 @@ flowchart LR
 </tr>
 <tr>
   <td>24</td>
-  <td><code>lib/net8.0/Microsoft.EntityFrameworkCore.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>lib/net8.0/Microsoft.EntityFrameworkCore.dll node in publish/sead.query.api.deps.json.</td>
+  <td>lib/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>25</td>
@@ -523,22 +523,14 @@ flowchart LR
 </tr>
 <tr>
   <td>27</td>
-  <td><code>runtime</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><code>lib/net8.0/Microsoft.EntityFrameworkCore.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>runtime node in publish/sead.query.api.deps.json.</td>
+  <td>lib/net8.0/Microsoft.EntityFrameworkCore.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>lib/net9.0/Microsoft.Extensions.Caching.Memory.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>lib/net9.0/Microsoft.Extensions.Caching.Memory.dll node in publish/sead.query.api.deps.json.</td>
-</tr>
-<tr>
-  <td>29</td>
   <td><code>assemblyVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-async">Async</span></td>
   <td>External entry / no inbound edge</td>
@@ -546,12 +538,20 @@ flowchart LR
   <td>assemblyVersion node in publish/sead.query.api.deps.json.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>29</td>
   <td><code>fileVersion</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>fileVersion node in publish/sead.query.api.deps.json.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll</code><br><small style="color:var(--muted)">publish/sead.query.api.deps.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll node in publish/sead.query.api.deps.json.</td>
 </tr>
 </table>
 
@@ -560,7 +560,7 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>318 nodes</td></tr>
+      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>309 nodes</td></tr>
 <tr><td><code>sead.query.composer/Templates/facet-route-config.schema.json</code></td><td>198 nodes</td></tr>
 <tr><td><code>conf/appsettings.Test.json</code></td><td>26 nodes</td></tr>
 <tr><td><code>sead.query.api/Properties/launchSettings.json</code></td><td>26 nodes</td></tr>
@@ -572,19 +572,19 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x1129, imports x18, references x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1121, imports x18, references x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 4. Analysis & Clustering ====== -->
 <h2 id="analysis-clustering">4. Analysis &amp; Clustering</h2>
-<p>Analysis &amp; Clustering groups implementation around seadquerycore, services, seadqueryinfra, seadqueryapi, mostly in publish/sead.query.api.deps.json, sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs, QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs. This section covers 2386 nodes and 4022 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Analysis &amp; Clustering groups implementation around seadquerycore, services, seadqueryinfra, seadqueryapi, mostly in publish/sead.query.api.deps.json, sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs, QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs. This section covers 2395 nodes and 4028 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Analysis &amp; Clustering (2386 nodes, 4022 edges)
+    %% Section: Analysis &amp; Clustering (2395 nodes, 4028 edges)
     subgraph analysis_clustering_sead_query_api_Cli_StartupCo_d466144d["sead.query.api/Cli/StartupCommandParser.cs"]
         cli_startupcommandparser_startupcommandparser_2ece6377("StartupCommandParser<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
         cli_startupcommandparser_startupcommandparser_pa_ff63ba91("Parse()<br/><small>sead.query.api/Cli/StartupCommandParser.cs</small>")
@@ -626,7 +626,7 @@ flowchart LR
     cli_startupcommandparser_startupcommandparser_2ece6377 -->|method| cli_startupcommandparser_startupcommandparser_re_439190ef
     cli_startupcommandparser_startupcommandparser_re_333a0ec4 -->|calls| cli_startupcommandparser_startupcommandparser_re_bfdf11f5
     cli_startupcommandparser_startupcommandparser_re_439190ef -->|calls| cli_startupcommandparser_startupcommandparser_re_bfdf11f5
-    %% Omitted for readability: 2368 nodes, 0 edges
+    %% Omitted for readability: 2377 nodes, 0 edges
     class cli_startupcommandparser_startupcommandparser_2ece6377 entry;
     class cli_startupcommandparser_startupcommandparser_pa_ff63ba91 function;
     class cli_startupcommandparser_startupcommandparser_re_bfdf11f5 entry;
@@ -913,7 +913,7 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>97 nodes</td></tr>
+      <tr><td><code>publish/sead.query.api.deps.json</code></td><td>106 nodes</td></tr>
 <tr><td><code>sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs</code></td><td>90 nodes</td></tr>
 <tr><td><code>QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs</code></td><td>58 nodes</td></tr>
 <tr><td><code>QueryComposer/Services/ComposedFacetContentSupport.cs</code></td><td>46 nodes</td></tr>
@@ -925,7 +925,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: references x1475, method x1121, contains x738, calls x346. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: references x1475, method x1121, contains x744, calls x346. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3098,12 +3098,12 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around clinerules, tmp, copy, get, mostly in get-facets.md, .chglog/CHANGELOG.tpl.md, CHANGELOG.md. This section covers 66 nodes and 19 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around clinerules, tmp, copy, get, mostly in get-facets.md, .chglog/CHANGELOG.tpl.md, CHANGELOG.md. This section covers 64 nodes and 18 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (66 nodes, 19 edges)
+    %% Section: Other (64 nodes, 18 edges)
     subgraph other_get_facets_md_dcfbf1dc["get-facets.md"]
         get_facets_get_geo_count_query_a82a7548("get_geo_count_query<br/><small>get-facets.md</small>")
         get_facets_get_geo_filter_clauses_ca6f3cc3("get_geo_filter_clauses<br/><small>get-facets.md</small>")
@@ -3124,9 +3124,9 @@ flowchart LR
         clinerules_baby_steps_the_unbreakable_rules_of_b_d165918d("The Unbreakable Rules of Baby Steps™<br/><small>.clinerules/baby-steps.md</small>")
         clinerules_baby_steps_93890392("baby-steps.md")
     end
-    subgraph other_reinstall_csharp_dev_kit_sh_0e1ad457["reinstall-csharp-dev-kit.sh"]
-        reinstall_csharp_dev_kit_d9ef466b("reinstall-csharp-dev-kit.sh")
-        home_roger_source_sead_query_api_reinstall_cshar_6959595c("reinstall-csharp-dev-kit.sh script<br/><small>reinstall-csharp-dev-kit.sh</small>")
+    subgraph other_clinerules_project_md_1285a089[".clinerules/project.md"]
+        clinerules_project_shared_project_instructions_f56afa82("Shared project instructions<br/><small>.clinerules/project.md</small>")
+        clinerules_project_edc27c8f("project.md")
     end
     release_workflow_release_yml_ea5da4fe("Release Workflow<br/><small>.github/workflows/release.yml</small>")
     utilities_interval_cf095bb4("Interval.cs")
@@ -3134,7 +3134,7 @@ flowchart LR
     get_facets_get_geo_count_query_a82a7548 -->|calls| get_facets_get_counts_063055d6
     get_facets_get_geo_count_query_a82a7548 -->|calls| get_facets_get_facet_content_32b4d145
     get_facets_get_facet_content_32b4d145 -->|calls| get_facets_get_counts_063055d6
-    %% Omitted for readability: 48 nodes, 0 edges
+    %% Omitted for readability: 46 nodes, 0 edges
     class get_facets_get_geo_count_query_a82a7548 function;
     class get_facets_get_geo_filter_clauses_ca6f3cc3 function;
     class get_facets_get_facet_content_32b4d145 function;
@@ -3149,8 +3149,8 @@ flowchart LR
     class clinerules_baby_steps_core_operational_directive_09a40eb7 concept;
     class clinerules_baby_steps_the_unbreakable_rules_of_b_d165918d concept;
     class clinerules_baby_steps_93890392 concept;
-    class reinstall_csharp_dev_kit_d9ef466b function;
-    class home_roger_source_sead_query_api_reinstall_cshar_6959595c function;
+    class clinerules_project_shared_project_instructions_f56afa82 concept;
+    class clinerules_project_edc27c8f concept;
     class release_workflow_release_yml_ea5da4fe klass;
     class utilities_interval_cf095bb4 klass;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
@@ -3376,22 +3376,6 @@ flowchart LR
 </tr>
 <tr>
   <td>26</td>
-  <td><code>reinstall-csharp-dev-kit.sh</code><br><small style="color:var(--muted)">reinstall-csharp-dev-kit.sh</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>reinstall-csharp-dev-kit.sh node in reinstall-csharp-dev-kit.sh.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>reinstall-csharp-dev-kit.sh script</code><br><small style="color:var(--muted)">reinstall-csharp-dev-kit.sh</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>reinstall-csharp-dev-kit.sh script node in reinstall-csharp-dev-kit.sh.</td>
-</tr>
-<tr>
-  <td>28</td>
   <td><code>AI DLC Construction Phase</code><br><small style="color:var(--muted)">clinerules copy/workflows/ai-dlc-construction.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -3399,7 +3383,7 @@ flowchart LR
   <td>Documentation node describing AI DLC Construction Phase.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>27</td>
   <td><code>AI DLC Inception Phase</code><br><small style="color:var(--muted)">clinerules copy/workflows/ai-dlc-inception.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -3407,12 +3391,28 @@ flowchart LR
   <td>Documentation node describing AI DLC Inception Phase.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>28</td>
   <td><code>AI Assistant Guide for BAs</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/ba.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>Documentation node describing AI Assistant Guide for BAs.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Baby Steps™ Methodology</code><br><small style="color:var(--muted)">clinerules copy/.clinerules/baby-steps.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Baby Steps™ Methodology.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>bin/deploy-staging Reference</code><br><small style="color:var(--muted)">bin/deploy-staging.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing bin/deploy-staging Reference.</td>
 </tr>
 </table>
 
@@ -3427,13 +3427,13 @@ flowchart LR
 <tr><td><code>.clinerules/baby-steps.md</code></td><td>3 nodes</td></tr>
 <tr><td><code>.clinerules/project.md</code></td><td>2 nodes</td></tr>
 <tr><td><code>.clinerules/self-improving-cline.md</code></td><td>2 nodes</td></tr>
-<tr><td><code>reinstall-csharp-dev-kit.sh</code></td><td>2 nodes</td></tr>
 <tr><td><code>instructions/features/semantic-term-normalization.md</code></td><td>1 nodes</td></tr>
+<tr><td><code>.github/prompts/dotnet.prompt.md</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x12, calls x4, references x2, semantically similar to x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x11, calls x4, references x2, semantically similar to x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3444,17 +3444,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>3397</td></tr>
-      <tr><td>Edges</td><td>5475</td></tr>
+      <tr><td>Nodes</td><td>3395</td></tr>
+      <tr><td>Edges</td><td>5474</td></tr>
       <tr><td>Hyperedges</td><td>0</td></tr>
-      <tr><td>Communities</td><td>278</td></tr>
+      <tr><td>Communities</td><td>275</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>5469</td></tr>
+      <tr><td>EXTRACTED</td><td>5468</td></tr>
       <tr><td>INFERRED</td><td>6</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -3463,7 +3463,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>sead_query_api — Architecture Documentation</p>
-  <p>Generated: 2026-07-08 21:01 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-07-09 16:25 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

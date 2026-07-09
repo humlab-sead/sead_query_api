@@ -15,7 +15,7 @@ The immediate Phase 5 need is not a new validation concept. It is one explicit i
 
 ### Authoring Structure Failures
 
-- Invalid YAML structure, unknown top-level keys, and malformed field shapes should fail at authoring time through `sead.query.composer/Templates/facet-route-config.schema.json` and `--validate-facet-config`.
+- Invalid YAML structure, unknown top-level keys, and malformed field shapes should fail at authoring time through `sead.query.composer/Templates/facet-configuration-schema.json` and `--validate-facet-config`.
 - This is the earliest validation boundary for malformed authoring input.
 - The current validation path now also catches semantic route and anchor drift before import, including anchor-table mismatches in generated routes and unresolved facet-anchor route bindings.
 
@@ -50,7 +50,7 @@ The immediate Phase 5 need is not a new validation concept. It is one explicit i
 
 Phase 5 currently has one practical validation ladder.
 
-1. Validate YAML structure and field shapes with `sead.query.composer/Templates/facet-route-config.schema.json` and `--validate-facet-config`.
+1. Validate YAML structure and field shapes with `sead.query.composer/Templates/facet-configuration-schema.json` and `--validate-facet-config`.
    - This boundary now includes semantic checks against the current facet schema for anchor tables, generated route endpoints, facet source tables, aggregate facet references, and facet-anchor route bindings.
 2. Import the candidate revision with `--import-facet-config`, which records one active `facet.config_revision` row and materializes the runtime copy in the existing `facet` schema.
 3. Fail bad imported configuration at startup through route-graph and route-name validation before the first request is served.
@@ -79,7 +79,7 @@ The remaining gaps are narrower than earlier in Phase 5.
 
 The checked-in Phase 5 authoring draft is narrower than the eventual cutover surface.
 
-Current generated families in `sead.query.composer/Templates/route_v1.yaml`:
+Current generated families in `sead.query.composer/Templates/facet_configuration.yml`:
 
 - `feature_type`
 - `dataset_methods`
@@ -110,7 +110,7 @@ Phase 5 should not yet treat diagnostics hardening as complete. The remaining wo
 
 ## Recommended Follow-Up
 
-- keep this inventory aligned with any new family added to `route_v1.yaml`
+- keep this inventory aligned with any new family added to `facet_configuration.yml`
 - add focused tests when a new family introduces a request-time exception or explicit fallback boundary
 - keep the maintained exception list aligned with the currently covered out-of-draft legacy-fallback families as that inventory widens
 - move any durable runtime-boundary statements that should outlive Phase 5 into `docs/DESIGN.md` and `docs/OPERATIONS.md`

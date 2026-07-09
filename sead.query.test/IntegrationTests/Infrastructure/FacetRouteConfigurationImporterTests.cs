@@ -20,7 +20,7 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
         var dbContext = (FacetContext)FacetContext;
         var importer = new FacetRouteConfigurationImporter(dbContext);
         var configurationFilePath = Path.GetFullPath(
-            Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "route_v1.yaml")
+            Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "facet_configuration.yml")
         );
         var previousSourceCommit = Environment.GetEnvironmentVariable("SEAD_QUERY_FACET_CONFIG_SOURCE_COMMIT");
         var previousImportedBy = Environment.GetEnvironmentVariable("SEAD_QUERY_FACET_CONFIG_IMPORTED_BY");
@@ -951,7 +951,7 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
 
     private static string GetConfigurationFilePath()
     {
-        return Path.GetFullPath(Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "route_v1.yaml"));
+        return Path.GetFullPath(Path.Combine(ScaffoldUtility.GetProjectRoot(), "..", "sead.query.composer", "Templates", "facet_configuration.yml"));
     }
 
     private static string CreateTemporaryConfigurationFile(string fileContent)

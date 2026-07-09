@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=./facet-route-config.schema.json
+# yaml-language-server: $schema=./facet-configuration-schema.json
 
 schema_version: 1
 config_revision: phase5-runtime-slices-draft-06

@@ -103,7 +103,7 @@ Objective: prepare the first implementation-driving facets without turning Phase
 Completion criteria: the next implementation phase has named driver facets, including required intersect/geopolygon restoration drivers, and each facet's intended purpose is explicit.
 
 Implementation notes:
-- added `result_facet` to `sead.query.composer/Templates/route_v1.yaml` with `template_key: anchor_identity` demonstrating the retained result-shape path
+- added `result_facet` to `sead.query.composer/Templates/facet_configuration.yml` with `template_key: anchor_identity` demonstrating the retained result-shape path
 - added `family` as routed discrete driver with inline SQL template using `base_anchor: analysis_entity` and projected anchors for `dataset` and `sample`
 - added `tbl_biblio_sample_groups` as clause-bearing joined discrete driver with inline SQL template using `base_anchor: sample` and multi-table join structure
 - updated `analysis_entity_ages` and `sites_polygon` facet descriptions to document their roles as Phase 3 restoration drivers
@@ -114,16 +114,16 @@ Implementation notes:
 
 | Area                            | Status   | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 |---------------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Authoring contract              | Complete | `sead.query.composer/Templates/facet-route-config.schema.json` now carries the inline `sql` block with canonical `body` support plus explicit projected-anchor, anchor-to-SQL exception, and constrained `template_key` shapes. Fixed placeholder-set documentation is now complete: `discrete` (`{pick_filter_sql}`, `{pick_values_sql}`), `range` (`{low}`, `{high}`, `{range_filter_sql}`), `intersect` (`{range_filter_sql}`), `geopolygon` (`{polygon_filter_sql}`, `{polygon_wkt}`, `{srid}`). |
+| Authoring contract              | Complete | `sead.query.composer/Templates/facet-configuration-schema.json` now carries the inline `sql` block with canonical `body` support plus explicit projected-anchor, anchor-to-SQL exception, and constrained `template_key` shapes. Fixed placeholder-set documentation is now complete: `discrete` (`{pick_filter_sql}`, `{pick_values_sql}`), `range` (`{low}`, `{high}`, `{range_filter_sql}`), `intersect` (`{range_filter_sql}`), `geopolygon` (`{polygon_filter_sql}`, `{polygon_wkt}`, `{srid}`). |
 | Schema and import validation    | Complete | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` now validates inline-template metadata and `sead.query.test/IntegrationTests/Infrastructure/FacetRouteConfigurationImporterTests.cs` covers persisted rows, placeholder validation, template_key validation, unsupported contract types, type/contract mismatch, missing base anchor references, missing sql body, and unsupported sql mode failure cases.                                                                       |
 | Runtime persistence and loading | Complete | `scripts/prepare-facet-runtime-schema.sql` adds `facet.facet_template`, `sead.query.infra/Configuration/FacetTemplateRuntimeResolver.cs` loads a runtime snapshot, and both `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs` and `sead.query.composer/QueryComposer/Services/ComposedFacetContentFilterQueryFactory.cs` now consume it.                                                                                                                        |
 | Compiler entry contract         | Complete | `sead.query.core/Interfaces/IFacetTemplateRuntimeResolver.cs` and `sead.query.api/Dependency.cs` add the runtime resolver contract, and the composer paths now read `anchor_identity` from the runtime snapshot rather than separate lookups.                                                                                                                                                                                                                                                        |
-| Driver-slice readiness          | Complete | `result_facet`, `family`, and `tbl_biblio_sample_groups` added to `route_v1.yaml` as Phase 1 drivers. `analysis_entity_ages` and `sites_polygon` updated as Phase 3 restoration drivers. `geochronology` and `tbl_denormalized_measured_values_33_0` documented as queued Phase 3 non-discrete drivers.                                                                                                                                                                                              |
+| Driver-slice readiness          | Complete | `result_facet`, `family`, and `tbl_biblio_sample_groups` added to `facet_configuration.yml` as Phase 1 drivers. `analysis_entity_ages` and `sites_polygon` updated as Phase 3 restoration drivers. `geochronology` and `tbl_denormalized_measured_values_33_0` documented as queued Phase 3 non-discrete drivers.                                                                                                                                                                                              |
 
 ## Validation Evidence Summary
 
 ### Section 1: Authoring Contract
-- ✅ Schema validation implemented in `facet-route-config.schema.json`
+- ✅ Schema validation implemented in `facet-configuration-schema.json`
 - ✅ `sql` block structure: mode, contract, base_anchor, body
 - ✅ `template_key` property with enum constraint to result facets
 - ✅ Anchor-to-SQL exception shape defined (anchor + route + sql_override)
@@ -149,7 +149,7 @@ Implementation notes:
 - ⚠️ Runtime enforcement of template_key restriction to result facets (validated at import only, runtime assumes compliance)
 
 ### Section 5: Driver-Slice Readiness
-- ✅ 3 driver facets added to `route_v1.yaml`: `result_facet`, `family`, `tbl_biblio_sample_groups`
+- ✅ 3 driver facets added to `facet_configuration.yml`: `result_facet`, `family`, `tbl_biblio_sample_groups`
 - ✅ Restoration drivers identified: `analysis_entity_ages`, `sites_polygon`
 - ✅ Queued Phase 3 drivers documented: `geochronology`, `tbl_denormalized_measured_values_33_0`
 
@@ -166,7 +166,7 @@ Implementation notes:
 
 **Impact:** Low; identity mode proves the base template contract. Route projection will be validated in Phase 2.
 
-**Location:** `sead.query.composer/Templates/route_v1.yaml` lines ~408, ~454, ~498
+**Location:** `sead.query.composer/Templates/facet_configuration.yml` lines ~408, ~454, ~498
 
 ### Anchor-to-SQL Exception Mapping
 **Description:** Schema defines explicit anchor-to-SQL exception shape but no driver facet exercises it
@@ -215,7 +215,7 @@ Implementation notes:
 - run focused tests for the importer and runtime-loading path once inline-template persistence lands
 - run focused compiler-contract tests for template lookup, placeholder validation, and unknown template-key failure paths
 - validate the snapshot-backed composer path for both result projection and facet content
-- use `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` when the first authored inline-template slice is added
+- use `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` when the first authored inline-template slice is added
 
 ## Deliverables
 

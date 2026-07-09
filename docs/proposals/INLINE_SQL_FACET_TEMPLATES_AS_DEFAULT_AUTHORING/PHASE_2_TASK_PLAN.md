@@ -27,7 +27,7 @@ Objective: define the missing route templates referenced by Phase 1 driver facet
 
 **Completion criteria:** driver facets can use projected anchor routes instead of identity-mode-only workarounds.
 
-**Location:** `sead.query.composer/Templates/route_v1.yaml` route_templates section
+**Location:** `sead.query.composer/Templates/facet_configuration.yml` route_templates section
 
 **Dependencies:** None; this is pure authoring work that unblocks route projection validation.
 
@@ -81,7 +81,7 @@ Objective: prove routed discrete execution with projected anchors using `family`
 
 **Completion criteria:** `family` produces correct or documented-as-blocked SQL through the routed discrete inline-template path.
 
-**Location:** `sead.query.composer/Templates/route_v1.yaml` (authoring), discrete compiler services (runtime)
+**Location:** `sead.query.composer/Templates/facet_configuration.yml` (authoring), discrete compiler services (runtime)
 
 **Dependencies:** Route template definitions (work item 1) and discrete compiler implementation (work item 2) are complete.
 
@@ -100,7 +100,7 @@ Objective: prove clause-bearing joined discrete execution using `tbl_biblio_samp
 
 **Completion criteria:** `tbl_biblio_sample_groups` produces correct or documented-as-blocked SQL through the joined discrete inline-template path.
 
-**Location:** `sead.query.composer/Templates/route_v1.yaml` (authoring), discrete compiler services (runtime)
+**Location:** `sead.query.composer/Templates/facet_configuration.yml` (authoring), discrete compiler services (runtime)
 
 **Dependencies:** Route template definitions (work item 1) and discrete compiler implementation (work item 2) are complete.
 
@@ -111,7 +111,7 @@ Objective: add at least one facet demonstrating explicit anchor-to-SQL override 
 **Carried from Phase 1 deferred work**
 
 - [x] identify a candidate facet that requires explicit anchor-to-SQL mapping (cannot rely on projected-anchor routes)
-- [x] author the explicit anchor-to-SQL exception in `route_v1.yaml`
+- [x] author the explicit anchor-to-SQL exception in `facet_configuration.yml`
 - [x] implement exception lookup and SQL override in discrete compiler
 - [x] validate that the exception facet produces correct SQL
 - [x] add focused unit test for anchor-to-SQL exception handling
@@ -120,7 +120,7 @@ Objective: add at least one facet demonstrating explicit anchor-to-SQL override 
 
 **Completion criteria:** at least one facet uses explicit anchor-to-SQL override and produces correct SQL through the discrete inline-template path.
 
-**Location:** `sead.query.composer/Templates/route_v1.yaml` (authoring), discrete compiler services (runtime)
+**Location:** `sead.query.composer/Templates/facet_configuration.yml` (authoring), discrete compiler services (runtime)
 
 **Dependencies:** Discrete compiler implementation (work item 2) is complete.
 
@@ -158,11 +158,11 @@ Objective: ensure facets not yet migrated to inline SQL continue to work through
 - Added route template `sample` with generated routes: `sample__dataset`, `sample__sites`, `sample__analysis_entity`.
 - Added route template `analysis_entity` with generated routes: `analysis_entity__dataset`, `analysis_entity__sample`.
 - Named path definitions and route-template path definitions were manually reviewed and verified as semantically correct for the intended table traversals.
-- The route inventory itself now documents join paths and anchor mappings directly in `route_v1.yaml` through:
+- The route inventory itself now documents join paths and anchor mappings directly in `facet_configuration.yml` through:
   - top-level `paths` entries for shared traversal fragments
   - per-template anchor `path` definitions under `route_templates`
 - Build verification passed via `make build`.
-- `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` exits with code 1 in the current environment.
+- `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` exits with code 1 in the current environment.
 - Focused importer test run (`dotnet test --filter FullyQualifiedName~FacetRouteConfigurationImporterTests`) shows a schema precondition failure: `facet 'result_facet' group 'result' could not be resolved in the current facet schema`.
 - Full route-template semantic validation is therefore blocked on local facet-schema baseline alignment.
 - Runtime schema preparation now gets past authentication, but still stops on an existing facet-schema shape mismatch (`facet_template_id` column missing on `facet.facet_template` in the current database copy). Direct runtime import validation remains blocked until that runtime schema baseline is aligned.
@@ -255,7 +255,7 @@ Objective: ensure facets not yet migrated to inline SQL continue to work through
   - `dotnet test sead.query.test/sead.query.test.csproj --filter "FullyQualifiedName~Load_CountryFilteredTabularResult_UsesComposedFilterSql|FullyQualifiedName~Load_CountryFilteredMapResult_UsesComposedFilterSql"` (2 passed)
 
 ### Section 6: Anchor-to-SQL Exception Demonstration
-- Added explicit anchor-to-SQL override on `family` facet (`dataset` anchor) in `sead.query.composer/Templates/route_v1.yaml` using `sql_override` with `{pick_filter_sql}`.
+- Added explicit anchor-to-SQL override on `family` facet (`dataset` anchor) in `sead.query.composer/Templates/facet_configuration.yml` using `sql_override` with `{pick_filter_sql}`.
 - Exception lookup + override usage is implemented in composed runtime paths through shared helper logic in `ComposedFacetContentSupport.TryCreateDiscreteTemplateSql`.
 - Added focused unit coverage:
   - `ComposedFacetContentServiceTests.Load_WithSnapshotBackedExplicitAnchorSql_RendersPlaceholderSql`
@@ -337,7 +337,7 @@ Objective: ensure facets not yet migrated to inline SQL continue to work through
 
 ## Validation And Testing
 
-- run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml` after route template definitions are complete
+- run `make validate-facet-config FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml` after route template definitions are complete
 - run focused unit tests for discrete compiler, template key lookup, route projection, and anchor-to-SQL exceptions
 - run focused integration tests for `result_facet`, `family`, and `tbl_biblio_sample_groups`
 - run focused parity checks for driver facets against legacy relational path
@@ -349,7 +349,7 @@ Objective: ensure facets not yet migrated to inline SQL continue to work through
 | Deliverable                 | Description                                                    | Status   | Link                                                                                                                |
 |-----------------------------|----------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------|
 | Phase 2 task plan           | Active execution tracker for Phase 2                           | Complete | `docs/proposals/INLINE_SQL_FACET_TEMPLATES_AS_DEFAULT_AUTHORING/PHASE_2_TASK_PLAN.md`                               |
-| Route template definitions  | Missing route templates for projected anchor validation        | Complete | `sead.query.composer/Templates/route_v1.yaml`                                                                       |
+| Route template definitions  | Missing route templates for projected anchor validation        | Complete | `sead.query.composer/Templates/facet_configuration.yml`                                                                       |
 | Discrete compiler           | Inline SQL template execution for discrete facets              | Complete | `sead.query.composer/QueryComposer/` discrete compiler services                                                     |
 | Template key implementation | `anchor_identity` execution for result-shape facets            | Complete | `sead.query.composer/QueryComposer/Services/ComposedResultProjectionHandoffBuilder.cs`                              |
 | Driver facet validation     | Parity checks and SQL validation for Phase 2 driver facets     | Complete | `sead.query.test/` focused integration tests                                                                        |

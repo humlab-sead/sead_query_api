@@ -68,7 +68,7 @@ This proposal does not:
 
 Relevant current state:
 
-- `route_v1.yaml` is the maintained YAML authoring source of truth for the current v1 configuration draft
+- `facet_configuration.yml` is the maintained YAML authoring source of truth for the current v1 configuration draft
 - the active importer validates anchors, route templates, and facet-anchor bindings, then materializes one active runtime copy in the `facet` schema
 - the importer currently rejects anchor-level `sql_override` content as unsupported
 - the active route compiler already has an `AnchorTemplate.ExplicitSql` field and the discrete predicate resolver already returns `ExplicitSql` directly when present

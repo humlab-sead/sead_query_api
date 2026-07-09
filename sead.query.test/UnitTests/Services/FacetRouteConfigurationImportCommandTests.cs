@@ -15,7 +15,7 @@ public class FacetRouteConfigurationImportCommandTests
     {
         var importer = new Mock<IFacetRouteConfigurationImporter>();
         var command = new FacetRouteConfigurationImportCommand(importer.Object);
-        var relativePath = "sead.query.composer/Templates/route_v1.yaml";
+        var relativePath = "sead.query.composer/Templates/facet_configuration.yml";
 
         command.Run(relativePath);
 
@@ -73,7 +73,7 @@ public class FacetRouteConfigurationValidationCommandTests
     {
         var importer = new Mock<IFacetRouteConfigurationImporter>();
         var command = new FacetRouteConfigurationValidationCommand(importer.Object);
-        var relativePath = "sead.query.composer/Templates/route_v1.yaml";
+        var relativePath = "sead.query.composer/Templates/facet_configuration.yml";
 
         command.Run(relativePath);
 
@@ -85,7 +85,7 @@ public class FacetRouteConfigurationValidationCommandTests
     {
         var importer = new Mock<IFacetRouteConfigurationImporter>();
         var command = new FacetRouteConfigurationValidationCommand(importer.Object);
-        var relativePath = "sead.query.composer/Templates/route_v1.yaml";
+        var relativePath = "sead.query.composer/Templates/facet_configuration.yml";
 
         command.Run(relativePath, offline: true);
 

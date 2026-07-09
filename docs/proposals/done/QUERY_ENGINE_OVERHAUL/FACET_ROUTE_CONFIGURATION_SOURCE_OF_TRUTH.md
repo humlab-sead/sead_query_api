@@ -64,7 +64,7 @@ Relevant current state:
 - anchors, facets, and routes already exist as database entities and repositories
 - the route compiler already supports named route definitions, macro expansion, route resolution, and SQL generation
 - the YAML experiment in [sead.query.composer/Templates/templates.yml](../../../../sead.query.composer/Templates/templates.yml) mixes useful ideas with a duplication-heavy shape
-- the active Phase 5 authoring draft now lives in `sead.query.composer/Templates/route_v1.yaml` and is validated before import
+- the active Phase 5 authoring draft now lives in `sead.query.composer/Templates/facet_configuration.yml` and is validated before import
 - the current host exposes `--validate-facet-config` and `--import-facet-config` so validation and import happen at one repeatable boundary instead of through ad hoc database editing
 - `--validate-facet-config` now resolves anchor tables, generated route endpoints, and facet-anchor route bindings against the current facet schema before import, so route and anchor drift fails before any runtime rows are updated
 - startup now validates the imported route graph and configured route names before request handling, so bad imported configuration fails before the first live request
@@ -376,7 +376,7 @@ The goal is to keep exceptions explicit and reviewable.
 
 Current exception surface:
 
-- the checked-in `route_v1.yaml` draft currently uses generated route families only; it does not yet carry a YAML-side `routes` exception section or a recorded SQL-override inventory
+- the checked-in `facet_configuration.yml` draft currently uses generated route families only; it does not yet carry a YAML-side `routes` exception section or a recorded SQL-override inventory
 - explicit `routes` remain the place for source-to-anchor paths that do not fit a reusable family yet
 - `facet.facet_template` remains the place for true SQL override cases and should stay rare
 - `facet.route_step` persistence is still deferred because the current seeded schema applies a global unique constraint on `route_step.table_id`; the runtime currently relies on imported `facet.route.specification` instead

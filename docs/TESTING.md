@@ -225,14 +225,14 @@ Example:
 
 ```bash
 make validate-facet-config \
-	FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml \
+	FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml \
 	FACET_CONFIG_DB_HOST=127.0.0.1
 ```
 
 - use offline validation (`make validate-facet-config-offline`) when the job is intentionally disconnected or database connectivity is not yet available, and you only need schema/importer-contract checks
 
 ```bash
-make validate-facet-config-offline FACET_CONFIG_FILE=sead.query.composer/Templates/route_v1.yaml
+make validate-facet-config-offline FACET_CONFIG_FILE=sead.query.composer/Templates/facet_configuration.yml
 ```
 
 This mode validates file structure and importer contract rules without querying database-backed resolved bindings.

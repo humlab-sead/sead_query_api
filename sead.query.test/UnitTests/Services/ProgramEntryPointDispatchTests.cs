@@ -36,7 +36,7 @@ public class ProgramEntryPointDispatchTests
             return new TestHost(serviceProvider);
         }
 
-        var configurationPath = "sead.query.composer/Templates/route_v1.yaml";
+        var configurationPath = "sead.query.composer/Templates/facet_configuration.yml";
         var command = new ValidateFacetConfigCommand(configurationPath, false, ["--urls", "http://localhost:5000"]);
 
         var exitCode = ProgramEntryPoint.Run(
@@ -72,7 +72,7 @@ public class ProgramEntryPointDispatchTests
             return new TestHost(serviceProvider);
         }
 
-        var configurationPath = "sead.query.composer/Templates/route_v1.yaml";
+        var configurationPath = "sead.query.composer/Templates/facet_configuration.yml";
         var command = new ValidateFacetConfigCommand(configurationPath, true, ["--urls", "http://localhost:5000"]);
 
         var exitCode = ProgramEntryPoint.Run(

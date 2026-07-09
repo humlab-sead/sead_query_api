@@ -1,16 +1,16 @@
-# Graph Report - sead_query_api  (2026-07-08)
+# Graph Report - sead_query_api  (2026-07-09)
 
 ## Corpus Check
-- 297 files · ~72,998 words
+- 296 files · ~72,730 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3397 nodes · 5475 edges · 278 communities (191 shown, 87 thin omitted)
+- 3395 nodes · 5474 edges · 275 communities (191 shown, 84 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `656ea855`
+- Built from commit: `d9ade5fd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -274,8 +274,6 @@
 - [[_COMMUNITY_Community 261|Community 261]]
 - [[_COMMUNITY_Community 262|Community 262]]
 - [[_COMMUNITY_Community 263|Community 263]]
-- [[_COMMUNITY_Community 264|Community 264]]
-- [[_COMMUNITY_Community 265|Community 265]]
 - [[_COMMUNITY_Community 266|Community 266]]
 - [[_COMMUNITY_Community 267|Community 267]]
 - [[_COMMUNITY_Community 268|Community 268]]
@@ -283,7 +281,6 @@
 - [[_COMMUNITY_Community 270|Community 270]]
 - [[_COMMUNITY_Community 271|Community 271]]
 - [[_COMMUNITY_Community 272|Community 272]]
-- [[_COMMUNITY_Community 273|Community 273]]
 - [[_COMMUNITY_Community 274|Community 274]]
 - [[_COMMUNITY_Community 275|Community 275]]
 
@@ -314,7 +311,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (278 total, 87 thin omitted)
+## Communities (275 total, 84 thin omitted)
 
 ### Community 0 - "Facet Route Configuration"
 Cohesion: 0.06
@@ -330,19 +327,19 @@ Nodes (31): ComposedResultProjectionRequest, IPickFilterCompilerLocator, IResult
 
 ### Community 3 - "System Core Libraries"
 Cohesion: 0.03
-Nodes (109): Bogus (35.6.5), CacheManager.Core (3.0.0), CacheManager.Microsoft.Extensions.Caching.Memory (3.0.0), CacheManager.Serialization.Json (3.0.0), CacheManager.StackExchange.Redis (3.0.0), Castle.Core (5.2.1), YamlDotNet (18.1.0), runtime (+101 more)
+Nodes (111): Bogus (35.6.5), CacheManager.Core (3.0.0), CacheManager.Microsoft.Extensions.Caching.Memory (3.0.0), CacheManager.Serialization.Json (3.0.0), CacheManager.StackExchange.Redis (3.0.0), Castle.Core (5.2.1), YamlDotNet (18.1.0), runtime (+103 more)
 
 ### Community 4 - "JSON Serialization Mapping"
-Cohesion: 0.06
-Nodes (61): Microsoft.NETCore.Platforms, Microsoft.NETCore.Targets, Microsoft.Win32.Primitives, System.AppContext, System.Collections, System.Collections.Concurrent, System.Console, System.Diagnostics.Debug (+53 more)
+Cohesion: 0.07
+Nodes (58): Microsoft.NETCore.Platforms, Microsoft.NETCore.Targets, Microsoft.Win32.Primitives, System.AppContext, System.Collections, System.Collections.Concurrent, System.Console, System.Diagnostics.Debug (+50 more)
 
 ### Community 5 - "Core .NET Runtime Dependencies"
 Cohesion: 0.07
 Nodes (30): ResultSpecification, SeadQueryCore, ResultSpecificationField, SeadQueryCore, IResultSpecificationRepository, SeadQueryCore, Name, ResultDefinitionRepositoryEagerBuilder (+22 more)
 
 ### Community 6 - "Caching and JSON Libraries"
-Cohesion: 0.07
-Nodes (34): CategoryInfoService, SeadQueryCore.Plugin.Common, ICategoryInfoService, FacetsController, SeadQueryAPI.Controllers, DiscreteCategoryInfoService, GeoPolygonCategoryInfoService, ICategoryInfoService (+26 more)
+Cohesion: 0.27
+Nodes (12): FacetsController, SeadQueryAPI.Controllers, Consumes, Facet, FacetContent, FacetsConfig2, HttpGet, HttpPost (+4 more)
 
 ### Community 7 - "Database Query Proxies"
 Cohesion: 0.21
@@ -385,16 +382,16 @@ Cohesion: 0.08
 Nodes (24): DefaultContractResolver, IList, MemberInfo, PropertyMap, Dictionary, JsonProperty, MemberSerialization, Type (+16 more)
 
 ### Community 17 - "Dependency Injection and Logging"
-Cohesion: 0.12
-Nodes (14): IResultSqlCompiler, SeadQueryCore, IResultSqlCompilerLocator, SeadQueryCore, ResultSqlCompilerLocator, SeadQueryCore, IResultSqlCompiler, IResultSqlCompiler (+6 more)
+Cohesion: 0.06
+Nodes (26): ResultViewType, SeadQueryCore, ResultViewTypeExt, SeadQueryCore, IResultSqlCompiler, SeadQueryCore, IResultSqlCompilerLocator, SeadQueryCore (+18 more)
 
 ### Community 18 - "Cache Implementation"
 Cohesion: 0.16
 Nodes (12): IGeoPolygonCategoryCountSqlCompiler, IGeoPolygonCategoryInfoSqlCompiler, CategoryItem, CompilePayload, Facet, IDataReader, QuerySetup, dynamic (+4 more)
 
 ### Community 19 - "Facet Content Loading Services"
-Cohesion: 0.12
-Nodes (15): ResultColumn, ResultContentSet, ResultData, ResultMetaData, SeadQueryCore.Model, SeadQueryCore.Model, SourceColumnType, SeadQueryCore.Model (+7 more)
+Cohesion: 0.07
+Nodes (27): ResultController, SeadQueryAPI.Controllers, ResultColumn, ResultContentSet, ResultData, ResultMetaData, SeadQueryCore.Model, SeadQueryCore.Model (+19 more)
 
 ### Community 20 - "Facet Inline SQL Schema"
 Cohesion: 0.10
@@ -409,12 +406,12 @@ Cohesion: 0.07
 Nodes (23): ResultField, SeadQueryCore, ResultFieldType, SeadQueryCore, SeadQueryCore, ISqlFieldCompiler, Type, ISqlFieldCompiler (+15 more)
 
 ### Community 23 - "Production Environment Settings"
-Cohesion: 0.15
-Nodes (13): bool, FacetTemplateRuntimeResolver, IFacetTemplateRuntimeResolver, IFacetTemplateRuntimeResolver, Facet, FacetTemplateRuntimeSnapshot, Dictionary, Facet (+5 more)
+Cohesion: 0.07
+Nodes (31): bool, FacetTemplateRuntimeResolver, IComposedFacetContentFilterQueryFactory, IFacetTemplateRuntimeResolver, IFacetTemplateRuntimeResolver, ComposedFilterQuery, PredicateQueryPlan, ComposedFacetContentRequest (+23 more)
 
 ### Community 24 - "Supersead Environment Settings"
 Cohesion: 0.04
-Nodes (61): dependencies, runtime, Microsoft.AspNetCore.JsonPatch, Microsoft.CSharp, Microsoft.Extensions.ObjectPool, Newtonsoft.Json, Newtonsoft.Json.Bson, runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl (+53 more)
+Nodes (59): dependencies, runtime, Microsoft.AspNetCore.JsonPatch, Microsoft.CSharp, Microsoft.Extensions.ObjectPool, Newtonsoft.Json, Newtonsoft.Json.Bson, runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl (+51 more)
 
 ### Community 25 - "Repository Pattern Implementation"
 Cohesion: 0.10
@@ -441,8 +438,8 @@ Cohesion: 0.09
 Nodes (22): CountColumn, CountTable, Default, Override, Microsoft, System, Application, QueryBuilderSetting (+14 more)
 
 ### Community 31 - "Schema and Facet Metadata"
-Cohesion: 0.05
-Nodes (50): dependencies, runtime, Microsoft.Extensions.Caching.Abstractions, Microsoft.Extensions.Configuration.Binder, Microsoft.Extensions.DependencyInjection, Microsoft.Extensions.DependencyInjection.Abstractions, Microsoft.Extensions.Logging, Microsoft.Extensions.Logging.Abstractions (+42 more)
+Cohesion: 0.07
+Nodes (44): dependencies, runtime, Microsoft.Extensions.Caching.Abstractions, Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.Abstractions, Microsoft.Extensions.Configuration.Binder, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.DependencyInjection (+36 more)
 
 ### Community 32 - "Facet Template Runtime Resolver"
 Cohesion: 0.18
@@ -465,12 +462,12 @@ Cohesion: 0.23
 Nodes (10): FacetUrlFacetsConfigFactory, ILoadResultService, IResultConfigReconstituteService, IResultProjectionHandoffBuilder, ISupportedRequestPickSanitizer, ResultProjectionHandoff, TextWriter, ResultProjectionHandoff (+2 more)
 
 ### Community 38 - "Facet API Controllers"
-Cohesion: 0.14
-Nodes (13): IValidPicksSqlCompiler, ISqlFieldCompiler, CompilePayload, ICategoryCountSqlCompiler, ISqlCompiler, SeadQueryCore, IResultSqlCompiler, List (+5 more)
+Cohesion: 0.11
+Nodes (17): IValidPicksSqlCompiler, ISqlFieldCompiler, CompilePayload, ICategoryCountSqlCompiler, ISqlCompiler, SeadQueryCore, IResultSqlCompiler, List (+9 more)
 
 ### Community 39 - "Facet Content Query Composition"
-Cohesion: 0.27
-Nodes (8): Graph, DefaultGraphFactory, IDefaultGraphFactory, PathFinder, Edges, IEnumerable, IRepositoryRegistry, List
+Cohesion: 0.16
+Nodes (13): Graph, IPathFinder, SeadQueryCore, IPathFinder, DefaultGraphFactory, IDefaultGraphFactory, PathFinder, List (+5 more)
 
 ### Community 40 - "Facet SQL and Anchor Definitions"
 Cohesion: 0.09
@@ -489,8 +486,8 @@ Cohesion: 0.06
 Nodes (41): Microsoft.AspNetCore.Mvc.NewtonsoftJson (10.0.9), Microsoft.Extensions.Caching.Redis (2.3.0), Microsoft.VisualStudio.Azure.Containers.Tools.Targets (1.23.0), Swashbuckle.AspNetCore (10.2.3), Swashbuckle.AspNetCore.Annotations (10.2.3), System.CommandLine (2.0.0), Autofac.Extensions.DependencyInjection, Autofac.Extras.AggregateService (+33 more)
 
 ### Community 44 - "Composed Facet Content Factory"
-Cohesion: 0.22
-Nodes (11): FacetMetaData, MetaController, SeadQueryAPI.Controllers, FacetType, SeadQueryCore, FacetGroup, FacetType, HttpGet (+3 more)
+Cohesion: 0.17
+Nodes (13): FacetMetaData, MetaController, SeadQueryAPI.Controllers, FacetGroup, SeadQueryCore, FacetType, SeadQueryCore, FacetGroup (+5 more)
 
 ### Community 45 - "Node and Table Repositories"
 Cohesion: 0.05
@@ -561,8 +558,8 @@ Cohesion: 0.20
 Nodes (11): IJoinsClauseCompiler, IJoinsClauseCompiler, JoinsClauseCompiler, FacetsConfig2, List, Route, FacetsConfig2, FacetTable (+3 more)
 
 ### Community 62 - "Enumerable Extensions"
-Cohesion: 0.19
-Nodes (11): IntersectCategoryCountHelper, IIntersectCategoryCountHelper, ICategoryCountHelper, RangeCategoryCountHelper, IRangeCategoryCountHelper, CompilePayload, FacetsConfig2, List (+3 more)
+Cohesion: 0.23
+Nodes (9): ICategoryCountHelper, RangeCategoryCountHelper, IRangeCategoryCountHelper, CompilePayload, FacetsConfig2, List, CompilePayload, FacetsConfig2 (+1 more)
 
 ### Community 63 - "Discrete Facet Predicate Resolver"
 Cohesion: 0.30
@@ -577,8 +574,8 @@ Cohesion: 0.20
 Nodes (9): DatabaseFacade, Func<DbDataReader, T>, RelationalDataReader, RDFacadeExtensions, CancellationToken, DbDataReader, IEnumerable, T (+1 more)
 
 ### Community 66 - "Dependency Injection Libraries"
-Cohesion: 0.06
-Nodes (32): Microsoft.Extensions.FileSystemGlobbing, Microsoft.Extensions.Primitives, assemblyVersion, fileVersion, assemblyVersion, fileVersion, assemblyVersion, fileVersion (+24 more)
+Cohesion: 0.07
+Nodes (28): Microsoft.Extensions.Primitives, assemblyVersion, fileVersion, assemblyVersion, fileVersion, assemblyVersion, fileVersion, assemblyVersion (+20 more)
 
 ### Community 67 - "Facet Repository Implementation"
 Cohesion: 0.18
@@ -616,6 +613,10 @@ Nodes (6): CategoryItem, dynamic, Facet, IDataReader, QuerySetup, DiscreteCatego
 Cohesion: 0.22
 Nodes (8): DbContextOptionsBuilder, FacetContextFactory, SeadQueryInfra, IFacetContextFactory, SeadQueryInfra, FacetContext, StoreSetting, FacetContext
 
+### Community 76 - "Join SQL Compilation"
+Cohesion: 0.21
+Nodes (10): CategoryInfoService, SeadQueryCore.Plugin.Common, DiscreteCategoryInfoService, GeoPolygonCategoryInfoService, ICategoryInfoService, IDiscreteCategoryInfoService, IGeoPolygonCategoryInfoService, CategoryInfo (+2 more)
+
 ### Community 77 - "Facet Repository Methods"
 Cohesion: 0.24
 Nodes (8): FacetsConfigSpecification, SeadQueryCore, FacetConfig2, FacetsConfig2, List, T, QuerySeadSpecification, SeadQueryCore
@@ -633,12 +634,12 @@ Cohesion: 0.15
 Nodes (13): compilationOptions, runtime, runtimeTargets, Microsoft.Win32.SystemEvents/6.0.0, assemblyVersion, assetType, fileVersion, rid (+5 more)
 
 ### Community 81 - "Encryption Services"
-Cohesion: 0.22
-Nodes (6): CategoryItem, dynamic, Facet, IDataReader, QuerySetup, RangeCategoryInfoSqlCompiler
+Cohesion: 0.29
+Nodes (7): System.IO.Pipelines, assemblyVersion, fileVersion, Pipelines.Sockets.Unofficial/2.2.8, dependencies, runtime, lib/net5.0/Pipelines.Sockets.Unofficial.dll
 
 ### Community 82 - "Facet Configuration Specifications"
-Cohesion: 0.13
-Nodes (14): ICategoryInfoSqlCompiler, IDiscreteCategoryInfoService, IDiscreteCategoryInfoSqlCompiler, IDiscreteFacetPlugin, IDiscretePickFilterCompiler, IRangeCategoryInfoSqlCompiler, CategoryItem, dynamic (+6 more)
+Cohesion: 0.12
+Nodes (14): ICategoryInfoSqlCompiler, IDiscreteCategoryInfoSqlCompiler, IRangeCategoryInfoSqlCompiler, CategoryItem, dynamic, Facet, IDataReader, QuerySetup (+6 more)
 
 ### Community 83 - "Application Startup Configuration"
 Cohesion: 0.27
@@ -657,28 +658,28 @@ Cohesion: 0.27
 Nodes (7): IRangeCategoryCountSqlCompiler, CategoryItem, CompilePayload, Facet, IDataReader, QuerySetup, RangeCategoryCountSqlCompiler
 
 ### Community 87 - "Logging Configuration"
-Cohesion: 0.11
-Nodes (25): $ref, propertyNames, $ref, properties, $ref, $ref, $ref, aggregate (+17 more)
+Cohesion: 0.08
+Nodes (43): $ref, additionalProperties, properties, required, type, propertyNames, $ref, $ref (+35 more)
 
 ### Community 88 - "Runtime Cryptography Dependencies"
 Cohesion: 0.27
 Nodes (6): Assembly, IEnumerable, Type, DotEnv, InfraUtility, SeadQueryInfra
 
 ### Community 89 - "Query Setup Extensions"
-Cohesion: 0.29
-Nodes (7): DiscreteCategoryCountHelper, IDiscreteCategoryCountHelper, GeoPolygonCategoryCountHelper, IGeoPolygonCategoryCountHelper, CompilePayload, FacetsConfig2, List
+Cohesion: 0.12
+Nodes (16): DiscreteCategoryCountHelper, IDiscreteCategoryCountHelper, IDiscreteCategoryCountSqlCompiler, IDiscreteCategoryInfoService, IDiscretePickFilterCompiler, GeoPolygonCategoryCountHelper, IGeoPolygonCategoryCountHelper, CompilePayload (+8 more)
 
 ### Community 90 - "Logging Configuration"
-Cohesion: 0.24
-Nodes (7): IDiscreteCategoryCountSqlCompiler, CategoryItem, CompilePayload, Facet, IDataReader, QuerySetup, DiscreteCategoryCountSqlCompiler
+Cohesion: 0.38
+Nodes (5): RangeCategoryInfoService, IRangeCategoryInfoService, CategoryInfo, dynamic, FacetsConfig2
 
 ### Community 91 - "Facet URL Configuration Service"
 Cohesion: 0.32
 Nodes (5): HttpContext, HttpRequest, RequestLoggingMiddleware, RequestDelegate, Task
 
 ### Community 92 - "Result URL Projection Service"
-Cohesion: 0.11
-Nodes (24): $ref, $ref, $ref, $ref, facetInlineSql, additionalProperties, anyOf, properties (+16 more)
+Cohesion: 0.14
+Nodes (15): $ref, $ref, facetInlineSql, additionalProperties, anyOf, properties, required, type (+7 more)
 
 ### Community 93 - "Composed Facet Content Loading"
 Cohesion: 0.39
@@ -693,12 +694,12 @@ Cohesion: 0.25
 Nodes (7): IFacetSetting, SeadQueryCore, ISetting, FacetSetting, SeadQueryCore, Setting, StoreSetting
 
 ### Community 96 - "Route Family Schema"
-Cohesion: 0.42
-Nodes (3): IIntersectFacetPlugin, IntersectFacetPlugin, ContainerBuilder
+Cohesion: 0.29
+Nodes (5): IntersectCategoryCountHelper, IIntersectCategoryCountHelper, IIntersectFacetPlugin, IntersectFacetPlugin, ContainerBuilder
 
 ### Community 97 - "Discrete Facet Plugins"
-Cohesion: 0.31
-Nodes (5): IFacetPlugin, IRangeFacetPlugin, RangeFacetPlugin, ContainerBuilder, ContainerBuilder
+Cohesion: 0.19
+Nodes (8): IDiscreteFacetPlugin, DiscreteFacetPlugin, IFacetPlugin, IRangeFacetPlugin, RangeFacetPlugin, ContainerBuilder, ContainerBuilder, ContainerBuilder
 
 ### Community 98 - "SQL and Pick Filter Compilation"
 Cohesion: 0.29
@@ -717,8 +718,8 @@ Cohesion: 0.43
 Nodes (5): IPickFilterCompilerLocator, PickFilterCompilerLocator, SeadQueryCore.QueryBuilder, EFacetType, IPickFilterCompiler
 
 ### Community 102 - "Category Count Compilation"
-Cohesion: 0.10
-Nodes (24): $ref, additionalProperties, items, minItems, minProperties, type, items, type (+16 more)
+Cohesion: 0.09
+Nodes (26): $ref, additionalProperties, items, minItems, minProperties, type, items, type (+18 more)
 
 ### Community 103 - "Pick Filter Compilation"
 Cohesion: 0.08
@@ -749,8 +750,8 @@ Cohesion: 0.67
 Nodes (4): get_counts, get_facet_content, get_geo_count_query, get_geo_filter_clauses
 
 ### Community 112 - "Category Info SQL Compilation"
-Cohesion: 0.09
-Nodes (26): Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.Abstractions, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Diagnostics.Abstractions, Microsoft.Extensions.FileProviders.Abstractions, Microsoft.Extensions.FileProviders.Physical, assemblyVersion, fileVersion (+18 more)
+Cohesion: 0.33
+Nodes (6): assemblyVersion, fileVersion, dependencies, runtime, Microsoft.Extensions.Configuration.Binder/9.0.4, lib/net9.0/Microsoft.Extensions.Configuration.Binder.dll
 
 ### Community 113 - "View State Controller"
 Cohesion: 0.13
@@ -785,8 +786,8 @@ Cohesion: 0.67
 Nodes (3): Cline's Memory Bank, Task Handoff Strategy Guide, Cline's Memory Bank (Time-Aware Version)
 
 ### Community 125 - "Facet Settings Management"
-Cohesion: 0.18
-Nodes (12): ResultController, SeadQueryAPI.Controllers, Consumes, FacetsConfig2, HttpGet, HttpPost, IEnumerable, JObject (+4 more)
+Cohesion: 0.33
+Nodes (4): ICategoryInfoService, CategoryInfo, dynamic, FacetsConfig2
 
 ### Community 126 - "Intersect Category Info Services"
 Cohesion: 0.67
@@ -805,8 +806,8 @@ Cohesion: 0.18
 Nodes (12): IComposedFacetContentHandler, ComposedFacetContentRequest, ComposedFilterQuery, Facet, FacetConfig2, FacetContent, FacetsConfig2, IFacetContentQueryComposer (+4 more)
 
 ### Community 168 - "Country Facet Configurations"
-Cohesion: 0.13
-Nodes (15): IComposedFacetContentFilterQueryFactory, ComposedFilterQuery, PredicateQueryPlan, ComposedFacetContentRequest, ComposedFilterQuery, Facet, FacetConfig2, FacetTemplateRuntimeSnapshot (+7 more)
+Cohesion: 0.33
+Nodes (6): assemblyVersion, fileVersion, dependencies, runtime, Microsoft.Extensions.Logging.Abstractions/9.0.4, lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
 
 ### Community 183 - "API Dependency Configuration"
 Cohesion: 0.33
@@ -821,12 +822,12 @@ Cohesion: 0.27
 Nodes (6): StartupCommandParser, Option, ParseResult, RootCommand, StartupCommand, string
 
 ### Community 190 - "Logging Abstractions Runtime"
-Cohesion: 0.35
-Nodes (6): IComposedFilterQueryComposer, ComposedFilterQuery, IReadOnlyCollection, IReadOnlyList, PredicateQueryPlan, IntersectComposedFilterQueryComposer
+Cohesion: 0.19
+Nodes (10): IComposedFilterQueryComposer, IComposedFilterQueryComposer, ComposedFilterQuery, IReadOnlyCollection, PredicateQueryPlan, ComposedFilterQuery, IReadOnlyCollection, IReadOnlyList (+2 more)
 
 ### Community 201 - "Community 201"
-Cohesion: 0.06
-Nodes (32): dependencies, runtime, dependencies, runtime, CacheManager.Core, Microsoft.EntityFrameworkCore, Microsoft.EntityFrameworkCore.Abstractions, Microsoft.EntityFrameworkCore.Analyzers (+24 more)
+Cohesion: 0.08
+Nodes (26): dependencies, runtime, dependencies, runtime, CacheManager.Core, Microsoft.EntityFrameworkCore, Microsoft.EntityFrameworkCore.Abstractions, Microsoft.EntityFrameworkCore.Analyzers (+18 more)
 
 ### Community 202 - "Community 202"
 Cohesion: 0.14
@@ -857,12 +858,12 @@ Cohesion: 0.33
 Nodes (5): IFacetRepository, Dictionary, EFacetType, Facet, IEnumerable
 
 ### Community 210 - "Community 210"
-Cohesion: 0.18
-Nodes (12): $ref, facetProjectedAnchor, properties, additionalProperties, properties, required, type, anchor (+4 more)
+Cohesion: 0.22
+Nodes (10): $ref, facetProjectedAnchor, properties, additionalProperties, properties, required, type, anchor (+2 more)
 
 ### Community 211 - "Community 211"
-Cohesion: 0.27
-Nodes (8): IPicksFilterCompiler, PicksFilterCompiler, SeadQueryCore.QueryBuilder, Facet, FacetConfig2, IEnumerable, IPickFilterCompiler, List
+Cohesion: 0.17
+Nodes (11): IPicksFilterCompiler, PicksFilterCompiler, SeadQueryCore.QueryBuilder, Facet, FacetConfig2, Facet, FacetConfig2, IEnumerable (+3 more)
 
 ### Community 212 - "Community 212"
 Cohesion: 0.18
@@ -885,12 +886,12 @@ Cohesion: 0.22
 Nodes (9): Breaking changes, Domain facet configuration, Enhancements, Fixes, Orphaned facets, Other noteworthy things, Pending / Not implemented, Release @2020.03 (v1.1.0) (+1 more)
 
 ### Community 217 - "Community 217"
-Cohesion: 0.25
-Nodes (6): ResultViewType, SeadQueryCore, ResultViewTypeExt, SeadQueryCore, IResultSqlCompiler, ResultViewType
+Cohesion: 0.33
+Nodes (6): assemblyVersion, fileVersion, Newtonsoft.Json.Bson/1.0.2, dependencies, runtime, lib/netstandard2.0/Newtonsoft.Json.Bson.dll
 
 ### Community 218 - "Community 218"
-Cohesion: 0.22
-Nodes (9): additionalProperties, properties, required, type, anchor, $ref, key_column, table (+1 more)
+Cohesion: 0.40
+Nodes (5): assemblyVersion, fileVersion, runtime, Microsoft.Extensions.Configuration.FileExtensions/9.0.4, lib/net9.0/Microsoft.Extensions.Configuration.FileExtensions.dll
 
 ### Community 219 - "Community 219"
 Cohesion: 0.22
@@ -905,12 +906,12 @@ Cohesion: 0.32
 Nodes (5): IGeoPolygonPickFilterCompiler, Facet, FacetConfig2, List, GeoPolygonPickFilterCompiler
 
 ### Community 222 - "Community 222"
-Cohesion: 0.18
-Nodes (11): dependencies, runtime, dependencies, runtime, Autofac, Castle.Core, assemblyVersion, fileVersion (+3 more)
+Cohesion: 0.25
+Nodes (8): dependencies, runtime, dependencies, runtime, Autofac, Castle.Core, Autofac.Extensions.DependencyInjection/10.0.0, Autofac.Extras.AggregateService/6.1.2
 
 ### Community 223 - "Community 223"
-Cohesion: 0.50
-Nodes (4): dependencies, runtime, System.Diagnostics.EventLog, Castle.Core/5.2.1
+Cohesion: 0.29
+Nodes (7): dependencies, runtime, System.Diagnostics.EventLog, assemblyVersion, fileVersion, Castle.Core/5.2.1, lib/net6.0/Castle.Core.dll
 
 ### Community 224 - "Community 224"
 Cohesion: 0.29
@@ -953,16 +954,16 @@ Cohesion: 0.40
 Nodes (5): assemblyVersion, fileVersion, runtime, Microsoft.Extensions.DependencyInjection.Abstractions/9.0.4, lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
 
 ### Community 234 - "Community 234"
-Cohesion: 0.29
-Nodes (6): Facet, IEnumerable, QuerySetup, ResultSpecificationField, SeadQueryCore, TabularResultSqlCompiler
+Cohesion: 0.40
+Nodes (5): assemblyVersion, fileVersion, runtime, Microsoft.Extensions.Configuration.Json/9.0.4, lib/net9.0/Microsoft.Extensions.Configuration.Json.dll
 
 ### Community 235 - "Community 235"
 Cohesion: 0.38
 Nodes (3): StartupEnvironment, IReadOnlyList, string
 
 ### Community 236 - "Community 236"
-Cohesion: 0.33
-Nodes (5): IPathFinder, SeadQueryCore, IPathFinder, List, TableRelation
+Cohesion: 0.40
+Nodes (5): assemblyVersion, fileVersion, runtime, Microsoft.Extensions.Logging.Configuration/9.0.4, lib/net9.0/Microsoft.Extensions.Logging.Configuration.dll
 
 ### Community 237 - "Community 237"
 Cohesion: 0.40
@@ -1008,6 +1009,10 @@ Nodes (4): [@2024-05](https://github.com/humlab-sead/sead_query_api/compare/2024
 Cohesion: 0.50
 Nodes (4): Changelog, Enhancement, Release @2023.12, Release @2024.05
 
+### Community 249 - "Community 249"
+Cohesion: 0.40
+Nodes (5): assemblyVersion, fileVersion, runtime, Microsoft.Extensions.Logging.Console/9.0.4, lib/net9.0/Microsoft.Extensions.Logging.Console.dll
+
 ### Community 259 - "Community 259"
 Cohesion: 0.29
 Nodes (7): dependencies, runtime, System.Diagnostics.DiagnosticSource, assemblyVersion, fileVersion, Autofac/8.2.1, lib/net8.0/Autofac.dll
@@ -1025,16 +1030,8 @@ Cohesion: 0.33
 Nodes (4): ProgramEntryPoint, Func, IHost, StartupCommand
 
 ### Community 263 - "Community 263"
-Cohesion: 0.33
-Nodes (4): IComposedFilterQueryComposer, ComposedFilterQuery, IReadOnlyCollection, PredicateQueryPlan
-
-### Community 264 - "Community 264"
-Cohesion: 0.40
-Nodes (4): Facet, IEnumerable, QuerySetup, ResultSpecificationField
-
-### Community 265 - "Community 265"
-Cohesion: 0.40
-Nodes (3): ComposedFacetContentRequest, ComposedFilterQuery, IComposedFacetContentFilterQueryFactory
+Cohesion: 0.50
+Nodes (3): CategoryInfo, FacetContent, SeadQueryCore
 
 ### Community 267 - "Community 267"
 Cohesion: 0.50
@@ -1053,21 +1050,21 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ## Knowledge Gaps
-- **1201 isolated node(s):** `PreToolUse`, `CountTable`, `CountColumn`, `Host`, `Database` (+1196 more)
+- **1200 isolated node(s):** `PreToolUse`, `CountTable`, `CountColumn`, `Host`, `Database` (+1195 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **87 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **84 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `dependencies` connect `JSON Serialization Mapping` to `Dependency Injection Libraries`, `System Core Libraries`, `Community 259`, `Community 223`, `Facet SQL and Anchor Definitions`, `Community 201`, `Result Field Aliasing`, `Facet Config Reconstitution`, `Application Logging Settings`, `Category Info SQL Compilation`, `Supersead Environment Settings`, `Community 222`, `Schema and Facet Metadata`?**
-  _High betweenness centrality (0.145) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `JSON Serialization Mapping` to `Dependency Injection Libraries`, `System Core Libraries`, `Community 259`, `Community 223`, `Facet SQL and Anchor Definitions`, `Community 201`, `Result Field Aliasing`, `Facet Config Reconstitution`, `Application Logging Settings`, `Encryption Services`, `Supersead Environment Settings`, `Community 222`, `Schema and Facet Metadata`?**
+  _High betweenness centrality (0.151) - this node is a cross-community bridge._
 - **Why does `SeadQueryInfra` connect `Application Logging Settings` to `JSON Serialization Mapping`?**
-  _High betweenness centrality (0.134) - this node is a cross-community bridge._
-- **Why does `.NETCoreApp,Version=v9.0` connect `Supersead Environment Settings` to `Dependency Injection Libraries`, `System Core Libraries`, `JSON Serialization Mapping`, `Community 259`, `Community 223`, `Community 232`, `Community 201`, `Community 233`, `Result Field Aliasing`, `Facet SQL and Anchor Definitions`, `Community 237`, `Community 238`, `API Values Controller`, `Category Info SQL Compilation`, `Community 222`, `Schema and Facet Metadata`?**
-  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+  _High betweenness centrality (0.140) - this node is a cross-community bridge._
+- **Why does `.NETCoreApp,Version=v9.0` connect `Supersead Environment Settings` to `System Core Libraries`, `JSON Serialization Mapping`, `Community 259`, `Schema and Facet Metadata`, `Country Facet Configurations`, `Facet SQL and Anchor Definitions`, `Result Field Aliasing`, `Dependency Injection Libraries`, `Community 201`, `API Values Controller`, `Encryption Services`, `Community 217`, `Community 218`, `Community 222`, `Community 223`, `Community 232`, `Community 233`, `Community 234`, `Community 236`, `Community 237`, `Community 238`, `Category Info SQL Compilation`, `Community 249`?**
+  _High betweenness centrality (0.052) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `CountTable`, `CountColumn` to the rest of the system?**
-  _1201 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1200 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Facet Route Configuration` be split into smaller, more focused modules?**
   _Cohesion score 0.057623762376237626 - nodes in this community are weakly interconnected._
 - **Should `Composed Facet Queries` be split into smaller, more focused modules?**
