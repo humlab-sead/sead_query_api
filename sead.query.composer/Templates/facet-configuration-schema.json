@@ -76,6 +76,14 @@
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
         },
+        "udfCall": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*\\(.*\\)$"
+        },
+        "qualifiedUdfCall": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+\\(.*\\)$"
+        },
         "tableReference": {
             "oneOf": [
                 {
@@ -83,6 +91,12 @@
                 },
                 {
                     "$ref": "#/$defs/qualifiedIdentifier"
+                },
+                {
+                    "$ref": "#/$defs/udfCall"
+                },
+                {
+                    "$ref": "#/$defs/qualifiedUdfCall"
                 }
             ]
         },
