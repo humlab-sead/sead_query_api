@@ -2,25 +2,27 @@
 
 This guide explains how to author `sead.query.composer/Templates/facet_configuration.yml`.
 
-It focuses on:
+It covers:
 
-* the structure of the YAML file
-* the meaning of each top-level section
-* the semantic role of each important property
-* the rules that prevent common validation and import failures
+- the structure of the YAML file
+- the meaning of each top-level section
+- the semantic role of each important property
+- how to avoid common validation and import failures
 
 Use this guide when adding, changing, or reviewing facet configuration before validation and import.
 
-## Canonical Files
+## Key Files
 
-| Purpose                 | File or location                                                    |
-|-------------------------|---------------------------------------------------------------------|
-| Authoring source        | `sead.query.composer/Templates/facet_configuration.yml`             |
-| Authoring contract      | `sead.query.composer/Templates/facet-configuration-schema.json`     |
-| Importer implementation | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` |
-| Runtime copy            | Imported rows in schema `facet`, including `facet.config_revision`  |
+## Facet Configuration References
 
-File Anatomy
+| Reference             | Location                                                            |
+|-----------------------|---------------------------------------------------------------------|
+| Configuration file    | `sead.query.composer/Templates/facet_configuration.yml`             |
+| Validation schema     | `sead.query.composer/Templates/facet-configuration-schema.json`     |
+| Importer code         | `sead.query.infra/Configuration/FacetRouteConfigurationImporter.cs` |
+| Imported runtime data | Imported rows in schema `facet`, including `facet.config_revision`  |
+
+## Top-Level Structure
 
 The configuration has these top-level sections:
 
@@ -99,7 +101,7 @@ schema_version: 1
 
 Semantic meaning:
 
-`schema_version` identifies the configuration contract version expected by the importer and validator.
+`schema_version` identifies the configuration schema (contract) version expected by the importer and validator.
 
 Authoring rule:
 
@@ -110,7 +112,7 @@ Do not change this value unless the schema and importer both support the new ver
 Example:
 
 ```yaml
-config_revision: phaseX-some-revision
+config_revision: some-revision
 ```
 
 Semantic meaning:
@@ -183,7 +185,7 @@ A facet anchor binding is valid only when the bound route ends on the same table
 
 ## Paths
 
-`paths` are reusable route macros.
+`paths` define reusable traversal segments that can be included by route templates.
 
 Example:
 
@@ -314,7 +316,7 @@ facets:
     group_key: geography
     type: discrete
     source_table: tbl_countries
-    category:
+    category: 
       id_expr: country_id
       name_expr: country_name
       data_type: integer
