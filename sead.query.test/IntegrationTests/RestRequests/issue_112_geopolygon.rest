@@ -208,3 +208,84 @@ Content-Type: application/json; charset=UTF-8
         ]
     }
 }
+
+### MULTIPLE POLYGONS (facet load)
+# The "polygons" property takes a list of polygons, each a list of [latitude, longitude] pairs.
+# A site matches if it is within ANY of the polygons.
+# The single-polygon "coordinates" and "pickValues" properties still work and are equivalent
+# to sending one polygon here.
+
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/facets/load
+content-type: application/json
+mode: cors
+accept: application/json
+
+{
+    "requestId":1,
+    "requestType":"populate",
+    "targetCode":"sites_polygon",
+    "facetConfigs":[ {
+        "facetCode":"sites_polygon",
+        "position":1,
+        "polygons": [
+          [
+            [63.872484, 20.093291],
+            [63.947006, 20.501316],
+            [63.878949, 20.673213],
+            [63.748021, 20.252953],
+            [63.793983, 20.095738]
+          ],
+          [
+            [55.605, 12.905],
+            [55.735, 13.355],
+            [55.545, 13.505],
+            [55.435, 13.115]
+          ]
+        ]
+    }]
+}
+
+### MULTIPLE POLYGONS (result load)
+
+POST {{protocol}}://{{host}}:{{port}}/{{baseurl}}/result/load
+Sec-Fetch-Mode: cors
+mode: cors
+Accept: application/json, text/javascript, /; q=0.01
+Content-Type: application/json; charset=UTF-8
+
+{
+    "facetsConfig": {
+        "requestId": 1,
+        "requestType": "populate",
+        "targetCode": "sites_polygon",
+        "facetConfigs": [
+          {
+              "facetCode":"sites_polygon",
+              "position":1,
+              "polygons": [
+                [
+                  [63.872484, 20.093291],
+                  [63.947006, 20.501316],
+                  [63.878949, 20.673213],
+                  [63.748021, 20.252953],
+                  [63.793983, 20.095738]
+                ],
+                [
+                  [55.605, 12.905],
+                  [55.735, 13.355],
+                  [55.545, 13.505],
+                  [55.435, 13.115]
+                ]
+              ]
+          }
+        ]
+    },
+    "resultConfig": {
+        "requestId": 3,
+        "sessionId": "1",
+        "viewTypeId": "tabular",
+        "aggregateKeys": [
+            "site_level"
+        ]
+    }
+}
