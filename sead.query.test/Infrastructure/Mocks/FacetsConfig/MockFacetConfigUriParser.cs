@@ -12,6 +12,8 @@ namespace SQT.Mocks
     /// Parses a URI that specifies a facetsConfig setup.
     /// The URI must be of format:
     ///     "target-facet[@trigger-facet]:(facet-code[@picks])(/facet-code[@picks])*
+    /// Picks are comma separated. For geopolygon facets several polygons can be
+    /// specified, separated by ';'.
     /// </summary>
     internal class MockFacetConfigUriParser
     {
@@ -88,7 +90,13 @@ namespace SQT.Mocks
                 ];
             }
 
-            return data.Split(",").Select(z => new FacetConfigPick(z)).ToList();
+            /* Several polygons (geopolygon facets) are separated by ';' e.g. "1,1,2,2,3,3;4,4,5,5,6,6" */
+            return data
+                .Split(";")
+                .SelectMany((polygon, index) => polygon
+                    .Split(",")
+                    .Select(z => new FacetConfigPick(z) { PolygonIndex = index }))
+                .ToList();
         }
     }
 }

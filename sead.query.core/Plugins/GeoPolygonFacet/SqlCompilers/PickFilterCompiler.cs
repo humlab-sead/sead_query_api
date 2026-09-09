@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace SeadQueryCore.Plugin.GeoPolygon;
 
@@ -12,27 +9,25 @@ public class GeoPolygonPickFilterCompiler : IGeoPolygonPickFilterCompiler
         if (!config.HasPicks())
             return currentFacet.Criteria;
 
-        var polygon = GetPolygonValues(config);
+        var polygons = config.GetPickValueGroups();
 
-        if (polygon.Count % 2 != 0 || polygon.Count < 6)
-            throw new ArgumentException($"Invalid polygon sizes {polygon.Count}");
+        for (var i = 0; i < polygons.Count; i++)
+        {
+            var polygon = polygons[i];
 
-        if (polygon[0] != polygon[^2] || polygon[1] != polygon[^1])
-            polygon.AddRange([polygon[0], polygon[1]]);
+            if (polygon.Count % 2 != 0 || polygon.Count < 6)
+                throw new ArgumentException(
+                    polygons.Count == 1 ? $"Invalid polygon sizes {polygon.Count}" : $"Invalid polygon sizes {polygon.Count} (polygon {i})"
+                );
+
+            /* Close the ring if the client didn't */
+            if (polygon[0] != polygon[^2] || polygon[1] != polygon[^1])
+                polygon.AddRange([polygon[0], polygon[1]]);
+        }
 
         var dotName = currentFacet.TargetTable.ResolvedAliasOrTableOrUdfName;
         return SqlCompileUtility
-            .WithinPolygonExpr($"{dotName}.latitude_dd", $"{dotName}.longitude_dd", polygon)
+            .WithinAnyPolygonExpr($"{dotName}.latitude_dd", $"{dotName}.longitude_dd", polygons)
             .GlueIf(currentFacet.Criteria, " AND ");
-    }
-
-    private static List<decimal> GetPolygonValues(FacetConfig2 config)
-    {
-        var cultureInfo = new CultureInfo("en-US");
-
-        return config
-            .Picks.SelectMany(pick => pick.PickValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            .Select(value => decimal.Parse(value, NumberStyles.Any, cultureInfo))
-            .ToList();
     }
 }

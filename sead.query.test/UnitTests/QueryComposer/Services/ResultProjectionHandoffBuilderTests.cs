@@ -155,6 +155,41 @@ public class ResultProjectionHandoffBuilderTests : IntegrationTestBase
     }
 
     [Fact]
+    public void Build_WithMultiPolygonFilteredTabularResult_OrsPolygonsInComposedFilter()
+    {
+        var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
+        var facetsConfig = FakeFacetsConfig("sites_polygon:sites_polygon@55,12,55,16,58,16,58,12;51,-3,51,1,54,1,54,-3");
+        var resultConfig = FakeResultConfig("result_facet", "site_level", "tabular");
+
+        var result = builder.Build(facetsConfig, resultConfig);
+
+        result.QuerySetup.LeadingSql.Should().Contain("with composed_filter as");
+        result.QuerySetup.LeadingSql.Should().Contain("(ST_Within(ST_MakePoint(X_0.latitude_dd, X_0.longitude_dd)");
+        result.QuerySetup.LeadingSql.Should().Contain(") OR ST_Within(ST_MakePoint(X_0.latitude_dd, X_0.longitude_dd)");
+        result.QuerySetup.LeadingSql.Should().Contain("ST_MakePoint(55, 12)").And.Contain("ST_MakePoint(51, -3)");
+        result
+            .QuerySetup.Joins.Should()
+            .Contain(join => join.Contains("join composed_filter on composed_filter.target_id = tbl_analysis_entities.analysis_entity_id"));
+    }
+
+    [Fact]
+    public void Build_WithMultiPolygonFilteredMapResult_OrsPolygonsInComposedFilter()
+    {
+        var builder = Container.Resolve<IResultProjectionHandoffBuilder>();
+        var facetsConfig = FakeFacetsConfig("sites_polygon:sites_polygon@55,12,55,16,58,16,58,12;51,-3,51,1,54,1,54,-3");
+        var resultConfig = FakeResultConfig("map_result", "map_result", "map");
+
+        var result = builder.Build(facetsConfig, resultConfig);
+
+        result.QuerySetup.LeadingSql.Should().Contain("target_route as (");
+        result.QuerySetup.LeadingSql.Should().Contain(") OR ST_Within(ST_MakePoint(X_0.latitude_dd, X_0.longitude_dd)");
+        result.QuerySetup.Joins.Should().Contain(join => join.Contains("join target_route on target_route.target_id = tbl_sites.site_id"));
+        result
+            .QuerySetup.Joins.Should()
+            .Contain(join => join.Contains("join composed_filter on composed_filter.target_id = target_route.source_id"));
+    }
+
+    [Fact]
     public void Build_WithIntersectFilteredMapResult_UsesTargetRouteJoin()
     {
         var builder = Container.Resolve<IResultProjectionHandoffBuilder>();

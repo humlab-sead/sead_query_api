@@ -43,6 +43,21 @@ namespace SeadQueryCore
             set { Picks = value.SelectMany(coords => coords.Select(x => new FacetConfigPick(x))).ToList(); }
         }
 
+        /// <summary>
+        /// Accepts several polygons (rings), each a list of coordinate pairs, and flattens them into
+        /// the pick list with the polygon's index stored on each pick. Used by geopolygon facets.
+        /// </summary>
+        [JsonProperty]
+        public List<List<List<decimal>>> Polygons
+        {
+            set
+            {
+                Picks = (value ?? [])
+                    .SelectMany((polygon, index) => polygon.SelectMany(coords => coords.Select(x => new FacetConfigPick(x, index))))
+                    .ToList();
+            }
+        }
+
         public FacetConfig2(Facet facet, int position, string filter, List<FacetConfigPick> picks)
         {
             FacetCode = facet.FacetCode;
@@ -81,6 +96,20 @@ namespace SeadQueryCore
         }
 
         public List<int> GetIntegerPickValues() => Picks.Select(x => x.ToInt()).ToList();
+
+        /// <summary>
+        /// Number of distinct polygons (rings) in the pick list. Always 1 for a non-empty pick list
+        /// that carries no polygon indices (i.e. all other facet types, and single-polygon geopolygon picks).
+        /// </summary>
+        public int GetPolygonCount() => Picks.Select(x => x.PolygonIndex).Distinct().Count();
+
+        /// <summary>
+        /// Returns the pick values grouped by polygon index, ordered by index, with the pick order
+        /// preserved within each group. A pick list without polygon indices yields a single group.
+        /// A pick may hold several comma-separated values, e.g. a "latitude, longitude" pair.
+        /// </summary>
+        public List<List<decimal>> GetPickValueGroups() =>
+            Picks.GroupBy(x => x.PolygonIndex).OrderBy(g => g.Key).Select(g => g.SelectMany(x => x.ToDecimals()).ToList()).ToList();
 
         public List<string> GetJoinTables()
         {
