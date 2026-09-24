@@ -262,6 +262,20 @@ public class FacetRouteConfigurationImporterTests : MockerWithFacetContext
     }
 
     [Fact]
+    public void ValidateFile_WithMainFacetConfiguration_ThrowsWhenResultFacetGroupIsMissingFromSchema()
+    {
+        var dbContext = (FacetContext)FacetContext;
+        var importer = new FacetRouteConfigurationImporter(dbContext);
+        var configurationFilePath = GetConfigurationFilePath();
+
+        var act = () => importer.ValidateFile(configurationFilePath);
+
+        act.Should()
+            .Throw<InvalidOperationException>()
+            .WithMessage("*facet 'result_facet' group 'result' could not be resolved in the current facet schema*");
+    }
+
+    [Fact]
     public void ValidateFile_WithMissingFacetAnchorRoute_ThrowsInvalidOperationException()
     {
         var dbContext = (FacetContext)FacetContext;

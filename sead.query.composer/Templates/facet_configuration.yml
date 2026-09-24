@@ -412,7 +412,7 @@ facets:
   - key: result_facet
     display_title: Result facet
     description: Retained result-shape facet using constrained template_key for anchor-identity projection
-    group_key: result
+    group_key: ROOT
     type: discrete
     source_table: tbl_physical_samples
     category:
@@ -435,6 +435,10 @@ facets:
         route: sample__sites
       - anchor: analysis_entity
         route: sample__analysis_entity
+    aggregate:
+      type: count
+      title: Number of samples
+      # facet_key: 
 
   - key: family
     display_title: Family
