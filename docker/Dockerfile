@@ -1,10 +1,6 @@
-# Base image for cloning the repository
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim AS repo
-
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
-ARG BRANCH
-WORKDIR /repo
-RUN git clone https://github.com/humlab-sead/sead_query_api.git --branch $BRANCH --depth 1
+# Built from the checkout it sits in: the build context is the repository root, so
+# this builds whatever is checked out - sead-deployment checks out the release's tag.
+#   podman build -f docker/Dockerfile .
 
 # SDK image for building the project
 FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build
@@ -13,17 +9,13 @@ WORKDIR /src
 ARG BUILD_MODE=Release
 
 # Copying only csproj files and doing dotnet restore separately to take advantage of Docker cache
-COPY --from=repo /repo/sead_query_api/sead.query.api/sead.query.api.csproj sead.query.api/
-COPY --from=repo /repo/sead_query_api/sead.query.core/sead.query.core.csproj sead.query.core/
-COPY --from=repo /repo/sead_query_api/sead.query.infra/sead.query.infra.csproj sead.query.infra/
+COPY sead.query.api/sead.query.api.csproj sead.query.api/
+COPY sead.query.core/sead.query.core.csproj sead.query.core/
+COPY sead.query.infra/sead.query.infra.csproj sead.query.infra/
 RUN dotnet restore "sead.query.api/sead.query.api.csproj"
-COPY --from=repo /repo/sead_query_api .
+COPY . .
 
 RUN dotnet publish "sead.query.api/sead.query.api.csproj" -c $BUILD_MODE -o /app/publish --no-restore
-
-# RUN cd sead.query.api \
-#     && dotnet build   sead.query.api.csproj -c $BUILD_MODE \
-#     && dotnet publish sead.query.api.csproj -c $BUILD_MODE -o /src/app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim
 
@@ -33,4 +25,9 @@ RUN mkdir -p /data /app /app/logs /app/config
 
 WORKDIR /app
 COPY --from=build /app/publish .
+
+# What was built, as 'git describe' put it; reported by sead-deployment's 'deploy.sh versions'
+ARG SOURCE_VERSION=
+ENV SOURCE_VERSION=${SOURCE_VERSION}
+
 ENTRYPOINT ["dotnet", "sead.query.api.dll"]
