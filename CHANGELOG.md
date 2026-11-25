@@ -4,6 +4,16 @@
 > All notable changes to this project will be documented in this file
 
 
+## [1.5.0](https://github.com/humlab-sead/sead_query_api/compare/v1.4.0...v1.5.0) (2026-11-25)
+
+### 🍕 Features
+
+* **geopolygon:** support several polygons in the map facet ([ca1b65d](https://github.com/humlab-sead/sead_query_api/commit/ca1b65df01d4b2e5b420d88c6fb99e2fe8372683))
+
+### 🤖 Build System
+
+* **docker:** build the image from the checkout it sits in ([bc7bf09](https://github.com/humlab-sead/sead_query_api/commit/bc7bf090fd98e9aa993e91bd4b46846c9af4f456))
+
 ## [1.4.0](https://github.com/humlab-sead/sead_query_api/compare/v1.3.0...v1.4.0) (2025-06-25)
 
 ### 🍕 Features
