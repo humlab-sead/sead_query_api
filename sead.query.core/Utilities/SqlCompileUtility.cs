@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace SeadQueryCore
 {
@@ -62,6 +63,30 @@ namespace SeadQueryCore
         {
             var pointExpr = $"ST_MakePoint({latitude_column}, {longitude_column})";
             return WithinPolygonExpr(pointExpr, polygon);
+        }
+
+        /// <summary>
+        /// Returns a SQL expression that checks if a GIS coordinate is within any one of the given polygons.
+        /// Note that the coordinate order is (latitude, longitude) i.e. latitude is the PostGIS X ordinate.
+        /// This is non-standard, but consistent between point and polygon, so containment is still correct.
+        /// </summary>
+        /// <param name="latitude_column"></param>
+        /// <param name="longitude_column"></param>
+        /// <param name="polygons">List of closed polygons, each a flat list of latitude/longitude pairs</param>
+        /// <returns></returns>
+        public static string WithinAnyPolygonExpr(string latitude_column, string longitude_column, List<List<decimal>> polygons)
+        {
+            if (polygons == null || polygons.Count == 0)
+                throw new ArgumentException("Invalid polygon sizes 0");
+
+            var pointExpr = $"ST_MakePoint({latitude_column}, {longitude_column})";
+
+            /* A single polygon compiles to the exact same expression as before multi-polygon support */
+            if (polygons.Count == 1)
+                return WithinPolygonExpr(pointExpr, polygons[0]);
+
+            /* Criterias are glued together with AND, so the OR:ed expression must be parenthesized */
+            return "(" + String.Join(" OR ", polygons.Select(polygon => WithinPolygonExpr(pointExpr, polygon))) + ")";
         }
 
         /// <summary>

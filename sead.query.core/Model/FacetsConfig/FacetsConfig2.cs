@@ -17,6 +17,14 @@ namespace SeadQueryCore
             public string FacetCode { get; set; }
             public EFacetType FacetType { get; set; }
             public List<decimal> PickValues { get; set; }
+
+            /// <summary>
+            /// The same picks grouped per polygon (ring). Only set for geopolygon facets, where the
+            /// flat PickValues list alone doesn't tell the client where one polygon ends and the next begins.
+            /// </summary>
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public List<List<decimal>> Polygons { get; set; }
+
             public string Title { get; set; }
         }
 
@@ -169,6 +177,7 @@ namespace SeadQueryCore
                 {
                     FacetCode = config.FacetCode,
                     PickValues = config.GetPickValues(),
+                    Polygons = config.Facet.FacetTypeId == EFacetType.GeoPolygon ? config.GetPickValueGroups() : null,
                     FacetType = config.Facet.FacetTypeId,
                     Title = config.Facet.DisplayTitle
                 };
@@ -187,6 +196,12 @@ namespace SeadQueryCore
             foreach (var x in this.GetFacetConfigsWithPicks())
             {
                 key.AppendFormat("{0}_{1}", x.FacetCode, string.Join("_", x.GetPickValues(true).ToArray()));
+
+                /* The sorted pick values above don't distinguish between two different groupings of the
+                   same coordinates, so multi-polygon picks must contribute their grouping to the key. */
+                if (x.GetPolygonCount() > 1)
+                    key.AppendFormat("_[{0}]", string.Join("][",
+                        x.GetPickValueGroups().Select(g => string.Join("_", g.Select(v => v.ToStringEn())))));
             }
             return key.ToString();
         }

@@ -9,16 +9,24 @@ public class GeoPolygonPickFilterCompiler : IGeoPolygonPickFilterCompiler
         if (!config.HasPicks())
             return currentFacet.Criteria;
 
-        var polygon = config.GetPickValues(false);
+        var polygons = config.GetPickValueGroups();
 
-        if (polygon.Count % 2 != 0 || polygon.Count < 6)
-            throw new ArgumentException($"Invalid polygon sizes {polygon.Count}");
+        for (var i = 0; i < polygons.Count; i++)
+        {
+            var polygon = polygons[i];
 
-        if (polygon[0] != polygon[^2] || polygon[1] != polygon[^1])
-            polygon.AddRange([polygon[0], polygon[1]]);
+            if (polygon.Count % 2 != 0 || polygon.Count < 6)
+                throw new ArgumentException(polygons.Count == 1
+                    ? $"Invalid polygon sizes {polygon.Count}"
+                    : $"Invalid polygon sizes {polygon.Count} (polygon {i})");
+
+            /* Close the ring if the client didn't */
+            if (polygon[0] != polygon[^2] || polygon[1] != polygon[^1])
+                polygon.AddRange([polygon[0], polygon[1]]);
+        }
 
         var dotName = currentFacet.TargetTable.ResolvedAliasOrTableOrUdfName;
-        return SqlCompileUtility.WithinPolygonExpr($"{dotName}.latitude_dd", $"{dotName}.longitude_dd", polygon)
+        return SqlCompileUtility.WithinAnyPolygonExpr($"{dotName}.latitude_dd", $"{dotName}.longitude_dd", polygons)
             .GlueIf(currentFacet.Criteria, " AND ");
     }
 }
