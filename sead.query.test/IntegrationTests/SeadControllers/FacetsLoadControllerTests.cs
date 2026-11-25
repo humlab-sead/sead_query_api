@@ -40,7 +40,8 @@ namespace IntegrationTests.Sead
         [Theory]
         // FIXME: Faulty facet definition generates incorrect SQL (see tmp/a.sql)
         [InlineData("constructions:constructions", false)]
-        [InlineData("dataset_methods:dataset_methods", false)]
+        [InlineData("dataset_methods:dataset_methods", true, "tbl_methods", "tbl_datasets")]
+        [InlineData("sites:dataset_methods@10/sites", true, "tbl_methods", "tbl_datasets")]
         [InlineData("genus:dataset_provider@10/sites@1985,2044,2046,2017,2045/genus@764,551", true)]
         [InlineData("relative_age_name:relative_age_name", true, "tbl_analysis_entities")]
         [InlineData("dataset_provider:dataset_provider@1", true, "tbl_analysis_entities", "tbl_dataset_masters", "tbl_datasets")]
